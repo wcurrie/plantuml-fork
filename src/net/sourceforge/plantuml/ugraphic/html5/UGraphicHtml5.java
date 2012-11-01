@@ -93,6 +93,12 @@ public class UGraphicHtml5 extends AbstractUGraphic<Html5Drawer> implements Clip
 		
 	}
 
+    public void startGroup(String... attributeNamesAndValues) {
+    }
+
+    public void endGroup() {
+    }
+
 //	public void close() {
 //		getEpsGraphics().close();
 //	}

@@ -116,7 +116,15 @@ public abstract class UGraphicUtils {
 				g.closeAction();
 			}
 
-			public ColorMapper getColorMapper() {
+            public void startGroup(String... attributeNamesAndValues) {
+                g.startGroup(attributeNamesAndValues);
+            }
+
+            public void endGroup() {
+                g.endGroup();
+            }
+
+            public ColorMapper getColorMapper() {
 				return g.getColorMapper();
 			}
 

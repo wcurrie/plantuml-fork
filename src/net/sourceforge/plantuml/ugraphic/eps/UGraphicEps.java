@@ -149,4 +149,10 @@ public class UGraphicEps extends AbstractUGraphic<EpsGraphics> implements ClipCo
 		getGraphicObject().closeLink();
 	}
 
+    public void startGroup(String... attributeNamesAndValues) {
+    }
+
+    public void endGroup() {
+    }
+
 }

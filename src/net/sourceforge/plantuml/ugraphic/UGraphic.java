@@ -64,6 +64,10 @@ public interface UGraphic {
 
 	public void closeAction();
 
+    public void startGroup(String... attributeNamesAndValues);
+
+    public void endGroup();
+
 	public UGroup createGroup();
 
 }

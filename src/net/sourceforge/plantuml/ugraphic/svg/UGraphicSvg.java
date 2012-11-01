@@ -165,7 +165,15 @@ public class UGraphicSvg extends AbstractUGraphic<SvgGraphics> implements ClipCo
 		getGraphicObject().closeLink();
 	}
 
-	class SvgGroup implements UGroup {
+    public void startGroup(String... attributeNamesAndValues) {
+        getGraphicObject().createGroupWithClassName(attributeNamesAndValues);
+    }
+
+    public void endGroup() {
+        getGraphicObject().endGroup();
+    }
+
+    class SvgGroup implements UGroup {
 		public void draw(double x, double y, UShape shape) {
 		}
 

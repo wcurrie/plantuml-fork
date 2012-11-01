@@ -117,13 +117,15 @@ public class ParticipantBox implements Pushable {
 		final StringBounder stringBounder = ug.getStringBounder();
 
 		if (showHead) {
-			final double y1 = topStartingY - head.getPreferredHeight(stringBounder)
-					- line.getPreferredHeight(stringBounder) / 2;
-			ug.translate(getMinX(), y1);
-			head.drawU(ug, new Area(new Dimension2DDouble(head.getPreferredWidth(stringBounder), head
-					.getPreferredHeight(stringBounder))), new SimpleContext2D(false));
-			ug.setTranslate(atX, atY);
-		}
+            ug.startGroup("class", "participant-head", "transform", "translate(0 0)");
+            final double y1 = topStartingY - head.getPreferredHeight(stringBounder)
+                    - line.getPreferredHeight(stringBounder) / 2;
+            ug.translate(getMinX(), y1);
+            head.drawU(ug, new Area(new Dimension2DDouble(head.getPreferredWidth(stringBounder), head
+                    .getPreferredHeight(stringBounder))), new SimpleContext2D(false));
+            ug.setTranslate(atX, atY);
+            ug.endGroup();
+        }
 
 		if (positionTail > 0) {
 			// final double y2 = positionTail - topStartingY +

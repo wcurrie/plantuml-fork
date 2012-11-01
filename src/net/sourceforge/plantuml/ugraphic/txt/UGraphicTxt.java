@@ -95,8 +95,13 @@ public class UGraphicTxt extends AbstractCommonUGraphic {
 	public void closeAction() {
 	}
 
+    public void startGroup(String... attributeNamesAndValues) {
+    }
 
-	public UGroup createGroup() {
+    public void endGroup() {
+    }
+
+    public UGroup createGroup() {
 		return new UGroupNull();
 	}
 
