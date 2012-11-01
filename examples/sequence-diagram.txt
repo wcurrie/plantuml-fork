@@ -1,0 +1,34 @@
+@startuml
+Alice -> Bob: Authentication Request
+Bob --> Alice: Authentication Response
+
+Alice -> Bob: authentication Request
+Alice <-- Bob: authentication Response
+
+Alice -> Bob: authentication Request
+Alice <-- Bob: authentication Response
+
+Alice -> Bob: authentication Request
+Alice <-- Bob: authentication Response
+
+Alice -> Bob: authentication Request
+Alice <-- Bob: authentication Response
+
+Alice -> Bob: authentication Request
+Alice <-- Bob: authentication Response
+
+Alice -> Bob: authentication Request
+Alice <-- Bob: authentication Response
+
+Alice -> Bob: authentication Request
+Alice <-- Bob: authentication Response
+
+Alice -> Bob: authentication Request
+Alice <-- Bob: authentication Response
+
+Alice -> Bob: authentication Request
+Alice <-- Bob: authentication Response
+
+Alice -> Bob: authentication Request 2
+Alice <-- Bob: authentication Response 2
+@enduml

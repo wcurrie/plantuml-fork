@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" height="736pt" style="width:246px;height:736px;" version="1.1" viewBox="0 0 246 736" width="246pt">
+<script type="text/javascript">
+<![CDATA[
+    // from http://www.howtocreate.co.uk/tutorials/javascript/browserwindow
+    function getScrollXY() {
+      var scrOfX = 0, scrOfY = 0;
+      if( typeof( window.pageYOffset ) == 'number' ) {
+        //Netscape compliant
+        scrOfY = window.pageYOffset;
+        scrOfX = window.pageXOffset;
+      } else if( document.body && ( document.body.scrollLeft || document.body.scrollTop ) ) {
+        //DOM compliant
+        scrOfY = document.body.scrollTop;
+        scrOfX = document.body.scrollLeft;
+      } else if( document.documentElement && ( document.documentElement.scrollLeft || document.documentElement.scrollTop ) ) {
+        //IE6 standards compliant mode
+        scrOfY = document.documentElement.scrollTop;
+        scrOfX = document.documentElement.scrollLeft;
+      }
+      return [ scrOfX, scrOfY ];
+    }
+      
+    function moveFixed(evt)
+    {
+      var scrollpos = getScrollXY();
+      var fixed = document.getElementsByClassName("participant-head");
+        for (var i = 0; i <fixed.length; i++) {
+            var tfm = fixed[i].transform.baseVal.getItem(0);
+            tfm.setTranslate(0, scrollpos[1]);
+        };
+    }
+    
+    window.onscroll = moveFixed;
+  ]]>
+  </script>
+<defs>
+<filter height="300%" id="f1" width="300%" x="-1" y="-1">
+<feGaussianBlur result="blurOut" stdDeviation="2"/>
+<feColorMatrix in="blurOut" result="blurOut2" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 .4 0"/>
+<feOffset dx="4" dy="4" in="blurOut2" result="blurOut3"/>
+<feBlend in="SourceGraphic" in2="blurOut3" mode="normal"/>
+</filter>
+</defs>
+<g>
+<line style="stroke: #A80036; stroke-width: 1.0; stroke-dasharray: 5.0,5.0;" x1="29" x2="29" y1="34.3105" y2="699.1426"/>
+<line style="stroke: #A80036; stroke-width: 1.0; stroke-dasharray: 5.0,5.0;" x1="220" x2="220" y1="34.3105" y2="699.1426"/>
+<g class="participant-head" transform="translate(0 0)">
+<rect fill="#FEFECE" filter="url(#f1)" height="29.3105" style="stroke: #A80036; stroke-width: 1.5;" width="45" x="5" y="0"/>
+<text fill="#000000" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="31" x="12" y="20">
+Alice</text>
+</g>
+<rect fill="#FEFECE" filter="url(#f1)" height="29.3105" style="stroke: #A80036; stroke-width: 1.5;" width="45" x="5" y="697.6895"/>
+<text fill="#000000" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="31" x="12" y="717.6895">
+Alice</text>
+<g class="participant-head" transform="translate(0 0)">
+<rect fill="#FEFECE" filter="url(#f1)" height="29.3105" style="stroke: #A80036; stroke-width: 1.5;" width="37" x="200" y="0"/>
+<text fill="#000000" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="23" x="207" y="20">
+Bob</text>
+</g>
+<rect fill="#FEFECE" filter="url(#f1)" height="29.3105" style="stroke: #A80036; stroke-width: 1.5;" width="37" x="200" y="697.6895"/>
+<text fill="#000000" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="23" x="207" y="717.6895">
+Bob</text>
+<line style="stroke: #A80036; stroke-width: 1.0;" x1="29.5" x2="214.5" y1="65.3105" y2="65.3105"/>
+<polygon fill="#A80036" points="208.5,61.3105,218.5,65.3105,208.5,69.3105,212.5,65.3105" style="stroke: #A80036; stroke-width: 1.0;"/>
+<text fill="#000000" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="147" x="36.5" y="61.3105">
+Authentication Request</text>
+<line style="stroke: #A80036; stroke-width: 1.0; stroke-dasharray: 2.0,2.0;" x1="34.5" x2="219.5" y1="94.6211" y2="94.6211"/>
+<polygon fill="#A80036" points="41.5,90.6211,31.5,94.6211,41.5,98.6211,37.5,94.6211" style="stroke: #A80036; stroke-width: 1.0;"/>
+<text fill="#000000" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="157" x="46.5" y="90.6211">
+Authentication Response</text>
+<line style="stroke: #A80036; stroke-width: 1.0;" x1="29.5" x2="214.5" y1="123.9316" y2="123.9316"/>
+<polygon fill="#A80036" points="208.5,119.9316,218.5,123.9316,208.5,127.9316,212.5,123.9316" style="stroke: #A80036; stroke-width: 1.0;"/>
+<text fill="#000000" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="145" x="36.5" y="119.9316">
+authentication Request</text>
+<line style="stroke: #A80036; stroke-width: 1.0; stroke-dasharray: 2.0,2.0;" x1="34.5" x2="219.5" y1="153.2422" y2="153.2422"/>
+<polygon fill="#A80036" points="41.5,149.2422,31.5,153.2422,41.5,157.2422,37.5,153.2422" style="stroke: #A80036; stroke-width: 1.0;"/>
+<text fill="#000000" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="155" x="46.5" y="149.2422">
+authentication Response</text>
+<line style="stroke: #A80036; stroke-width: 1.0;" x1="29.5" x2="214.5" y1="182.5527" y2="182.5527"/>
+<polygon fill="#A80036" points="208.5,178.5527,218.5,182.5527,208.5,186.5527,212.5,182.5527" style="stroke: #A80036; stroke-width: 1.0;"/>
+<text fill="#000000" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="145" x="36.5" y="178.5527">
+authentication Request</text>
+<line style="stroke: #A80036; stroke-width: 1.0; stroke-dasharray: 2.0,2.0;" x1="34.5" x2="219.5" y1="211.8633" y2="211.8633"/>
+<polygon fill="#A80036" points="41.5,207.8633,31.5,211.8633,41.5,215.8633,37.5,211.8633" style="stroke: #A80036; stroke-width: 1.0;"/>
+<text fill="#000000" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="155" x="46.5" y="207.8633">
+authentication Response</text>
+<line style="stroke: #A80036; stroke-width: 1.0;" x1="29.5" x2="214.5" y1="241.1738" y2="241.1738"/>
+<polygon fill="#A80036" points="208.5,237.1738,218.5,241.1738,208.5,245.1738,212.5,241.1738" style="stroke: #A80036; stroke-width: 1.0;"/>
+<text fill="#000000" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="145" x="36.5" y="237.1738">
+authentication Request</text>
+<line style="stroke: #A80036; stroke-width: 1.0; stroke-dasharray: 2.0,2.0;" x1="34.5" x2="219.5" y1="270.4844" y2="270.4844"/>
+<polygon fill="#A80036" points="41.5,266.4844,31.5,270.4844,41.5,274.4844,37.5,270.4844" style="stroke: #A80036; stroke-width: 1.0;"/>
+<text fill="#000000" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="155" x="46.5" y="266.4844">
+authentication Response</text>
+<line style="stroke: #A80036; stroke-width: 1.0;" x1="29.5" x2="214.5" y1="299.7949" y2="299.7949"/>
+<polygon fill="#A80036" points="208.5,295.7949,218.5,299.7949,208.5,303.7949,212.5,299.7949" style="stroke: #A80036; stroke-width: 1.0;"/>
+<text fill="#000000" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="145" x="36.5" y="295.7949">
+authentication Request</text>
+<line style="stroke: #A80036; stroke-width: 1.0; stroke-dasharray: 2.0,2.0;" x1="34.5" x2="219.5" y1="329.1055" y2="329.1055"/>
+<polygon fill="#A80036" points="41.5,325.1055,31.5,329.1055,41.5,333.1055,37.5,329.1055" style="stroke: #A80036; stroke-width: 1.0;"/>
+<text fill="#000000" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="155" x="46.5" y="325.1055">
+authentication Response</text>
+<line style="stroke: #A80036; stroke-width: 1.0;" x1="29.5" x2="214.5" y1="358.416" y2="358.416"/>
+<polygon fill="#A80036" points="208.5,354.416,218.5,358.416,208.5,362.416,212.5,358.416" style="stroke: #A80036; stroke-width: 1.0;"/>
+<text fill="#000000" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="145" x="36.5" y="354.416">
+authentication Request</text>
+<line style="stroke: #A80036; stroke-width: 1.0; stroke-dasharray: 2.0,2.0;" x1="34.5" x2="219.5" y1="387.7266" y2="387.7266"/>
+<polygon fill="#A80036" points="41.5,383.7266,31.5,387.7266,41.5,391.7266,37.5,387.7266" style="stroke: #A80036; stroke-width: 1.0;"/>
+<text fill="#000000" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="155" x="46.5" y="383.7266">
+authentication Response</text>
+<line style="stroke: #A80036; stroke-width: 1.0;" x1="29.5" x2="214.5" y1="417.0371" y2="417.0371"/>
+<polygon fill="#A80036" points="208.5,413.0371,218.5,417.0371,208.5,421.0371,212.5,417.0371" style="stroke: #A80036; stroke-width: 1.0;"/>
+<text fill="#000000" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="145" x="36.5" y="413.0371">
+authentication Request</text>
+<line style="stroke: #A80036; stroke-width: 1.0; stroke-dasharray: 2.0,2.0;" x1="34.5" x2="219.5" y1="446.3477" y2="446.3477"/>
+<polygon fill="#A80036" points="41.5,442.3477,31.5,446.3477,41.5,450.3477,37.5,446.3477" style="stroke: #A80036; stroke-width: 1.0;"/>
+<text fill="#000000" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="155" x="46.5" y="442.3477">
+authentication Response</text>
+<line style="stroke: #A80036; stroke-width: 1.0;" x1="29.5" x2="214.5" y1="475.6582" y2="475.6582"/>
+<polygon fill="#A80036" points="208.5,471.6582,218.5,475.6582,208.5,479.6582,212.5,475.6582" style="stroke: #A80036; stroke-width: 1.0;"/>
+<text fill="#000000" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="145" x="36.5" y="471.6582">
+authentication Request</text>
+<line style="stroke: #A80036; stroke-width: 1.0; stroke-dasharray: 2.0,2.0;" x1="34.5" x2="219.5" y1="504.9688" y2="504.9688"/>
+<polygon fill="#A80036" points="41.5,500.9688,31.5,504.9688,41.5,508.9688,37.5,504.9688" style="stroke: #A80036; stroke-width: 1.0;"/>
+<text fill="#000000" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="155" x="46.5" y="500.9688">
+authentication Response</text>
+<line style="stroke: #A80036; stroke-width: 1.0;" x1="29.5" x2="214.5" y1="534.2793" y2="534.2793"/>
+<polygon fill="#A80036" points="208.5,530.2793,218.5,534.2793,208.5,538.2793,212.5,534.2793" style="stroke: #A80036; stroke-width: 1.0;"/>
+<text fill="#000000" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="145" x="36.5" y="530.2793">
+authentication Request</text>
+<line style="stroke: #A80036; stroke-width: 1.0; stroke-dasharray: 2.0,2.0;" x1="34.5" x2="219.5" y1="563.5898" y2="563.5898"/>
+<polygon fill="#A80036" points="41.5,559.5898,31.5,563.5898,41.5,567.5898,37.5,563.5898" style="stroke: #A80036; stroke-width: 1.0;"/>
+<text fill="#000000" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="155" x="46.5" y="559.5898">
+authentication Response</text>
+<line style="stroke: #A80036; stroke-width: 1.0;" x1="29.5" x2="214.5" y1="592.9004" y2="592.9004"/>
+<polygon fill="#A80036" points="208.5,588.9004,218.5,592.9004,208.5,596.9004,212.5,592.9004" style="stroke: #A80036; stroke-width: 1.0;"/>
+<text fill="#000000" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="145" x="36.5" y="588.9004">
+authentication Request</text>
+<line style="stroke: #A80036; stroke-width: 1.0; stroke-dasharray: 2.0,2.0;" x1="34.5" x2="219.5" y1="622.2109" y2="622.2109"/>
+<polygon fill="#A80036" points="41.5,618.2109,31.5,622.2109,41.5,626.2109,37.5,622.2109" style="stroke: #A80036; stroke-width: 1.0;"/>
+<text fill="#000000" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="155" x="46.5" y="618.2109">
+authentication Response</text>
+<line style="stroke: #A80036; stroke-width: 1.0;" x1="29.5" x2="214.5" y1="651.5215" y2="651.5215"/>
+<polygon fill="#A80036" points="208.5,647.5215,218.5,651.5215,208.5,655.5215,212.5,651.5215" style="stroke: #A80036; stroke-width: 1.0;"/>
+<text fill="#000000" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="157" x="36.5" y="647.5215">
+authentication Request 2</text>
+<line style="stroke: #A80036; stroke-width: 1.0; stroke-dasharray: 2.0,2.0;" x1="34.5" x2="219.5" y1="680.832" y2="680.832"/>
+<polygon fill="#A80036" points="41.5,676.832,31.5,680.832,41.5,684.832,37.5,680.832" style="stroke: #A80036; stroke-width: 1.0;"/>
+<text fill="#000000" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="167" x="46.5" y="676.832">
+authentication Response 2</text>
+</g>
+</svg>
+
