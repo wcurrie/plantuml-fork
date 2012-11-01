@@ -635,6 +635,26 @@ public class SvgGraphics {
 		return new String(Base64Coder.encode(data));
 	}
 
+    public void createGroupWithClassName(String... attributeNamesAndValues) {
+        if (attributeNamesAndValues.length % 2 != 0) {
+            throw new IllegalArgumentException("attributeNamesAndValues must be paired " + Arrays.asList(attributeNamesAndValues));
+        }
+        Element group = document.createElement("g");
+        for (int i = 0; i < attributeNamesAndValues.length; i += 2) {
+            String attributeName = attributeNamesAndValues[i];
+            String attributeValue = attributeNamesAndValues[i + 1];
+            group.setAttribute(attributeName, attributeValue);
+        }
+        pendingLink2.add(0, group);
+    }
+
+    public void endGroup() {
+        if (pendingLink2.size() == 0) {
+            throw new IllegalStateException("No group open");
+        }
+        closeLink();
+    }
+
 	// Shadow
 
 	private boolean withShadow = false;

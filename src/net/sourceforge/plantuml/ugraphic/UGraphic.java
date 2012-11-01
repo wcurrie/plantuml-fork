@@ -59,5 +59,9 @@ public interface UGraphic {
 
 	public void flushUg();
 
+    public void startGroup(String... attributeNamesAndValues);
+
+    public void endGroup();
+
 	public boolean isSpecialTxt();
 }

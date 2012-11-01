@@ -155,6 +155,14 @@ public class UGraphicSvg extends AbstractUGraphic<SvgGraphics> implements ClipCo
 		createXml(os);
 	}
 
+    public void startGroup(String... attributeNamesAndValues) {
+        getGraphicObject().createGroupWithClassName(attributeNamesAndValues);
+    }
+
+    public void endGroup() {
+        getGraphicObject().endGroup();
+    }
+
 	// @Override
 	// public String startHiddenGroup() {
 	// getGraphicObject().startHiddenGroup();

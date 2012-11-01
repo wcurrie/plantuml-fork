@@ -172,7 +172,13 @@ public class UGraphicG2d extends AbstractUGraphic<Graphics2D> implements EnsureV
 		urls.remove(urls.size() - 1);
 	}
 
-	public void ensureVisible(double x, double y) {
+    public void startGroup(String... attributeNamesAndValues) {
+    }
+
+    public void endGroup() {
+    }
+
+    public void ensureVisible(double x, double y) {
 		for (Url u : urls) {
 			u.ensureVisible(x, y);
 		}

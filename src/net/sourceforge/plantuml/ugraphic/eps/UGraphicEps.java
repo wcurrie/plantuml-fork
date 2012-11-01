@@ -143,4 +143,10 @@ public class UGraphicEps extends AbstractUGraphic<EpsGraphics> implements ClipCo
 		os.write(getEPSCode().getBytes());
 	}
 
+    public void startGroup(String... attributeNamesAndValues) {
+    }
+
+    public void endGroup() {
+    }
+
 }

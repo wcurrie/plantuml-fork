@@ -119,6 +119,12 @@ public class UGraphicTxt extends AbstractCommonUGraphic implements ClipContainer
 		throw new UnsupportedOperationException();
 	}
 
+    public void startGroup(String... attributeNamesAndValues) {
+    }
+
+    public void endGroup() {
+    }
+
 	public Dimension2D getDimension() {
 		return new Dimension2DDouble(0, 0);
 	}
