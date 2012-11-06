@@ -66,7 +66,7 @@ class Step1Message extends Step1Abstract {
 			this.messageArrow = new MessageArrow(freeY.getFreeY(range), drawingSet.getSkin(), drawingSet.getSkin()
 					.createComponent(ComponentType.ARROW, getConfig(), drawingSet.getSkinParam(),
 							getLabelOfMessage(message)), getLivingParticipantBox1(), getLivingParticipantBox2(),
-					message.getUrl());
+					message);
 		}
 
 		if (message.getNote() != null) {

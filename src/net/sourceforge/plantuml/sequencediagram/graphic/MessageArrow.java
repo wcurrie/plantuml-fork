@@ -38,23 +38,24 @@ import java.awt.geom.Dimension2D;
 import net.sourceforge.plantuml.Dimension2DDouble;
 import net.sourceforge.plantuml.Url;
 import net.sourceforge.plantuml.graphic.StringBounder;
+import net.sourceforge.plantuml.sequencediagram.DiagramPositionsCollector;
+import net.sourceforge.plantuml.sequencediagram.Message;
 import net.sourceforge.plantuml.sequencediagram.NotePosition;
-import net.sourceforge.plantuml.skin.Area;
-import net.sourceforge.plantuml.skin.ArrowComponent;
-import net.sourceforge.plantuml.skin.Component;
-import net.sourceforge.plantuml.skin.Context2D;
-import net.sourceforge.plantuml.skin.Skin;
+import net.sourceforge.plantuml.sequencediagram.Participant;
+import net.sourceforge.plantuml.skin.*;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
 
 class MessageArrow extends Arrow {
 
 	private final LivingParticipantBox p1;
 	private final LivingParticipantBox p2;
+    private final Message message;
 
-	public MessageArrow(double startingY, Skin skin, Component arrow, LivingParticipantBox p1, LivingParticipantBox p2, Url url) {
-		super(startingY, skin, arrow, url);
+    public MessageArrow(double startingY, Skin skin, Component arrow, LivingParticipantBox p1, LivingParticipantBox p2, Message message) {
+		super(startingY, skin, arrow, message.getUrl());
+        this.message = message;
 
-		if (p1 == p2) {
+        if (p1 == p2) {
 			throw new IllegalArgumentException();
 		}
 		if (p1 == null || p2 == null) {
@@ -126,7 +127,13 @@ class MessageArrow extends Arrow {
 	@Override
 	protected void drawInternalU(UGraphic ug, double maxX, Context2D context) {
 		final StringBounder stringBounder = ug.getStringBounder();
-		ug.translate(getStartingX(stringBounder), getStartingY());
+        ug.translate(getStartingX(stringBounder), getStartingY());
+        double arrowYStartLevel = getArrowYStartLevel(stringBounder);
+        if (message.getArrowConfiguration().isLeftToRightNormal()) {
+            DiagramPositionsCollector.getInstance().recordMessage(message.getParticipant1().getCode(), message.getParticipant2().getCode(), arrowYStartLevel, message.getLabel());
+        } else {
+            DiagramPositionsCollector.getInstance().recordMessage(message.getParticipant2().getCode(), message.getParticipant1().getCode(), arrowYStartLevel, message.getLabel());
+        }
 		startUrl(ug);
 		getArrowComponent().drawU(ug, new Area(getActualDimension(stringBounder)), context);
 		endUrl(ug);

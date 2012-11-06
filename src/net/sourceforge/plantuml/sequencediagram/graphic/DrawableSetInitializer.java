@@ -597,7 +597,7 @@ class DrawableSetInitializer {
 		final Component delayLine = drawableSet.getSkin().createComponent(ComponentType.DELAY_LINE, null,
 				drawableSet.getSkinParam(), p.getDisplay());
 		final ParticipantBox box = new ParticipantBox(head, line, tail, delayLine, this.freeX, drawableSet
-				.getSkinParam().shadowing());
+				.getSkinParam().shadowing(), p.getCode());
 
 		final Component comp = drawableSet.getSkin().createComponent(ComponentType.ALIVE_BOX_CLOSE_CLOSE, null,
 				drawableSet.getSkinParam(), null);
