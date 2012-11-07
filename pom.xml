@@ -51,11 +51,11 @@
     </description>
     <url>http://plantuml.sourceforge.net</url>
 
-    <parent>
-        <groupId>org.sonatype.oss</groupId>
-        <artifactId>oss-parent</artifactId>
-        <version>5</version>
-    </parent>
+    <!--<parent>-->
+        <!--<groupId>org.sonatype.oss</groupId>-->
+        <!--<artifactId>oss-parent</artifactId>-->
+        <!--<version>5</version>-->
+    <!--</parent>-->
 
     <dependencies>
         <dependency>
@@ -103,6 +103,10 @@
             <url>https://github.com/wcurrie/mvn-repo/raw/master/snapshots</url>
         </snapshotRepository>
     </distributionManagement>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
 
     <build>
         <sourceDirectory>${project.basedir}/src</sourceDirectory>
@@ -161,6 +165,7 @@
                 <version>2.1</version>
                 <configuration>
                     <mavenExecutorId>forked-path</mavenExecutorId>
+                    <pushChanges>false</pushChanges>
                 </configuration>
             </plugin>
         </plugins>
