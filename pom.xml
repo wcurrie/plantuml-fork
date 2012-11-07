@@ -76,7 +76,7 @@
 
     <scm>
         <connection>scm:git:https://github.com/wcurrie/plantuml-fork.git</connection>
-        <developerConnection>scm:svn:https://plantuml.svn.sourceforge.net/svnroot/plantuml/trunk</developerConnection>
+        <developerConnection>scm:git:https://github.com/wcurrie/plantuml-fork.git</developerConnection>
         <url>http://plantuml.svn.sourceforge.net/viewvc/plantuml/trunk</url>
     </scm>
 

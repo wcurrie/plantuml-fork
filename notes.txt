@@ -1,0 +1,24 @@
+
+How to float participant heads...
+
+* SequenceDiagramFileMaker chooses UGraphics to use for given output file type. Eg UGraphicSvg (containing SvgGraphics).
+* SvgGraphics code against w3c DOM API. Would be capable of generating new <g> elements or adding "id" attribute to
+elements that are already currently generated.
+
+* DrawableSetInitializer creates head, tail and line components using Rose (a Skin implementation). For head and tail
+Rose creates a ComponentRoseParticipant instance for each head and tail. These are contained with a ParticipantBox that
+writes the head then tail sequentially (in drawHeadTailU()), making it hard to group all heads in a single <g>.
+* Could add startGroup(String id) and endGroup() to UGraphics to allow each head to go in a <g>. Eg
+<g class="participant-head">. It currently has a createGroup() method but that returns a UGroup which presents a
+narrow interface than UGraphic. No idea how this interface would work for other file types...
+
+* Need to test whether header floating script can work by looking up individual participant heads by class name and
+translate()'ing each of them.
+
+How to allow arbitrary messages on a single participant line to be selected and show the time between each?
+* ComponentRoseArrow draws the arrow. It knows the y positions of each arrow but doesn't appear to know which participants
+are involved
+
+
+How to make participant line fatter with respect to delay between messages?
+* Would provide a visual clue in log-tool for the biggest delay in a transaction.
