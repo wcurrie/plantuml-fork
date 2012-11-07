@@ -35,7 +35,7 @@
 
     <groupId>net.sourceforge.plantuml</groupId>
     <artifactId>plantuml-sequence-diagram-fork</artifactId>
-    <version>7940-SNAPSHOT</version>
+    <version>7940.1-SNAPSHOT</version>
     <packaging>jar</packaging>
 
     <name>PlantUML</name>
@@ -75,7 +75,7 @@
     </licenses>
 
     <scm>
-        <connection>scm:svn:https://plantuml.svn.sourceforge.net/svnroot/plantuml/trunk</connection>
+        <connection>scm:git:https://github.com/wcurrie/plantuml-fork.git</connection>
         <developerConnection>scm:svn:https://plantuml.svn.sourceforge.net/svnroot/plantuml/trunk</developerConnection>
         <url>http://plantuml.svn.sourceforge.net/viewvc/plantuml/trunk</url>
     </scm>
@@ -92,6 +92,17 @@
             <email>plantuml@gmail.com</email>
         </developer>
     </developers>
+
+    <distributionManagement>
+        <repository>
+            <id>repo</id>
+            <url>https://github.com/wcurrie/mvn-repo/raw/master/releases</url>
+        </repository>
+        <snapshotRepository>
+            <id>snapshot-repo</id>
+            <url>https://github.com/wcurrie/mvn-repo/raw/master/snapshots</url>
+        </snapshotRepository>
+    </distributionManagement>
 
     <build>
         <sourceDirectory>${project.basedir}/src</sourceDirectory>
