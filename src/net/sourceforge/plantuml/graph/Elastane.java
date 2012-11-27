@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 8519 $
+ * Revision $Revision: 9495 $
  *
  */
 package net.sourceforge.plantuml.graph;
@@ -39,7 +39,6 @@ import java.awt.Shape;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Dimension2D;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -51,6 +50,7 @@ import java.util.Set;
 import net.sourceforge.plantuml.Dimension2DDouble;
 import net.sourceforge.plantuml.Log;
 import net.sourceforge.plantuml.SpriteContainerEmpty;
+import net.sourceforge.plantuml.cucadiagram.Display;
 import net.sourceforge.plantuml.cucadiagram.IEntity;
 import net.sourceforge.plantuml.cucadiagram.Link;
 import net.sourceforge.plantuml.geom.Box;
@@ -269,7 +269,7 @@ public class Elastane {
 			final String label = l.getLabel();
 			if (label != null) {
 				// polyline.getFirst().getCenter();
-				final TextBlock textBlock = TextBlockUtils.create(Arrays.asList(label),
+				final TextBlock textBlock = TextBlockUtils.create(Display.asList(label),
 						new FontConfiguration(UFont.getCurrentFont(g2d), HtmlColorUtils.BLACK),
 						HorizontalAlignement.LEFT, new SpriteContainerEmpty());
 				textBlock.calculateDimension(StringBounderUtils.asStringBounder(g2d));

@@ -71,7 +71,7 @@ import net.sourceforge.plantuml.version.PSystemVersionFactory;
 
 public class PSystemBuilder {
 
-	final public PSystem createPSystem(final List<String> strings) throws IOException, InterruptedException {
+	final public PSystem createPSystem(final List<? extends CharSequence> strings) throws IOException, InterruptedException {
 
 		final List<PSystemFactory> factories = getAllFactories();
 

@@ -43,6 +43,7 @@ import java.util.Set;
 
 import net.sourceforge.plantuml.cucadiagram.Bodier;
 import net.sourceforge.plantuml.cucadiagram.Code;
+import net.sourceforge.plantuml.cucadiagram.Display;
 import net.sourceforge.plantuml.cucadiagram.GroupRoot;
 import net.sourceforge.plantuml.cucadiagram.GroupType;
 import net.sourceforge.plantuml.cucadiagram.IEntity;
@@ -60,8 +61,8 @@ public class EntityFactory {
 
 	private final IGroup rootGroup = new GroupRoot(this);
 
-	public ILeaf createLeaf(Code code, List<? extends CharSequence> display, LeafType entityType,
-			IGroup parentContainer, Set<VisibilityModifier> hides) {
+	public ILeaf createLeaf(Code code, Display display, LeafType entityType, IGroup parentContainer,
+			Set<VisibilityModifier> hides) {
 		if (entityType == null) {
 			throw new IllegalArgumentException();
 		}
@@ -71,7 +72,7 @@ public class EntityFactory {
 		return result;
 	}
 
-	public IGroup createGroup(Code code, List<? extends CharSequence> display, String namespace, GroupType groupType,
+	public IGroup createGroup(Code code, Display display, String namespace, GroupType groupType,
 			IGroup parentContainer, Set<VisibilityModifier> hides) {
 		if (groupType == null) {
 			throw new IllegalArgumentException();

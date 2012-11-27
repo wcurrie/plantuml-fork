@@ -45,6 +45,7 @@ import net.sourceforge.plantuml.command.regex.RegexConcat;
 import net.sourceforge.plantuml.command.regex.RegexLeaf;
 import net.sourceforge.plantuml.command.regex.RegexResult;
 import net.sourceforge.plantuml.cucadiagram.Code;
+import net.sourceforge.plantuml.cucadiagram.Display;
 import net.sourceforge.plantuml.cucadiagram.IEntity;
 import net.sourceforge.plantuml.cucadiagram.LeafType;
 import net.sourceforge.plantuml.cucadiagram.Stereotype;
@@ -99,7 +100,7 @@ public class CommandCreateEntityObjectMultilines extends CommandMultilines2<Obje
 		if (getSystem().leafExist(code)) {
 			return getSystem().getOrCreateLeaf1(code, null);
 		}
-		final IEntity entity = getSystem().createLeaf(code, StringUtils.getWithNewlines(display), LeafType.OBJECT);
+		final IEntity entity = getSystem().createLeaf(code, Display.getWithNewlines(display), LeafType.OBJECT);
 		if (stereotype != null) {
 			entity.setStereotype(new Stereotype(stereotype, getSystem().getSkinParam().getCircledCharacterRadius(),
 					getSystem().getSkinParam().getFont(FontParam.CIRCLED_CHARACTER, null)));

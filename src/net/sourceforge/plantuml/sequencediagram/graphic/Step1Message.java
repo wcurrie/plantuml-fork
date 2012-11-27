@@ -28,15 +28,14 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 8538 $
+ * Revision $Revision: 9495 $
  *
  */
 package net.sourceforge.plantuml.sequencediagram.graphic;
 
-import java.util.Arrays;
-
 import net.sourceforge.plantuml.ISkinParam;
 import net.sourceforge.plantuml.SkinParamBackcolored;
+import net.sourceforge.plantuml.cucadiagram.Display;
 import net.sourceforge.plantuml.graphic.StringBounder;
 import net.sourceforge.plantuml.sequencediagram.InGroupable;
 import net.sourceforge.plantuml.sequencediagram.LifeEvent;
@@ -196,7 +195,7 @@ class Step1Message extends Step1Abstract {
 		return getDrawingSet()
 				.getSkin()
 				.createComponent(ComponentType.ALIVE_BOX_OPEN_OPEN, null, getDrawingSet().getSkinParam(),
-						Arrays.asList("")).getPreferredWidth(null) / 2;
+						Display.asList("")).getPreferredWidth(null) / 2;
 	}
 
 	private Arrow createArrowCreate() {

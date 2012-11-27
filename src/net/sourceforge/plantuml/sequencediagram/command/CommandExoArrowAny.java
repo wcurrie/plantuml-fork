@@ -33,12 +33,12 @@
  */
 package net.sourceforge.plantuml.sequencediagram.command;
 
-import java.util.Arrays;
 import java.util.List;
 
 import net.sourceforge.plantuml.StringUtils;
 import net.sourceforge.plantuml.command.CommandExecutionResult;
 import net.sourceforge.plantuml.command.SingleLineCommand;
+import net.sourceforge.plantuml.cucadiagram.Display;
 import net.sourceforge.plantuml.sequencediagram.MessageExo;
 import net.sourceforge.plantuml.sequencediagram.MessageExoType;
 import net.sourceforge.plantuml.sequencediagram.Participant;
@@ -69,11 +69,11 @@ abstract class CommandExoArrowAny extends SingleLineCommand<SequenceDiagram> {
 				|| arrow.contains("\\\\");
 		final boolean dotted = arrow.contains("--");
 
-		final List<String> labels;
+		final Display labels;
 		if (arg.get(2) == null) {
-			labels = Arrays.asList("");
+			labels = Display.asList("");
 		} else {
-			labels = StringUtils.getWithNewlines(arg.get(2));
+			labels = Display.getWithNewlines(arg.get(2));
 		}
 
 		ArrowConfiguration config = ArrowConfiguration.withDirection(ArrowDirection.LEFT_TO_RIGHT_NORMAL);

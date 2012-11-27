@@ -28,10 +28,14 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 7715 $
+ * Revision $Revision: 9486 $
  *
  */
 package net.sourceforge.plantuml.ugraphic;
+
+import java.awt.geom.Dimension2D;
+
+import net.sourceforge.plantuml.Dimension2DDouble;
 
 public class UEllipse extends AbstractShadowable {
 
@@ -65,5 +69,15 @@ public class UEllipse extends AbstractShadowable {
 
 	public final double getExtend() {
 		return extend;
+	}
+
+	public Dimension2D getDimension() {
+		return new Dimension2DDouble(width, height);
+	}
+
+	public UEllipse bigger(double more) {
+		final UEllipse result = new UEllipse(width + more, height + more);
+		result.setDeltaShadow(getDeltaShadow());
+		return result;
 	}
 }

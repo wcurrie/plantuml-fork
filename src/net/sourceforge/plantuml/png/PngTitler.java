@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 7715 $
+ * Revision $Revision: 9502 $
  *
  */
 package net.sourceforge.plantuml.png;
@@ -38,9 +38,9 @@ import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.awt.geom.Dimension2D;
 import java.awt.image.BufferedImage;
-import java.util.List;
 
 import net.sourceforge.plantuml.SpriteContainerEmpty;
+import net.sourceforge.plantuml.cucadiagram.Display;
 import net.sourceforge.plantuml.graphic.FontConfiguration;
 import net.sourceforge.plantuml.graphic.HorizontalAlignement;
 import net.sourceforge.plantuml.graphic.HtmlColor;
@@ -56,14 +56,14 @@ import net.sourceforge.plantuml.ugraphic.g2d.UGraphicG2d;
 public class PngTitler {
 
 	private final HtmlColor textColor;
-	private final List<? extends CharSequence> text;
+	private final Display text;
 	private final int fontSize;
 	private final String fontFamily;
 	private final HorizontalAlignement horizontalAlignement;
 	private final VerticalPosition verticalPosition;
 	private final ColorMapper colorMapper;
 
-	public PngTitler(ColorMapper colorMapper, HtmlColor textColor, List<? extends CharSequence> text, int fontSize, String fontFamily,
+	public PngTitler(ColorMapper colorMapper, HtmlColor textColor, Display text, int fontSize, String fontFamily,
 			HorizontalAlignement horizontalAlignement, VerticalPosition verticalPosition) {
 		this.textColor = textColor;
 		this.colorMapper = colorMapper;
@@ -100,7 +100,7 @@ public class PngTitler {
 		return TextBlockUtils.create(text, new FontConfiguration(normalFont, textColor), horizontalAlignement, new SpriteContainerEmpty());
 	}
 
-	static private BufferedImage addTitle(ColorMapper colorMapper, BufferedImage im, HtmlColor background, HtmlColor textColor, List<? extends CharSequence> text,
+	static private BufferedImage addTitle(ColorMapper colorMapper, BufferedImage im, HtmlColor background, HtmlColor textColor, Display text,
 			int fontSize, String fontFamily, HorizontalAlignement horizontalAlignement,
 			VerticalPosition verticalPosition, int margin) {
 

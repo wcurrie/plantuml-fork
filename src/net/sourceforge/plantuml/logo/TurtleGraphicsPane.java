@@ -37,10 +37,10 @@ import java.awt.Font;
 import java.awt.geom.Dimension2D;
 import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import net.sourceforge.plantuml.SpriteContainerEmpty;
+import net.sourceforge.plantuml.cucadiagram.Display;
 import net.sourceforge.plantuml.graphic.FontConfiguration;
 import net.sourceforge.plantuml.graphic.HorizontalAlignement;
 import net.sourceforge.plantuml.graphic.HtmlColor;
@@ -195,7 +195,7 @@ class TurtleGraphicsPane {
 		drawTurtle(ug);
 		if (message != null) {
 			final FontConfiguration font = new FontConfiguration(new UFont("", Font.PLAIN, 14), HtmlColorUtils.BLACK);
-			final TextBlock text = TextBlockUtils.create(Arrays.asList(message), font, HorizontalAlignement.LEFT, new SpriteContainerEmpty());
+			final TextBlock text = TextBlockUtils.create(Display.asList(message), font, HorizontalAlignement.LEFT, new SpriteContainerEmpty());
 			final Dimension2D dim = text.calculateDimension(ug.getStringBounder());
 			final double textHeight = dim.getHeight();
 			text.drawU(ug, 0, height - textHeight);

@@ -28,14 +28,12 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 8906 $
+ * Revision $Revision: 9498 $
  *
  */
 package net.sourceforge.plantuml.cucadiagram;
 
 import java.awt.geom.Dimension2D;
-import java.util.Arrays;
-import java.util.List;
 
 import net.sourceforge.plantuml.Hideable;
 import net.sourceforge.plantuml.SpriteContainer;
@@ -64,7 +62,7 @@ public class Link implements Hideable {
 	final private String qualifier2;
 	final private String uid = "LNK" + UniqueSequence.getValue();
 
-	private List<? extends CharSequence> note;
+	private Display note;
 	private Position notePosition;
 	private HtmlColor noteColor;
 
@@ -237,7 +235,7 @@ public class Link implements Hideable {
 		this.weight = weight;
 	}
 
-	public final List<? extends CharSequence> getNote() {
+	public final Display getNote() {
 		return note;
 	}
 
@@ -249,14 +247,14 @@ public class Link implements Hideable {
 		return notePosition;
 	}
 
-	public final void addNote(List<? extends CharSequence> note, Position position, HtmlColor noteColor) {
+	public final void addNote(Display note, Position position, HtmlColor noteColor) {
 		this.note = note;
 		this.notePosition = position;
 		this.noteColor = noteColor;
 	}
 
 	public final void addNote(String n, Position position, HtmlColor noteColor) {
-		this.note = StringUtils.getWithNewlines(n);
+		this.note = Display.getWithNewlines(n);
 		this.notePosition = position;
 		this.noteColor = noteColor;
 	}
@@ -313,7 +311,7 @@ public class Link implements Hideable {
 	private double getQualifierMargin(StringBounder stringBounder, UFont fontQualif, String qualif,
 			SpriteContainer spriteContainer) {
 		if (qualif != null) {
-			final TextBlock b = TextBlockUtils.create(Arrays.asList(qualif), new FontConfiguration(fontQualif,
+			final TextBlock b = TextBlockUtils.create(Display.asList(qualif), new FontConfiguration(fontQualif,
 					HtmlColorUtils.BLACK), HorizontalAlignement.LEFT, spriteContainer);
 			final Dimension2D dim = b.calculateDimension(stringBounder);
 			return Math.max(dim.getWidth(), dim.getHeight());

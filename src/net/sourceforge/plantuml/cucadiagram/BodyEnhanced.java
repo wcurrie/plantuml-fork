@@ -136,7 +136,7 @@ public class BodyEnhanced implements TextBlockWidth {
 			return null;
 		}
 		s = s.substring(2, s.length() - 2).trim();
-		return TextBlockUtils.create(StringUtils.getWithNewlines(s), titleConfig, HorizontalAlignement.LEFT, spriteContainer);
+		return TextBlockUtils.create(Display.getWithNewlines(s), titleConfig, HorizontalAlignement.LEFT, spriteContainer);
 	}
 
 }

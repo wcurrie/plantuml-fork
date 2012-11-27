@@ -28,16 +28,15 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 7894 $
+ * Revision $Revision: 9495 $
  *
  */
 package net.sourceforge.plantuml.skin.bluemodern;
 
 import java.awt.geom.Dimension2D;
-import java.util.Arrays;
-import java.util.List;
 
 import net.sourceforge.plantuml.SpriteContainer;
+import net.sourceforge.plantuml.cucadiagram.Display;
 import net.sourceforge.plantuml.graphic.FontConfiguration;
 import net.sourceforge.plantuml.graphic.HorizontalAlignement;
 import net.sourceforge.plantuml.graphic.HtmlColor;
@@ -66,7 +65,7 @@ public class ComponentBlueModernGroupingHeader extends AbstractTextualComponent 
 
 	public ComponentBlueModernGroupingHeader(HtmlColor headerBackgroundColor, HtmlColor generalBackgroundColor,
 			HtmlColor borderColor, HtmlColor fontColor1, HtmlColor fontColor2, UFont bigFont, UFont smallFont,
-			List<? extends CharSequence> strings, SpriteContainer spriteContainer) {
+			Display strings, SpriteContainer spriteContainer) {
 		super(strings.get(0), fontColor1, bigFont, HorizontalAlignement.LEFT, 15, 30, 1, spriteContainer);
 		this.headerBackgroundColor = headerBackgroundColor;
 		this.generalBackgroundColor = generalBackgroundColor;
@@ -74,7 +73,7 @@ public class ComponentBlueModernGroupingHeader extends AbstractTextualComponent 
 		if (strings.size() == 1 || strings.get(1) == null) {
 			this.commentTextBlock = null;
 		} else {
-			this.commentTextBlock = TextBlockUtils.create(Arrays.asList("[" + strings.get(1) + "]"),
+			this.commentTextBlock = TextBlockUtils.create(Display.asList("[" + strings.get(1) + "]"),
 					new FontConfiguration(smallFont, fontColor2), HorizontalAlignement.LEFT, spriteContainer);
 		}
 	}

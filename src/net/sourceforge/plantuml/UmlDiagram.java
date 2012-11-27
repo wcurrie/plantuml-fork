@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  *
- * Revision $Revision: 9072 $
+ * Revision $Revision: 9495 $
  *
  */
 package net.sourceforge.plantuml;
@@ -50,6 +50,7 @@ import java.util.List;
 
 import javax.imageio.ImageIO;
 
+import net.sourceforge.plantuml.cucadiagram.Display;
 import net.sourceforge.plantuml.flashcode.FlashCodeFactory;
 import net.sourceforge.plantuml.flashcode.FlashCodeUtils;
 import net.sourceforge.plantuml.graphic.GraphicStrings;
@@ -67,9 +68,9 @@ public abstract class UmlDiagram extends AbstractPSystem implements PSystem {
 
 	private int minwidth = Integer.MAX_VALUE;
 
-	private List<? extends CharSequence> title;
-	private List<String> header;
-	private List<String> footer;
+	private Display title;
+	private Display header;
+	private Display footer;
 	private HorizontalAlignement headerAlignement = HorizontalAlignement.RIGHT;
 	private HorizontalAlignement footerAlignement = HorizontalAlignement.CENTER;
 	private final Pragma pragma = new Pragma();
@@ -77,11 +78,11 @@ public abstract class UmlDiagram extends AbstractPSystem implements PSystem {
 
 	private final SkinParam skinParam = new SkinParam(getUmlDiagramType());
 
-	final public void setTitle(List<? extends CharSequence> strings) {
+	final public void setTitle(Display strings) {
 		this.title = strings;
 	}
 
-	final public List<? extends CharSequence> getTitle() {
+	final public Display getTitle() {
 		return title;
 	}
 
@@ -109,19 +110,19 @@ public abstract class UmlDiagram extends AbstractPSystem implements PSystem {
 		skinParam.setParam(key.toLowerCase(), value);
 	}
 
-	public final List<String> getHeader() {
+	public final Display getHeader() {
 		return header;
 	}
 
-	public final void setHeader(List<String> header) {
+	public final void setHeader(Display header) {
 		this.header = header;
 	}
 
-	public final List<String> getFooter() {
+	public final Display getFooter() {
 		return footer;
 	}
 
-	public final void setFooter(List<String> footer) {
+	public final void setFooter(Display footer) {
 		this.footer = footer;
 	}
 
@@ -208,6 +209,7 @@ public abstract class UmlDiagram extends AbstractPSystem implements PSystem {
 		try {
 			lastInfo = exportDiagramInternal(os, cmap, index, fileFormatOption, flashcodes);
 		} catch (Exception e) {
+			e.printStackTrace();
 			exportDiagramError(os, e, fileFormatOption);
 		}
 	}

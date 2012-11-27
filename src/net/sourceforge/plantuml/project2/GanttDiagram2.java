@@ -35,10 +35,10 @@ package net.sourceforge.plantuml.project2;
 
 import java.awt.Font;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import net.sourceforge.plantuml.SpriteContainerEmpty;
+import net.sourceforge.plantuml.cucadiagram.Display;
 import net.sourceforge.plantuml.graphic.FontConfiguration;
 import net.sourceforge.plantuml.graphic.HorizontalAlignement;
 import net.sourceforge.plantuml.graphic.HtmlColorUtils;
@@ -81,7 +81,7 @@ public class GanttDiagram2 {
 		final List<Row> rows = new ArrayList<Row>();
 		for (Task t : tasks) {
 			final String text = t.getCode();
-			final TextBlock label = TextBlockUtils.create(Arrays.asList(text), fontConfig, HorizontalAlignement.LEFT,
+			final TextBlock label = TextBlockUtils.create(Display.asList(text), fontConfig, HorizontalAlignement.LEFT,
 					new SpriteContainerEmpty());
 			rows.add(new RowSimple((Day) t.getStart(), (Day) t.getEnd(), HtmlColorUtils.BLACK, TextBlockUtils
 					.withMargin(label, 3, 3)));

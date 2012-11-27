@@ -47,6 +47,7 @@ import net.sourceforge.plantuml.command.note.SingleMultiFactoryCommand;
 import net.sourceforge.plantuml.command.regex.RegexConcat;
 import net.sourceforge.plantuml.command.regex.RegexLeaf;
 import net.sourceforge.plantuml.command.regex.RegexResult;
+import net.sourceforge.plantuml.cucadiagram.Display;
 import net.sourceforge.plantuml.sequencediagram.AbstractMessage;
 import net.sourceforge.plantuml.sequencediagram.NotePosition;
 import net.sourceforge.plantuml.sequencediagram.SequenceDiagram;
@@ -74,7 +75,7 @@ public final class FactorySequenceNoteOnArrowCommand implements SingleMultiFacto
 
 			@Override
 			protected CommandExecutionResult executeArg(RegexResult arg) {
-				final List<String> strings = StringUtils.getWithNewlines(arg.get("NOTE", 0));
+				final List<String> strings = StringUtils.getWithNewlines2(arg.get("NOTE", 0));
 				return executeInternal(getSystem(), arg, strings);
 			}
 
@@ -104,7 +105,7 @@ public final class FactorySequenceNoteOnArrowCommand implements SingleMultiFacto
 		final AbstractMessage m = system.getLastMessage();
 		if (m != null) {
 			final NotePosition position = NotePosition.valueOf(line0.get("POSITION", 0).toUpperCase());
-			List<CharSequence> strings = StringUtils.manageEmbededDiagrams(in);
+			List<CharSequence> strings = StringUtils.manageEmbededDiagrams2(in);
 			final Url url;
 			if (strings.size() > 0) {
 				final UrlBuilder urlBuilder = new UrlBuilder(system.getSkinParam().getValue("topurl"), true);
@@ -116,7 +117,7 @@ public final class FactorySequenceNoteOnArrowCommand implements SingleMultiFacto
 				strings = strings.subList(1, strings.size());
 			}
 
-			m.setNote(strings, position, line0.get("COLOR", 0), url);
+			m.setNote(new Display(strings), position, line0.get("COLOR", 0), url);
 		}
 
 		return CommandExecutionResult.ok();

@@ -42,7 +42,7 @@ import java.util.regex.Pattern;
 
 public class BlockUml {
 
-	private final List<String> data;
+	private final List<? extends CharSequence> data;
 	private PSystem system;
 
 	//private static final Pattern patternFilename = Pattern.compile("^@start\\S+\\s+\"?(.*?)\"?$");
@@ -52,19 +52,19 @@ public class BlockUml {
 		this(Arrays.asList(strings));
 	}
 
-	public BlockUml(List<String> strings) {
-		final String s0 = strings.get(0).trim();
+	public BlockUml(List<? extends CharSequence> strings) {
+		final String s0 = strings.get(0).toString().trim();
 		if (s0.startsWith("@start") == false) {
 			throw new IllegalArgumentException();
 		}
-		this.data = new ArrayList<String>(strings);
+		this.data = new ArrayList<CharSequence>(strings);
 	}
 
 	public String getFilename() {
 		if (OptionFlags.getInstance().isWord()) {
 			return null;
 		}
-		final Matcher m = patternFilename.matcher(data.get(0).trim());
+		final Matcher m = patternFilename.matcher(data.get(0).toString().trim());
 		final boolean ok = m.find();
 		if (ok == false) {
 			return null;

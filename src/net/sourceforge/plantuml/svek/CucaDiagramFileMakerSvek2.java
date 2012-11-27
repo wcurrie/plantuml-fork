@@ -45,6 +45,7 @@ import net.sourceforge.plantuml.ColorParam;
 import net.sourceforge.plantuml.EmptyImageBuilder;
 import net.sourceforge.plantuml.FontParam;
 import net.sourceforge.plantuml.UmlDiagramType;
+import net.sourceforge.plantuml.cucadiagram.Display;
 import net.sourceforge.plantuml.cucadiagram.EntityPosition;
 import net.sourceforge.plantuml.cucadiagram.GroupType;
 import net.sourceforge.plantuml.cucadiagram.IEntity;
@@ -446,7 +447,7 @@ public final class CucaDiagramFileMakerSvek2 {
 	}
 
 	private TextBlock getTitleBlock(IGroup g) {
-		final List<? extends CharSequence> label = g.getDisplay();
+		final Display label = g.getDisplay();
 		final String stereo = g.getStereotype() == null ? null : g.getStereotype().getLabel();
 
 		if (label == null) {
@@ -470,7 +471,7 @@ public final class CucaDiagramFileMakerSvek2 {
 		final String stereo = g.getStereotype().getLabel();
 
 		final FontParam fontParam = FontParam.COMPONENT_STEREOTYPE;
-		return TextBlockUtils.create(stereos, new FontConfiguration(dotData.getSkinParam().getFont(fontParam, stereo),
+		return TextBlockUtils.create(new Display(stereos), new FontConfiguration(dotData.getSkinParam().getFont(fontParam, stereo),
 				dotData.getSkinParam().getFontHtmlColor(fontParam, stereo)), HorizontalAlignement.CENTER, dotData
 				.getSkinParam());
 	}

@@ -70,12 +70,12 @@ public class GroupRoot implements IGroup {
 	}
 
 
-	public List<? extends CharSequence> getDisplay() {
+	public Display getDisplay() {
 		throw new UnsupportedOperationException();
 
 	}
 
-	public void setDisplay(List<? extends CharSequence> display) {
+	public void setDisplay(Display display) {
 		throw new UnsupportedOperationException();
 
 	}

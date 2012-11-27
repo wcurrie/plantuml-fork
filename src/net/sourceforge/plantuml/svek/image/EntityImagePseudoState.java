@@ -34,12 +34,12 @@
 package net.sourceforge.plantuml.svek.image;
 
 import java.awt.geom.Dimension2D;
-import java.util.Arrays;
 
 import net.sourceforge.plantuml.ColorParam;
 import net.sourceforge.plantuml.Dimension2DDouble;
 import net.sourceforge.plantuml.FontParam;
 import net.sourceforge.plantuml.ISkinParam;
+import net.sourceforge.plantuml.cucadiagram.Display;
 import net.sourceforge.plantuml.cucadiagram.ILeaf;
 import net.sourceforge.plantuml.cucadiagram.Stereotype;
 import net.sourceforge.plantuml.graphic.FontConfiguration;
@@ -61,7 +61,7 @@ public class EntityImagePseudoState extends AbstractEntityImage {
 	public EntityImagePseudoState(ILeaf entity, ISkinParam skinParam) {
 		super(entity, skinParam);
 		final Stereotype stereotype = entity.getStereotype();
-		this.desc = TextBlockUtils.create(Arrays.asList("H"), new FontConfiguration(
+		this.desc = TextBlockUtils.create(Display.asList("H"), new FontConfiguration(
 				getFont(FontParam.STATE, stereotype), getFontColor(FontParam.STATE, stereotype)),
 				HorizontalAlignement.CENTER, skinParam);
 

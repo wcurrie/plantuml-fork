@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 9048 $
+ * Revision $Revision: 9501 $
  *
  */
 package net.sourceforge.plantuml.sequencediagram.graphic;
@@ -41,6 +41,7 @@ import net.sourceforge.plantuml.Dimension2DDouble;
 import net.sourceforge.plantuml.ISkinParam;
 import net.sourceforge.plantuml.SkinParamBackcolored;
 import net.sourceforge.plantuml.SkinParamBackcoloredReference;
+import net.sourceforge.plantuml.cucadiagram.Display;
 import net.sourceforge.plantuml.graphic.StringBounder;
 import net.sourceforge.plantuml.sequencediagram.Delay;
 import net.sourceforge.plantuml.sequencediagram.Divider;
@@ -415,11 +416,11 @@ class DrawableSetInitializer {
 				m.getBackColorGeneral());
 
 		final Component comp = drawableSet.getSkin().createComponent(ComponentType.GROUPING_SPACE, null, skinParam,
-				Arrays.asList(m.getComment()));
+				Display.asList(m.getComment()));
 		final double preferredHeight = comp.getPreferredHeight(stringBounder);
 		freeY2 = freeY2.add(preferredHeight, range);
 
-		final List<String> strings = m.getTitle().equals("group") ? Arrays.asList(m.getComment()) : Arrays.asList(
+		final Display strings = m.getTitle().equals("group") ? Display.asList(m.getComment()) : Display.asList(
 				m.getTitle(), m.getComment());
 		final Component header = drawableSet.getSkin().createComponent(ComponentType.GROUPING_HEADER, null, skinParam,
 				strings);
@@ -445,7 +446,7 @@ class DrawableSetInitializer {
 				freeY2 = ((FrontierStack) freeY2).restore();
 			}
 			final Component compElse = drawableSet.getSkin().createComponent(ComponentType.GROUPING_ELSE, null,
-					skinParam, Arrays.asList(m.getComment()));
+					skinParam, Display.asList(m.getComment()));
 			final Lazy lazy = new Lazy() {
 				public double getNow() {
 					final GraphicalElement after = drawableSet.getEvent(m.getJustAfter());
@@ -468,7 +469,7 @@ class DrawableSetInitializer {
 			element = new GroupingGraphicalElementTail(freeY2.getFreeY(range),
 					inGroupableStack.getTopGroupingStructure(), m.isParallel());
 			final Component comp = drawableSet.getSkin().createComponent(ComponentType.GROUPING_SPACE, null, skinParam,
-					Arrays.asList(m.getComment()));
+					Display.asList(m.getComment()));
 			final double preferredHeight = comp.getPreferredHeight(stringBounder);
 			freeY2 = freeY2.add(preferredHeight, range);
 			inGroupableStack.pop();
@@ -532,9 +533,9 @@ class DrawableSetInitializer {
 		final ISkinParam skinParam = new SkinParamBackcoloredReference(drawableSet.getSkinParam(),
 				reference.getBackColorElement(), reference.getBackColorGeneral());
 
-		final List<String> strings = new ArrayList<String>();
-		strings.add("ref");
-		strings.addAll(reference.getStrings());
+		Display strings = new Display();
+		strings = strings.add("ref");
+		strings = strings.addAll(reference.getStrings());
 		final Component comp = drawableSet.getSkin().createComponent(ComponentType.REFERENCE, null, skinParam, strings);
 		final GraphicalReference graphicalReference = new GraphicalReference(freeY2.getFreeY(range), comp, p1, p2,
 				reference.getUrl());

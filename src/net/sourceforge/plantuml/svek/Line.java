@@ -38,12 +38,14 @@ import java.awt.geom.Point2D;
 import java.util.Collection;
 import java.util.List;
 
+import net.sourceforge.plantuml.Direction;
 import net.sourceforge.plantuml.Hideable;
 import net.sourceforge.plantuml.ISkinParam;
 import net.sourceforge.plantuml.OptionFlags;
 import net.sourceforge.plantuml.StringUtils;
 import net.sourceforge.plantuml.Url;
 import net.sourceforge.plantuml.command.Position;
+import net.sourceforge.plantuml.cucadiagram.Display;
 import net.sourceforge.plantuml.cucadiagram.IEntity;
 import net.sourceforge.plantuml.cucadiagram.IGroup;
 import net.sourceforge.plantuml.cucadiagram.Link;
@@ -110,44 +112,44 @@ public class Line implements Moveable, Hideable {
 
 	class DirectionalTextBlock implements TextBlock {
 
-		private final TextBlock direct;
-		private final TextBlock reverse;
+		private final TextBlock right;
+		private final TextBlock left;
 
-		DirectionalTextBlock(TextBlock direct, TextBlock reverse) {
-			this.direct = direct;
-			this.reverse = reverse;
+		DirectionalTextBlock(TextBlock right, TextBlock left) {
+			this.right = right;
+			this.left = left;
 		}
 
 		public void drawU(UGraphic ug, double x, double y) {
-			boolean isDirect = isDirect();
+			Direction dir = getDirection();
 			if (getLinkArrow() == LinkArrow.BACKWARD) {
-				isDirect = !isDirect;
+				dir = dir.getInv();
 			}
-			if (isDirect) {
-				direct.drawU(ug, x, y);
+			if (dir == Direction.RIGHT) {
+				right.drawU(ug, x, y);
 			} else {
-				reverse.drawU(ug, x, y);
+				left.drawU(ug, x, y);
 			}
 		}
 
 		public List<Url> getUrls() {
-			if (isDirect()) {
-				return direct.getUrls();
+			if (getDirection() == Direction.RIGHT) {
+				return right.getUrls();
 			}
-			return reverse.getUrls();
+			return left.getUrls();
 		}
 
 		public Dimension2D calculateDimension(StringBounder stringBounder) {
-			return direct.calculateDimension(stringBounder);
+			return right.calculateDimension(stringBounder);
 		}
 
-		private boolean isDirect() {
+		private Direction getDirection() {
 			final Point2D start = dotPath.getStartPoint();
 			final Point2D end = dotPath.getEndPoint();
 			if (end.getX() == start.getX()) {
-				return end.getY() > start.getY();
+				return end.getY() > start.getY() ? Direction.RIGHT : Direction.LEFT;
 			}
-			return end.getX() > start.getX();
+			return end.getX() > start.getX() ? Direction.RIGHT : Direction.LEFT;
 		}
 
 	}
@@ -179,23 +181,23 @@ public class Line implements Moveable, Hideable {
 			if (getLinkArrow() == LinkArrow.NONE) {
 				labelOnly = null;
 			} else {
-				labelOnly = new DirectionalTextBlock(new TextBlockArrow(LinkArrow.DIRECT_NORMAL, labelFont),
-						new TextBlockArrow(LinkArrow.BACKWARD, labelFont));
+				final TextBlockArrow right = new TextBlockArrow(Direction.RIGHT, labelFont);
+				final TextBlockArrow left = new TextBlockArrow(Direction.LEFT, labelFont);
+				labelOnly = new DirectionalTextBlock(right, left);
 			}
 		} else {
 			final double marginLabel = startUid.equals(endUid) ? 6 : 1;
 			final TextBlock label = TextBlockUtils.withMargin(TextBlockUtils.create(
-					StringUtils.getWithNewlines(link.getLabel()), labelFont, HorizontalAlignement.CENTER, skinParam),
+					Display.getWithNewlines(link.getLabel()), labelFont, HorizontalAlignement.CENTER, skinParam),
 					marginLabel, marginLabel);
 			if (getLinkArrow() == LinkArrow.NONE) {
 				labelOnly = label;
 			} else {
-				final TextBlock direct = TextBlockUtils.mergeLR(label, new TextBlockArrow(LinkArrow.DIRECT_NORMAL,
-						labelFont));
-				final TextBlock reverse = TextBlockUtils.mergeLR(new TextBlockArrow(LinkArrow.BACKWARD, labelFont),
-						label);
-
-				labelOnly = new DirectionalTextBlock(direct, reverse);
+				TextBlock right = new TextBlockArrow(Direction.RIGHT, labelFont);
+				right = TextBlockUtils.mergeLR(label, right);
+				TextBlock left = new TextBlockArrow(Direction.LEFT, labelFont);
+				left = TextBlockUtils.mergeLR(left, label);
+				labelOnly = new DirectionalTextBlock(right, left);
 			}
 		}
 
@@ -228,14 +230,14 @@ public class Line implements Moveable, Hideable {
 		if (link.getQualifier1() == null) {
 			startTailText = null;
 		} else {
-			startTailText = TextBlockUtils.create(StringUtils.getWithNewlines(link.getQualifier1()), labelFont,
+			startTailText = TextBlockUtils.create(Display.getWithNewlines(link.getQualifier1()), labelFont,
 					HorizontalAlignement.CENTER, skinParam);
 		}
 
 		if (link.getQualifier2() == null) {
 			endHeadText = null;
 		} else {
-			endHeadText = TextBlockUtils.create(StringUtils.getWithNewlines(link.getQualifier2()), labelFont,
+			endHeadText = TextBlockUtils.create(Display.getWithNewlines(link.getQualifier2()), labelFont,
 					HorizontalAlignement.CENTER, skinParam);
 		}
 

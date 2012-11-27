@@ -28,16 +28,15 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 7715 $
+ * Revision $Revision: 9495 $
  *
  */
 package net.sourceforge.plantuml.skin;
 
 import java.awt.geom.Dimension2D;
-import java.util.Arrays;
-import java.util.List;
 
 import net.sourceforge.plantuml.SpriteContainer;
+import net.sourceforge.plantuml.cucadiagram.Display;
 import net.sourceforge.plantuml.graphic.FontConfiguration;
 import net.sourceforge.plantuml.graphic.HorizontalAlignement;
 import net.sourceforge.plantuml.graphic.HtmlColor;
@@ -49,7 +48,7 @@ import net.sourceforge.plantuml.ugraphic.UFont;
 
 public abstract class AbstractTextualComponent extends AbstractComponent {
 
-	private final List<? extends CharSequence> strings;
+	private final Display strings;
 
 	private final int marginX1;
 	private final int marginX2;
@@ -61,13 +60,15 @@ public abstract class AbstractTextualComponent extends AbstractComponent {
 	private final HtmlColor fontColor;
 
 	public AbstractTextualComponent(CharSequence label, HtmlColor fontColor, UFont font,
-			HorizontalAlignement horizontalAlignement, int marginX1, int marginX2, int marginY, SpriteContainer spriteContainer) {
-		this(Arrays.asList(label == null ? "" : label), fontColor, font, horizontalAlignement, marginX1, marginX2,
+			HorizontalAlignement horizontalAlignement, int marginX1, int marginX2, int marginY,
+			SpriteContainer spriteContainer) {
+		this(Display.asList(label == null ? "" : label), fontColor, font, horizontalAlignement, marginX1, marginX2,
 				marginY, spriteContainer);
 	}
 
-	public AbstractTextualComponent(List<? extends CharSequence> strings, HtmlColor fontColor, UFont font,
-			HorizontalAlignement horizontalAlignement, int marginX1, int marginX2, int marginY, SpriteContainer spriteContainer) {
+	public AbstractTextualComponent(Display strings, HtmlColor fontColor, UFont font,
+			HorizontalAlignement horizontalAlignement, int marginX1, int marginX2, int marginY,
+			SpriteContainer spriteContainer) {
 		this.font = font;
 		this.fontColor = fontColor;
 		this.marginX1 = marginX1;
@@ -78,7 +79,8 @@ public abstract class AbstractTextualComponent extends AbstractComponent {
 		if (strings.size() == 1 && strings.get(0).length() == 0) {
 			textBlock = new TextBlockEmpty();
 		} else {
-			textBlock = TextBlockUtils.create(strings, new FontConfiguration(font, fontColor), horizontalAlignement, spriteContainer);
+			textBlock = TextBlockUtils.create(strings, new FontConfiguration(font, fontColor), horizontalAlignement,
+					spriteContainer);
 		}
 	}
 
@@ -112,7 +114,7 @@ public abstract class AbstractTextualComponent extends AbstractComponent {
 		return size.getHeight() + 2 * marginY;
 	}
 
-	final protected List<? extends CharSequence> getLabels() {
+	final protected Display getLabels() {
 		return strings;
 	}
 

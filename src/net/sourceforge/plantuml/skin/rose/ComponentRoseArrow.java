@@ -28,17 +28,17 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 8540 $
+ * Revision $Revision: 9495 $
  *
  */
 package net.sourceforge.plantuml.skin.rose;
 
 import java.awt.geom.Dimension2D;
 import java.awt.geom.Point2D;
-import java.util.List;
 
 import net.sourceforge.plantuml.OptionFlags;
 import net.sourceforge.plantuml.SpriteContainer;
+import net.sourceforge.plantuml.cucadiagram.Display;
 import net.sourceforge.plantuml.graphic.HorizontalAlignement;
 import net.sourceforge.plantuml.graphic.HtmlColor;
 import net.sourceforge.plantuml.graphic.StringBounder;
@@ -59,7 +59,7 @@ public class ComponentRoseArrow extends AbstractComponentRoseArrow {
 	private final HorizontalAlignement messagePosition;
 
 	public ComponentRoseArrow(HtmlColor foregroundColor, HtmlColor fontColor, UFont font,
-			List<? extends CharSequence> stringsToDisplay, ArrowConfiguration arrowConfiguration,
+			Display stringsToDisplay, ArrowConfiguration arrowConfiguration,
 			HorizontalAlignement messagePosition, SpriteContainer spriteContainer) {
 		super(foregroundColor, fontColor, font, stringsToDisplay, arrowConfiguration, spriteContainer);
 		this.messagePosition = messagePosition;

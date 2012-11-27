@@ -48,6 +48,7 @@ import net.sourceforge.plantuml.cucadiagram.BlockMemberImpl;
 import net.sourceforge.plantuml.cucadiagram.Bodier;
 import net.sourceforge.plantuml.cucadiagram.BodyEnhanced;
 import net.sourceforge.plantuml.cucadiagram.Code;
+import net.sourceforge.plantuml.cucadiagram.Display;
 import net.sourceforge.plantuml.cucadiagram.EntityPortion;
 import net.sourceforge.plantuml.cucadiagram.EntityPosition;
 import net.sourceforge.plantuml.cucadiagram.EntityUtils;
@@ -78,7 +79,7 @@ class EntityImpl implements ILeaf, IGroup {
 
 	private final Bodier bodier;
 	private final String uid = StringUtils.getUid("cl", UniqueSequence.getValue());
-	private final List<CharSequence> display = new ArrayList<CharSequence>();
+	private Display display = new Display();
 
 	private LeafType leafType;
 	private Stereotype stereotype;
@@ -171,13 +172,12 @@ class EntityImpl implements ILeaf, IGroup {
 		return code;
 	}
 
-	public List<? extends CharSequence> getDisplay() {
-		return Collections.unmodifiableList(display);
+	public Display getDisplay() {
+		return display;
 	}
 
-	public void setDisplay(List<? extends CharSequence> display) {
-		this.display.clear();
-		this.display.addAll(display);
+	public void setDisplay(Display display) {
+		this.display = display;
 	}
 
 	public String getUid() {

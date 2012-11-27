@@ -28,20 +28,19 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 9449 $
+ * Revision $Revision: 9495 $
  *
  */
 package net.sourceforge.plantuml.skin.rose;
 
-import java.util.Arrays;
 import java.util.EnumMap;
-import java.util.List;
 import java.util.Map;
 
 import net.sourceforge.plantuml.AlignParam;
 import net.sourceforge.plantuml.ColorParam;
 import net.sourceforge.plantuml.FontParam;
 import net.sourceforge.plantuml.ISkinParam;
+import net.sourceforge.plantuml.cucadiagram.Display;
 import net.sourceforge.plantuml.graphic.HtmlColor;
 import net.sourceforge.plantuml.graphic.HtmlColorUtils;
 import net.sourceforge.plantuml.skin.ArrowConfiguration;
@@ -155,7 +154,7 @@ public class Rose implements Skin {
 	}
 
 	public Component createComponent(ComponentType type, ArrowConfiguration config, ISkinParam param,
-			List<? extends CharSequence> stringsToDisplay) {
+			Display stringsToDisplay) {
 		final HtmlColor background = param.getBackgroundColor();
 		final HtmlColor groupBorder = getHtmlColor(param, ColorParam.sequenceGroupBorder);
 		final HtmlColor groupBackground = getHtmlColor(param, ColorParam.sequenceGroupBackground);
@@ -333,7 +332,7 @@ public class Rose implements Skin {
 					FontParam.SEQUENCE_TITLE, null), stringsToDisplay, param);
 		}
 		if (type == ComponentType.SIGNATURE) {
-			return new ComponentRoseTitle(HtmlColorUtils.BLACK, fontGrouping, Arrays.asList("This skin was created ",
+			return new ComponentRoseTitle(HtmlColorUtils.BLACK, fontGrouping, Display.asList("This skin was created ",
 					"in April 2009."), param);
 		}
 		if (type == ComponentType.ENGLOBER) {

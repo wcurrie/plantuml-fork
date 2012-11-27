@@ -53,6 +53,7 @@ import javax.swing.Timer;
 import net.sourceforge.plantuml.Log;
 import net.sourceforge.plantuml.ugraphic.SpriteGrayLevel;
 import net.sourceforge.plantuml.ugraphic.SpriteUtils;
+import net.sourceforge.plantuml.version.PSystemVersion;
 
 public class SpriteWindow extends JFrame {
 
@@ -61,6 +62,7 @@ public class SpriteWindow extends JFrame {
 
 	public SpriteWindow() {
 		super("SpriteWindows");
+		setIconImage(PSystemVersion.getPlantumlSmallIcon2());
 		// encode.addActionListener(new ActionListener() {
 		// public void actionPerformed(ActionEvent ae) {
 		// encode();

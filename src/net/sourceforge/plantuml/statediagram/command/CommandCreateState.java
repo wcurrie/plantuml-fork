@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 9434 $
+ * Revision $Revision: 9498 $
  *
  */
 package net.sourceforge.plantuml.statediagram.command;
@@ -42,6 +42,7 @@ import net.sourceforge.plantuml.command.regex.RegexConcat;
 import net.sourceforge.plantuml.command.regex.RegexLeaf;
 import net.sourceforge.plantuml.command.regex.RegexResult;
 import net.sourceforge.plantuml.cucadiagram.Code;
+import net.sourceforge.plantuml.cucadiagram.Display;
 import net.sourceforge.plantuml.cucadiagram.IEntity;
 import net.sourceforge.plantuml.cucadiagram.Stereotype;
 import net.sourceforge.plantuml.graphic.HtmlColorUtils;
@@ -75,7 +76,7 @@ public class CommandCreateState extends SingleLineCommand2<StateDiagram> {
 			display = code.getCode();
 		}
 		final IEntity ent = getSystem().getOrCreateLeaf1(code, null);
-		ent.setDisplay(StringUtils.getWithNewlines(display));
+		ent.setDisplay(Display.getWithNewlines(display));
 
 		final String stereotype = arg2.get("STEREOTYPE", 0);
 		if (stereotype != null) {

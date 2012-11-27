@@ -41,28 +41,29 @@ import java.util.Set;
 
 import net.sourceforge.plantuml.Url;
 import net.sourceforge.plantuml.UrlBuilder;
+import net.sourceforge.plantuml.cucadiagram.Display;
 import net.sourceforge.plantuml.graphic.HtmlColor;
 import net.sourceforge.plantuml.graphic.HtmlColorUtils;
 import net.sourceforge.plantuml.skin.ArrowConfiguration;
 
 public abstract class AbstractMessage implements Event {
 
-	final private List<String> label;
+	final private Display label;
 	// final private boolean dotted;
 	// final private boolean full;
 	final private ArrowConfiguration arrowConfiguration;
 	final private List<LifeEvent> lifeEvents = new ArrayList<LifeEvent>();
 
-	private List<? extends CharSequence> notes;
+	private Display notes;
 	private NotePosition notePosition;
 	private HtmlColor noteBackColor;
 	private Url urlNote;
 	private final Url url;
 	private final String messageNumber;
 
-	public AbstractMessage(List<String> label, ArrowConfiguration arrowConfiguration, String messageNumber) {
+	public AbstractMessage(Display label, ArrowConfiguration arrowConfiguration, String messageNumber) {
 		this.url = initUrl(label);
-		this.label = removeUrl(label);
+		this.label = label.removeUrl(url);
 		this.arrowConfiguration = arrowConfiguration;
 		this.messageNumber = messageNumber;
 	}
@@ -75,23 +76,23 @@ public abstract class AbstractMessage implements Event {
 	}
 
 
-	private List<String> removeUrl(List<String> label) {
-		if (url == null) {
-			return label;
-		}
-		final List<String> result = new ArrayList<String>();
-		result.add(UrlBuilder.purgeUrl(label.get(0)));
-		result.addAll(label.subList(1, label.size()));
-		return result;
+//	private Display removeUrl(Display label) {
+//		if (url == null) {
+//			return label;
+//		}
+//		final Display result = new Display();
+//		result.add(UrlBuilder.purgeUrl(label.get(0).toString()));
+//		result.addAll(label.subList(1, label.size()));
+//		return result;
+//
+//	}
 
-	}
-
-	private static Url initUrl(List<String> label) {
+	private static Url initUrl(Display label) {
 		if (label.size() == 0) {
 			return null;
 		}
 		final UrlBuilder urlBuilder = new UrlBuilder(null, false);
-		return urlBuilder.getUrl(label.get(0).trim());
+		return urlBuilder.getUrl(label.get(0).toString().trim());
 	}
 
 	public final boolean addLifeEvent(LifeEvent lifeEvent) {
@@ -135,23 +136,23 @@ public abstract class AbstractMessage implements Event {
 		return Collections.unmodifiableList(lifeEvents);
 	}
 
-	public final List<String> getLabel() {
-		return Collections.unmodifiableList(label);
+	public final Display getLabel() {
+		return label;
 	}
 
 	public final ArrowConfiguration getArrowConfiguration() {
 		return arrowConfiguration;
 	}
 
-	public final List<? extends CharSequence> getNote() {
-		return notes == null ? notes : Collections.unmodifiableList(notes);
+	public final Display getNote() {
+		return notes == null ? notes : notes;
 	}
 
 	public final Url getUrlNote() {
 		return urlNote;
 	}
 
-	public final void setNote(List<? extends CharSequence> strings, NotePosition notePosition, String backcolor, Url url) {
+	public final void setNote(Display strings, NotePosition notePosition, String backcolor, Url url) {
 		if (notePosition != NotePosition.LEFT && notePosition != NotePosition.RIGHT) {
 			throw new IllegalArgumentException();
 		}

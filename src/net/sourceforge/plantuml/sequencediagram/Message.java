@@ -28,13 +28,12 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 7845 $
+ * Revision $Revision: 9495 $
  *
  */
 package net.sourceforge.plantuml.sequencediagram;
 
-import java.util.List;
-
+import net.sourceforge.plantuml.cucadiagram.Display;
 import net.sourceforge.plantuml.skin.ArrowConfiguration;
 
 public class Message extends AbstractMessage {
@@ -42,7 +41,7 @@ public class Message extends AbstractMessage {
 	final private Participant p1;
 	final private Participant p2;
 
-	public Message(Participant p1, Participant p2, List<String> label, ArrowConfiguration arrowConfiguration,
+	public Message(Participant p1, Participant p2, Display label, ArrowConfiguration arrowConfiguration,
 			String messageNumber) {
 		super(label, arrowConfiguration, messageNumber);
 		this.p1 = p1;

@@ -38,6 +38,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import net.sourceforge.plantuml.Url;
+import net.sourceforge.plantuml.cucadiagram.Display;
 import net.sourceforge.plantuml.graphic.HtmlColor;
 
 public class Reference implements Event {
@@ -47,9 +48,9 @@ public class Reference implements Event {
 	private final HtmlColor backColorGeneral;
 	private final HtmlColor backColorElement;
 
-	private final List<String> strings;
+	private final Display strings;
 
-	public Reference(List<Participant> participants, Url url, List<String> strings, HtmlColor backColorGeneral, HtmlColor backColorElement) {
+	public Reference(List<Participant> participants, Url url, Display strings, HtmlColor backColorGeneral, HtmlColor backColorElement) {
 		this.participants = participants;
 		this.url = url;
 		this.strings = strings;
@@ -61,7 +62,7 @@ public class Reference implements Event {
 		return Collections.unmodifiableList(participants);
 	}
 
-	public List<String> getStrings() {
+	public Display getStrings() {
 		return strings;
 	}
 

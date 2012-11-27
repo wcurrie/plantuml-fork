@@ -41,6 +41,8 @@
 		<javac target="1.5" srcdir="src" destdir="build" />
 		<copy file="src/net/sourceforge/plantuml/version/logo.png"
 			todir="build/net/sourceforge/plantuml/version" />
+		<copy file="src/net/sourceforge/plantuml/version/favicon.png"
+			todir="build/net/sourceforge/plantuml/version" />
 	</target>
 
 	<target name="dist" depends="compile">

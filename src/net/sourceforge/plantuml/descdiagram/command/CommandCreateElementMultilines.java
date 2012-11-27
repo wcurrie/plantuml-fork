@@ -33,7 +33,6 @@
  */
 package net.sourceforge.plantuml.descdiagram.command;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
 
@@ -46,6 +45,7 @@ import net.sourceforge.plantuml.command.regex.RegexConcat;
 import net.sourceforge.plantuml.command.regex.RegexLeaf;
 import net.sourceforge.plantuml.command.regex.RegexResult;
 import net.sourceforge.plantuml.cucadiagram.Code;
+import net.sourceforge.plantuml.cucadiagram.Display;
 import net.sourceforge.plantuml.cucadiagram.ILeaf;
 import net.sourceforge.plantuml.cucadiagram.LeafType;
 import net.sourceforge.plantuml.cucadiagram.Stereotype;
@@ -83,16 +83,16 @@ public class CommandCreateElementMultilines extends CommandMultilines2<Descripti
 		final RegexResult line0 = getStartingPattern().matcher(lines.get(0).trim());
 		final LeafType type = LeafType.getLeafType(line0.get("TYPE", 0).toUpperCase());
 		final Code code = Code.of(line0.get("CODE", 0));
-		final List<String> display = new ArrayList<String>(lines.subList(1, lines.size() - 1));
+		Display display = new Display(lines.subList(1, lines.size() - 1));
 		final String descStart = line0.get("DESC", 0);
 		if (StringUtils.isNotEmpty(descStart)) {
-			display.add(0, descStart);
+			display = display.addFirst(descStart);
 		}
 
 		final List<String> lineLast = StringUtils.getSplit(Pattern.compile(getPatternEnd()), lines
 				.get(lines.size() - 1));
 		if (StringUtils.isNotEmpty(lineLast.get(0))) {
-			display.add(lineLast.get(0));
+			display = display.add(lineLast.get(0));
 		}
 
 		final String stereotype = line0.get("STEREO", 0);

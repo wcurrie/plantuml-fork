@@ -49,6 +49,7 @@ import net.sourceforge.plantuml.UmlDiagramType;
 import net.sourceforge.plantuml.UniqueSequence;
 import net.sourceforge.plantuml.cucadiagram.Code;
 import net.sourceforge.plantuml.cucadiagram.CucaDiagram;
+import net.sourceforge.plantuml.cucadiagram.Display;
 import net.sourceforge.plantuml.cucadiagram.IEntity;
 import net.sourceforge.plantuml.cucadiagram.ILeaf;
 import net.sourceforge.plantuml.cucadiagram.LeafType;
@@ -93,7 +94,7 @@ public class ActivityDiagram2 extends CucaDiagram {
 		if (waitings.size() == 0) {
 			throw new IllegalStateException();
 		}
-		final IEntity act = createLeaf(getAutoCode(), StringUtils.getWithNewlines(display), LeafType.ACTIVITY);
+		final IEntity act = createLeaf(getAutoCode(), Display.getWithNewlines(display), LeafType.ACTIVITY);
 		afterAdd(act, direction);
 
 	}
@@ -118,7 +119,7 @@ public class ActivityDiagram2 extends CucaDiagram {
 			// throw new IllegalStateException(bar);
 		}
 		label(bar);
-		final IEntity act = createLeaf(getAutoCode(), StringUtils.getWithNewlines(bar), LeafType.SYNCHRO_BAR);
+		final IEntity act = createLeaf(getAutoCode(), Display.getWithNewlines(bar), LeafType.SYNCHRO_BAR);
 		bars.put(bar, act);
 		afterAdd(act, direction);
 	}
@@ -168,11 +169,11 @@ public class ActivityDiagram2 extends CucaDiagram {
 		if (waitings.size() != 0) {
 			throw new IllegalStateException();
 		}
-		this.waitings.add(createLeaf(Code.of("start"), StringUtils.getWithNewlines("start"), LeafType.CIRCLE_START));
+		this.waitings.add(createLeaf(Code.of("start"), Display.getWithNewlines("start"), LeafType.CIRCLE_START));
 	}
 
 	public void startIf(String test, String when) {
-		final IEntity br = createLeaf(getAutoCode(), StringUtils.getWithNewlines(test), LeafType.BRANCH);
+		final IEntity br = createLeaf(getAutoCode(), Display.getWithNewlines(test), LeafType.BRANCH);
 //		if (DotMaker.MODE_BRANCHE_CLUSTER) {
 //			test = null;
 //		}

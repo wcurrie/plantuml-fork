@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 7721 $
+ * Revision $Revision: 9502 $
  *
  */
 package net.sourceforge.plantuml.sequencediagram;
@@ -39,20 +39,21 @@ import java.util.List;
 
 import net.sourceforge.plantuml.SpecificBackcolorable;
 import net.sourceforge.plantuml.Url;
+import net.sourceforge.plantuml.cucadiagram.Display;
 import net.sourceforge.plantuml.cucadiagram.Stereotype;
 import net.sourceforge.plantuml.graphic.HtmlColor;
 
 public class Participant implements SpecificBackcolorable {
 
 	private final String code;
-	private final List<CharSequence> display;
+	private Display display;
 	private final ParticipantType type;
 
 	private int initialLife = 0;
 
 	private Stereotype stereotype;
 
-	public Participant(ParticipantType type, String code, List<String> display) {
+	public Participant(ParticipantType type, String code, Display display) {
 		if (type == null) {
 			throw new IllegalArgumentException();
 		}
@@ -64,7 +65,7 @@ public class Participant implements SpecificBackcolorable {
 		}
 		this.code = code;
 		this.type = type;
-		this.display = new ArrayList<CharSequence>(display);
+		this.display = display;
 	}
 
 	public String getCode() {
@@ -76,8 +77,8 @@ public class Participant implements SpecificBackcolorable {
 		return getCode();
 	}
 
-	public List<CharSequence> getDisplay() {
-		return Collections.unmodifiableList(display);
+	public Display getDisplay() {
+		return display;
 	}
 
 	public ParticipantType getType() {
@@ -96,9 +97,9 @@ public class Participant implements SpecificBackcolorable {
 		}
 		this.stereotype = stereotype;
 		if (stereotypePositionTop) {
-			display.add(0, stereotype);
+			display = display.addFirst(stereotype);
 		} else {
-			display.add(stereotype);
+			display = display.add(stereotype);
 		}
 	}
 

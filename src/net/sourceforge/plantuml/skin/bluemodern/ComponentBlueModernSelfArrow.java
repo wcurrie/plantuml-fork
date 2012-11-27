@@ -28,14 +28,13 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 7886 $
+ * Revision $Revision: 9495 $
  *
  */
 package net.sourceforge.plantuml.skin.bluemodern;
 
-import java.util.List;
-
 import net.sourceforge.plantuml.SpriteContainer;
+import net.sourceforge.plantuml.cucadiagram.Display;
 import net.sourceforge.plantuml.graphic.HtmlColor;
 import net.sourceforge.plantuml.graphic.StringBounder;
 import net.sourceforge.plantuml.skin.Area;
@@ -53,7 +52,7 @@ public class ComponentBlueModernSelfArrow extends AbstractComponentBlueModernArr
 	private final double arrowWidth = 45;
 
 	public ComponentBlueModernSelfArrow(HtmlColor foregroundColor, HtmlColor colorFont, UFont font,
-			List<? extends CharSequence> stringsToDisplay, ArrowConfiguration arrowConfiguration, SpriteContainer spriteContainer) {
+			Display stringsToDisplay, ArrowConfiguration arrowConfiguration, SpriteContainer spriteContainer) {
 		super(foregroundColor, colorFont, font, stringsToDisplay, arrowConfiguration, spriteContainer);
 	}
 

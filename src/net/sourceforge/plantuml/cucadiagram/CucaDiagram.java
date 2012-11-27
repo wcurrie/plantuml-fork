@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 9433 $
+ * Revision $Revision: 9498 $
  *
  */
 package net.sourceforge.plantuml.cucadiagram;
@@ -109,22 +109,22 @@ public abstract class CucaDiagram extends UmlDiagram implements GroupHierarchy, 
 		}
 		ILeaf result = getLeafs().get(code);
 		if (result == null) {
-			result = createLeafInternal(code, StringUtils.getWithNewlines(code), type, getCurrentGroup());
+			result = createLeafInternal(code, Display.getWithNewlines(code), type, getCurrentGroup());
 		}
 		return result;
 	}
 
-	public ILeaf createLeaf(Code code, List<? extends CharSequence> display, LeafType type) {
+	public ILeaf createLeaf(Code code, Display display, LeafType type) {
 		if (getLeafs().containsKey(code)) {
 			throw new IllegalArgumentException("Already known: " + code);
 		}
 		return createLeafInternal(code, display, type, getCurrentGroup());
 	}
 
-	final protected ILeaf createLeafInternal(Code code, List<? extends CharSequence> display, LeafType type,
+	final protected ILeaf createLeafInternal(Code code, Display display, LeafType type,
 			IGroup group) {
 		if (display == null) {
-			display = StringUtils.getWithNewlines(code);
+			display = Display.getWithNewlines(code);
 		}
 		final ILeaf leaf = entityFactory.createLeaf(code, display, type, group, getHides());
 		entityFactory.addLeaf(leaf);
@@ -145,14 +145,14 @@ public abstract class CucaDiagram extends UmlDiagram implements GroupHierarchy, 
 		return Collections.unmodifiableCollection(result);
 	}
 
-	public final IGroup getOrCreateGroup(Code code, List<? extends CharSequence> display, String namespace,
+	public final IGroup getOrCreateGroup(Code code, Display display, String namespace,
 			GroupType type, IGroup parent) {
 		final IGroup g = getOrCreateGroupInternal(code, display, namespace, type, parent);
 		currentGroup = g;
 		return g;
 	}
 
-	protected final IGroup getOrCreateGroupInternal(Code code, List<? extends CharSequence> display, String namespace,
+	protected final IGroup getOrCreateGroupInternal(Code code, Display display, String namespace,
 			GroupType type, IGroup parent) {
 		IGroup result = entityFactory.getGroups().get(code);
 		if (result != null) {

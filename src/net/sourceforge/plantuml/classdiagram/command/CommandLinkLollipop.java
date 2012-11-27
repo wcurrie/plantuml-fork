@@ -46,6 +46,7 @@ import net.sourceforge.plantuml.command.regex.RegexLeaf;
 import net.sourceforge.plantuml.command.regex.RegexOr;
 import net.sourceforge.plantuml.command.regex.RegexResult;
 import net.sourceforge.plantuml.cucadiagram.Code;
+import net.sourceforge.plantuml.cucadiagram.Display;
 import net.sourceforge.plantuml.cucadiagram.IEntity;
 import net.sourceforge.plantuml.cucadiagram.LeafType;
 import net.sourceforge.plantuml.cucadiagram.Link;
@@ -102,11 +103,11 @@ final public class CommandLinkLollipop extends SingleLineCommand2<AbstractClassO
 		if (arg.get("LOL_THEN_ENT", 0) == null) {
 			assert arg.get("ENT_THEN_LOL", 0) != null;
 			cl1 = getSystem().getOrCreateLeaf1(ent1, null);
-			cl2 = getSystem().createLeaf(cl1.getCode().addSuffix(suffix), StringUtils.getWithNewlines(ent2), LeafType.LOLLIPOP);
+			cl2 = getSystem().createLeaf(cl1.getCode().addSuffix(suffix), Display.getWithNewlines(ent2), LeafType.LOLLIPOP);
 			normalEntity = cl1;
 		} else {
 			cl2 = getSystem().getOrCreateLeaf1(ent2, null);
-			cl1 = getSystem().createLeaf(cl2.getCode().addSuffix(suffix), StringUtils.getWithNewlines(ent1), LeafType.LOLLIPOP);
+			cl1 = getSystem().createLeaf(cl2.getCode().addSuffix(suffix), Display.getWithNewlines(ent1), LeafType.LOLLIPOP);
 			normalEntity = cl2;
 		}
 

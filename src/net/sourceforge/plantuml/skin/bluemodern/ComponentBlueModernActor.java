@@ -28,14 +28,13 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 8151 $
+ * Revision $Revision: 9495 $
  *
  */
 package net.sourceforge.plantuml.skin.bluemodern;
 
-import java.util.List;
-
 import net.sourceforge.plantuml.SpriteContainer;
+import net.sourceforge.plantuml.cucadiagram.Display;
 import net.sourceforge.plantuml.graphic.HorizontalAlignement;
 import net.sourceforge.plantuml.graphic.HtmlColor;
 import net.sourceforge.plantuml.graphic.StringBounder;
@@ -52,7 +51,7 @@ public class ComponentBlueModernActor extends AbstractTextualComponent {
 	private final boolean head;
 
 	public ComponentBlueModernActor(HtmlColor backgroundColor, HtmlColor foregroundColor, HtmlColor fontColor, UFont font,
-			List<? extends CharSequence> stringsToDisplay, boolean head, SpriteContainer spriteContainer) {
+			Display stringsToDisplay, boolean head, SpriteContainer spriteContainer) {
 		super(stringsToDisplay, fontColor, font, HorizontalAlignement.CENTER, 3, 3, 0, spriteContainer);
 		this.head = head;
 		stickman = new StickMan(backgroundColor, foregroundColor);

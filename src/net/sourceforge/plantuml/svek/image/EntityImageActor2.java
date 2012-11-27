@@ -41,6 +41,7 @@ import net.sourceforge.plantuml.FontParam;
 import net.sourceforge.plantuml.ISkinParam;
 import net.sourceforge.plantuml.StringUtils;
 import net.sourceforge.plantuml.Url;
+import net.sourceforge.plantuml.cucadiagram.Display;
 import net.sourceforge.plantuml.cucadiagram.ILeaf;
 import net.sourceforge.plantuml.cucadiagram.Stereotype;
 import net.sourceforge.plantuml.graphic.FontConfiguration;
@@ -71,7 +72,7 @@ public class EntityImageActor2 extends AbstractEntityImage {
 		if (stereotype == null || stereotype.getLabel() == null) {
 			this.stereo = null;
 		} else {
-			this.stereo = TextBlockUtils.create(StringUtils.getWithNewlines(stereotype.getLabel()),
+			this.stereo = TextBlockUtils.create(Display.getWithNewlines(stereotype.getLabel()),
 					new FontConfiguration(getFont(fontStereotype, stereotype), getFontColor(fontStereotype, null)),
 					HorizontalAlignement.CENTER, skinParam);
 		}

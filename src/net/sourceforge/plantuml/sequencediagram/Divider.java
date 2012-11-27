@@ -33,19 +33,18 @@
  */
 package net.sourceforge.plantuml.sequencediagram;
 
-import java.util.List;
-
 import net.sourceforge.plantuml.Url;
+import net.sourceforge.plantuml.cucadiagram.Display;
 
 public class Divider implements Event {
 
-	private final List<String> text;
+	private final Display text;
 
-	public Divider(List<String> text) {
+	public Divider(Display text) {
 		this.text = text;
 	}
 
-	public final List<String> getText() {
+	public final Display getText() {
 		return text;
 	}
 

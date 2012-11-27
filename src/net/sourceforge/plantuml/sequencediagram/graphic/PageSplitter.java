@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 7715 $
+ * Revision $Revision: 9495 $
  *
  */
 package net.sourceforge.plantuml.sequencediagram.graphic;
@@ -38,24 +38,25 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
+import net.sourceforge.plantuml.cucadiagram.Display;
 import net.sourceforge.plantuml.sequencediagram.Newpage;
 
 class PageSplitter {
 
 	private final double fullHeight;
 	private final List<Double> positions;
-	private final List<List<String>> titles;
+	private final List<Display> titles;
 	private final double headerHeight;
 	private final double tailHeight;
 	private final double signatureHeight;
 	private final double newpageHeight;
-	private final List<? extends CharSequence> diagramTitle;
+	private final Display diagramTitle;
 
 	PageSplitter(double fullHeight, double headerHeight, Map<Newpage, Double> newpages, double tailHeight,
-			double signatureHeight, double newpageHeight, List<? extends CharSequence> diagramTitle) {
+			double signatureHeight, double newpageHeight, Display diagramTitle) {
 		this.fullHeight = fullHeight;
 		this.diagramTitle = diagramTitle;
-		this.titles = new ArrayList<List<String>>();
+		this.titles = new ArrayList<Display>();
 		this.positions = new ArrayList<Double>();
 
 		for (Map.Entry<Newpage, Double> ent : newpages.entrySet()) {
@@ -88,7 +89,7 @@ class PageSplitter {
 	private Page lastPage() {
 		final double newpage1 = positions.get(positions.size() - 1) - this.newpageHeight;
 		final double newpage2 = this.fullHeight - this.tailHeight - this.signatureHeight;
-		final List<String> title = titles.get(positions.size() - 1);
+		final Display title = titles.get(positions.size() - 1);
 		return new Page(headerHeight, newpage1, newpage2, tailHeight, signatureHeight, title);
 	}
 
@@ -107,7 +108,7 @@ class PageSplitter {
 	private Page createPage(int i) {
 		final double newpage1 = positions.get(i) - this.newpageHeight;
 		final double newpage2 = positions.get(i + 1) + this.newpageHeight;
-		final List<String> title = titles.get(i);
+		final Display title = titles.get(i);
 		return new Page(headerHeight, newpage1, newpage2, tailHeight, 0, title);
 	}
 

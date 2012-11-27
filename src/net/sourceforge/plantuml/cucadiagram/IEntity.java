@@ -41,18 +41,18 @@ import net.sourceforge.plantuml.Url;
 import net.sourceforge.plantuml.graphic.USymbol;
 
 public interface IEntity extends SpecificBackcolorable, Hideable {
-	
+
 	public USymbol getUSymbol();
-	
+
 	public void setUSymbol(USymbol symbol);
 
 	public LeafType getEntityType();
 
-	public List<? extends CharSequence> getDisplay();
+	public Display getDisplay();
 
 	public IGroup getParentContainer();
 
-	public void setDisplay(List<? extends CharSequence> display);
+	public void setDisplay(Display display);
 
 	public String getUid();
 

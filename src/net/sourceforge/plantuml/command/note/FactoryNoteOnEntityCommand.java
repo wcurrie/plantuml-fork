@@ -52,6 +52,7 @@ import net.sourceforge.plantuml.command.regex.RegexLeaf;
 import net.sourceforge.plantuml.command.regex.RegexOr;
 import net.sourceforge.plantuml.command.regex.RegexResult;
 import net.sourceforge.plantuml.cucadiagram.Code;
+import net.sourceforge.plantuml.cucadiagram.Display;
 import net.sourceforge.plantuml.cucadiagram.IEntity;
 import net.sourceforge.plantuml.cucadiagram.LeafType;
 import net.sourceforge.plantuml.cucadiagram.Link;
@@ -100,7 +101,7 @@ public final class FactoryNoteOnEntityCommand implements SingleMultiFactoryComma
 			@Override
 			protected CommandExecutionResult executeArg(RegexResult arg) {
 				final String s = arg.get("NOTE", 0);
-				return executeInternal(arg, system, null, StringUtils.getWithNewlines(s));
+				return executeInternal(arg, system, null, StringUtils.getWithNewlines2(s));
 			}
 		};
 	}
@@ -148,7 +149,7 @@ public final class FactoryNoteOnEntityCommand implements SingleMultiFactoryComma
 			cl1 = system.getOrCreateLeaf1(code, null);
 		}
 
-		final IEntity note = system.createLeaf(UniqueSequence.getCode("GMN"), s, LeafType.NOTE);
+		final IEntity note = system.createLeaf(UniqueSequence.getCode("GMN"), new Display(s), LeafType.NOTE);
 		note.setSpecificBackcolor(HtmlColorUtils.getColorIfValid(line0.get("COLOR", 0)));
 		if (url != null) {
 			note.addUrl(url);

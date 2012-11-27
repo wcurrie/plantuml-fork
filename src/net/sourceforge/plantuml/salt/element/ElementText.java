@@ -37,6 +37,7 @@ import java.awt.geom.Dimension2D;
 import java.util.List;
 
 import net.sourceforge.plantuml.SpriteContainer;
+import net.sourceforge.plantuml.cucadiagram.Display;
 import net.sourceforge.plantuml.graphic.FontConfiguration;
 import net.sourceforge.plantuml.graphic.HorizontalAlignement;
 import net.sourceforge.plantuml.graphic.HtmlColorUtils;
@@ -54,7 +55,7 @@ public class ElementText implements Element {
 
 	public ElementText(List<String> text, UFont font, SpriteContainer spriteContainer) {
 		final FontConfiguration config = new FontConfiguration(font, HtmlColorUtils.BLACK);
-		this.block = TextBlockUtils.create(text, config, HorizontalAlignement.LEFT, spriteContainer);
+		this.block = TextBlockUtils.create(new Display(text), config, HorizontalAlignement.LEFT, spriteContainer);
 		this.show = text.get(0).equals(".") == false;
 		this.text = text.get(0);
 	}

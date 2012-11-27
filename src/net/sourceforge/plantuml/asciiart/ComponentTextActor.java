@@ -34,10 +34,10 @@
 package net.sourceforge.plantuml.asciiart;
 
 import java.awt.geom.Dimension2D;
-import java.util.List;
 
 import net.sourceforge.plantuml.FileFormat;
 import net.sourceforge.plantuml.StringUtils;
+import net.sourceforge.plantuml.cucadiagram.Display;
 import net.sourceforge.plantuml.graphic.StringBounder;
 import net.sourceforge.plantuml.skin.Area;
 import net.sourceforge.plantuml.skin.Component;
@@ -49,10 +49,10 @@ import net.sourceforge.plantuml.ugraphic.txt.UGraphicTxt;
 public class ComponentTextActor implements Component {
 
 	private final ComponentType type;
-	private final List<? extends CharSequence> stringsToDisplay;
+	private final Display stringsToDisplay;
 	private final FileFormat fileFormat;
 
-	public ComponentTextActor(ComponentType type, List<? extends CharSequence> stringsToDisplay, FileFormat fileFormat) {
+	public ComponentTextActor(ComponentType type, Display stringsToDisplay, FileFormat fileFormat) {
 		this.type = type;
 		this.stringsToDisplay = stringsToDisplay;
 		this.fileFormat = fileFormat;
@@ -68,14 +68,14 @@ public class ComponentTextActor implements Component {
 
 		final int xman = width / 2 - 1;
 		if (type == ComponentType.ACTOR_HEAD) {
-			charArea.drawStringsLR(stringsToDisplay, 1, getStickManHeight());
+			charArea.drawStringsLR(stringsToDisplay.as(), 1, getStickManHeight());
 			if (fileFormat == FileFormat.UTXT) {
 				charArea.drawStickManUnicode(xman, 0);
 			} else {
 				charArea.drawStickMan(xman, 0);
 			}
 		} else if (type == ComponentType.ACTOR_TAIL) {
-			charArea.drawStringsLR(stringsToDisplay, 1, 0);
+			charArea.drawStringsLR(stringsToDisplay.as(), 1, 0);
 			if (fileFormat == FileFormat.UTXT) {
 				charArea.drawStickManUnicode(xman, 1);
 			} else {

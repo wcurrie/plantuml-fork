@@ -33,8 +33,6 @@
  */
 package net.sourceforge.plantuml.sequencediagram.command;
 
-import java.util.List;
-
 import net.sourceforge.plantuml.FontParam;
 import net.sourceforge.plantuml.ISkinParam;
 import net.sourceforge.plantuml.StringUtils;
@@ -47,6 +45,7 @@ import net.sourceforge.plantuml.command.regex.RegexConcat;
 import net.sourceforge.plantuml.command.regex.RegexLeaf;
 import net.sourceforge.plantuml.command.regex.RegexOr;
 import net.sourceforge.plantuml.command.regex.RegexResult;
+import net.sourceforge.plantuml.cucadiagram.Display;
 import net.sourceforge.plantuml.cucadiagram.Stereotype;
 import net.sourceforge.plantuml.graphic.HtmlColorUtils;
 import net.sourceforge.plantuml.sequencediagram.LifeEventType;
@@ -74,9 +73,9 @@ public abstract class CommandParticipant extends SingleLineCommand2<SequenceDiag
 			return CommandExecutionResult.ok();
 		}
 
-		List<String> strings = null;
+		Display strings = null;
 		if (arg2.get("FULL", 0) != null) {
-			strings = StringUtils.getWithNewlines(arg2.get("FULL", 0));
+			strings = Display.getWithNewlines(arg2.get("FULL", 0));
 		}
 
 		final String typeString1 = arg2.get("TYPE", 0);

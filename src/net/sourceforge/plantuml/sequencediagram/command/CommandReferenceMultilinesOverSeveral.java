@@ -41,6 +41,7 @@ import net.sourceforge.plantuml.Url;
 import net.sourceforge.plantuml.UrlBuilder;
 import net.sourceforge.plantuml.command.CommandExecutionResult;
 import net.sourceforge.plantuml.command.CommandMultilines;
+import net.sourceforge.plantuml.cucadiagram.Display;
 import net.sourceforge.plantuml.graphic.HtmlColor;
 import net.sourceforge.plantuml.graphic.HtmlColorUtils;
 import net.sourceforge.plantuml.sequencediagram.Participant;
@@ -72,12 +73,12 @@ public class CommandReferenceMultilinesOverSeveral extends CommandMultilines<Seq
 			p.add(getSystem().getOrCreateParticipant(StringUtils.eventuallyRemoveStartingAndEndingDoubleQuote(s)));
 		}
 
-		List<String> strings = StringUtils.removeEmptyColumns(lines.subList(1, lines.size() - 1));
+		Display strings = new Display(lines.subList(1, lines.size() - 1)).removeEmptyColumns();
 
 		Url u = null;
 		if (strings.size() > 0) {
 			final UrlBuilder urlBuilder = new UrlBuilder(getSystem().getSkinParam().getValue("topurl"), true);
-			u = urlBuilder.getUrl(strings.get(0));
+			u = urlBuilder.getUrl(strings.get(0).toString());
 		}
 		if (u != null) {
 			strings = strings.subList(1, strings.size());

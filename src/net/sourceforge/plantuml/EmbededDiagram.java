@@ -33,16 +33,14 @@
  */
 package net.sourceforge.plantuml;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import net.sourceforge.plantuml.cucadiagram.Display;
 
 public class EmbededDiagram implements CharSequence {
 
-	private final List<String> system;
+	private final Display system;
 
-	public EmbededDiagram(List<String> system) {
-		this.system = new ArrayList<String>(system);
+	public EmbededDiagram(Display system) {
+		this.system = system;
 	}
 
 	public int length() {
@@ -57,7 +55,7 @@ public class EmbededDiagram implements CharSequence {
 		return toString().subSequence(start, end);
 	}
 
-	public final List<String> getLines() {
-		return Collections.unmodifiableList(system);
+	public final Display getLines() {
+		return system;
 	}
 }

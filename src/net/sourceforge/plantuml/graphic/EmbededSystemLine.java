@@ -56,10 +56,10 @@ import net.sourceforge.plantuml.ugraphic.UShape;
 
 class EmbededSystemLine implements Line {
 
-	final private List<String> lines;
+	final private List<? extends CharSequence> lines;
 
 	public EmbededSystemLine(EmbededDiagram sys) {
-		this.lines = sys.getLines();
+		this.lines = sys.getLines().as();
 	}
 
 	public Dimension2D calculateDimension(StringBounder stringBounder) {

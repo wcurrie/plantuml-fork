@@ -49,6 +49,7 @@ import net.sourceforge.plantuml.command.SingleLineCommand2;
 import net.sourceforge.plantuml.command.regex.RegexConcat;
 import net.sourceforge.plantuml.command.regex.RegexLeaf;
 import net.sourceforge.plantuml.command.regex.RegexResult;
+import net.sourceforge.plantuml.cucadiagram.Display;
 import net.sourceforge.plantuml.cucadiagram.IEntity;
 import net.sourceforge.plantuml.cucadiagram.LeafType;
 import net.sourceforge.plantuml.cucadiagram.Link;
@@ -86,12 +87,12 @@ public final class FactoryNoteActivityCommand implements SingleMultiFactoryComma
 			public final CommandExecutionResult executeNow(List<String> lines) {
 				// StringUtils.trim(lines, true);
 				final RegexResult arg = getStartingPattern().matcher(lines.get(0).trim());
-				List<String> strings = StringUtils.removeEmptyColumns(lines.subList(1, lines.size() - 1));
+				Display strings = new Display(StringUtils.removeEmptyColumns(lines.subList(1, lines.size() - 1)));
 
 				Url url = null;
 				if (strings.size() > 0) {
 					final UrlBuilder urlBuilder = new UrlBuilder(getSystem().getSkinParam().getValue("topurl"), true);
-					url = urlBuilder.getUrl(strings.get(0));
+					url = urlBuilder.getUrl(strings.get(0).toString());
 				}
 				if (url != null) {
 					strings = strings.subList(1, strings.size());
@@ -114,7 +115,7 @@ public final class FactoryNoteActivityCommand implements SingleMultiFactoryComma
 			@Override
 			protected CommandExecutionResult executeArg(RegexResult arg) {
 				final IEntity note = getSystem().createNote(UniqueSequence.getCode("GN"),
-						StringUtils.getWithNewlines(arg.get("NOTE", 0)));
+						Display.getWithNewlines(arg.get("NOTE", 0)));
 				return executeInternal(getSystem(), arg, note);
 			}
 		};

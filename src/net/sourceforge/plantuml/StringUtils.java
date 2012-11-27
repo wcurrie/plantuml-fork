@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  *
- * Revision $Revision: 9435 $
+ * Revision $Revision: 9501 $
  *
  */
 package net.sourceforge.plantuml;
@@ -45,6 +45,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import net.sourceforge.plantuml.cucadiagram.Code;
+import net.sourceforge.plantuml.cucadiagram.Display;
 import net.sourceforge.plantuml.preproc.ReadLineReader;
 import net.sourceforge.plantuml.preproc.UncommentReadLine;
 
@@ -54,10 +55,10 @@ public class StringUtils {
 		return file.getAbsolutePath();
 	}
 
-	public static List<String> getWithNewlines(Code s) {
-		return getWithNewlines(s.getCode());
+	public static List<String> getWithNewlines2(Code s) {
+		return getWithNewlines2(s.getCode());
 	}
-	public static List<String> getWithNewlines(String s) {
+	public static List<String> getWithNewlines2(String s) {
 		if (s == null) {
 			return null;
 		}
@@ -291,10 +292,33 @@ public class StringUtils {
 		return result;
 	}
 
+	public static int getWidth(Display stringsToDisplay) {
+		int result = 1;
+		for (CharSequence s : stringsToDisplay) {
+			if (result < s.length()) {
+				result = s.length();
+			}
+		}
+		return result;
+	}
+
 	public static int getHeight(List<? extends CharSequence> stringsToDisplay) {
 		return stringsToDisplay.size();
 	}
 
+	public static int getHeight(Display stringsToDisplay) {
+		return stringsToDisplay.size();
+	}
+
+	private static void removeFirstColumn(List<String> data) {
+		for (int i = 0; i < data.size(); i++) {
+			final String s = data.get(i);
+			if (s.length() > 0) {
+				data.set(i, s.substring(1));
+			}
+		}
+	}
+	
 	private static boolean firstColumnRemovable(List<String> data) {
 		boolean allEmpty = true;
 		for (String s : data) {
@@ -308,15 +332,6 @@ public class StringUtils {
 			}
 		}
 		return allEmpty == false;
-	}
-
-	private static void removeFirstColumn(List<String> data) {
-		for (int i = 0; i < data.size(); i++) {
-			final String s = data.get(i);
-			if (s.length() > 0) {
-				data.set(i, s.substring(1));
-			}
-		}
 	}
 
 	public static List<String> removeEmptyColumns(List<String> data) {
@@ -412,7 +427,31 @@ public class StringUtils {
 		return uid1 + String.format("%04d", uid2);
 	}
 
-	public static List<CharSequence> manageEmbededDiagrams(final List<String> strings) {
+	public static Display manageEmbededDiagrams(final Display strings) {
+		Display result = new Display();
+		final Iterator<CharSequence> it = strings.iterator();
+		while (it.hasNext()) {
+			CharSequence s = it.next();
+			if (s.equals("{{")) {
+				Display other = new Display();
+				other = other.add("@startuml");
+				while (it.hasNext()) {
+					final CharSequence s2 = it.next();
+					if (s2.equals("}}")) {
+						break;
+					}
+					other = other.add(s2);
+				}
+				other = other.add("@enduml");
+				s = new EmbededDiagram(other);
+			}
+			result = result.add(s);
+		}
+		return result;
+	}
+	
+
+	public static List<CharSequence> manageEmbededDiagrams2(final List<String> strings) {
 		final List<CharSequence> result = new ArrayList<CharSequence>();
 		final Iterator<String> it = strings.iterator();
 		while (it.hasNext()) {
@@ -428,12 +467,13 @@ public class StringUtils {
 					other.add(s2);
 				}
 				other.add("@enduml");
-				s = new EmbededDiagram(other);
+				s = new EmbededDiagram(new Display(other));
 			}
 			result.add(s);
 		}
 		return result;
 	}
+
 
 	public static boolean isMethod(String s) {
 		return s.contains("(") || s.contains(")");

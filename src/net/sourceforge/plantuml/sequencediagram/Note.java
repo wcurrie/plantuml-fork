@@ -28,16 +28,15 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 9059 $
+ * Revision $Revision: 9495 $
  *
  */
 package net.sourceforge.plantuml.sequencediagram;
 
-import java.util.List;
-
 import net.sourceforge.plantuml.SpecificBackcolorable;
 import net.sourceforge.plantuml.Url;
 import net.sourceforge.plantuml.UrlBuilder;
+import net.sourceforge.plantuml.cucadiagram.Display;
 import net.sourceforge.plantuml.graphic.HtmlColor;
 
 public class Note implements Event, SpecificBackcolorable {
@@ -45,28 +44,28 @@ public class Note implements Event, SpecificBackcolorable {
 	private final Participant p;
 	private final Participant p2;
 
-	private final List<String> strings;
+	private final Display strings;
 
 	private final NotePosition position;
 	private NoteStyle style = NoteStyle.NORMAL;
 
 	private final Url url;
 
-	public Note(Participant p, NotePosition position, List<String> strings) {
+	public Note(Participant p, NotePosition position, Display strings) {
 		this(p, null, position, strings);
 	}
 
-	public Note(Participant p, Participant p2, List<String> strings) {
+	public Note(Participant p, Participant p2, Display strings) {
 		this(p, p2, NotePosition.OVER_SEVERAL, strings);
 	}
 
-	private Note(Participant p, Participant p2, NotePosition position, List<String> strings) {
+	private Note(Participant p, Participant p2, NotePosition position, Display strings) {
 		this.p = p;
 		this.p2 = p2;
 		this.position = position;
 		if (strings != null && strings.size() > 0) {
 			final UrlBuilder urlBuilder = new UrlBuilder(null, true);
-			this.url = urlBuilder.getUrl(strings.get(0));
+			this.url = urlBuilder.getUrl(strings.get(0).toString());
 		} else {
 			this.url = null;
 		}
@@ -86,7 +85,7 @@ public class Note implements Event, SpecificBackcolorable {
 		return p2;
 	}
 
-	public List<String> getStrings() {
+	public Display getStrings() {
 		return strings;
 	}
 

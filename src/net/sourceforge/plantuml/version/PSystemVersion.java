@@ -41,6 +41,7 @@ import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Properties;
@@ -62,17 +63,59 @@ import net.sourceforge.plantuml.ugraphic.UFont;
 public class PSystemVersion extends AbstractPSystem {
 
 	private final List<String> strings = new ArrayList<String>();
-	private final BufferedImage image;
+	private BufferedImage image;
 
-	PSystemVersion(boolean withImage, List<String> args) throws IOException {
+	PSystemVersion(boolean withImage, List<String> args) {
 		strings.addAll(args);
 		if (withImage) {
-			final InputStream is = getClass().getResourceAsStream("logo.png");
-			image = ImageIO.read(is);
-			is.close();
-		} else {
-			image = null;
+			image = getPlantumlImage();
 		}
+	}
+
+	public static BufferedImage getPlantumlImage() {
+		try {
+			final InputStream is = PSystemVersion.class.getResourceAsStream("logo.png");
+			final BufferedImage image = ImageIO.read(is);
+			is.close();
+			return image;
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+
+	public static BufferedImage getPlantumlSmallIcon() {
+		try {
+			final InputStream is = PSystemVersion.class.getResourceAsStream("favicon.png");
+			final BufferedImage image = ImageIO.read(is);
+			is.close();
+			return image;
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+
+	private static BufferedImage transparentIcon;
+
+	public static BufferedImage getPlantumlSmallIcon2() {
+		if (transparentIcon != null) {
+			return transparentIcon;
+		}
+		final BufferedImage ico = getPlantumlSmallIcon();
+		if (ico == null) {
+			return null;
+		}
+		transparentIcon = new BufferedImage(ico.getWidth(), ico.getHeight(), BufferedImage.TYPE_INT_ARGB_PRE);
+		for (int i = 0; i < ico.getWidth(); i++) {
+			for (int j = 0; j < ico.getHeight(); j++) {
+				final int col = ico.getRGB(i, j);
+				if (col != ico.getRGB(0, 0)) {
+					transparentIcon.setRGB(i, j, col);
+				}
+			}
+		}
+		return transparentIcon;
 	}
 
 	public void exportDiagram(OutputStream os, CMapData cmap, int index, FileFormatOption fileFormat)
@@ -80,7 +123,7 @@ public class PSystemVersion extends AbstractPSystem {
 		getGraphicStrings().writeImage(os, fileFormat);
 	}
 
-	public static PSystemVersion createShowVersion() throws IOException {
+	public static PSystemVersion createShowVersion() {
 		final List<String> strings = new ArrayList<String>();
 		strings.add("<b>PlantUML version " + Version.versionString() + "</b> (" + new Date(Version.compileTime()) + ")");
 		if (License.isCloseSource()) {
@@ -99,12 +142,12 @@ public class PSystemVersion extends AbstractPSystem {
 		return new PSystemVersion(true, strings);
 	}
 
-	public static PSystemVersion createShowAuthors() throws IOException {
+	public static PSystemVersion createShowAuthors() {
 		// Duplicate in OptionPrint
 		final List<String> strings = new ArrayList<String>();
 		strings.add("<b>PlantUML version " + Version.versionString() + "</b> (" + new Date(Version.compileTime()) + ")");
 		if (License.isCloseSource()) {
-			strings.add("(Close source distribution)");
+			strings.add("(LGPL source distribution)");
 		}
 		strings.add(" ");
 		strings.add("<u>Original idea</u>: Arnaud Roques");
@@ -120,7 +163,7 @@ public class PSystemVersion extends AbstractPSystem {
 		return new PSystemVersion(true, strings);
 	}
 
-	public static PSystemVersion createCheckVersions(String host, String port) throws IOException {
+	public static PSystemVersion createCheckVersions(String host, String port) {
 		final List<String> strings = new ArrayList<String>();
 		strings.add("<b>PlantUML version " + Version.versionString() + "</b> (" + new Date(Version.compileTime()) + ")");
 
@@ -208,6 +251,10 @@ public class PSystemVersion extends AbstractPSystem {
 
 	public String getDescription() {
 		return "(Version)";
+	}
+
+	public List<String> getLines() {
+		return Collections.unmodifiableList(strings);
 	}
 
 }

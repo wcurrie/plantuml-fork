@@ -34,10 +34,10 @@
 package net.sourceforge.plantuml.asciiart;
 
 import java.awt.geom.Dimension2D;
-import java.util.List;
 
 import net.sourceforge.plantuml.FileFormat;
 import net.sourceforge.plantuml.StringUtils;
+import net.sourceforge.plantuml.cucadiagram.Display;
 import net.sourceforge.plantuml.graphic.StringBounder;
 import net.sourceforge.plantuml.skin.Area;
 import net.sourceforge.plantuml.skin.ArrowConfiguration;
@@ -50,11 +50,11 @@ import net.sourceforge.plantuml.ugraphic.txt.UGraphicTxt;
 public class ComponentTextArrow implements Component {
 
 	private final ComponentType type;
-	private final List<? extends CharSequence> stringsToDisplay;
+	private final Display stringsToDisplay;
 	private final FileFormat fileFormat;
 	private final ArrowConfiguration config;
 
-	public ComponentTextArrow(ComponentType type, ArrowConfiguration config, List<? extends CharSequence> stringsToDisplay, FileFormat fileFormat) {
+	public ComponentTextArrow(ComponentType type, ArrowConfiguration config, Display stringsToDisplay, FileFormat fileFormat) {
 		this.type = type;
 		this.config = config;
 		this.stringsToDisplay = stringsToDisplay;
@@ -83,7 +83,7 @@ public class ComponentTextArrow implements Component {
 		} else {
 			throw new UnsupportedOperationException();
 		}
-		charArea.drawStringsLR(stringsToDisplay, (width - textWidth) / 2, 0);
+		charArea.drawStringsLR(stringsToDisplay.as(), (width - textWidth) / 2, 0);
 	}
 
 	public double getPreferredHeight(StringBounder stringBounder) {

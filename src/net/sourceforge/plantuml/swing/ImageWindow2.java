@@ -55,6 +55,7 @@ import javax.swing.ListModel;
 import javax.swing.WindowConstants;
 
 import net.sourceforge.plantuml.GeneratedImage;
+import net.sourceforge.plantuml.version.PSystemVersion;
 
 class ImageWindow2 extends JFrame {
 
@@ -68,6 +69,7 @@ class ImageWindow2 extends JFrame {
 
 	public ImageWindow2(SimpleLine2 simpleLine, final MainWindow2 main, ListModel listModel, int index) {
 		super(simpleLine.toString());
+		setIconImage(PSystemVersion.getPlantumlSmallIcon2());
 		this.simpleLine2 = simpleLine;
 		this.listModel = listModel;
 		this.index = index;
@@ -96,6 +98,7 @@ class ImageWindow2 extends JFrame {
 		getContentPane().add(north, BorderLayout.NORTH);
 		getContentPane().add(scrollPane, BorderLayout.CENTER);
 		setSize(640, 400);
+		this.setLocationRelativeTo(this.getParent());
 		setVisible(true);
 		setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 		this.addWindowListener(new WindowAdapter() {

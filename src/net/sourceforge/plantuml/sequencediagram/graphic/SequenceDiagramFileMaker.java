@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 9352 $
+ * Revision $Revision: 9495 $
  *
  */
 package net.sourceforge.plantuml.sequencediagram.graphic;
@@ -41,7 +41,6 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -54,6 +53,7 @@ import net.sourceforge.plantuml.FileFormatOption;
 import net.sourceforge.plantuml.FontParam;
 import net.sourceforge.plantuml.StringUtils;
 import net.sourceforge.plantuml.UmlDiagramInfo;
+import net.sourceforge.plantuml.cucadiagram.Display;
 import net.sourceforge.plantuml.eps.EpsStrategy;
 import net.sourceforge.plantuml.graphic.HtmlColor;
 import net.sourceforge.plantuml.graphic.HtmlColorGradient;
@@ -150,13 +150,13 @@ public class SequenceDiagramFileMaker implements FileMaker {
 	}
 
 	private PageSplitter create(DrawableSet drawableSet, Map<Newpage, Double> positions, boolean showFootbox,
-			List<? extends CharSequence> title) {
+			Display title) {
 
 		final double headerHeight = drawableSet.getHeadHeight(dummyStringBounder);
 		final double tailHeight = drawableSet.getTailHeight(dummyStringBounder, showFootbox);
 		final double signatureHeight = 0;
 		final double newpageHeight = drawableSet.getSkin()
-				.createComponent(ComponentType.NEWPAGE, null, drawableSet.getSkinParam(), Arrays.asList(""))
+				.createComponent(ComponentType.NEWPAGE, null, drawableSet.getSkinParam(), Display.asList(""))
 				.getPreferredHeight(dummyStringBounder);
 
 		return new PageSplitter(fullDimension.getHeight(), headerHeight, positions, tailHeight, signatureHeight,

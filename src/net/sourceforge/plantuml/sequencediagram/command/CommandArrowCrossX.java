@@ -33,9 +33,6 @@
  */
 package net.sourceforge.plantuml.sequencediagram.command;
 
-import java.util.Arrays;
-import java.util.List;
-
 import net.sourceforge.plantuml.StringUtils;
 import net.sourceforge.plantuml.command.CommandExecutionResult;
 import net.sourceforge.plantuml.command.SingleLineCommand2;
@@ -43,6 +40,7 @@ import net.sourceforge.plantuml.command.regex.RegexConcat;
 import net.sourceforge.plantuml.command.regex.RegexLeaf;
 import net.sourceforge.plantuml.command.regex.RegexOr;
 import net.sourceforge.plantuml.command.regex.RegexResult;
+import net.sourceforge.plantuml.cucadiagram.Display;
 import net.sourceforge.plantuml.sequencediagram.Message;
 import net.sourceforge.plantuml.sequencediagram.Participant;
 import net.sourceforge.plantuml.sequencediagram.SequenceDiagram;
@@ -78,19 +76,19 @@ public class CommandArrowCrossX extends SingleLineCommand2<SequenceDiagram> {
 
 	private Participant getOrCreateParticipant(RegexResult arg2, String n) {
 		final String code;
-		final List<String> display;
+		final Display display;
 		if (arg2.get(n + "CODE", 0) != null) {
 			code = arg2.get(n + "CODE", 0);
-			display = StringUtils.getWithNewlines(code);
+			display = Display.getWithNewlines(code);
 		} else if (arg2.get(n + "LONG", 0) != null) {
 			code = arg2.get(n + "LONG", 0);
-			display = StringUtils.getWithNewlines(code);
+			display = Display.getWithNewlines(code);
 		} else if (arg2.get(n + "LONGCODE", 0) != null) {
-			display = StringUtils.getWithNewlines(arg2.get(n + "LONGCODE", 0));
+			display = Display.getWithNewlines(arg2.get(n + "LONGCODE", 0));
 			code = arg2.get(n + "LONGCODE", 1);
 		} else if (arg2.get(n + "CODELONG", 0) != null) {
 			code = arg2.get(n + "CODELONG", 0);
-			display = StringUtils.getWithNewlines(arg2.get(n + "CODELONG", 1));
+			display = Display.getWithNewlines(arg2.get(n + "CODELONG", 1));
 			return getSystem().getOrCreateParticipant(code, display);
 		} else {
 			throw new IllegalStateException();
@@ -122,11 +120,11 @@ public class CommandArrowCrossX extends SingleLineCommand2<SequenceDiagram> {
 
 		final boolean dotted = arrow.contains("--");
 
-		final List<String> labels;
+		final Display labels;
 		if (arg2.get("MESSAGE", 0) == null) {
-			labels = Arrays.asList("");
+			labels = Display.asList("");
 		} else {
-			labels = StringUtils.getWithNewlines(arg2.get("MESSAGE", 0));
+			labels = Display.getWithNewlines(arg2.get("MESSAGE", 0));
 		}
 
 		ArrowConfiguration config = ArrowConfiguration.withDirection(ArrowDirection.LEFT_TO_RIGHT_NORMAL);

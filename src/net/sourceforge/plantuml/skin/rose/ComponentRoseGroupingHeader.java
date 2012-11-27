@@ -28,16 +28,15 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 7894 $
+ * Revision $Revision: 9495 $
  *
  */
 package net.sourceforge.plantuml.skin.rose;
 
 import java.awt.geom.Dimension2D;
-import java.util.Arrays;
-import java.util.List;
 
 import net.sourceforge.plantuml.SpriteContainer;
+import net.sourceforge.plantuml.cucadiagram.Display;
 import net.sourceforge.plantuml.graphic.FontConfiguration;
 import net.sourceforge.plantuml.graphic.HorizontalAlignement;
 import net.sourceforge.plantuml.graphic.HtmlColor;
@@ -65,7 +64,7 @@ public class ComponentRoseGroupingHeader extends AbstractTextualComponent {
 	private final double deltaShadow;
 
 	public ComponentRoseGroupingHeader(HtmlColor fontColor, HtmlColor background, HtmlColor groupBackground,
-			HtmlColor groupBorder, UFont bigFont, UFont smallFont, List<? extends CharSequence> strings,
+			HtmlColor groupBorder, UFont bigFont, UFont smallFont, Display strings,
 			SpriteContainer spriteContainer, double deltaShadow) {
 		super(strings.get(0), fontColor, bigFont, HorizontalAlignement.LEFT, 15, 30, 1, spriteContainer);
 		this.groupBackground = groupBackground;
@@ -75,7 +74,7 @@ public class ComponentRoseGroupingHeader extends AbstractTextualComponent {
 		if (strings.size() == 1 || strings.get(1) == null) {
 			this.commentTextBlock = null;
 		} else {
-			this.commentTextBlock = TextBlockUtils.create(Arrays.asList("[" + strings.get(1) + "]"),
+			this.commentTextBlock = TextBlockUtils.create(Display.asList("[" + strings.get(1) + "]"),
 					new FontConfiguration(smallFont, fontColor), HorizontalAlignement.LEFT, spriteContainer);
 		}
 		if (this.background == null) {

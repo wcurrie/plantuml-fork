@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 8900 $
+ * Revision $Revision: 9495 $
  *
  */
 package net.sourceforge.plantuml.graphic;
@@ -49,6 +49,7 @@ import net.sourceforge.plantuml.FileFormat;
 import net.sourceforge.plantuml.FileFormatOption;
 import net.sourceforge.plantuml.SpriteContainerEmpty;
 import net.sourceforge.plantuml.StringUtils;
+import net.sourceforge.plantuml.cucadiagram.Display;
 import net.sourceforge.plantuml.eps.EpsStrategy;
 import net.sourceforge.plantuml.png.PngIO;
 import net.sourceforge.plantuml.svek.IEntityImage;
@@ -169,7 +170,7 @@ public class GraphicStrings implements IEntityImage {
 	}
 
 	public Dimension2D drawU(final UGraphic ug) {
-		final TextBlock textBlock = TextBlockUtils.create(strings, new FontConfiguration(font, green),
+		final TextBlock textBlock = TextBlockUtils.create(new Display(strings), new FontConfiguration(font, green),
 				HorizontalAlignement.LEFT, new SpriteContainerEmpty());
 		Dimension2D size = getSizeWithMin(textBlock.calculateDimension(ug.getStringBounder()));
 		textBlock.drawU(ug, 0, 0);
@@ -190,7 +191,7 @@ public class GraphicStrings implements IEntityImage {
 	}
 
 	public Dimension2D getDimension(StringBounder stringBounder) {
-		final TextBlock textBlock = TextBlockUtils.create(strings, new FontConfiguration(font, green),
+		final TextBlock textBlock = TextBlockUtils.create(new Display(strings), new FontConfiguration(font, green),
 				HorizontalAlignement.LEFT, new SpriteContainerEmpty());
 		return getSizeWithMin(textBlock.calculateDimension(stringBounder));
 	}

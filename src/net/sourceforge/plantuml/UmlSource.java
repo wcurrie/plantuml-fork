@@ -34,19 +34,24 @@
 package net.sourceforge.plantuml;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import net.sourceforge.plantuml.cucadiagram.Display;
+
 final public class UmlSource {
 
 	final private List<String> source;
 
-	public UmlSource(List<String> source) {
-		this.source = Collections.unmodifiableList(new ArrayList<String>(source));
+	public UmlSource(List<? extends CharSequence> source) {
+		final List<String> tmp = new ArrayList<String>();
+		for (CharSequence s : source) {
+			tmp.add(s.toString());
+		}
+		this.source = Collections.unmodifiableList(tmp);
 	}
 
 	public DiagramType getDiagramType() {
@@ -92,16 +97,16 @@ final public class UmlSource {
 		return true;
 	}
 
-	public List<String> getTitle() {
+	public Display getTitle() {
 		final Pattern p = Pattern.compile("(?i)^\\s*title\\s+(.+)$");
 		for (String s : source) {
 			final Matcher m = p.matcher(s);
 			final boolean ok = m.matches();
 			if (ok) {
-				return Arrays.asList(m.group(1));
+				return Display.asList(m.group(1));
 			}
 		}
-		return Collections.emptyList();
+		return Display.emptyList();
 	}
 
 }

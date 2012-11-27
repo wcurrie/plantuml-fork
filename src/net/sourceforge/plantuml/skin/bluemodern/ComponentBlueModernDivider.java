@@ -34,9 +34,9 @@
 package net.sourceforge.plantuml.skin.bluemodern;
 
 import java.awt.geom.Dimension2D;
-import java.util.List;
 
 import net.sourceforge.plantuml.SpriteContainer;
+import net.sourceforge.plantuml.cucadiagram.Display;
 import net.sourceforge.plantuml.graphic.HorizontalAlignement;
 import net.sourceforge.plantuml.graphic.HtmlColor;
 import net.sourceforge.plantuml.graphic.HtmlColorUtils;
@@ -57,7 +57,7 @@ public class ComponentBlueModernDivider extends AbstractTextualComponent {
 	private final HtmlColor borderColor;
 
 	public ComponentBlueModernDivider(HtmlColor fontColor, UFont font, HtmlColor background1, HtmlColor background2,
-			HtmlColor borderColor, List<? extends CharSequence> stringsToDisplay, SpriteContainer spriteContainer) {
+			HtmlColor borderColor, Display stringsToDisplay, SpriteContainer spriteContainer) {
 		super(stringsToDisplay, fontColor, font, HorizontalAlignement.CENTER, 4, 4, 4, spriteContainer);
 		this.background1 = background1;
 		this.background2 = background2;

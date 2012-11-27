@@ -54,6 +54,7 @@ import net.sourceforge.plantuml.StringUtils;
 import net.sourceforge.plantuml.UmlDiagram;
 import net.sourceforge.plantuml.UmlDiagramInfo;
 import net.sourceforge.plantuml.UmlDiagramType;
+import net.sourceforge.plantuml.cucadiagram.Display;
 import net.sourceforge.plantuml.graphic.HtmlColor;
 import net.sourceforge.plantuml.sequencediagram.graphic.FileMaker;
 import net.sourceforge.plantuml.sequencediagram.graphic.SequenceDiagramFileMaker;
@@ -75,10 +76,10 @@ public class SequenceDiagram extends UmlDiagram {
 
 	@Deprecated
 	public Participant getOrCreateParticipant(String code) {
-		return getOrCreateParticipant(code, StringUtils.getWithNewlines(code));
+		return getOrCreateParticipant(code, Display.getWithNewlines(code));
 	}
 
-	public Participant getOrCreateParticipant(String code, List<String> display) {
+	public Participant getOrCreateParticipant(String code, Display display) {
 		Participant result = participants.get(code);
 		if (result == null) {
 			result = new Participant(ParticipantType.PARTICIPANT, code, display);
@@ -94,13 +95,13 @@ public class SequenceDiagram extends UmlDiagram {
 		return lastMessage;
 	}
 
-	public Participant createNewParticipant(ParticipantType type, String code, List<String> display) {
+	public Participant createNewParticipant(ParticipantType type, String code, Display display) {
 		if (participants.containsKey(code)) {
 			throw new IllegalArgumentException();
 		}
 		if (display == null) {
 			// display = Arrays.asList(code);
-			display = StringUtils.getWithNewlines(code);
+			display = Display.getWithNewlines(code);
 		}
 		final Participant result = new Participant(type, code, display);
 		participants.put(code, result);
@@ -130,7 +131,7 @@ public class SequenceDiagram extends UmlDiagram {
 		events.add(n);
 	}
 
-	public void newpage(List<String> strings) {
+	public void newpage(Display strings) {
 		if (ignoreNewpage) {
 			return;
 		}
@@ -153,7 +154,7 @@ public class SequenceDiagram extends UmlDiagram {
 		this.autonewpage = autonewpage;
 	}
 
-	public void divider(List<String> strings) {
+	public void divider(Display strings) {
 		events.add(new Divider(strings));
 	}
 
@@ -167,7 +168,7 @@ public class SequenceDiagram extends UmlDiagram {
 
 	private Delay lastDelay;
 
-	public void delay(List<String> strings) {
+	public void delay(Display strings) {
 		final Delay delay = new Delay(strings);
 		events.add(delay);
 		lastDelay = delay;
@@ -353,7 +354,7 @@ public class SequenceDiagram extends UmlDiagram {
 
 	private ParticipantEnglober participantEnglober;
 
-	public void boxStart(List<String> comment, HtmlColor color) {
+	public void boxStart(Display comment, HtmlColor color) {
 		if (participantEnglober != null) {
 			throw new IllegalStateException();
 		}

@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 7715 $
+ * Revision $Revision: 9495 $
  *
  */
 package net.sourceforge.plantuml.command;
@@ -38,6 +38,7 @@ import java.util.regex.Matcher;
 
 import net.sourceforge.plantuml.StringUtils;
 import net.sourceforge.plantuml.UmlDiagram;
+import net.sourceforge.plantuml.cucadiagram.Display;
 import net.sourceforge.plantuml.graphic.HorizontalAlignement;
 
 public class CommandMultilinesFooter extends CommandMultilines<UmlDiagram> {
@@ -62,7 +63,7 @@ public class CommandMultilinesFooter extends CommandMultilines<UmlDiagram> {
 		if (align != null) {
 			getSystem().setFooterAlignement(HorizontalAlignement.valueOf(align.toUpperCase()));
 		}
-		final List<String> strings = lines.subList(1, lines.size() - 1);
+		final Display strings = new Display(lines.subList(1, lines.size() - 1));
 		if (strings.size() > 0) {
 			getSystem().setFooter(strings);
 			return CommandExecutionResult.ok();

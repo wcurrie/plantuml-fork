@@ -38,6 +38,7 @@ import java.util.List;
 import net.sourceforge.plantuml.StringUtils;
 import net.sourceforge.plantuml.command.CommandExecutionResult;
 import net.sourceforge.plantuml.command.SingleLineCommand;
+import net.sourceforge.plantuml.cucadiagram.Display;
 import net.sourceforge.plantuml.sequencediagram.AbstractMessage;
 import net.sourceforge.plantuml.sequencediagram.LifeEventType;
 import net.sourceforge.plantuml.sequencediagram.Message;
@@ -67,8 +68,8 @@ public class CommandReturn extends SingleLineCommand<SequenceDiagram> {
 		final ArrowConfiguration arrow = message.getArrowConfiguration().withDotted();
 
 		getSystem().addMessage(
-				new Message(message.getParticipant2(), message.getParticipant1(), StringUtils.getWithNewlines(arg
-						.get(0)), arrow, getSystem().getNextMessageNumber()));
+				new Message(message.getParticipant2(), message.getParticipant1(), Display.getWithNewlines(arg
+				.get(0)), arrow, getSystem().getNextMessageNumber()));
 
 		if (doDeactivation) {
 			final String error = getSystem().activate(message.getParticipant2(), LifeEventType.DEACTIVATE, null);

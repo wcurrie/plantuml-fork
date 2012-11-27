@@ -28,18 +28,18 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 7947 $
+ * Revision $Revision: 9495 $
  *
  */
 package net.sourceforge.plantuml.graph;
 
 import java.awt.geom.Dimension2D;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import net.sourceforge.plantuml.Dimension2DDouble;
 import net.sourceforge.plantuml.SpriteContainerEmpty;
+import net.sourceforge.plantuml.cucadiagram.Display;
 import net.sourceforge.plantuml.cucadiagram.Member;
 import net.sourceforge.plantuml.graphic.FontConfiguration;
 import net.sourceforge.plantuml.graphic.HorizontalAlignement;
@@ -80,7 +80,7 @@ public class MethodsOrFieldsArea {
 	}
 
 	private TextBlock createTextBlock(String s) {
-		return TextBlockUtils.create(Arrays.asList(s), new FontConfiguration(font, HtmlColorUtils.BLACK),
+		return TextBlockUtils.create(Display.asList(s), new FontConfiguration(font, HtmlColorUtils.BLACK),
 				HorizontalAlignement.LEFT, new SpriteContainerEmpty());
 	}
 

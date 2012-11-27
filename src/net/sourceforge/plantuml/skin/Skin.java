@@ -28,19 +28,18 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 7715 $
+ * Revision $Revision: 9495 $
  *
  */
 package net.sourceforge.plantuml.skin;
 
-import java.util.List;
-
 import net.sourceforge.plantuml.ISkinParam;
+import net.sourceforge.plantuml.cucadiagram.Display;
 
 public interface Skin {
 
 	Object getProtocolVersion();
 
-	Component createComponent(ComponentType type, ArrowConfiguration config, ISkinParam param, List<? extends CharSequence> stringsToDisplay);
+	Component createComponent(ComponentType type, ArrowConfiguration config, ISkinParam param, Display stringsToDisplay);
 
 }

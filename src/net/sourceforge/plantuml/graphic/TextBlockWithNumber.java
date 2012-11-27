@@ -28,27 +28,27 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 7947 $
+ * Revision $Revision: 9495 $
  *
  */
 package net.sourceforge.plantuml.graphic;
 
 import java.awt.geom.Dimension2D;
-import java.util.Arrays;
-import java.util.List;
 
 import net.sourceforge.plantuml.Dimension2DDouble;
 import net.sourceforge.plantuml.SpriteContainer;
+import net.sourceforge.plantuml.cucadiagram.Display;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
 
 class TextBlockWithNumber extends TextBlockSimple {
 
 	private final TextBlock numText;
 
-	public TextBlockWithNumber(String number, List<? extends CharSequence> texts, FontConfiguration fontConfiguration,
+	public TextBlockWithNumber(String number, Display texts, FontConfiguration fontConfiguration,
 			HorizontalAlignement horizontalAlignement, SpriteContainer spriteContainer) {
 		super(texts, fontConfiguration, horizontalAlignement, spriteContainer);
-		this.numText = TextBlockUtils.create(Arrays.asList(number), fontConfiguration, HorizontalAlignement.LEFT, spriteContainer);
+		this.numText = TextBlockUtils.create(Display.asList(number), fontConfiguration, HorizontalAlignement.LEFT,
+				spriteContainer);
 	}
 
 	@Override

@@ -45,6 +45,7 @@ import net.sourceforge.plantuml.command.regex.RegexLeaf;
 import net.sourceforge.plantuml.command.regex.RegexOr;
 import net.sourceforge.plantuml.command.regex.RegexResult;
 import net.sourceforge.plantuml.cucadiagram.Code;
+import net.sourceforge.plantuml.cucadiagram.Display;
 import net.sourceforge.plantuml.cucadiagram.IEntity;
 import net.sourceforge.plantuml.cucadiagram.ILeaf;
 import net.sourceforge.plantuml.cucadiagram.LeafType;
@@ -104,7 +105,7 @@ public class CommandCreateClass extends SingleLineCommand2<ClassDiagram> {
 			entity = getSystem().getOrCreateLeaf1(code, type);
 			entity.muteToType(type);
 		} else {
-			entity = getSystem().createLeaf(code, StringUtils.getWithNewlines(display), type);
+			entity = getSystem().createLeaf(code, Display.getWithNewlines(display), type);
 		}
 		if (stereotype != null) {
 			entity.setStereotype(new Stereotype(stereotype, getSystem().getSkinParam().getCircledCharacterRadius(),

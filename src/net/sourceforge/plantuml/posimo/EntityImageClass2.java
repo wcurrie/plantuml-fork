@@ -41,6 +41,7 @@ import net.sourceforge.plantuml.Dimension2DDouble;
 import net.sourceforge.plantuml.FontParam;
 import net.sourceforge.plantuml.ISkinParam;
 import net.sourceforge.plantuml.StringUtils;
+import net.sourceforge.plantuml.cucadiagram.Display;
 import net.sourceforge.plantuml.cucadiagram.IEntity;
 import net.sourceforge.plantuml.cucadiagram.LeafType;
 import net.sourceforge.plantuml.cucadiagram.Link;
@@ -78,7 +79,7 @@ public class EntityImageClass2 extends AbstractEntityImage2 {
 			this.stereo = null;
 		} else {
 			this.stereo = TextBlockUtils
-					.create(StringUtils.getWithNewlines(stereotype.getLabel()), new FontConfiguration(
+					.create(Display.getWithNewlines(stereotype.getLabel()), new FontConfiguration(
 							getFont(FontParam.CLASS_STEREOTYPE), getFontColor(FontParam.CLASS_STEREOTYPE)),
 							HorizontalAlignement.CENTER, skinParam);
 		}

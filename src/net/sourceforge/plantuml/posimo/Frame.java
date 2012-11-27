@@ -40,6 +40,7 @@ import net.sourceforge.plantuml.ColorParam;
 import net.sourceforge.plantuml.FontParam;
 import net.sourceforge.plantuml.ISkinParam;
 import net.sourceforge.plantuml.SpriteContainerEmpty;
+import net.sourceforge.plantuml.cucadiagram.Display;
 import net.sourceforge.plantuml.graphic.FontConfiguration;
 import net.sourceforge.plantuml.graphic.HorizontalAlignement;
 import net.sourceforge.plantuml.graphic.HtmlColor;
@@ -120,7 +121,7 @@ public class Frame implements Component {
 	private TextBlock createTextBloc() {
 		final UFont font = skinParam.getFont(FontParam.PACKAGE, null);
 		final HtmlColor textColor = skinParam.getFontHtmlColor(FontParam.PACKAGE, null);
-		final TextBlock bloc = TextBlockUtils.create(name, new FontConfiguration(font, textColor),
+		final TextBlock bloc = TextBlockUtils.create(new Display(name), new FontConfiguration(font, textColor),
 				HorizontalAlignement.LEFT, new SpriteContainerEmpty());
 		return bloc;
 	}

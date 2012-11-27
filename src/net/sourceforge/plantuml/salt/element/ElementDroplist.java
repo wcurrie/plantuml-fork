@@ -40,6 +40,7 @@ import java.util.StringTokenizer;
 
 import net.sourceforge.plantuml.Dimension2DDouble;
 import net.sourceforge.plantuml.SpriteContainer;
+import net.sourceforge.plantuml.cucadiagram.Display;
 import net.sourceforge.plantuml.graphic.HorizontalAlignement;
 import net.sourceforge.plantuml.graphic.HtmlColorUtils;
 import net.sourceforge.plantuml.graphic.StringBounder;
@@ -69,7 +70,7 @@ public class ElementDroplist extends AbstractElementText implements Element {
 		if (drop.size() == 0) {
 			this.openDrop = null;
 		} else {
-			this.openDrop = TextBlockUtils.create(drop, getConfig(), HorizontalAlignement.LEFT, spriteContainer);
+			this.openDrop = TextBlockUtils.create(new Display(drop), getConfig(), HorizontalAlignement.LEFT, spriteContainer);
 		}
 	}
 

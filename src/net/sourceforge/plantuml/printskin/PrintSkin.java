@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 8441 $
+ * Revision $Revision: 9495 $
  *
  */
 package net.sourceforge.plantuml.printskin;
@@ -39,7 +39,6 @@ import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.util.Arrays;
 import java.util.List;
 
 import net.sourceforge.plantuml.AbstractPSystem;
@@ -49,6 +48,7 @@ import net.sourceforge.plantuml.EmptyImageBuilder;
 import net.sourceforge.plantuml.FileFormatOption;
 import net.sourceforge.plantuml.SkinParam;
 import net.sourceforge.plantuml.SpriteContainerEmpty;
+import net.sourceforge.plantuml.cucadiagram.Display;
 import net.sourceforge.plantuml.graphic.FontConfiguration;
 import net.sourceforge.plantuml.graphic.HorizontalAlignement;
 import net.sourceforge.plantuml.graphic.HtmlColorUtils;
@@ -120,7 +120,7 @@ class PrintSkin extends AbstractPSystem {
 	private void printComponent(ComponentType type) {
 		println(type.name());
 		final Component comp = skin.createComponent(type,
-				ArrowConfiguration.withDirection(ArrowDirection.LEFT_TO_RIGHT_NORMAL), new SkinParam(null), toPrint);
+				ArrowConfiguration.withDirection(ArrowDirection.LEFT_TO_RIGHT_NORMAL), new SkinParam(null), new Display(toPrint));
 		if (comp == null) {
 			println("null");
 			return;
@@ -153,7 +153,7 @@ class PrintSkin extends AbstractPSystem {
 	}
 
 	private void println(String s) {
-		final TextBlock textBlock = TextBlockUtils.create(Arrays.asList(s), new FontConfiguration(FONT1,
+		final TextBlock textBlock = TextBlockUtils.create(Display.asList(s), new FontConfiguration(FONT1,
 				HtmlColorUtils.BLACK), HorizontalAlignement.LEFT, new SpriteContainerEmpty());
 		textBlock.drawU(ug, xpos, ypos);
 		ypos += textBlock.calculateDimension(ug.getStringBounder()).getHeight();

@@ -33,11 +33,9 @@
  */
 package net.sourceforge.plantuml.sequencediagram.graphic;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import net.sourceforge.plantuml.ISkinParam;
 import net.sourceforge.plantuml.SkinParamBackcolored;
+import net.sourceforge.plantuml.cucadiagram.Display;
 import net.sourceforge.plantuml.graphic.StringBounder;
 import net.sourceforge.plantuml.sequencediagram.InGroupable;
 import net.sourceforge.plantuml.sequencediagram.LifeEvent;
@@ -116,13 +114,13 @@ class Step1MessageExo extends Step1Abstract {
 		return getDrawingSet().getLivingParticipantBox(((MessageExo) getMessage()).getParticipant());
 	}
 
-	private List<? extends CharSequence> getLabelOfMessage(MessageExo message) {
+	private Display getLabelOfMessage(MessageExo message) {
 		if (message.getMessageNumber() == null) {
 			return message.getLabel();
 		}
-		final List<CharSequence> result = new ArrayList<CharSequence>();
-		result.add(new MessageNumber(message.getMessageNumber()));
-		result.addAll(message.getLabel());
+		Display result = new Display();
+		result = result.add(new MessageNumber(message.getMessageNumber()));
+		result = result.addAll(message.getLabel());
 		return result;
 	}
 

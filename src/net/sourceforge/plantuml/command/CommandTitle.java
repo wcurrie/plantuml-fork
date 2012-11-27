@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 7715 $
+ * Revision $Revision: 9498 $
  *
  */
 package net.sourceforge.plantuml.command;
@@ -37,6 +37,7 @@ import java.util.List;
 
 import net.sourceforge.plantuml.StringUtils;
 import net.sourceforge.plantuml.UmlDiagram;
+import net.sourceforge.plantuml.cucadiagram.Display;
 
 public class CommandTitle extends SingleLineCommand<UmlDiagram> {
 
@@ -46,7 +47,7 @@ public class CommandTitle extends SingleLineCommand<UmlDiagram> {
 
 	@Override
 	protected CommandExecutionResult executeArg(List<String> arg) {
-		getSystem().setTitle(StringUtils.getWithNewlines(arg.get(0)));
+		getSystem().setTitle(Display.getWithNewlines(arg.get(0)));
 		return CommandExecutionResult.ok();
 	}
 

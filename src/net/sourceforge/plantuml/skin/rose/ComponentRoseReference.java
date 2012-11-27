@@ -34,9 +34,9 @@
 package net.sourceforge.plantuml.skin.rose;
 
 import java.awt.geom.Dimension2D;
-import java.util.List;
 
 import net.sourceforge.plantuml.SpriteContainer;
+import net.sourceforge.plantuml.cucadiagram.Display;
 import net.sourceforge.plantuml.graphic.FontConfiguration;
 import net.sourceforge.plantuml.graphic.HorizontalAlignement;
 import net.sourceforge.plantuml.graphic.HtmlColor;
@@ -65,7 +65,7 @@ public class ComponentRoseReference extends AbstractTextualComponent {
 
 	public ComponentRoseReference(HtmlColor fontColor, HtmlColor fontHeaderColor, UFont font, HtmlColor borderColor,
 			HtmlColor backgroundHeader, HtmlColor background, UFont header,
-			List<? extends CharSequence> stringsToDisplay, HorizontalAlignement position,
+			Display stringsToDisplay, HorizontalAlignement position,
 			SpriteContainer spriteContainer, double deltaShadow) {
 		super(stringsToDisplay.subList(1, stringsToDisplay.size()), fontColor, font, HorizontalAlignement.LEFT, 4, 4,
 				4, spriteContainer);

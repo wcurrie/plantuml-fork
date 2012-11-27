@@ -38,6 +38,7 @@ import java.util.List;
 import net.sourceforge.plantuml.StringUtils;
 import net.sourceforge.plantuml.command.CommandExecutionResult;
 import net.sourceforge.plantuml.command.SingleLineCommand;
+import net.sourceforge.plantuml.cucadiagram.Display;
 import net.sourceforge.plantuml.graphic.HtmlColor;
 import net.sourceforge.plantuml.graphic.HtmlColorUtils;
 import net.sourceforge.plantuml.sequencediagram.SequenceDiagram;
@@ -55,7 +56,7 @@ public class CommandBoxStart extends SingleLineCommand<SequenceDiagram> {
 		}
 		final HtmlColor color = HtmlColorUtils.getColorIfValid(arg.get(1));
 		final String title = arg.get(0) == null ? "" : arg.get(0);
-		getSystem().boxStart(StringUtils.getWithNewlines(title), color);
+		getSystem().boxStart(Display.getWithNewlines(title), color);
 		return CommandExecutionResult.ok();
 	}
 

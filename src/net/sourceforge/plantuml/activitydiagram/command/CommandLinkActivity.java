@@ -46,6 +46,7 @@ import net.sourceforge.plantuml.command.regex.RegexOr;
 import net.sourceforge.plantuml.command.regex.RegexPartialMatch;
 import net.sourceforge.plantuml.command.regex.RegexResult;
 import net.sourceforge.plantuml.cucadiagram.Code;
+import net.sourceforge.plantuml.cucadiagram.Display;
 import net.sourceforge.plantuml.cucadiagram.GroupType;
 import net.sourceforge.plantuml.cucadiagram.IEntity;
 import net.sourceforge.plantuml.cucadiagram.LeafType;
@@ -176,10 +177,10 @@ public class CommandLinkActivity extends SingleLineCommand2<ActivityDiagram> {
 		final Code code = Code.of(arg.get("CODE" + suf, 0));
 		if (code != null) {
 			if (partition != null) {
-				system.getOrCreateGroup(Code.of(partition), StringUtils.getWithNewlines(partition), null, GroupType.PACKAGE,
+				system.getOrCreateGroup(Code.of(partition), Display.getWithNewlines(partition), null, GroupType.PACKAGE,
 						system.getRootGroup());
 			}
-			final IEntity result = system.getOrCreate(code, StringUtils.getWithNewlines(code),
+			final IEntity result = system.getOrCreate(code, Display.getWithNewlines(code),
 					getTypeIfExisting(system, code));
 			if (partition != null) {
 				system.endGroup();
@@ -188,16 +189,16 @@ public class CommandLinkActivity extends SingleLineCommand2<ActivityDiagram> {
 		}
 		final String bar = arg.get("BAR" + suf, 0);
 		if (bar != null) {
-			return system.getOrCreate(Code.of(bar), StringUtils.getWithNewlines(bar), LeafType.SYNCHRO_BAR);
+			return system.getOrCreate(Code.of(bar), Display.getWithNewlines(bar), LeafType.SYNCHRO_BAR);
 		}
 		final RegexPartialMatch quoted = arg.get("QUOTED" + suf);
 		if (quoted.get(0) != null) {
 			final Code quotedCode = Code.of(quoted.get(1) == null ? quoted.get(0) : quoted.get(1));
 			if (partition != null) {
-				system.getOrCreateGroup(Code.of(partition), StringUtils.getWithNewlines(partition), null, GroupType.PACKAGE,
+				system.getOrCreateGroup(Code.of(partition), Display.getWithNewlines(partition), null, GroupType.PACKAGE,
 						system.getRootGroup());
 			}
-			final IEntity result = system.getOrCreate(quotedCode, StringUtils.getWithNewlines(quoted.get(0)),
+			final IEntity result = system.getOrCreate(quotedCode, Display.getWithNewlines(quoted.get(0)),
 					getTypeIfExisting(system, quotedCode));
 			if (partition != null) {
 				system.endGroup();
@@ -207,10 +208,10 @@ public class CommandLinkActivity extends SingleLineCommand2<ActivityDiagram> {
 		final Code quotedInvisible = Code.of(arg.get("QUOTED_INVISIBLE" + suf, 0));
 		if (quotedInvisible !=  null) {
 			if (partition != null) {
-				system.getOrCreateGroup(Code.of(partition), StringUtils.getWithNewlines(partition), null, GroupType.PACKAGE,
+				system.getOrCreateGroup(Code.of(partition), Display.getWithNewlines(partition), null, GroupType.PACKAGE,
 						system.getRootGroup());
 			}
-			final IEntity result = system.getOrCreate(quotedInvisible, StringUtils.getWithNewlines(quotedInvisible), LeafType.ACTIVITY);
+			final IEntity result = system.getOrCreate(quotedInvisible, Display.getWithNewlines(quotedInvisible), LeafType.ACTIVITY);
 			if (partition != null) {
 				system.endGroup();
 			}

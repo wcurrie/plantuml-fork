@@ -48,6 +48,7 @@ import net.sourceforge.plantuml.command.regex.RegexConcat;
 import net.sourceforge.plantuml.command.regex.RegexLeaf;
 import net.sourceforge.plantuml.command.regex.RegexResult;
 import net.sourceforge.plantuml.cucadiagram.CucaDiagram;
+import net.sourceforge.plantuml.cucadiagram.Display;
 import net.sourceforge.plantuml.cucadiagram.Link;
 import net.sourceforge.plantuml.graphic.HtmlColorUtils;
 
@@ -82,7 +83,7 @@ public final class FactoryNoteOnLinkCommand implements SingleMultiFactoryCommand
 			public CommandExecutionResult executeNow(List<String> lines) {
 				final List<String> strings = StringUtils.removeEmptyColumns(lines.subList(1, lines.size() - 1));
 				if (strings.size() > 0) {
-					final List<CharSequence> note = StringUtils.manageEmbededDiagrams(strings);
+					final List<CharSequence> note = StringUtils.manageEmbededDiagrams2(strings);
 					final RegexResult arg = getStartingPattern().matcher(lines.get(0));
 					return executeInternal(getSystem(), note, arg);
 				}
@@ -97,7 +98,7 @@ public final class FactoryNoteOnLinkCommand implements SingleMultiFactoryCommand
 
 			@Override
 			protected CommandExecutionResult executeArg(RegexResult arg) {
-				final List<String> note = StringUtils.getWithNewlines(arg.get("NOTE", 0));
+				final List<String> note = StringUtils.getWithNewlines2(arg.get("NOTE", 0));
 				return executeInternal(getSystem(), note, arg);
 			}
 		};
@@ -121,7 +122,7 @@ public final class FactoryNoteOnLinkCommand implements SingleMultiFactoryCommand
 		if (url != null) {
 			note = note.subList(1, note.size());
 		}
-		link.addNote(note, position, HtmlColorUtils.getColorIfValid(arg.get("COLOR", 0)));
+		link.addNote(new Display(note), position, HtmlColorUtils.getColorIfValid(arg.get("COLOR", 0)));
 		return CommandExecutionResult.ok();
 	}
 

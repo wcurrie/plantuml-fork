@@ -34,10 +34,10 @@
 package net.sourceforge.plantuml.asciiart;
 
 import java.awt.geom.Dimension2D;
-import java.util.List;
 
 import net.sourceforge.plantuml.FileFormat;
 import net.sourceforge.plantuml.StringUtils;
+import net.sourceforge.plantuml.cucadiagram.Display;
 import net.sourceforge.plantuml.graphic.StringBounder;
 import net.sourceforge.plantuml.skin.Area;
 import net.sourceforge.plantuml.skin.Component;
@@ -49,10 +49,10 @@ import net.sourceforge.plantuml.ugraphic.txt.UGraphicTxt;
 public class ComponentTextGroupingHeader implements Component {
 
 	private final ComponentType type;
-	private final List<? extends CharSequence> stringsToDisplay;
+	private final Display stringsToDisplay;
 	private final FileFormat fileFormat;
 
-	public ComponentTextGroupingHeader(ComponentType type, List<? extends CharSequence> stringsToDisplay,
+	public ComponentTextGroupingHeader(ComponentType type, Display stringsToDisplay,
 			FileFormat fileFormat) {
 		this.type = type;
 		this.stringsToDisplay = stringsToDisplay;

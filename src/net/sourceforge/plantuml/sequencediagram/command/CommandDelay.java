@@ -33,12 +33,12 @@
  */
 package net.sourceforge.plantuml.sequencediagram.command;
 
-import java.util.Collections;
 import java.util.List;
 
 import net.sourceforge.plantuml.StringUtils;
 import net.sourceforge.plantuml.command.CommandExecutionResult;
 import net.sourceforge.plantuml.command.SingleLineCommand;
+import net.sourceforge.plantuml.cucadiagram.Display;
 import net.sourceforge.plantuml.sequencediagram.SequenceDiagram;
 
 public class CommandDelay extends SingleLineCommand<SequenceDiagram> {
@@ -49,8 +49,7 @@ public class CommandDelay extends SingleLineCommand<SequenceDiagram> {
 
 	@Override
 	protected CommandExecutionResult executeArg(List<String> arg) {
-		final List<String> strings = arg.get(0) == null ? Collections.<String> emptyList() : StringUtils
-				.getWithNewlines(arg.get(0));
+		final Display strings = arg.get(0) == null ? Display.emptyList() : Display.getWithNewlines(arg.get(0));
 		getSystem().delay(strings);
 		return CommandExecutionResult.ok();
 	}

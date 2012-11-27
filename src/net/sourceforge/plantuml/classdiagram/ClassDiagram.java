@@ -28,16 +28,15 @@
  *
  * Original Author:  Arnaud Roques
  *
- * Revision $Revision: 9448 $
+ * Revision $Revision: 9498 $
  *
  */
 package net.sourceforge.plantuml.classdiagram;
 
-import java.util.List;
-
 import net.sourceforge.plantuml.StringUtils;
 import net.sourceforge.plantuml.UmlDiagramType;
 import net.sourceforge.plantuml.cucadiagram.Code;
+import net.sourceforge.plantuml.cucadiagram.Display;
 import net.sourceforge.plantuml.cucadiagram.EntityUtils;
 import net.sourceforge.plantuml.cucadiagram.GroupType;
 import net.sourceforge.plantuml.cucadiagram.IGroup;
@@ -61,7 +60,7 @@ public class ClassDiagram extends AbstractClassOrObjectDiagram {
 				return getOrCreateLeaf1Default(code, LeafType.CLASS);
 			}
 			return createEntityWithNamespace(code,
-					StringUtils.getWithNewlines(code.getShortName(getLeafs(), getNamespaceSeparator())), LeafType.CLASS);
+					Display.getWithNewlines(code.getShortName(getLeafs(), getNamespaceSeparator())), LeafType.CLASS);
 		}
 		if (getNamespaceSeparator() == null) {
 			return getOrCreateLeaf1Default(code, LeafType.CLASS);
@@ -71,11 +70,11 @@ public class ClassDiagram extends AbstractClassOrObjectDiagram {
 			return getOrCreateLeaf1Default(code, type);
 		}
 		return createEntityWithNamespace(code,
-				StringUtils.getWithNewlines(code.getShortName(getLeafs(), getNamespaceSeparator())), type);
+				Display.getWithNewlines(code.getShortName(getLeafs(), getNamespaceSeparator())), type);
 	}
 
 	@Override
-	public ILeaf createLeaf(Code code, List<? extends CharSequence> display, LeafType type) {
+	public ILeaf createLeaf(Code code, Display display, LeafType type) {
 		if (type != LeafType.ABSTRACT_CLASS && type != LeafType.CLASS && type != LeafType.INTERFACE
 				&& type != LeafType.ENUM && type != LeafType.LOLLIPOP) {
 			return super.createLeaf(code, display, type);
@@ -90,17 +89,17 @@ public class ClassDiagram extends AbstractClassOrObjectDiagram {
 		return createEntityWithNamespace(code, display, type);
 	}
 
-	private ILeaf createEntityWithNamespace(Code fullyCode, List<? extends CharSequence> display, LeafType type) {
+	private ILeaf createEntityWithNamespace(Code fullyCode, Display display, LeafType type) {
 		IGroup group = getCurrentGroup();
 		final String namespace = fullyCode.getNamespace(getLeafs(), getNamespaceSeparator());
 		if (namespace != null && (EntityUtils.groupRoot(group) || group.getCode().getCode().equals(namespace) == false)) {
-			group = getOrCreateGroupInternal(Code.of(namespace), StringUtils.getWithNewlines(namespace), namespace,
+			group = getOrCreateGroupInternal(Code.of(namespace), Display.getWithNewlines(namespace), namespace,
 					GroupType.PACKAGE, getRootGroup());
 		}
 		return createLeafInternal(
 				fullyCode,
-				display == null ? StringUtils.getWithNewlines(fullyCode.getShortName(getLeafs(),
-						getNamespaceSeparator())) : display, type, group);
+				display == null ? Display.getWithNewlines(fullyCode.getShortName(getLeafs(),
+				getNamespaceSeparator())) : display, type, group);
 	}
 
 	@Override

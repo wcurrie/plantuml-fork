@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  *
- * Revision $Revision: 9353 $
+ * Revision $Revision: 9493 $
  *
  */
 package net.sourceforge.plantuml;
@@ -60,9 +60,17 @@ public enum FileFormat {
 
 	public String changeName(String fileName, int cpt) {
 		if (cpt == 0) {
-			return fileName.replaceAll("\\.\\w+$", getFileSuffix());
+			return changeName(fileName, getFileSuffix());
 		}
-		return fileName.replaceAll("\\.\\w+$", "_" + String.format("%03d", cpt) + getFileSuffix());
+		return changeName(fileName, "_" + String.format("%03d", cpt) + getFileSuffix());
+	}
+
+	private String changeName(String fileName, String replacement) {
+		String result = fileName.replaceAll("\\.\\w+$", replacement);
+		if (result.equals(fileName)) {
+			result = fileName + replacement;
+		}
+		return result;
 	}
 
 	public File computeFilename(File pngFile, int i) {
@@ -71,9 +79,9 @@ public enum FileFormat {
 		}
 		final File dir = pngFile.getParentFile();
 		return new File(dir, computeFilename(pngFile.getName(), i));
-//		String name = pngFile.getName();
-//		name = name.replaceAll("\\" + getFileSuffix() + "$", "_" + String.format("%03d", i) + getFileSuffix());
-//		return new File(dir, name);
+		// String name = pngFile.getName();
+		// name = name.replaceAll("\\" + getFileSuffix() + "$", "_" + String.format("%03d", i) + getFileSuffix());
+		// return new File(dir, name);
 
 	}
 

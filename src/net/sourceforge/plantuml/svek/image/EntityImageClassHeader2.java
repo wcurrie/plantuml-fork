@@ -34,11 +34,11 @@
 package net.sourceforge.plantuml.svek.image;
 
 import java.awt.geom.Dimension2D;
-import java.util.Arrays;
 
 import net.sourceforge.plantuml.ColorParam;
 import net.sourceforge.plantuml.FontParam;
 import net.sourceforge.plantuml.ISkinParam;
+import net.sourceforge.plantuml.cucadiagram.Display;
 import net.sourceforge.plantuml.cucadiagram.EntityPortion;
 import net.sourceforge.plantuml.cucadiagram.ILeaf;
 import net.sourceforge.plantuml.cucadiagram.LeafType;
@@ -84,7 +84,7 @@ public class EntityImageClassHeader2 extends AbstractEntityImage {
 			stereo = null;
 		} else {
 			stereo = TextBlockUtils.withMargin(TextBlockUtils.create(
-					stereotype.getLabels(),
+					new Display(stereotype.getLabels()),
 					new FontConfiguration(getFont(FontParam.CLASS_STEREOTYPE, stereotype), getFontColor(
 							FontParam.CLASS_STEREOTYPE, stereotype)), HorizontalAlignement.CENTER, skinParam), 1, 0);
 		}
@@ -94,7 +94,7 @@ public class EntityImageClassHeader2 extends AbstractEntityImage {
 			genericBlock = null;
 		} else {
 			genericBlock = TextBlockUtils.create(
-					Arrays.asList(generic),
+					Display.asList(generic),
 					new FontConfiguration(getFont(FontParam.CLASS_STEREOTYPE, stereotype), getFontColor(
 							FontParam.CLASS_STEREOTYPE, stereotype)), HorizontalAlignement.CENTER, skinParam);
 			genericBlock = TextBlockUtils.withMargin(genericBlock, 1, 1);

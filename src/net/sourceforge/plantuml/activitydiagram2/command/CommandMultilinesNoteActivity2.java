@@ -42,6 +42,7 @@ import net.sourceforge.plantuml.command.CommandExecutionResult;
 import net.sourceforge.plantuml.command.CommandMultilines;
 import net.sourceforge.plantuml.command.Position;
 import net.sourceforge.plantuml.command.note.CommandNote;
+import net.sourceforge.plantuml.cucadiagram.Display;
 import net.sourceforge.plantuml.cucadiagram.IEntity;
 import net.sourceforge.plantuml.cucadiagram.LeafType;
 import net.sourceforge.plantuml.cucadiagram.Link;
@@ -72,7 +73,7 @@ public class CommandMultilinesNoteActivity2 extends CommandMultilines<ActivityDi
 			return CommandExecutionResult.error("No activity defined");
 		}
 
-		final List<String> strings = StringUtils.removeEmptyColumns(lines.subList(1, lines.size() - 1));
+		final Display strings = new Display(lines.subList(1, lines.size() - 1)).removeEmptyColumns();
 //		final String s = StringUtils.getMergedLines(strings);
 
 		final IEntity note = getSystem().createLeaf(UniqueSequence.getCode("GMN"), strings, LeafType.NOTE);

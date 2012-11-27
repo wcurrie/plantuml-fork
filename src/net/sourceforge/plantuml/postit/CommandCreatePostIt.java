@@ -39,6 +39,7 @@ import net.sourceforge.plantuml.command.SingleLineCommand2;
 import net.sourceforge.plantuml.command.regex.RegexConcat;
 import net.sourceforge.plantuml.command.regex.RegexLeaf;
 import net.sourceforge.plantuml.command.regex.RegexResult;
+import net.sourceforge.plantuml.cucadiagram.Display;
 
 public class CommandCreatePostIt extends SingleLineCommand2<PostItDiagram> {
 
@@ -58,7 +59,7 @@ public class CommandCreatePostIt extends SingleLineCommand2<PostItDiagram> {
 	protected CommandExecutionResult executeArg(RegexResult arg) {
 		final String id = arg.get("ID", 0);
 		final String text = arg.get("TEXT", 0);
-		getSystem().createPostIt(id, StringUtils.getWithNewlines(text));
+		getSystem().createPostIt(id, Display.getWithNewlines(text));
 		return CommandExecutionResult.ok();
 	}
 

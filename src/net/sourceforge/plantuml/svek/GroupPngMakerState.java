@@ -45,6 +45,7 @@ import net.sourceforge.plantuml.OptionFlags;
 import net.sourceforge.plantuml.SkinParamBackcolored;
 import net.sourceforge.plantuml.Url;
 import net.sourceforge.plantuml.cucadiagram.CucaDiagram;
+import net.sourceforge.plantuml.cucadiagram.Display;
 import net.sourceforge.plantuml.cucadiagram.EntityUtils;
 import net.sourceforge.plantuml.cucadiagram.GroupHierarchy;
 import net.sourceforge.plantuml.cucadiagram.GroupType;
@@ -108,7 +109,7 @@ public final class GroupPngMakerState {
 	}
 
 	public IEntityImage getImage() throws IOException, InterruptedException {
-		final List<? extends CharSequence> display = group.getDisplay();
+		final Display display = group.getDisplay();
 		final TextBlock title = TextBlockUtils.create(display, new FontConfiguration(getFont(FontParam.STATE),
 				HtmlColorUtils.BLACK), HorizontalAlignement.CENTER, diagram.getSkinParam());
 

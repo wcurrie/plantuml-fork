@@ -48,6 +48,7 @@ import net.sourceforge.plantuml.command.regex.RegexLeaf;
 import net.sourceforge.plantuml.command.regex.RegexOr;
 import net.sourceforge.plantuml.command.regex.RegexResult;
 import net.sourceforge.plantuml.cucadiagram.Code;
+import net.sourceforge.plantuml.cucadiagram.Display;
 import net.sourceforge.plantuml.cucadiagram.IEntity;
 import net.sourceforge.plantuml.cucadiagram.ILeaf;
 import net.sourceforge.plantuml.cucadiagram.LeafType;
@@ -168,7 +169,7 @@ public class CommandCreateClassMultilines extends CommandMultilines2<ClassDiagra
 			result = getSystem().getOrCreateLeaf1(code, null);
 			result.muteToType(type);
 		} else {
-			result = getSystem().createLeaf(code, StringUtils.getWithNewlines(display), type);
+			result = getSystem().createLeaf(code, Display.getWithNewlines(display), type);
 		}
 		if (stereotype != null) {
 			result.setStereotype(new Stereotype(stereotype, getSystem().getSkinParam().getCircledCharacterRadius(),

@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 8980 $
+ * Revision $Revision: 9495 $
  *
  */
 package net.sourceforge.plantuml;
@@ -44,6 +44,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Properties;
 
+import net.sourceforge.plantuml.cucadiagram.Display;
 import net.sourceforge.plantuml.version.License;
 import net.sourceforge.plantuml.version.Version;
 
@@ -107,9 +108,9 @@ public abstract class AbstractPSystem implements PSystem {
 		return Arrays.asList(suggestedFile);
 	}
 
-	public List<? extends CharSequence> getTitle() {
+	public Display getTitle() {
 		if (source == null) {
-			return Collections.emptyList();
+			return Display.emptyList();
 		}
 		return source.getTitle();
 	}

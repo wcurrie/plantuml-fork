@@ -75,11 +75,13 @@ import javax.swing.JTextField;
 import javax.swing.ListModel;
 import javax.swing.SwingUtilities;
 import javax.swing.Timer;
+import javax.swing.border.CompoundBorder;
 
 import net.sourceforge.plantuml.DirWatcher2;
 import net.sourceforge.plantuml.GeneratedImage;
 import net.sourceforge.plantuml.Log;
 import net.sourceforge.plantuml.Option;
+import net.sourceforge.plantuml.version.PSystemVersion;
 
 public class MainWindow2 extends JFrame {
 
@@ -157,19 +159,23 @@ public class MainWindow2 extends JFrame {
 
 	private MainWindow2(File dir, Option option) {
 		super(dir.getAbsolutePath());
+		setIconImage(PSystemVersion.getPlantumlSmallIcon2());
 		this.option = option;
 		dirWatcher = new DirWatcher2(dir, option, getRegexpPattern(getExtensions()));
 
 		Log.info("Showing MainWindow");
 		scrollPane = new JScrollPane(jList1);
+		scrollPane.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
 		final JPanel south = new JPanel(new BorderLayout());
 		final JLabel labelFileExtensions = new JLabel("File extensions: ");
 		extensions.setText(getExtensions());
 
 		labelFileExtensions.setBorder(BorderFactory.createEmptyBorder(6, 6, 6, 6));
-		south.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createEmptyBorder(3, 3, 3, 3),
-				BorderFactory.createEtchedBorder()));
+		CompoundBorder border = BorderFactory.createCompoundBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10),
+				BorderFactory.createEtchedBorder());
+		border = BorderFactory.createCompoundBorder(border, BorderFactory.createEmptyBorder(5, 5, 5, 5));
+		south.setBorder(border);
 		south.add(labelFileExtensions, BorderLayout.WEST);
 		south.add(extensions, BorderLayout.CENTER);
 
@@ -233,6 +239,14 @@ public class MainWindow2 extends JFrame {
 			}
 		});
 
+		final JMenuItem about = new JMenuItem("About");
+		mFile.add(about);
+		about.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				new AboutWindow();
+			}
+		});
+
 		final JMenuItem exit = new JMenuItem("Exit");
 		mFile.add(exit);
 		exit.addActionListener(new ActionListener() {
@@ -241,8 +255,8 @@ public class MainWindow2 extends JFrame {
 			}
 		});
 
-
-		setSize(320, 200);
+		setSize(640, 400);
+		this.setLocationRelativeTo(this.getParent());
 		setVisible(true);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 

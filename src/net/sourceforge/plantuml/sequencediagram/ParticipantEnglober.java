@@ -33,21 +33,20 @@
  */
 package net.sourceforge.plantuml.sequencediagram;
 
-import java.util.List;
-
+import net.sourceforge.plantuml.cucadiagram.Display;
 import net.sourceforge.plantuml.graphic.HtmlColor;
 
 public class ParticipantEnglober {
 
-	final private List<String> title;
+	final private Display title;
 	final private HtmlColor boxColor;
 
-	public ParticipantEnglober(List<String> title, HtmlColor boxColor) {
+	public ParticipantEnglober(Display title, HtmlColor boxColor) {
 		this.title = title;
 		this.boxColor = boxColor;
 	}
 
-	public final List<String> getTitle() {
+	public final Display getTitle() {
 		return title;
 	}
 

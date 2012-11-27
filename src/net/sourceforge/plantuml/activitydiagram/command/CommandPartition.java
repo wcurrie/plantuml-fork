@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  *
- * Revision $Revision: 9061 $
+ * Revision $Revision: 9498 $
  *
  */
 package net.sourceforge.plantuml.activitydiagram.command;
@@ -40,6 +40,7 @@ import net.sourceforge.plantuml.activitydiagram.ActivityDiagram;
 import net.sourceforge.plantuml.command.CommandExecutionResult;
 import net.sourceforge.plantuml.command.SingleLineCommand;
 import net.sourceforge.plantuml.cucadiagram.Code;
+import net.sourceforge.plantuml.cucadiagram.Display;
 import net.sourceforge.plantuml.cucadiagram.GroupType;
 import net.sourceforge.plantuml.cucadiagram.IEntity;
 import net.sourceforge.plantuml.cucadiagram.IGroup;
@@ -55,7 +56,7 @@ public class CommandPartition extends SingleLineCommand<ActivityDiagram> {
 	protected CommandExecutionResult executeArg(List<String> arg) {
 		final Code code = Code.of(StringUtils.eventuallyRemoveStartingAndEndingDoubleQuote(arg.get(0)));
 		final IGroup currentPackage = getSystem().getCurrentGroup();
-		final IEntity p = getSystem().getOrCreateGroup(code, StringUtils.getWithNewlines(code), null, GroupType.PACKAGE, currentPackage);
+		final IEntity p = getSystem().getOrCreateGroup(code, Display.getWithNewlines(code), null, GroupType.PACKAGE, currentPackage);
 		final String color = arg.get(1);
 		if (color != null) {
 			p.setSpecificBackcolor(HtmlColorUtils.getColorIfValid(color));

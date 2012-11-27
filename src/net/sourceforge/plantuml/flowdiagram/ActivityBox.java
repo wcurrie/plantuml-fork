@@ -35,12 +35,12 @@ package net.sourceforge.plantuml.flowdiagram;
 
 import java.awt.Font;
 import java.awt.geom.Dimension2D;
-import java.util.Arrays;
 import java.util.List;
 
 import net.sourceforge.plantuml.Dimension2DDouble;
 import net.sourceforge.plantuml.SpriteContainerEmpty;
 import net.sourceforge.plantuml.Url;
+import net.sourceforge.plantuml.cucadiagram.Display;
 import net.sourceforge.plantuml.golem.Tile;
 import net.sourceforge.plantuml.graphic.FontConfiguration;
 import net.sourceforge.plantuml.graphic.HorizontalAlignement;
@@ -70,7 +70,7 @@ public class ActivityBox implements TextBlock {
 		this.label = label;
 		final UFont font = new UFont("Serif", Font.PLAIN, 14);
 		final FontConfiguration fc = new FontConfiguration(font, HtmlColorUtils.BLACK);
-		tb = TextBlockUtils.create(Arrays.asList(label), fc, HorizontalAlignement.LEFT, new SpriteContainerEmpty());
+		tb = TextBlockUtils.create(Display.asList(label), fc, HorizontalAlignement.LEFT, new SpriteContainerEmpty());
 	}
 
 	public Tile getTile() {

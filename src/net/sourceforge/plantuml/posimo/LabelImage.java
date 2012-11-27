@@ -39,6 +39,7 @@ import net.sourceforge.plantuml.FontParam;
 import net.sourceforge.plantuml.ISkinParam;
 import net.sourceforge.plantuml.SpriteContainerEmpty;
 import net.sourceforge.plantuml.StringUtils;
+import net.sourceforge.plantuml.cucadiagram.Display;
 import net.sourceforge.plantuml.cucadiagram.Link;
 import net.sourceforge.plantuml.graphic.FontConfiguration;
 import net.sourceforge.plantuml.graphic.HorizontalAlignement;
@@ -63,7 +64,7 @@ public class LabelImage {
 		// this.entity = entity;
 		this.param = param;
 		this.rose = rose;
-		this.name = TextBlockUtils.create(StringUtils.getWithNewlines(link.getLabel()),
+		this.name = TextBlockUtils.create(Display.getWithNewlines(link.getLabel()),
 				new FontConfiguration(param.getFont(FontParam.CLASS, null), HtmlColorUtils.BLACK), HorizontalAlignement.CENTER, new SpriteContainerEmpty());
 	}
 

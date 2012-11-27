@@ -49,6 +49,7 @@ import net.sourceforge.plantuml.command.regex.RegexLeaf;
 import net.sourceforge.plantuml.command.regex.RegexOr;
 import net.sourceforge.plantuml.command.regex.RegexResult;
 import net.sourceforge.plantuml.cucadiagram.Code;
+import net.sourceforge.plantuml.cucadiagram.Display;
 import net.sourceforge.plantuml.cucadiagram.GroupType;
 import net.sourceforge.plantuml.cucadiagram.IEntity;
 import net.sourceforge.plantuml.cucadiagram.LeafType;
@@ -147,10 +148,10 @@ public class CommandLinkLongActivity extends CommandMultilines2<ActivityDiagram>
 			partition = StringUtils.eventuallyRemoveStartingAndEndingDoubleQuote(partition);
 		}
 		if (partition != null) {
-			getSystem().getOrCreateGroup(Code.of(partition), StringUtils.getWithNewlines(partition), null, GroupType.PACKAGE,
+			getSystem().getOrCreateGroup(Code.of(partition), Display.getWithNewlines(partition), null, GroupType.PACKAGE,
 					null);
 		}
-		final IEntity entity2 = getSystem().createLeaf(code, StringUtils.getWithNewlines(display), LeafType.ACTIVITY);
+		final IEntity entity2 = getSystem().createLeaf(code, Display.getWithNewlines(display), LeafType.ACTIVITY);
 		if (partition != null) {
 			getSystem().endGroup();
 		}

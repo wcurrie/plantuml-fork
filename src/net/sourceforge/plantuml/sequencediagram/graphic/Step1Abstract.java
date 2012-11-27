@@ -33,10 +33,8 @@
  */
 package net.sourceforge.plantuml.sequencediagram.graphic;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import net.sourceforge.plantuml.Url;
+import net.sourceforge.plantuml.cucadiagram.Display;
 import net.sourceforge.plantuml.graphic.StringBounder;
 import net.sourceforge.plantuml.sequencediagram.AbstractMessage;
 import net.sourceforge.plantuml.sequencediagram.LifeEvent;
@@ -83,13 +81,13 @@ abstract class Step1Abstract {
 
 	abstract Frontier prepareMessage(ConstraintSet constraintSet, InGroupablesStack groupingStructures);
 
-	protected final List<? extends CharSequence> getLabelOfMessage(AbstractMessage message) {
+	protected final Display getLabelOfMessage(AbstractMessage message) {
 		if (message.getMessageNumber() == null) {
 			return message.getLabel();
 		}
-		final List<CharSequence> result = new ArrayList<CharSequence>();
-		result.add(new MessageNumber(message.getMessageNumber()));
-		result.addAll(message.getLabel());
+		Display result = new Display();
+		result = result.add(new MessageNumber(message.getMessageNumber()));
+		result = result.addAll(message.getLabel());
 		return result;
 	}
 

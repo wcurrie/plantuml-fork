@@ -40,6 +40,7 @@ import net.sourceforge.plantuml.command.CommandExecutionResult;
 import net.sourceforge.plantuml.command.SingleLineCommand;
 import net.sourceforge.plantuml.compositediagram.CompositeDiagram;
 import net.sourceforge.plantuml.cucadiagram.Code;
+import net.sourceforge.plantuml.cucadiagram.Display;
 import net.sourceforge.plantuml.cucadiagram.IEntity;
 
 public class CommandCreateBlock extends SingleLineCommand<CompositeDiagram> {
@@ -56,7 +57,7 @@ public class CommandCreateBlock extends SingleLineCommand<CompositeDiagram> {
 			display = code.getCode();
 		}
 		final IEntity ent = getSystem().getOrCreateLeaf1(code, null);
-		ent.setDisplay(StringUtils.getWithNewlines(display));
+		ent.setDisplay(Display.getWithNewlines(display));
 		return CommandExecutionResult.ok();
 	}
 

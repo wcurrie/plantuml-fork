@@ -33,8 +33,7 @@
  */
 package net.sourceforge.plantuml.sequencediagram;
 
-import java.util.List;
-
+import net.sourceforge.plantuml.cucadiagram.Display;
 import net.sourceforge.plantuml.skin.ArrowConfiguration;
 
 public class MessageExo extends AbstractMessage {
@@ -42,7 +41,7 @@ public class MessageExo extends AbstractMessage {
 	final private MessageExoType type;
 	final private Participant participant;
 
-	public MessageExo(Participant p, MessageExoType type, List<String> label, ArrowConfiguration arrowConfiguration,
+	public MessageExo(Participant p, MessageExoType type, Display label, ArrowConfiguration arrowConfiguration,
 			String messageNumber) {
 		super(label, arrowConfiguration, messageNumber);
 		this.participant = p;

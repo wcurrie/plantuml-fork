@@ -28,24 +28,23 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 7715 $
+ * Revision $Revision: 9495 $
  *
  */
 package net.sourceforge.plantuml.sequencediagram;
 
-import java.util.List;
-
 import net.sourceforge.plantuml.Url;
+import net.sourceforge.plantuml.cucadiagram.Display;
 
 public class Newpage implements Event {
 
-	private final List<String> title;
+	private final Display title;
 
-	public Newpage(List<String> strings) {
+	public Newpage(Display strings) {
 		this.title = strings;
 	}
 
-	public final List<String> getTitle() {
+	public final Display getTitle() {
 		return title;
 	}
 

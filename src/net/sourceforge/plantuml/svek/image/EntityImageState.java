@@ -34,7 +34,6 @@
 package net.sourceforge.plantuml.svek.image;
 
 import java.awt.geom.Dimension2D;
-import java.util.ArrayList;
 import java.util.List;
 
 import net.sourceforge.plantuml.ColorParam;
@@ -43,6 +42,7 @@ import net.sourceforge.plantuml.FontParam;
 import net.sourceforge.plantuml.ISkinParam;
 import net.sourceforge.plantuml.StringUtils;
 import net.sourceforge.plantuml.Url;
+import net.sourceforge.plantuml.cucadiagram.Display;
 import net.sourceforge.plantuml.cucadiagram.IEntity;
 import net.sourceforge.plantuml.cucadiagram.Member;
 import net.sourceforge.plantuml.cucadiagram.Stereotype;
@@ -86,9 +86,9 @@ public class EntityImageState extends AbstractEntityImage {
 				new FontConfiguration(getFont(FontParam.STATE, stereotype), getFontColor(FontParam.STATE, stereotype)),
 				HorizontalAlignement.CENTER, skinParam);
 
-		final List<String> list = new ArrayList<String>();
+		Display list = new Display();
 		for (Member att : entity.getFieldsToDisplay()) {
-			list.addAll(StringUtils.getWithNewlines(att.getDisplay(true)));
+			list = list.addAll(Display.getWithNewlines(att.getDisplay(true)));
 		}
 
 		this.url = entity.getUrls();

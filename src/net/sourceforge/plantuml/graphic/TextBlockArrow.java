@@ -38,19 +38,19 @@ import java.util.Collections;
 import java.util.List;
 
 import net.sourceforge.plantuml.Dimension2DDouble;
+import net.sourceforge.plantuml.Direction;
 import net.sourceforge.plantuml.Url;
-import net.sourceforge.plantuml.cucadiagram.LinkArrow;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
 import net.sourceforge.plantuml.ugraphic.UPolygon;
 
 public class TextBlockArrow implements TextBlock {
 
 	private final double size;
-	private final LinkArrow arrow;
+	private final Direction arrow;
 	private final HtmlColor color;
 
-	public TextBlockArrow(LinkArrow arrow, FontConfiguration fontConfiguration) {
-		if (arrow != LinkArrow.DIRECT_NORMAL && arrow != LinkArrow.BACKWARD) {
+	public TextBlockArrow(Direction arrow, FontConfiguration fontConfiguration) {
+		if (arrow == null) {
 			throw new IllegalArgumentException();
 		}
 		this.arrow = arrow;
@@ -69,21 +69,37 @@ public class TextBlockArrow implements TextBlock {
 			triSize--;
 		}
 		final UPolygon triangle = getTriangle(triSize);
-		ug.draw(x + 2, y + (size - triSize) - 2, triangle);
+		if (arrow == Direction.RIGHT || arrow == Direction.LEFT) {
+			ug.draw(x + 2, y + (size - triSize) - 2, triangle);
+		} else {
+			ug.draw(x + 2, y + (size - triSize) - 2, triangle);
+		}
 	}
 
 	private UPolygon getTriangle(int triSize) {
 		final UPolygon triangle = new UPolygon();
-		if (arrow == LinkArrow.DIRECT_NORMAL) {
+		if (arrow == Direction.RIGHT) {
 			triangle.addPoint(0, 0);
 			triangle.addPoint(triSize, triSize / 2);
 			triangle.addPoint(0, triSize);
 			triangle.addPoint(0, 0);
-		} else {
+		} else if (arrow == Direction.LEFT) {
 			triangle.addPoint(triSize, 0);
 			triangle.addPoint(0, triSize / 2);
 			triangle.addPoint(triSize, triSize);
 			triangle.addPoint(triSize, 0);
+		} else if (arrow == Direction.UP) {
+			triangle.addPoint(0, triSize);
+			triangle.addPoint(triSize / 2, 0);
+			triangle.addPoint(triSize, triSize);
+			triangle.addPoint(0, triSize);
+		} else if (arrow == Direction.DOWN) {
+			triangle.addPoint(0, 0);
+			triangle.addPoint(triSize / 2, triSize);
+			triangle.addPoint(triSize, 0);
+			triangle.addPoint(0, 0);
+		} else {
+			throw new IllegalStateException();
 		}
 		return triangle;
 	}

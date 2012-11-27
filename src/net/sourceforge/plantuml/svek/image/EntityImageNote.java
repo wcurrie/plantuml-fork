@@ -46,6 +46,7 @@ import net.sourceforge.plantuml.ISkinParam;
 import net.sourceforge.plantuml.MathUtils;
 import net.sourceforge.plantuml.SkinParamBackcolored;
 import net.sourceforge.plantuml.Url;
+import net.sourceforge.plantuml.cucadiagram.Display;
 import net.sourceforge.plantuml.cucadiagram.IEntity;
 import net.sourceforge.plantuml.cucadiagram.ILeaf;
 import net.sourceforge.plantuml.cucadiagram.Stereotype;
@@ -86,7 +87,7 @@ public class EntityImageNote extends AbstractEntityImage {
 		super(entity, getSkin(skinParam, entity));
 
 		this.withShadow = skinParam.shadowing();
-		final List<? extends CharSequence> strings = entity.getDisplay();
+		final Display strings = entity.getDisplay();
 
 		final Rose rose = new Rose();
 

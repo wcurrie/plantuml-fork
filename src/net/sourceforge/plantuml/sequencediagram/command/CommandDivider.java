@@ -38,6 +38,7 @@ import java.util.List;
 import net.sourceforge.plantuml.StringUtils;
 import net.sourceforge.plantuml.command.CommandExecutionResult;
 import net.sourceforge.plantuml.command.SingleLineCommand;
+import net.sourceforge.plantuml.cucadiagram.Display;
 import net.sourceforge.plantuml.sequencediagram.SequenceDiagram;
 
 public class CommandDivider extends SingleLineCommand<SequenceDiagram> {
@@ -48,7 +49,7 @@ public class CommandDivider extends SingleLineCommand<SequenceDiagram> {
 
 	@Override
 	protected CommandExecutionResult executeArg(List<String> arg) {
-		final List<String> strings = StringUtils.getWithNewlines(arg.get(0));
+		final Display strings = Display.getWithNewlines(arg.get(0));
 		getSystem().divider(strings);
 		return CommandExecutionResult.ok();
 	}

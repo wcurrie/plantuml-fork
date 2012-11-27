@@ -43,6 +43,7 @@ import net.sourceforge.plantuml.command.SingleLineCommand2;
 import net.sourceforge.plantuml.command.regex.RegexConcat;
 import net.sourceforge.plantuml.command.regex.RegexLeaf;
 import net.sourceforge.plantuml.command.regex.RegexResult;
+import net.sourceforge.plantuml.cucadiagram.Display;
 import net.sourceforge.plantuml.graphic.HtmlColor;
 import net.sourceforge.plantuml.graphic.HtmlColorUtils;
 import net.sourceforge.plantuml.sequencediagram.Participant;
@@ -80,7 +81,7 @@ public class CommandReferenceOverSeveral extends SingleLineCommand2<SequenceDiag
 			p.add(getSystem().getOrCreateParticipant(StringUtils.eventuallyRemoveStartingAndEndingDoubleQuote(s)));
 		}
 
-		final List<String> strings = StringUtils.getWithNewlines(text);
+		final Display strings = Display.getWithNewlines(text);
 
 		Url u = null;
 		if (url != null) {

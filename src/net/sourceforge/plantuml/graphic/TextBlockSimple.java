@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 8038 $
+ * Revision $Revision: 9495 $
  *
  */
 package net.sourceforge.plantuml.graphic;
@@ -42,6 +42,7 @@ import net.sourceforge.plantuml.Dimension2DDouble;
 import net.sourceforge.plantuml.EmbededDiagram;
 import net.sourceforge.plantuml.SpriteContainer;
 import net.sourceforge.plantuml.Url;
+import net.sourceforge.plantuml.cucadiagram.Display;
 import net.sourceforge.plantuml.cucadiagram.Stereotype;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
 
@@ -49,7 +50,7 @@ class TextBlockSimple implements TextBlock {
 
 	private final List<Line> lines = new ArrayList<Line>();
 
-	protected TextBlockSimple(List<? extends CharSequence> texts, FontConfiguration fontConfiguration,
+	protected TextBlockSimple(Display texts, FontConfiguration fontConfiguration,
 			HorizontalAlignement horizontalAlignement, SpriteContainer spriteContainer) {
 		for (CharSequence s : texts) {
 			if (s instanceof Stereotype) {
@@ -62,7 +63,7 @@ class TextBlockSimple implements TextBlock {
 			}
 		}
 	}
-	
+
 	public List<Url> getUrls() {
 		final List<Url> result = new ArrayList<Url>();
 		for (Line line : lines) {
@@ -70,7 +71,6 @@ class TextBlockSimple implements TextBlock {
 		}
 		return Collections.unmodifiableList(result);
 	}
-
 
 	private List<SingleLine> createLinesForStereotype(FontConfiguration fontConfiguration, Stereotype s,
 			HorizontalAlignement horizontalAlignement, SpriteContainer spriteContainer) {
@@ -112,6 +112,5 @@ class TextBlockSimple implements TextBlock {
 			y += line.calculateDimension(ug.getStringBounder()).getHeight();
 		}
 	}
-
 
 }

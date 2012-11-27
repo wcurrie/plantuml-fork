@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 7715 $
+ * Revision $Revision: 9499 $
  *
  */
 package net.sourceforge.plantuml.command;
@@ -37,6 +37,7 @@ import java.util.List;
 
 import net.sourceforge.plantuml.StringUtils;
 import net.sourceforge.plantuml.UmlDiagram;
+import net.sourceforge.plantuml.cucadiagram.Display;
 
 public class CommandMultilinesTitle extends CommandMultilines<UmlDiagram> {
 
@@ -51,7 +52,7 @@ public class CommandMultilinesTitle extends CommandMultilines<UmlDiagram> {
 
 
 	public CommandExecutionResult execute(List<String> lines) {
-		final List<String> strings = StringUtils.removeEmptyColumns(lines.subList(1, lines.size() - 1));
+		final Display strings = new Display(lines.subList(1, lines.size() - 1)).removeEmptyColumns();
 		if (strings.size() > 0) {
 			getSystem().setTitle(StringUtils.manageEmbededDiagrams(strings));
 			return CommandExecutionResult.ok();

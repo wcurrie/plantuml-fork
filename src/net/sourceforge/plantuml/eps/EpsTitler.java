@@ -40,6 +40,7 @@ import java.util.List;
 import java.util.StringTokenizer;
 
 import net.sourceforge.plantuml.SpriteContainerEmpty;
+import net.sourceforge.plantuml.cucadiagram.Display;
 import net.sourceforge.plantuml.graphic.FontConfiguration;
 import net.sourceforge.plantuml.graphic.HorizontalAlignement;
 import net.sourceforge.plantuml.graphic.HtmlColor;
@@ -73,7 +74,7 @@ public final class EpsTitler {
 			textBloc = null;
 		} else {
 			final UFont normalFont = new UFont(fontFamily, Font.PLAIN, fontSize);
-			textBloc = TextBlockUtils.create(text, new FontConfiguration(normalFont, textColor),
+			textBloc = TextBlockUtils.create(new Display(text), new FontConfiguration(normalFont, textColor),
 					HorizontalAlignement.LEFT, new SpriteContainerEmpty());
 		}
 	}

@@ -35,9 +35,9 @@ package net.sourceforge.plantuml.project.graphic;
 
 import java.awt.Font;
 import java.awt.geom.Dimension2D;
-import java.util.Arrays;
 
 import net.sourceforge.plantuml.SpriteContainerEmpty;
+import net.sourceforge.plantuml.cucadiagram.Display;
 import net.sourceforge.plantuml.graphic.FontConfiguration;
 import net.sourceforge.plantuml.graphic.HorizontalAlignement;
 import net.sourceforge.plantuml.graphic.HtmlColorUtils;
@@ -69,7 +69,7 @@ class ItemHeader {
 		ug.draw(x, y, new URectangle(getWidth(stringBounder), getHeight(stringBounder)));
 
 		for (Item it : project.getValidItems()) {
-			final TextBlock b = TextBlockUtils.create(Arrays.asList("" + it.getCode()), fontConfig,
+			final TextBlock b = TextBlockUtils.create(Display.asList("" + it.getCode()), fontConfig,
 					HorizontalAlignement.LEFT, new SpriteContainerEmpty());
 			final Dimension2D dim = b.calculateDimension(stringBounder);
 			b.drawU(ug, x, y);

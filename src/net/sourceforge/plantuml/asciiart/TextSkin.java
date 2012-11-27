@@ -28,15 +28,14 @@
  *
  * Original Author:  Arnaud Roques
  *
- * Revision $Revision: 7914 $
+ * Revision $Revision: 9495 $
  *
  */
 package net.sourceforge.plantuml.asciiart;
 
-import java.util.List;
-
 import net.sourceforge.plantuml.FileFormat;
 import net.sourceforge.plantuml.ISkinParam;
+import net.sourceforge.plantuml.cucadiagram.Display;
 import net.sourceforge.plantuml.skin.ArrowConfiguration;
 import net.sourceforge.plantuml.skin.Component;
 import net.sourceforge.plantuml.skin.ComponentType;
@@ -52,7 +51,7 @@ public class TextSkin implements Skin {
 	}
 
 	public Component createComponent(ComponentType type, ArrowConfiguration config, ISkinParam param,
-			List<? extends CharSequence> stringsToDisplay) {
+			Display stringsToDisplay) {
 		if (type == ComponentType.PARTICIPANT_HEAD || type == ComponentType.PARTICIPANT_TAIL) {
 			return new ComponentTextParticipant(type, stringsToDisplay, fileFormat);
 		}

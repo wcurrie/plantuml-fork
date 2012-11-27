@@ -45,6 +45,7 @@ import net.sourceforge.plantuml.command.note.SingleMultiFactoryCommand;
 import net.sourceforge.plantuml.command.regex.RegexConcat;
 import net.sourceforge.plantuml.command.regex.RegexLeaf;
 import net.sourceforge.plantuml.command.regex.RegexResult;
+import net.sourceforge.plantuml.cucadiagram.Display;
 import net.sourceforge.plantuml.graphic.HtmlColorUtils;
 import net.sourceforge.plantuml.sequencediagram.Note;
 import net.sourceforge.plantuml.sequencediagram.NoteStyle;
@@ -77,7 +78,7 @@ public final class FactorySequenceNoteOverSeveralCommand implements SingleMultiF
 
 			@Override
 			protected CommandExecutionResult executeArg(RegexResult arg) {
-				final List<String> strings = StringUtils.getWithNewlines(arg.get("NOTE", 0));
+				final List<String> strings = StringUtils.getWithNewlines2(arg.get("NOTE", 0));
 
 				return executeInternal(getSystem(), arg, strings);
 			}
@@ -111,7 +112,7 @@ public final class FactorySequenceNoteOverSeveralCommand implements SingleMultiF
 				.eventuallyRemoveStartingAndEndingDoubleQuote(line0.get("P2", 0)));
 
 		if (strings.size() > 0) {
-			final Note note = new Note(p1, p2, strings);
+			final Note note = new Note(p1, p2, new Display(strings));
 			note.setSpecificBackcolor(HtmlColorUtils.getColorIfValid(line0.get("COLOR", 0)));
 			note.setStyle(NoteStyle.getNoteStyle(line0.get("STYLE", 0)));
 			system.addNote(note);

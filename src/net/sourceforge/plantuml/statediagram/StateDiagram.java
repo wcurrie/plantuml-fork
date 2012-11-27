@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 9434 $
+ * Revision $Revision: 9498 $
  *
  */
 package net.sourceforge.plantuml.statediagram;
@@ -40,11 +40,11 @@ import net.sourceforge.plantuml.UmlDiagramType;
 import net.sourceforge.plantuml.UniqueSequence;
 import net.sourceforge.plantuml.classdiagram.AbstractEntityDiagram;
 import net.sourceforge.plantuml.cucadiagram.Code;
+import net.sourceforge.plantuml.cucadiagram.Display;
 import net.sourceforge.plantuml.cucadiagram.EntityUtils;
 import net.sourceforge.plantuml.cucadiagram.GroupType;
 import net.sourceforge.plantuml.cucadiagram.IEntity;
 import net.sourceforge.plantuml.cucadiagram.IGroup;
-import net.sourceforge.plantuml.cucadiagram.ILeaf;
 import net.sourceforge.plantuml.cucadiagram.LeafType;
 
 public class StateDiagram extends AbstractEntityDiagram {
@@ -88,7 +88,7 @@ public class StateDiagram extends AbstractEntityDiagram {
 	}
 
 	public IEntity getHistorical(Code codeGroup) {
-		final IEntity g = getOrCreateGroup(codeGroup, StringUtils.getWithNewlines(codeGroup), null, GroupType.STATE,
+		final IEntity g = getOrCreateGroup(codeGroup, Display.getWithNewlines(codeGroup), null, GroupType.STATE,
 				getRootGroup());
 		final IEntity result = getOrCreateLeaf1(Code.of("*historical*" + g.getCode().getCode()), LeafType.PSEUDO_STATE);
 		endGroup();
@@ -101,12 +101,12 @@ public class StateDiagram extends AbstractEntityDiagram {
 		if (EntityUtils.groupRoot(cur) == false && cur.zgetGroupType() == GroupType.CONCURRENT_STATE) {
 			super.endGroup();
 		}
-		final IGroup conc1 = getOrCreateGroup(UniqueSequence.getCode("CONC"), Arrays.asList(""), null,
+		final IGroup conc1 = getOrCreateGroup(UniqueSequence.getCode("CONC"), Display.asList(""), null,
 				GroupType.CONCURRENT_STATE, getCurrentGroup());
 		if (EntityUtils.groupRoot(cur) == false && cur.zgetGroupType() == GroupType.STATE) {
 			cur.zmoveEntitiesTo(conc1);
 			super.endGroup();
-			getOrCreateGroup(UniqueSequence.getCode("CONC"), Arrays.asList(""), null, GroupType.CONCURRENT_STATE,
+			getOrCreateGroup(UniqueSequence.getCode("CONC"), Display.asList(""), null, GroupType.CONCURRENT_STATE,
 					getCurrentGroup());
 		}
 		// printlink("AFTER");

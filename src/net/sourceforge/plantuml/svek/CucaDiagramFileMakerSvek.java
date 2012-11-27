@@ -55,6 +55,7 @@ import net.sourceforge.plantuml.StringUtils;
 import net.sourceforge.plantuml.UmlDiagramType;
 import net.sourceforge.plantuml.Url;
 import net.sourceforge.plantuml.cucadiagram.CucaDiagram;
+import net.sourceforge.plantuml.cucadiagram.Display;
 import net.sourceforge.plantuml.cucadiagram.IEntity;
 import net.sourceforge.plantuml.cucadiagram.Link;
 import net.sourceforge.plantuml.cucadiagram.dot.CucaDiagramFileMakerResult;
@@ -207,8 +208,8 @@ public final class CucaDiagramFileMakerSvek {
 	}
 
 	private IEntityImage addHeaderAndFooter(IEntityImage original) {
-		final List<String> footer = diagram.getFooter();
-		final List<String> header = diagram.getHeader();
+		final Display footer = diagram.getFooter();
+		final Display header = diagram.getHeader();
 		if (footer == null && header == null) {
 			return original;
 		}
@@ -224,7 +225,7 @@ public final class CucaDiagramFileMakerSvek {
 	}
 
 	private IEntityImage addTitle(IEntityImage original) {
-		final List<? extends CharSequence> title = diagram.getTitle();
+		final Display title = diagram.getTitle();
 		if (title == null) {
 			return original;
 		}

@@ -42,6 +42,7 @@ import net.sourceforge.plantuml.command.regex.RegexConcat;
 import net.sourceforge.plantuml.command.regex.RegexLeaf;
 import net.sourceforge.plantuml.command.regex.RegexResult;
 import net.sourceforge.plantuml.cucadiagram.Code;
+import net.sourceforge.plantuml.cucadiagram.Display;
 import net.sourceforge.plantuml.cucadiagram.GroupType;
 import net.sourceforge.plantuml.cucadiagram.IEntity;
 import net.sourceforge.plantuml.cucadiagram.IGroup;
@@ -86,7 +87,7 @@ public class CommandPackageWithUSymbol extends SingleLineCommand2<AbstractEntity
 			code = Code.of(arg.get("AS", 0));
 		}
 		final IGroup currentPackage = getSystem().getCurrentGroup();
-		final IEntity p = getSystem().getOrCreateGroup(code, StringUtils.getWithNewlines(display), null,
+		final IEntity p = getSystem().getOrCreateGroup(code, Display.getWithNewlines(display), null,
 				GroupType.PACKAGE, currentPackage);
 		p.setUSymbol(USymbol.getFromString(arg.get("SYMBOL", 0)));
 		final String stereotype = arg.get("STEREOTYPE", 0);

@@ -46,6 +46,7 @@ import net.sourceforge.plantuml.command.regex.RegexConcat;
 import net.sourceforge.plantuml.command.regex.RegexLeaf;
 import net.sourceforge.plantuml.command.regex.RegexResult;
 import net.sourceforge.plantuml.cucadiagram.Code;
+import net.sourceforge.plantuml.cucadiagram.Display;
 import net.sourceforge.plantuml.cucadiagram.IEntity;
 import net.sourceforge.plantuml.cucadiagram.LeafType;
 import net.sourceforge.plantuml.graphic.HtmlColorUtils;
@@ -77,7 +78,7 @@ public final class FactoryNoteCommand implements SingleMultiFactoryCommand<Abstr
 			@Override
 			protected CommandExecutionResult executeArg(RegexResult arg) {
 				final String display = arg.get("DISPLAY", 0);
-				return executeInternal(getSystem(), arg, StringUtils.getWithNewlines(display));
+				return executeInternal(getSystem(), arg, StringUtils.getWithNewlines2(display));
 			}
 
 		};
@@ -105,7 +106,7 @@ public final class FactoryNoteCommand implements SingleMultiFactoryCommand<Abstr
 	private CommandExecutionResult executeInternal(AbstractEntityDiagram system, RegexResult arg,
 			final List<? extends CharSequence> display) {
 		final Code code = Code.of(arg.get("CODE", 0));
-		final IEntity entity = system.createLeaf(code, display, LeafType.NOTE);
+		final IEntity entity = system.createLeaf(code, new Display(display), LeafType.NOTE);
 		assert entity != null;
 		entity.setSpecificBackcolor(HtmlColorUtils.getColorIfValid(arg.get("COLOR", 0)));
 		return CommandExecutionResult.ok();

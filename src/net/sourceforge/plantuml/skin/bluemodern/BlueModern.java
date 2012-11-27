@@ -28,17 +28,16 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 7947 $
+ * Revision $Revision: 9495 $
  *
  */
 package net.sourceforge.plantuml.skin.bluemodern;
 
 import java.awt.Font;
-import java.util.Arrays;
-import java.util.List;
 
 import net.sourceforge.plantuml.FontParam;
 import net.sourceforge.plantuml.ISkinParam;
+import net.sourceforge.plantuml.cucadiagram.Display;
 import net.sourceforge.plantuml.graphic.HorizontalAlignement;
 import net.sourceforge.plantuml.graphic.HtmlColor;
 import net.sourceforge.plantuml.graphic.HtmlColorUtils;
@@ -70,7 +69,7 @@ public class BlueModern implements Skin {
 	private final HtmlColor borderGroupColor = HtmlColorUtils.getColorIfValid("#BBBBBB");
 
 	public Component createComponent(ComponentType type, ArrowConfiguration config, ISkinParam param,
-			List<? extends CharSequence> stringsToDisplay) {
+			Display stringsToDisplay) {
 
 		if (type.isArrow()) {
 			if (config.isSelfArrow()) {
@@ -148,7 +147,7 @@ public class BlueModern implements Skin {
 					stringsToDisplay, param);
 		}
 		if (type == ComponentType.SIGNATURE) {
-			return new ComponentRoseTitle(HtmlColorUtils.BLACK, smallFont, Arrays.asList("This skin was created ",
+			return new ComponentRoseTitle(HtmlColorUtils.BLACK, smallFont, Display.asList("This skin was created ",
 					"in April 2009."), param);
 		}
 		if (type == ComponentType.ENGLOBER) {

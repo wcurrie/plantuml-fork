@@ -34,13 +34,12 @@
 package net.sourceforge.plantuml.postit;
 
 import java.awt.geom.Dimension2D;
-import java.util.Collections;
-import java.util.List;
 
 import net.sourceforge.plantuml.Dimension2DDouble;
 import net.sourceforge.plantuml.FontParam;
 import net.sourceforge.plantuml.SkinParam;
 import net.sourceforge.plantuml.SpriteContainerEmpty;
+import net.sourceforge.plantuml.cucadiagram.Display;
 import net.sourceforge.plantuml.graphic.HtmlColor;
 import net.sourceforge.plantuml.graphic.HtmlColorUtils;
 import net.sourceforge.plantuml.graphic.StringBounder;
@@ -54,11 +53,11 @@ import net.sourceforge.plantuml.ugraphic.UGraphic;
 public class PostIt {
 
 	private final String id;
-	private final List<String> text;
+	private final Display text;
 
 	private Dimension2D minimunDimension;
 
-	public PostIt(String id, List<String> text) {
+	public PostIt(String id, Display text) {
 		this.id = id;
 		this.text = text;
 	}
@@ -67,8 +66,8 @@ public class PostIt {
 		return id;
 	}
 
-	public List<String> getText() {
-		return Collections.unmodifiableList(text);
+	public Display getText() {
+		return text;
 	}
 
 	public Dimension2D getMinimunDimension() {

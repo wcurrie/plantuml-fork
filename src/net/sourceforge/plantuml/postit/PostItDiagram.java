@@ -49,6 +49,7 @@ import net.sourceforge.plantuml.FileFormatOption;
 import net.sourceforge.plantuml.UmlDiagram;
 import net.sourceforge.plantuml.UmlDiagramInfo;
 import net.sourceforge.plantuml.UmlDiagramType;
+import net.sourceforge.plantuml.cucadiagram.Display;
 import net.sourceforge.plantuml.png.PngIO;
 import net.sourceforge.plantuml.sequencediagram.graphic.SequenceDiagramFileMaker;
 import net.sourceforge.plantuml.ugraphic.ColorMapperIdentity;
@@ -98,7 +99,7 @@ public class PostItDiagram extends UmlDiagram {
 		throw new UnsupportedOperationException();
 	}
 
-	public PostIt createPostIt(String id, List<String> text) {
+	public PostIt createPostIt(String id, Display text) {
 		if (postIts.containsKey(id)) {
 			throw new IllegalArgumentException();
 		}

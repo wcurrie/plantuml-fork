@@ -28,12 +28,12 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 7715 $
+ * Revision $Revision: 9495 $
  *
  */
 package net.sourceforge.plantuml.sequencediagram.graphic;
 
-import java.util.List;
+import net.sourceforge.plantuml.cucadiagram.Display;
 
 public final class Page {
 
@@ -42,7 +42,7 @@ public final class Page {
 	private final double newpage2;
 	private final double tailHeight;
 	private final double signatureHeight;
-	private final List<? extends CharSequence> title;
+	private final Display title;
 
 	@Override
 	public String toString() {
@@ -50,7 +50,7 @@ public final class Page {
 	}
 
 	public Page(double headerHeight, double newpage1, double newpage2, double tailHeight,
-			double signatureHeight, List<? extends CharSequence> title) {
+			double signatureHeight, Display title) {
 		if (headerHeight < 0) {
 			throw new IllegalArgumentException();
 		}
@@ -114,7 +114,7 @@ public final class Page {
 		return headerHeight;
 	}
 
-	public final List<? extends CharSequence> getTitle() {
+	public final Display getTitle() {
 		return title;
 	}
 
