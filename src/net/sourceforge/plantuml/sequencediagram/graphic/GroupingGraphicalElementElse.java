@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 8497 $
+ * Revision $Revision: 9565 $
  *
  */
 package net.sourceforge.plantuml.sequencediagram.graphic;
@@ -49,8 +49,8 @@ class GroupingGraphicalElementElse extends GroupingGraphicalElement {
 	private final Lazy afterY;
 	private final boolean parallel;
 
-	public GroupingGraphicalElementElse(double startingY, Component compElse, InGroupableList inGroupableList, boolean parallel,
-			Lazy afterY) {
+	public GroupingGraphicalElementElse(double startingY, Component compElse, InGroupableList inGroupableList,
+			boolean parallel, Lazy afterY) {
 		super(startingY, inGroupableList);
 		this.parallel = parallel;
 		this.compElse = compElse;
@@ -65,6 +65,9 @@ class GroupingGraphicalElementElse extends GroupingGraphicalElement {
 		ug.translate(x1, getStartingY());
 
 		final double height = afterY.getNow() - getStartingY();
+		if (height <= 0) {
+			return;
+		}
 		final Dimension2D dim = new Dimension2DDouble(x2 - x1, height);
 
 		if (parallel == false) {

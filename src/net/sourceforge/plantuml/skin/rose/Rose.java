@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 9495 $
+ * Revision $Revision: 9593 $
  *
  */
 package net.sourceforge.plantuml.skin.rose;
@@ -40,6 +40,7 @@ import net.sourceforge.plantuml.AlignParam;
 import net.sourceforge.plantuml.ColorParam;
 import net.sourceforge.plantuml.FontParam;
 import net.sourceforge.plantuml.ISkinParam;
+import net.sourceforge.plantuml.LineParam;
 import net.sourceforge.plantuml.cucadiagram.Display;
 import net.sourceforge.plantuml.graphic.HtmlColor;
 import net.sourceforge.plantuml.graphic.HtmlColorUtils;
@@ -48,6 +49,7 @@ import net.sourceforge.plantuml.skin.Component;
 import net.sourceforge.plantuml.skin.ComponentType;
 import net.sourceforge.plantuml.skin.Skin;
 import net.sourceforge.plantuml.ugraphic.UFont;
+import net.sourceforge.plantuml.ugraphic.UStroke;
 
 public class Rose implements Skin {
 
@@ -188,12 +190,14 @@ public class Rose implements Skin {
 		if (type == ComponentType.PARTICIPANT_HEAD) {
 			final HtmlColor borderColor = getHtmlColor(param, ColorParam.sequenceParticipantBorder);
 			return new ComponentRoseParticipant(sequenceParticipantBackground, borderColor, getFontColor(param,
-					FontParam.SEQUENCE_PARTICIPANT), fontParticipant, stringsToDisplay, param, deltaShadow, param.getRoundCorner());
+					FontParam.SEQUENCE_PARTICIPANT), fontParticipant, stringsToDisplay, param, deltaShadow,
+					param.getRoundCorner(), getStroke(param, LineParam.sequenceParticipantBorder));
 		}
 		if (type == ComponentType.PARTICIPANT_TAIL) {
 			final HtmlColor borderColor = getHtmlColor(param, ColorParam.sequenceParticipantBorder);
 			return new ComponentRoseParticipant(sequenceParticipantBackground, borderColor, getFontColor(param,
-					FontParam.SEQUENCE_PARTICIPANT), fontParticipant, stringsToDisplay, param, deltaShadow, param.getRoundCorner());
+					FontParam.SEQUENCE_PARTICIPANT), fontParticipant, stringsToDisplay, param, deltaShadow,
+					param.getRoundCorner(), getStroke(param, LineParam.sequenceParticipantBorder));
 		}
 		if (type == ComponentType.PARTICIPANT_LINE) {
 			final HtmlColor borderColor = getHtmlColor(param, ColorParam.sequenceLifeLineBorder);
@@ -343,6 +347,14 @@ public class Rose implements Skin {
 		}
 
 		return null;
+	}
+
+	private UStroke getStroke(ISkinParam param, LineParam lineParam) {
+		final UStroke result = param.getThickness(lineParam);
+		if (result == null) {
+			return new UStroke(lineParam.getDefaultValue());
+		}
+		return result;
 	}
 
 	public Object getProtocolVersion() {

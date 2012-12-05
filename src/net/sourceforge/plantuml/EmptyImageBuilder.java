@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  *
- * Revision $Revision: 8310 $
+ * Revision $Revision: 9590 $
  *
  */
 package net.sourceforge.plantuml;
@@ -79,7 +79,9 @@ public class EmptyImageBuilder {
 	}
 
 	public UGraphicG2d getUGraphicG2d() {
-		return new UGraphicG2d(new ColorMapperIdentity(), g2d, im, 1.0);
+		final UGraphicG2d result = new UGraphicG2d(new ColorMapperIdentity(), g2d, 1.0);
+		result.setBufferedImage(im);
+		return result;
 	}
 
 }

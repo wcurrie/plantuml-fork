@@ -386,8 +386,8 @@ public class Cluster implements Moveable {
 		}
 
 		if (attributeHeight > 0) {
-			attribute.drawU(ug, x + minX + IEntityImage.MARGIN, y + minY + suppY + IEntityImage.MARGIN / 2.0,
-					total.getWidth());
+			attribute.asTextBlock(total.getWidth()).drawU(ug, x + minX + IEntityImage.MARGIN,
+					y + minY + suppY + IEntityImage.MARGIN / 2.0);
 		}
 
 		final Stereotype stereotype = group.getStereotype();

@@ -46,6 +46,8 @@ import net.sourceforge.plantuml.ugraphic.UClip;
 import net.sourceforge.plantuml.ugraphic.UFont;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
 import net.sourceforge.plantuml.ugraphic.UGroup;
+import net.sourceforge.plantuml.ugraphic.UHorizontalLine;
+import net.sourceforge.plantuml.ugraphic.ULine;
 import net.sourceforge.plantuml.ugraphic.UParam;
 import net.sourceforge.plantuml.ugraphic.UShape;
 import net.sourceforge.plantuml.ugraphic.UText;
@@ -74,6 +76,10 @@ public class Footprint {
 		public void draw(double x, double y, UShape shape) {
 			if (shape instanceof UText) {
 				drawText(x, y, (UText) shape);
+			} else if (shape instanceof UHorizontalLine) {
+				// Definitively a Horizontal line
+			} else if (shape instanceof ULine) {
+				// Probably a Horizontal line
 			} else {
 				throw new UnsupportedOperationException(shape.getClass().toString());
 			}

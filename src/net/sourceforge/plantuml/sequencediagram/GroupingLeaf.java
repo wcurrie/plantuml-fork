@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 7893 $
+ * Revision $Revision: 9565 $
  *
  */
 package net.sourceforge.plantuml.sequencediagram;
@@ -56,6 +56,9 @@ public class GroupingLeaf extends Grouping {
 		final int idx = start.getChildren().indexOf(this);
 		if (idx == -1) {
 			throw new IllegalStateException();
+		}
+		if (idx + 1 >= start.getChildren().size()) {
+			return null;
 		}
 		return start.getChildren().get(idx + 1);
 	}

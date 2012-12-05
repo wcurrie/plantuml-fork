@@ -27,18 +27,28 @@
  * in the United States and other countries.]
  *
  * Original Author:  Arnaud Roques
- * 
- * Revision $Revision: 4749 $
  *
+ * Revision $Revision: 7715 $
+ * 
  */
-package net.sourceforge.plantuml.cucadiagram;
+package net.sourceforge.plantuml;
 
-import net.sourceforge.plantuml.FontParam;
-import net.sourceforge.plantuml.ISkinParam;
-import net.sourceforge.plantuml.graphic.TextBlock;
 
-public interface BlockMember {
+public enum LineParam {
+//	sequenceActorBorder(0.1),
+//	sequenceGroupBorder(0.1),
+//	sequenceReferenceBorder(0.1),
+//	sequenceLifeLineBorder(0.1),
+	sequenceParticipantBorder(1.5);
+//	sequenceBoxBorder(0.1);
+	
+	private final double defaultValue;
+	
+	private LineParam(double defaultValue) {
+		this.defaultValue = defaultValue;
+	}
 
-	public TextBlock asTextBlock(FontParam fontParam, ISkinParam skinParam);
-
+	public double getDefaultValue() {
+		return defaultValue;
+	}
 }

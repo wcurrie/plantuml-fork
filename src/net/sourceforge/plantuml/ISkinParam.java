@@ -40,6 +40,7 @@ import net.sourceforge.plantuml.graphic.HtmlColor;
 import net.sourceforge.plantuml.svek.PackageStyle;
 import net.sourceforge.plantuml.ugraphic.ColorMapper;
 import net.sourceforge.plantuml.ugraphic.UFont;
+import net.sourceforge.plantuml.ugraphic.UStroke;
 
 public interface ISkinParam extends SpriteContainer {
 
@@ -50,6 +51,8 @@ public interface ISkinParam extends SpriteContainer {
 	public HtmlColor getHtmlColor(ColorParam param, String stereotype, boolean clickable);
 
 	public HtmlColor getFontHtmlColor(FontParam param, String stereotype);
+	
+	public UStroke getThickness(LineParam param);
 
 	public UFont getFont(FontParam fontParam, String stereotype);
 

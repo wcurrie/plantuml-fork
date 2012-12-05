@@ -471,9 +471,9 @@ public final class CucaDiagramFileMakerSvek2 {
 		final String stereo = g.getStereotype().getLabel();
 
 		final FontParam fontParam = FontParam.COMPONENT_STEREOTYPE;
-		return TextBlockUtils.create(new Display(stereos), new FontConfiguration(dotData.getSkinParam().getFont(fontParam, stereo),
-				dotData.getSkinParam().getFontHtmlColor(fontParam, stereo)), HorizontalAlignement.CENTER, dotData
-				.getSkinParam());
+		return TextBlockUtils.create(new Display(stereos),
+				new FontConfiguration(dotData.getSkinParam().getFont(fontParam, stereo), dotData.getSkinParam()
+						.getFontHtmlColor(fontParam, stereo)), HorizontalAlignement.CENTER, dotData.getSkinParam());
 	}
 
 }

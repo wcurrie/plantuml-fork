@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 8671 $
+ * Revision $Revision: 9592 $
  *
  */
 package net.sourceforge.plantuml.ugraphic.g2d;
@@ -63,16 +63,16 @@ import net.sourceforge.plantuml.ugraphic.UText;
 
 public class UGraphicG2d extends AbstractUGraphic<Graphics2D> implements EnsureVisible {
 
-	private final BufferedImage bufferedImage;
+	private BufferedImage bufferedImage;
 
 	private final double dpiFactor;
 
-	public UGraphicG2d(ColorMapper colorMapper, Graphics2D g2d, BufferedImage bufferedImage, double dpiFactor) {
-		this(colorMapper, g2d, bufferedImage, dpiFactor, null);
+	public UGraphicG2d(ColorMapper colorMapper, Graphics2D g2d, double dpiFactor) {
+		this(colorMapper, g2d, dpiFactor, null);
 
 	}
 
-	public UGraphicG2d(ColorMapper colorMapper, Graphics2D g2d, BufferedImage bufferedImage, double dpiFactor,
+	public UGraphicG2d(ColorMapper colorMapper, Graphics2D g2d, double dpiFactor,
 			AffineTransform affineTransform) {
 		super(colorMapper, g2d);
 		this.dpiFactor = dpiFactor;
@@ -82,7 +82,6 @@ public class UGraphicG2d extends AbstractUGraphic<Graphics2D> implements EnsureV
 		if (affineTransform != null) {
 			g2d.transform(affineTransform);
 		}
-		this.bufferedImage = bufferedImage;
 		registerDriver(URectangle.class, new DriverRectangleG2d(dpiFactor, this));
 		registerDriver(UText.class, new DriverTextG2d(this));
 		registerDriver(ULine.class, new DriverLineG2d(dpiFactor));
@@ -96,10 +95,6 @@ public class UGraphicG2d extends AbstractUGraphic<Graphics2D> implements EnsureV
 
 	public StringBounder getStringBounder() {
 		return StringBounderUtils.asStringBounder(getGraphicObject());
-	}
-
-	public final BufferedImage getBufferedImage() {
-		return bufferedImage;
 	}
 
 	public void setClip(UClip uclip) {
@@ -158,6 +153,18 @@ public class UGraphicG2d extends AbstractUGraphic<Graphics2D> implements EnsureV
 		for (Url u : urls) {
 			u.ensureVisible(x, y);
 		}
+	}
+
+	public BufferedImage getBufferedImage() {
+		return bufferedImage;
+	}
+
+	public void setBufferedImage(BufferedImage bufferedImage) {
+		this.bufferedImage = bufferedImage;
+	}
+	
+	public Graphics2D getGraphics2D() {
+		return getGraphicObject();
 	}
 
 }

@@ -63,7 +63,8 @@ public class PSystemLogo extends AbstractPSystem {
 		final int height = 480;
 		final EmptyImageBuilder builder = new EmptyImageBuilder(width, height, Color.WHITE);
 		final BufferedImage im = builder.getBufferedImage();
-		final UGraphic ug = new UGraphicG2d(new ColorMapperIdentity(), builder.getGraphics2D(), im, 1.0);
+		final UGraphic ug = new UGraphicG2d(new ColorMapperIdentity(), builder.getGraphics2D(), 1.0);
+		((UGraphicG2d) ug).setBufferedImage(im);
 
 		final TurtleGraphicsPane turtleGraphicsPane = new TurtleGraphicsPane(width, height);
 		final TinyJavaLogo tinyJavaLogo = new TinyJavaLogo(turtleGraphicsPane);

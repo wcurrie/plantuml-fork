@@ -38,6 +38,7 @@ import java.awt.geom.Dimension2D;
 import net.sourceforge.plantuml.ColorParam;
 import net.sourceforge.plantuml.FontParam;
 import net.sourceforge.plantuml.ISkinParam;
+import net.sourceforge.plantuml.SkinParamUtils;
 import net.sourceforge.plantuml.cucadiagram.IEntity;
 import net.sourceforge.plantuml.cucadiagram.Stereotype;
 import net.sourceforge.plantuml.graphic.HtmlColor;
@@ -51,7 +52,7 @@ public abstract class AbstractEntityImage implements IEntityImage {
 	private final ISkinParam skinParam;
 	// private final String stereoLabel;
 
-	private final Rose rose = new Rose();
+	// private final Rose rose = new Rose();
 
 	public AbstractEntityImage(IEntity entity, ISkinParam skinParam) {
 		if (entity == null) {
@@ -78,25 +79,6 @@ public abstract class AbstractEntityImage implements IEntityImage {
 
 	protected final IEntity getEntity() {
 		return entity;
-	}
-
-	protected final UFont getFontOld(FontParam fontParam) {
-		return skinParam.getFont(fontParam, null);
-	}
-
-	protected final UFont getFont(FontParam fontParam, Stereotype stereo) {
-		final String s = stereo == null ? null : stereo.getLabel();
-		return skinParam.getFont(fontParam, s);
-	}
-
-	protected final HtmlColor getFontColor(FontParam fontParam, Stereotype stereo) {
-		final String s = stereo == null ? null : stereo.getLabel();
-		return skinParam.getFontHtmlColor(fontParam, s);
-	}
-
-	protected final HtmlColor getColor(ColorParam colorParam, Stereotype stereo) {
-		final String s = stereo == null ? null : stereo.getLabel();
-		return rose.getHtmlColor(skinParam, colorParam, s);
 	}
 
 	protected final ISkinParam getSkinParam() {

@@ -94,7 +94,7 @@ public class PSystemProject2 extends AbstractPSystem {
 	private BufferedImage createImage(GanttDiagram2 diagram) {
 		EmptyImageBuilder builder = new EmptyImageBuilder(10, 10, background);
 		Graphics2D g2d = builder.getGraphics2D();
-		UGraphicG2d ug = new UGraphicG2d(colorMapper, g2d, null, 1.0);
+		UGraphicG2d ug = new UGraphicG2d(colorMapper, g2d, 1.0);
 
 		final double height = diagram.getHeight(ug.getStringBounder());
 		final double width = diagram.getWidth(ug.getStringBounder());
@@ -105,7 +105,8 @@ public class PSystemProject2 extends AbstractPSystem {
 		final BufferedImage im = builder.getBufferedImage();
 		g2d = builder.getGraphics2D();
 
-		ug = new UGraphicG2d(colorMapper, g2d, im, 1.0);
+		ug = new UGraphicG2d(colorMapper, g2d, 1.0);
+		ug.setBufferedImage(im);
 		diagram.draw(ug, 0, 0);
 		g2d.dispose();
 		return im;

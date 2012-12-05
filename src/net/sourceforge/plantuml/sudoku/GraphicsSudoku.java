@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 9495 $
+ * Revision $Revision: 9590 $
  *
  */
 package net.sourceforge.plantuml.sudoku;
@@ -92,7 +92,7 @@ public class GraphicsSudoku {
 		final BufferedImage im = builder.getBufferedImage();
 		final Graphics2D g3d = builder.getGraphics2D();
 
-		final UGraphic ug = new UGraphicG2d(new ColorMapperIdentity(), g3d, null, 1.0);
+		final UGraphic ug = new UGraphicG2d(new ColorMapperIdentity(), g3d, 1.0);
 
 		ug.translate(xOffset, yOffset);
 

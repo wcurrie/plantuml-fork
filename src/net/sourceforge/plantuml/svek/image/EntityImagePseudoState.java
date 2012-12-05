@@ -39,6 +39,7 @@ import net.sourceforge.plantuml.ColorParam;
 import net.sourceforge.plantuml.Dimension2DDouble;
 import net.sourceforge.plantuml.FontParam;
 import net.sourceforge.plantuml.ISkinParam;
+import net.sourceforge.plantuml.SkinParamUtils;
 import net.sourceforge.plantuml.cucadiagram.Display;
 import net.sourceforge.plantuml.cucadiagram.ILeaf;
 import net.sourceforge.plantuml.cucadiagram.Stereotype;
@@ -62,7 +63,7 @@ public class EntityImagePseudoState extends AbstractEntityImage {
 		super(entity, skinParam);
 		final Stereotype stereotype = entity.getStereotype();
 		this.desc = TextBlockUtils.create(Display.asList("H"), new FontConfiguration(
-				getFont(FontParam.STATE, stereotype), getFontColor(FontParam.STATE, stereotype)),
+				SkinParamUtils.getFont(getSkinParam(), FontParam.STATE, stereotype), SkinParamUtils.getFontColor(getSkinParam(), FontParam.STATE, stereotype)),
 				HorizontalAlignement.CENTER, skinParam);
 
 	}
@@ -78,8 +79,8 @@ public class EntityImagePseudoState extends AbstractEntityImage {
 			circle.setDeltaShadow(4);
 		}
 		ug.getParam().setStroke(new UStroke(1.5));
-		ug.getParam().setColor(getColor(ColorParam.stateBorder, getStereo()));
-		ug.getParam().setBackcolor(getColor(ColorParam.stateBackground, getStereo()));
+		ug.getParam().setColor(SkinParamUtils.getColor(getSkinParam(), ColorParam.stateBorder, getStereo()));
+		ug.getParam().setBackcolor(SkinParamUtils.getColor(getSkinParam(), ColorParam.stateBackground, getStereo()));
 		ug.draw(xTheoricalPosition, yTheoricalPosition, circle);
 		ug.getParam().setStroke(new UStroke());
 

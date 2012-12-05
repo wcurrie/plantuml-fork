@@ -38,6 +38,7 @@ import java.awt.geom.Dimension2D;
 import net.sourceforge.plantuml.ColorParam;
 import net.sourceforge.plantuml.Dimension2DDouble;
 import net.sourceforge.plantuml.ISkinParam;
+import net.sourceforge.plantuml.SkinParamUtils;
 import net.sourceforge.plantuml.cucadiagram.ILeaf;
 import net.sourceforge.plantuml.graphic.StringBounder;
 import net.sourceforge.plantuml.svek.AbstractEntityImage;
@@ -77,8 +78,8 @@ public class EntityImageAssociation extends AbstractEntityImage {
 		diams.addPoint(SIZE, 0);
 
 		ug.getParam().setStroke(new UStroke(1.5));
-		ug.getParam().setColor(getColor(ColorParam.classBorder, getStereo()));
-		ug.getParam().setBackcolor(getColor(ColorParam.classBackground, getStereo()));
+		ug.getParam().setColor(SkinParamUtils.getColor(getSkinParam(), ColorParam.classBorder, getStereo()));
+		ug.getParam().setBackcolor(SkinParamUtils.getColor(getSkinParam(), ColorParam.classBackground, getStereo()));
 		ug.draw(xTheoricalPosition, yTheoricalPosition, diams);
 		ug.getParam().setStroke(new UStroke());
 	}

@@ -34,29 +34,32 @@
 package net.sourceforge.plantuml.graphic;
 
 import java.awt.geom.Dimension2D;
+import java.util.List;
 
 import net.sourceforge.plantuml.Dimension2DDouble;
+import net.sourceforge.plantuml.Url;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
+import net.sourceforge.plantuml.ugraphic.UHorizontalLine;
 import net.sourceforge.plantuml.ugraphic.ULine;
 import net.sourceforge.plantuml.ugraphic.UStroke;
 
-public class TextBlockLineBefore implements TextBlockWidth {
+public class TextBlockLineBefore2 implements TextBlock {
 
-	private final TextBlockWidth textBlock;
+	private final TextBlock textBlock;
 	private final char separator;
 	private final TextBlock title;
 
-	public TextBlockLineBefore(TextBlockWidth textBlock, char separator, TextBlock title) {
+	public TextBlockLineBefore2(TextBlock textBlock, char separator, TextBlock title) {
 		this.textBlock = textBlock;
 		this.separator = separator;
 		this.title = title;
 	}
 
-	public TextBlockLineBefore(TextBlockWidth textBlock, char separator) {
+	public TextBlockLineBefore2(TextBlock textBlock, char separator) {
 		this(textBlock, separator, null);
 	}
 
-	public TextBlockLineBefore(TextBlockWidth textBlock) {
+	public TextBlockLineBefore2(TextBlock textBlock) {
 		this(textBlock, '_');
 	}
 
@@ -69,20 +72,20 @@ public class TextBlockLineBefore implements TextBlockWidth {
 		return dim;
 	}
 
-	public void drawU(UGraphic ug, double x, double y, double widthToUse) {
-		final HtmlColor color = ug.getParam().getColor();
-		if (title == null) {
-			drawLine(ug, x + 1, y, widthToUse - 2, separator);
-		}
-		textBlock.drawU(ug, x, y, widthToUse);
-		ug.getParam().setColor(color);
-		if (title != null) {
-			final Dimension2D dimTitle = title.calculateDimension(ug.getStringBounder());
-			final double space = (widthToUse - dimTitle.getWidth()) / 2;
-			drawLine(ug, x + 1, y, space - 1 - 2, separator);
-			title.drawU(ug, x + space, y - dimTitle.getHeight() / 2 - 0.5);
-			ug.getParam().setColor(color);
-			drawLine(ug, x + 1 + widthToUse - space + 1, y, space - 1 - 2, separator);
+	public static void drawLine(UGraphic ug, double y, UHorizontalLine line, char separator) {
+		if (separator == '=') {
+			ug.draw(0, y, line);
+			ug.draw(0, y + 2, line.blankTitle());
+		} else if (separator == '.') {
+			ug.getParam().setStroke(new UStroke(1, 2, 1));
+			ug.draw(0, y, line);
+			ug.getParam().setStroke(new UStroke());
+		} else if (separator == '-') {
+			ug.draw(0, y, line);
+		} else {
+			ug.getParam().setStroke(new UStroke(1.5));
+			ug.draw(0, y, line);
+			ug.getParam().setStroke(new UStroke());
 		}
 	}
 
@@ -101,6 +104,23 @@ public class TextBlockLineBefore implements TextBlockWidth {
 			ug.draw(x, y, new ULine(widthToUse, 0));
 			ug.getParam().setStroke(new UStroke());
 		}
+	}
+
+	public void drawU(UGraphic ug, double x, double y) {
+		final HtmlColor color = ug.getParam().getColor();
+		if (title == null) {
+			drawLine(ug, y, UHorizontalLine.infinite(1, 1), separator);
+		}
+		textBlock.drawU(ug, x, y);
+		ug.getParam().setColor(color);
+		if (title != null) {
+			drawLine(ug, y, UHorizontalLine.infinite(1, 1, title), separator);
+			ug.getParam().setColor(color);
+		}
+	}
+
+	public List<Url> getUrls() {
+		return textBlock.getUrls();
 	}
 
 }

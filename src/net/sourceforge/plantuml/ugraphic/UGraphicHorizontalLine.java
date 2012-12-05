@@ -28,49 +28,27 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 6577 $
+ * Revision $Revision: 8033 $
  *
  */
-package net.sourceforge.plantuml.graphic;
+package net.sourceforge.plantuml.ugraphic;
 
-import java.awt.geom.Dimension2D;
-import java.util.ArrayList;
-import java.util.List;
 
-import net.sourceforge.plantuml.Dimension2DDouble;
-import net.sourceforge.plantuml.ugraphic.UGraphic;
+public class UGraphicHorizontalLine extends AbstractUGraphicHorizontalLine {
 
-public class TextBlockWidthVertical implements TextBlockWidth {
+	private final double startingX;
+	private final double endingX;
 
-	private final List<TextBlockWidth> blocks = new ArrayList<TextBlockWidth>();
-
-	public TextBlockWidthVertical(TextBlockWidth b1, TextBlockWidth b2) {
-		this.blocks.add(b1);
-		this.blocks.add(b2);
+	public UGraphicHorizontalLine(UGraphic ug, double startingX, double endingX) {
+		super(ug);
+		this.startingX = startingX;
+		this.endingX = endingX;
 	}
 
-	public TextBlockWidthVertical(List<TextBlockWidth> all) {
-		if (all.size() < 2) {
-			throw new IllegalArgumentException();
-		}
-		this.blocks.addAll(all);
+	@Override
+	protected void drawHline(UGraphic ug, double x, double y, UHorizontalLine line) {
+		line.drawLine(ug, startingX, endingX, y);
 	}
 
-	public Dimension2D calculateDimension(StringBounder stringBounder) {
-		Dimension2D dim = blocks.get(0).calculateDimension(stringBounder);
-		for (int i = 1; i < blocks.size(); i++) {
-			dim = Dimension2DDouble.mergeTB(dim, blocks.get(i).calculateDimension(stringBounder));
-		}
-		return dim;
-	}
-
-	public void drawU(UGraphic ug, double x, double y, double widthToUse) {
-		for (TextBlockWidth b : blocks) {
-			b.drawU(ug, x, y, widthToUse);
-			final Dimension2D dim = b.calculateDimension(ug.getStringBounder());
-			y += dim.getHeight();
-		}
-
-	}
 
 }

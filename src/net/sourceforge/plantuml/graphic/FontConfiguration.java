@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 8487 $
+ * Revision $Revision: 9574 $
  *
  */
 package net.sourceforge.plantuml.graphic;
@@ -36,6 +36,10 @@ package net.sourceforge.plantuml.graphic;
 import java.util.EnumSet;
 import java.util.Map;
 
+import net.sourceforge.plantuml.FontParam;
+import net.sourceforge.plantuml.ISkinParam;
+import net.sourceforge.plantuml.SkinParamUtils;
+import net.sourceforge.plantuml.cucadiagram.Stereotype;
 import net.sourceforge.plantuml.ugraphic.UFont;
 
 public class FontConfiguration {
@@ -51,6 +55,11 @@ public class FontConfiguration {
 
 	public FontConfiguration(UFont font, HtmlColor color) {
 		this(getStyles(font), font, color, font, color, null, FontPosition.NORMAL, new SvgAttributes());
+	}
+	
+	public FontConfiguration(ISkinParam skinParam, FontParam fontParam, Stereotype stereo) {
+		this(SkinParamUtils.getFont(skinParam, fontParam, stereo),
+				SkinParamUtils.getFontColor(skinParam, fontParam, stereo));
 	}
 
 	private static EnumSet<FontStyle> getStyles(UFont font) {

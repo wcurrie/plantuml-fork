@@ -247,6 +247,23 @@ public final class CucaDiagramFileMakerSvek {
 
 	private void createPng(OutputStream os, FileFormatOption fileFormatOption, final IEntityImage result,
 			final Dimension2D dim) throws IOException {
+		final double dpiFactor;
+		final Scale scale = diagram.getScale();
+		if (scale == null) {
+			dpiFactor = diagram.getDpiFactor(fileFormatOption);
+		} else {
+			dpiFactor = scale.getScale(dim.getWidth(), dim.getHeight());
+		}
+		final UGraphicG2d ug = (UGraphicG2d) fileFormatOption.createUGraphic(diagram.getSkinParam()
+				.getColorMapper(), dpiFactor, dim, result.getBackcolor(), diagram.isRotation());
+		result.drawU(ug, 0, 0);
+
+		PngIO.write(ug.getBufferedImage(), os, diagram.getMetadata(), diagram.getDpi(fileFormatOption));
+
+	}
+
+	private void createPngOld(OutputStream os, FileFormatOption fileFormatOption, final IEntityImage result,
+			final Dimension2D dim) throws IOException {
 		Color backColor = Color.WHITE;
 		if (result.getBackcolor() instanceof HtmlColorSimple) {
 			backColor = diagram.getSkinParam().getColorMapper().getMappedColor(result.getBackcolor());
@@ -274,8 +291,8 @@ public final class CucaDiagramFileMakerSvek {
 			graphics2D = builder.getGraphics2D();
 
 		}
-		final UGraphic ug = new UGraphicG2d(diagram.getSkinParam().getColorMapper(), graphics2D,
-				builder.getBufferedImage(), dpiFactor);
+		final UGraphic ug = new UGraphicG2d(diagram.getSkinParam().getColorMapper(), graphics2D, dpiFactor);
+		((UGraphicG2d) ug).setBufferedImage(builder.getBufferedImage());
 		final BufferedImage im = ((UGraphicG2d) ug).getBufferedImage();
 		if (result.getBackcolor() instanceof HtmlColorGradient) {
 			ug.getParam().setBackcolor(result.getBackcolor());

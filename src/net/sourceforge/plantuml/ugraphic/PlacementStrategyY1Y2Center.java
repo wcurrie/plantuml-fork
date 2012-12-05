@@ -28,39 +28,38 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 6577 $
+ * Revision $Revision: 3837 $
  *
  */
-package net.sourceforge.plantuml.graphic;
+package net.sourceforge.plantuml.ugraphic;
 
 import java.awt.geom.Dimension2D;
+import java.awt.geom.Point2D;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
-import net.sourceforge.plantuml.Dimension2DDouble;
-import net.sourceforge.plantuml.ugraphic.UGraphic;
+import net.sourceforge.plantuml.graphic.StringBounder;
+import net.sourceforge.plantuml.graphic.TextBlock;
 
-public class TextBlocWidthMarged implements TextBlockWidth {
+public class PlacementStrategyY1Y2Center extends AbstractPlacementStrategy {
 
-	private final TextBlockWidth textBlock;
-	private final double x1;
-	private final double x2;
-	private final double y1;
-	private final double y2;
-
-	public TextBlocWidthMarged(TextBlockWidth textBlock, double x1, double x2, double y1, double y2) {
-		this.textBlock = textBlock;
-		this.x1 = x1;
-		this.x2 = x2;
-		this.y1 = y1;
-		this.y2 = y2;
+	public PlacementStrategyY1Y2Center(StringBounder stringBounder) {
+		super(stringBounder);
 	}
 
-	public Dimension2D calculateDimension(StringBounder stringBounder) {
-		final Dimension2D dim = textBlock.calculateDimension(stringBounder);
-		return Dimension2DDouble.delta(dim, x1 + x2, y1 + y2);
-	}
+	public Map<TextBlock, Point2D> getPositions(double width, double height) {
+		final double usedHeight = getSumHeight();
+		// double maxWidth = getMaxWidth();
 
-	public void drawU(UGraphic ug, double x, double y, double widthToUse) {
-		textBlock.drawU(ug, x + x1, y + y1, widthToUse);
+		final double space = (height - usedHeight) / (getDimensions().size() + 1);
+		final Map<TextBlock, Point2D> result = new LinkedHashMap<TextBlock, Point2D>();
+		double y = space;
+		for (Map.Entry<TextBlock, Dimension2D> ent : getDimensions().entrySet()) {
+			final double x = (width - ent.getValue().getWidth()) / 2;
+			result.put(ent.getKey(), new Point2D.Double(x, y));
+			y += ent.getValue().getHeight() + space;
+		}
+		return result;
 	}
 
 }

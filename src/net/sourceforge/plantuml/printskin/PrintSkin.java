@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 9495 $
+ * Revision $Revision: 9590 $
  *
  */
 package net.sourceforge.plantuml.printskin;
@@ -102,7 +102,7 @@ class PrintSkin extends AbstractPSystem {
 		final BufferedImage im = builder.getBufferedImage();
 		final Graphics2D g2d = builder.getGraphics2D();
 
-		ug = new UGraphicG2d(new ColorMapperIdentity(), g2d, null, 1.0);
+		ug = new UGraphicG2d(new ColorMapperIdentity(), g2d, 1.0);
 
 		for (ComponentType type : ComponentType.values()) {
 			printComponent(type);

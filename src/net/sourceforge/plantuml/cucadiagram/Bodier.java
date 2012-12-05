@@ -41,7 +41,7 @@ import java.util.Set;
 import net.sourceforge.plantuml.FontParam;
 import net.sourceforge.plantuml.ISkinParam;
 import net.sourceforge.plantuml.StringUtils;
-import net.sourceforge.plantuml.graphic.TextBlockWidth;
+import net.sourceforge.plantuml.graphic.TextBlock;
 import net.sourceforge.plantuml.skin.VisibilityModifier;
 
 public class Bodier {
@@ -66,7 +66,7 @@ public class Bodier {
 
 	public boolean isBodyEnhanced() {
 		for (String s : rawBody) {
-			if (BodyEnhanced.isBlockSeparator(s)) {
+			if (BodyEnhanced2.isBlockSeparator(s)) {
 				return true;
 			}
 		}
@@ -75,8 +75,8 @@ public class Bodier {
 
 	public BlockMember getBodyEnhanced() {
 		return new BlockMember() {
-			public TextBlockWidth asTextBlock(FontParam fontParam, ISkinParam skinParam) {
-				return new BodyEnhanced(rawBody, fontParam, skinParam);
+			public TextBlock asTextBlock(FontParam fontParam, ISkinParam skinParam) {
+				return new BodyEnhanced2(rawBody, fontParam, skinParam);
 			}
 		};
 	}

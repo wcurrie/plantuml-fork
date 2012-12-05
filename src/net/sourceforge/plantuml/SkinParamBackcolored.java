@@ -41,6 +41,7 @@ import net.sourceforge.plantuml.svek.PackageStyle;
 import net.sourceforge.plantuml.ugraphic.ColorMapper;
 import net.sourceforge.plantuml.ugraphic.Sprite;
 import net.sourceforge.plantuml.ugraphic.UFont;
+import net.sourceforge.plantuml.ugraphic.UStroke;
 
 public class SkinParamBackcolored implements ISkinParam {
 
@@ -168,6 +169,10 @@ public class SkinParamBackcolored implements ISkinParam {
 
 	public double getRoundCorner() {
 		return skinParam.getRoundCorner();
+	}
+
+	public UStroke getThickness(LineParam param) {
+		return skinParam.getThickness(param);
 	}
 
 }

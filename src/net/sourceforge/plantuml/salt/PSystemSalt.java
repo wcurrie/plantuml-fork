@@ -72,7 +72,7 @@ public class PSystemSalt extends AbstractPSystem {
 		Graphics2D g2d = builder.getGraphics2D();
 
 		final Dimension2D size = salt.getPreferredDimension(
-				new UGraphicG2d(new ColorMapperIdentity(), g2d, null, 1.0).getStringBounder(), 0, 0);
+				new UGraphicG2d(new ColorMapperIdentity(), g2d, 1.0).getStringBounder(), 0, 0);
 		g2d.dispose();
 
 		builder = new EmptyImageBuilder(size.getWidth() + 6, size.getHeight() + 6, Color.WHITE);
@@ -80,7 +80,7 @@ public class PSystemSalt extends AbstractPSystem {
 		g2d = builder.getGraphics2D();
 		g2d.translate(3, 3);
 		g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-		final UGraphic ug = new UGraphicG2d(new ColorMapperIdentity(), g2d, null, 1.0);
+		final UGraphic ug = new UGraphicG2d(new ColorMapperIdentity(), g2d, 1.0);
 		ug.getParam().setColor(HtmlColorUtils.BLACK);
 		salt.drawU(ug, 0, 0, 0, new Dimension2DDouble(size.getWidth(), size.getHeight()));
 		salt.drawU(ug, 0, 0, 1, new Dimension2DDouble(size.getWidth(), size.getHeight()));

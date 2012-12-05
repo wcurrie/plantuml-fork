@@ -46,7 +46,7 @@ import net.sourceforge.plantuml.Url;
 import net.sourceforge.plantuml.cucadiagram.BlockMember;
 import net.sourceforge.plantuml.cucadiagram.BlockMemberImpl;
 import net.sourceforge.plantuml.cucadiagram.Bodier;
-import net.sourceforge.plantuml.cucadiagram.BodyEnhanced;
+import net.sourceforge.plantuml.cucadiagram.BodyEnhanced2;
 import net.sourceforge.plantuml.cucadiagram.Code;
 import net.sourceforge.plantuml.cucadiagram.Display;
 import net.sourceforge.plantuml.cucadiagram.EntityPortion;
@@ -61,9 +61,10 @@ import net.sourceforge.plantuml.cucadiagram.Member;
 import net.sourceforge.plantuml.cucadiagram.PortionShower;
 import net.sourceforge.plantuml.cucadiagram.Rankdir;
 import net.sourceforge.plantuml.cucadiagram.Stereotype;
+import net.sourceforge.plantuml.graphic.HorizontalAlignement;
 import net.sourceforge.plantuml.graphic.HtmlColor;
-import net.sourceforge.plantuml.graphic.TextBlockWidth;
-import net.sourceforge.plantuml.graphic.TextBlockWidthVertical;
+import net.sourceforge.plantuml.graphic.TextBlock;
+import net.sourceforge.plantuml.graphic.TextBlockVertical2;
 import net.sourceforge.plantuml.graphic.USymbol;
 import net.sourceforge.plantuml.svek.IEntityImage;
 import net.sourceforge.plantuml.svek.PackageStyle;
@@ -282,15 +283,16 @@ class EntityImpl implements ILeaf, IGroup {
 			return bodier.getBodyEnhanced();
 		}
 		return new BlockMember() {
-			public TextBlockWidth asTextBlock(FontParam fontParam, ISkinParam skinParam) {
+			public TextBlock asTextBlock(FontParam fontParam, ISkinParam skinParam) {
 				if (getEntityType().isLikeClass()) {
 					final boolean showMethods = portionShower.showPortion(EntityPortion.METHOD, EntityImpl.this);
 					final boolean showFields = portionShower.showPortion(EntityPortion.FIELD, EntityImpl.this);
 
 					if (showFields && showMethods) {
-						return new TextBlockWidthVertical(new BlockMemberImpl(getFieldsToDisplay()).asTextBlock(
-								fontParam, skinParam), new BlockMemberImpl(getMethodsToDisplay()).asTextBlock(
-								fontParam, skinParam));
+						return new TextBlockVertical2(new BlockMemberImpl(getFieldsToDisplay()).asTextBlock(fontParam,
+								skinParam),
+								new BlockMemberImpl(getMethodsToDisplay()).asTextBlock(fontParam, skinParam),
+								HorizontalAlignement.LEFT);
 					} else if (showFields) {
 						return new BlockMemberImpl(getFieldsToDisplay()).asTextBlock(fontParam, skinParam);
 					} else if (showMethods) {
@@ -311,8 +313,8 @@ class EntityImpl implements ILeaf, IGroup {
 			return null;
 		}
 		return new BlockMember() {
-			public TextBlockWidth asTextBlock(FontParam fontParam, ISkinParam skinParam) {
-				return new BodyEnhanced(mouseOver, fontParam, skinParam);
+			public TextBlock asTextBlock(FontParam fontParam, ISkinParam skinParam) {
+				return new BodyEnhanced2(mouseOver, fontParam, skinParam);
 			}
 		};
 	}

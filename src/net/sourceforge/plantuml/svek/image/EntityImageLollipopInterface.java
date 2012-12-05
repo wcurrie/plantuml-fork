@@ -40,6 +40,7 @@ import net.sourceforge.plantuml.ColorParam;
 import net.sourceforge.plantuml.Dimension2DDouble;
 import net.sourceforge.plantuml.FontParam;
 import net.sourceforge.plantuml.ISkinParam;
+import net.sourceforge.plantuml.SkinParamUtils;
 import net.sourceforge.plantuml.Url;
 import net.sourceforge.plantuml.cucadiagram.ILeaf;
 import net.sourceforge.plantuml.cucadiagram.Stereotype;
@@ -63,8 +64,7 @@ public class EntityImageLollipopInterface extends AbstractEntityImage {
 	public EntityImageLollipopInterface(ILeaf entity, ISkinParam skinParam) {
 		super(entity, skinParam);
 		final Stereotype stereotype = entity.getStereotype();
-		this.desc = TextBlockUtils.create(entity.getDisplay(), new FontConfiguration(getFont(FontParam.CLASS,
-				stereotype), getFontColor(FontParam.CLASS, stereotype)), HorizontalAlignement.CENTER, skinParam);
+		this.desc = TextBlockUtils.create(entity.getDisplay(), new FontConfiguration(SkinParamUtils.getFont(getSkinParam(), FontParam.CLASS, stereotype), SkinParamUtils.getFontColor(getSkinParam(), FontParam.CLASS, stereotype)), HorizontalAlignement.CENTER, skinParam);
 		this.url = entity.getUrls();
 
 	}
@@ -80,8 +80,8 @@ public class EntityImageLollipopInterface extends AbstractEntityImage {
 			circle.setDeltaShadow(4);
 		}
 		ug.getParam().setStroke(new UStroke(1.5));
-		ug.getParam().setColor(getColor(ColorParam.classBorder, getStereo()));
-		ug.getParam().setBackcolor(getColor(ColorParam.classBackground, getStereo()));
+		ug.getParam().setColor(SkinParamUtils.getColor(getSkinParam(), ColorParam.classBorder, getStereo()));
+		ug.getParam().setBackcolor(SkinParamUtils.getColor(getSkinParam(), ColorParam.classBackground, getStereo()));
 		if (url.size()>0) {
 			ug.startUrl(url.get(0));
 		}

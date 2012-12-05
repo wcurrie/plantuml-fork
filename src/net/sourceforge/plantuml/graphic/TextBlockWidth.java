@@ -35,11 +35,9 @@ package net.sourceforge.plantuml.graphic;
 
 import java.awt.geom.Dimension2D;
 
-import net.sourceforge.plantuml.ugraphic.UGraphic;
-
 public interface TextBlockWidth {
 
 	Dimension2D calculateDimension(StringBounder stringBounder);
 
-	void drawU(UGraphic ug, double x, double y, double widthToUse);
+	TextBlock asTextBlock(double widthToUse);
 }

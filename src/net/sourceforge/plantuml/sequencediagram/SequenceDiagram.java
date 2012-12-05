@@ -50,7 +50,6 @@ import net.sourceforge.plantuml.CMapData;
 import net.sourceforge.plantuml.FileFormat;
 import net.sourceforge.plantuml.FileFormatOption;
 import net.sourceforge.plantuml.Log;
-import net.sourceforge.plantuml.StringUtils;
 import net.sourceforge.plantuml.UmlDiagram;
 import net.sourceforge.plantuml.UmlDiagramInfo;
 import net.sourceforge.plantuml.UmlDiagramType;
@@ -186,6 +185,7 @@ public class SequenceDiagram extends UmlDiagram {
 			return new SequenceDiagramTxtMaker(this, fileFormat);
 		}
 
+		//return new SequenceDiagramFileMaker2(this, skin, fileFormatOption, flashcodes);
 		return new SequenceDiagramFileMaker(this, skin, fileFormatOption, flashcodes);
 	}
 

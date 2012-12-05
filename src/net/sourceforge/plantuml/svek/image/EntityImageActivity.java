@@ -40,6 +40,7 @@ import net.sourceforge.plantuml.ColorParam;
 import net.sourceforge.plantuml.Dimension2DDouble;
 import net.sourceforge.plantuml.FontParam;
 import net.sourceforge.plantuml.ISkinParam;
+import net.sourceforge.plantuml.SkinParamUtils;
 import net.sourceforge.plantuml.Url;
 import net.sourceforge.plantuml.cucadiagram.ILeaf;
 import net.sourceforge.plantuml.cucadiagram.Stereotype;
@@ -67,8 +68,7 @@ public class EntityImageActivity extends AbstractEntityImage {
 		super(entity, skinParam);
 		final Stereotype stereotype = entity.getStereotype();
 
-		this.desc = TextBlockUtils.create(entity.getDisplay(), new FontConfiguration(getFont(FontParam.ACTIVITY,
-				stereotype), getFontColor(FontParam.ACTIVITY, stereotype)), HorizontalAlignement.CENTER, skinParam);
+		this.desc = TextBlockUtils.create(entity.getDisplay(), new FontConfiguration(SkinParamUtils.getFont(getSkinParam(), FontParam.ACTIVITY, stereotype), SkinParamUtils.getFontColor(getSkinParam(), FontParam.ACTIVITY, stereotype)), HorizontalAlignement.CENTER, skinParam);
 		this.url = entity.getUrls();
 	}
 
@@ -93,10 +93,10 @@ public class EntityImageActivity extends AbstractEntityImage {
 		}
 
 		ug.getParam().setStroke(new UStroke(1.5));
-		ug.getParam().setColor(getColor(ColorParam.activityBorder, getStereo()));
+		ug.getParam().setColor(SkinParamUtils.getColor(getSkinParam(), ColorParam.activityBorder, getStereo()));
 		HtmlColor backcolor = getEntity().getSpecificBackColor();
 		if (backcolor == null) {
-			backcolor = getColor(ColorParam.activityBackground, getStereo());
+			backcolor = SkinParamUtils.getColor(getSkinParam(), ColorParam.activityBackground, getStereo());
 		}
 		ug.getParam().setBackcolor(backcolor);
 

@@ -114,10 +114,14 @@ public class Line implements Moveable, Hideable {
 
 		private final TextBlock right;
 		private final TextBlock left;
+		private final TextBlock up;
+		private final TextBlock down;
 
-		DirectionalTextBlock(TextBlock right, TextBlock left) {
+		DirectionalTextBlock(TextBlock right, TextBlock left, TextBlock up, TextBlock down) {
 			this.right = right;
 			this.left = left;
+			this.up = up;
+			this.down = down;
 		}
 
 		public void drawU(UGraphic ug, double x, double y) {
@@ -125,10 +129,21 @@ public class Line implements Moveable, Hideable {
 			if (getLinkArrow() == LinkArrow.BACKWARD) {
 				dir = dir.getInv();
 			}
-			if (dir == Direction.RIGHT) {
+			switch (dir) {
+			case RIGHT:
 				right.drawU(ug, x, y);
-			} else {
+				break;
+			case LEFT:
 				left.drawU(ug, x, y);
+				break;
+			case UP:
+				up.drawU(ug, x, y);
+				break;
+			case DOWN:
+				down.drawU(ug, x, y);
+				break;
+			default:
+				throw new UnsupportedOperationException();
 			}
 		}
 
@@ -146,8 +161,12 @@ public class Line implements Moveable, Hideable {
 		private Direction getDirection() {
 			final Point2D start = dotPath.getStartPoint();
 			final Point2D end = dotPath.getEndPoint();
-			if (end.getX() == start.getX()) {
-				return end.getY() > start.getY() ? Direction.RIGHT : Direction.LEFT;
+			final double ang = Math.atan2(end.getX() - start.getX(), end.getY() - start.getY());
+			if (ang > -Math.PI / 4 && ang < Math.PI / 4) {
+				return Direction.DOWN;
+			}
+			if (ang > Math.PI * 3 / 4 || ang < -Math.PI * 3 / 4) {
+				return Direction.UP;
 			}
 			return end.getX() > start.getX() ? Direction.RIGHT : Direction.LEFT;
 		}
@@ -183,7 +202,9 @@ public class Line implements Moveable, Hideable {
 			} else {
 				final TextBlockArrow right = new TextBlockArrow(Direction.RIGHT, labelFont);
 				final TextBlockArrow left = new TextBlockArrow(Direction.LEFT, labelFont);
-				labelOnly = new DirectionalTextBlock(right, left);
+				final TextBlockArrow up = new TextBlockArrow(Direction.UP, labelFont);
+				final TextBlockArrow down = new TextBlockArrow(Direction.DOWN, labelFont);
+				labelOnly = new DirectionalTextBlock(right, left, up, down);
 			}
 		} else {
 			final double marginLabel = startUid.equals(endUid) ? 6 : 1;
@@ -197,7 +218,11 @@ public class Line implements Moveable, Hideable {
 				right = TextBlockUtils.mergeLR(label, right);
 				TextBlock left = new TextBlockArrow(Direction.LEFT, labelFont);
 				left = TextBlockUtils.mergeLR(left, label);
-				labelOnly = new DirectionalTextBlock(right, left);
+				TextBlock up = new TextBlockArrow(Direction.UP, labelFont);
+				up = TextBlockUtils.mergeTB(up, label, HorizontalAlignement.CENTER);
+				TextBlock down = new TextBlockArrow(Direction.DOWN, labelFont);
+				down = TextBlockUtils.mergeTB(label, down, HorizontalAlignement.CENTER);
+				labelOnly = new DirectionalTextBlock(right, left, up, down);
 			}
 		}
 

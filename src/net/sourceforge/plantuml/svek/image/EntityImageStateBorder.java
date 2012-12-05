@@ -40,6 +40,7 @@ import net.sourceforge.plantuml.ColorParam;
 import net.sourceforge.plantuml.Dimension2DDouble;
 import net.sourceforge.plantuml.FontParam;
 import net.sourceforge.plantuml.ISkinParam;
+import net.sourceforge.plantuml.SkinParamUtils;
 import net.sourceforge.plantuml.cucadiagram.EntityPosition;
 import net.sourceforge.plantuml.cucadiagram.ILeaf;
 import net.sourceforge.plantuml.cucadiagram.Stereotype;
@@ -76,7 +77,7 @@ public class EntityImageStateBorder extends AbstractEntityImage {
 		final Stereotype stereotype = leaf.getStereotype();
 
 		this.desc = TextBlockUtils.create(leaf.getDisplay(), new FontConfiguration(
-				getFont(FontParam.STATE, stereotype), getFontColor(FontParam.STATE, stereotype)),
+				SkinParamUtils.getFont(getSkinParam(), FontParam.STATE, stereotype), SkinParamUtils.getFontColor(getSkinParam(), FontParam.STATE, stereotype)),
 				HorizontalAlignement.CENTER, skinParam);
 	}
 
@@ -112,10 +113,10 @@ public class EntityImageStateBorder extends AbstractEntityImage {
 		desc.drawU(ug, x, y);
 
 		ug.getParam().setStroke(new UStroke(1.5));
-		ug.getParam().setColor(getColor(ColorParam.stateBorder, getStereo()));
+		ug.getParam().setColor(SkinParamUtils.getColor(getSkinParam(), ColorParam.stateBorder, getStereo()));
 		HtmlColor backcolor = getEntity().getSpecificBackColor();
 		if (backcolor == null) {
-			backcolor = getColor(ColorParam.stateBackground, getStereo());
+			backcolor = SkinParamUtils.getColor(getSkinParam(), ColorParam.stateBackground, getStereo());
 		}
 		ug.getParam().setBackcolor(backcolor);
 

@@ -38,6 +38,7 @@ import java.awt.geom.Dimension2D;
 import net.sourceforge.plantuml.ColorParam;
 import net.sourceforge.plantuml.Dimension2DDouble;
 import net.sourceforge.plantuml.ISkinParam;
+import net.sourceforge.plantuml.SkinParamUtils;
 import net.sourceforge.plantuml.cucadiagram.ILeaf;
 import net.sourceforge.plantuml.graphic.StringBounder;
 import net.sourceforge.plantuml.svek.AbstractEntityImage;
@@ -64,7 +65,7 @@ public class EntityImageSynchroBar extends AbstractEntityImage {
 			rect.setDeltaShadow(4);
 		}
 		ug.getParam().setColor(null);
-		ug.getParam().setBackcolor(getColor(ColorParam.activityBar, getStereo()));
+		ug.getParam().setBackcolor(SkinParamUtils.getColor(getSkinParam(), ColorParam.activityBar, getStereo()));
 		ug.draw(xTheoricalPosition, yTheoricalPosition, rect);
 	}
 

@@ -35,68 +35,91 @@ package net.sourceforge.plantuml.cucadiagram;
 
 import java.awt.geom.Dimension2D;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import net.sourceforge.plantuml.FontParam;
 import net.sourceforge.plantuml.ISkinParam;
+import net.sourceforge.plantuml.SkinParamUtils;
 import net.sourceforge.plantuml.SpriteContainer;
 import net.sourceforge.plantuml.StringUtils;
+import net.sourceforge.plantuml.Url;
 import net.sourceforge.plantuml.graphic.FontConfiguration;
 import net.sourceforge.plantuml.graphic.HorizontalAlignement;
 import net.sourceforge.plantuml.graphic.StringBounder;
 import net.sourceforge.plantuml.graphic.TextBlock;
-import net.sourceforge.plantuml.graphic.TextBlockLineBefore;
+import net.sourceforge.plantuml.graphic.TextBlockLineBefore2;
 import net.sourceforge.plantuml.graphic.TextBlockUtils;
-import net.sourceforge.plantuml.graphic.TextBlockWidth;
-import net.sourceforge.plantuml.graphic.TextBlockWidthVertical;
+import net.sourceforge.plantuml.graphic.TextBlockVertical2;
 import net.sourceforge.plantuml.skin.rose.Rose;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
 
-public class BodyEnhanced implements TextBlockWidth {
+public class BodyEnhanced2 implements TextBlock {
 
-	private TextBlockWidth area2;
+	private TextBlock area2;
 	private final FontConfiguration titleConfig;
 	private final List<String> rawBody;
 	private final FontParam fontParam;
 	private final ISkinParam skinParam;
+	private final boolean lineFirst;
+	private final HorizontalAlignement align;
 
-	public BodyEnhanced(List<String> rawBody, FontParam fontParam, ISkinParam skinParam) {
+	public BodyEnhanced2(List<String> rawBody, FontParam fontParam, ISkinParam skinParam) {
 		this.rawBody = new ArrayList<String>(rawBody);
 		this.fontParam = fontParam;
 		this.skinParam = skinParam;
 
 		this.titleConfig = new FontConfiguration(skinParam.getFont(fontParam, null), new Rose().getFontColor(skinParam,
 				fontParam));
+		this.lineFirst = true;
+		this.align = HorizontalAlignement.LEFT;
+	}
+
+	public BodyEnhanced2(Display display, FontParam fontParam, ISkinParam skinParam, HorizontalAlignement align,
+			Stereotype stereotype) {
+		this.rawBody = new ArrayList<String>();
+		for (CharSequence s : display) {
+			this.rawBody.add(s.toString());
+		}
+		this.fontParam = fontParam;
+		this.skinParam = skinParam;
+
+		this.titleConfig = new FontConfiguration(skinParam, fontParam, stereotype);
+		this.lineFirst = false;
+		this.align = align;
 
 	}
 
-	private TextBlockWidth decorate(StringBounder stringBounder, TextBlockWidth b, char separator, TextBlock title) {
+	private TextBlock decorate(StringBounder stringBounder, TextBlock b, char separator, TextBlock title) {
+		if (separator == 0) {
+			return b;
+		}
 		if (title == null) {
-			return new TextBlockLineBefore(TextBlockUtils.withMargin(b, 6, 4), separator);
+			return new TextBlockLineBefore2(TextBlockUtils.withMargin(b, 6, 4), separator);
 		}
 		final Dimension2D dimTitle = title.calculateDimension(stringBounder);
-		final TextBlockWidth raw = new TextBlockLineBefore(
-				TextBlockUtils.withMargin(b, 6, dimTitle.getHeight() / 2, 4), separator, title);
-		return TextBlockUtils.withMargin(raw, 0, dimTitle.getHeight() / 2, 0);
+		final TextBlock raw = new TextBlockLineBefore2(TextBlockUtils.withMargin(b, 6, 6, dimTitle.getHeight() / 2, 4),
+				separator, title);
+		return TextBlockUtils.withMargin(raw, 0, 0, dimTitle.getHeight() / 2, 0);
 	}
 
 	public Dimension2D calculateDimension(StringBounder stringBounder) {
 		return getArea(stringBounder).calculateDimension(stringBounder);
 	}
 
-	private TextBlockWidth getArea(StringBounder stringBounder) {
+	private TextBlock getArea(StringBounder stringBounder) {
 		if (area2 != null) {
 			return area2;
 		}
-		final List<TextBlockWidth> blocks = new ArrayList<TextBlockWidth>();
+		final List<TextBlock> blocks = new ArrayList<TextBlock>();
 
-		char separator = '_';
+		char separator = lineFirst ? '_' : 0;
 		TextBlock title = null;
 		List<Member> members = new ArrayList<Member>();
 		for (String s : rawBody) {
 			if (isBlockSeparator(s)) {
-				blocks.add(decorate(stringBounder, new MethodsOrFieldsArea(members, fontParam, skinParam), separator,
-						title));
+				blocks.add(decorate(stringBounder, new MethodsOrFieldsArea(members, fontParam, skinParam, align),
+						separator, title));
 				separator = s.charAt(0);
 				title = getTitle(s, skinParam);
 				members = new ArrayList<Member>();
@@ -105,14 +128,16 @@ public class BodyEnhanced implements TextBlockWidth {
 				members.add(m);
 			}
 		}
-		blocks.add(decorate(stringBounder, new MethodsOrFieldsArea(members, fontParam, skinParam), separator, title));
+		blocks.add(decorate(stringBounder, new MethodsOrFieldsArea(members, fontParam, skinParam, align), separator,
+				title));
 
-		this.area2 = new TextBlockWidthVertical(blocks);
+		if (blocks.size() == 1) {
+			this.area2 = blocks.get(0);
+		} else {
+			this.area2 = new TextBlockVertical2(blocks, align);
+		}
+
 		return area2;
-	}
-
-	public void drawU(UGraphic ug, double x, double y, double widthToUse) {
-		getArea(ug.getStringBounder()).drawU(ug, x, y, widthToUse);
 	}
 
 	public static boolean isBlockSeparator(String s) {
@@ -136,7 +161,16 @@ public class BodyEnhanced implements TextBlockWidth {
 			return null;
 		}
 		s = s.substring(2, s.length() - 2).trim();
-		return TextBlockUtils.create(Display.getWithNewlines(s), titleConfig, HorizontalAlignement.LEFT, spriteContainer);
+		return TextBlockUtils.create(Display.getWithNewlines(s), titleConfig, HorizontalAlignement.LEFT,
+				spriteContainer);
+	}
+
+	public void drawU(UGraphic ug, double x, double y) {
+		getArea(ug.getStringBounder()).drawU(ug, x, y);
+	}
+
+	public List<Url> getUrls() {
+		return Collections.emptyList();
 	}
 
 }

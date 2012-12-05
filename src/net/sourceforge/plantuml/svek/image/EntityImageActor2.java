@@ -39,6 +39,7 @@ import java.util.List;
 import net.sourceforge.plantuml.Dimension2DDouble;
 import net.sourceforge.plantuml.FontParam;
 import net.sourceforge.plantuml.ISkinParam;
+import net.sourceforge.plantuml.SkinParamUtils;
 import net.sourceforge.plantuml.StringUtils;
 import net.sourceforge.plantuml.Url;
 import net.sourceforge.plantuml.cucadiagram.Display;
@@ -65,15 +66,15 @@ public class EntityImageActor2 extends AbstractEntityImage {
 		super(entity, skinParam);
 		final Stereotype stereotype = entity.getStereotype();
 
-		this.name = TextBlockUtils.create(entity.getDisplay(), new FontConfiguration(getFont(fontName, stereotype),
-				getFontColor(fontName, stereotype)), HorizontalAlignement.CENTER, skinParam);
+		this.name = TextBlockUtils.create(entity.getDisplay(), new FontConfiguration(SkinParamUtils.getFont(getSkinParam(), fontName, stereotype),
+				SkinParamUtils.getFontColor(getSkinParam(), fontName, stereotype)), HorizontalAlignement.CENTER, skinParam);
 		this.stickman = stickman;
 
 		if (stereotype == null || stereotype.getLabel() == null) {
 			this.stereo = null;
 		} else {
 			this.stereo = TextBlockUtils.create(Display.getWithNewlines(stereotype.getLabel()),
-					new FontConfiguration(getFont(fontStereotype, stereotype), getFontColor(fontStereotype, null)),
+					new FontConfiguration(SkinParamUtils.getFont(getSkinParam(), fontStereotype, stereotype), SkinParamUtils.getFontColor(getSkinParam(), fontStereotype, null)),
 					HorizontalAlignement.CENTER, skinParam);
 		}
 		this.url = entity.getUrls();

@@ -124,7 +124,9 @@ public class PostItDiagram extends UmlDiagram {
 
 			final Graphics2D graphics2D = builder.getGraphics2D();
 			final double dpiFactor = this.getDpiFactor(fileFormatOption);
-			return new UGraphicG2d(new ColorMapperIdentity(), graphics2D, builder.getBufferedImage(), dpiFactor);
+			final UGraphicG2d result = new UGraphicG2d(new ColorMapperIdentity(), graphics2D, dpiFactor);
+			result.setBufferedImage(builder.getBufferedImage());
+			return result;
 		}
 		throw new UnsupportedOperationException();
 	}

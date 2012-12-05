@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  *
- * Revision $Revision: 9423 $
+ * Revision $Revision: 9593 $
  *
  */
 package net.sourceforge.plantuml;
@@ -55,6 +55,7 @@ import net.sourceforge.plantuml.ugraphic.ColorMapperIdentity;
 import net.sourceforge.plantuml.ugraphic.ColorMapperMonochrome;
 import net.sourceforge.plantuml.ugraphic.Sprite;
 import net.sourceforge.plantuml.ugraphic.UFont;
+import net.sourceforge.plantuml.ugraphic.UStroke;
 
 public class SkinParam implements ISkinParam {
 
@@ -431,6 +432,14 @@ public class SkinParam implements ISkinParam {
 			return Double.parseDouble(value);
 		}
 		return 0;
+	}
+
+	public UStroke getThickness(LineParam param) {
+		final String value = getValue(param.name() + "thickness");
+		if (value != null && value.matches("[\\d.]+")) {
+			return new UStroke(Double.parseDouble(value));
+		}
+		return null;
 	}
 
 }

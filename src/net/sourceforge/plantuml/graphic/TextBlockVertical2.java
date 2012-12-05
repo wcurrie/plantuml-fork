@@ -34,51 +34,62 @@
 package net.sourceforge.plantuml.graphic;
 
 import java.awt.geom.Dimension2D;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import net.sourceforge.plantuml.Dimension2DDouble;
-import net.sourceforge.plantuml.StringUtils;
 import net.sourceforge.plantuml.Url;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
 
-class TextBlockVertical implements TextBlock {
+public class TextBlockVertical2 implements TextBlock {
 
-	private final TextBlock b1;
-	private final TextBlock b2;
+	private final List<TextBlock> blocks = new ArrayList<TextBlock>();
 	private final HorizontalAlignement horizontalAlignement;
 
-	public TextBlockVertical(TextBlock b1, TextBlock b2, HorizontalAlignement horizontalAlignement) {
-		this.b1 = b1;
-		this.b2 = b2;
+	public TextBlockVertical2(TextBlock b1, TextBlock b2, HorizontalAlignement horizontalAlignement) {
+		this.blocks.add(b1);
+		this.blocks.add(b2);
+		this.horizontalAlignement = horizontalAlignement;
+	}
+
+	public TextBlockVertical2(List<TextBlock> all, HorizontalAlignement horizontalAlignement) {
+		if (all.size() < 2) {
+			throw new IllegalArgumentException();
+		}
+		this.blocks.addAll(all);
 		this.horizontalAlignement = horizontalAlignement;
 	}
 
 	public Dimension2D calculateDimension(StringBounder stringBounder) {
-		final Dimension2D dim1 = b1.calculateDimension(stringBounder);
-		final Dimension2D dim2 = b2.calculateDimension(stringBounder);
-		return Dimension2DDouble.mergeTB(dim1, dim2);
+		Dimension2D dim = blocks.get(0).calculateDimension(stringBounder);
+		for (int i = 1; i < blocks.size(); i++) {
+			dim = Dimension2DDouble.mergeTB(dim, blocks.get(i).calculateDimension(stringBounder));
+		}
+		return dim;
 	}
 
 	public void drawU(UGraphic ug, double x, double y) {
-		final Dimension2D dim = calculateDimension(ug.getStringBounder());
-		final Dimension2D dimb1 = b1.calculateDimension(ug.getStringBounder());
-		final Dimension2D dimb2 = b2.calculateDimension(ug.getStringBounder());
-		final Dimension2D dim1 = b1.calculateDimension(ug.getStringBounder());
-
-		if (horizontalAlignement == HorizontalAlignement.CENTER) {
-			b1.drawU(ug, x + (dim.getWidth() - dimb1.getWidth()) / 2, y);
-			b2.drawU(ug, x + (dim.getWidth() - dimb2.getWidth()) / 2, y + dim1.getHeight());
-		} else if (horizontalAlignement == HorizontalAlignement.LEFT) {
-			b1.drawU(ug, x, y);
-			b2.drawU(ug, x, y + dim1.getHeight());
-
-		} else {
-			throw new UnsupportedOperationException();
+		final HtmlColor color = ug.getParam().getColor();
+		final Dimension2D dimtotal = calculateDimension(ug.getStringBounder());
+		for (TextBlock b : blocks) {
+			final Dimension2D dimb = b.calculateDimension(ug.getStringBounder());
+			if (horizontalAlignement == HorizontalAlignement.LEFT) {
+				b.drawU(ug, x, y);
+				ug.getParam().setColor(color);
+			} else if (horizontalAlignement == HorizontalAlignement.CENTER) {
+				final double dx = (dimtotal.getWidth() - dimb.getWidth()) / 2;
+				b.drawU(ug, x + dx, y);
+				ug.getParam().setColor(color);
+			} else {
+				throw new UnsupportedOperationException();
+			}
+			y += dimb.getHeight();
 		}
 	}
 
 	public List<Url> getUrls() {
-		return StringUtils.merge(b1.getUrls(), b2.getUrls());
+		return Collections.emptyList();
 	}
 
 }

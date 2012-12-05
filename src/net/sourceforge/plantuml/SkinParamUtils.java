@@ -27,59 +27,34 @@
  * in the United States and other countries.]
  *
  * Original Author:  Arnaud Roques
- * 
- * Revision $Revision: 4125 $
+ *
+ * Revision $Revision: 9423 $
  *
  */
-package net.sourceforge.plantuml.graphic;
+package net.sourceforge.plantuml;
 
-import java.awt.geom.Dimension2D;
-import java.util.Collections;
-import java.util.List;
+import net.sourceforge.plantuml.cucadiagram.Stereotype;
+import net.sourceforge.plantuml.graphic.HtmlColor;
+import net.sourceforge.plantuml.skin.rose.Rose;
+import net.sourceforge.plantuml.ugraphic.UFont;
 
-import net.sourceforge.plantuml.Dimension2DDouble;
-import net.sourceforge.plantuml.Url;
-import net.sourceforge.plantuml.ugraphic.UGraphic;
+public class SkinParamUtils {
+	
+	private static final Rose rose = new Rose();
 
-public class TextBlockEmpty implements TextBlock, TextBlockWidth {
-
-	private final double width;
-	private final double height;
-
-	public TextBlockEmpty(double width, double height) {
-		this.width = width;
-		this.height = height;
+	public static UFont getFont(ISkinParam skinParam, FontParam fontParam, Stereotype stereo) {
+		final String s = stereo == null ? null : stereo.getLabel();
+		return skinParam.getFont(fontParam, s);
 	}
 
-	public TextBlockEmpty() {
-		this(0, 0);
+	public static HtmlColor getFontColor(ISkinParam skinParam, FontParam fontParam, Stereotype stereo) {
+		final String s = stereo == null ? null : stereo.getLabel();
+		return skinParam.getFontHtmlColor(fontParam, s);
 	}
 
-	public Dimension2D calculateDimension(StringBounder stringBounder) {
-		return new Dimension2DDouble(width, height);
-	}
-
-	public void drawU(UGraphic ug, double x, double y) {
-	}
-
-	public List<Url> getUrls() {
-		return Collections.emptyList();
-	}
-
-	public TextBlock asTextBlock(final double widthToUse) {
-		return new TextBlock() {
-
-			public void drawU(UGraphic ug, double x, double y) {
-			}
-
-			public Dimension2D calculateDimension(StringBounder stringBounder) {
-				return TextBlockEmpty.this.calculateDimension(stringBounder);
-			}
-
-			public List<Url> getUrls() {
-				return TextBlockEmpty.this.getUrls();
-			}
-		};
+	public static HtmlColor getColor(ISkinParam skinParam, ColorParam colorParam, Stereotype stereo) {
+		final String s = stereo == null ? null : stereo.getLabel();
+		return rose.getHtmlColor(skinParam, colorParam, s);
 	}
 
 }

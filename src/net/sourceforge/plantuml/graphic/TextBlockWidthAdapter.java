@@ -55,7 +55,7 @@ public class TextBlockWidthAdapter implements TextBlock {
 	}
 
 	public void drawU(UGraphic ug, double x, double y) {
-		textBlockWidth.drawU(ug, x, y, width);
+		textBlockWidth.asTextBlock(width).drawU(ug, x, y);
 	}
 
 	public Dimension2D calculateDimension(StringBounder stringBounder) {

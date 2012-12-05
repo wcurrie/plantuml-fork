@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 9486 $
+ * Revision $Revision: 9564 $
  *
  */
 package net.sourceforge.plantuml.ugraphic;
@@ -80,4 +80,17 @@ public class UEllipse extends AbstractShadowable {
 		result.setDeltaShadow(getDeltaShadow());
 		return result;
 	}
+
+	public double getStartingX(double y) {
+		y = y / height * 2;
+		final double x = 1 - Math.sqrt(1 - (y - 1) * (y - 1));
+		return x * width / 2;
+	}
+
+	public double getEndingX(double y) {
+		y = y / height * 2;
+		final double x = 1 + Math.sqrt(1 - (y - 1) * (y - 1));
+		return x * width / 2;
+	}
+
 }

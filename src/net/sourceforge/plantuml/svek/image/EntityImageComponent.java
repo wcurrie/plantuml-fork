@@ -41,6 +41,7 @@ import net.sourceforge.plantuml.ColorParam;
 import net.sourceforge.plantuml.Dimension2DDouble;
 import net.sourceforge.plantuml.FontParam;
 import net.sourceforge.plantuml.ISkinParam;
+import net.sourceforge.plantuml.SkinParamUtils;
 import net.sourceforge.plantuml.StringUtils;
 import net.sourceforge.plantuml.Url;
 import net.sourceforge.plantuml.cucadiagram.Display;
@@ -74,8 +75,7 @@ public class EntityImageComponent extends AbstractEntityImage {
 		final Stereotype stereotype = entity.getStereotype();
 		this.desc = TextBlockUtils.create(
 				entity.getDisplay(),
-				new FontConfiguration(getFont(FontParam.COMPONENT, stereotype), getFontColor(FontParam.COMPONENT,
-						stereotype)), HorizontalAlignement.CENTER, skinParam);
+				new FontConfiguration(SkinParamUtils.getFont(getSkinParam(), FontParam.COMPONENT, stereotype), SkinParamUtils.getFontColor(getSkinParam(), FontParam.COMPONENT, stereotype)), HorizontalAlignement.CENTER, skinParam);
 
 		this.style = stereotype == null ? null : stereotype.getPackageStyle();
 		if (this.style == null) {
@@ -83,8 +83,7 @@ public class EntityImageComponent extends AbstractEntityImage {
 			if (stereotype != null && stereotype.getLabel() != null) {
 				this.stereo = TextBlockUtils.create(
 						Display.getWithNewlines(stereotype.getLabel()),
-						new FontConfiguration(getFont(FontParam.COMPONENT_STEREOTYPE, stereotype), getFontColor(
-								FontParam.COMPONENT_STEREOTYPE, null)), HorizontalAlignement.CENTER, skinParam);
+						new FontConfiguration(SkinParamUtils.getFont(getSkinParam(), FontParam.COMPONENT_STEREOTYPE, stereotype), SkinParamUtils.getFontColor(getSkinParam(), FontParam.COMPONENT_STEREOTYPE, null)), HorizontalAlignement.CENTER, skinParam);
 			}
 		}
 		this.symbol = getUSymbol();
@@ -190,15 +189,15 @@ public class EntityImageComponent extends AbstractEntityImage {
 		}
 		HtmlColor backcolor = getEntity().getSpecificBackColor();
 		if (backcolor == null) {
-			backcolor = getColor(ColorParam.componentBackground, getStereo());
+			backcolor = SkinParamUtils.getColor(getSkinParam(), ColorParam.componentBackground, getStereo());
 		}
 		ug.getParam().setBackcolor(backcolor);
 		if (symbol == null) {
 			ug.getParam().setStroke(new UStroke(1.5));
-			ug.getParam().setColor(getColor(ColorParam.componentBorder, getStereo()));
+			ug.getParam().setColor(SkinParamUtils.getColor(getSkinParam(), ColorParam.componentBorder, getStereo()));
 			drawStyled(ug, xTheoricalPosition, yTheoricalPosition);
 		} else {
-			final SymbolContext ctx = new SymbolContext(backcolor, getColor(ColorParam.componentBorder, getStereo()))
+			final SymbolContext ctx = new SymbolContext(backcolor, SkinParamUtils.getColor(getSkinParam(), ColorParam.componentBorder, getStereo()))
 					.withStroke(new UStroke(1.5)).withShadow(getSkinParam().shadowing());
 			symbol.asSmall(TextBlockUtils.mergeTB(desc, stereo, HorizontalAlignement.CENTER), null, ctx).drawU(ug,
 					xTheoricalPosition, yTheoricalPosition);

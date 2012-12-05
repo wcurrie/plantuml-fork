@@ -37,11 +37,11 @@ import java.awt.geom.Dimension2D;
 import java.util.List;
 
 import net.sourceforge.plantuml.ColorParam;
-import net.sourceforge.plantuml.Dimension2DDouble;
 import net.sourceforge.plantuml.FontParam;
 import net.sourceforge.plantuml.ISkinParam;
-import net.sourceforge.plantuml.StringUtils;
+import net.sourceforge.plantuml.SkinParamUtils;
 import net.sourceforge.plantuml.Url;
+import net.sourceforge.plantuml.cucadiagram.BodyEnhanced2;
 import net.sourceforge.plantuml.cucadiagram.Display;
 import net.sourceforge.plantuml.cucadiagram.ILeaf;
 import net.sourceforge.plantuml.cucadiagram.Stereotype;
@@ -53,86 +53,71 @@ import net.sourceforge.plantuml.graphic.TextBlock;
 import net.sourceforge.plantuml.graphic.TextBlockUtils;
 import net.sourceforge.plantuml.svek.AbstractEntityImage;
 import net.sourceforge.plantuml.svek.ShapeType;
+import net.sourceforge.plantuml.ugraphic.AbstractUGraphicHorizontalLine;
+import net.sourceforge.plantuml.ugraphic.TextBlockInEllipse;
 import net.sourceforge.plantuml.ugraphic.UEllipse;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
+import net.sourceforge.plantuml.ugraphic.UHorizontalLine;
 import net.sourceforge.plantuml.ugraphic.UStroke;
 
 public class EntityImageUseCase extends AbstractEntityImage {
 
 	final private TextBlock desc;
-	final private static int MARGIN = 10;
-	final private TextBlock stereo;
+
 	final private List<Url> url;
 
 	public EntityImageUseCase(ILeaf entity, ISkinParam skinParam) {
 		super(entity, skinParam);
 		final Stereotype stereotype = entity.getStereotype();
 
-		this.desc = TextBlockUtils.create(
-				entity.getDisplay(),
-				new FontConfiguration(getFont(FontParam.USECASE, stereotype), getFontColor(FontParam.USECASE,
-						stereotype)), HorizontalAlignement.CENTER, skinParam);
+		final TextBlock tmp = new BodyEnhanced2(entity.getDisplay(), FontParam.USECASE, skinParam,
+				HorizontalAlignement.CENTER, stereotype);
 
 		if (stereotype == null || stereotype.getLabel() == null) {
-			this.stereo = null;
+			this.desc = tmp;
 		} else {
-			this.stereo = TextBlockUtils.create(
+			final TextBlock stereo = TextBlockUtils.create(
 					Display.getWithNewlines(stereotype.getLabel()),
-					new FontConfiguration(getFont(FontParam.USECASE_ACTOR_STEREOTYPE, stereotype), getFontColor(
+					new FontConfiguration(SkinParamUtils.getFont(getSkinParam(), FontParam.USECASE_ACTOR_STEREOTYPE,
+							stereotype), SkinParamUtils.getFontColor(getSkinParam(),
 							FontParam.USECASE_ACTOR_STEREOTYPE, null)), HorizontalAlignement.CENTER, skinParam);
+			this.desc = TextBlockUtils.mergeTB(stereo, tmp, HorizontalAlignement.CENTER);
 		}
 		this.url = entity.getUrls();
 
 	}
 
-	private Dimension2D getStereoDimension(StringBounder stringBounder) {
-		if (stereo == null) {
-			return new Dimension2DDouble(0, 0);
-		}
-		return stereo.calculateDimension(stringBounder);
-	}
-
 	@Override
 	public Dimension2D getDimension(StringBounder stringBounder) {
-		final Dimension2D dim = Dimension2DDouble.mergeTB(desc.calculateDimension(stringBounder),
-				getStereoDimension(stringBounder));
-		return Dimension2DDouble.delta(dim, MARGIN * 2);
+		return new TextBlockInEllipse(desc, stringBounder).calculateDimension(stringBounder);
 	}
 
 	public void drawU(UGraphic ug, double xTheoricalPosition, double yTheoricalPosition) {
 		final StringBounder stringBounder = ug.getStringBounder();
-		final Dimension2D dimTotal = getDimension(stringBounder);
-		final Dimension2D dimStereo = getStereoDimension(stringBounder);
-		final Dimension2D dimDesc = desc.calculateDimension(stringBounder);
-
-		final double widthTotal = dimTotal.getWidth();
-		final double heightTotal = dimTotal.getHeight();
-		final UEllipse ellipse = new UEllipse(widthTotal, heightTotal);
+		final TextBlockInEllipse ellipse = new TextBlockInEllipse(desc, stringBounder);
 		if (getSkinParam().shadowing()) {
 			ellipse.setDeltaShadow(3);
 		}
+
 		if (url.size() > 0) {
 			ug.startUrl(url.get(0));
 		}
 
 		ug.getParam().setStroke(new UStroke(1.5));
-		ug.getParam().setColor(getColor(ColorParam.usecaseBorder, getStereo()));
+		ug.getParam().setColor(SkinParamUtils.getColor(getSkinParam(), ColorParam.usecaseBorder, getStereo()));
 		HtmlColor backcolor = getEntity().getSpecificBackColor();
 		if (backcolor == null) {
-			backcolor = getColor(ColorParam.usecaseBackground, getStereo());
+			backcolor = SkinParamUtils.getColor(getSkinParam(), ColorParam.usecaseBackground, getStereo());
 		}
 		ug.getParam().setBackcolor(backcolor);
-		ug.draw(xTheoricalPosition, yTheoricalPosition, ellipse);
+		// final double width = textBlock.calculateDimension(stringBounder).getWidth();
+
+		final UGraphic ug2 = new MyUGraphic(ug, xTheoricalPosition, yTheoricalPosition, ellipse.getUEllipse());
+
+		ellipse.drawU(ug2, xTheoricalPosition, yTheoricalPosition);
+
 		ug.getParam().setStroke(new UStroke());
 
-		final double x = (dimTotal.getWidth() - dimDesc.getWidth()) / 2;
-		final double y = MARGIN + dimStereo.getHeight();
-		desc.drawU(ug, xTheoricalPosition + x, yTheoricalPosition + y);
-
-		if (stereo != null) {
-			final double stereoX = (dimTotal.getWidth() - dimStereo.getWidth()) / 2;
-			stereo.drawU(ug, xTheoricalPosition + stereoX, yTheoricalPosition + MARGIN);
-		}
 		if (url.size() > 0) {
 			ug.closeAction();
 		}
@@ -145,6 +130,45 @@ public class EntityImageUseCase extends AbstractEntityImage {
 
 	public int getShield() {
 		return 0;
+	}
+
+	static class MyUGraphic extends AbstractUGraphicHorizontalLine {
+
+		private final double startingX;
+		private final double yTheoricalPosition;
+		private final UEllipse ellipse;
+
+		MyUGraphic(UGraphic ug, double startingX, double yTheoricalPosition, UEllipse ellipse) {
+			super(ug);
+			this.startingX = startingX;
+			this.ellipse = ellipse;
+			this.yTheoricalPosition = yTheoricalPosition;
+		}
+
+		private double getNormalized(double y) {
+			if (y < yTheoricalPosition) {
+				throw new IllegalArgumentException();
+			}
+			y = y - yTheoricalPosition;
+			if (y > ellipse.getHeight()) {
+				throw new IllegalArgumentException();
+			}
+			return y;
+		}
+
+		private double getStartingX(double y) {
+			return startingX + ellipse.getStartingX(getNormalized(y));
+		}
+
+		private double getEndingX(double y) {
+			return startingX + ellipse.getEndingX(getNormalized(y));
+		}
+
+		@Override
+		protected void drawHline(UGraphic ug, double x, double y, UHorizontalLine line) {
+			line.drawLine(ug, getStartingX(y), getEndingX(y), y);
+		}
+
 	}
 
 }

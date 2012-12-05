@@ -34,7 +34,6 @@
 package net.sourceforge.plantuml.sequencediagram.graphic;
 
 import java.awt.Color;
-import java.awt.Graphics2D;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Dimension2D;
 import java.awt.image.BufferedImage;
@@ -47,7 +46,6 @@ import java.util.Map;
 
 import net.sourceforge.plantuml.CMapData;
 import net.sourceforge.plantuml.Dimension2DDouble;
-import net.sourceforge.plantuml.EmptyImageBuilder;
 import net.sourceforge.plantuml.FileFormat;
 import net.sourceforge.plantuml.FileFormatOption;
 import net.sourceforge.plantuml.FontParam;
@@ -61,7 +59,6 @@ import net.sourceforge.plantuml.graphic.HtmlColorSimple;
 import net.sourceforge.plantuml.graphic.StringBounder;
 import net.sourceforge.plantuml.graphic.StringBounderUtils;
 import net.sourceforge.plantuml.graphic.TextBlock;
-import net.sourceforge.plantuml.graphic.VerticalPosition;
 import net.sourceforge.plantuml.png.PngIO;
 import net.sourceforge.plantuml.png.PngTitler;
 import net.sourceforge.plantuml.sequencediagram.Event;
@@ -77,13 +74,12 @@ import net.sourceforge.plantuml.skin.ComponentType;
 import net.sourceforge.plantuml.skin.SimpleContext2D;
 import net.sourceforge.plantuml.skin.Skin;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
-import net.sourceforge.plantuml.ugraphic.URectangle;
 import net.sourceforge.plantuml.ugraphic.eps.UGraphicEps;
 import net.sourceforge.plantuml.ugraphic.g2d.UGraphicG2d;
 import net.sourceforge.plantuml.ugraphic.html5.UGraphicHtml5;
 import net.sourceforge.plantuml.ugraphic.svg.UGraphicSvg;
 
-public class SequenceDiagramFileMaker implements FileMaker {
+public class SequenceDiagramFileMaker2 implements FileMaker {
 
 	private static final StringBounder dummyStringBounder;
 
@@ -102,7 +98,7 @@ public class SequenceDiagramFileMaker implements FileMaker {
 	private int offsetX;
 	private int offsetY;
 
-	public SequenceDiagramFileMaker(SequenceDiagram sequenceDiagram, Skin skin, FileFormatOption fileFormatOption,
+	public SequenceDiagramFileMaker2(SequenceDiagram sequenceDiagram, Skin skin, FileFormatOption fileFormatOption,
 			List<BufferedImage> flashcodes) {
 		// HtmlColor.setForceMonochrome(sequenceDiagram.getSkinParam().isMonochrome());
 		this.flashcodes = flashcodes;
@@ -250,9 +246,10 @@ public class SequenceDiagramFileMaker implements FileMaker {
 		final UGraphic ug;
 		final FileFormat fileFormat = fileFormatOption.getFileFormat();
 		final double dpiFactor = diagram.getDpiFactor(fileFormatOption);
-		final double imageWidth = getImageWidth(area, diagram.isRotation(), dpiFactor);
+		final double imageWidthWithDpi = getImageWidth(area, diagram.isRotation(), dpiFactor);
+		final double imageWidthWithoutDpiAndRotation = getImageWidth(area, false, 1);
 		if (fileFormat == FileFormat.PNG) {
-			double imageHeight = getImageHeight(area, page, diagram.isRotation(), dpiFactor);
+			double imageHeight = getImageHeight(area, page, false, 1);
 			if (imageHeight == 0) {
 				imageHeight = 1;
 			}
@@ -260,32 +257,18 @@ public class SequenceDiagramFileMaker implements FileMaker {
 			if (flashcodes != null) {
 				flashCodeHeight = flashcodes.get(0).getHeight();
 			}
-			final EmptyImageBuilder builder = new EmptyImageBuilder(imageWidth, imageHeight + flashCodeHeight,
-					backColor);
 
-			final Graphics2D graphics2D = builder.getGraphics2D();
+			final Dimension2D dim = new Dimension2DDouble(imageWidthWithoutDpiAndRotation, imageHeight
+					+ flashCodeHeight);
+			ug = fileFormatOption.createUGraphic(diagram.getSkinParam().getColorMapper(), dpiFactor, dim, diagram
+					.getSkinParam().getBackgroundColor(), diagram.isRotation());
+
 			if (flashcodes != null) {
-				graphics2D.drawImage(flashcodes.get(0), null, 0, (int) imageHeight);
+				((UGraphicG2d) ug).getGraphics2D().drawImage(flashcodes.get(0), null, 0, (int) imageHeight);
 			}
-			if (diagram.isRotation()) {
-				final AffineTransform at = new AffineTransform(0, 1, 1, 0, 0, 0);
-				at.concatenate(new AffineTransform(-1, 0, 0, 1, imageHeight, 0));
-				at.concatenate(AffineTransform.getTranslateInstance(0.01, 0));
-				graphics2D.setTransform(at);
-			}
-			final AffineTransform scale = graphics2D.getTransform();
+			final AffineTransform scale = ((UGraphicG2d) ug).getGraphics2D().getTransform();
 			scale.scale(getScale(area.getWidth(), area.getHeight()), getScale(area.getWidth(), area.getHeight()));
-			graphics2D.setTransform(scale);
-			ug = new UGraphicG2d(diagram.getSkinParam().getColorMapper(), graphics2D, dpiFactor,
-					fileFormatOption.getAffineTransform());
-			((UGraphicG2d) ug).setBufferedImage(builder.getBufferedImage());
-
-			if (diagram.getSkinParam().getBackgroundColor() instanceof HtmlColorGradient) {
-				final BufferedImage im = ((UGraphicG2d) ug).getBufferedImage();
-				ug.getParam().setBackcolor(diagram.getSkinParam().getBackgroundColor());
-				ug.draw(0, 0, new URectangle(im.getWidth(), im.getHeight()));
-				ug.getParam().setBackcolor(null);
-			}
+			((UGraphicG2d) ug).getGraphics2D().setTransform(scale);
 		} else if (fileFormat == FileFormat.SVG) {
 			if (diagram.getSkinParam().getBackgroundColor() instanceof HtmlColorGradient) {
 				ug = new UGraphicSvg(diagram.getSkinParam().getColorMapper(), (HtmlColorGradient) diagram
@@ -305,12 +288,14 @@ public class SequenceDiagramFileMaker implements FileMaker {
 			throw new UnsupportedOperationException();
 		}
 
-		final int diff = (int) Math.round((imageWidth - getImageWidthWithoutMinsize(area, diagram.isRotation(),
-				dpiFactor)) / 2);
-		if (diagram.isRotation()) {
-			ug.translate(0, diff / dpiFactor);
-		} else {
-			ug.translate(diff / dpiFactor, 0);
+		if (fileFormat != FileFormat.PNG) {
+			final int diff = (int) Math.round((imageWidthWithDpi - getImageWidthWithoutMinsize(area,
+					diagram.isRotation(), dpiFactor)) / 2);
+			if (diagram.isRotation()) {
+				ug.translate(0, diff / dpiFactor);
+			} else {
+				ug.translate(diff / dpiFactor, 0);
+			}
 		}
 
 		if (compTitle != null) {

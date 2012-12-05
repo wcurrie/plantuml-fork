@@ -40,7 +40,7 @@ import net.sourceforge.plantuml.ColorParam;
 import net.sourceforge.plantuml.Dimension2DDouble;
 import net.sourceforge.plantuml.FontParam;
 import net.sourceforge.plantuml.ISkinParam;
-import net.sourceforge.plantuml.StringUtils;
+import net.sourceforge.plantuml.SkinParamUtils;
 import net.sourceforge.plantuml.Url;
 import net.sourceforge.plantuml.cucadiagram.Display;
 import net.sourceforge.plantuml.cucadiagram.EntityPortion;
@@ -53,14 +53,14 @@ import net.sourceforge.plantuml.graphic.HtmlColor;
 import net.sourceforge.plantuml.graphic.StringBounder;
 import net.sourceforge.plantuml.graphic.TextBlock;
 import net.sourceforge.plantuml.graphic.TextBlockEmpty;
-import net.sourceforge.plantuml.graphic.TextBlockLineBefore;
+import net.sourceforge.plantuml.graphic.TextBlockLineBefore2;
 import net.sourceforge.plantuml.graphic.TextBlockUtils;
-import net.sourceforge.plantuml.graphic.TextBlockWidth;
 import net.sourceforge.plantuml.svek.AbstractEntityImage;
 import net.sourceforge.plantuml.svek.ShapeType;
 import net.sourceforge.plantuml.ugraphic.PlacementStrategyY1Y2;
 import net.sourceforge.plantuml.ugraphic.Shadowable;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
+import net.sourceforge.plantuml.ugraphic.UGraphicHorizontalLine;
 import net.sourceforge.plantuml.ugraphic.ULayoutGroup;
 import net.sourceforge.plantuml.ugraphic.URectangle;
 import net.sourceforge.plantuml.ugraphic.UStroke;
@@ -69,7 +69,7 @@ public class EntityImageObject extends AbstractEntityImage {
 
 	final private TextBlock name;
 	final private TextBlock stereo;
-	final private TextBlockWidth fields;
+	final private TextBlock fields;
 	final private List<Url> url;
 	final private double roundCorner;
 
@@ -78,19 +78,18 @@ public class EntityImageObject extends AbstractEntityImage {
 		final Stereotype stereotype = entity.getStereotype();
 		this.roundCorner = skinParam.getRoundCorner();
 		this.name = TextBlockUtils.withMargin(
-				TextBlockUtils.create(entity.getDisplay(), new FontConfiguration(getFont(FontParam.OBJECT, stereotype),
-						getFontColor(FontParam.OBJECT, stereotype)), HorizontalAlignement.CENTER, skinParam), 2, 2);
+				TextBlockUtils.create(entity.getDisplay(), new FontConfiguration(SkinParamUtils.getFont(getSkinParam(), FontParam.OBJECT, stereotype),
+						SkinParamUtils.getFontColor(getSkinParam(), FontParam.OBJECT, stereotype)), HorizontalAlignement.CENTER, skinParam), 2, 2);
 		if (stereotype == null || stereotype.getLabel() == null) {
 			this.stereo = null;
 		} else {
 			this.stereo = TextBlockUtils.create(
 					Display.getWithNewlines(stereotype.getLabel()),
-					new FontConfiguration(getFont(FontParam.OBJECT_STEREOTYPE, stereotype), getFontColor(
-							FontParam.OBJECT_STEREOTYPE, stereotype)), HorizontalAlignement.CENTER, skinParam);
+					new FontConfiguration(SkinParamUtils.getFont(getSkinParam(), FontParam.OBJECT_STEREOTYPE, stereotype), SkinParamUtils.getFontColor(getSkinParam(), FontParam.OBJECT_STEREOTYPE, stereotype)), HorizontalAlignement.CENTER, skinParam);
 		}
 
 		if (entity.getFieldsToDisplay().size() == 0) {
-			this.fields = new TextBlockLineBefore(new TextBlockEmpty(10, 16));
+			this.fields = new TextBlockLineBefore2(new TextBlockEmpty(10, 16));
 		} else {
 			// this.fields =
 			// entity.getFieldsToDisplay().asTextBlock(FontParam.OBJECT_ATTRIBUTE,
@@ -153,10 +152,10 @@ public class EntityImageObject extends AbstractEntityImage {
 			rect.setDeltaShadow(4);
 		}
 
-		ug.getParam().setColor(getColor(ColorParam.objectBorder, getStereo()));
+		ug.getParam().setColor(SkinParamUtils.getColor(getSkinParam(), ColorParam.objectBorder, getStereo()));
 		HtmlColor backcolor = getEntity().getSpecificBackColor();
 		if (backcolor == null) {
-			backcolor = getColor(ColorParam.objectBackground, getStereo());
+			backcolor = SkinParamUtils.getColor(getSkinParam(), ColorParam.objectBackground, getStereo());
 		}
 		ug.getParam().setBackcolor(backcolor);
 		if (url.size() > 0) {
@@ -179,11 +178,11 @@ public class EntityImageObject extends AbstractEntityImage {
 		y += dimTitle.getHeight();
 
 		x = xTheoricalPosition;
-		ug.getParam().setColor(getColor(ColorParam.objectBorder, getStereo()));
-		// ug.getParam().setStroke(new UStroke(1.5));
-		// ug.draw(x, y, new ULine(widthTotal, 0));
-		// ug.getParam().setStroke(new UStroke());
-		fields.drawU(ug, x, y, widthTotal);
+		ug.getParam().setColor(SkinParamUtils.getColor(getSkinParam(), ColorParam.objectBorder, getStereo()));
+
+		final UGraphic ug2 = new UGraphicHorizontalLine(ug, x, x + widthTotal);
+		fields.drawU(ug2, x, y);
+		
 		if (url.size() > 0) {
 			ug.closeAction();
 		}

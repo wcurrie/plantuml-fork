@@ -89,8 +89,8 @@ public final class InnerStateAutonom implements IEntityImage {
 
 		r.drawU(ug, x, y, shadowing);
 		title.drawU(ug, x + (total.getWidth() - text.getWidth()) / 2, y + IEntityImage.MARGIN);
-		attribute.drawU(ug, x + IEntityImage.MARGIN, y + IEntityImage.MARGIN + text.getHeight() + IEntityImage.MARGIN,
-				total.getWidth());
+		attribute.asTextBlock(total.getWidth()).drawU(ug, x + IEntityImage.MARGIN,
+				y + IEntityImage.MARGIN + text.getHeight() + IEntityImage.MARGIN);
 
 		final double spaceYforURL = getSpaceYforURL(ug.getStringBounder());
 		im.drawU(ug, x + IEntityImage.MARGIN, y + spaceYforURL);

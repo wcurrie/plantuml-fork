@@ -150,7 +150,7 @@ public abstract class UGraphicUtils {
 		EmptyImageBuilder builder = new EmptyImageBuilder(10, 10, colorMapper.getMappedColor(background));
 		Graphics2D g2d = builder.getGraphics2D();
 
-		final UGraphicG2d tmp = new UGraphicG2d(colorMapper, g2d, null, 1.0);
+		final UGraphicG2d tmp = new UGraphicG2d(colorMapper, g2d, 1.0);
 		final Dimension2D size = image.calculateDimension(tmp.getStringBounder());
 		g2d.dispose();
 
@@ -160,7 +160,7 @@ public abstract class UGraphicUtils {
 		// if (disableTextAliasing) {
 		// g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_OFF);
 		// }
-		final UGraphicG2d ug = new UGraphicG2d(colorMapper, g2d, null, 1.0);
+		final UGraphicG2d ug = new UGraphicG2d(colorMapper, g2d, 1.0);
 		image.drawU(ug, 0, 0);
 		g2d.dispose();
 		return im;

@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 9495 $
+ * Revision $Revision: 9590 $
  *
  */
 package net.sourceforge.plantuml.graphic;
@@ -139,7 +139,7 @@ public class GraphicStrings implements IEntityImage {
 		EmptyImageBuilder builder = new EmptyImageBuilder(10, 10, colorMapper.getMappedColor(background));
 		Graphics2D g2d = builder.getGraphics2D();
 
-		final Dimension2D size = drawU(new UGraphicG2d(colorMapper, g2d, null, 1.0));
+		final Dimension2D size = drawU(new UGraphicG2d(colorMapper, g2d, 1.0));
 		g2d.dispose();
 
 		builder = new EmptyImageBuilder(size.getWidth(), size.getHeight(), colorMapper.getMappedColor(background));
@@ -148,7 +148,7 @@ public class GraphicStrings implements IEntityImage {
 		if (disableTextAliasing) {
 			g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_OFF);
 		}
-		drawU(new UGraphicG2d(colorMapper, g2d, null, 1.0));
+		drawU(new UGraphicG2d(colorMapper, g2d, 1.0));
 		g2d.dispose();
 		return im;
 	}

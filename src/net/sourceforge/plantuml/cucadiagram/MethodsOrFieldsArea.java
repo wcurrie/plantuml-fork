@@ -41,7 +41,6 @@ import java.util.List;
 import net.sourceforge.plantuml.Dimension2DDouble;
 import net.sourceforge.plantuml.FontParam;
 import net.sourceforge.plantuml.ISkinParam;
-import net.sourceforge.plantuml.StringUtils;
 import net.sourceforge.plantuml.Url;
 import net.sourceforge.plantuml.graphic.FontConfiguration;
 import net.sourceforge.plantuml.graphic.HorizontalAlignement;
@@ -52,21 +51,30 @@ import net.sourceforge.plantuml.graphic.TextBlockUtils;
 import net.sourceforge.plantuml.graphic.TextBlockWidth;
 import net.sourceforge.plantuml.skin.VisibilityModifier;
 import net.sourceforge.plantuml.skin.rose.Rose;
+import net.sourceforge.plantuml.ugraphic.PlacementStrategy;
 import net.sourceforge.plantuml.ugraphic.PlacementStrategyVisibility;
+import net.sourceforge.plantuml.ugraphic.PlacementStrategyY1Y2Center;
 import net.sourceforge.plantuml.ugraphic.PlacementStrategyY1Y2Left;
 import net.sourceforge.plantuml.ugraphic.UFont;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
 import net.sourceforge.plantuml.ugraphic.ULayoutGroup;
 
-public class MethodsOrFieldsArea implements TextBlockWidth {
+public class MethodsOrFieldsArea implements TextBlockWidth, TextBlock {
 
 	private final UFont font;
 	private final ISkinParam skinParam;
 	private final HtmlColor color;
 	private final Rose rose = new Rose();
 	private final List<Member> members = new ArrayList<Member>();
+	private final HorizontalAlignement align;
 
 	public MethodsOrFieldsArea(List<Member> members, FontParam fontParam, ISkinParam skinParam) {
+		this(members, fontParam, skinParam, HorizontalAlignement.LEFT);
+	}
+
+	public MethodsOrFieldsArea(List<Member> members, FontParam fontParam, ISkinParam skinParam,
+			HorizontalAlignement align) {
+		this.align = align;
 		this.skinParam = skinParam;
 		this.font = skinParam.getFont(fontParam, null);
 		this.color = rose.getFontColor(skinParam, fontParam);
@@ -112,8 +120,7 @@ public class MethodsOrFieldsArea implements TextBlockWidth {
 		if (m.isStatic()) {
 			config = config.underline();
 		}
-		final TextBlock bloc = TextBlockUtils.create(Display.getWithNewlines(s), config, HorizontalAlignement.LEFT,
-				skinParam);
+		final TextBlock bloc = TextBlockUtils.create(Display.getWithNewlines(s), config, align, skinParam);
 		return new TextBlockTracer(m, bloc);
 	}
 
@@ -136,8 +143,9 @@ public class MethodsOrFieldsArea implements TextBlockWidth {
 				ug.closeAction();
 			}
 		}
+
 		public List<Url> getUrls() {
-			if (url!=null) {
+			if (url != null) {
 				return Collections.singletonList(url);
 			}
 			return Collections.emptyList();
@@ -147,29 +155,6 @@ public class MethodsOrFieldsArea implements TextBlockWidth {
 			final Dimension2D dim = bloc.calculateDimension(stringBounder);
 			return dim;
 		}
-
-	}
-
-	public void drawU(UGraphic ug, final double x, final double y, double widthToUse) {
-		final Dimension2D dim = calculateDimension(ug.getStringBounder());
-		final ULayoutGroup group;
-		if (hasSmallIcon()) {
-			group = new ULayoutGroup(new PlacementStrategyVisibility(ug.getStringBounder(),
-					skinParam.getCircledCharacterRadius() + 3));
-			for (Member att : members) {
-				final TextBlock bloc = createTextBlock(att);
-				final VisibilityModifier modifier = att.getVisibilityModifier();
-				group.add(getUBlock(modifier));
-				group.add(bloc);
-			}
-		} else {
-			group = new ULayoutGroup(new PlacementStrategyY1Y2Left(ug.getStringBounder()));
-			for (Member att : members) {
-				final TextBlock bloc = createTextBlock(att);
-				group.add(bloc);
-			}
-		}
-		group.drawU(ug, x, y, dim.getWidth(), dim.getHeight());
 
 	}
 
@@ -195,6 +180,57 @@ public class MethodsOrFieldsArea implements TextBlockWidth {
 
 		final TextBlock uBlock = modifier.getUBlock(skinParam.classAttributeIconSize(), fore, back);
 		return uBlock;
+	}
+
+	public TextBlock asTextBlock(final double widthToUse) {
+		return new TextBlock() {
+
+			public void drawU(UGraphic ug, double x, double y) {
+				MethodsOrFieldsArea.this.drawU(ug, x, y);
+			}
+
+			public Dimension2D calculateDimension(StringBounder stringBounder) {
+				return MethodsOrFieldsArea.this.calculateDimension(stringBounder);
+			}
+
+			public List<Url> getUrls() {
+				return Collections.emptyList();
+			}
+		};
+	}
+
+	public void drawU(UGraphic ug, double x, double y) {
+		final Dimension2D dim = calculateDimension(ug.getStringBounder());
+		final ULayoutGroup group;
+		if (hasSmallIcon()) {
+			group = new ULayoutGroup(new PlacementStrategyVisibility(ug.getStringBounder(),
+					skinParam.getCircledCharacterRadius() + 3));
+			for (Member att : members) {
+				final TextBlock bloc = createTextBlock(att);
+				final VisibilityModifier modifier = att.getVisibilityModifier();
+				group.add(getUBlock(modifier));
+				group.add(bloc);
+			}
+		} else {
+			final PlacementStrategy placementStrategy;
+			if (align == HorizontalAlignement.LEFT) {
+				placementStrategy = new PlacementStrategyY1Y2Left(ug.getStringBounder());
+			} else if (align == HorizontalAlignement.CENTER) {
+				placementStrategy = new PlacementStrategyY1Y2Center(ug.getStringBounder());
+			} else {
+				throw new IllegalStateException();
+			}
+			group = new ULayoutGroup(placementStrategy);
+			for (Member att : members) {
+				final TextBlock bloc = createTextBlock(att);
+				group.add(bloc);
+			}
+		}
+		group.drawU(ug, x, y, dim.getWidth(), dim.getHeight());
+	}
+
+	public List<Url> getUrls() {
+		return Collections.emptyList();
 	}
 
 }

@@ -51,15 +51,20 @@ public class TextBlockInEllipse implements TextBlock {
 	public TextBlockInEllipse(TextBlock text, StringBounder stringBounder) {
 		this.text = text;
 		final Dimension2D textDim = text.calculateDimension(stringBounder);
-		final double alpha = textDim.getHeight() / textDim.getWidth();
+		double alpha = textDim.getHeight() / textDim.getWidth();
+		if (alpha < .2) {
+			alpha = .2;
+		} else if (alpha > .8) {
+			alpha = .8;
+		}
 		final Footprint footprint = new Footprint(stringBounder);
 		ellipse = footprint.getEllipse(text, alpha);
 
 	}
-	private UEllipse getUEllipse() {
-		return ellipse.asUEllipse().bigger(10);
-	}
 
+	public UEllipse getUEllipse() {
+		return ellipse.asUEllipse().bigger(6);
+	}
 
 	public void drawU(UGraphic ug, double x, double y) {
 		final UEllipse sh = getUEllipse();
@@ -70,7 +75,7 @@ public class TextBlockInEllipse implements TextBlock {
 
 		ug.draw(x, y, sh);
 
-		text.drawU(ug, x + dx, y + dy - 1.5);
+		text.drawU(ug, x + dx, y + dy - 2);
 	}
 
 	public Dimension2D calculateDimension(StringBounder stringBounder) {

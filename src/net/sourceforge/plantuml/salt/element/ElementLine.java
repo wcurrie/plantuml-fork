@@ -39,7 +39,7 @@ import net.sourceforge.plantuml.Dimension2DDouble;
 import net.sourceforge.plantuml.graphic.HtmlColor;
 import net.sourceforge.plantuml.graphic.HtmlColorUtils;
 import net.sourceforge.plantuml.graphic.StringBounder;
-import net.sourceforge.plantuml.graphic.TextBlockLineBefore;
+import net.sourceforge.plantuml.graphic.TextBlockLineBefore2;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
 
 public class ElementLine implements Element {
@@ -64,7 +64,7 @@ public class ElementLine implements Element {
 		if (separator == '=') {
 			y2 = y2 - 1;
 		}
-		TextBlockLineBefore.drawLine(ug, x, y2, dimToUse.getWidth(), separator);
+		TextBlockLineBefore2.drawLine(ug, x, y2, dimToUse.getWidth(), separator);
 		ug.getParam().setColor(old);
 	}
 }

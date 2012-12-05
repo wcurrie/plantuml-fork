@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 9501 $
+ * Revision $Revision: 9565 $
  *
  */
 package net.sourceforge.plantuml.sequencediagram.graphic;
@@ -450,6 +450,9 @@ class DrawableSetInitializer {
 			final Lazy lazy = new Lazy() {
 				public double getNow() {
 					final GraphicalElement after = drawableSet.getEvent(m.getJustAfter());
+					if (after == null) {
+						return 0;
+					}
 					return after.getStartingY();
 				}
 			};

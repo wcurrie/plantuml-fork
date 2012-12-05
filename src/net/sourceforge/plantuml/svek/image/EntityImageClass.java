@@ -40,27 +40,29 @@ import net.sourceforge.plantuml.ColorParam;
 import net.sourceforge.plantuml.Dimension2DDouble;
 import net.sourceforge.plantuml.FontParam;
 import net.sourceforge.plantuml.ISkinParam;
+import net.sourceforge.plantuml.SkinParamUtils;
 import net.sourceforge.plantuml.Url;
 import net.sourceforge.plantuml.cucadiagram.ILeaf;
 import net.sourceforge.plantuml.cucadiagram.PortionShower;
 import net.sourceforge.plantuml.graphic.HtmlColor;
 import net.sourceforge.plantuml.graphic.StringBounder;
-import net.sourceforge.plantuml.graphic.TextBlockWidth;
+import net.sourceforge.plantuml.graphic.TextBlock;
 import net.sourceforge.plantuml.svek.AbstractEntityImage;
 import net.sourceforge.plantuml.svek.ShapeType;
 import net.sourceforge.plantuml.ugraphic.Shadowable;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
+import net.sourceforge.plantuml.ugraphic.UGraphicHorizontalLine;
 import net.sourceforge.plantuml.ugraphic.UGroup;
 import net.sourceforge.plantuml.ugraphic.URectangle;
 import net.sourceforge.plantuml.ugraphic.UStroke;
 
 public class EntityImageClass extends AbstractEntityImage {
 
-	final private TextBlockWidth body;
+	final private TextBlock body;
 	final private int shield;
 	final private EntityImageClassHeader2 header;
 	final private List<Url> url;
-	final private TextBlockWidth mouseOver;
+	final private TextBlock mouseOver;
 	final private double roundCorner;
 
 	public EntityImageClass(ILeaf entity, ISkinParam skinParam, PortionShower portionShower) {
@@ -97,23 +99,24 @@ public class EntityImageClass extends AbstractEntityImage {
 		drawInternal(ug, xTheoricalPosition, yTheoricalPosition);
 		if (mouseOver != null) {
 			final UGroup g = ug.createGroup();
-			ug.getParam().setBackcolor(getColor(ColorParam.classBackground, getStereo()));
+			ug.getParam().setBackcolor(SkinParamUtils.getColor(getSkinParam(), ColorParam.classBackground, getStereo()));
 			final Dimension2D dim = mouseOver.calculateDimension(ug.getStringBounder());
 			final Shadowable rect = new URectangle(dim.getWidth(), dim.getHeight());
 			if (getSkinParam().shadowing()) {
 				rect.setDeltaShadow(4);
 			}
 
-			final HtmlColor classBorder = getColor(ColorParam.classBorder, getStereo());
+			final HtmlColor classBorder = SkinParamUtils.getColor(getSkinParam(), ColorParam.classBorder, getStereo());
 			ug.getParam().setColor(classBorder);
-			ug.getParam().setBackcolor(getColor(ColorParam.classBackground, getStereo()));
+			ug.getParam().setBackcolor(SkinParamUtils.getColor(getSkinParam(), ColorParam.classBackground, getStereo()));
 
 			final double x = xTheoricalPosition + 30;
 			final double y = yTheoricalPosition + 30;
 			ug.getParam().setStroke(new UStroke(1.5));
 			g.draw(x, y, rect);
 			ug.getParam().setStroke(new UStroke());
-			mouseOver.drawU(ug, x, y, dim.getWidth());
+			final UGraphic ug2 = new UGraphicHorizontalLine(ug, x, x + dim.getWidth());
+			mouseOver.drawU(ug2, x, y);
 			g.close();
 		}
 
@@ -134,11 +137,11 @@ public class EntityImageClass extends AbstractEntityImage {
 			rect.setDeltaShadow(4);
 		}
 
-		final HtmlColor classBorder = getColor(ColorParam.classBorder, getStereo());
+		final HtmlColor classBorder = SkinParamUtils.getColor(getSkinParam(), ColorParam.classBorder, getStereo());
 		ug.getParam().setColor(classBorder);
 		HtmlColor backcolor = getEntity().getSpecificBackColor();
 		if (backcolor == null) {
-			backcolor = getColor(ColorParam.classBackground, getStereo());
+			backcolor = SkinParamUtils.getColor(getSkinParam(), ColorParam.classBackground, getStereo());
 		}
 		ug.getParam().setBackcolor(backcolor);
 
@@ -157,7 +160,9 @@ public class EntityImageClass extends AbstractEntityImage {
 		if (body != null) {
 			ug.getParam().setBackcolor(backcolor);
 			ug.getParam().setColor(classBorder);
-			body.drawU(ug, x, y, widthTotal);
+			// body.asTextBlock(widthTotal).drawU(ug, x, y);
+			final UGraphic ug2 = new UGraphicHorizontalLine(ug, x, x + widthTotal);
+			body.drawU(ug2, x, y);
 		}
 	}
 

@@ -38,6 +38,7 @@ import java.awt.geom.Dimension2D;
 import net.sourceforge.plantuml.ColorParam;
 import net.sourceforge.plantuml.Dimension2DDouble;
 import net.sourceforge.plantuml.ISkinParam;
+import net.sourceforge.plantuml.SkinParamUtils;
 import net.sourceforge.plantuml.cucadiagram.ILeaf;
 import net.sourceforge.plantuml.graphic.StringBounder;
 import net.sourceforge.plantuml.svek.AbstractEntityImage;
@@ -67,14 +68,14 @@ public class EntityImageCircleEnd extends AbstractEntityImage {
 		}
 		ug.getParam().setStroke(new UStroke());
 		ug.getParam().setBackcolor(null);
-		ug.getParam().setColor(getColor(ColorParam.activityEnd, getStereo()));
+		ug.getParam().setColor(SkinParamUtils.getColor(getSkinParam(), ColorParam.activityEnd, getStereo()));
 		ug.draw(xTheoricalPosition, yTheoricalPosition, circle);
 		ug.getParam().setStroke(new UStroke());
 
 		final double delta = 4;
 		final UShape circleSmall = new UEllipse(SIZE - delta * 2, SIZE - delta * 2);
 		ug.getParam().setColor(null);
-		ug.getParam().setBackcolor(getColor(ColorParam.activityEnd, getStereo()));
+		ug.getParam().setBackcolor(SkinParamUtils.getColor(getSkinParam(), ColorParam.activityEnd, getStereo()));
 		ug.draw(xTheoricalPosition + delta + 0.5, yTheoricalPosition + delta + 0.5, circleSmall);
 
 	}

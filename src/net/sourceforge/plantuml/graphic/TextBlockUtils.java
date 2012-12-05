@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 9495 $
+ * Revision $Revision: 9560 $
  *
  */
 package net.sourceforge.plantuml.graphic;
@@ -97,14 +97,6 @@ public class TextBlockUtils {
 		return new TextBlockMarged(textBlock, marginX, marginX, marginY, marginY);
 	}
 
-	public static TextBlockWidth withMargin(TextBlockWidth textBlock, double marginX, double marginY) {
-		return new TextBlocWidthMarged(textBlock, marginX, marginX, marginY, marginY);
-	}
-
-	public static TextBlockWidth withMargin(TextBlockWidth textBlock, double marginX, double marginY1, double marginY2) {
-		return new TextBlocWidthMarged(textBlock, marginX, marginX, marginY1, marginY2);
-	}
-
 	public static TextBlock withMinWidth(TextBlock textBlock, double minWidth, HorizontalAlignement horizontalAlignement) {
 		return new TextBlockMinWidth(textBlock, minWidth, horizontalAlignement);
 	}
@@ -154,7 +146,7 @@ public class TextBlockUtils {
 	}
 
 	public static TextBlock mergeTB(TextBlock b1, TextBlock b2, HorizontalAlignement horizontalAlignement) {
-		return new TextBlockVertical(b1, b2, horizontalAlignement);
+		return new TextBlockVertical2(b1, b2, horizontalAlignement);
 	}
 
 }

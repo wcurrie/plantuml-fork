@@ -39,7 +39,9 @@ import java.util.List;
 
 import net.sourceforge.plantuml.Dimension2DDouble;
 import net.sourceforge.plantuml.Url;
+import net.sourceforge.plantuml.ugraphic.AbstractUGraphicHorizontalLine;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
+import net.sourceforge.plantuml.ugraphic.UHorizontalLine;
 import net.sourceforge.plantuml.ugraphic.UPath;
 
 class USymbolDatabase extends USymbol {
@@ -60,12 +62,39 @@ class USymbolDatabase extends USymbol {
 
 		ug.draw(xTheoricalPosition, yTheoricalPosition, shape);
 
+		final UPath closing = getClosingPath(width);
+		ug.draw(xTheoricalPosition, yTheoricalPosition, closing);
+
+	}
+
+	private UPath getClosingPath(double width) {
 		final UPath closing = new UPath();
 		closing.moveTo(0, 10);
 		closing.cubicTo(10, 20, width / 2 - 10, 20, width / 2, 20);
 		closing.cubicTo(width / 2 + 10, 20, width - 10, 20, width, 10);
+		return closing;
+	}
 
-		ug.draw(xTheoricalPosition, yTheoricalPosition, closing);
+	class MyUGraphic extends AbstractUGraphicHorizontalLine {
+
+		private final double startingX;
+		private final double endingX;
+
+		public MyUGraphic(UGraphic ug, double startingX, double endingX) {
+			super(ug);
+			this.startingX = startingX;
+			this.endingX = endingX;
+		}
+
+		@Override
+		protected void drawHline(UGraphic ug, double x, double y, UHorizontalLine line) {
+			final UPath closing = getClosingPath(endingX - startingX);
+			final HtmlColor backcolor = ug.getParam().getBackcolor();
+			ug.getParam().setBackcolor(null);
+			ug.draw(startingX, y - 15, closing);
+			ug.getParam().setBackcolor(backcolor);
+			line.drawTitle(ug, startingX, endingX, y, true);
+		}
 
 	}
 
@@ -82,7 +111,8 @@ class USymbolDatabase extends USymbol {
 				drawDatabase(ug, x, y, dim.getWidth(), dim.getHeight(), symbolContext.isShadowing());
 				final Margin margin = getMargin();
 				final TextBlock tb = TextBlockUtils.mergeTB(stereotype, label, HorizontalAlignement.CENTER);
-				tb.drawU(ug, x + margin.getX1(), y + margin.getY1());
+				final UGraphic ug2 = new MyUGraphic(ug, x, x + dim.getWidth());
+				tb.drawU(ug2, x + margin.getX1(), y + margin.getY1());
 
 			}
 

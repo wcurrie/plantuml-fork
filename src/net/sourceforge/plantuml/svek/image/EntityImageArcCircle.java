@@ -38,6 +38,7 @@ import java.awt.geom.Dimension2D;
 import net.sourceforge.plantuml.Dimension2DDouble;
 import net.sourceforge.plantuml.FontParam;
 import net.sourceforge.plantuml.ISkinParam;
+import net.sourceforge.plantuml.SkinParamUtils;
 import net.sourceforge.plantuml.StringUtils;
 import net.sourceforge.plantuml.cucadiagram.Display;
 import net.sourceforge.plantuml.cucadiagram.ILeaf;
@@ -64,15 +65,14 @@ public class EntityImageArcCircle extends AbstractEntityImage {
 		final Stereotype stereotype = entity.getStereotype();
 
 		this.name = TextBlockUtils.create(entity.getDisplay(), new FontConfiguration(
-				getFont(FontParam.COMPONENT, stereotype), getFontColor(FontParam.COMPONENT, stereotype)),
+				SkinParamUtils.getFont(getSkinParam(), FontParam.COMPONENT, stereotype), SkinParamUtils.getFontColor(getSkinParam(), FontParam.COMPONENT, stereotype)),
 				HorizontalAlignement.CENTER, skinParam);
 
 		if (stereotype == null || stereotype.getLabel() == null) {
 			this.stereo = null;
 		} else {
 			this.stereo = TextBlockUtils.create(Display.getWithNewlines(stereotype.getLabel()),
-					new FontConfiguration(getFont(FontParam.COMPONENT_STEREOTYPE, stereotype), getFontColor(
-							FontParam.COMPONENT_STEREOTYPE, null)), HorizontalAlignement.CENTER, skinParam);
+					new FontConfiguration(SkinParamUtils.getFont(getSkinParam(), FontParam.COMPONENT_STEREOTYPE, stereotype), SkinParamUtils.getFontColor(getSkinParam(), FontParam.COMPONENT_STEREOTYPE, null)), HorizontalAlignement.CENTER, skinParam);
 		}
 
 	}

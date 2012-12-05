@@ -40,6 +40,7 @@ import net.sourceforge.plantuml.ColorParam;
 import net.sourceforge.plantuml.Dimension2DDouble;
 import net.sourceforge.plantuml.FontParam;
 import net.sourceforge.plantuml.ISkinParam;
+import net.sourceforge.plantuml.SkinParamUtils;
 import net.sourceforge.plantuml.StringUtils;
 import net.sourceforge.plantuml.Url;
 import net.sourceforge.plantuml.cucadiagram.Display;
@@ -70,15 +71,14 @@ public class EntityImageCircleInterface extends AbstractEntityImage {
 		final Stereotype stereotype = entity.getStereotype();
 
 		this.name = TextBlockUtils.create(entity.getDisplay(), new FontConfiguration(
-				getFont(FontParam.COMPONENT, stereotype), getFontColor(FontParam.COMPONENT, stereotype)),
+				SkinParamUtils.getFont(getSkinParam(), FontParam.COMPONENT, stereotype), SkinParamUtils.getFontColor(getSkinParam(), FontParam.COMPONENT, stereotype)),
 				HorizontalAlignement.CENTER, skinParam);
 
 		if (stereotype == null || stereotype.getLabel() == null) {
 			this.stereo = null;
 		} else {
 			this.stereo = TextBlockUtils.create(Display.getWithNewlines(stereotype.getLabel()),
-					new FontConfiguration(getFont(FontParam.COMPONENT_STEREOTYPE, stereotype), getFontColor(
-							FontParam.COMPONENT_STEREOTYPE, null)), HorizontalAlignement.CENTER, skinParam);
+					new FontConfiguration(SkinParamUtils.getFont(getSkinParam(), FontParam.COMPONENT_STEREOTYPE, stereotype), SkinParamUtils.getFontColor(getSkinParam(), FontParam.COMPONENT_STEREOTYPE, null)), HorizontalAlignement.CENTER, skinParam);
 		}
 		this.url = entity.getUrls();
 
@@ -113,8 +113,8 @@ public class EntityImageCircleInterface extends AbstractEntityImage {
 			circle.setDeltaShadow(4);
 		}
 		ug.getParam().setStroke(new UStroke(2));
-		ug.getParam().setColor(getColor(ColorParam.componentInterfaceBorder, getStereo()));
-		ug.getParam().setBackcolor(getColor(ColorParam.componentInterfaceBackground, getStereo()));
+		ug.getParam().setColor(SkinParamUtils.getColor(getSkinParam(), ColorParam.componentInterfaceBorder, getStereo()));
+		ug.getParam().setBackcolor(SkinParamUtils.getColor(getSkinParam(), ColorParam.componentInterfaceBackground, getStereo()));
 		if (url.size()>0) {
 			ug.startUrl(url.get(0));
 		}

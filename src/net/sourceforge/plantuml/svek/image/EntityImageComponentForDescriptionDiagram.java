@@ -40,8 +40,10 @@ import java.util.List;
 import net.sourceforge.plantuml.ColorParam;
 import net.sourceforge.plantuml.FontParam;
 import net.sourceforge.plantuml.ISkinParam;
+import net.sourceforge.plantuml.SkinParamUtils;
 import net.sourceforge.plantuml.StringUtils;
 import net.sourceforge.plantuml.Url;
+import net.sourceforge.plantuml.cucadiagram.BodyEnhanced2;
 import net.sourceforge.plantuml.cucadiagram.Display;
 import net.sourceforge.plantuml.cucadiagram.ILeaf;
 import net.sourceforge.plantuml.cucadiagram.Stereotype;
@@ -71,18 +73,22 @@ public class EntityImageComponentForDescriptionDiagram extends AbstractEntityIma
 		if (symbol == null) {
 			throw new IllegalArgumentException();
 		}
-		final TextBlock desc = TextBlockUtils.create(
-				entity.getDisplay(),
-				new FontConfiguration(getFont(getFontParam(symbol), stereotype), getFontColor(getFontParam(symbol),
-						stereotype)), HorizontalAlignement.CENTER, skinParam);
+		
+		final TextBlock desc = new BodyEnhanced2(entity.getDisplay(), getFontParam(symbol), skinParam,
+				HorizontalAlignement.CENTER, stereotype);
+
+//		final TextBlock desc = TextBlockUtils.create(
+//				entity.getDisplay(),
+//				new FontConfiguration(getFont(getFontParam(symbol), stereotype), getFontColor(getFontParam(symbol),
+//						stereotype)), HorizontalAlignement.CENTER, skinParam);
 
 		this.url = entity.getUrls();
 
 		HtmlColor backcolor = getEntity().getSpecificBackColor();
 		if (backcolor == null) {
-			backcolor = getColor(getColorParamBack(symbol), getStereo());
+			backcolor = SkinParamUtils.getColor(getSkinParam(), getColorParamBack(symbol), getStereo());
 		}
-		final HtmlColor forecolor = getColor(getColorParamBorder(symbol), getStereo());
+		final HtmlColor forecolor = SkinParamUtils.getColor(getSkinParam(), getColorParamBorder(symbol), getStereo());
 		final SymbolContext ctx = new SymbolContext(backcolor, forecolor).withStroke(new UStroke(1.5)).withShadow(
 				getSkinParam().shadowing());
 
@@ -90,8 +96,7 @@ public class EntityImageComponentForDescriptionDiagram extends AbstractEntityIma
 		if (stereotype != null && stereotype.getLabel() != null) {
 			stereo = TextBlockUtils.create(
 					Display.getWithNewlines(stereotype.getLabel()),
-					new FontConfiguration(getFont(getFontParamStereotype(symbol), stereotype), getFontColor(
-							getFontParamStereotype(symbol), null)), HorizontalAlignement.CENTER, skinParam);
+					new FontConfiguration(SkinParamUtils.getFont(getSkinParam(), getFontParamStereotype(symbol), stereotype), SkinParamUtils.getFontColor(getSkinParam(), getFontParamStereotype(symbol), null)), HorizontalAlignement.CENTER, skinParam);
 		}
 
 		asSmall = symbol.asSmall(desc, stereo, ctx);

@@ -39,6 +39,7 @@ import net.sourceforge.plantuml.ColorParam;
 import net.sourceforge.plantuml.Dimension2DDouble;
 import net.sourceforge.plantuml.FontParam;
 import net.sourceforge.plantuml.ISkinParam;
+import net.sourceforge.plantuml.SkinParamUtils;
 import net.sourceforge.plantuml.cucadiagram.ILeaf;
 import net.sourceforge.plantuml.cucadiagram.Stereotype;
 import net.sourceforge.plantuml.graphic.FontConfiguration;
@@ -68,8 +69,7 @@ public class EntityImageEmptyPackage2 extends AbstractEntityImage {
 		this.stereotype = entity.getStereotype();
 		this.desc = TextBlockUtils.create(
 				entity.getDisplay(),
-				new FontConfiguration(getFont(FontParam.PACKAGE, stereotype), getFontColor(FontParam.PACKAGE,
-						stereotype)), HorizontalAlignement.CENTER, skinParam);
+				new FontConfiguration(SkinParamUtils.getFont(getSkinParam(), FontParam.PACKAGE, stereotype), SkinParamUtils.getFontColor(getSkinParam(), FontParam.PACKAGE, stereotype)), HorizontalAlignement.CENTER, skinParam);
 	}
 
 	@Override
@@ -91,7 +91,7 @@ public class EntityImageEmptyPackage2 extends AbstractEntityImage {
 		final ClusterDecoration decoration = new ClusterDecoration(getSkinParam().getPackageStyle(), null, desc,
 				TextBlockUtils.empty(0, 0), stateBack, 0, 0, widthTotal, heightTotal);
 
-		decoration.drawU(ug, xTheoricalPosition, yTheoricalPosition, getColor(ColorParam.packageBorder, getStereo()),
+		decoration.drawU(ug, xTheoricalPosition, yTheoricalPosition, SkinParamUtils.getColor(getSkinParam(), ColorParam.packageBorder, getStereo()),
 				getSkinParam().shadowing());
 
 	}

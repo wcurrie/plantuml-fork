@@ -39,9 +39,9 @@ import java.util.List;
 
 import net.sourceforge.plantuml.FontParam;
 import net.sourceforge.plantuml.ISkinParam;
-import net.sourceforge.plantuml.graphic.TextBlockLineBefore;
+import net.sourceforge.plantuml.graphic.TextBlock;
+import net.sourceforge.plantuml.graphic.TextBlockLineBefore2;
 import net.sourceforge.plantuml.graphic.TextBlockUtils;
-import net.sourceforge.plantuml.graphic.TextBlockWidth;
 
 public class BlockMemberImpl implements BlockMember {
 
@@ -55,9 +55,9 @@ public class BlockMemberImpl implements BlockMember {
 		return Collections.unmodifiableList(members);
 	}
 
-	public TextBlockWidth asTextBlock(FontParam fontParam, ISkinParam skinParam) {
-		return new TextBlockLineBefore(TextBlockUtils.withMargin(
-				new MethodsOrFieldsArea(members, fontParam, skinParam), 6, 4));
+	public TextBlock asTextBlock(FontParam fontParam, ISkinParam skinParam) {
+		return new TextBlockLineBefore2(TextBlockUtils.withMargin((TextBlock) new MethodsOrFieldsArea(members,
+				fontParam, skinParam), 6, 4));
 	}
 
 }

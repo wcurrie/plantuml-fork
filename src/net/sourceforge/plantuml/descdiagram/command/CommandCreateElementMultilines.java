@@ -51,6 +51,7 @@ import net.sourceforge.plantuml.cucadiagram.LeafType;
 import net.sourceforge.plantuml.cucadiagram.Stereotype;
 import net.sourceforge.plantuml.descdiagram.DescriptionDiagram;
 import net.sourceforge.plantuml.graphic.HtmlColorUtils;
+import net.sourceforge.plantuml.graphic.USymbol;
 
 public class CommandCreateElementMultilines extends CommandMultilines2<DescriptionDiagram> {
 
@@ -69,7 +70,7 @@ public class CommandCreateElementMultilines extends CommandMultilines2<Descripti
 
 	private static RegexConcat getRegexConcat() {
 		return new RegexConcat(new RegexLeaf("^"), //
-				new RegexLeaf("TYPE", "(usecase)\\s+"), //
+				new RegexLeaf("TYPE", "(usecase|database)\\s+"), //
 				new RegexLeaf("CODE", "([\\p{L}0-9_.]+)"), //
 				new RegexLeaf("STEREO", "(?:\\s*(\\<\\<.+\\>\\>))?"), //
 				new RegexLeaf("\\s*"), //
@@ -81,7 +82,20 @@ public class CommandCreateElementMultilines extends CommandMultilines2<Descripti
 	public CommandExecutionResult executeNow(List<String> lines) {
 		StringUtils.trim(lines, false);
 		final RegexResult line0 = getStartingPattern().matcher(lines.get(0).trim());
-		final LeafType type = LeafType.getLeafType(line0.get("TYPE", 0).toUpperCase());
+		final String symbol = line0.get("TYPE", 0).toUpperCase();
+		final LeafType type;
+		final USymbol usymbol;
+
+		if (symbol.equalsIgnoreCase("usecase")) {
+			type = LeafType.USECASE;
+			usymbol = null;
+		} else if (symbol.equalsIgnoreCase("database")) {
+			type = LeafType.COMPONENT2;
+			usymbol = USymbol.DATABASE;
+		} else {
+			throw new IllegalStateException();
+		}
+
 		final Code code = Code.of(line0.get("CODE", 0));
 		Display display = new Display(lines.subList(1, lines.size() - 1));
 		final String descStart = line0.get("DESC", 0);
@@ -89,8 +103,8 @@ public class CommandCreateElementMultilines extends CommandMultilines2<Descripti
 			display = display.addFirst(descStart);
 		}
 
-		final List<String> lineLast = StringUtils.getSplit(Pattern.compile(getPatternEnd()), lines
-				.get(lines.size() - 1));
+		final List<String> lineLast = StringUtils.getSplit(Pattern.compile(getPatternEnd()),
+				lines.get(lines.size() - 1));
 		if (StringUtils.isNotEmpty(lineLast.get(0))) {
 			display = display.add(lineLast.get(0));
 		}
@@ -98,6 +112,7 @@ public class CommandCreateElementMultilines extends CommandMultilines2<Descripti
 		final String stereotype = line0.get("STEREO", 0);
 
 		final ILeaf result = getSystem().createLeaf(code, display, type);
+		result.setUSymbol(usymbol);
 		if (stereotype != null) {
 			result.setStereotype(new Stereotype(stereotype, getSystem().getSkinParam().getCircledCharacterRadius(),
 					getSystem().getSkinParam().getFont(FontParam.CIRCLED_CHARACTER, null)));
