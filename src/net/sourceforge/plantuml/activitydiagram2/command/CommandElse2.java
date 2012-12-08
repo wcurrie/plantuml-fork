@@ -39,6 +39,7 @@ import net.sourceforge.plantuml.command.SingleLineCommand2;
 import net.sourceforge.plantuml.command.regex.RegexConcat;
 import net.sourceforge.plantuml.command.regex.RegexLeaf;
 import net.sourceforge.plantuml.command.regex.RegexResult;
+import net.sourceforge.plantuml.cucadiagram.Display;
 
 public class CommandElse2 extends SingleLineCommand2<ActivityDiagram2> {
 
@@ -58,7 +59,7 @@ public class CommandElse2 extends SingleLineCommand2<ActivityDiagram2> {
 //		if (getSystem().getLastEntityConsulted() == null) {
 //			return CommandExecutionResult.error("No if for this endif");
 //		}
-		getSystem().else2(arg.get("WHEN", 0));
+		getSystem().else2(Display.getWithNewlines(arg.get("WHEN", 0)));
 
 		return CommandExecutionResult.ok();
 	}

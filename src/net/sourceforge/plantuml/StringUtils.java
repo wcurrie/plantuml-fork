@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  *
- * Revision $Revision: 9501 $
+ * Revision $Revision: 9603 $
  *
  */
 package net.sourceforge.plantuml;
@@ -58,6 +58,7 @@ public class StringUtils {
 	public static List<String> getWithNewlines2(Code s) {
 		return getWithNewlines2(s.getCode());
 	}
+
 	public static List<String> getWithNewlines2(String s) {
 		if (s == null) {
 			return null;
@@ -153,6 +154,17 @@ public class StringUtils {
 		return result.toString();
 	}
 
+	public static String unicodeForHtml(Display display) {
+		final StringBuilder result = new StringBuilder();
+		for (int i = 0; i < display.size(); i++) {
+			result.append(unicodeForHtml(display.get(i).toString()));
+			if (i < display.size() - 1) {
+				result.append("<br>");
+			}
+		}
+		return result.toString();
+	}
+
 	public static String manageArrowForSequence(String s) {
 		s = s.replace('=', '-').toLowerCase();
 		return s;
@@ -236,9 +248,9 @@ public class StringUtils {
 		return Direction.DOWN;
 	}
 
-//	public static Code eventuallyRemoveStartingAndEndingDoubleQuote(Code s) {
-//		return Code.of(eventuallyRemoveStartingAndEndingDoubleQuote(s.getCode()));
-//	}
+	// public static Code eventuallyRemoveStartingAndEndingDoubleQuote(Code s) {
+	// return Code.of(eventuallyRemoveStartingAndEndingDoubleQuote(s.getCode()));
+	// }
 
 	public static String eventuallyRemoveStartingAndEndingDoubleQuote(String s) {
 		if (s.startsWith("\"") && s.endsWith("\"")) {
@@ -318,7 +330,7 @@ public class StringUtils {
 			}
 		}
 	}
-	
+
 	private static boolean firstColumnRemovable(List<String> data) {
 		boolean allEmpty = true;
 		for (String s : data) {
@@ -449,7 +461,6 @@ public class StringUtils {
 		}
 		return result;
 	}
-	
 
 	public static List<CharSequence> manageEmbededDiagrams2(final List<String> strings) {
 		final List<CharSequence> result = new ArrayList<CharSequence>();
@@ -474,11 +485,9 @@ public class StringUtils {
 		return result;
 	}
 
-
 	public static boolean isMethod(String s) {
 		return s.contains("(") || s.contains(")");
 	}
-
 
 	public static <O> List<O> merge(List<O> l1, List<O> l2) {
 		final List<O> result = new ArrayList<O>(l1);

@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 9498 $
+ * Revision $Revision: 9608 $
  *
  */
 package net.sourceforge.plantuml.cucadiagram;
@@ -37,7 +37,6 @@ import java.awt.geom.Dimension2D;
 
 import net.sourceforge.plantuml.Hideable;
 import net.sourceforge.plantuml.SpriteContainer;
-import net.sourceforge.plantuml.StringUtils;
 import net.sourceforge.plantuml.UniqueSequence;
 import net.sourceforge.plantuml.Url;
 import net.sourceforge.plantuml.command.Position;
@@ -55,7 +54,7 @@ public class Link implements Hideable {
 	final private IEntity cl1;
 	final private IEntity cl2;
 	private LinkType type;
-	final private String label;
+	final private Display label;
 
 	private int length;
 	final private String qualifier1;
@@ -79,19 +78,19 @@ public class Link implements Hideable {
 
 	private boolean opale;
 	private boolean horizontalSolitary;
-	
+
 	private Url url;
 
-	public Link(IEntity cl1, IEntity cl2, LinkType type, String label, int length) {
+	public Link(IEntity cl1, IEntity cl2, LinkType type, Display label, int length) {
 		this(cl1, cl2, type, label, length, null, null, null, null, null);
 	}
 
-	public Link(IEntity cl1, IEntity cl2, LinkType type, String label, int length, String qualifier1,
+	public Link(IEntity cl1, IEntity cl2, LinkType type, Display label, int length, String qualifier1,
 			String qualifier2, String labeldistance, String labelangle) {
 		this(cl1, cl2, type, label, length, qualifier1, qualifier2, labeldistance, labelangle, null);
 	}
 
-	public Link(IEntity cl1, IEntity cl2, LinkType type, String label, int length, String qualifier1,
+	public Link(IEntity cl1, IEntity cl2, LinkType type, Display label, int length, String qualifier1,
 			String qualifier2, String labeldistance, String labelangle, HtmlColor specificColor) {
 		if (length < 1) {
 			throw new IllegalArgumentException();
@@ -99,16 +98,16 @@ public class Link implements Hideable {
 		if (cl1 == null || cl2 == null) {
 			throw new IllegalArgumentException();
 		}
-		// if (cl1.getEntityType() == LeafType.STATE_CONCURRENT) {
-		// throw new IllegalArgumentException();
-		// }
-		// if (cl2.getEntityType() == LeafType.STATE_CONCURRENT) {
-		// throw new IllegalArgumentException();
-		// }
+
 		this.cl1 = cl1;
 		this.cl2 = cl2;
 		this.type = type;
-		this.label = label;
+		if (label == null) {
+			this.label = null;
+		} else {
+			this.url = label.initUrl();
+			this.label = label.removeUrl(url);
+		}
 		this.length = length;
 		this.qualifier1 = qualifier1;
 		this.qualifier2 = qualifier2;
@@ -139,11 +138,11 @@ public class Link implements Hideable {
 	}
 
 	public void goDotted() {
-		type =  type.getDotted();
+		type = type.getDotted();
 	}
-	
+
 	private boolean hidden = false;
-	
+
 	public void goHidden() {
 		this.hidden = true;
 	}
@@ -207,7 +206,7 @@ public class Link implements Hideable {
 		return type;
 	}
 
-	public String getLabel() {
+	public Display getLabel() {
 		return label;
 	}
 

@@ -62,11 +62,12 @@ public class ComponentRoseReference extends AbstractTextualComponent {
 	private final double xMargin = 2;
 	private final HorizontalAlignement position;
 	private final double deltaShadow;
+	private final UStroke stroke;
 
 	public ComponentRoseReference(HtmlColor fontColor, HtmlColor fontHeaderColor, UFont font, HtmlColor borderColor,
 			HtmlColor backgroundHeader, HtmlColor background, UFont header,
 			Display stringsToDisplay, HorizontalAlignement position,
-			SpriteContainer spriteContainer, double deltaShadow) {
+			SpriteContainer spriteContainer, double deltaShadow, UStroke stroke) {
 		super(stringsToDisplay.subList(1, stringsToDisplay.size()), fontColor, font, HorizontalAlignement.LEFT, 4, 4,
 				4, spriteContainer);
 		this.position = position;
@@ -74,6 +75,7 @@ public class ComponentRoseReference extends AbstractTextualComponent {
 		this.background = background;
 		this.borderColor = borderColor;
 		this.deltaShadow = deltaShadow;
+		this.stroke = stroke;
 
 		textHeader = TextBlockUtils.create(stringsToDisplay.subList(0, 1), new FontConfiguration(header,
 				fontHeaderColor), HorizontalAlignement.LEFT, spriteContainer);
@@ -87,7 +89,7 @@ public class ComponentRoseReference extends AbstractTextualComponent {
 		final int textHeaderWidth = (int) (getHeaderWidth(stringBounder));
 		final int textHeaderHeight = (int) (getHeaderHeight(stringBounder));
 
-		ug.getParam().setStroke(new UStroke(2));
+		ug.getParam().setStroke(stroke);
 		final URectangle rect = new URectangle(dimensionToUse.getWidth() - xMargin * 2 - deltaShadow,
 				dimensionToUse.getHeight() - heightFooter);
 		rect.setDeltaShadow(deltaShadow);

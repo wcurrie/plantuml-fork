@@ -46,9 +46,9 @@ import net.sourceforge.plantuml.command.SingleLineCommand2;
 import net.sourceforge.plantuml.command.regex.RegexConcat;
 import net.sourceforge.plantuml.command.regex.RegexLeaf;
 import net.sourceforge.plantuml.command.regex.RegexOr;
-import net.sourceforge.plantuml.command.regex.RegexPartialMatch;
 import net.sourceforge.plantuml.command.regex.RegexResult;
 import net.sourceforge.plantuml.cucadiagram.Code;
+import net.sourceforge.plantuml.cucadiagram.Display;
 import net.sourceforge.plantuml.cucadiagram.IEntity;
 import net.sourceforge.plantuml.cucadiagram.ILeaf;
 import net.sourceforge.plantuml.cucadiagram.LeafType;
@@ -67,37 +67,39 @@ final public class CommandLinkClass extends SingleLineCommand2<AbstractClassOrOb
 
 	static private RegexConcat getRegexConcat(UmlDiagramType umlDiagramType) {
 		return new RegexConcat(
-				new RegexLeaf("HEADER", "^(?:@([\\d.]+)\\s+)?"),
-				new RegexOr(
+				new RegexLeaf("HEADER", "^(?:@([\\d.]+)\\s+)?"), //
+				new RegexOr(//
 						new RegexLeaf("ENT1", "(?:" + optionalKeywords(umlDiagramType) + "\\s+)?"
 								+ "(\\.?[\\p{L}0-9_]+(?:\\.[\\p{L}0-9_]+)*|\"[^\"]+\")\\s*(\\<\\<.*\\>\\>)?"),
 						new RegexLeaf("COUPLE1",
 								"\\(\\s*(\\.?[\\p{L}0-9_]+(?:\\.[\\p{L}0-9_]+)*)\\s*,\\s*(\\.?[\\p{L}0-9_]+(?:\\.[\\p{L}0-9_]+)*)\\s*\\)")),
-				new RegexLeaf("\\s*"),
-				new RegexLeaf("FIRST_LABEL", "(?:\"([^\"]+)\")?"),
-				new RegexLeaf("\\s*"),
+				new RegexLeaf("\\s*"), //
+				new RegexLeaf("FIRST_LABEL", "(?:\"([^\"]+)\")?"), //
+				new RegexLeaf("\\s*"), //
 
 				new RegexConcat(
 						//
 						new RegexLeaf("ARROW_HEAD1", "( +o|[\\[<*+^]|[<\\[]\\|)?"), //
 						new RegexLeaf("ARROW_BODY1", "([-=.]+)"), //
 						new RegexLeaf("ARROW_STYLE1",
-						"(?:\\[((?:#\\w+|dotted|dashed|bold|hidden)(?:,#\\w+|,dotted|,dashed|,bold|,hidden)*)\\])?"),
+								"(?:\\[((?:#\\w+|dotted|dashed|bold|hidden)(?:,#\\w+|,dotted|,dashed|,bold|,hidden)*)\\])?"),
 						new RegexLeaf("ARROW_DIRECTION", "(left|right|up|down|le?|ri?|up?|do?)?"), //
 						new RegexLeaf("ARROW_STYLE2",
-						"(?:\\[((?:#\\w+|dotted|dashed|bold|hidden)(?:,#\\w+|,dotted|,dashed|,bold|,hidden)*)\\])?"),
+								"(?:\\[((?:#\\w+|dotted|dashed|bold|hidden)(?:,#\\w+|,dotted|,dashed|,bold|,hidden)*)\\])?"),
 						new RegexLeaf("ARROW_BODY2", "([-=.]*)"), //
 						new RegexLeaf("ARROW_HEAD2", "(o +|[\\]>*+^]|\\|[>\\]])?")), //
 
-				new RegexLeaf("\\s*"),
+				new RegexLeaf("\\s*"), //
 				new RegexLeaf("SECOND_LABEL", "(?:\"([^\"]+)\")?"),
-				new RegexLeaf("\\s*"),
+				new RegexLeaf("\\s*"), //
 				new RegexOr(
 						new RegexLeaf("ENT2", "(?:" + optionalKeywords(umlDiagramType) + "\\s+)?"
 								+ "(\\.?[\\p{L}0-9_]+(?:\\.[\\p{L}0-9_]+)*|\"[^\"]+\")\\s*(\\<\\<.*\\>\\>)?"),
 						new RegexLeaf("COUPLE2",
 								"\\(\\s*(\\.?[\\p{L}0-9_]+(?:\\.[\\p{L}0-9_]+)*)\\s*,\\s*(\\.?[\\p{L}0-9_]+(?:\\.[\\p{L}0-9_]+)*)\\s*\\)")),
-				new RegexLeaf("\\s*"), new RegexLeaf("LABEL_LINK", "(?::\\s*(.+))?"), new RegexLeaf("$"));
+				new RegexLeaf("\\s*"), //
+				new RegexLeaf("LABEL_LINK", "(?::\\s*(.+))?"), //
+				new RegexLeaf("$"));
 	}
 
 	private static String optionalKeywords(UmlDiagramType type) {
@@ -224,7 +226,7 @@ final public class CommandLinkClass extends SingleLineCommand2<AbstractClassOrOb
 			labelLink = labelLink.substring(0, labelLink.length() - 2).trim();
 		}
 
-		Link link = new Link(cl1, cl2, linkType, labelLink, queue, firstLabel, secondLabel, getSystem()
+		Link link = new Link(cl1, cl2, linkType, Display.getWithNewlines(labelLink), queue, firstLabel, secondLabel, getSystem()
 				.getLabeldistance(), getSystem().getLabelangle());
 
 		if (dir == Direction.LEFT || dir == Direction.UP) {
@@ -275,7 +277,7 @@ final public class CommandLinkClass extends SingleLineCommand2<AbstractClassOrOb
 			queue = getQueueLength(arg);
 		}
 
-		final String labelLink = arg.get("LABEL_LINK", 0);
+		final Display labelLink = Display.getWithNewlines(arg.get("LABEL_LINK", 0));
 		final String firstLabel = arg.get("FIRST_LABEL", 0);
 		final String secondLabel = arg.get("SECOND_LABEL", 0);
 		final Link link = new Link(cl1, cl2, linkType, labelLink, queue, firstLabel, secondLabel, getSystem()
@@ -303,7 +305,7 @@ final public class CommandLinkClass extends SingleLineCommand2<AbstractClassOrOb
 		final IEntity cl2 = getSystem().getOrCreateLeaf1(ent2, null);
 
 		final LinkType linkType = getLinkType(arg);
-		final String label = arg.get("LABEL_LINK", 0);
+		final Display label = Display.getWithNewlines(arg.get("LABEL_LINK", 0));
 		// final int length = getQueueLength(arg);
 		// final String weight = arg.get("HEADER").get(0);
 
@@ -329,7 +331,7 @@ final public class CommandLinkClass extends SingleLineCommand2<AbstractClassOrOb
 		final IEntity cl1 = getSystem().getOrCreateLeaf1(ent1, null);
 
 		final LinkType linkType = getLinkType(arg);
-		final String label = arg.get("LABEL_LINK", 0);
+		final Display label = Display.getWithNewlines(arg.get("LABEL_LINK", 0));
 		// final int length = getQueueLength(arg);
 		// final String weight = arg.get("HEADER").get(0);
 
@@ -432,8 +434,9 @@ final public class CommandLinkClass extends SingleLineCommand2<AbstractClassOrOb
 	}
 
 	private String getFullArrow(RegexResult arg) {
-		return notNull(arg.get("ARROW_HEAD1", 0)) + notNull(arg.get("ARROW_BODY1", 0)) + notNull(arg.get("ARROW_DIRECTION", 0))
-				+ notNull(arg.get("ARROW_BODY2", 0)) + notNull(arg.get("ARROW_HEAD2", 0));
+		return notNull(arg.get("ARROW_HEAD1", 0)) + notNull(arg.get("ARROW_BODY1", 0))
+				+ notNull(arg.get("ARROW_DIRECTION", 0)) + notNull(arg.get("ARROW_BODY2", 0))
+				+ notNull(arg.get("ARROW_HEAD2", 0));
 	}
 
 	private String notNull(String s) {
@@ -442,7 +445,7 @@ final public class CommandLinkClass extends SingleLineCommand2<AbstractClassOrOb
 		}
 		return s;
 	}
-	
+
 	private void applyStyle(String arrowStyle, Link link) {
 		if (arrowStyle == null) {
 			return;
@@ -463,8 +466,6 @@ final public class CommandLinkClass extends SingleLineCommand2<AbstractClassOrOb
 			}
 		}
 	}
-
-
 
 	private boolean isInversed(LinkDecor decors1, LinkDecor decors2) {
 		if (decors1 == LinkDecor.ARROW && decors2 != LinkDecor.ARROW) {

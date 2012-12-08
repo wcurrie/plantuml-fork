@@ -43,19 +43,22 @@ import net.sourceforge.plantuml.skin.Area;
 import net.sourceforge.plantuml.ugraphic.UFont;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
 import net.sourceforge.plantuml.ugraphic.URectangle;
+import net.sourceforge.plantuml.ugraphic.UStroke;
 
 final public class ComponentRoseNoteBox extends AbstractTextualComponent {
 
 	private final HtmlColor back;
 	private final HtmlColor foregroundColor;
 	private final double deltaShadow;
+	private final UStroke stroke;
 
 	public ComponentRoseNoteBox(HtmlColor back, HtmlColor foregroundColor, HtmlColor fontColor, UFont font,
-			Display strings, SpriteContainer spriteContainer, double deltaShadow) {
+			Display strings, SpriteContainer spriteContainer, double deltaShadow, UStroke stroke) {
 		super(strings, fontColor, font, HorizontalAlignement.LEFT, 4, 4, 4, spriteContainer);
 		this.back = back;
 		this.foregroundColor = foregroundColor;
 		this.deltaShadow = deltaShadow;
+		this.stroke = stroke;
 	}
 
 	@Override
@@ -88,9 +91,11 @@ final public class ComponentRoseNoteBox extends AbstractTextualComponent {
 
 		ug.getParam().setColor(foregroundColor);
 		ug.getParam().setBackcolor(back);
+		ug.getParam().setStroke(stroke);
 		final URectangle rect = new URectangle(x2, textHeight);
 		rect.setDeltaShadow(deltaShadow);
 		ug.draw(0, 0, rect);
+		ug.getParam().setStroke(new UStroke());
 
 		getTextBlock().drawU(ug, getMarginX1(), getMarginY());
 

@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 9495 $
+ * Revision $Revision: 9604 $
  *
  */
 package net.sourceforge.plantuml.graph;
@@ -266,7 +266,7 @@ public class Elastane {
 			final PolylineBreakeable polyline = ent.getValue();
 			final Shape shape = factory.getLink(polyline, b1, b2);
 
-			final String label = l.getLabel();
+			final String label = l.getLabel().get(0).toString();
 			if (label != null) {
 				// polyline.getFirst().getCenter();
 				final TextBlock textBlock = TextBlockUtils.create(Display.asList(label),

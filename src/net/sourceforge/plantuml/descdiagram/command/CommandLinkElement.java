@@ -42,6 +42,7 @@ import net.sourceforge.plantuml.command.regex.RegexConcat;
 import net.sourceforge.plantuml.command.regex.RegexLeaf;
 import net.sourceforge.plantuml.command.regex.RegexResult;
 import net.sourceforge.plantuml.cucadiagram.Code;
+import net.sourceforge.plantuml.cucadiagram.Display;
 import net.sourceforge.plantuml.cucadiagram.IEntity;
 import net.sourceforge.plantuml.cucadiagram.ILeaf;
 import net.sourceforge.plantuml.cucadiagram.LeafType;
@@ -279,7 +280,7 @@ public class CommandLinkElement extends SingleLineCommand2<DescriptionDiagram> {
 
 		final Labels labels = new Labels(arg);
 
-		Link link = new Link(cl1, cl2, linkType, labels.labelLink, queue.length(), labels.firstLabel,
+		Link link = new Link(cl1, cl2, linkType, Display.getWithNewlines(labels.labelLink), queue.length(), labels.firstLabel,
 				labels.secondLabel, getSystem().getLabeldistance(), getSystem().getLabelangle());
 
 		if (dir == Direction.LEFT || dir == Direction.UP) {
@@ -328,7 +329,7 @@ public class CommandLinkElement extends SingleLineCommand2<DescriptionDiagram> {
 		// dir = dir.getInv();
 		// }
 
-		Link link = new Link(cl1, cl2, linkType, arg.get("LABEL_LINK", 0), queue.length());
+		Link link = new Link(cl1, cl2, linkType, Display.getWithNewlines(arg.get("LABEL_LINK", 0)), queue.length());
 		if (dir == Direction.LEFT || dir == Direction.UP) {
 			link = link.getInv();
 		}

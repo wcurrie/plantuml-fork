@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 9495 $
+ * Revision $Revision: 9610 $
  *
  */
 package net.sourceforge.plantuml.skin.rose;
@@ -62,14 +62,16 @@ public class ComponentRoseGroupingHeader extends AbstractTextualComponent {
 	private final HtmlColor groupBorder;
 	private final HtmlColor background;
 	private final double deltaShadow;
+	private final UStroke stroke;
 
 	public ComponentRoseGroupingHeader(HtmlColor fontColor, HtmlColor background, HtmlColor groupBackground,
 			HtmlColor groupBorder, UFont bigFont, UFont smallFont, Display strings,
-			SpriteContainer spriteContainer, double deltaShadow) {
+			SpriteContainer spriteContainer, double deltaShadow, UStroke stroke) {
 		super(strings.get(0), fontColor, bigFont, HorizontalAlignement.LEFT, 15, 30, 1, spriteContainer);
 		this.groupBackground = groupBackground;
 		this.groupBorder = groupBorder;
 		this.background = background;
+		this.stroke = stroke;
 		this.deltaShadow = deltaShadow;
 		if (strings.size() == 1 || strings.get(1) == null) {
 			this.commentTextBlock = null;
@@ -111,7 +113,7 @@ public class ComponentRoseGroupingHeader extends AbstractTextualComponent {
 		final Dimension2D dimensionToUse = area.getDimensionToUse();
 		ug.getParam().setColor(groupBorder);
 		ug.getParam().setBackcolor(background);
-		ug.getParam().setStroke(new UStroke(2));
+		ug.getParam().setStroke(stroke);
 		final URectangle rect = new URectangle(dimensionToUse.getWidth(), dimensionToUse.getHeight());
 		rect.setDeltaShadow(deltaShadow);
 		ug.draw(0, 0, rect);
@@ -123,10 +125,10 @@ public class ComponentRoseGroupingHeader extends AbstractTextualComponent {
 		final Dimension2D dimensionToUse = area.getDimensionToUse();
 		ug.getParam().setColor(groupBorder);
 		ug.getParam().setBackcolor(null);
-		ug.getParam().setStroke(new UStroke(2));
+		ug.getParam().setStroke(stroke);
 		final URectangle rect = new URectangle(dimensionToUse.getWidth(), dimensionToUse.getHeight());
 		ug.draw(0, 0, rect);
-		ug.getParam().setStroke(new UStroke());
+		// ug.getParam().setStroke(new UStroke());
 
 		final StringBounder stringBounder = ug.getStringBounder();
 		final int textWidth = (int) getTextWidth(stringBounder);
@@ -142,7 +144,7 @@ public class ComponentRoseGroupingHeader extends AbstractTextualComponent {
 		polygon.addPoint(0, textHeight);
 		polygon.addPoint(0, 0);
 
-		ug.getParam().setStroke(new UStroke(2));
+		// ug.getParam().setStroke(new UStroke(2));
 		ug.getParam().setColor(groupBorder);
 		ug.getParam().setBackcolor(groupBackground);
 		ug.draw(0, 0, polygon);

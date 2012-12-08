@@ -37,10 +37,16 @@ import net.sourceforge.plantuml.svek.Control;
 
 class USymbolControl extends USymbolSimpleAbstract {
 
+	private final double thickness;
+	
+	public USymbolControl(double thickness) {
+		this.thickness = thickness;
+	}
+
 	@Override
 	protected TextBlock getDrawing(final SymbolContext symbolContext) {
 		return new Control(symbolContext.getBackColor(), symbolContext.getForeColor(),
-				symbolContext.isShadowing() ? 4.0 : 0.0);
+				symbolContext.isShadowing() ? 4.0 : 0.0, thickness);
 	}
 
 }

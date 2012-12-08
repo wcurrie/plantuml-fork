@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 9495 $
+ * Revision $Revision: 9610 $
  *
  */
 package net.sourceforge.plantuml.skin.rose;
@@ -44,6 +44,7 @@ import net.sourceforge.plantuml.ugraphic.UFont;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
 import net.sourceforge.plantuml.ugraphic.ULine;
 import net.sourceforge.plantuml.ugraphic.UPolygon;
+import net.sourceforge.plantuml.ugraphic.UStroke;
 
 final public class ComponentRoseNote extends AbstractTextualComponent {
 
@@ -53,16 +54,18 @@ final public class ComponentRoseNote extends AbstractTextualComponent {
 	private final double paddingX;
 	private final double paddingY;
 	private final double deltaShadow;
+	private final UStroke stroke;
 
 	public ComponentRoseNote(HtmlColor back, HtmlColor foregroundColor, HtmlColor fontColor, UFont font,
 			Display strings, double paddingX, double paddingY, SpriteContainer spriteContainer,
-			double deltaShadow) {
+			double deltaShadow, UStroke stroke) {
 		super(strings, fontColor, font, HorizontalAlignement.LEFT, 6, 15, 5, spriteContainer);
 		this.back = back;
 		this.foregroundColor = foregroundColor;
 		this.paddingX = paddingX;
 		this.paddingY = paddingY;
 		this.deltaShadow = deltaShadow;
+		this.stroke = stroke;
 	}
 
 	@Override
@@ -112,10 +115,12 @@ final public class ComponentRoseNote extends AbstractTextualComponent {
 
 		ug.getParam().setColor(foregroundColor);
 		ug.getParam().setBackcolor(back);
+		ug.getParam().setStroke(stroke);
 		ug.draw(0, 0, polygon);
 
 		ug.draw(x2 - cornersize, 0, new ULine(0, cornersize));
 		ug.draw(x2, cornersize, new ULine(-cornersize, 0));
+		ug.getParam().setStroke(new UStroke());
 
 		getTextBlock().drawU(ug, getMarginX1() + diffX / 2, getMarginY());
 

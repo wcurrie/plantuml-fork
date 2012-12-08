@@ -51,6 +51,7 @@ import javax.xml.transform.stream.StreamResult;
 
 import net.sourceforge.plantuml.UniqueSequence;
 import net.sourceforge.plantuml.classdiagram.ClassDiagram;
+import net.sourceforge.plantuml.cucadiagram.Display;
 import net.sourceforge.plantuml.cucadiagram.IEntity;
 import net.sourceforge.plantuml.cucadiagram.Link;
 import net.sourceforge.plantuml.cucadiagram.LinkDecor;
@@ -125,6 +126,10 @@ public class XmiClassDiagramArgo implements IXmiClassDiagram {
 
 	public static String forXMI(String s) {
 		return s.replace(':', ' ');
+	}
+
+	public static String forXMI(Display s) {
+		return s.get(0).toString().replace(':', ' ');
 	}
 
 	private void addLink(Link link) {

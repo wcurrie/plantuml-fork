@@ -35,20 +35,13 @@ package net.sourceforge.plantuml;
 
 
 public enum LineParam {
-//	sequenceActorBorder(0.1),
+//	sequenceBoundaryBorder,
+	sequenceActorBorder,
+	sequenceDividerBorder,
 //	sequenceGroupBorder(0.1),
 //	sequenceReferenceBorder(0.1),
-//	sequenceLifeLineBorder(0.1),
-	sequenceParticipantBorder(1.5);
+	sequenceLifeLineBorder,
+	sequenceParticipantBorder, noteBorder, sequenceGroupBorder, sequenceReferenceBorder;
 //	sequenceBoxBorder(0.1);
 	
-	private final double defaultValue;
-	
-	private LineParam(double defaultValue) {
-		this.defaultValue = defaultValue;
-	}
-
-	public double getDefaultValue() {
-		return defaultValue;
-	}
 }

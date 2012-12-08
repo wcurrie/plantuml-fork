@@ -173,7 +173,7 @@ public class CommandLinkLongActivity extends CommandMultilines2<ActivityDiagram>
 		final String arrow = StringUtils.manageArrowForCuca(line0.get("ARROW", 0));
 		final int lenght = arrow.length() - 1;
 
-		final String linkLabel = line0.get("BRACKET", 0);
+		final Display linkLabel = Display.getWithNewlines(line0.get("BRACKET", 0));
 
 		LinkType type = new LinkType(LinkDecor.ARROW, LinkDecor.NONE);
 		if (line0.get("ARROW", 0).contains(".")) {

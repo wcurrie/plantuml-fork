@@ -46,6 +46,7 @@ import net.sourceforge.plantuml.skin.Area;
 import net.sourceforge.plantuml.svek.EntityDomain;
 import net.sourceforge.plantuml.ugraphic.UFont;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
+import net.sourceforge.plantuml.ugraphic.UStroke;
 
 public class ComponentRoseEntity extends AbstractTextualComponent {
 
@@ -53,11 +54,10 @@ public class ComponentRoseEntity extends AbstractTextualComponent {
 	private final boolean head;
 
 	public ComponentRoseEntity(HtmlColor yellow, HtmlColor red, HtmlColor fontColor, UFont font,
-			Display stringsToDisplay, boolean head, SpriteContainer spriteContainer,
-			double deltaShadow) {
+			Display stringsToDisplay, boolean head, SpriteContainer spriteContainer, double deltaShadow, UStroke stroke) {
 		super(stringsToDisplay, fontColor, font, HorizontalAlignement.CENTER, 3, 3, 0, spriteContainer);
 		this.head = head;
-		this.stickman = new EntityDomain(yellow, red, deltaShadow);
+		this.stickman = new EntityDomain(yellow, red, deltaShadow, stroke.getThickness());
 	}
 
 	@Override

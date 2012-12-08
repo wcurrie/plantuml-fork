@@ -39,6 +39,7 @@ import net.sourceforge.plantuml.command.SingleLineCommand2;
 import net.sourceforge.plantuml.command.regex.RegexConcat;
 import net.sourceforge.plantuml.command.regex.RegexLeaf;
 import net.sourceforge.plantuml.command.regex.RegexResult;
+import net.sourceforge.plantuml.cucadiagram.Display;
 
 public class CommandIf2 extends SingleLineCommand2<ActivityDiagram2> {
 
@@ -60,7 +61,7 @@ public class CommandIf2 extends SingleLineCommand2<ActivityDiagram2> {
 	@Override
 	protected CommandExecutionResult executeArg(RegexResult arg) {
 //
-		getSystem().startIf(arg.get("TEST", 0), arg.get("WHEN", 0));
+		getSystem().startIf(arg.get("TEST", 0), Display.getWithNewlines(arg.get("WHEN", 0)));
 //
 //		int lenght = 2;
 //

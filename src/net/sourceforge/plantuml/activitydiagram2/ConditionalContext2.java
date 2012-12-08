@@ -39,6 +39,7 @@ import java.util.Iterator;
 import java.util.LinkedHashSet;
 
 import net.sourceforge.plantuml.Direction;
+import net.sourceforge.plantuml.cucadiagram.Display;
 import net.sourceforge.plantuml.cucadiagram.IEntity;
 import net.sourceforge.plantuml.cucadiagram.LeafType;
 
@@ -48,9 +49,9 @@ public class ConditionalContext2 {
 	private final IEntity branch;
 	private final Direction direction;
 	private final ConditionalContext2 parent;
-	private final String when;
+	private final Display when;
 
-	public ConditionalContext2(ConditionalContext2 parent, IEntity branch, Direction direction, String when) {
+	public ConditionalContext2(ConditionalContext2 parent, IEntity branch, Direction direction, Display when) {
 		if (branch.getEntityType() != LeafType.BRANCH) {
 			throw new IllegalArgumentException();
 		}
@@ -107,7 +108,7 @@ public class ConditionalContext2 {
 		return hasElse;
 	}
 
-	public final String getWhen() {
+	public final Display getWhen() {
 		return when;
 	}
 

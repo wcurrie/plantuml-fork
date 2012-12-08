@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  *
- * Revision $Revision: 9495 $
+ * Revision $Revision: 9611 $
  *
  */
 package net.sourceforge.plantuml;
@@ -60,6 +60,7 @@ import net.sourceforge.plantuml.mjpeg.MJPEGGenerator;
 import net.sourceforge.plantuml.pdf.PdfConverter;
 import net.sourceforge.plantuml.ugraphic.Sprite;
 import net.sourceforge.plantuml.ugraphic.UFont;
+import net.sourceforge.plantuml.version.Version;
 
 public abstract class UmlDiagram extends AbstractPSystem implements PSystem {
 
@@ -220,7 +221,7 @@ public abstract class UmlDiagram extends AbstractPSystem implements PSystem {
 		final List<String> strings = new ArrayList<String>();
 		strings.add("An error has occured : " + exception);
 		strings.add(" ");
-		strings.add("PlantUML cannot parse result from dot/GraphViz.");
+		strings.add("PlantUML (" + Version.versionString() + ") cannot parse result from dot/GraphViz.");
 		strings.add(" ");
 		strings.add("This may be caused by :");
 		strings.add(" - a bug in PlantUML");

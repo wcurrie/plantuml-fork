@@ -121,7 +121,7 @@ public class CommandLinkActivity extends SingleLineCommand2<ActivityDiagram> {
 			entity2.setStereotype(new Stereotype(arg2.get("STEREOTYPE2", 0)));
 		}
 
-		final String linkLabel = arg2.get("BRACKET", 0);
+		final Display linkLabel = Display.getWithNewlines(arg2.get("BRACKET", 0));
 
 		final String arrow = StringUtils.manageArrowForCuca(arg2.get("ARROW", 0));
 		int lenght = arrow.length() - 1;

@@ -49,6 +49,7 @@ import net.sourceforge.plantuml.skin.SimpleContext2D;
 import net.sourceforge.plantuml.skin.rose.ComponentRoseNote;
 import net.sourceforge.plantuml.ugraphic.UFont;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
+import net.sourceforge.plantuml.ugraphic.UStroke;
 
 public class PostIt {
 
@@ -109,7 +110,7 @@ public class PostIt {
 		final SkinParam param = new SkinParam(null);
 		final UFont fontNote = param.getFont(FontParam.NOTE, null);
 		final ComponentRoseNote note = new ComponentRoseNote(noteBackgroundColor, borderColor, HtmlColorUtils.BLACK,
-				fontNote, text, 0, 0, new SpriteContainerEmpty(), 0);
+				fontNote, text, 0, 0, new SpriteContainerEmpty(), 0, new UStroke());
 		return note;
 	}
 }

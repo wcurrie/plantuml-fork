@@ -62,7 +62,7 @@ public abstract class AbstractMessage implements Event {
 	private final String messageNumber;
 
 	public AbstractMessage(Display label, ArrowConfiguration arrowConfiguration, String messageNumber) {
-		this.url = initUrl(label);
+		this.url = label.initUrl();
 		this.label = label.removeUrl(url);
 		this.arrowConfiguration = arrowConfiguration;
 		this.messageNumber = messageNumber;
@@ -75,25 +75,6 @@ public abstract class AbstractMessage implements Event {
 		return url;
 	}
 
-
-//	private Display removeUrl(Display label) {
-//		if (url == null) {
-//			return label;
-//		}
-//		final Display result = new Display();
-//		result.add(UrlBuilder.purgeUrl(label.get(0).toString()));
-//		result.addAll(label.subList(1, label.size()));
-//		return result;
-//
-//	}
-
-	private static Url initUrl(Display label) {
-		if (label.size() == 0) {
-			return null;
-		}
-		final UrlBuilder urlBuilder = new UrlBuilder(null, false);
-		return urlBuilder.getUrl(label.get(0).toString().trim());
-	}
 
 	public final boolean addLifeEvent(LifeEvent lifeEvent) {
 		final Set<Participant> noActivationAuthorized = new HashSet<Participant>();

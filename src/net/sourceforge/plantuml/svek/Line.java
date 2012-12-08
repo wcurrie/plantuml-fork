@@ -208,8 +208,8 @@ public class Line implements Moveable, Hideable {
 			}
 		} else {
 			final double marginLabel = startUid.equals(endUid) ? 6 : 1;
-			final TextBlock label = TextBlockUtils.withMargin(TextBlockUtils.create(
-					Display.getWithNewlines(link.getLabel()), labelFont, HorizontalAlignement.CENTER, skinParam),
+			final TextBlock label = TextBlockUtils.withMargin(
+					TextBlockUtils.create(link.getLabel(), labelFont, HorizontalAlignement.CENTER, skinParam),
 					marginLabel, marginLabel);
 			if (getLinkArrow() == LinkArrow.NONE) {
 				labelOnly = label;
@@ -464,7 +464,12 @@ public class Line implements Moveable, Hideable {
 		if (idx != -1) {
 			return idx;
 		}
-		throw new IllegalStateException();
+		s = "fill=\"" + StringUtils.getAsHtml(color).toLowerCase() + "\"";
+		idx = svg.indexOf(s);
+		if (idx != -1) {
+			return idx;
+		}
+		throw new IllegalStateException("color=" + color + " " + StringUtils.getAsHtml(color).toLowerCase());
 
 	}
 

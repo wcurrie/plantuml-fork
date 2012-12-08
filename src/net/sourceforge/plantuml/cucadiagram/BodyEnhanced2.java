@@ -40,7 +40,6 @@ import java.util.List;
 
 import net.sourceforge.plantuml.FontParam;
 import net.sourceforge.plantuml.ISkinParam;
-import net.sourceforge.plantuml.SkinParamUtils;
 import net.sourceforge.plantuml.SpriteContainer;
 import net.sourceforge.plantuml.StringUtils;
 import net.sourceforge.plantuml.Url;
@@ -63,6 +62,7 @@ public class BodyEnhanced2 implements TextBlock {
 	private final ISkinParam skinParam;
 	private final boolean lineFirst;
 	private final HorizontalAlignement align;
+	private final boolean manageHorizontalLine;
 
 	public BodyEnhanced2(List<String> rawBody, FontParam fontParam, ISkinParam skinParam) {
 		this.rawBody = new ArrayList<String>(rawBody);
@@ -73,10 +73,11 @@ public class BodyEnhanced2 implements TextBlock {
 				fontParam));
 		this.lineFirst = true;
 		this.align = HorizontalAlignement.LEFT;
+		this.manageHorizontalLine = true;
 	}
 
 	public BodyEnhanced2(Display display, FontParam fontParam, ISkinParam skinParam, HorizontalAlignement align,
-			Stereotype stereotype) {
+			Stereotype stereotype, boolean manageHorizontalLine) {
 		this.rawBody = new ArrayList<String>();
 		for (CharSequence s : display) {
 			this.rawBody.add(s.toString());
@@ -87,6 +88,7 @@ public class BodyEnhanced2 implements TextBlock {
 		this.titleConfig = new FontConfiguration(skinParam, fontParam, stereotype);
 		this.lineFirst = false;
 		this.align = align;
+		this.manageHorizontalLine = manageHorizontalLine;
 
 	}
 
@@ -117,6 +119,7 @@ public class BodyEnhanced2 implements TextBlock {
 		TextBlock title = null;
 		List<Member> members = new ArrayList<Member>();
 		for (String s : rawBody) {
+			// if (manageHorizontalLine && isBlockSeparator(s)) {
 			if (isBlockSeparator(s)) {
 				blocks.add(decorate(stringBounder, new MethodsOrFieldsArea(members, fontParam, skinParam, align),
 						separator, title));

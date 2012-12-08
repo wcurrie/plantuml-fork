@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 7886 $
+ * Revision $Revision: 9599 $
  *
  */
 package net.sourceforge.plantuml.skin.rose;
@@ -47,10 +47,12 @@ public class ComponentRoseLine extends AbstractComponent {
 
 	private final HtmlColor color;
 	private final boolean continueLine;
+	private final UStroke stroke;
 
-	public ComponentRoseLine(HtmlColor color, boolean continueLine) {
+	public ComponentRoseLine(HtmlColor color, boolean continueLine, UStroke stroke) {
 		this.color = color;
 		this.continueLine = continueLine;
+		this.stroke = stroke;
 	}
 
 	@Override
@@ -60,7 +62,7 @@ public class ComponentRoseLine extends AbstractComponent {
 		if (continueLine) {
 			ug.getParam().setStroke(new UStroke());
 		} else {
-			stroke(ug, 5, 5);
+			stroke(ug, 5, 5, stroke.getThickness());
 		}
 		final int x = (int) (dimensionToUse.getWidth() / 2);
 		ug.draw(x, 0, new ULine(0, dimensionToUse.getHeight()));

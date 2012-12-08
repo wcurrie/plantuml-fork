@@ -55,14 +55,15 @@ public class Boundary implements TextBlock {
 	private final double left = 17;
 	private final HtmlColor backgroundColor;
 	private final HtmlColor foregroundColor;
-	private final float thickness = 2;
+	private final double thickness;
 
 	private final double deltaShadow;
 
-	public Boundary(HtmlColor backgroundColor, HtmlColor foregroundColor, double deltaShadow) {
+	public Boundary(HtmlColor backgroundColor, HtmlColor foregroundColor, double deltaShadow, double thickness) {
 		this.backgroundColor = backgroundColor;
 		this.foregroundColor = foregroundColor;
 		this.deltaShadow = deltaShadow;
+		this.thickness = thickness;
 	}
 
 	public void drawU(UGraphic ug, double x, double y) {

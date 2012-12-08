@@ -46,6 +46,7 @@ import net.sourceforge.plantuml.skin.Area;
 import net.sourceforge.plantuml.svek.Control;
 import net.sourceforge.plantuml.ugraphic.UFont;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
+import net.sourceforge.plantuml.ugraphic.UStroke;
 
 public class ComponentRoseControl extends AbstractTextualComponent {
 
@@ -54,10 +55,10 @@ public class ComponentRoseControl extends AbstractTextualComponent {
 
 	public ComponentRoseControl(HtmlColor yellow, HtmlColor red, HtmlColor fontColor, UFont font,
 			Display stringsToDisplay, boolean head, SpriteContainer spriteContainer,
-			double deltaShadow) {
+			double deltaShadow, UStroke stroke) {
 		super(stringsToDisplay, fontColor, font, HorizontalAlignement.CENTER, 3, 3, 0, spriteContainer);
 		this.head = head;
-		this.stickman = new Control(yellow, red, deltaShadow);
+		this.stickman = new Control(yellow, red, deltaShadow, stroke.getThickness());
 	}
 
 	@Override

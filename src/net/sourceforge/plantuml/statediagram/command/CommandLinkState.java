@@ -43,6 +43,7 @@ import net.sourceforge.plantuml.command.regex.RegexConcat;
 import net.sourceforge.plantuml.command.regex.RegexLeaf;
 import net.sourceforge.plantuml.command.regex.RegexResult;
 import net.sourceforge.plantuml.cucadiagram.Code;
+import net.sourceforge.plantuml.cucadiagram.Display;
 import net.sourceforge.plantuml.cucadiagram.IEntity;
 import net.sourceforge.plantuml.cucadiagram.LeafType;
 import net.sourceforge.plantuml.cucadiagram.Link;
@@ -121,7 +122,7 @@ public class CommandLinkState extends SingleLineCommand2<StateDiagram> {
 		final LinkType linkType = new LinkType(circleEnd ? LinkDecor.ARROW_AND_CIRCLE : LinkDecor.ARROW,
 				crossStart ? LinkDecor.CIRCLE_CROSS : LinkDecor.NONE);
 
-		Link link = new Link(cl1, cl2, linkType, arg.get("LABEL", 0), lenght);
+		Link link = new Link(cl1, cl2, linkType, Display.getWithNewlines(arg.get("LABEL", 0)), lenght);
 		if (dir == Direction.LEFT || dir == Direction.UP) {
 			link = link.getInv();
 		}

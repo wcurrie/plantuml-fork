@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 8152 $
+ * Revision $Revision: 9599 $
  *
  */
 package net.sourceforge.plantuml.skin;
@@ -49,7 +49,7 @@ import net.sourceforge.plantuml.ugraphic.UStroke;
 
 public class StickMan implements TextBlock {
 
-	private final float thickness = 2;
+	private final double thickness;
 
 	private final double armsY = 8;
 	private final double armsLenght = 13;
@@ -68,14 +68,19 @@ public class StickMan implements TextBlock {
 	}
 
 
-	public StickMan(HtmlColor backgroundColor, HtmlColor foregroundColor, double deltaShadow) {
+	public StickMan(HtmlColor backgroundColor, HtmlColor foregroundColor, double deltaShadow, double thickness) {
 		this.backgroundColor = backgroundColor;
 		this.foregroundColor = foregroundColor;
 		this.deltaShadow = deltaShadow;
+		this.thickness = thickness;
+	}
+
+	public StickMan(HtmlColor backgroundColor, HtmlColor foregroundColor, double deltaShadow) {
+		this(backgroundColor, foregroundColor, deltaShadow, 2);
 	}
 
 	public StickMan(HtmlColor backgroundColor, HtmlColor foregroundColor) {
-		this(backgroundColor, foregroundColor, 0);
+		this(backgroundColor, foregroundColor, 0, 2);
 	}
 
 	public void drawU(UGraphic ug, double x, double y) {

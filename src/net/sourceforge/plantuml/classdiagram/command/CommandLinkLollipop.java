@@ -162,7 +162,7 @@ final public class CommandLinkLollipop extends SingleLineCommand2<AbstractClassO
 			 * merge(arg.get("LABEL_LINK_XT").get(2), secondLabel); }
 			 */
 
-		final Link link = new Link(cl1, cl2, linkType, labelLink, length, firstLabel, secondLabel, getSystem()
+		final Link link = new Link(cl1, cl2, linkType, Display.getWithNewlines(labelLink), length, firstLabel, secondLabel, getSystem()
 				.getLabeldistance(), getSystem().getLabelangle());
 		getSystem().resetPragmaLabel();
 		addLink(link, arg.get("HEADER", 0));

@@ -64,7 +64,7 @@ public class LabelImage {
 		// this.entity = entity;
 		this.param = param;
 		this.rose = rose;
-		this.name = TextBlockUtils.create(Display.getWithNewlines(link.getLabel()),
+		this.name = TextBlockUtils.create(link.getLabel(),
 				new FontConfiguration(param.getFont(FontParam.CLASS, null), HtmlColorUtils.BLACK), HorizontalAlignement.CENTER, new SpriteContainerEmpty());
 	}
 

@@ -72,17 +72,6 @@ public class Display implements Iterable<CharSequence> {
 		return this.display.equals(((Display) other).display);
 	}
 
-	public Display removeUrl(Url url) {
-		if (url == null) {
-			return this;
-		}
-		final Display result = new Display();
-		result.display.add(UrlBuilder.purgeUrl(this.get(0).toString()));
-		result.display.addAll(this.subList(1, this.size()).display);
-		return result;
-
-	}
-
 	public Display addAll(Display other) {
 		final Display result = new Display(this);
 		result.display.addAll(other.display);
@@ -190,5 +179,27 @@ public class Display implements Iterable<CharSequence> {
 		result.display.add(current.toString());
 		return result;
 	}
+	
+	public Url initUrl() {
+		if (this.size() == 0) {
+			return null;
+		}
+		final UrlBuilder urlBuilder = new UrlBuilder(null, false);
+		return urlBuilder.getUrl(this.get(0).toString().trim());
+	}
+
+	public Display removeUrl(Url url) {
+		if (url == null) {
+			return this;
+		}
+		final Display result = new Display();
+		result.display.add(UrlBuilder.purgeUrl(this.get(0).toString()));
+		result.display.addAll(this.subList(1, this.size()).display);
+		return result;
+
+	}
+
+
+
 
 }

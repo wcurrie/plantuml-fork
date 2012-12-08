@@ -27,42 +27,36 @@
  * in the United States and other countries.]
  *
  * Original Author:  Arnaud Roques
- *
- * Revision $Revision: 5721 $
+ * 
+ * Revision $Revision: 3837 $
  *
  */
-package net.sourceforge.plantuml.activitydiagram2;
+package net.sourceforge.plantuml.donors;
 
-import net.sourceforge.plantuml.cucadiagram.Display;
-import net.sourceforge.plantuml.cucadiagram.IEntity;
+import net.sourceforge.plantuml.DiagramType;
+import net.sourceforge.plantuml.PSystemBasicFactory;
 
-public class PendingLink {
+public class PSystemDonorsFactory implements PSystemBasicFactory {
 
-	private final IEntity entityFrom;
-	private final String gotoLabel;
-	private final Display linkLabel;
+	private PSystemDonors system;
 
-	public PendingLink(IEntity entityFrom, String gotoLabel, Display linkLabel) {
-		this.entityFrom = entityFrom;
-		this.gotoLabel = gotoLabel;
-		this.linkLabel = linkLabel;
+	public void init(String startLine) {
 	}
 
-	public final IEntity getEntityFrom() {
-		return entityFrom;
+	public PSystemDonors getSystem() {
+		return system;
 	}
 
-	public final String getGotoLabel() {
-		return gotoLabel;
+	public boolean executeLine(String line) {
+		if (line.matches("(?i)^(donors)\\s*$")) {
+			system = PSystemDonors.create();
+			return true;
+		}
+		return false;
 	}
 
-	public final Display getLinkLabel() {
-		return linkLabel;
-	}
-
-	@Override
-	public String toString() {
-		return entityFrom + " -> " + gotoLabel + " " + linkLabel;
+	public DiagramType getDiagramType() {
+		return DiagramType.UML;
 	}
 
 }

@@ -42,7 +42,7 @@ public class TranscoderImpl implements Transcoder {
 	private final StringCompressor stringCompressor;
 
 	public TranscoderImpl() {
-		this(new AsciiEncoder(), new CompressionHuffman());
+		this(new AsciiEncoder(), new StringCompressorNone(), new CompressionHuffman());
 	}
 
 	public TranscoderImpl(URLEncoder urlEncoder, Compression compression) {

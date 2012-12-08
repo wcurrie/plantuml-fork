@@ -56,13 +56,15 @@ public class ComponentRoseDivider extends AbstractTextualComponent {
 	private final HtmlColor background;
 	private final boolean empty;
 	private final boolean withShadow;
+	private final UStroke stroke;
 
-	public ComponentRoseDivider(HtmlColor fontColor, UFont font, HtmlColor background,
-			Display stringsToDisplay, SpriteContainer spriteContainer, boolean withShadow) {
+	public ComponentRoseDivider(HtmlColor fontColor, UFont font, HtmlColor background, Display stringsToDisplay,
+			SpriteContainer spriteContainer, boolean withShadow, UStroke stroke) {
 		super(stringsToDisplay, fontColor, font, HorizontalAlignement.CENTER, 4, 4, 4, spriteContainer);
 		this.background = background;
 		this.empty = stringsToDisplay.get(0).length() == 0;
 		this.withShadow = withShadow;
+		this.stroke = stroke;
 	}
 
 	@Override
@@ -77,7 +79,6 @@ public class ComponentRoseDivider extends AbstractTextualComponent {
 		final double xpos = (dimensionToUse.getWidth() - textWidth - deltaX) / 2;
 		final double ypos = (dimensionToUse.getHeight() - textHeight) / 2;
 
-		// if (empty) {
 		ug.getParam().setColor(background);
 		ug.getParam().setBackcolor(background);
 		final URectangle rectLong = new URectangle(dimensionToUse.getWidth(), 3);
@@ -85,8 +86,10 @@ public class ComponentRoseDivider extends AbstractTextualComponent {
 			rectLong.setDeltaShadow(2);
 		}
 		ug.draw(0, dimensionToUse.getHeight() / 2 - 1, rectLong);
-		// }
+
 		ug.getParam().setColor(HtmlColorUtils.BLACK);
+
+		ug.getParam().setStroke(new UStroke(stroke.getThickness() / 2));
 		ug.draw(0, dimensionToUse.getHeight() / 2 - 1, new ULine(dimensionToUse.getWidth(), 0));
 		ug.draw(0, dimensionToUse.getHeight() / 2 + 2, new ULine(dimensionToUse.getWidth(), 0));
 
@@ -94,7 +97,7 @@ public class ComponentRoseDivider extends AbstractTextualComponent {
 			ug.getParam().setColor(HtmlColorUtils.BLACK);
 			ug.getParam().setBackcolor(background);
 
-			ug.getParam().setStroke(new UStroke(2));
+			ug.getParam().setStroke(stroke);
 			final URectangle rect = new URectangle(textWidth + deltaX, textHeight);
 			if (withShadow) {
 				rect.setDeltaShadow(4);
@@ -104,6 +107,7 @@ public class ComponentRoseDivider extends AbstractTextualComponent {
 
 			textBlock.drawU(ug, xpos + deltaX, ypos + getMarginY());
 		}
+		ug.getParam().setStroke(new UStroke());
 	}
 
 	@Override

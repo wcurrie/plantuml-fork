@@ -44,6 +44,7 @@ import java.util.List;
 import net.sourceforge.plantuml.ColorParam;
 import net.sourceforge.plantuml.EmptyImageBuilder;
 import net.sourceforge.plantuml.FontParam;
+import net.sourceforge.plantuml.LineParam;
 import net.sourceforge.plantuml.UmlDiagramType;
 import net.sourceforge.plantuml.cucadiagram.Display;
 import net.sourceforge.plantuml.cucadiagram.EntityPosition;
@@ -333,21 +334,24 @@ public final class CucaDiagramFileMakerSvek2 {
 		if (leaf.getEntityType() == LeafType.BOUNDARY) {
 			final TextBlock stickman = new Boundary(getColor(ColorParam.usecaseActorBackground, leaf.getStereotype()),
 					getColor(ColorParam.usecaseActorBorder, leaf.getStereotype()),
-					dotData.getSkinParam().shadowing() ? 4.0 : 0.0);
+					dotData.getSkinParam().shadowing() ? 4.0 : 0.0, Rose.getStroke(dotData.getSkinParam(),
+							LineParam.sequenceActorBorder, 2).getThickness());
 			return new EntityImageActor2(leaf, dotData.getSkinParam(), FontParam.USECASE_ACTOR_STEREOTYPE,
 					FontParam.USECASE_ACTOR, stickman);
 		}
 		if (leaf.getEntityType() == LeafType.CONTROL) {
 			final TextBlock stickman = new Control(getColor(ColorParam.usecaseActorBackground, leaf.getStereotype()),
 					getColor(ColorParam.usecaseActorBorder, leaf.getStereotype()),
-					dotData.getSkinParam().shadowing() ? 4.0 : 0.0);
+					dotData.getSkinParam().shadowing() ? 4.0 : 0.0, Rose.getStroke(dotData.getSkinParam(),
+							LineParam.sequenceActorBorder, 2).getThickness());
 			return new EntityImageActor2(leaf, dotData.getSkinParam(), FontParam.USECASE_ACTOR_STEREOTYPE,
 					FontParam.USECASE_ACTOR, stickman);
 		}
 		if (leaf.getEntityType() == LeafType.ENTITY_DOMAIN) {
 			final TextBlock stickman = new EntityDomain(getColor(ColorParam.usecaseActorBackground,
 					leaf.getStereotype()), getColor(ColorParam.usecaseActorBorder, leaf.getStereotype()), dotData
-					.getSkinParam().shadowing() ? 4.0 : 0.0);
+					.getSkinParam().shadowing() ? 4.0 : 0.0, Rose.getStroke(dotData.getSkinParam(),
+					LineParam.sequenceActorBorder, 2).getThickness());
 			return new EntityImageActor2(leaf, dotData.getSkinParam(), FontParam.USECASE_ACTOR_STEREOTYPE,
 					FontParam.USECASE_ACTOR, stickman);
 		}

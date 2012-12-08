@@ -37,6 +37,7 @@ import net.sourceforge.plantuml.command.CommandExecutionResult;
 import net.sourceforge.plantuml.command.SingleLineCommand;
 import net.sourceforge.plantuml.compositediagram.CompositeDiagram;
 import net.sourceforge.plantuml.cucadiagram.Code;
+import net.sourceforge.plantuml.cucadiagram.Display;
 import net.sourceforge.plantuml.cucadiagram.IEntity;
 import net.sourceforge.plantuml.cucadiagram.Link;
 import net.sourceforge.plantuml.cucadiagram.LinkDecor;
@@ -65,7 +66,7 @@ public class CommandLinkBlock extends SingleLineCommand<CompositeDiagram> {
 
 		final String queue = arg.get(2);
 
-		final Link link = new Link(cl1, cl2, linkType, arg.get(5), queue.length());
+		final Link link = new Link(cl1, cl2, linkType, Display.getWithNewlines(arg.get(5)), queue.length());
 		getSystem().addLink(link);
 		return CommandExecutionResult.ok();
 	}

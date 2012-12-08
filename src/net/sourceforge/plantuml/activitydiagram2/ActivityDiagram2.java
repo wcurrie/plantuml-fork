@@ -44,7 +44,6 @@ import java.util.List;
 import java.util.Map;
 
 import net.sourceforge.plantuml.Direction;
-import net.sourceforge.plantuml.StringUtils;
 import net.sourceforge.plantuml.UmlDiagramType;
 import net.sourceforge.plantuml.UniqueSequence;
 import net.sourceforge.plantuml.cucadiagram.Code;
@@ -61,16 +60,15 @@ public class ActivityDiagram2 extends CucaDiagram {
 
 	private Collection<IEntity> waitings = new LinkedHashSet<IEntity>();
 	private ConditionalContext2 currentContext;
-	// private int futureLength = 2;
-	private String futureLabel = null;
+
+	private Display futureLabel = null;
 
 	private final Collection<String> pendingLabels = new HashSet<String>();
 	private final Map<String, IEntity> labels = new HashMap<String, IEntity>();
-	
+
 	public ILeaf getOrCreateLeaf1(Code code, LeafType type) {
 		return getOrCreateLeaf1Default(code, type);
 	}
-
 
 	final protected List<String> getDotStrings() {
 		return Arrays.asList("nodesep=.20;", "ranksep=0.4;", "edge [fontsize=11,labelfontsize=11];",
@@ -172,11 +170,11 @@ public class ActivityDiagram2 extends CucaDiagram {
 		this.waitings.add(createLeaf(Code.of("start"), Display.getWithNewlines("start"), LeafType.CIRCLE_START));
 	}
 
-	public void startIf(String test, String when) {
+	public void startIf(String test, Display when) {
 		final IEntity br = createLeaf(getAutoCode(), Display.getWithNewlines(test), LeafType.BRANCH);
-//		if (DotMaker.MODE_BRANCHE_CLUSTER) {
-//			test = null;
-//		}
+		// if (DotMaker.MODE_BRANCHE_CLUSTER) {
+		// test = null;
+		// }
 		currentContext = new ConditionalContext2(currentContext, br, Direction.DOWN, when);
 		for (IEntity last : this.waitings) {
 			// if (test == null) {
@@ -211,7 +209,7 @@ public class ActivityDiagram2 extends CucaDiagram {
 		// }
 	}
 
-	public void else2(String when) {
+	public void else2(Display when) {
 		this.currentContext.executeElse(this.waitings);
 		this.waitings.clear();
 		this.waitings.add(currentContext.getBranch());

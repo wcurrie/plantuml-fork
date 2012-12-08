@@ -40,7 +40,6 @@ class USymbolBoundary extends USymbolSimpleAbstract {
 	@Override
 	protected TextBlock getDrawing(final SymbolContext symbolContext) {
 		return new Boundary(symbolContext.getBackColor(), symbolContext.getForeColor(),
-				symbolContext.isShadowing() ? 4.0 : 0.0);
+				symbolContext.isShadowing() ? 4.0 : 0.0, 2);
 	}
-
 }

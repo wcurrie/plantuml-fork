@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 9495 $
+ * Revision $Revision: 9599 $
  *
  */
 package net.sourceforge.plantuml.skin.rose;
@@ -46,6 +46,7 @@ import net.sourceforge.plantuml.skin.Area;
 import net.sourceforge.plantuml.skin.StickMan;
 import net.sourceforge.plantuml.ugraphic.UFont;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
+import net.sourceforge.plantuml.ugraphic.UStroke;
 
 public class ComponentRoseActor extends AbstractTextualComponent {
 
@@ -54,10 +55,10 @@ public class ComponentRoseActor extends AbstractTextualComponent {
 
 	public ComponentRoseActor(HtmlColor yellow, HtmlColor red, HtmlColor fontColor, UFont font,
 			Display stringsToDisplay, boolean head, SpriteContainer spriteContainer,
-			double deltaShadow) {
+			double deltaShadow, UStroke stroke) {
 		super(stringsToDisplay, fontColor, font, HorizontalAlignement.CENTER, 3, 3, 0, spriteContainer);
 		this.head = head;
-		this.stickman = new StickMan(yellow, red, deltaShadow);
+		this.stickman = new StickMan(yellow, red, deltaShadow, stroke.getThickness());
 	}
 
 	@Override
