@@ -159,6 +159,10 @@ public class Line implements Moveable, Hideable {
 		}
 
 		private Direction getDirection() {
+			if (isAutolink()) {
+				final double startAngle = dotPath.getStartAngle();
+				return Direction.LEFT;
+			}
 			final Point2D start = dotPath.getStartPoint();
 			final Point2D end = dotPath.getEndPoint();
 			final double ang = Math.atan2(end.getX() - start.getX(), end.getY() - start.getY());
@@ -268,6 +272,10 @@ public class Line implements Moveable, Hideable {
 
 	}
 
+	public boolean hasNoteLabelText() {
+		return noteLabelText != null;
+	}
+
 	private LinkArrow getLinkArrow() {
 		return link.getLinkArrow();
 	}
@@ -300,6 +308,7 @@ public class Line implements Moveable, Hideable {
 			sb.append("label=<");
 			appendTable(sb, noteLabelText.calculateDimension(stringBounder), noteLabelColor);
 			sb.append(">");
+//			sb.append(",labelfloat=true");
 		}
 
 		if (startTailText != null) {
@@ -307,12 +316,14 @@ public class Line implements Moveable, Hideable {
 			sb.append("taillabel=<");
 			appendTable(sb, startTailText.calculateDimension(stringBounder), startTailColor);
 			sb.append(">");
+//			sb.append(",labelangle=0");
 		}
 		if (endHeadText != null) {
 			sb.append(",");
 			sb.append("headlabel=<");
 			appendTable(sb, endHeadText.calculateDimension(stringBounder), endHeadColor);
 			sb.append(">");
+//			sb.append(",labelangle=0");
 		}
 
 		if (ltail != null) {
@@ -333,6 +344,14 @@ public class Line implements Moveable, Hideable {
 		if (link.isConstraint() == false || link.hasTwoEntryPointsSameContainer()) {
 			sb.append("constraint=false,");
 		}
+
+//		if (link.getLabeldistance() != null) {
+//			sb.append("labeldistance=" + link.getLabeldistance() + ",");
+//		}
+//		if (link.getLabelangle() != null) {
+//			sb.append("labelangle=" + link.getLabelangle() + ",");
+//		}
+//		sb.append("labelangle=1,");
 
 		sb.append("];");
 		SvekUtils.println(sb);
@@ -739,15 +758,12 @@ public class Line implements Moveable, Hideable {
 		return link.isHidden();
 	}
 
-	// private Cluster picLine1 = null;
-	// private Cluster picLine2 = null;
-	//
-	// public void setPicLine1(Cluster cluster) {
-	// this.picLine1 = cluster;
-	// }
-	//
-	// public void setPicLine2(Cluster cluster) {
-	// this.picLine2 = cluster;
-	// }
+	public boolean sameConnections(Line other) {
+		return link.sameConnections(other.link);
+	}
+
+	private boolean isAutolink() {
+		return link.getEntity1() == link.getEntity2();
+	}
 
 }

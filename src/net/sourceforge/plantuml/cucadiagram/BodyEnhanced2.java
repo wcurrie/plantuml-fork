@@ -119,8 +119,8 @@ public class BodyEnhanced2 implements TextBlock {
 		TextBlock title = null;
 		List<Member> members = new ArrayList<Member>();
 		for (String s : rawBody) {
-			// if (manageHorizontalLine && isBlockSeparator(s)) {
-			if (isBlockSeparator(s)) {
+			if (manageHorizontalLine && isBlockSeparator(s)) {
+			// if (isBlockSeparator(s)) {
 				blocks.add(decorate(stringBounder, new MethodsOrFieldsArea(members, fontParam, skinParam, align),
 						separator, title));
 				separator = s.charAt(0);

@@ -155,5 +155,10 @@ class USymbolDatabase extends USymbol {
 			}
 		};
 	}
+	
+	public boolean manageHorizontalLine() {
+		return true;
+	}
+
 
 }

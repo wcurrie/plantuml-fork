@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 9608 $
+ * Revision $Revision: 9637 $
  *
  */
 package net.sourceforge.plantuml.cucadiagram;
@@ -383,6 +383,16 @@ public class Link implements Hideable {
 
 	public boolean isHidden() {
 		return hidden || cl1.isHidden() || cl2.isHidden();
+	}
+
+	public boolean sameConnections(Link other) {
+		if (this.cl1 == other.cl1 && this.cl2 == other.cl2) {
+			return true;
+		}
+		if (this.cl1 == other.cl2 && this.cl2 == other.cl1) {
+			return true;
+		}
+		return false;
 	}
 
 	// private Group containerEntryPoint;

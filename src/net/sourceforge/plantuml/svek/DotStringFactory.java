@@ -268,6 +268,9 @@ public class DotStringFactory implements Moveable {
 
 	public ClusterPosition solve(String... dotStrings) throws IOException, InterruptedException {
 		final String svg = getSVG(dotStrings);
+		if (svg.length() == 0) {
+			throw new EmptySvgException();
+		}
 
 		final Pattern pGraph = Pattern.compile("(?m)\\<svg\\s+width=\"(\\d+)pt\"\\s+height=\"(\\d+)pt\"");
 		final Matcher mGraph = pGraph.matcher(svg);
@@ -356,9 +359,10 @@ public class DotStringFactory implements Moveable {
 		return idx;
 	}
 
-	public void openCluster(IGroup g, int titleAndAttributeWidth, int titleAndAttributeHeight, TextBlock title, TextBlock stereo) {
-		this.current = current.createChild(g, titleAndAttributeWidth, titleAndAttributeHeight, title, stereo, colorSequence,
-				dotData.getSkinParam());
+	public void openCluster(IGroup g, int titleAndAttributeWidth, int titleAndAttributeHeight, TextBlock title,
+			TextBlock stereo) {
+		this.current = current.createChild(g, titleAndAttributeWidth, titleAndAttributeHeight, title, stereo,
+				colorSequence, dotData.getSkinParam());
 		bibliotekon.addCluster(this.current);
 	}
 

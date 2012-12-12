@@ -70,7 +70,19 @@ public class Bibliotekon {
 	public void addLine(Line line) {
 		allLines.add(line);
 		if (first(line)) {
-			lines0.add(line);
+			if (line.hasNoteLabelText()) {
+				// lines0.add(0, line);
+				for (int i = 0; i < lines0.size(); i++) {
+					final Line other = lines0.get(i);
+					if (other.hasNoteLabelText() == false && line.sameConnections(other)) {
+						lines0.add(i, line);
+						return;
+					}
+				}
+				lines0.add(line);
+			} else {
+				lines0.add(line);
+			}
 		} else {
 			lines1.add(line);
 		}

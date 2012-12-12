@@ -27,48 +27,12 @@
  * in the United States and other countries.]
  *
  * Original Author:  Arnaud Roques
- * 
- * Revision $Revision: 5937 $
  *
+ * Revision $Revision: 4236 $
+ * 
  */
-package net.sourceforge.plantuml.skin.rose;
+package net.sourceforge.plantuml.svek;
 
-import java.awt.geom.Dimension2D;
-
-import net.sourceforge.plantuml.graphic.HtmlColor;
-import net.sourceforge.plantuml.graphic.StringBounder;
-import net.sourceforge.plantuml.skin.AbstractComponent;
-import net.sourceforge.plantuml.skin.Area;
-import net.sourceforge.plantuml.ugraphic.UGraphic;
-import net.sourceforge.plantuml.ugraphic.ULine;
-
-public class ComponentRoseDelayLine extends AbstractComponent {
-
-	private final HtmlColor color;
-
-	public ComponentRoseDelayLine(HtmlColor color) {
-		this.color = color;
-	}
-
-	@Override
-	protected void drawInternalU(UGraphic ug, Area area) {
-		final Dimension2D dimensionToUse = area.getDimensionToUse();
-		ug.getParam().setColor(color);
-		stroke(ug, 1, 4);
-		final int x = (int) (dimensionToUse.getWidth() / 2);
-		ug.setAntiAliasing(false);
-		ug.draw(x, 0, new ULine(0, dimensionToUse.getHeight()));
-		ug.setAntiAliasing(true);
-	}
-
-	@Override
-	public double getPreferredHeight(StringBounder stringBounder) {
-		return 20;
-	}
-
-	@Override
-	public double getPreferredWidth(StringBounder stringBounder) {
-		return 1;
-	}
+public class EmptySvgException extends RuntimeException {
 
 }

@@ -480,9 +480,9 @@ final public class CommandLinkClass extends SingleLineCommand2<AbstractClassOrOb
 		if (decors2 == LinkDecor.PLUS) {
 			return true;
 		}
-		if (decors2 == LinkDecor.EXTENDS) {
-			return true;
-		}
+//		if (decors2 == LinkDecor.EXTENDS) {
+//			return true;
+//		}
 		return false;
 	}
 

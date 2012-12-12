@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  *
- * Revision $Revision: 9611 $
+ * Revision $Revision: 9631 $
  *
  */
 package net.sourceforge.plantuml;
@@ -58,6 +58,7 @@ import net.sourceforge.plantuml.graphic.HorizontalAlignement;
 import net.sourceforge.plantuml.graphic.HtmlColorUtils;
 import net.sourceforge.plantuml.mjpeg.MJPEGGenerator;
 import net.sourceforge.plantuml.pdf.PdfConverter;
+import net.sourceforge.plantuml.svek.EmptySvgException;
 import net.sourceforge.plantuml.ugraphic.Sprite;
 import net.sourceforge.plantuml.ugraphic.UFont;
 import net.sourceforge.plantuml.version.Version;
@@ -222,6 +223,9 @@ public abstract class UmlDiagram extends AbstractPSystem implements PSystem {
 		strings.add("An error has occured : " + exception);
 		strings.add(" ");
 		strings.add("PlantUML (" + Version.versionString() + ") cannot parse result from dot/GraphViz.");
+		if (exception instanceof EmptySvgException) {
+			strings.add("Because dot/GraphViz returns an empty string.");
+		}
 		strings.add(" ");
 		strings.add("This may be caused by :");
 		strings.add(" - a bug in PlantUML");
