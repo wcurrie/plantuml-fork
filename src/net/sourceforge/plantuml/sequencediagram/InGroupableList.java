@@ -63,8 +63,11 @@ public class InGroupableList implements InGroupable {
 		return result;
 	}
 
-	public InGroupableList(Grouping grouping, double startingY) {
+	private final ParticipantBox veryfirst;
+
+	public InGroupableList(ParticipantBox veryfirst, Grouping grouping, double startingY) {
 		this.grouping = grouping;
+		this.veryfirst = veryfirst;
 	}
 
 	public void addInGroupable(InGroupable in) {
@@ -110,7 +113,6 @@ public class InGroupableList implements InGroupable {
 		}
 		return result;
 	}
-
 
 	private InGroupable cacheMin = null;
 	private InGroupable cacheMax = null;
@@ -164,7 +166,8 @@ public class InGroupableList implements InGroupable {
 	public double getMinX(StringBounder stringBounder) {
 		final InGroupable min = getMin(stringBounder);
 		if (min == null) {
-			return MARGIN10 + MARGIN5;
+			return MARGIN10 + MARGIN5 + veryfirst.getStartingX();
+			// return MARGIN10 + MARGIN5;
 		}
 		double m = min.getMinX(stringBounder);
 		if (min instanceof MessageExoArrow

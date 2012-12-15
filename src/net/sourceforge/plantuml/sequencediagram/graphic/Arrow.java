@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 8033 $
+ * Revision $Revision: 9654 $
  *
  */
 package net.sourceforge.plantuml.sequencediagram.graphic;
@@ -58,7 +58,7 @@ abstract class Arrow extends GraphicalElement implements InGroupable {
 
 	final protected double getMaxX() {
 		if (maxX == 0) {
-			throw new IllegalStateException();
+			// throw new IllegalStateException();
 		}
 		return maxX;
 	}

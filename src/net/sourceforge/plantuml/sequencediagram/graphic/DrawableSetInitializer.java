@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 9565 $
+ * Revision $Revision: 9651 $
  *
  */
 package net.sourceforge.plantuml.sequencediagram.graphic;
@@ -424,7 +424,8 @@ class DrawableSetInitializer {
 				m.getTitle(), m.getComment());
 		final Component header = drawableSet.getSkin().createComponent(ComponentType.GROUPING_HEADER, null, skinParam,
 				strings);
-		final InGroupableList inGroupableList = new InGroupableList(m, freeY2.getFreeY(range));
+		final ParticipantBox veryfirst = drawableSet.getVeryfirst();
+		final InGroupableList inGroupableList = new InGroupableList(veryfirst, m, freeY2.getFreeY(range));
 		inGroupableStack.addList(inGroupableList);
 
 		final GraphicalElement element = new GroupingGraphicalElementHeader(freeY2.getFreeY(range), header,

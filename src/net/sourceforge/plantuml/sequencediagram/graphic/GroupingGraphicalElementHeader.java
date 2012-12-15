@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 9493 $
+ * Revision $Revision: 9651 $
  *
  */
 package net.sourceforge.plantuml.sequencediagram.graphic;
@@ -78,7 +78,7 @@ class GroupingGraphicalElementHeader extends GroupingGraphicalElement {
 		if (endY > 0) {
 			height = endY - getStartingY();
 		} else {
-			assert false;
+			// assert false;
 			return;
 		}
 		final Dimension2D dim = new Dimension2DDouble(x2 - x1, height);

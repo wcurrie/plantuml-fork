@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 8448 $
+ * Revision $Revision: 9651 $
  *
  */
 package net.sourceforge.plantuml.sequencediagram.graphic;
@@ -86,6 +86,10 @@ class DrawableSet {
 		}
 		this.skin = skin;
 		this.skinParam = skinParam;
+	}
+	
+	public ParticipantBox getVeryfirst() {
+		return participants.values().iterator().next().getParticipantBox();
 	}
 
 	public final Skin getSkin() {
