@@ -45,6 +45,7 @@ import net.sourceforge.plantuml.ColorParam;
 import net.sourceforge.plantuml.EmptyImageBuilder;
 import net.sourceforge.plantuml.FontParam;
 import net.sourceforge.plantuml.LineParam;
+import net.sourceforge.plantuml.SkinParamForecolored;
 import net.sourceforge.plantuml.UmlDiagramType;
 import net.sourceforge.plantuml.cucadiagram.Display;
 import net.sourceforge.plantuml.cucadiagram.EntityPosition;
@@ -380,6 +381,11 @@ public final class CucaDiagramFileMakerSvek2 {
 			return new EntityImageGroup(leaf, dotData.getSkinParam());
 		}
 		if (leaf.getEntityType() == LeafType.EMPTY_PACKAGE) {
+			if (leaf.getUSymbol() != null) {
+				return new EntityImageComponentForDescriptionDiagram(leaf, new SkinParamForecolored(
+						dotData.getSkinParam(), HtmlColorUtils.BLACK));
+			}
+			assert false;
 			return new EntityImageEmptyPackage2(leaf, dotData.getSkinParam());
 		}
 		if (leaf.getEntityType() == LeafType.ASSOCIATION) {
@@ -406,7 +412,12 @@ public final class CucaDiagramFileMakerSvek2 {
 			if (dotData.isEmpty(g) && g.zgetGroupType() == GroupType.PACKAGE) {
 				final ILeaf folder = entityFactory.createLeaf(g.getCode(), g.getDisplay(), LeafType.EMPTY_PACKAGE,
 						g.getParentContainer(), null);
-				folder.setSpecificBackcolor(g.getSpecificBackColor());
+				folder.setUSymbol(g.getUSymbol());
+				if (g.getSpecificBackColor() == null) {
+					folder.setSpecificBackcolor(dotData.getSkinParam().getBackgroundColor());
+				} else {
+					folder.setSpecificBackcolor(g.getSpecificBackColor());
+				}
 				printEntity(folder);
 			} else {
 				printGroup(g);

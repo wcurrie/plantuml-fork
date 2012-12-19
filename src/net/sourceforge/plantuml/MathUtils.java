@@ -45,7 +45,9 @@ public class MathUtils {
 
 	public static double limitation(double v, double min, double max) {
 		if (min >= max) {
-			throw new IllegalArgumentException();
+			assert false : "min="+min+" max="+max+" v="+v;
+			return v;
+			// throw new IllegalArgumentException("min="+min+" max="+max+" v="+v);
 		}
 		if (v < min) {
 			return min;
