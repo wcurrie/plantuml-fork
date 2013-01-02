@@ -64,7 +64,6 @@ public class EntityImageEmptyPackage2 extends AbstractEntityImage {
 
 	public EntityImageEmptyPackage2(ILeaf entity, ISkinParam skinParam) {
 		super(entity, skinParam);
-		assert false;
 		this.skinParam = skinParam;
 		this.specificBackColor = entity.getSpecificBackColor();
 		this.stereotype = entity.getStereotype();
@@ -75,13 +74,11 @@ public class EntityImageEmptyPackage2 extends AbstractEntityImage {
 
 	@Override
 	public Dimension2D getDimension(StringBounder stringBounder) {
-		assert false;
 		final Dimension2D dim = desc.calculateDimension(stringBounder);
 		return Dimension2DDouble.delta(dim, MARGIN * 2, MARGIN * 2 + dim.getHeight() * 2);
 	}
 
 	public void drawU(UGraphic ug, double xTheoricalPosition, double yTheoricalPosition) {
-		assert false;
 		final StringBounder stringBounder = ug.getStringBounder();
 		final Dimension2D dimTotal = getDimension(stringBounder);
 
@@ -100,12 +97,10 @@ public class EntityImageEmptyPackage2 extends AbstractEntityImage {
 	}
 
 	public ShapeType getShapeType() {
-		assert false;
 		return ShapeType.RECTANGLE;
 	}
 
 	public int getShield() {
-		assert false;
 		return 0;
 	}
 

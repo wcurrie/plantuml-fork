@@ -385,7 +385,6 @@ public final class CucaDiagramFileMakerSvek2 {
 				return new EntityImageComponentForDescriptionDiagram(leaf, new SkinParamForecolored(
 						dotData.getSkinParam(), HtmlColorUtils.BLACK));
 			}
-			assert false;
 			return new EntityImageEmptyPackage2(leaf, dotData.getSkinParam());
 		}
 		if (leaf.getEntityType() == LeafType.ASSOCIATION) {

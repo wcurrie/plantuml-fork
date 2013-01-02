@@ -63,7 +63,14 @@ public class RegexResult {
 
 	public String getLazzy(String key, int num) {
 		for (Map.Entry<String, RegexPartialMatch> ent : data.entrySet()) {
-			if (ent.getKey().startsWith(key) && ent.getValue().get(num) != null) {
+			if (ent.getKey().startsWith(key) == false) {
+				continue;
+			}
+			final RegexPartialMatch match = ent.getValue();
+			if (num >= match.size()) {
+				continue;
+			}
+			if (match.get(num) != null) {
 				return ent.getValue().get(num);
 			}
 		}

@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 9610 $
+ * Revision $Revision: 9679 $
  *
  */
 package net.sourceforge.plantuml.skin.rose;
@@ -166,7 +166,6 @@ public class Rose implements Skin {
 				ColorParam.sequenceReferenceHeaderBackground);
 		final HtmlColor sequenceReferenceBorder = getHtmlColor(param, ColorParam.sequenceReferenceBorder);
 		final HtmlColor lifeLineBackgroundColor = getHtmlColor(param, ColorParam.sequenceLifeLineBackground);
-		final HtmlColor sequenceArrow = getHtmlColor(param, ColorParam.sequenceArrow);
 		final HtmlColor sequenceActorBackground = getHtmlColor(param, ColorParam.sequenceActorBackground);
 		final HtmlColor sequenceParticipantBackground = getHtmlColor(param, ColorParam.sequenceParticipantBackground);
 
@@ -178,6 +177,8 @@ public class Rose implements Skin {
 		final double deltaShadow = param.shadowing() ? 4.0 : 0;
 
 		if (type.isArrow()) {
+			final HtmlColor sequenceArrow = config.getColor() == null ? getHtmlColor(param, ColorParam.sequenceArrow)
+					: config.getColor();
 			if (config.isSelfArrow()) {
 				return new ComponentRoseSelfArrow(sequenceArrow, getFontColor(param, FontParam.SEQUENCE_ARROW),
 						fontArrow, stringsToDisplay, config, param);

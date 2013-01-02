@@ -51,10 +51,12 @@ public class Bodier {
 	private final LeafType type;
 	private List<Member> methodsToDisplay;
 	private List<Member> fieldsToDisplay;
+	private final boolean manageModifier;
 
 	public Bodier(LeafType type, Set<VisibilityModifier> hides) {
 		this.hides = hides;
 		this.type = type;
+		this.manageModifier = type == null ? false : type.manageModifier();
 	}
 
 	public void addFieldOrMethod(String s) {
@@ -76,7 +78,7 @@ public class Bodier {
 	public BlockMember getBodyEnhanced() {
 		return new BlockMember() {
 			public TextBlock asTextBlock(FontParam fontParam, ISkinParam skinParam) {
-				return new BodyEnhanced2(rawBody, fontParam, skinParam);
+				return new BodyEnhanced2(rawBody, fontParam, skinParam, manageModifier);
 			}
 		};
 	}
@@ -104,7 +106,7 @@ public class Bodier {
 				if (s.length() == 0 && methodsToDisplay.size() == 0) {
 					continue;
 				}
-				final Member m = new MemberImpl(s, true);
+				final Member m = new MemberImpl(s, true, manageModifier);
 				if (hides == null || hides.contains(m.getVisibilityModifier()) == false) {
 					methodsToDisplay.add(m);
 				}
@@ -132,7 +134,7 @@ public class Bodier {
 				if (s.length() == 0 && fieldsToDisplay.size() == 0) {
 					continue;
 				}
-				final Member m = new MemberImpl(s, false);
+				final Member m = new MemberImpl(s, false, manageModifier);
 				if (hides == null || hides.contains(m.getVisibilityModifier()) == false) {
 					fieldsToDisplay.add(m);
 				}

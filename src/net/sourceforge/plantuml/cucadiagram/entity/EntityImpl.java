@@ -314,7 +314,7 @@ class EntityImpl implements ILeaf, IGroup {
 		}
 		return new BlockMember() {
 			public TextBlock asTextBlock(FontParam fontParam, ISkinParam skinParam) {
-				return new BodyEnhanced2(mouseOver, fontParam, skinParam);
+				return new BodyEnhanced2(mouseOver, fontParam, skinParam, leafType.manageModifier());
 			}
 		};
 	}

@@ -74,7 +74,7 @@ public class EntityImageComponentForDescriptionDiagram extends AbstractEntityIma
 		}
 		
 		final TextBlock desc = new BodyEnhanced2(entity.getDisplay(), getFontParam(symbol), skinParam,
-				HorizontalAlignement.CENTER, stereotype, symbol.manageHorizontalLine());
+				HorizontalAlignement.CENTER, stereotype, symbol.manageHorizontalLine(), false);
 
 //		final TextBlock desc = TextBlockUtils.create(
 //				entity.getDisplay(),

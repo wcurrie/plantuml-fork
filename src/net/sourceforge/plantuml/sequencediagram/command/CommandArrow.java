@@ -33,6 +33,8 @@
  */
 package net.sourceforge.plantuml.sequencediagram.command;
 
+import java.util.StringTokenizer;
+
 import net.sourceforge.plantuml.StringUtils;
 import net.sourceforge.plantuml.command.CommandExecutionResult;
 import net.sourceforge.plantuml.command.SingleLineCommand2;
@@ -65,11 +67,27 @@ public class CommandArrow extends SingleLineCommand2<SequenceDiagram> {
 						new RegexLeaf("PART1CODE", "([\\p{L}0-9_.@]+)"), //
 						new RegexLeaf("PART1LONG", "\"([^\"]+)\""), //
 						new RegexLeaf("PART1LONGCODE", "\"([^\"]+)\"\\s*as\\s+([\\p{L}0-9_.@]+)"), //
-						new RegexLeaf("PART1CODELONG", "([\\p{L}0-9_.@]+)\\s+as\\s*\"([^\"]+)\"")), new RegexLeaf(
-						"\\s*"), //
-				new RegexOr("ARROW", //
-						new RegexLeaf("ARROW_DIRECT", "( o)?[=-]+(>>?|//?|\\\\\\\\?|x )([ox] )?"), //
-						new RegexLeaf("ARROW_REVERSE", "( [xo])?( x|<<?|//?|\\\\\\\\?)[=-]+(o )?")), //
+						new RegexLeaf("PART1CODELONG", "([\\p{L}0-9_.@]+)\\s+as\\s*\"([^\"]+)\"")),
+				new RegexLeaf("\\s*"), //
+				new RegexOr(
+						"ARROW", //
+						new RegexConcat(
+								//
+								new RegexLeaf("ARROW_START1", "( o)?"), //
+								new RegexLeaf("ARROW_BODYA_DIRECT", "(-+)"), //
+								new RegexLeaf("ARROW_STYLE_DIRECT",
+										"(?:\\[((?:#\\w+|dotted|dashed|bold|hidden)(?:,#\\w+|,dotted|,dashed|,bold|,hidden)*)\\])?"),
+								new RegexLeaf("ARROW_BODYB_DIRECT", "(-*)"), //
+								new RegexLeaf("ARROW_END1", "(>>?|//?|\\\\\\\\?|x )([ox] )?")), //
+						new RegexConcat(
+								//
+								new RegexLeaf("ARROW_END2", "( [xo])?( x|<<?|//?|\\\\\\\\?)"), //
+								new RegexLeaf("ARROW_BODYA_REVERSE", "(-*)"), //
+								new RegexLeaf("ARROW_STYLE_REVERSE",
+										"(?:\\[((?:#\\w+|dotted|dashed|bold|hidden)(?:,#\\w+|,dotted|,dashed|,bold|,hidden)*)\\])?"),
+								new RegexLeaf("ARROW_BODYB_REVERSE", "(-+)"), //
+								new RegexLeaf("ARROW_START2", "(o )?")) //
+				), //
 				new RegexLeaf("\\s*"), //
 				new RegexOr("PART2", //
 						new RegexLeaf("PART2CODE", "([\\p{L}0-9_.@]+)"), //
@@ -106,22 +124,30 @@ public class CommandArrow extends SingleLineCommand2<SequenceDiagram> {
 		return getSystem().getOrCreateParticipant(code, display);
 	}
 
-	private boolean decorationAtStart(RegexResult arg2, String decoration) {
-		return decorationAtPosition(arg2, 0, 2, decoration);
+	private boolean decorationAtStart(RegexResult arg2) {
+		final String s = arg2.getLazzy("ARROW_START", 0);
+		return s != null && s.toLowerCase().contains("o");
 	}
 
-	private boolean decorationAtEnd(RegexResult arg2, String decoration) {
-		return decorationAtPosition(arg2, 2, 0, decoration);
-	}
-
-	private boolean decorationAtPosition(RegexResult arg2, int posDirect, int posReverse,
-			String decoration) {
-		final String s1 = arg2.get("ARROW_DIRECT", posDirect);
-		if (s1 != null && s1.toLowerCase().contains(decoration)) {
+	private boolean decorationAtEnd(RegexResult arg2) {
+		String s = arg2.get("ARROW_END1", 1);
+		if (s != null && s.toLowerCase().contains("o")) {
 			return true;
 		}
-		final String s2 = arg2.get("ARROW_REVERSE", posReverse);
-		if (s2 != null && s2.toLowerCase().contains(decoration)) {
+		s = arg2.get("ARROW_END2", 0);
+		if (s != null && s.toLowerCase().contains("o")) {
+			return true;
+		}
+		return false;
+	}
+
+	private boolean crossAtEnd(RegexResult arg2) {
+		String s = arg2.getLazzy("ARROW_END", 1);
+		if (s != null && s.toLowerCase().contains("x")) {
+			return true;
+		}
+		s = arg2.getLazzy("ARROW_END", 0);
+		if (s != null && s.toLowerCase().contains("x")) {
 			return true;
 		}
 		return false;
@@ -132,9 +158,9 @@ public class CommandArrow extends SingleLineCommand2<SequenceDiagram> {
 		final String fullArrow = StringUtils.manageArrowForSequence(arg2.get("ARROW", 0));
 		final String arrowWithX = fullArrow.replaceAll("[ o]", "");
 		final String arrow = fullArrow.replaceAll("[ ox]", "");
-		final boolean circleAtStart = decorationAtStart(arg2, "o");
-		final boolean circleAtEnd = decorationAtEnd(arg2, "o");
-		final boolean crossAtEnd = decorationAtEnd(arg2, "x") || decorationAtPosition(arg2, 1, 1, "x");
+		final boolean circleAtStart = decorationAtStart(arg2);
+		final boolean circleAtEnd = decorationAtEnd(arg2);
+		final boolean crossAtEnd = crossAtEnd(arg2);
 		Participant p1;
 		Participant p2;
 
@@ -153,7 +179,8 @@ public class CommandArrow extends SingleLineCommand2<SequenceDiagram> {
 		final boolean sync = arrow.endsWith(">>") || arrow.startsWith("<<") || arrow.contains("\\\\")
 				|| arrow.contains("//");
 
-		final boolean dotted = arrow.contains("--");
+		final boolean dotted = getLength(arg2) > 1;
+		// final boolean dotted = false;
 
 		final Display labels;
 		if (arg2.get("MESSAGE", 0) == null) {
@@ -187,6 +214,7 @@ public class CommandArrow extends SingleLineCommand2<SequenceDiagram> {
 		// if (crossAtStart) {
 		// config = config.withDecorationStart(ArrowDecoration.CROSSX);
 		// }
+		config = applyStyle(arg2.getLazzy("ARROW_STYLE", 0), config);
 
 		final String activationSpec = arg2.get("ACTIVATION", 0);
 
@@ -225,6 +253,40 @@ public class CommandArrow extends SingleLineCommand2<SequenceDiagram> {
 
 		}
 		return CommandExecutionResult.ok();
+	}
+
+	private int getLength(RegexResult arg2) {
+		String sa = arg2.getLazzy("ARROW_BODYA", 0);
+		if (sa == null) {
+			sa = "";
+		}
+		String sb = arg2.getLazzy("ARROW_BODYB", 0);
+		if (sb == null) {
+			sb = "";
+		}
+		return sa.length() + sb.length();
+	}
+
+	private ArrowConfiguration applyStyle(String arrowStyle, ArrowConfiguration config) {
+		if (arrowStyle == null) {
+			return config;
+		}
+		final StringTokenizer st = new StringTokenizer(arrowStyle, ",");
+		while (st.hasMoreTokens()) {
+			final String s = st.nextToken();
+			if (s.equalsIgnoreCase("dashed")) {
+				// link.goDashed();
+			} else if (s.equalsIgnoreCase("bold")) {
+				// link.goBold();
+			} else if (s.equalsIgnoreCase("dotted")) {
+				// link.goDotted();
+			} else if (s.equalsIgnoreCase("hidden")) {
+				// link.goHidden();
+			} else {
+				config = config.withColor(HtmlColorUtils.getColorIfValid(s));
+			}
+		}
+		return config;
 	}
 
 }

@@ -49,12 +49,13 @@ public class MemberImpl implements Member {
 
 	private final VisibilityModifier visibilityModifier;
 
-	public MemberImpl(String display, boolean isMethod) {
+	public MemberImpl(String display, boolean isMethod, boolean manageModifier) {
+		// manageModifier = true;
 		final Pattern p = Pattern.compile("^(.*)(" + UrlBuilder.getRegexp() + ")(.*)$");
 		final Matcher m = p.matcher(display);
 
 		if (m.matches()) {
-			if (m.groupCount()!=6) {
+			if (m.groupCount() != 6) {
 				throw new IllegalStateException();
 			}
 			final UrlBuilder urlBuilder = new UrlBuilder(null, true);
@@ -66,19 +67,28 @@ public class MemberImpl implements Member {
 		}
 
 		final String lower = display.toLowerCase();
-		this.staticModifier = lower.contains("{static}") || lower.contains("{classifier}");
-		this.abstractModifier = lower.contains("{abstract}");
-		String displayClean = display.replaceAll("(?i)\\{(static|classifier|abstract)\\}", "").trim();
-		if (displayClean.length() == 0) {
-			displayClean = " ";
-		}
 
-		if (VisibilityModifier.isVisibilityCharacter(displayClean.charAt(0))) {
-			visibilityModifier = VisibilityModifier.getVisibilityModifier(display.charAt(0), isMethod == false);
-			this.display = displayClean.substring(1).trim();
+		if (manageModifier) {
+			this.staticModifier = lower.contains("{static}") || lower.contains("{classifier}");
+			this.abstractModifier = lower.contains("{abstract}");
+			String displayClean = display.replaceAll("(?i)\\{(static|classifier|abstract)\\}", "").trim();
+			if (displayClean.length() == 0) {
+				displayClean = " ";
+			}
+
+			if (VisibilityModifier.isVisibilityCharacter(displayClean.charAt(0))) {
+				visibilityModifier = VisibilityModifier.getVisibilityModifier(display.charAt(0), isMethod == false);
+				this.display = displayClean.substring(1).trim();
+			} else {
+				this.display = displayClean;
+				visibilityModifier = null;
+			}
 		} else {
-			this.display = displayClean;
-			visibilityModifier = null;
+			this.staticModifier = false;
+			this.visibilityModifier = null;
+			this.abstractModifier = false;
+			display = display.trim();
+			this.display = display.length() == 0 ? " " : display.trim();
 		}
 	}
 

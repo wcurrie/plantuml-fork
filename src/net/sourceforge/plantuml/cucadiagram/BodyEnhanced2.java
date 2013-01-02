@@ -63,8 +63,9 @@ public class BodyEnhanced2 implements TextBlock {
 	private final boolean lineFirst;
 	private final HorizontalAlignement align;
 	private final boolean manageHorizontalLine;
+	private final boolean manageModifier;
 
-	public BodyEnhanced2(List<String> rawBody, FontParam fontParam, ISkinParam skinParam) {
+	public BodyEnhanced2(List<String> rawBody, FontParam fontParam, ISkinParam skinParam, boolean manageModifier) {
 		this.rawBody = new ArrayList<String>(rawBody);
 		this.fontParam = fontParam;
 		this.skinParam = skinParam;
@@ -74,10 +75,11 @@ public class BodyEnhanced2 implements TextBlock {
 		this.lineFirst = true;
 		this.align = HorizontalAlignement.LEFT;
 		this.manageHorizontalLine = true;
+		this.manageModifier = manageModifier;
 	}
 
 	public BodyEnhanced2(Display display, FontParam fontParam, ISkinParam skinParam, HorizontalAlignement align,
-			Stereotype stereotype, boolean manageHorizontalLine) {
+			Stereotype stereotype, boolean manageHorizontalLine, boolean manageModifier) {
 		this.rawBody = new ArrayList<String>();
 		for (CharSequence s : display) {
 			this.rawBody.add(s.toString());
@@ -89,6 +91,7 @@ public class BodyEnhanced2 implements TextBlock {
 		this.lineFirst = false;
 		this.align = align;
 		this.manageHorizontalLine = manageHorizontalLine;
+		this.manageModifier = manageModifier;
 
 	}
 
@@ -127,7 +130,7 @@ public class BodyEnhanced2 implements TextBlock {
 				title = getTitle(s, skinParam);
 				members = new ArrayList<Member>();
 			} else {
-				final Member m = new MemberImpl(s, StringUtils.isMethod(s));
+				final Member m = new MemberImpl(s, StringUtils.isMethod(s), manageModifier);
 				members.add(m);
 			}
 		}

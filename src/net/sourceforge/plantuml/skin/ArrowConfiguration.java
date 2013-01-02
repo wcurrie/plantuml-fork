@@ -33,6 +33,8 @@
  */
 package net.sourceforge.plantuml.skin;
 
+import net.sourceforge.plantuml.graphic.HtmlColor;
+
 public class ArrowConfiguration {
 
 	private final ArrowDirection direction;
@@ -41,9 +43,10 @@ public class ArrowConfiguration {
 	private final ArrowPart part;
 	private final ArrowDecoration decorationStart;
 	private final ArrowDecoration decorationEnd;
+	private final HtmlColor color;
 
 	private ArrowConfiguration(ArrowDirection direction, ArrowBody body, ArrowHead head, ArrowPart part,
-			ArrowDecoration decorationStart, ArrowDecoration decorationEnd) {
+			ArrowDecoration decorationStart, ArrowDecoration decorationEnd, HtmlColor color) {
 		if (direction == null || body == null || head == null || part == null) {
 			throw new IllegalArgumentException();
 		}
@@ -53,6 +56,7 @@ public class ArrowConfiguration {
 		this.head = head;
 		this.decorationStart = decorationStart;
 		this.decorationEnd = decorationEnd;
+		this.color = color;
 	}
 
 	@Override
@@ -67,34 +71,38 @@ public class ArrowConfiguration {
 
 	public static ArrowConfiguration withDirection(ArrowDirection direction) {
 		return new ArrowConfiguration(direction, ArrowBody.NORMAL, ArrowHead.NORMAL, ArrowPart.FULL,
-				ArrowDecoration.NONE, ArrowDecoration.NONE);
+				ArrowDecoration.NONE, ArrowDecoration.NONE, null);
 	}
 
 	public ArrowConfiguration reverse() {
 		if (direction == ArrowDirection.SELF) {
 			throw new UnsupportedOperationException();
 		}
-		return new ArrowConfiguration(direction.reverse(), body, head, part, decorationStart, decorationEnd);
+		return new ArrowConfiguration(direction.reverse(), body, head, part, decorationStart, decorationEnd, color);
 	}
 
 	public ArrowConfiguration withHead(ArrowHead head) {
-		return new ArrowConfiguration(direction, body, head, part, decorationStart, decorationEnd);
+		return new ArrowConfiguration(direction, body, head, part, decorationStart, decorationEnd, color);
 	}
 
 	public ArrowConfiguration withDotted() {
-		return new ArrowConfiguration(direction, ArrowBody.DOTTED, head, part, decorationStart, decorationEnd);
+		return new ArrowConfiguration(direction, ArrowBody.DOTTED, head, part, decorationStart, decorationEnd, color);
 	}
 
 	public ArrowConfiguration withPart(ArrowPart part) {
-		return new ArrowConfiguration(direction, body, head, part, decorationStart, decorationEnd);
+		return new ArrowConfiguration(direction, body, head, part, decorationStart, decorationEnd, color);
 	}
 
 	public ArrowConfiguration withDecorationStart(ArrowDecoration decorationStart) {
-		return new ArrowConfiguration(direction, body, head, part, decorationStart, decorationEnd);
+		return new ArrowConfiguration(direction, body, head, part, decorationStart, decorationEnd, color);
 	}
 
 	public ArrowConfiguration withDecorationEnd(ArrowDecoration decorationEnd) {
-		return new ArrowConfiguration(direction, body, head, part, decorationStart, decorationEnd);
+		return new ArrowConfiguration(direction, body, head, part, decorationStart, decorationEnd, color);
+	}
+
+	public ArrowConfiguration withColor(HtmlColor color) {
+		return new ArrowConfiguration(direction, body, head, part, decorationStart, decorationEnd, color);
 	}
 
 	public final ArrowDecoration getDecorationEnd() {
@@ -127,6 +135,10 @@ public class ArrowConfiguration {
 
 	public final ArrowPart getPart() {
 		return part;
+	}
+
+	public HtmlColor getColor() {
+		return color;
 	}
 
 }

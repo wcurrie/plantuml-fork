@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 8980 $
+ * Revision $Revision: 9666 $
  *
  */
 package net.sourceforge.plantuml.cucadiagram;
@@ -42,7 +42,7 @@ public enum LeafType {
 	ABSTRACT_CLASS, CLASS, INTERFACE, LOLLIPOP, ENUM, ACTOR, USECASE, COMPONENT, CIRCLE_INTERFACE, NOTE, OBJECT, ASSOCIATION,
 
 	BOUNDARY, CONTROL, ENTITY_DOMAIN,
-	
+
 	COMPONENT2,
 
 	ARC_CIRCLE,
@@ -52,7 +52,7 @@ public enum LeafType {
 	STATE, STATE_CONCURRENT, PSEUDO_STATE,
 
 	BLOCK,
-	
+
 	STILL_UNKNOWN;
 
 	public static LeafType getLeafType(String arg0) {
@@ -73,4 +73,10 @@ public enum LeafType {
 		return StringUtils.capitalize(html);
 	}
 
+	public boolean manageModifier() {
+		if (this == ABSTRACT_CLASS || this == CLASS || this == INTERFACE || this == ENUM || this == OBJECT) {
+			return true;
+		}
+		return false;
+	}
 }
