@@ -33,7 +33,6 @@
  */
 package net.sourceforge.plantuml.command;
 
-import net.sourceforge.plantuml.StringUtils;
 import net.sourceforge.plantuml.classdiagram.AbstractEntityDiagram;
 import net.sourceforge.plantuml.command.regex.RegexConcat;
 import net.sourceforge.plantuml.command.regex.RegexLeaf;

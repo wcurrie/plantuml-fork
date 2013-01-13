@@ -439,14 +439,14 @@ final public class CommandLinkClass extends SingleLineCommand2<AbstractClassOrOb
 				+ notNull(arg.get("ARROW_HEAD2", 0));
 	}
 
-	private String notNull(String s) {
+	public static String notNull(String s) {
 		if (s == null) {
 			return "";
 		}
 		return s;
 	}
 
-	private void applyStyle(String arrowStyle, Link link) {
+	public static void applyStyle(String arrowStyle, Link link) {
 		if (arrowStyle == null) {
 			return;
 		}

@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 9495 $
+ * Revision $Revision: 9694 $
  *
  */
 package net.sourceforge.plantuml.sequencediagram.graphic;
@@ -42,7 +42,6 @@ import net.sourceforge.plantuml.sequencediagram.LifeEvent;
 import net.sourceforge.plantuml.sequencediagram.Message;
 import net.sourceforge.plantuml.sequencediagram.NotePosition;
 import net.sourceforge.plantuml.skin.ArrowConfiguration;
-import net.sourceforge.plantuml.skin.ArrowDirection;
 import net.sourceforge.plantuml.skin.ArrowHead;
 import net.sourceforge.plantuml.skin.ComponentType;
 
@@ -217,11 +216,11 @@ class Step1Message extends Step1Abstract {
 	}
 
 	private ArrowConfiguration getSelfArrowType(Message m) {
-		ArrowConfiguration result = ArrowConfiguration.withDirection(ArrowDirection.SELF);
+		ArrowConfiguration result = ArrowConfiguration.withDirectionSelf();
 		if (m.getArrowConfiguration().isDotted()) {
 			result = result.withDotted();
 		}
-		if (m.getArrowConfiguration().getHead() == ArrowHead.ASYNC) {
+		if (m.getArrowConfiguration().isAsync()) {
 			result = result.withHead(ArrowHead.ASYNC);
 		}
 		result = result.withPart(m.getArrowConfiguration().getPart());

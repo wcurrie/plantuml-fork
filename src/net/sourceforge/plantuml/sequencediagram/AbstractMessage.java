@@ -40,7 +40,6 @@ import java.util.List;
 import java.util.Set;
 
 import net.sourceforge.plantuml.Url;
-import net.sourceforge.plantuml.UrlBuilder;
 import net.sourceforge.plantuml.cucadiagram.Display;
 import net.sourceforge.plantuml.graphic.HtmlColor;
 import net.sourceforge.plantuml.graphic.HtmlColorUtils;

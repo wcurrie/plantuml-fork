@@ -28,13 +28,14 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 9495 $
+ * Revision $Revision: 9714 $
  *
  */
 package net.sourceforge.plantuml.skin.bluemodern;
 
 import java.awt.Graphics2D;
 import java.awt.geom.Dimension2D;
+import java.awt.geom.Point2D;
 
 import net.sourceforge.plantuml.SpriteContainer;
 import net.sourceforge.plantuml.cucadiagram.Display;
@@ -42,7 +43,7 @@ import net.sourceforge.plantuml.graphic.HtmlColor;
 import net.sourceforge.plantuml.graphic.StringBounder;
 import net.sourceforge.plantuml.skin.Area;
 import net.sourceforge.plantuml.skin.ArrowConfiguration;
-import net.sourceforge.plantuml.skin.ArrowHead;
+import net.sourceforge.plantuml.skin.ArrowDirection;
 import net.sourceforge.plantuml.skin.ArrowPart;
 import net.sourceforge.plantuml.ugraphic.UFont;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
@@ -80,7 +81,7 @@ public class ComponentBlueModernArrow extends AbstractComponentBlueModernArrow {
 		final int direction = getDirection();
 		final UPolygon polygon = new UPolygon();
 
-		if (getArrowConfiguration().getHead() == ArrowHead.ASYNC) {
+		if (getArrowConfiguration().isAsync()) {
 			ug.getParam().setStroke(new UStroke(1.5));
 			if (direction == 1) {
 				if (getArrowConfiguration().getPart() != ArrowPart.BOTTOM_PART) {
@@ -149,10 +150,10 @@ public class ComponentBlueModernArrow extends AbstractComponentBlueModernArrow {
 	}
 
 	protected int getDirection() {
-		if (getArrowConfiguration().isLeftToRightNormal()) {
+		if (getArrowConfiguration().getArrowDirection() == ArrowDirection.LEFT_TO_RIGHT_NORMAL) {
 			return 1;
 		}
-		if (getArrowConfiguration().isRightToLeftReverse()) {
+		if (getArrowConfiguration().getArrowDirection() == ArrowDirection.RIGHT_TO_LEFT_REVERSE) {
 			return -1;
 		}
 		throw new IllegalStateException();
@@ -167,5 +168,22 @@ public class ComponentBlueModernArrow extends AbstractComponentBlueModernArrow {
 	public double getPreferredWidth(StringBounder stringBounder) {
 		return getTextWidth(stringBounder);
 	}
+	
+	public Point2D getStartPoint(StringBounder stringBounder, Dimension2D dimensionToUse) {
+		final int textHeight = (int) getTextHeight(stringBounder);
+		if (getArrowConfiguration().getArrowDirection() == ArrowDirection.LEFT_TO_RIGHT_NORMAL) {
+			return new Point2D.Double(getPaddingX(), textHeight + getPaddingY());
+		}
+		return new Point2D.Double(dimensionToUse.getWidth() + getPaddingX(), textHeight + getPaddingY());
+	}
+
+	public Point2D getEndPoint(StringBounder stringBounder, Dimension2D dimensionToUse) {
+		final int textHeight = (int) getTextHeight(stringBounder);
+		if (getArrowConfiguration().getArrowDirection() == ArrowDirection.LEFT_TO_RIGHT_NORMAL) {
+			return new Point2D.Double(dimensionToUse.getWidth() + getPaddingX(), textHeight + getPaddingY());
+		}
+		return new Point2D.Double(getPaddingX(), textHeight + getPaddingY());
+	}
+
 
 }

@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 9495 $
+ * Revision $Revision: 9714 $
  *
  */
 package net.sourceforge.plantuml.skin.bluemodern;
@@ -38,10 +38,11 @@ import net.sourceforge.plantuml.cucadiagram.Display;
 import net.sourceforge.plantuml.graphic.HorizontalAlignement;
 import net.sourceforge.plantuml.graphic.HtmlColor;
 import net.sourceforge.plantuml.skin.AbstractTextualComponent;
+import net.sourceforge.plantuml.skin.ArrowComponent;
 import net.sourceforge.plantuml.skin.ArrowConfiguration;
 import net.sourceforge.plantuml.ugraphic.UFont;
 
-public abstract class AbstractComponentBlueModernArrow extends AbstractTextualComponent {
+public abstract class AbstractComponentBlueModernArrow extends AbstractTextualComponent implements ArrowComponent {
 
 	private final int arrowDeltaX = 12;
 	private final int arrowDeltaY = 10;

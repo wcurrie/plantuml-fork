@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  *
- * Revision $Revision: 9498 $
+ * Revision $Revision: 9694 $
  *
  */
 package net.sourceforge.plantuml.activitydiagram;
@@ -37,7 +37,6 @@ import java.util.Arrays;
 import java.util.List;
 
 import net.sourceforge.plantuml.Direction;
-import net.sourceforge.plantuml.StringUtils;
 import net.sourceforge.plantuml.UmlDiagramType;
 import net.sourceforge.plantuml.UniqueSequence;
 import net.sourceforge.plantuml.cucadiagram.Code;

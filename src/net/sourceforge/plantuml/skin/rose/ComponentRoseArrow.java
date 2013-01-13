@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 9495 $
+ * Revision $Revision: 9698 $
  *
  */
 package net.sourceforge.plantuml.skin.rose;
@@ -45,6 +45,7 @@ import net.sourceforge.plantuml.graphic.StringBounder;
 import net.sourceforge.plantuml.skin.Area;
 import net.sourceforge.plantuml.skin.ArrowConfiguration;
 import net.sourceforge.plantuml.skin.ArrowDecoration;
+import net.sourceforge.plantuml.skin.ArrowDirection;
 import net.sourceforge.plantuml.skin.ArrowHead;
 import net.sourceforge.plantuml.skin.ArrowPart;
 import net.sourceforge.plantuml.ugraphic.UEllipse;
@@ -58,9 +59,8 @@ public class ComponentRoseArrow extends AbstractComponentRoseArrow {
 
 	private final HorizontalAlignement messagePosition;
 
-	public ComponentRoseArrow(HtmlColor foregroundColor, HtmlColor fontColor, UFont font,
-			Display stringsToDisplay, ArrowConfiguration arrowConfiguration,
-			HorizontalAlignement messagePosition, SpriteContainer spriteContainer) {
+	public ComponentRoseArrow(HtmlColor foregroundColor, HtmlColor fontColor, UFont font, Display stringsToDisplay,
+			ArrowConfiguration arrowConfiguration, HorizontalAlignement messagePosition, SpriteContainer spriteContainer) {
 		super(foregroundColor, fontColor, font, stringsToDisplay, arrowConfiguration, spriteContainer);
 		this.messagePosition = messagePosition;
 	}
@@ -85,14 +85,14 @@ public class ComponentRoseArrow extends AbstractComponentRoseArrow {
 		//
 		double start = 0;
 		double len = x2;
-		final int direction = getDirection();
-		double arrowHeadPosition = direction == 1 ? x2 - 1 : 2;
+		final ArrowDirection direction2 = getDirection2();
+		double arrowHeadPosition = direction2 == ArrowDirection.LEFT_TO_RIGHT_NORMAL ? x2 - 1 : 2;
 		final ArrowDecoration decorationStart = getArrowConfiguration().getDecorationStart();
 		if (decorationStart == ArrowDecoration.CIRCLE) {
-			if (direction == 1) {
+			if (direction2 == ArrowDirection.LEFT_TO_RIGHT_NORMAL) {
 				start += diamCircle / 2;
 				len -= diamCircle / 2;
-			} else if (direction == -1) {
+			} else if (direction2 == ArrowDirection.RIGHT_TO_LEFT_REVERSE) {
 				len -= diamCircle / 2;
 			}
 		}
@@ -100,19 +100,19 @@ public class ComponentRoseArrow extends AbstractComponentRoseArrow {
 		final ArrowDecoration decorationEnd = getArrowConfiguration().getDecorationEnd();
 		switch (decorationEnd) {
 		case CROSSX:
-			if (direction == 1) {
+			if (direction2 == ArrowDirection.LEFT_TO_RIGHT_NORMAL) {
 				len -= spaceCrossX + getArrowDeltaX() / 2;
-			} else if (direction == -1) {
+			} else if (direction2 == ArrowDirection.RIGHT_TO_LEFT_REVERSE) {
 				start += spaceCrossX + getArrowDeltaX() / 2;
 				len -= spaceCrossX + getArrowDeltaX() / 2;
 			}
 			break;
 
 		case CIRCLE:
-			if (direction == 1) {
+			if (direction2 == ArrowDirection.LEFT_TO_RIGHT_NORMAL) {
 				len -= diamCircle / 2;
 				arrowHeadPosition -= diamCircle / 2 + thinCircle;
-			} else if (direction == -1) {
+			} else if (direction2 == ArrowDirection.RIGHT_TO_LEFT_REVERSE) {
 				start += diamCircle / 2;
 				len -= diamCircle / 2;
 				arrowHeadPosition += diamCircle / 2 + thinCircle;
@@ -122,9 +122,9 @@ public class ComponentRoseArrow extends AbstractComponentRoseArrow {
 		}
 		if (decorationEnd != ArrowDecoration.CROSSX && getArrowConfiguration().getHead() == ArrowHead.NORMAL
 				&& getArrowConfiguration().getPart() == ArrowPart.FULL) {
-			if (direction == 1) {
+			if (direction2 == ArrowDirection.LEFT_TO_RIGHT_NORMAL) {
 				len -= getArrowDeltaX() / 2;
-			} else if (direction == -1) {
+			} else if (direction2 == ArrowDirection.RIGHT_TO_LEFT_REVERSE) {
 				start += getArrowDeltaX() / 2;
 				len -= getArrowDeltaX() / 2;
 			}
@@ -134,8 +134,8 @@ public class ComponentRoseArrow extends AbstractComponentRoseArrow {
 		if (getArrowConfiguration().isDotted()) {
 			ug.getParam().setStroke(new UStroke());
 		}
-		if (direction == 1) {
-			if (getArrowConfiguration().getHead() == ArrowHead.ASYNC) {
+		if (direction2 == ArrowDirection.LEFT_TO_RIGHT_NORMAL) {
+			if (getArrowConfiguration().isAsync()) {
 				if (getArrowConfiguration().getPart() != ArrowPart.BOTTOM_PART) {
 					ug.draw(arrowHeadPosition, textHeight, new ULine(-getArrowDeltaX(), -getArrowDeltaY()));
 				}
@@ -173,7 +173,7 @@ public class ComponentRoseArrow extends AbstractComponentRoseArrow {
 				ug.getParam().setStroke(new UStroke());
 			}
 		} else {
-			if (getArrowConfiguration().getHead() == ArrowHead.ASYNC) {
+			if (getArrowConfiguration().isAsync()) {
 				if (getArrowConfiguration().getPart() != ArrowPart.BOTTOM_PART) {
 					ug.draw(arrowHeadPosition - 1, textHeight, new ULine(getArrowDeltaX(), -getArrowDeltaY()));
 				}
@@ -217,9 +217,10 @@ public class ComponentRoseArrow extends AbstractComponentRoseArrow {
 			textPos = (dimensionToUse.getWidth() - textWidth) / 2;
 		} else if (messagePosition == HorizontalAlignement.RIGHT) {
 			final double textWidth = getTextBlock().calculateDimension(stringBounder).getWidth();
-			textPos = dimensionToUse.getWidth() - textWidth - getMarginX2() - (direction == 1 ? getArrowDeltaX() : 0);
+			textPos = dimensionToUse.getWidth() - textWidth - getMarginX2()
+					- (direction2 == ArrowDirection.LEFT_TO_RIGHT_NORMAL ? getArrowDeltaX() : 0);
 		} else {
-			textPos = getMarginX1() + (direction == -1 ? getArrowDeltaX() : 0);
+			textPos = getMarginX1() + (direction2 == ArrowDirection.RIGHT_TO_LEFT_REVERSE ? getArrowDeltaX() : 0);
 		}
 		getTextBlock().drawU(ug, textPos, 0);
 	}
@@ -268,7 +269,7 @@ public class ComponentRoseArrow extends AbstractComponentRoseArrow {
 
 	public Point2D getStartPoint(StringBounder stringBounder, Dimension2D dimensionToUse) {
 		final int textHeight = (int) getTextHeight(stringBounder);
-		if (getDirection() == 1) {
+		if (getDirection2() == ArrowDirection.LEFT_TO_RIGHT_NORMAL) {
 			return new Point2D.Double(getPaddingX(), textHeight + getPaddingY());
 		}
 		return new Point2D.Double(dimensionToUse.getWidth() + getPaddingX(), textHeight + getPaddingY());
@@ -276,20 +277,14 @@ public class ComponentRoseArrow extends AbstractComponentRoseArrow {
 
 	public Point2D getEndPoint(StringBounder stringBounder, Dimension2D dimensionToUse) {
 		final int textHeight = (int) getTextHeight(stringBounder);
-		if (getDirection() == 1) {
+		if (getDirection2() == ArrowDirection.LEFT_TO_RIGHT_NORMAL) {
 			return new Point2D.Double(dimensionToUse.getWidth() + getPaddingX(), textHeight + getPaddingY());
 		}
 		return new Point2D.Double(getPaddingX(), textHeight + getPaddingY());
 	}
 
-	final protected int getDirection() {
-		if (getArrowConfiguration().isLeftToRightNormal()) {
-			return 1;
-		}
-		if (getArrowConfiguration().isRightToLeftReverse()) {
-			return -1;
-		}
-		throw new IllegalStateException();
+	final private ArrowDirection getDirection2() {
+		return getArrowConfiguration().getArrowDirection();
 	}
 
 	@Override

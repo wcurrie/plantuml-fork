@@ -28,13 +28,12 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 9651 $
+ * Revision $Revision: 9694 $
  *
  */
 package net.sourceforge.plantuml.sequencediagram.graphic;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import net.sourceforge.plantuml.Dimension2DDouble;

@@ -28,28 +28,42 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 9694 $
+ * Revision $Revision: 4636 $
  *
  */
-package net.sourceforge.plantuml.sequencediagram.command;
+package net.sourceforge.plantuml.sequencediagram.puma;
 
-import java.util.List;
+import java.util.ArrayList;
+import java.util.Collection;
 
-import net.sourceforge.plantuml.command.CommandExecutionResult;
-import net.sourceforge.plantuml.command.SingleLineCommand;
-import net.sourceforge.plantuml.cucadiagram.Display;
-import net.sourceforge.plantuml.sequencediagram.SequenceDiagram;
+public class PUnivers {
 
-public class CommandNewpage extends SingleLineCommand<SequenceDiagram> {
+	private final Collection<PSegment> all = new ArrayList<PSegment>();
+	private final Collection<FixedLink> links = new ArrayList<FixedLink>();
 
-	public CommandNewpage(SequenceDiagram sequenceDiagram) {
-		super(sequenceDiagram, "(?i)^@?newpage(?:(?:\\s*:\\s*|\\s+)(.*[\\p{L}0-9_.].*))?$");
+	public PSegment createPSegment(double minsize) {
+		final PSegment result = new PSegment(minsize);
+		all.add(result);
+		return result;
 	}
 
-	@Override
-	protected CommandExecutionResult executeArg(List<String> arg) {
-		final Display strings = arg.get(0) == null ? null : Display.getWithNewlines(arg.get(0));
-		getSystem().newpage(strings);
-		return CommandExecutionResult.ok();
+	public void addFixedLink(PSegment segment1, double position1, PSegment segment2, double position2) {
+		final FixedLink link = new FixedLink(new SegmentPosition(segment1, position1), new SegmentPosition(segment2,
+				position2));
+		links.add(link);
+
+	}
+
+	public void solve() {
+		boolean changed = false;
+		do {
+			changed = false;
+			for (FixedLink link : links) {
+				if (link.pushIfNeed()) {
+					changed = true;
+				}
+			}
+		} while (changed);
+
 	}
 }

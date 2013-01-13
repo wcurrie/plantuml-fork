@@ -35,16 +35,11 @@ package net.sourceforge.plantuml.svek;
 
 import java.awt.geom.Dimension2D;
 
-import net.sourceforge.plantuml.ColorParam;
-import net.sourceforge.plantuml.FontParam;
 import net.sourceforge.plantuml.ISkinParam;
-import net.sourceforge.plantuml.SkinParamUtils;
 import net.sourceforge.plantuml.cucadiagram.IEntity;
 import net.sourceforge.plantuml.cucadiagram.Stereotype;
 import net.sourceforge.plantuml.graphic.HtmlColor;
 import net.sourceforge.plantuml.graphic.StringBounder;
-import net.sourceforge.plantuml.skin.rose.Rose;
-import net.sourceforge.plantuml.ugraphic.UFont;
 
 public abstract class AbstractEntityImage implements IEntityImage {
 

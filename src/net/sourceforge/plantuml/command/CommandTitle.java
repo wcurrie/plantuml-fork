@@ -28,14 +28,13 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 9498 $
+ * Revision $Revision: 9694 $
  *
  */
 package net.sourceforge.plantuml.command;
 
 import java.util.List;
 
-import net.sourceforge.plantuml.StringUtils;
 import net.sourceforge.plantuml.UmlDiagram;
 import net.sourceforge.plantuml.cucadiagram.Display;
 

@@ -28,28 +28,31 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 9694 $
+ * Revision $Revision: 4636 $
  *
  */
-package net.sourceforge.plantuml.sequencediagram.command;
+package net.sourceforge.plantuml.sequencediagram.puma;
 
-import java.util.List;
+public class FixedLink {
 
-import net.sourceforge.plantuml.command.CommandExecutionResult;
-import net.sourceforge.plantuml.command.SingleLineCommand;
-import net.sourceforge.plantuml.cucadiagram.Display;
-import net.sourceforge.plantuml.sequencediagram.SequenceDiagram;
+	final private SegmentPosition segmentPosition1;
+	final private SegmentPosition segmentPosition2;
 
-public class CommandNewpage extends SingleLineCommand<SequenceDiagram> {
-
-	public CommandNewpage(SequenceDiagram sequenceDiagram) {
-		super(sequenceDiagram, "(?i)^@?newpage(?:(?:\\s*:\\s*|\\s+)(.*[\\p{L}0-9_.].*))?$");
+	public FixedLink(SegmentPosition segmentPosition1, SegmentPosition segmentPosition2) {
+		this.segmentPosition1 = segmentPosition1;
+		this.segmentPosition2 = segmentPosition2;
 	}
 
-	@Override
-	protected CommandExecutionResult executeArg(List<String> arg) {
-		final Display strings = arg.get(0) == null ? null : Display.getWithNewlines(arg.get(0));
-		getSystem().newpage(strings);
-		return CommandExecutionResult.ok();
+	public boolean pushIfNeed() {
+		final double p1 = segmentPosition1.getPosition();
+		final double p2 = segmentPosition2.getPosition();
+		if (p1 == p2) {
+			return false;
+		}
+		final double diff = p1 - p2;
+		segmentPosition2.getSegment().push(diff);
+		assert segmentPosition1.getPosition() == segmentPosition2.getPosition();
+		return true;
 	}
+
 }

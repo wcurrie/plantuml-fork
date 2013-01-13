@@ -35,7 +35,7 @@ package net.sourceforge.plantuml.skin;
 
 
 public enum ArrowDirection {
-	LEFT_TO_RIGHT_NORMAL, RIGHT_TO_LEFT_REVERSE, SELF;
+	LEFT_TO_RIGHT_NORMAL, RIGHT_TO_LEFT_REVERSE, SELF, BOTH_DIRECTION;
 
 	public ArrowDirection reverse() {
 		switch (this) {

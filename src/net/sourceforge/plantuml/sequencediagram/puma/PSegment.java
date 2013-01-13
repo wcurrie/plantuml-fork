@@ -28,28 +28,44 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 9694 $
+ * Revision $Revision: 4636 $
  *
  */
-package net.sourceforge.plantuml.sequencediagram.command;
+package net.sourceforge.plantuml.sequencediagram.puma;
 
-import java.util.List;
+public class PSegment {
 
-import net.sourceforge.plantuml.command.CommandExecutionResult;
-import net.sourceforge.plantuml.command.SingleLineCommand;
-import net.sourceforge.plantuml.cucadiagram.Display;
-import net.sourceforge.plantuml.sequencediagram.SequenceDiagram;
+	private final double minsize;
+	private double startx;
+	private double endx;
 
-public class CommandNewpage extends SingleLineCommand<SequenceDiagram> {
-
-	public CommandNewpage(SequenceDiagram sequenceDiagram) {
-		super(sequenceDiagram, "(?i)^@?newpage(?:(?:\\s*:\\s*|\\s+)(.*[\\p{L}0-9_.].*))?$");
+	public PSegment(double minsize) {
+		this.minsize = minsize;
+		this.startx = 0;
+		this.endx = minsize;
 	}
 
-	@Override
-	protected CommandExecutionResult executeArg(List<String> arg) {
-		final Display strings = arg.get(0) == null ? null : Display.getWithNewlines(arg.get(0));
-		getSystem().newpage(strings);
-		return CommandExecutionResult.ok();
+	public double getMinsize() {
+		return minsize;
 	}
+
+	public void push(double delta) {
+		this.startx += delta;
+		this.endx += delta;
+	}
+
+	public String getDebugPosition() {
+		return "" + ((int) startx) + "-" + ((int) endx);
+	}
+
+	public double getPosition(double position) {
+		if (position == 0) {
+			return startx;
+		}
+		if (position == 1) {
+			return endx;
+		}
+		throw new UnsupportedOperationException();
+	}
+
 }

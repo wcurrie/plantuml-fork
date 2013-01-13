@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  *
- * Revision $Revision: 9495 $
+ * Revision $Revision: 9684 $
  *
  */
 package net.sourceforge.plantuml.asciiart;
@@ -37,6 +37,7 @@ import net.sourceforge.plantuml.FileFormat;
 import net.sourceforge.plantuml.ISkinParam;
 import net.sourceforge.plantuml.cucadiagram.Display;
 import net.sourceforge.plantuml.skin.ArrowConfiguration;
+import net.sourceforge.plantuml.skin.ArrowDirection;
 import net.sourceforge.plantuml.skin.Component;
 import net.sourceforge.plantuml.skin.ComponentType;
 import net.sourceforge.plantuml.skin.Skin;
@@ -58,7 +59,7 @@ public class TextSkin implements Skin {
 		if (type == ComponentType.ACTOR_HEAD || type == ComponentType.ACTOR_TAIL) {
 			return new ComponentTextActor(type, stringsToDisplay, fileFormat);
 		}
-		if (type.isArrow() && (config.isLeftToRightNormal() || config.isRightToLeftReverse())) {
+		if (type.isArrow() && ((config.getArrowDirection() == ArrowDirection.LEFT_TO_RIGHT_NORMAL) || (config.getArrowDirection() == ArrowDirection.RIGHT_TO_LEFT_REVERSE))) {
 			return new ComponentTextArrow(type, config, stringsToDisplay, fileFormat);
 		}
 		if (type.isArrow() && config.isSelfArrow()) {

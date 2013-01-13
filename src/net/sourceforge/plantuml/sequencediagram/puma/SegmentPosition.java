@@ -28,28 +28,28 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 9694 $
+ * Revision $Revision: 4636 $
  *
  */
-package net.sourceforge.plantuml.sequencediagram.command;
+package net.sourceforge.plantuml.sequencediagram.puma;
 
-import java.util.List;
+public class SegmentPosition {
 
-import net.sourceforge.plantuml.command.CommandExecutionResult;
-import net.sourceforge.plantuml.command.SingleLineCommand;
-import net.sourceforge.plantuml.cucadiagram.Display;
-import net.sourceforge.plantuml.sequencediagram.SequenceDiagram;
+	final private PSegment segment;
+	final private double position;
 
-public class CommandNewpage extends SingleLineCommand<SequenceDiagram> {
-
-	public CommandNewpage(SequenceDiagram sequenceDiagram) {
-		super(sequenceDiagram, "(?i)^@?newpage(?:(?:\\s*:\\s*|\\s+)(.*[\\p{L}0-9_.].*))?$");
+	public SegmentPosition(PSegment segment, double position) {
+		this.segment = segment;
+		this.position = position;
 	}
 
-	@Override
-	protected CommandExecutionResult executeArg(List<String> arg) {
-		final Display strings = arg.get(0) == null ? null : Display.getWithNewlines(arg.get(0));
-		getSystem().newpage(strings);
-		return CommandExecutionResult.ok();
+	public double getPosition() {
+		return segment.getPosition(position);
 	}
+
+	public PSegment getSegment() {
+		return segment;
+		
+	}
+
 }

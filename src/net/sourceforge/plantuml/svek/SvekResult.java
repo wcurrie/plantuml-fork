@@ -45,7 +45,6 @@ import net.sourceforge.plantuml.ColorParam;
 import net.sourceforge.plantuml.UmlDiagramType;
 import net.sourceforge.plantuml.cucadiagram.dot.DotData;
 import net.sourceforge.plantuml.graphic.HtmlColor;
-import net.sourceforge.plantuml.graphic.HtmlColorUtils;
 import net.sourceforge.plantuml.graphic.StringBounder;
 import net.sourceforge.plantuml.posimo.Moveable;
 import net.sourceforge.plantuml.skin.rose.Rose;

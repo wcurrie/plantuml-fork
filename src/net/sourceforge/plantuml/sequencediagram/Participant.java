@@ -28,14 +28,10 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 9502 $
+ * Revision $Revision: 9694 $
  *
  */
 package net.sourceforge.plantuml.sequencediagram;
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 
 import net.sourceforge.plantuml.SpecificBackcolorable;
 import net.sourceforge.plantuml.Url;

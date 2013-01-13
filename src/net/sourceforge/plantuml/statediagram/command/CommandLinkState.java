@@ -33,10 +33,9 @@
  */
 package net.sourceforge.plantuml.statediagram.command;
 
-import java.util.StringTokenizer;
-
 import net.sourceforge.plantuml.Direction;
 import net.sourceforge.plantuml.StringUtils;
+import net.sourceforge.plantuml.classdiagram.command.CommandLinkClass;
 import net.sourceforge.plantuml.command.CommandExecutionResult;
 import net.sourceforge.plantuml.command.SingleLineCommand2;
 import net.sourceforge.plantuml.command.regex.RegexConcat;
@@ -126,32 +125,32 @@ public class CommandLinkState extends SingleLineCommand2<StateDiagram> {
 		if (dir == Direction.LEFT || dir == Direction.UP) {
 			link = link.getInv();
 		}
-		applyStyle(arg.getLazzy("ARROW_STYLE", 0), link);
+		CommandLinkClass.applyStyle(arg.getLazzy("ARROW_STYLE", 0), link);
 		getSystem().addLink(link);
 
 		return CommandExecutionResult.ok();
 	}
 
-	private void applyStyle(String arrowStyle, Link link) {
-		if (arrowStyle == null) {
-			return;
-		}
-		final StringTokenizer st = new StringTokenizer(arrowStyle, ",");
-		while (st.hasMoreTokens()) {
-			final String s = st.nextToken();
-			if (s.equalsIgnoreCase("dashed")) {
-				link.goDashed();
-			} else if (s.equalsIgnoreCase("bold")) {
-				link.goBold();
-			} else if (s.equalsIgnoreCase("dotted")) {
-				link.goDotted();
-			} else if (s.equalsIgnoreCase("hidden")) {
-				link.goHidden();
-			} else {
-				link.setSpecificColor(s);
-			}
-		}
-	}
+//	public static void applyStyle(String arrowStyle, Link link) {
+//		if (arrowStyle == null) {
+//			return;
+//		}
+//		final StringTokenizer st = new StringTokenizer(arrowStyle, ",");
+//		while (st.hasMoreTokens()) {
+//			final String s = st.nextToken();
+//			if (s.equalsIgnoreCase("dashed")) {
+//				link.goDashed();
+//			} else if (s.equalsIgnoreCase("bold")) {
+//				link.goBold();
+//			} else if (s.equalsIgnoreCase("dotted")) {
+//				link.goDotted();
+//			} else if (s.equalsIgnoreCase("hidden")) {
+//				link.goHidden();
+//			} else {
+//				link.setSpecificColor(s);
+//			}
+//		}
+//	}
 
 	private Direction getDirection(RegexResult arg) {
 		final String arrowDirection = arg.get("ARROW_DIRECTION", 0);

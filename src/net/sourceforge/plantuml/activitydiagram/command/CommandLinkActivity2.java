@@ -38,6 +38,7 @@ import net.sourceforge.plantuml.StringUtils;
 import net.sourceforge.plantuml.Url;
 import net.sourceforge.plantuml.UrlBuilder;
 import net.sourceforge.plantuml.activitydiagram.ActivityDiagram;
+import net.sourceforge.plantuml.classdiagram.command.CommandLinkClass;
 import net.sourceforge.plantuml.command.CommandExecutionResult;
 import net.sourceforge.plantuml.command.SingleLineCommand2;
 import net.sourceforge.plantuml.command.regex.RegexConcat;
@@ -56,9 +57,9 @@ import net.sourceforge.plantuml.cucadiagram.LinkType;
 import net.sourceforge.plantuml.cucadiagram.Stereotype;
 import net.sourceforge.plantuml.graphic.HtmlColorUtils;
 
-public class CommandLinkActivity extends SingleLineCommand2<ActivityDiagram> {
+public class CommandLinkActivity2 extends SingleLineCommand2<ActivityDiagram> {
 
-	public CommandLinkActivity(ActivityDiagram diagram) {
+	public CommandLinkActivity2(ActivityDiagram diagram) {
 		super(diagram, getRegexConcat());
 	}
 
@@ -75,7 +76,16 @@ public class CommandLinkActivity extends SingleLineCommand2<ActivityDiagram> {
 				new RegexLeaf("BACKCOLOR", "(#\\w+[-\\\\|/]?\\w+)?"), //
 				new RegexLeaf("\\s*"), //
 				new RegexLeaf("URL", "(" + UrlBuilder.getRegexp() + ")?"), //
-				new RegexLeaf("ARROW", "([-=.]+(?:\\*|left|right|up|down|le?|ri?|up?|do?)?[-=.]*\\>)"), //
+
+				new RegexLeaf("ARROW_BODY1", "([-.]+)"), //
+				new RegexLeaf("ARROW_STYLE1",
+						"(?:\\[((?:#\\w+|dotted|dashed|bold|hidden)(?:,#\\w+|,dotted|,dashed|,bold|,hidden)*)\\])?"), //
+				new RegexLeaf("ARROW_DIRECTION", "(\\*|left|right|up|down|le?|ri?|up?|do?)?"), //
+				new RegexLeaf("ARROW_STYLE2",
+						"(?:\\[((?:#\\w+|dotted|dashed|bold|hidden)(?:,#\\w+|,dotted|,dashed|,bold|,hidden)*)\\])?"), //
+				new RegexLeaf("ARROW_BODY2", "([-.]*)\\>"), //
+
+				// new RegexLeaf("ARROW", "([-=.]+(?:\\*|left|right|up|down|le?|ri?|up?|do?)?[-=.]*\\>)"), //
 				new RegexLeaf("\\s*"), //
 				new RegexLeaf("BRACKET", "(?:\\[([^\\]*]+[^\\]]*)\\])?"), //
 				new RegexLeaf("\\s*"), //
@@ -94,7 +104,7 @@ public class CommandLinkActivity extends SingleLineCommand2<ActivityDiagram> {
 				new RegexLeaf("BACKCOLOR2", "(#\\w+[-\\\\|/]?\\w+)?"), //
 				new RegexLeaf("$"));
 	}
-
+	
 	@Override
 	protected CommandExecutionResult executeArg(RegexResult arg2) {
 		final IEntity entity1 = getEntity(getSystem(), arg2, true);
@@ -121,22 +131,26 @@ public class CommandLinkActivity extends SingleLineCommand2<ActivityDiagram> {
 
 		final Display linkLabel = Display.getWithNewlines(arg2.get("BRACKET", 0));
 
-		final String arrow = StringUtils.manageArrowForCuca(arg2.get("ARROW", 0));
+		final String arrowBody1 = CommandLinkClass.notNull(arg2.get("ARROW_BODY1", 0));
+		final String arrowBody2 = CommandLinkClass.notNull(arg2.get("ARROW_BODY2", 0));
+		final String arrowDirection = CommandLinkClass.notNull(arg2.get("ARROW_DIRECTION", 0));
+
+		final String arrow = StringUtils.manageArrowForCuca(arrowBody1 + arrowDirection + arrowBody2 + ">");
 		int lenght = arrow.length() - 1;
-		if (arg2.get("ARROW", 0).contains("*")) {
+		if (arrowDirection.contains("*")) {
 			lenght = 2;
 		}
 
 		LinkType type = new LinkType(LinkDecor.ARROW, LinkDecor.NONE);
-		if (arg2.get("ARROW", 0).contains(".")) {
+		if ((arrowBody1 + arrowBody2).contains(".")) {
 			type = type.getDotted();
 		}
 
 		Link link = new Link(entity1, entity2, type, linkLabel, lenght);
-		if (arg2.get("ARROW", 0).contains("*")) {
+		if (arrowDirection.contains("*")) {
 			link.setConstraint(false);
 		}
-		final Direction direction = StringUtils.getArrowDirection(arg2.get("ARROW", 0));
+		final Direction direction = StringUtils.getArrowDirection(arrowBody1 + arrowDirection + arrowBody2 + ">");
 		if (direction == Direction.LEFT || direction == Direction.UP) {
 			link = link.getInv();
 		}
@@ -146,6 +160,7 @@ public class CommandLinkActivity extends SingleLineCommand2<ActivityDiagram> {
 			link.setUrl(urlLink);
 		}
 
+		CommandLinkClass.applyStyle(arg2.getLazzy("ARROW_STYLE", 0), link);
 		getSystem().addLink(link);
 
 		return CommandExecutionResult.ok();
@@ -175,8 +190,8 @@ public class CommandLinkActivity extends SingleLineCommand2<ActivityDiagram> {
 		final Code code = Code.of(arg.get("CODE" + suf, 0));
 		if (code != null) {
 			if (partition != null) {
-				system.getOrCreateGroup(Code.of(partition), Display.getWithNewlines(partition), null, GroupType.PACKAGE,
-						system.getRootGroup());
+				system.getOrCreateGroup(Code.of(partition), Display.getWithNewlines(partition), null,
+						GroupType.PACKAGE, system.getRootGroup());
 			}
 			final IEntity result = system.getOrCreate(code, Display.getWithNewlines(code),
 					getTypeIfExisting(system, code));
@@ -193,8 +208,8 @@ public class CommandLinkActivity extends SingleLineCommand2<ActivityDiagram> {
 		if (quoted.get(0) != null) {
 			final Code quotedCode = Code.of(quoted.get(1) == null ? quoted.get(0) : quoted.get(1));
 			if (partition != null) {
-				system.getOrCreateGroup(Code.of(partition), Display.getWithNewlines(partition), null, GroupType.PACKAGE,
-						system.getRootGroup());
+				system.getOrCreateGroup(Code.of(partition), Display.getWithNewlines(partition), null,
+						GroupType.PACKAGE, system.getRootGroup());
 			}
 			final IEntity result = system.getOrCreate(quotedCode, Display.getWithNewlines(quoted.get(0)),
 					getTypeIfExisting(system, quotedCode));
@@ -204,12 +219,13 @@ public class CommandLinkActivity extends SingleLineCommand2<ActivityDiagram> {
 			return result;
 		}
 		final Code quotedInvisible = Code.of(arg.get("QUOTED_INVISIBLE" + suf, 0));
-		if (quotedInvisible !=  null) {
+		if (quotedInvisible != null) {
 			if (partition != null) {
-				system.getOrCreateGroup(Code.of(partition), Display.getWithNewlines(partition), null, GroupType.PACKAGE,
-						system.getRootGroup());
+				system.getOrCreateGroup(Code.of(partition), Display.getWithNewlines(partition), null,
+						GroupType.PACKAGE, system.getRootGroup());
 			}
-			final IEntity result = system.getOrCreate(quotedInvisible, Display.getWithNewlines(quotedInvisible), LeafType.ACTIVITY);
+			final IEntity result = system.getOrCreate(quotedInvisible, Display.getWithNewlines(quotedInvisible),
+					LeafType.ACTIVITY);
 			if (partition != null) {
 				system.endGroup();
 			}

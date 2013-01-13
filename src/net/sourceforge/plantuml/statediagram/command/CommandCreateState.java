@@ -28,12 +28,11 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 9498 $
+ * Revision $Revision: 9694 $
  *
  */
 package net.sourceforge.plantuml.statediagram.command;
 
-import net.sourceforge.plantuml.StringUtils;
 import net.sourceforge.plantuml.Url;
 import net.sourceforge.plantuml.UrlBuilder;
 import net.sourceforge.plantuml.command.CommandExecutionResult;

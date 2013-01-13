@@ -28,10 +28,13 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 9495 $
+ * Revision $Revision: 9714 $
  *
  */
 package net.sourceforge.plantuml.skin.bluemodern;
+
+import java.awt.geom.Dimension2D;
+import java.awt.geom.Point2D;
 
 import net.sourceforge.plantuml.SpriteContainer;
 import net.sourceforge.plantuml.cucadiagram.Display;
@@ -39,7 +42,6 @@ import net.sourceforge.plantuml.graphic.HtmlColor;
 import net.sourceforge.plantuml.graphic.StringBounder;
 import net.sourceforge.plantuml.skin.Area;
 import net.sourceforge.plantuml.skin.ArrowConfiguration;
-import net.sourceforge.plantuml.skin.ArrowHead;
 import net.sourceforge.plantuml.skin.ArrowPart;
 import net.sourceforge.plantuml.ugraphic.UFont;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
@@ -82,7 +84,7 @@ public class ComponentBlueModernSelfArrow extends AbstractComponentBlueModernArr
 
 		final int delta = (int) getArrowOnlyHeight(stringBounder);
 
-		if (getArrowConfiguration().getHead() == ArrowHead.ASYNC) {
+		if (getArrowConfiguration().isAsync()) {
 			ug.getParam().setStroke(new UStroke(1.5));
 			if (getArrowConfiguration().getPart() != ArrowPart.BOTTOM_PART) {
 				ug.draw(getArrowDeltaX2(), textHeight - getArrowDeltaY2() + delta, new ULine(-getArrowDeltaX2(),
@@ -132,6 +134,17 @@ public class ComponentBlueModernSelfArrow extends AbstractComponentBlueModernArr
 	@Override
 	public double getPreferredWidth(StringBounder stringBounder) {
 		return Math.max(getTextWidth(stringBounder), arrowWidth);
+	}
+
+	public Point2D getStartPoint(StringBounder stringBounder, Dimension2D dimensionToUse) {
+		final int textHeight = (int) getTextHeight(stringBounder);
+		return new Point2D.Double(getPaddingX(), textHeight + getPaddingY());
+	}
+
+	public Point2D getEndPoint(StringBounder stringBounder, Dimension2D dimensionToUse) {
+		final int textHeight = (int) getTextHeight(stringBounder);
+		final int textAndArrowHeight = (int) (textHeight + getArrowOnlyHeight(stringBounder));
+		return new Point2D.Double(getPaddingX(), textAndArrowHeight + getPaddingY());
 	}
 
 }

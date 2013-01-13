@@ -41,6 +41,7 @@ import net.sourceforge.plantuml.cucadiagram.Display;
 import net.sourceforge.plantuml.graphic.StringBounder;
 import net.sourceforge.plantuml.skin.Area;
 import net.sourceforge.plantuml.skin.ArrowConfiguration;
+import net.sourceforge.plantuml.skin.ArrowDirection;
 import net.sourceforge.plantuml.skin.Component;
 import net.sourceforge.plantuml.skin.ComponentType;
 import net.sourceforge.plantuml.skin.Context2D;
@@ -76,9 +77,9 @@ public class ComponentTextArrow implements Component {
 			}
 		}
 
-		if (config.isLeftToRightNormal()) {
+		if (config.getArrowDirection() == ArrowDirection.LEFT_TO_RIGHT_NORMAL) {
 			charArea.drawChar('>', width - 1, yarrow);
-		} else if (config.isRightToLeftReverse()) {
+		} else if (config.getArrowDirection() == ArrowDirection.RIGHT_TO_LEFT_REVERSE) {
 			charArea.drawChar('<', 1, yarrow);
 		} else {
 			throw new UnsupportedOperationException();

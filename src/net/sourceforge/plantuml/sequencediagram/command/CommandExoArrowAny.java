@@ -44,7 +44,6 @@ import net.sourceforge.plantuml.sequencediagram.MessageExoType;
 import net.sourceforge.plantuml.sequencediagram.Participant;
 import net.sourceforge.plantuml.sequencediagram.SequenceDiagram;
 import net.sourceforge.plantuml.skin.ArrowConfiguration;
-import net.sourceforge.plantuml.skin.ArrowDirection;
 import net.sourceforge.plantuml.skin.ArrowHead;
 import net.sourceforge.plantuml.skin.ArrowPart;
 
@@ -76,7 +75,7 @@ abstract class CommandExoArrowAny extends SingleLineCommand<SequenceDiagram> {
 			labels = Display.getWithNewlines(arg.get(2));
 		}
 
-		ArrowConfiguration config = ArrowConfiguration.withDirection(ArrowDirection.LEFT_TO_RIGHT_NORMAL);
+		ArrowConfiguration config = ArrowConfiguration.withDirectionNormal();
 		if (dotted) {
 			config = config.withDotted();
 		}

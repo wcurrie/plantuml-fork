@@ -43,7 +43,6 @@ import net.sourceforge.plantuml.sequencediagram.MessageExo;
 import net.sourceforge.plantuml.sequencediagram.MessageExoType;
 import net.sourceforge.plantuml.sequencediagram.MessageNumber;
 import net.sourceforge.plantuml.skin.ArrowConfiguration;
-import net.sourceforge.plantuml.skin.ArrowDirection;
 import net.sourceforge.plantuml.skin.ArrowHead;
 import net.sourceforge.plantuml.skin.ComponentType;
 
@@ -137,14 +136,14 @@ class Step1MessageExo extends Step1Abstract {
 		ArrowConfiguration result = null;
 		final MessageExoType type = m.getType();
 		if (type.getDirection() == 1) {
-			result = ArrowConfiguration.withDirection(ArrowDirection.LEFT_TO_RIGHT_NORMAL);
+			result = ArrowConfiguration.withDirectionNormal();
 		} else {
-			result = ArrowConfiguration.withDirection(ArrowDirection.RIGHT_TO_LEFT_REVERSE);
+			result = ArrowConfiguration.withDirectionReverse();
 		}
 		if (m.getArrowConfiguration().isDotted()) {
 			result = result.withDotted();
 		}
-		if (m.getArrowConfiguration().getHead() == ArrowHead.ASYNC) {
+		if (m.getArrowConfiguration().isAsync()) {
 			result = result.withHead(ArrowHead.ASYNC);
 		}
 		result = result.withPart(m.getArrowConfiguration().getPart());

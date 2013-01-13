@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 9590 $
+ * Revision $Revision: 9694 $
  *
  */
 package net.sourceforge.plantuml.printskin;
@@ -57,7 +57,6 @@ import net.sourceforge.plantuml.graphic.TextBlockUtils;
 import net.sourceforge.plantuml.png.PngIO;
 import net.sourceforge.plantuml.skin.Area;
 import net.sourceforge.plantuml.skin.ArrowConfiguration;
-import net.sourceforge.plantuml.skin.ArrowDirection;
 import net.sourceforge.plantuml.skin.Component;
 import net.sourceforge.plantuml.skin.ComponentType;
 import net.sourceforge.plantuml.skin.SimpleContext2D;
@@ -120,7 +119,7 @@ class PrintSkin extends AbstractPSystem {
 	private void printComponent(ComponentType type) {
 		println(type.name());
 		final Component comp = skin.createComponent(type,
-				ArrowConfiguration.withDirection(ArrowDirection.LEFT_TO_RIGHT_NORMAL), new SkinParam(null), new Display(toPrint));
+				ArrowConfiguration.withDirectionNormal(), new SkinParam(null), new Display(toPrint));
 		if (comp == null) {
 			println("null");
 			return;

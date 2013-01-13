@@ -33,29 +33,25 @@
  */
 package net.sourceforge.plantuml.skin;
 
+import net.sourceforge.plantuml.OptionFlags;
 import net.sourceforge.plantuml.graphic.HtmlColor;
 
 public class ArrowConfiguration {
 
-	private final ArrowDirection direction;
 	private final ArrowBody body;
-	private final ArrowHead head;
-	private final ArrowPart part;
-	private final ArrowDecoration decorationStart;
-	private final ArrowDecoration decorationEnd;
+
+	private final ArrowDressing dressing1;
+	private final ArrowDressing dressing2;
+
 	private final HtmlColor color;
 
-	private ArrowConfiguration(ArrowDirection direction, ArrowBody body, ArrowHead head, ArrowPart part,
-			ArrowDecoration decorationStart, ArrowDecoration decorationEnd, HtmlColor color) {
-		if (direction == null || body == null || head == null || part == null) {
+	private ArrowConfiguration(ArrowBody body, ArrowDressing dressing1, ArrowDressing dressing2, HtmlColor color) {
+		if (body == null || dressing1 == null) {
 			throw new IllegalArgumentException();
 		}
-		this.part = part;
-		this.direction = direction;
 		this.body = body;
-		this.head = head;
-		this.decorationStart = decorationStart;
-		this.decorationEnd = decorationEnd;
+		this.dressing1 = dressing1;
+		this.dressing2 = dressing2;
 		this.color = color;
 	}
 
@@ -65,64 +61,89 @@ public class ArrowConfiguration {
 	}
 
 	public String name() {
-		return direction.name().substring(0, 4) + "-" + body.name() + "-" + head.name() + "-"
-				+ part.name().substring(0, 3) + "-" + decorationEnd.name().substring(0, 4);
+		return body.name() + "-" + dressing1.name() + "-" + dressing2.name();
 	}
 
-	public static ArrowConfiguration withDirection(ArrowDirection direction) {
-		return new ArrowConfiguration(direction, ArrowBody.NORMAL, ArrowHead.NORMAL, ArrowPart.FULL,
-				ArrowDecoration.NONE, ArrowDecoration.NONE, null);
+	public static ArrowConfiguration withDirectionNormal() {
+		return new ArrowConfiguration(ArrowBody.NORMAL, ArrowDressing.create(), ArrowDressing.create().withHead(
+				ArrowHead.NORMAL), null);
+	}
+
+	public static ArrowConfiguration withDirectionBoth() {
+		return new ArrowConfiguration(ArrowBody.NORMAL, ArrowDressing.create().withHead(ArrowHead.NORMAL),
+				ArrowDressing.create().withHead(ArrowHead.NORMAL), null);
+	}
+
+	public static ArrowConfiguration withDirectionSelf() {
+		return new ArrowConfiguration(ArrowBody.NORMAL, ArrowDressing.create().withHead(ArrowHead.NORMAL), null, null);
+	}
+
+	public static ArrowConfiguration withDirectionReverse() {
+		return withDirectionNormal().reverse();
 	}
 
 	public ArrowConfiguration reverse() {
-		if (direction == ArrowDirection.SELF) {
-			throw new UnsupportedOperationException();
+		if (OptionFlags.NEW_ARROW) {
+			return new ArrowConfiguration(body, dressing2, dressing1, color);
 		}
-		return new ArrowConfiguration(direction.reverse(), body, head, part, decorationStart, decorationEnd, color);
-	}
-
-	public ArrowConfiguration withHead(ArrowHead head) {
-		return new ArrowConfiguration(direction, body, head, part, decorationStart, decorationEnd, color);
+		final ArrowDecoration d1 = dressing1.getDecoration();
+		final ArrowDecoration d2 = dressing2.getDecoration();
+		return new ArrowConfiguration(body, dressing2.withDecoration(d1), dressing1.withDecoration(d2), color);
 	}
 
 	public ArrowConfiguration withDotted() {
-		return new ArrowConfiguration(direction, ArrowBody.DOTTED, head, part, decorationStart, decorationEnd, color);
+		return new ArrowConfiguration(ArrowBody.DOTTED, dressing1, dressing2, color);
+	}
+
+	public ArrowConfiguration withHead(ArrowHead head) {
+		if (dressing2 != null && dressing2.getHead() != ArrowHead.NONE) {
+			return new ArrowConfiguration(body, dressing1, dressing2.withHead(head), color);
+		}
+		return new ArrowConfiguration(body, dressing1.withHead(head), dressing2, color);
 	}
 
 	public ArrowConfiguration withPart(ArrowPart part) {
-		return new ArrowConfiguration(direction, body, head, part, decorationStart, decorationEnd, color);
+		if (dressing2 != null && dressing2.getHead() != ArrowHead.NONE) {
+			return new ArrowConfiguration(body, dressing1, dressing2.withPart(part), color);
+		}
+		return new ArrowConfiguration(body, dressing1.withPart(part), dressing2, color);
 	}
 
 	public ArrowConfiguration withDecorationStart(ArrowDecoration decorationStart) {
-		return new ArrowConfiguration(direction, body, head, part, decorationStart, decorationEnd, color);
+		return new ArrowConfiguration(body, dressing1.withDecoration(decorationStart), dressing2, color);
 	}
 
 	public ArrowConfiguration withDecorationEnd(ArrowDecoration decorationEnd) {
-		return new ArrowConfiguration(direction, body, head, part, decorationStart, decorationEnd, color);
+		return new ArrowConfiguration(body, dressing1, dressing2.withDecoration(decorationEnd), color);
 	}
 
 	public ArrowConfiguration withColor(HtmlColor color) {
-		return new ArrowConfiguration(direction, body, head, part, decorationStart, decorationEnd, color);
+		return new ArrowConfiguration(body, dressing1, dressing2, color);
 	}
 
 	public final ArrowDecoration getDecorationEnd() {
-		return this.decorationEnd;
+		return this.dressing2.getDecoration();
 	}
 
 	public final ArrowDecoration getDecorationStart() {
-		return this.decorationStart;
+		return this.dressing1.getDecoration();
 	}
 
-	public boolean isLeftToRightNormal() {
-		return this.direction == ArrowDirection.LEFT_TO_RIGHT_NORMAL;
-	}
-
-	public boolean isRightToLeftReverse() {
-		return this.direction == ArrowDirection.RIGHT_TO_LEFT_REVERSE;
+	public final ArrowDirection getArrowDirection() {
+		if (this.dressing2 == null) {
+			return ArrowDirection.SELF;
+		}
+		if (this.dressing1.getHead() == ArrowHead.NONE && this.dressing2.getHead() != ArrowHead.NONE) {
+			return ArrowDirection.LEFT_TO_RIGHT_NORMAL;
+		}
+		if (this.dressing1.getHead() != ArrowHead.NONE && this.dressing2.getHead() == ArrowHead.NONE) {
+			return ArrowDirection.RIGHT_TO_LEFT_REVERSE;
+		}
+		return ArrowDirection.BOTH_DIRECTION;
 	}
 
 	public boolean isSelfArrow() {
-		return this.direction == ArrowDirection.SELF;
+		return getArrowDirection() == ArrowDirection.SELF;
 	}
 
 	public boolean isDotted() {
@@ -130,15 +151,33 @@ public class ArrowConfiguration {
 	}
 
 	public ArrowHead getHead() {
-		return this.head;
+		if (dressing2 != null && dressing2.getHead() != ArrowHead.NONE) {
+			return dressing2.getHead();
+		}
+		return dressing1.getHead();
+	}
+
+	public boolean isAsync() {
+		return dressing1.getHead() == ArrowHead.ASYNC || (dressing2 != null && dressing2.getHead() == ArrowHead.ASYNC);
 	}
 
 	public final ArrowPart getPart() {
-		return part;
+		if (dressing2 != null && dressing2.getHead() != ArrowHead.NONE) {
+			return dressing2.getPart();
+		}
+		return dressing1.getPart();
 	}
 
 	public HtmlColor getColor() {
 		return color;
+	}
+
+	public ArrowDressing getDressing1() {
+		return dressing1;
+	}
+
+	public ArrowDressing getDressing2() {
+		return dressing2;
 	}
 
 }

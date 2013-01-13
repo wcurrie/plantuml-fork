@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 8438 $
+ * Revision $Revision: 9697 $
  *
  */
 package net.sourceforge.plantuml.sequencediagram;

@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  *
- * Revision $Revision: 8763 $
+ * Revision $Revision: 9712 $
  *
  */
 package net.sourceforge.plantuml.activitydiagram;
@@ -37,8 +37,8 @@ import net.sourceforge.plantuml.activitydiagram.command.CommandElse;
 import net.sourceforge.plantuml.activitydiagram.command.CommandEndPartition;
 import net.sourceforge.plantuml.activitydiagram.command.CommandEndif;
 import net.sourceforge.plantuml.activitydiagram.command.CommandIf;
-import net.sourceforge.plantuml.activitydiagram.command.CommandLinkActivity;
-import net.sourceforge.plantuml.activitydiagram.command.CommandLinkLongActivity;
+import net.sourceforge.plantuml.activitydiagram.command.CommandLinkActivity2;
+import net.sourceforge.plantuml.activitydiagram.command.CommandLinkLongActivity2;
 import net.sourceforge.plantuml.activitydiagram.command.CommandPartition;
 import net.sourceforge.plantuml.command.AbstractUmlSystemCommandFactory;
 import net.sourceforge.plantuml.command.CommandRankDir;
@@ -62,7 +62,7 @@ public class ActivityDiagramFactory extends AbstractUmlSystemCommandFactory {
 
 		addCommand(new CommandPartition(system));
 		addCommand(new CommandEndPartition(system));
-		addCommand(new CommandLinkLongActivity(system));
+		addCommand(new CommandLinkLongActivity2(system));
 
 		final FactoryNoteActivityCommand factoryNoteActivityCommand = new FactoryNoteActivityCommand();
 		addCommand(factoryNoteActivityCommand.createSingleLine(system));
@@ -76,7 +76,7 @@ public class ActivityDiagramFactory extends AbstractUmlSystemCommandFactory {
 		addCommand(new CommandElse(system));
 		addCommand(new CommandEndif(system));
 		
-		addCommand(new CommandLinkActivity(system));
+		addCommand(new CommandLinkActivity2(system));
 		// addCommand(new CommandInnerConcurrent(system));
 	}
 

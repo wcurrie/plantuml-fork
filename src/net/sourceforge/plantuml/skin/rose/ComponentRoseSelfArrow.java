@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 9495 $
+ * Revision $Revision: 9694 $
  *
  */
 package net.sourceforge.plantuml.skin.rose;
@@ -43,7 +43,6 @@ import net.sourceforge.plantuml.graphic.HtmlColor;
 import net.sourceforge.plantuml.graphic.StringBounder;
 import net.sourceforge.plantuml.skin.Area;
 import net.sourceforge.plantuml.skin.ArrowConfiguration;
-import net.sourceforge.plantuml.skin.ArrowHead;
 import net.sourceforge.plantuml.skin.ArrowPart;
 import net.sourceforge.plantuml.ugraphic.UFont;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
@@ -86,7 +85,7 @@ public class ComponentRoseSelfArrow extends AbstractComponentRoseArrow {
 			ug.getParam().setStroke(new UStroke());
 		}
 
-		if (getArrowConfiguration().getHead() == ArrowHead.ASYNC) {
+		if (getArrowConfiguration().isAsync()) {
 			if (getArrowConfiguration().getPart() != ArrowPart.BOTTOM_PART) {
 				ug.draw(dx2, textAndArrowHeight, new ULine(getArrowDeltaX(), -getArrowDeltaY()));
 			}

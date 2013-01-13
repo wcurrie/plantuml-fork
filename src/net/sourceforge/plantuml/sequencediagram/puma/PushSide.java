@@ -28,28 +28,12 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 9694 $
+ * Revision $Revision: 4636 $
  *
  */
-package net.sourceforge.plantuml.sequencediagram.command;
+package net.sourceforge.plantuml.sequencediagram.puma;
 
-import java.util.List;
+public enum PushSide {
 
-import net.sourceforge.plantuml.command.CommandExecutionResult;
-import net.sourceforge.plantuml.command.SingleLineCommand;
-import net.sourceforge.plantuml.cucadiagram.Display;
-import net.sourceforge.plantuml.sequencediagram.SequenceDiagram;
-
-public class CommandNewpage extends SingleLineCommand<SequenceDiagram> {
-
-	public CommandNewpage(SequenceDiagram sequenceDiagram) {
-		super(sequenceDiagram, "(?i)^@?newpage(?:(?:\\s*:\\s*|\\s+)(.*[\\p{L}0-9_.].*))?$");
-	}
-
-	@Override
-	protected CommandExecutionResult executeArg(List<String> arg) {
-		final Display strings = arg.get(0) == null ? null : Display.getWithNewlines(arg.get(0));
-		getSystem().newpage(strings);
-		return CommandExecutionResult.ok();
-	}
+	START, END
 }

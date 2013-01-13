@@ -28,28 +28,61 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 9694 $
+ * Revision $Revision: 5191 $
  *
  */
-package net.sourceforge.plantuml.sequencediagram.command;
+package net.sourceforge.plantuml.skin;
 
-import java.util.List;
+public class ArrowDressing {
 
-import net.sourceforge.plantuml.command.CommandExecutionResult;
-import net.sourceforge.plantuml.command.SingleLineCommand;
-import net.sourceforge.plantuml.cucadiagram.Display;
-import net.sourceforge.plantuml.sequencediagram.SequenceDiagram;
+	private final ArrowHead head;
+	private final ArrowPart part;
+	private final ArrowDecoration decoration;
 
-public class CommandNewpage extends SingleLineCommand<SequenceDiagram> {
-
-	public CommandNewpage(SequenceDiagram sequenceDiagram) {
-		super(sequenceDiagram, "(?i)^@?newpage(?:(?:\\s*:\\s*|\\s+)(.*[\\p{L}0-9_.].*))?$");
+	public String name() {
+		return toString();
 	}
 
 	@Override
-	protected CommandExecutionResult executeArg(List<String> arg) {
-		final Display strings = arg.get(0) == null ? null : Display.getWithNewlines(arg.get(0));
-		getSystem().newpage(strings);
-		return CommandExecutionResult.ok();
+	public String toString() {
+		return head.name() + "*" + decoration.name();
 	}
+
+	private ArrowDressing(ArrowHead head, ArrowPart part, ArrowDecoration decoration) {
+		if (head == null || part == null || decoration == null) {
+			throw new IllegalArgumentException();
+		}
+		this.head = head;
+		this.part = part;
+		this.decoration = decoration;
+	}
+
+	public static ArrowDressing create() {
+		return new ArrowDressing(ArrowHead.NONE, ArrowPart.FULL, ArrowDecoration.NONE);
+	}
+
+	public ArrowDressing withHead(ArrowHead head) {
+		return new ArrowDressing(head, part, decoration);
+	}
+
+	public ArrowDressing withPart(ArrowPart part) {
+		return new ArrowDressing(head, part, decoration);
+	}
+
+	public ArrowDressing withDecoration(ArrowDecoration decoration) {
+		return new ArrowDressing(head, part, decoration);
+	}
+
+	public ArrowHead getHead() {
+		return head;
+	}
+
+	public ArrowPart getPart() {
+		return part;
+	}
+
+	public ArrowDecoration getDecoration() {
+		return decoration;
+	}
+
 }
