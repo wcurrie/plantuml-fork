@@ -27,12 +27,23 @@
  * in the United States and other countries.]
  *
  * Original Author:  Arnaud Roques
- * 
- * Revision $Revision: 5191 $
+ *
+ * Revision $Revision: 9631 $
  *
  */
-package net.sourceforge.plantuml.skin;
+package net.sourceforge.plantuml.cucadiagram;
 
-public enum ArrowDecoration {
-	NONE, CROSSX_toberemoved, CIRCLE
+public class UnparsableGraphvizException extends RuntimeException {
+
+	private final String graphvizVersion;
+
+	public UnparsableGraphvizException(Exception cause, String graphvizVersion) {
+		super(cause);
+		this.graphvizVersion = graphvizVersion;
+	}
+
+	public String getGraphvizVersion() {
+		return graphvizVersion;
+	}
+
 }

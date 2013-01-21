@@ -130,7 +130,7 @@ public class CommandArrowCrossX extends SingleLineCommand2<SequenceDiagram> {
 		if (dotted) {
 			config = config.withDotted();
 		}
-		config = config.withDecorationEnd(ArrowDecoration.CROSSX);
+		config = config.withDecorationEnd(ArrowDecoration.CROSSX_toberemoved);
 		// if (sync) {
 		// config = config.withAsync();
 		// }

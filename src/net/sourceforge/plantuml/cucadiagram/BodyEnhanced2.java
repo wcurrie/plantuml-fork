@@ -64,6 +64,7 @@ public class BodyEnhanced2 implements TextBlock {
 	private final HorizontalAlignement align;
 	private final boolean manageHorizontalLine;
 	private final boolean manageModifier;
+	private final List<Url> urls = new ArrayList<Url>();
 
 	public BodyEnhanced2(List<String> rawBody, FontParam fontParam, ISkinParam skinParam, boolean manageModifier) {
 		this.rawBody = new ArrayList<String>(rawBody);
@@ -116,6 +117,7 @@ public class BodyEnhanced2 implements TextBlock {
 		if (area2 != null) {
 			return area2;
 		}
+		urls.clear();
 		final List<TextBlock> blocks = new ArrayList<TextBlock>();
 
 		char separator = lineFirst ? '_' : 0;
@@ -123,7 +125,6 @@ public class BodyEnhanced2 implements TextBlock {
 		List<Member> members = new ArrayList<Member>();
 		for (String s : rawBody) {
 			if (manageHorizontalLine && isBlockSeparator(s)) {
-			// if (isBlockSeparator(s)) {
 				blocks.add(decorate(stringBounder, new MethodsOrFieldsArea(members, fontParam, skinParam, align),
 						separator, title));
 				separator = s.charAt(0);
@@ -132,6 +133,9 @@ public class BodyEnhanced2 implements TextBlock {
 			} else {
 				final Member m = new MemberImpl(s, StringUtils.isMethod(s), manageModifier);
 				members.add(m);
+				if (m.getUrl() != null) {
+					urls.add(m.getUrl());
+				}
 			}
 		}
 		blocks.add(decorate(stringBounder, new MethodsOrFieldsArea(members, fontParam, skinParam, align), separator,
@@ -176,7 +180,7 @@ public class BodyEnhanced2 implements TextBlock {
 	}
 
 	public List<Url> getUrls() {
-		return Collections.emptyList();
+		return Collections.unmodifiableList(urls);
 	}
 
 }

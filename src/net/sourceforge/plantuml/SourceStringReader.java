@@ -59,7 +59,7 @@ public class SourceStringReader {
 			final BlockUmlBuilder builder = new BlockUmlBuilder(config, defines, new StringReader(source), null);
 			this.blocks = builder.getBlockUmls();
 		} catch (IOException e) {
-			Log.error("error "+e);
+			Log.error("error " + e);
 			throw new IllegalStateException(e);
 		}
 	}
@@ -89,22 +89,18 @@ public class SourceStringReader {
 			error.writeImage(os, fileFormatOption);
 			return null;
 		}
-		try {
-			for (BlockUml b : blocks) {
-				final PSystem system = b.getSystem();
-				final int nbInSystem = system.getNbImages();
-				if (numImage < nbInSystem) {
-					final CMapData cmap = new CMapData();
-					system.exportDiagram(os, cmap, numImage, fileFormatOption);
-					if (cmap.containsData()) {
-						return system.getDescription() + "\n" + cmap.asString("plantuml");
-					}
-					return system.getDescription();
+		for (BlockUml b : blocks) {
+			final PSystem system = b.getSystem();
+			final int nbInSystem = system.getNbImages();
+			if (numImage < nbInSystem) {
+				final CMapData cmap = new CMapData();
+				system.exportDiagram(os, cmap, numImage, fileFormatOption);
+				if (cmap.containsData()) {
+					return system.getDescription() + "\n" + cmap.asString("plantuml");
 				}
-				numImage -= nbInSystem;
+				return system.getDescription();
 			}
-		} catch (InterruptedException e) {
-			return null;
+			numImage -= nbInSystem;
 		}
 		Log.error("numImage is too big = " + numImage);
 		return null;

@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  *
- * Revision $Revision: 9426 $
+ * Revision $Revision: 9724 $
  *
  */
 package net.sourceforge.plantuml;
@@ -191,7 +191,7 @@ public class Run {
 		printPattern(new ClassDiagramFactory());
 		printPattern(new ActivityDiagramFactory());
 		printPattern(new DescriptionDiagramFactory());
-		//printPattern(new ComponentDiagramFactory());
+		// printPattern(new ComponentDiagramFactory());
 		printPattern(new StateDiagramFactory());
 		printPattern(new ObjectDiagramFactory());
 	}
@@ -230,24 +230,20 @@ public class Run {
 		final SourceStringReader sourceStringReader = new SourceStringReader(new Defines(), source, option.getConfig());
 
 		if (option.isSyntax()) {
-			try {
-				final PSystem system = sourceStringReader.getBlocks().get(0).getSystem();
-				if (system instanceof UmlDiagram) {
-					ps.println(((UmlDiagram) system).getUmlDiagramType().name());
-					ps.println(system.getDescription());
-				} else if (system instanceof PSystemError) {
-					ps.println("ERROR");
-					final PSystemError sys = (PSystemError) system;
-					ps.println(sys.getHigherErrorPosition());
-					for (ErrorUml er : sys.getErrorsUml()) {
-						ps.println(er.getError());
-					}
-				} else {
-					ps.println("OTHER");
-					ps.println(system.getDescription());
+			final PSystem system = sourceStringReader.getBlocks().get(0).getSystem();
+			if (system instanceof UmlDiagram) {
+				ps.println(((UmlDiagram) system).getUmlDiagramType().name());
+				ps.println(system.getDescription());
+			} else if (system instanceof PSystemError) {
+				ps.println("ERROR");
+				final PSystemError sys = (PSystemError) system;
+				ps.println(sys.getHigherErrorPosition());
+				for (ErrorUml er : sys.getErrorsUml()) {
+					ps.println(er.getError());
 				}
-			} catch (InterruptedException e) {
-				Log.error("InterruptedException " + e);
+			} else {
+				ps.println("OTHER");
+				ps.println(system.getDescription());
 			}
 		} else if (option.isPipe()) {
 			sourceStringReader.generateImage(ps, 0, option.getFileFormatOption());

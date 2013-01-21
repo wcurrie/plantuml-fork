@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  *
- * Revision $Revision: 7715 $
+ * Revision $Revision: 9722 $
  * 
  */
 package net.sourceforge.plantuml;
@@ -64,6 +64,9 @@ public enum ColorParam {
 	
 	packageBackground,
 	packageBorder,
+
+	partitionBackground,
+	partitionBorder,
 
 	componentBackground,
 	componentBorder,
@@ -118,6 +121,4 @@ public enum ColorParam {
 	protected boolean isBackground() {
 		return isBackground;
 	}
-	
-	
 }

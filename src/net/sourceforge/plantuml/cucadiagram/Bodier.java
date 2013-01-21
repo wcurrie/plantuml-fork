@@ -41,6 +41,7 @@ import java.util.Set;
 import net.sourceforge.plantuml.FontParam;
 import net.sourceforge.plantuml.ISkinParam;
 import net.sourceforge.plantuml.StringUtils;
+import net.sourceforge.plantuml.Url;
 import net.sourceforge.plantuml.graphic.TextBlock;
 import net.sourceforge.plantuml.skin.VisibilityModifier;
 
@@ -75,10 +76,14 @@ public class Bodier {
 		return false;
 	}
 
+	private List<Url> urls = Collections.emptyList();
+
 	public BlockMember getBodyEnhanced() {
 		return new BlockMember() {
 			public TextBlock asTextBlock(FontParam fontParam, ISkinParam skinParam) {
-				return new BodyEnhanced2(rawBody, fontParam, skinParam, manageModifier);
+				final BodyEnhanced2 result = new BodyEnhanced2(rawBody, fontParam, skinParam, manageModifier);
+				urls = result.getUrls();
+				return result;
 			}
 		};
 	}
@@ -148,5 +153,9 @@ public class Bodier {
 		while (result.size() > 0 && result.get(result.size() - 1).getDisplay(false).trim().length() == 0) {
 			result.remove(result.size() - 1);
 		}
+	}
+
+	public List<Url> getUrls() {
+		return Collections.unmodifiableList(urls);
 	}
 }

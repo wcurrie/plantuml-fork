@@ -33,7 +33,6 @@
  */
 package net.sourceforge.plantuml.suggest;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -77,11 +76,11 @@ final public class SuggestEngine {
 		return current;
 	}
 
-	public SuggestEngineResult tryToSuggest() throws IOException {
+	public SuggestEngineResult tryToSuggest() {
 		return executeUmlCommand();
 	}
 
-	private SuggestEngineResult executeUmlCommand() throws IOException {
+	private SuggestEngineResult executeUmlCommand() {
 		systemFactory.init(startLine);
 		while (hasNext()) {
 			final String s = next();
@@ -111,7 +110,7 @@ final public class SuggestEngine {
 		throw new IllegalStateException();
 	}
 
-	private boolean manageMultiline(final String init) throws IOException {
+	private boolean manageMultiline(final String init) {
 		final List<String> lines = new ArrayList<String>();
 		lines.add(init);
 		while (hasNext()) {

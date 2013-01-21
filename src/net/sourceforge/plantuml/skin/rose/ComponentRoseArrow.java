@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 9698 $
+ * Revision $Revision: 9727 $
  *
  */
 package net.sourceforge.plantuml.skin.rose;
@@ -99,7 +99,7 @@ public class ComponentRoseArrow extends AbstractComponentRoseArrow {
 
 		final ArrowDecoration decorationEnd = getArrowConfiguration().getDecorationEnd();
 		switch (decorationEnd) {
-		case CROSSX:
+		case CROSSX_toberemoved:
 			if (direction2 == ArrowDirection.LEFT_TO_RIGHT_NORMAL) {
 				len -= spaceCrossX + getArrowDeltaX() / 2;
 			} else if (direction2 == ArrowDirection.RIGHT_TO_LEFT_REVERSE) {
@@ -120,7 +120,7 @@ public class ComponentRoseArrow extends AbstractComponentRoseArrow {
 			break;
 		default:
 		}
-		if (decorationEnd != ArrowDecoration.CROSSX && getArrowConfiguration().getHead() == ArrowHead.NORMAL
+		if (decorationEnd != ArrowDecoration.CROSSX_toberemoved && getArrowConfiguration().getHead() == ArrowHead.NORMAL
 				&& getArrowConfiguration().getPart() == ArrowPart.FULL) {
 			if (direction2 == ArrowDirection.LEFT_TO_RIGHT_NORMAL) {
 				len -= getArrowDeltaX() / 2;
@@ -142,7 +142,7 @@ public class ComponentRoseArrow extends AbstractComponentRoseArrow {
 				if (getArrowConfiguration().getPart() != ArrowPart.TOP_PART) {
 					ug.draw(arrowHeadPosition, textHeight, new ULine(-getArrowDeltaX(), getArrowDeltaY()));
 				}
-			} else if (decorationEnd == ArrowDecoration.CROSSX) {
+			} else if (decorationEnd == ArrowDecoration.CROSSX_toberemoved) {
 				ug.getParam().setStroke(new UStroke(2));
 				ug.draw(x2 - getArrowDeltaX() - spaceCrossX, textHeight - getArrowDeltaX() / 2, new ULine(
 						getArrowDeltaX(), getArrowDeltaX()));
@@ -180,7 +180,7 @@ public class ComponentRoseArrow extends AbstractComponentRoseArrow {
 				if (getArrowConfiguration().getPart() != ArrowPart.TOP_PART) {
 					ug.draw(arrowHeadPosition - 1, textHeight, new ULine(getArrowDeltaX(), getArrowDeltaY()));
 				}
-			} else if (decorationEnd == ArrowDecoration.CROSSX) {
+			} else if (decorationEnd == ArrowDecoration.CROSSX_toberemoved) {
 				ug.getParam().setStroke(new UStroke(2));
 				ug.draw(spaceCrossX, textHeight - getArrowDeltaX() / 2, new ULine(getArrowDeltaX(), getArrowDeltaX()));
 				ug.draw(spaceCrossX, textHeight + getArrowDeltaX() / 2, new ULine(getArrowDeltaX(), -getArrowDeltaX()));

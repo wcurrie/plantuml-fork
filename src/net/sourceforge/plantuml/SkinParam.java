@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  *
- * Revision $Revision: 9593 $
+ * Revision $Revision: 9722 $
  *
  */
 package net.sourceforge.plantuml;
@@ -80,6 +80,7 @@ public class SkinParam implements ISkinParam {
 	static String cleanForKey(String key) {
 		key = key.toLowerCase().trim();
 		key = key.replaceAll("_|\\.|\\s", "");
+		key = key.replaceAll("partition", "package");
 		final Matcher m = stereoPattern.matcher(key);
 		if (m.find()) {
 			final String s = m.group(1);

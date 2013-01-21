@@ -33,7 +33,6 @@
  */
 package net.sourceforge.plantuml;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -79,14 +78,14 @@ public class BlockUml {
 		return result;
 	}
 
-	public PSystem getSystem() throws IOException, InterruptedException {
+	public PSystem getSystem() {
 		if (system == null) {
 			createSystem();
 		}
 		return system;
 	}
 
-	private void createSystem() throws IOException, InterruptedException {
+	private void createSystem() {
 		system = new PSystemBuilder().createPSystem(data);
 
 	}

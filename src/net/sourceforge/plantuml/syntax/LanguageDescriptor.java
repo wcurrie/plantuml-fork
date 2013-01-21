@@ -31,13 +31,14 @@
  * Revision $Revision: 4639 $
  * 
  */
-package net.sourceforge.plantuml;
+package net.sourceforge.plantuml.syntax;
 
 import java.io.PrintStream;
 import java.util.Collection;
 import java.util.Set;
 import java.util.TreeSet;
 
+import net.sourceforge.plantuml.SkinParam;
 import net.sourceforge.plantuml.graphic.HtmlColorUtils;
 
 public class LanguageDescriptor {

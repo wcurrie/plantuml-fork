@@ -188,17 +188,20 @@ public class CommandArrow extends SingleLineCommand2<SequenceDiagram> {
 			config = config.withDecorationStart(ArrowDecoration.CIRCLE);
 		}
 		if (dressing1.contains("x")) {
-			
 			if (OptionFlags.NEW_ARROW) {
-				config = config.withDecorationStart(ArrowDecoration.CROSSX);
+				config = config.withHead2(ArrowHead.CROSSX);
 			} else {
 				// This line is to be kept until ComponentRoseArrow2 usage
-				config = config.withDecorationEnd(ArrowDecoration.CROSSX);
+				config = config.withDecorationEnd(ArrowDecoration.CROSSX_toberemoved);
 			}
 
 		}
 		if (dressing2.contains("x")) {
-			config = config.withDecorationEnd(ArrowDecoration.CROSSX);
+			if (OptionFlags.NEW_ARROW) {
+				config = config.withHead2(ArrowHead.CROSSX);
+			} else {
+				config = config.withDecorationEnd(ArrowDecoration.CROSSX_toberemoved);
+			}
 		}
 
 		config = applyStyle(arg2.getLazzy("ARROW_STYLE", 0), config);

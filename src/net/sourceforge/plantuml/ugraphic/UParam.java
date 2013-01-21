@@ -28,12 +28,13 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 8915 $
+ * Revision $Revision: 9733 $
  *
  */
 package net.sourceforge.plantuml.ugraphic;
 
 import net.sourceforge.plantuml.graphic.HtmlColor;
+import net.sourceforge.plantuml.graphic.HtmlColorTransparent;
 
 public class UParam {
 
@@ -58,6 +59,9 @@ public class UParam {
 	}
 
 	public void setBackcolor(HtmlColor color) {
+		if (color instanceof HtmlColorTransparent) {
+			throw new UnsupportedOperationException();
+		}
 		this.backcolor = color;
 	}
 

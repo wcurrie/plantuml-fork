@@ -266,8 +266,11 @@ public class DotStringFactory implements Moveable {
 		return graphviz.getDotExe();
 	}
 
-	public ClusterPosition solve(String... dotStrings) throws IOException, InterruptedException {
-		final String svg = getSVG(dotStrings);
+	public String getSvg(String... dotStrings) throws IOException, InterruptedException {
+		return getSVG(dotStrings);
+	}
+	
+	public ClusterPosition solve(String svg) throws IOException, InterruptedException {
 		if (svg.length() == 0) {
 			throw new EmptySvgException();
 		}

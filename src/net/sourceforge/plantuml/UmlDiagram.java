@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  *
- * Revision $Revision: 9631 $
+ * Revision $Revision: 9732 $
  *
  */
 package net.sourceforge.plantuml;
@@ -51,6 +51,7 @@ import java.util.List;
 import javax.imageio.ImageIO;
 
 import net.sourceforge.plantuml.cucadiagram.Display;
+import net.sourceforge.plantuml.cucadiagram.UnparsableGraphvizException;
 import net.sourceforge.plantuml.flashcode.FlashCodeFactory;
 import net.sourceforge.plantuml.flashcode.FlashCodeUtils;
 import net.sourceforge.plantuml.graphic.GraphicStrings;
@@ -210,14 +211,17 @@ public abstract class UmlDiagram extends AbstractPSystem implements PSystem {
 		}
 		try {
 			lastInfo = exportDiagramInternal(os, cmap, index, fileFormatOption, flashcodes);
+		} catch (UnparsableGraphvizException e) {
+			e.printStackTrace();
+			exportDiagramError(os, e.getCause(), fileFormatOption, e.getGraphvizVersion());
 		} catch (Exception e) {
 			e.printStackTrace();
-			exportDiagramError(os, e, fileFormatOption);
+			exportDiagramError(os, e, fileFormatOption, null);
 		}
 	}
 
-	private void exportDiagramError(OutputStream os, Exception exception, FileFormatOption fileFormat)
-			throws IOException {
+	private void exportDiagramError(OutputStream os, Throwable exception, FileFormatOption fileFormat,
+			String graphvizVersion) throws IOException {
 		final UFont font = new UFont("SansSerif", Font.PLAIN, 12);
 		final List<String> strings = new ArrayList<String>();
 		strings.add("An error has occured : " + exception);
@@ -225,6 +229,10 @@ public abstract class UmlDiagram extends AbstractPSystem implements PSystem {
 		strings.add("PlantUML (" + Version.versionString() + ") cannot parse result from dot/GraphViz.");
 		if (exception instanceof EmptySvgException) {
 			strings.add("Because dot/GraphViz returns an empty string.");
+		}
+		if (graphvizVersion != null) {
+			strings.add(" ");
+			strings.add("GraphViz version used : " + graphvizVersion);
 		}
 		strings.add(" ");
 		strings.add("This may be caused by :");

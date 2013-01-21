@@ -101,6 +101,14 @@ public class ArrowConfiguration {
 		}
 		return new ArrowConfiguration(body, dressing1.withHead(head), dressing2, color);
 	}
+	
+	public ArrowConfiguration withHead1(ArrowHead head) {
+		return new ArrowConfiguration(body, dressing1.withHead(head), dressing2, color);
+	}
+
+	public ArrowConfiguration withHead2(ArrowHead head) {
+		return new ArrowConfiguration(body, dressing1, dressing2.withHead(head), color);
+	}
 
 	public ArrowConfiguration withPart(ArrowPart part) {
 		if (dressing2 != null && dressing2.getHead() != ArrowHead.NONE) {

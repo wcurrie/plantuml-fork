@@ -28,13 +28,16 @@
  *
  * Original Author:  Arnaud Roques
  *
- * Revision $Revision: 8672 $
+ * Revision $Revision: 9722 $
  *
  */
 package net.sourceforge.plantuml;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.StringTokenizer;
 
 public class FileSystem {
 
@@ -67,8 +70,39 @@ public class FileSystem {
 		if (dir == null || isAbsolute(nameOrPath)) {
 			return new File(nameOrPath).getCanonicalFile();
 		}
-		final File file = new File(dir.getAbsoluteFile(), nameOrPath);
-		return file.getCanonicalFile();
+		final File filecurrent = new File(dir.getAbsoluteFile(), nameOrPath);
+		if (filecurrent.exists()) {
+			return filecurrent.getCanonicalFile();
+		}
+		for (File d : getPath("plantuml.include.path")) {
+			final File file = new File(d, nameOrPath);
+			if (file.exists()) {
+				return file.getCanonicalFile();
+			}
+		}
+		for (File d : getPath("java.class.path")) {
+			final File file = new File(d, nameOrPath);
+			if (file.exists()) {
+				return file.getCanonicalFile();
+			}
+		}
+		return filecurrent;
+	}
+
+	private List<File> getPath(String prop) {
+		final List<File> result = new ArrayList<File>();
+		final String paths = System.getProperty(prop);
+		if (paths == null) {
+			return result;
+		}
+		final StringTokenizer st = new StringTokenizer(paths, System.getProperty("path.separator"));
+		while (st.hasMoreTokens()) {
+			final File f = new File(st.nextToken());
+			if (f.exists() && f.isDirectory()) {
+				result.add(f);
+			}
+		}
+		return result;
 	}
 
 	private boolean isAbsolute(String nameOrPath) {

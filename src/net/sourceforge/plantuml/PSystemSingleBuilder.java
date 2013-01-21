@@ -33,7 +33,6 @@
  */
 package net.sourceforge.plantuml;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
@@ -71,7 +70,7 @@ final public class PSystemSingleBuilder {
 		return sys;
 	}
 
-	public PSystemSingleBuilder(UmlSource s, PSystemFactory systemFactory) throws IOException {
+	public PSystemSingleBuilder(UmlSource s, PSystemFactory systemFactory) {
 		this.source = s;
 		it = s.iterator();
 		startLine = next();
@@ -88,7 +87,7 @@ final public class PSystemSingleBuilder {
 		}
 	}
 
-	private void executeUmlBasic(PSystemBasicFactory systemFactory) throws IOException {
+	private void executeUmlBasic(PSystemBasicFactory systemFactory) {
 		systemFactory.init(startLine);
 		while (hasNext()) {
 			final String s = next();
@@ -128,7 +127,7 @@ final public class PSystemSingleBuilder {
 		return result;
 	}
 
-	private void executeUmlCommand(PSystemCommandFactory systemFactory) throws IOException {
+	private void executeUmlCommand(PSystemCommandFactory systemFactory) {
 		systemFactory.init(startLine);
 		while (hasNext()) {
 			final String s = next();
@@ -199,7 +198,7 @@ final public class PSystemSingleBuilder {
 		}
 	}
 
-	private boolean manageMultiline(PSystemCommandFactory systemFactory, final String init) throws IOException {
+	private boolean manageMultiline(PSystemCommandFactory systemFactory, final String init) {
 		final List<String> lines = new ArrayList<String>();
 		lines.add(init);
 		while (hasNext()) {

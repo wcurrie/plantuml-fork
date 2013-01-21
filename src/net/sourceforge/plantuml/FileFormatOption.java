@@ -42,6 +42,7 @@ import java.awt.image.BufferedImage;
 import net.sourceforge.plantuml.graphic.HtmlColor;
 import net.sourceforge.plantuml.graphic.HtmlColorGradient;
 import net.sourceforge.plantuml.graphic.HtmlColorSimple;
+import net.sourceforge.plantuml.graphic.HtmlColorTransparent;
 import net.sourceforge.plantuml.ugraphic.ColorMapper;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
 import net.sourceforge.plantuml.ugraphic.URectangle;
@@ -80,11 +81,13 @@ public class FileFormatOption {
 
 	}
 
-	private UGraphic createUGraphicPNG(ColorMapper colorMapper, double dpiFactor,
-			final Dimension2D dim, HtmlColor mybackcolor, boolean rotation) {
+	private UGraphic createUGraphicPNG(ColorMapper colorMapper, double dpiFactor, final Dimension2D dim,
+			HtmlColor mybackcolor, boolean rotation) {
 		Color backColor = Color.WHITE;
 		if (mybackcolor instanceof HtmlColorSimple) {
 			backColor = colorMapper.getMappedColor(mybackcolor);
+		} else if (mybackcolor instanceof HtmlColorTransparent) {
+			backColor = null;
 		}
 
 		final EmptyImageBuilder builder;
@@ -112,5 +115,4 @@ public class FileFormatOption {
 
 		return ug;
 	}
-
 }

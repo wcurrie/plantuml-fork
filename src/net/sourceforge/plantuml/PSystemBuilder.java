@@ -33,7 +33,6 @@
  */
 package net.sourceforge.plantuml;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -72,7 +71,7 @@ import net.sourceforge.plantuml.version.PSystemVersionFactory;
 
 public class PSystemBuilder {
 
-	final public PSystem createPSystem(final List<? extends CharSequence> strings) throws IOException, InterruptedException {
+	final public PSystem createPSystem(final List<? extends CharSequence> strings) {
 
 		final List<PSystemFactory> factories = getAllFactories();
 

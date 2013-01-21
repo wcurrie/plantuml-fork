@@ -86,10 +86,18 @@ public class ComponentRoseArrow2 extends AbstractComponentRoseArrow {
 		final double pos1 = start + 1;
 		final double pos2 = len - 1;
 
-		if (dressing2.getDecoration() == ArrowDecoration.CIRCLE) {
-			len -= diamCircle + thinCircle;
+		if (dressing2.getDecoration() == ArrowDecoration.CIRCLE && dressing2.getHead() == ArrowHead.NONE) {
+			len -= diamCircle / 2;
 		}
-		if (dressing1.getDecoration() == ArrowDecoration.CIRCLE) {
+		if (dressing2.getDecoration() == ArrowDecoration.CIRCLE && dressing2.getHead() != ArrowHead.NONE) {
+			len -= diamCircle / 2 + thinCircle;
+		}
+
+		if (dressing1.getDecoration() == ArrowDecoration.CIRCLE && dressing1.getHead() == ArrowHead.NONE) {
+			start += diamCircle / 2;
+			len -= diamCircle / 2;
+		}
+		if (dressing1.getDecoration() == ArrowDecoration.CIRCLE && dressing1.getHead() == ArrowHead.NORMAL) {
 			start += diamCircle + thinCircle;
 			len -= diamCircle + thinCircle;
 		}
@@ -105,12 +113,12 @@ public class ComponentRoseArrow2 extends AbstractComponentRoseArrow {
 			len -= getArrowDeltaX() / 2;
 		}
 
-		if (dressing2.getDecoration() == ArrowDecoration.CROSSX) {
-			len -= spaceCrossX;
+		if (dressing2.getHead() == ArrowHead.CROSSX) {
+			len -= 2 * spaceCrossX;
 		}
-		if (dressing1.getDecoration() == ArrowDecoration.CROSSX) {
-			start += spaceCrossX;
-			len -= spaceCrossX;
+		if (dressing1.getHead() == ArrowHead.CROSSX) {
+			start += 2 * spaceCrossX;
+			len -= 2 * spaceCrossX;
 		}
 
 		if (getArrowConfiguration().isDotted()) {
@@ -234,7 +242,7 @@ public class ComponentRoseArrow2 extends AbstractComponentRoseArrow {
 			if (dressing.getPart() != ArrowPart.TOP_PART) {
 				ug.draw(x - 1, textHeight, new ULine(getArrowDeltaX(), getArrowDeltaY()));
 			}
-		} else if (dressing.getDecoration() == ArrowDecoration.CROSSX) {
+		} else if (dressing.getHead() == ArrowHead.CROSSX) {
 			ug.getParam().setStroke(new UStroke(2));
 			ug.draw(spaceCrossX, textHeight - getArrowDeltaX() / 2, new ULine(getArrowDeltaX(), getArrowDeltaX()));
 			ug.draw(spaceCrossX, textHeight + getArrowDeltaX() / 2, new ULine(getArrowDeltaX(), -getArrowDeltaX()));
@@ -269,7 +277,13 @@ public class ComponentRoseArrow2 extends AbstractComponentRoseArrow {
 			if (dressing.getPart() != ArrowPart.TOP_PART) {
 				ug.draw(x, textHeight, new ULine(-getArrowDeltaX(), getArrowDeltaY()));
 			}
-		} else if (dressing.getDecoration() == ArrowDecoration.CROSSX) {
+		} else if (dressing.getHead() == ArrowHead.CROSSX) {
+			ug.getParam().setStroke(new UStroke(2));
+			ug.draw(x - spaceCrossX - getArrowDeltaX(), textHeight - getArrowDeltaX() / 2, new ULine(getArrowDeltaX(),
+					getArrowDeltaX()));
+			ug.draw(x - spaceCrossX - getArrowDeltaX(), textHeight + getArrowDeltaX() / 2, new ULine(getArrowDeltaX(),
+					-getArrowDeltaX()));
+			ug.getParam().setStroke(new UStroke());
 		} else if (dressing.getHead() == ArrowHead.NORMAL) {
 			ug.getParam().setBackcolor(getForegroundColor());
 			final UPolygon polygon = getPolygonNormal(dressing.getPart(), textHeight, x);

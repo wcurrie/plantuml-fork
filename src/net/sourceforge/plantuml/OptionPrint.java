@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  *
- * Revision $Revision: 8820 $
+ * Revision $Revision: 9723 $
  *
  */
 package net.sourceforge.plantuml;
@@ -39,6 +39,7 @@ import java.util.Date;
 import java.util.Properties;
 
 import net.sourceforge.plantuml.cucadiagram.dot.GraphvizUtils;
+import net.sourceforge.plantuml.syntax.LanguageDescriptor;
 import net.sourceforge.plantuml.version.License;
 import net.sourceforge.plantuml.version.PSystemVersion;
 import net.sourceforge.plantuml.version.Version;

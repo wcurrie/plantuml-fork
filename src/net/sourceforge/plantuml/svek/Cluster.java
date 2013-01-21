@@ -61,6 +61,7 @@ import net.sourceforge.plantuml.cucadiagram.MethodsOrFieldsArea;
 import net.sourceforge.plantuml.cucadiagram.Stereotype;
 import net.sourceforge.plantuml.cucadiagram.dot.DotData;
 import net.sourceforge.plantuml.graphic.HtmlColor;
+import net.sourceforge.plantuml.graphic.HtmlColorTransparent;
 import net.sourceforge.plantuml.graphic.HtmlColorUtils;
 import net.sourceforge.plantuml.graphic.StringBounder;
 import net.sourceforge.plantuml.graphic.TextBlock;
@@ -743,7 +744,7 @@ public class Cluster implements Moveable {
 		if (stateBack == null) {
 			stateBack = skinParam.getHtmlColor(ColorParam.background, stereotype, false);
 		}
-		if (stateBack == null) {
+		if (stateBack == null || stateBack instanceof HtmlColorTransparent) {
 			stateBack = HtmlColorUtils.WHITE;
 		}
 		return stateBack;
