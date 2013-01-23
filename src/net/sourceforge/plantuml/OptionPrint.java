@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  *
- * Revision $Revision: 9723 $
+ * Revision $Revision: 9743 $
  *
  */
 package net.sourceforge.plantuml;
@@ -135,6 +135,10 @@ public class OptionPrint {
 		System.out.println(p.getProperty("java.vm.name"));
 		System.out.println(p.getProperty("java.runtime.version"));
 		System.out.println(p.getProperty("os.name"));
+		System.out.println();
+		for (String s : GraphvizUtils.getTestDotStrings(false)) {
+			System.out.println(s);
+		}
 		exit();
 	}
 

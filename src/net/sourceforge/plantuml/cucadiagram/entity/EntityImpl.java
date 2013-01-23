@@ -214,21 +214,21 @@ class EntityImpl implements ILeaf, IGroup {
 	}
 
 	public final List<Url> getUrls() {
-		if (/*getEntityType().isLikeClass() &&*/ bodier != null && bodier.isBodyEnhanced()) {
-			return bodier.getUrls();
-		}
-
 		final List<Url> result = new ArrayList<Url>(urls);
-		for (Member m : getFieldsToDisplay()) {
-			final Url u = m.getUrl();
-			if (u != null) {
-				result.add(u);
+		if (bodier != null && bodier.isBodyEnhanced()) {
+			result.addAll(bodier.getUrls());
+		} else {
+			for (Member m : getFieldsToDisplay()) {
+				final Url u = m.getUrl();
+				if (u != null) {
+					result.add(u);
+				}
 			}
-		}
-		for (Member m : getMethodsToDisplay()) {
-			final Url u = m.getUrl();
-			if (u != null) {
-				result.add(u);
+			for (Member m : getMethodsToDisplay()) {
+				final Url u = m.getUrl();
+				if (u != null) {
+					result.add(u);
+				}
 			}
 		}
 		return Collections.unmodifiableList(result);
