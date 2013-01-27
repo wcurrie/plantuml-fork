@@ -33,6 +33,7 @@
  */
 package net.sourceforge.plantuml.syntax;
 
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -57,10 +58,22 @@ public class SyntaxChecker {
 
 	public static SyntaxResult checkSyntax(String source) {
 		OptionFlags.getInstance().setQuiet(true);
-		if (source.contains("@startuml") == false) {
-			source = "@startuml\n" + source + "\n@enduml";
-		}
 		final SyntaxResult result = new SyntaxResult();
+
+		if (source.startsWith("@startuml\n") == false) {
+			result.setError(true);
+			result.setErrorLinePosition(0);
+			result.addErrorText("No @startuml found");
+			result.setSuggest(Arrays.asList("Did you mean:", "@startuml"));
+			return result;
+		}
+		if (source.endsWith("@enduml\n") == false) {
+			result.setError(true);
+			result.setErrorLinePosition(lastLineNumber(source));
+			result.addErrorText("No @enduml found");
+			result.setSuggest(Arrays.asList("Did you mean:", "@enduml"));
+			return result;
+		}
 		final SourceStringReader sourceStringReader = new SourceStringReader(new Defines(), source,
 				Collections.<String> emptyList());
 
@@ -82,5 +95,15 @@ public class SyntaxChecker {
 
 		return result;
 
+	}
+
+	private static int lastLineNumber(String source) {
+		int result = 0;
+		for (int i = 0; i < source.length(); i++) {
+			if (source.charAt(i) == '\n') {
+				result++;
+			}
+		}
+		return result;
 	}
 }

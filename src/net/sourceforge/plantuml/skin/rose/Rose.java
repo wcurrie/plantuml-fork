@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 9707 $
+ * Revision $Revision: 9761 $
  *
  */
 package net.sourceforge.plantuml.skin.rose;
@@ -43,6 +43,7 @@ import net.sourceforge.plantuml.ISkinParam;
 import net.sourceforge.plantuml.LineParam;
 import net.sourceforge.plantuml.OptionFlags;
 import net.sourceforge.plantuml.cucadiagram.Display;
+import net.sourceforge.plantuml.graphic.HorizontalAlignement;
 import net.sourceforge.plantuml.graphic.HtmlColor;
 import net.sourceforge.plantuml.graphic.HtmlColorUtils;
 import net.sourceforge.plantuml.skin.ArrowConfiguration;
@@ -185,13 +186,16 @@ public class Rose implements Skin {
 				return new ComponentRoseSelfArrow(sequenceArrow, getFontColor(param, FontParam.SEQUENCE_ARROW),
 						fontArrow, stringsToDisplay, config, param);
 			}
+			final HorizontalAlignement messageHorizontalAlignement = param
+					.getHorizontalAlignement(AlignParam.SEQUENCE_MESSAGE_ALIGN);
+			final HorizontalAlignement textHorizontalAlignement = param
+					.getHorizontalAlignement(AlignParam.SEQUENCE_MESSAGE_ALIGN);
 			if (OptionFlags.NEW_ARROW) {
 				return new ComponentRoseArrow2(sequenceArrow, getFontColor(param, FontParam.SEQUENCE_ARROW), fontArrow,
-						stringsToDisplay, config, param.getHorizontalAlignement(AlignParam.SEQUENCE_MESSAGE_ALIGN),
-						param);
+						stringsToDisplay, config, messageHorizontalAlignement, param, textHorizontalAlignement);
 			}
 			return new ComponentRoseArrow(sequenceArrow, getFontColor(param, FontParam.SEQUENCE_ARROW), fontArrow,
-					stringsToDisplay, config, param.getHorizontalAlignement(AlignParam.SEQUENCE_MESSAGE_ALIGN), param);
+					stringsToDisplay, config, messageHorizontalAlignement, param, textHorizontalAlignement);
 		}
 		if (type == ComponentType.PARTICIPANT_HEAD) {
 			final HtmlColor borderColor = getHtmlColor(param, ColorParam.sequenceParticipantBorder);

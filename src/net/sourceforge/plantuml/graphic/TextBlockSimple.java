@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 9495 $
+ * Revision $Revision: 9761 $
  *
  */
 package net.sourceforge.plantuml.graphic;
@@ -107,6 +107,9 @@ class TextBlockSimple implements TextBlock {
 			if (lineHorizontalAlignement == HorizontalAlignement.CENTER) {
 				final double diff = dimText.getWidth() - line.calculateDimension(ug.getStringBounder()).getWidth();
 				deltaX = diff / 2.0;
+			} else if (lineHorizontalAlignement == HorizontalAlignement.RIGHT) {
+				final double diff = dimText.getWidth() - line.calculateDimension(ug.getStringBounder()).getWidth();
+				deltaX = diff;
 			}
 			line.drawU(ug, x + deltaX, y);
 			y += line.calculateDimension(ug.getStringBounder()).getHeight();

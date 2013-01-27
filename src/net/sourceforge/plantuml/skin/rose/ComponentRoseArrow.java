@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 9727 $
+ * Revision $Revision: 9760 $
  *
  */
 package net.sourceforge.plantuml.skin.rose;
@@ -60,8 +60,10 @@ public class ComponentRoseArrow extends AbstractComponentRoseArrow {
 	private final HorizontalAlignement messagePosition;
 
 	public ComponentRoseArrow(HtmlColor foregroundColor, HtmlColor fontColor, UFont font, Display stringsToDisplay,
-			ArrowConfiguration arrowConfiguration, HorizontalAlignement messagePosition, SpriteContainer spriteContainer) {
-		super(foregroundColor, fontColor, font, stringsToDisplay, arrowConfiguration, spriteContainer);
+			ArrowConfiguration arrowConfiguration, HorizontalAlignement messagePosition,
+			SpriteContainer spriteContainer, HorizontalAlignement textHorizontalAlignement) {
+		super(foregroundColor, fontColor, font, stringsToDisplay, arrowConfiguration, spriteContainer,
+				textHorizontalAlignement);
 		this.messagePosition = messagePosition;
 	}
 
@@ -120,7 +122,8 @@ public class ComponentRoseArrow extends AbstractComponentRoseArrow {
 			break;
 		default:
 		}
-		if (decorationEnd != ArrowDecoration.CROSSX_toberemoved && getArrowConfiguration().getHead() == ArrowHead.NORMAL
+		if (decorationEnd != ArrowDecoration.CROSSX_toberemoved
+				&& getArrowConfiguration().getHead() == ArrowHead.NORMAL
 				&& getArrowConfiguration().getPart() == ArrowPart.FULL) {
 			if (direction2 == ArrowDirection.LEFT_TO_RIGHT_NORMAL) {
 				len -= getArrowDeltaX() / 2;

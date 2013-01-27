@@ -61,8 +61,10 @@ public class ComponentRoseArrow2 extends AbstractComponentRoseArrow {
 	private final HorizontalAlignement messagePosition;
 
 	public ComponentRoseArrow2(HtmlColor foregroundColor, HtmlColor fontColor, UFont font, Display stringsToDisplay,
-			ArrowConfiguration arrowConfiguration, HorizontalAlignement messagePosition, SpriteContainer spriteContainer) {
-		super(foregroundColor, fontColor, font, stringsToDisplay, arrowConfiguration, spriteContainer);
+			ArrowConfiguration arrowConfiguration, HorizontalAlignement messagePosition,
+			SpriteContainer spriteContainer, HorizontalAlignement textHorizontalAlignement) {
+		super(foregroundColor, fontColor, font, stringsToDisplay, arrowConfiguration, spriteContainer,
+				textHorizontalAlignement);
 		this.messagePosition = messagePosition;
 	}
 
