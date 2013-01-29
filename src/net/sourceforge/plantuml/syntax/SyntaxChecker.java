@@ -2,7 +2,7 @@
  * PlantUML : a free UML diagram generator
  * ========================================================================
  *
- * (C) Copyright 2009-2012, Arnaud Roques
+ * (C) Copyright 2009-2013, Arnaud Roques
  *
  * Project Info:  http://plantuml.sourceforge.net
  * 
@@ -67,7 +67,7 @@ public class SyntaxChecker {
 			result.setSuggest(Arrays.asList("Did you mean:", "@startuml"));
 			return result;
 		}
-		if (source.endsWith("@enduml\n") == false) {
+		if (source.endsWith("@enduml\n") == false && source.endsWith("@enduml") == false) {
 			result.setError(true);
 			result.setErrorLinePosition(lastLineNumber(source));
 			result.addErrorText("No @enduml found");

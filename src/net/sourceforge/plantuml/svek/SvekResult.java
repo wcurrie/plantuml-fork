@@ -2,7 +2,7 @@
  * PlantUML : a free UML diagram generator
  * ========================================================================
  *
- * (C) Copyright 2009-2012, Arnaud Roques
+ * (C) Copyright 2009-2013, Arnaud Roques
  *
  * Project Info:  http://plantuml.sourceforge.net
  * 
@@ -144,14 +144,10 @@ public final class SvekResult implements IEntityImage, Moveable {
 			return ColorParam.classArrow;
 		} else if (dotData.getUmlDiagramType() == UmlDiagramType.OBJECT) {
 			return ColorParam.objectArrow;
-		} else if (dotData.getUmlDiagramType() == UmlDiagramType.USECASE) {
-			return ColorParam.usecaseArrow;
 		} else if (dotData.getUmlDiagramType() == UmlDiagramType.DESCRIPTION) {
 			return ColorParam.usecaseArrow;
 		} else if (dotData.getUmlDiagramType() == UmlDiagramType.ACTIVITY) {
 			return ColorParam.activityArrow;
-		} else if (dotData.getUmlDiagramType() == UmlDiagramType.COMPONENT) {
-			return ColorParam.componentArrow;
 		} else if (dotData.getUmlDiagramType() == UmlDiagramType.STATE) {
 			return ColorParam.stateArrow;
 		}

@@ -2,7 +2,7 @@
  * PlantUML : a free UML diagram generator
  * ========================================================================
  *
- * (C) Copyright 2009-2012, Arnaud Roques
+ * (C) Copyright 2009-2013, Arnaud Roques
  *
  * Project Info:  http://plantuml.sourceforge.net
  * 
@@ -28,11 +28,11 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 8894 $
+ * Revision $Revision: 9786 $
  *
  */
 package net.sourceforge.plantuml;
 
 public enum UmlDiagramType {
-	SEQUENCE, STATE, CLASS, OBJECT, ACTIVITY, USECASE, COMPONENT, DESCRIPTION, COMPOSITE, FLOW
+	SEQUENCE, STATE, CLASS, OBJECT, ACTIVITY, DESCRIPTION, COMPOSITE, FLOW
 }

@@ -2,7 +2,7 @@
  * PlantUML : a free UML diagram generator
  * ========================================================================
  *
- * (C) Copyright 2009-2012, Arnaud Roques
+ * (C) Copyright 2009-2013, Arnaud Roques
  *
  * Project Info:  http://plantuml.sourceforge.net
  * 
@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 9761 $
+ * Revision $Revision: 9786 $
  *
  */
 package net.sourceforge.plantuml.skin.rose;
@@ -74,7 +74,7 @@ public class Rose implements Skin {
 		defaultsColor.put(ColorParam.classArrow, HtmlColorUtils.getColorIfValid("#A80036"));
 		defaultsColor.put(ColorParam.objectArrow, HtmlColorUtils.getColorIfValid("#A80036"));
 		defaultsColor.put(ColorParam.activityArrow, HtmlColorUtils.getColorIfValid("#A80036"));
-		defaultsColor.put(ColorParam.componentArrow, HtmlColorUtils.getColorIfValid("#A80036"));
+		// defaultsColor.put(ColorParam.componentArrow, HtmlColorUtils.getColorIfValid("#A80036"));
 		defaultsColor.put(ColorParam.stateArrow, HtmlColorUtils.getColorIfValid("#A80036"));
 
 		defaultsColor.put(ColorParam.sequenceLifeLineBackground, HtmlColorUtils.getColorIfValid("white"));
@@ -189,7 +189,7 @@ public class Rose implements Skin {
 			final HorizontalAlignement messageHorizontalAlignement = param
 					.getHorizontalAlignement(AlignParam.SEQUENCE_MESSAGE_ALIGN);
 			final HorizontalAlignement textHorizontalAlignement = param
-					.getHorizontalAlignement(AlignParam.SEQUENCE_MESSAGE_ALIGN);
+					.getHorizontalAlignement(AlignParam.SEQUENCE_MESSAGETEXT_ALIGN);
 			if (OptionFlags.NEW_ARROW) {
 				return new ComponentRoseArrow2(sequenceArrow, getFontColor(param, FontParam.SEQUENCE_ARROW), fontArrow,
 						stringsToDisplay, config, messageHorizontalAlignement, param, textHorizontalAlignement);

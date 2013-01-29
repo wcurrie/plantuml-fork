@@ -2,7 +2,7 @@
  * PlantUML : a free UML diagram generator
  * ========================================================================
  *
- * (C) Copyright 2009-2012, Arnaud Roques
+ * (C) Copyright 2009-2013, Arnaud Roques
  *
  * Project Info:  http://plantuml.sourceforge.net
  * 
@@ -48,8 +48,23 @@ final public class UmlSource {
 
 	public UmlSource(List<? extends CharSequence> source) {
 		final List<String> tmp = new ArrayList<String>();
-		for (CharSequence s : source) {
-			tmp.add(s.toString());
+		final DiagramType type = DiagramType.getTypeFromArobaseStart(source.get(0).toString());
+		if (type == DiagramType.UML) {
+			final StringBuilder pending = new StringBuilder();
+			for (CharSequence cs : source) {
+				final String s = cs.toString();
+				if (s.endsWith("\\")) {
+					pending.append(s.substring(0, s.length() - 1));
+				} else {
+					pending.append(s);
+					tmp.add(pending.toString());
+					pending.setLength(0);
+				}
+			}
+		} else {
+			for (CharSequence s : source) {
+				tmp.add(s.toString());
+			}
 		}
 		this.source = Collections.unmodifiableList(tmp);
 	}

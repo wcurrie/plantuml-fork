@@ -2,7 +2,7 @@
  * PlantUML : a free UML diagram generator
  * ========================================================================
  *
- * (C) Copyright 2009-2012, Arnaud Roques
+ * (C) Copyright 2009-2013, Arnaud Roques
  *
  * Project Info:  http://plantuml.sourceforge.net
  * 
@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  *
- * Revision $Revision: 9722 $
+ * Revision $Revision: 9786 $
  *
  */
 package net.sourceforge.plantuml;
@@ -81,6 +81,7 @@ public class SkinParam implements ISkinParam {
 		key = key.toLowerCase().trim();
 		key = key.replaceAll("_|\\.|\\s", "");
 		key = key.replaceAll("partition", "package");
+		key = key.replaceAll("componentarrow", "usecasearrow");
 		final Matcher m = stereoPattern.matcher(key);
 		if (m.find()) {
 			final String s = m.group(1);
@@ -343,12 +344,33 @@ public class SkinParam implements ISkinParam {
 	}
 
 	public HorizontalAlignement getHorizontalAlignement(AlignParam param) {
-		final String value = getValue(param.name());
+		final String value;
+		switch (param) {
+		case SEQUENCE_MESSAGE_ALIGN:
+			value = getArg(getValue(AlignParam.SEQUENCE_MESSAGE_ALIGN.name()), 0);
+			break;
+		case SEQUENCE_MESSAGETEXT_ALIGN:
+			value = getArg(getValue(AlignParam.SEQUENCE_MESSAGE_ALIGN.name()), 1);
+			break;
+		default:
+			value = getValue(param.name());
+		}
 		final HorizontalAlignement result = HorizontalAlignement.fromString(value);
 		if (result == null) {
 			return param.getDefaultValue();
 		}
 		return result;
+	}
+
+	private String getArg(String value, int i) {
+		if (value == null) {
+			return null;
+		}
+		final String[] split = value.split(":");
+		if (i >= split.length) {
+			return split[0];
+		}
+		return split[i];
 	}
 
 	public ColorMapper getColorMapper() {

@@ -2,7 +2,7 @@
  * PlantUML : a free UML diagram generator
  * ========================================================================
  *
- * (C) Copyright 2009-2012, Arnaud Roques
+ * (C) Copyright 2009-2013, Arnaud Roques
  *
  * Project Info:  http://plantuml.sourceforge.net
  * 
@@ -43,7 +43,7 @@ public class License {
 		text.add("PlantUML : a free UML diagram generator");
 		text.add("========================================================================");
 		text.add("");
-		text.add("(C) Copyright 2009-2012, Arnaud Roques");
+		text.add("(C) Copyright 2009-2013, Arnaud Roques");
 		text.add("");
 		text.add("Project Info:  http://plantuml.sourceforge.net");
 		text.add("");

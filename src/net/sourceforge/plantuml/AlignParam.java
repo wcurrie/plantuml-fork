@@ -2,7 +2,7 @@
  * PlantUML : a free UML diagram generator
  * ========================================================================
  *
- * (C) Copyright 2009-2012, Arnaud Roques
+ * (C) Copyright 2009-2013, Arnaud Roques
  *
  * Project Info:  http://plantuml.sourceforge.net
  * 
@@ -39,6 +39,7 @@ import net.sourceforge.plantuml.graphic.HorizontalAlignement;
 public enum AlignParam {
 	
 	SEQUENCE_MESSAGE_ALIGN(HorizontalAlignement.LEFT),
+	SEQUENCE_MESSAGETEXT_ALIGN(HorizontalAlignement.LEFT),
 	SEQUENCE_REFERENCE_ALIGN(HorizontalAlignement.CENTER);
 	
 	private final HorizontalAlignement defaultValue;

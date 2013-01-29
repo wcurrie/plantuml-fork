@@ -2,7 +2,7 @@
  * PlantUML : a free UML diagram generator
  * ========================================================================
  *
- * (C) Copyright 2009-2012, Arnaud Roques
+ * (C) Copyright 2009-2013, Arnaud Roques
  *
  * Project Info:  http://plantuml.sourceforge.net
  * 
@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 9762 $
+ * Revision $Revision: 9787 $
  *
  */
 package net.sourceforge.plantuml.version;
@@ -36,7 +36,7 @@ package net.sourceforge.plantuml.version;
 public class Version {
 
 	public static int version() {
-		return 7953;
+		return 7954;
 	}
 
 	public static String versionString() {
@@ -51,7 +51,7 @@ public class Version {
 	}
 
 	public static long compileTime() {
-		return 1359296163361L;
+		return 1359482215254L;
 	}
 
 }

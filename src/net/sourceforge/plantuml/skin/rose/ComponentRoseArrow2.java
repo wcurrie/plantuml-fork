@@ -2,7 +2,7 @@
  * PlantUML : a free UML diagram generator
  * ========================================================================
  *
- * (C) Copyright 2009-2012, Arnaud Roques
+ * (C) Copyright 2009-2013, Arnaud Roques
  *
  * Project Info:  http://plantuml.sourceforge.net
  * 
@@ -130,83 +130,6 @@ public class ComponentRoseArrow2 extends AbstractComponentRoseArrow {
 		if (getArrowConfiguration().isDotted()) {
 			ug.getParam().setStroke(new UStroke());
 		}
-		// if (direction2 == ArrowDirection.LEFT_TO_RIGHT_NORMAL) {
-		// if (getArrowConfiguration().isAsync()) {
-		// if (getArrowConfiguration().getPart() != ArrowPart.BOTTOM_PART) {
-		// ug.draw(arrowHeadPosition, textHeight, new ULine(-getArrowDeltaX(), -getArrowDeltaY()));
-		// }
-		// if (getArrowConfiguration().getPart() != ArrowPart.TOP_PART) {
-		// ug.draw(arrowHeadPosition, textHeight, new ULine(-getArrowDeltaX(), getArrowDeltaY()));
-		// }
-		// } else if (decorationEnd == ArrowDecoration.CROSSX) {
-		// ug.getParam().setStroke(new UStroke(2));
-		// ug.draw(x2 - getArrowDeltaX() - spaceCrossX, textHeight - getArrowDeltaX() / 2, new ULine(
-		// getArrowDeltaX(), getArrowDeltaX()));
-		// ug.draw(x2 - getArrowDeltaX() - spaceCrossX, textHeight + getArrowDeltaX() / 2, new ULine(
-		// getArrowDeltaX(), -getArrowDeltaX()));
-		// ug.getParam().setStroke(new UStroke());
-		// } else {
-		// ug.getParam().setBackcolor(getForegroundColor());
-		// final UPolygon polygon = getPolygonNormal(textHeight, arrowHeadPosition);
-		// ug.draw(0, 0, polygon);
-		// ug.getParam().setBackcolor(null);
-		// }
-		//
-		// if (decorationStart == ArrowDecoration.CIRCLE) {
-		// ug.getParam().setStroke(new UStroke(thinCircle));
-		// ug.getParam().setColor(getForegroundColor());
-		// ug.getParam().setBackcolor(null);
-		// final UEllipse circle = new UEllipse(diamCircle, diamCircle);
-		// ug.draw(-diamCircle / 2 - 0.5, textHeight - diamCircle / 2 - thinCircle / 2, circle);
-		// ug.getParam().setStroke(new UStroke());
-		// }
-		// if (decorationEnd == ArrowDecoration.CIRCLE) {
-		// ug.getParam().setStroke(new UStroke(thinCircle));
-		// ug.getParam().setColor(getForegroundColor());
-		// ug.getParam().setBackcolor(null);
-		// final UEllipse circle = new UEllipse(diamCircle, diamCircle);
-		// ug.draw(x2 - diamCircle / 2 + 0.5, textHeight - diamCircle / 2 - thinCircle / 2, circle);
-		// ug.getParam().setStroke(new UStroke());
-		// }
-		// } else {
-		// if (getArrowConfiguration().isAsync()) {
-		// if (getArrowConfiguration().getPart() != ArrowPart.BOTTOM_PART) {
-		// ug.draw(arrowHeadPosition - 1, textHeight, new ULine(getArrowDeltaX(), -getArrowDeltaY()));
-		// }
-		// if (getArrowConfiguration().getPart() != ArrowPart.TOP_PART) {
-		// ug.draw(arrowHeadPosition - 1, textHeight, new ULine(getArrowDeltaX(), getArrowDeltaY()));
-		// }
-		// } else if (decorationEnd == ArrowDecoration.CROSSX) {
-		// ug.getParam().setStroke(new UStroke(2));
-		// ug.draw(spaceCrossX, textHeight - getArrowDeltaX() / 2, new ULine(getArrowDeltaX(), getArrowDeltaX()));
-		// ug.draw(spaceCrossX, textHeight + getArrowDeltaX() / 2, new ULine(getArrowDeltaX(), -getArrowDeltaX()));
-		// ug.getParam().setStroke(new UStroke());
-		// } else {
-		// ug.getParam().setBackcolor(getForegroundColor());
-		// final UPolygon polygon = getPolygonReverse(textHeight);
-		// ug.draw(arrowHeadPosition, 0, polygon);
-		// ug.getParam().setBackcolor(null);
-		// }
-		//
-		// if (decorationStart == ArrowDecoration.CIRCLE) {
-		// ug.getParam().setStroke(new UStroke(thinCircle));
-		// ug.getParam().setColor(getForegroundColor());
-		// ug.getParam().setBackcolor(null);
-		// final UEllipse circle = new UEllipse(diamCircle, diamCircle);
-		// ug.draw(x2 - diamCircle / 2 + 0.5, textHeight - diamCircle / 2 - thinCircle / 2, circle);
-		// ug.getParam().setStroke(new UStroke());
-		//
-		// }
-		// if (decorationEnd == ArrowDecoration.CIRCLE) {
-		// ug.getParam().setStroke(new UStroke(thinCircle));
-		// ug.getParam().setColor(getForegroundColor());
-		// ug.getParam().setBackcolor(null);
-		// final UEllipse circle = new UEllipse(diamCircle, diamCircle);
-		// ug.draw(-diamCircle / 2 - 0.5, textHeight - diamCircle / 2 - thinCircle / 2, circle);
-		// ug.getParam().setStroke(new UStroke());
-		//
-		// }
-		// }
 
 		final ArrowDirection direction2 = getDirection2();
 		final double textPos;
@@ -218,7 +141,9 @@ public class ComponentRoseArrow2 extends AbstractComponentRoseArrow {
 			textPos = dimensionToUse.getWidth() - textWidth - getMarginX2()
 					- (direction2 == ArrowDirection.LEFT_TO_RIGHT_NORMAL ? getArrowDeltaX() : 0);
 		} else {
-			textPos = getMarginX1() + (direction2 == ArrowDirection.RIGHT_TO_LEFT_REVERSE ? getArrowDeltaX() : 0);
+			textPos = getMarginX1()
+					+ (direction2 == ArrowDirection.RIGHT_TO_LEFT_REVERSE
+							|| direction2 == ArrowDirection.BOTH_DIRECTION ? getArrowDeltaX() : 0);
 		}
 		getTextBlock().drawU(ug, textPos, 0);
 	}
