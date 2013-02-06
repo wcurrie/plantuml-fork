@@ -27,31 +27,37 @@
  * in the United States and other countries.]
  *
  * Original Author:  Arnaud Roques
- * 
- * Revision $Revision: 9857 $
+ *
+ * Revision $Revision: 8475 $
  *
  */
-package net.sourceforge.plantuml.version;
+package net.sourceforge.plantuml.activitydiagram3.ftile;
 
-public class Version {
+import java.awt.geom.Dimension2D;
+import java.util.Collections;
+import java.util.List;
 
-	public static int version() {
-		return 7955;
+import net.sourceforge.plantuml.Dimension2DDouble;
+import net.sourceforge.plantuml.Url;
+import net.sourceforge.plantuml.graphic.StringBounder;
+import net.sourceforge.plantuml.ugraphic.UGraphic;
+
+public class FtileEmpty implements Ftile {
+
+	public void drawU(UGraphic ug, double x, double y) {
 	}
 
-	public static String versionString() {
-		if (beta()) {
-			return "" + (version() + 1) + "beta";
-		}
-		return "" + version();
+	public Dimension2D calculateDimension(StringBounder stringBounder) {
+		return new Dimension2DDouble(0, 0);
 	}
 
-	public static boolean beta() {
+	public List<Url> getUrls() {
+		return Collections.emptyList();
+	}
+	
+	public boolean isKilled() {
 		return false;
 	}
 
-	public static long compileTime() {
-		return 1360172551315L;
-	}
 
 }

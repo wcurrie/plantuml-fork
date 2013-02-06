@@ -27,31 +27,44 @@
  * in the United States and other countries.]
  *
  * Original Author:  Arnaud Roques
- * 
- * Revision $Revision: 9857 $
+ *
+ * Revision $Revision: 8475 $
  *
  */
-package net.sourceforge.plantuml.version;
+package net.sourceforge.plantuml.activitydiagram3.ftile;
 
-public class Version {
+import java.awt.geom.Dimension2D;
+import java.util.Collections;
+import java.util.List;
 
-	public static int version() {
-		return 7955;
+import net.sourceforge.plantuml.Dimension2DDouble;
+import net.sourceforge.plantuml.Url;
+import net.sourceforge.plantuml.graphic.HtmlColorUtils;
+import net.sourceforge.plantuml.graphic.StringBounder;
+import net.sourceforge.plantuml.ugraphic.UGraphic;
+import net.sourceforge.plantuml.ugraphic.UStroke;
+
+public class FtileDiamond implements Ftile {
+
+	public void drawU(UGraphic ug, double x, double y) {
+		ug.getParam().setColor(HtmlColorUtils.getColorIfValid("#A80036"));
+		ug.getParam().setBackcolor(HtmlColorUtils.getColorIfValid("#FEFECE"));
+		ug.getParam().setStroke(new UStroke(1.5));
+		ug.draw(x, y, Diamond.asPolygon());
+		ug.getParam().setStroke(new UStroke());
 	}
 
-	public static String versionString() {
-		if (beta()) {
-			return "" + (version() + 1) + "beta";
-		}
-		return "" + version();
+	public Dimension2D calculateDimension(StringBounder stringBounder) {
+		return new Dimension2DDouble(2 * Diamond.diamondHalfSize, 2 * Diamond.diamondHalfSize);
 	}
 
-	public static boolean beta() {
+	public List<Url> getUrls() {
+		return Collections.emptyList();
+	}
+	
+	public boolean isKilled() {
 		return false;
 	}
 
-	public static long compileTime() {
-		return 1360172551315L;
-	}
 
 }

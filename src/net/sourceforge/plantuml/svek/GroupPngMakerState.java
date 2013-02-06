@@ -118,9 +118,9 @@ public final class GroupPngMakerState {
 		}
 		final List<Link> links = getPureInnerLinks();
 		ISkinParam skinParam = diagram.getSkinParam();
-		if (OptionFlags.PBBACK && group.getSpecificBackColor() != null) {
-			skinParam = new SkinParamBackcolored(skinParam, null, group.getSpecificBackColor());
-		}
+//		if (OptionFlags.PBBACK && group.getSpecificBackColor() != null) {
+//			skinParam = new SkinParamBackcolored(skinParam, null, group.getSpecificBackColor());
+//		}
 		final DotData dotData = new DotData(group, links, group.getLeafsDirect(), diagram.getUmlDiagramType(),
 				skinParam, group.zgetRankdir(), new InnerGroupHierarchy(), diagram.getColorMapper(),
 				diagram.getEntityFactory());

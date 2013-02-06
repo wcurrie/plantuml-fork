@@ -50,6 +50,7 @@ import net.sourceforge.plantuml.CMapData;
 import net.sourceforge.plantuml.FileFormat;
 import net.sourceforge.plantuml.FileFormatOption;
 import net.sourceforge.plantuml.Log;
+import net.sourceforge.plantuml.OptionFlags;
 import net.sourceforge.plantuml.UmlDiagram;
 import net.sourceforge.plantuml.UmlDiagramInfo;
 import net.sourceforge.plantuml.UmlDiagramType;
@@ -57,6 +58,7 @@ import net.sourceforge.plantuml.cucadiagram.Display;
 import net.sourceforge.plantuml.graphic.HtmlColor;
 import net.sourceforge.plantuml.sequencediagram.graphic.FileMaker;
 import net.sourceforge.plantuml.sequencediagram.graphic.SequenceDiagramFileMaker;
+import net.sourceforge.plantuml.sequencediagram.graphic.SequenceDiagramFileMakerPuma;
 import net.sourceforge.plantuml.sequencediagram.graphic.SequenceDiagramTxtMaker;
 import net.sourceforge.plantuml.skin.ProtectedSkin;
 import net.sourceforge.plantuml.skin.Skin;
@@ -185,7 +187,9 @@ public class SequenceDiagram extends UmlDiagram {
 			return new SequenceDiagramTxtMaker(this, fileFormat);
 		}
 
-		//return new SequenceDiagramFileMaker2(this, skin, fileFormatOption, flashcodes);
+		if (OptionFlags.USE_PUMA) {
+			return new SequenceDiagramFileMakerPuma(this, skin, fileFormatOption, flashcodes);
+		}
 		return new SequenceDiagramFileMaker(this, skin, fileFormatOption, flashcodes);
 	}
 

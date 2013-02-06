@@ -27,31 +27,32 @@
  * in the United States and other countries.]
  *
  * Original Author:  Arnaud Roques
- * 
- * Revision $Revision: 9857 $
+ *
+ * Revision $Revision: 8475 $
  *
  */
-package net.sourceforge.plantuml.version;
+package net.sourceforge.plantuml.activitydiagram3.ftile;
 
-public class Version {
+import net.sourceforge.plantuml.ugraphic.UPolygon;
 
-	public static int version() {
-		return 7955;
-	}
+public class Diamond {
 
-	public static String versionString() {
-		if (beta()) {
-			return "" + (version() + 1) + "beta";
+	final static public double diamondHalfSize = 12;
+
+	public static UPolygon asPolygon() {
+		final UPolygon diams = new UPolygon();
+
+		diams.addPoint(diamondHalfSize, 0);
+		diams.addPoint(diamondHalfSize * 2, diamondHalfSize);
+		diams.addPoint(diamondHalfSize, diamondHalfSize * 2);
+		diams.addPoint(0, diamondHalfSize);
+		diams.addPoint(diamondHalfSize, 0);
+
+		if (Ftile.SHADOWING) {
+			diams.setDeltaShadow(3);
 		}
-		return "" + version();
-	}
 
-	public static boolean beta() {
-		return false;
-	}
-
-	public static long compileTime() {
-		return 1360172551315L;
+		return diams;
 	}
 
 }

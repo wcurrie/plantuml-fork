@@ -43,6 +43,7 @@ import net.sourceforge.plantuml.EmptyImageBuilder;
 import net.sourceforge.plantuml.FileFormat;
 import net.sourceforge.plantuml.FileFormatOption;
 import net.sourceforge.plantuml.StringUtils;
+import net.sourceforge.plantuml.UmlDiagramInfo;
 import net.sourceforge.plantuml.Url;
 import net.sourceforge.plantuml.eps.EpsStrategy;
 import net.sourceforge.plantuml.graphic.HtmlColor;
@@ -52,6 +53,7 @@ import net.sourceforge.plantuml.graphic.UDrawable;
 import net.sourceforge.plantuml.png.PngIO;
 import net.sourceforge.plantuml.ugraphic.eps.UGraphicEps;
 import net.sourceforge.plantuml.ugraphic.g2d.UGraphicG2d;
+import net.sourceforge.plantuml.ugraphic.html5.UGraphicHtml5;
 import net.sourceforge.plantuml.ugraphic.svg.UGraphicSvg;
 
 public abstract class UGraphicUtils {
@@ -164,6 +166,24 @@ public abstract class UGraphicUtils {
 		image.drawU(ug, 0, 0);
 		g2d.dispose();
 		return im;
+	}
+
+	public static void writeImage(OutputStream os, UGraphic ug, String metadata, int dpi) throws IOException {
+		if (ug instanceof UGraphicG2d) {
+			final BufferedImage im = ((UGraphicG2d) ug).getBufferedImage();
+			PngIO.write(im, os, metadata, dpi);
+		} else if (ug instanceof UGraphicSvg) {
+			final UGraphicSvg svg = (UGraphicSvg) ug;
+			svg.createXml(os);
+		} else if (ug instanceof UGraphicEps) {
+			final UGraphicEps eps = (UGraphicEps) ug;
+			os.write(eps.getEPSCode().getBytes());
+		} else if (ug instanceof UGraphicHtml5) {
+			final UGraphicHtml5 html5 = (UGraphicHtml5) ug;
+			os.write(html5.generateHtmlCode().getBytes());
+		} else {
+			throw new UnsupportedOperationException();
+		}
 	}
 
 }

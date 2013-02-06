@@ -27,31 +27,53 @@
  * in the United States and other countries.]
  *
  * Original Author:  Arnaud Roques
- * 
- * Revision $Revision: 9857 $
+ *
+ * Revision $Revision: 8475 $
  *
  */
-package net.sourceforge.plantuml.version;
+package net.sourceforge.plantuml.activitydiagram3.ftile;
 
-public class Version {
+import net.sourceforge.plantuml.ugraphic.UPolygon;
 
-	public static int version() {
-		return 7955;
+public class Arrows {
+
+	final static private double delta1 = 10;
+	final static private double delta2 = 4;
+
+	public static UPolygon asToUp() {
+		final UPolygon polygon = new UPolygon();
+		polygon.addPoint(-delta2, delta1);
+		polygon.addPoint(0, 0);
+		polygon.addPoint(delta2, delta1);
+		polygon.addPoint(0, delta1 - 4);
+		return polygon;
 	}
 
-	public static String versionString() {
-		if (beta()) {
-			return "" + (version() + 1) + "beta";
-		}
-		return "" + version();
+	public static UPolygon asToDown() {
+		final UPolygon polygon = new UPolygon();
+		polygon.addPoint(-delta2, -delta1);
+		polygon.addPoint(0, 0);
+		polygon.addPoint(delta2, -delta1);
+		polygon.addPoint(0, -delta1 + 4);
+		return polygon;
 	}
 
-	public static boolean beta() {
-		return false;
+	public static UPolygon asToRight() {
+		final UPolygon polygon = new UPolygon();
+		polygon.addPoint(-delta1, -delta2);
+		polygon.addPoint(0, 0);
+		polygon.addPoint(-delta1, delta2);
+		polygon.addPoint(-delta1 + 4, 0);
+		return polygon;
 	}
 
-	public static long compileTime() {
-		return 1360172551315L;
+	public static UPolygon asToLeft() {
+		final UPolygon polygon = new UPolygon();
+		polygon.addPoint(delta1, -delta2);
+		polygon.addPoint(0, 0);
+		polygon.addPoint(delta1, delta2);
+		polygon.addPoint(delta1 - 4, 0);
+		return polygon;
 	}
 
 }

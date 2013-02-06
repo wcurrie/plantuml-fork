@@ -27,31 +27,47 @@
  * in the United States and other countries.]
  *
  * Original Author:  Arnaud Roques
- * 
- * Revision $Revision: 9857 $
+ *
+ * Revision $Revision: 9786 $
  *
  */
-package net.sourceforge.plantuml.version;
+package net.sourceforge.plantuml.activitydiagram3;
 
-public class Version {
+import net.sourceforge.plantuml.activitydiagram3.ftile.Ftile;
+import net.sourceforge.plantuml.activitydiagram3.ftile.FtileIf;
+import net.sourceforge.plantuml.cucadiagram.Display;
 
-	public static int version() {
-		return 7955;
+public class InstructionIf implements Instruction {
+
+	private final InstructionList thenList = new InstructionList();
+	private final InstructionList elseList = new InstructionList();
+	private final Instruction parent;
+	private final String labelTest;
+	private final Display whenThen;
+	private Display whenElse;
+	private InstructionList current = thenList;
+
+	public InstructionIf(Instruction parent, String labelTest, Display whenThen) {
+		this.parent = parent;
+		this.labelTest = labelTest;
+		this.whenThen = whenThen;
 	}
 
-	public static String versionString() {
-		if (beta()) {
-			return "" + (version() + 1) + "beta";
-		}
-		return "" + version();
+	public void add(Instruction ins) {
+		current.add(ins);
 	}
 
-	public static boolean beta() {
-		return false;
+	public Ftile createFtile() {
+		return new FtileIf(thenList.createFtile(), elseList.createFtile(), labelTest, whenThen, whenElse);
 	}
 
-	public static long compileTime() {
-		return 1360172551315L;
+	public Instruction getParent() {
+		return parent;
+	}
+
+	public void swithToElse(Display whenElse) {
+		this.whenElse = whenElse;
+		this.current = elseList;
 	}
 
 }

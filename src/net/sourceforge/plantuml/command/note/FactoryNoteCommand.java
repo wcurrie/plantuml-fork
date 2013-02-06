@@ -93,7 +93,7 @@ public final class FactoryNoteCommand implements SingleMultiFactoryCommand<Abstr
 			}
 
 			public CommandExecutionResult executeNow(List<String> lines) {
-				StringUtils.trim(lines, false);
+				//StringUtils.trim(lines, false);
 				final RegexResult line0 = getStartingPattern().matcher(lines.get(0).trim());
 
 				final List<String> strings = StringUtils.removeEmptyColumns(lines.subList(1, lines.size() - 1));

@@ -68,17 +68,16 @@ public class PSystemDitaa extends AbstractPSystem {
 	public void exportDiagram(OutputStream os, CMapData cmap, int index, FileFormatOption fileFormatOption)
 			throws IOException {
 
-		if (fileFormatOption.getFileFormat() == FileFormat.PNG) {
+		if (fileFormatOption.getFileFormat() == FileFormat.ATXT) {
+			os.write(getSource().getPlainString().getBytes());
+		} else {
+			// ditaa can only export png so file format is mostly ignored
 			final ConversionOptions options = new ConversionOptions();
 			options.setDropShadows(dropShadows);
 			final Diagram diagram = new Diagram(grid, options, processingOptions);
 			final BufferedImage image = (BufferedImage) new BitmapRenderer().renderToImage(diagram,
 					options.renderingOptions);
 			ImageIO.write(image, "png", os);
-		} else if (fileFormatOption.getFileFormat() == FileFormat.ATXT) {
-			os.write(getSource().getPlainString().getBytes());
-		} else {
-			throw new UnsupportedOperationException(fileFormatOption.getFileFormat().toString());
 		}
 
 	}

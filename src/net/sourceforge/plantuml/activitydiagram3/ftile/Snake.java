@@ -27,31 +27,43 @@
  * in the United States and other countries.]
  *
  * Original Author:  Arnaud Roques
- * 
- * Revision $Revision: 9857 $
+ *
+ * Revision $Revision: 8475 $
  *
  */
-package net.sourceforge.plantuml.version;
+package net.sourceforge.plantuml.activitydiagram3.ftile;
 
-public class Version {
+import java.awt.geom.Point2D;
+import java.util.ArrayList;
+import java.util.List;
 
-	public static int version() {
-		return 7955;
+import net.sourceforge.plantuml.ugraphic.UGraphic;
+import net.sourceforge.plantuml.ugraphic.ULine;
+
+public class Snake {
+
+	private final List<Point2D.Double> points = new ArrayList<Point2D.Double>();
+
+	public void addPoint(double x, double y) {
+		this.points.add(new Point2D.Double(x, y));
 	}
 
-	public static String versionString() {
-		if (beta()) {
-			return "" + (version() + 1) + "beta";
+	public void drawU(UGraphic ug) {
+		for (int i = 0; i < points.size() - 1; i++) {
+			drawLine(ug, points.get(i), points.get(i + 1));
 		}
-		return "" + version();
 	}
 
-	public static boolean beta() {
-		return false;
+	private void drawLine(UGraphic ug, Point2D.Double pt1, Point2D.Double pt2) {
+		drawLine(ug, pt1.getX(), pt1.getY(), pt2.getX(), pt2.getY());
 	}
 
-	public static long compileTime() {
-		return 1360172551315L;
+	private void drawLine(UGraphic ug, double x1, double y1, double x2, double y2) {
+		final double xmin = Math.min(x1, x2);
+		final double xmax = Math.max(x1, x2);
+		final double ymin = Math.min(y1, y2);
+		final double ymax = Math.max(y1, y2);
+		ug.draw(xmin, ymin, new ULine(xmax - xmin, ymax - ymin));
 	}
 
 }

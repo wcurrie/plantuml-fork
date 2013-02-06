@@ -27,31 +27,38 @@
  * in the United States and other countries.]
  *
  * Original Author:  Arnaud Roques
- * 
- * Revision $Revision: 9857 $
+ *
+ * Revision $Revision: 9786 $
  *
  */
-package net.sourceforge.plantuml.version;
+package net.sourceforge.plantuml.activitydiagram3;
 
-public class Version {
+import net.sourceforge.plantuml.activitydiagram3.ftile.Ftile;
+import net.sourceforge.plantuml.activitydiagram3.ftile.FtileWhile;
+import net.sourceforge.plantuml.cucadiagram.Display;
 
-	public static int version() {
-		return 7955;
+public class InstructionWhile implements Instruction {
+
+	private final InstructionList repeatList = new InstructionList();
+	private final Instruction parent;
+
+	private final Display test;
+
+	public InstructionWhile(Instruction parent, Display test) {
+		this.parent = parent;
+		this.test = test;
 	}
 
-	public static String versionString() {
-		if (beta()) {
-			return "" + (version() + 1) + "beta";
-		}
-		return "" + version();
+	public void add(Instruction ins) {
+		repeatList.add(ins);
 	}
 
-	public static boolean beta() {
-		return false;
+	public Ftile createFtile() {
+		return new FtileWhile(repeatList.createFtile(), test);
 	}
 
-	public static long compileTime() {
-		return 1360172551315L;
+	public Instruction getParent() {
+		return parent;
 	}
 
 }

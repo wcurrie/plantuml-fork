@@ -27,31 +27,53 @@
  * in the United States and other countries.]
  *
  * Original Author:  Arnaud Roques
- * 
- * Revision $Revision: 9857 $
+ *
+ * Revision $Revision: 8475 $
  *
  */
-package net.sourceforge.plantuml.version;
+package net.sourceforge.plantuml.activitydiagram3.ftile;
 
-public class Version {
+import java.awt.geom.Dimension2D;
+import java.util.List;
 
-	public static int version() {
-		return 7955;
+import net.sourceforge.plantuml.Dimension2DDouble;
+import net.sourceforge.plantuml.Url;
+import net.sourceforge.plantuml.graphic.StringBounder;
+import net.sourceforge.plantuml.ugraphic.UGraphic;
+
+public class FtileFork implements Ftile {
+
+	private final double barHeight = 6;
+	private final Ftile inner;
+
+	public FtileFork(FtileForkInner inner) {
+		this.inner = inner;
 	}
 
-	public static String versionString() {
-		if (beta()) {
-			return "" + (version() + 1) + "beta";
-		}
-		return "" + version();
+	public void drawU(UGraphic ug, final double x, final double y) {
+		final StringBounder stringBounder = ug.getStringBounder();
+		final Dimension2D dimTotal = calculateDimension(stringBounder);
+		final Ftile black = new FtileBlackBlock(dimTotal.getWidth(), barHeight);
+
+		inner.drawU(ug, x, y + barHeight);
+
+		black.drawU(ug, x, y);
+		black.drawU(ug, x, y + dimTotal.getHeight() - barHeight);
+
 	}
 
-	public static boolean beta() {
+	public Dimension2D calculateDimension(StringBounder stringBounder) {
+		final Dimension2D dim = inner.calculateDimension(stringBounder);
+		return Dimension2DDouble.delta(dim, 0, 2 * barHeight);
+	}
+
+	public List<Url> getUrls() {
+		throw new UnsupportedOperationException();
+	}
+	
+	public boolean isKilled() {
 		return false;
 	}
 
-	public static long compileTime() {
-		return 1360172551315L;
-	}
 
 }

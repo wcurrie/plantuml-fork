@@ -115,7 +115,7 @@ public final class FactoryNoteOnEntityCommand implements SingleMultiFactoryComma
 			}
 
 			public CommandExecutionResult executeNow(List<String> lines) {
-				StringUtils.trim(lines, false);
+				//StringUtils.trim(lines, false);
 				final RegexResult line0 = getStartingPattern().matcher(lines.get(0).trim());
 
 				List<String> strings = StringUtils.removeEmptyColumns(lines.subList(1, lines.size() - 1));

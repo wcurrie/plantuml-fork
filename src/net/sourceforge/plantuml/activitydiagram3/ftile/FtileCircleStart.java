@@ -28,30 +28,47 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 9857 $
+ * Revision $Revision: 5183 $
  *
  */
-package net.sourceforge.plantuml.version;
+package net.sourceforge.plantuml.activitydiagram3.ftile;
 
-public class Version {
+import java.awt.geom.Dimension2D;
+import java.util.Collections;
+import java.util.List;
 
-	public static int version() {
-		return 7955;
-	}
+import net.sourceforge.plantuml.Dimension2DDouble;
+import net.sourceforge.plantuml.Url;
+import net.sourceforge.plantuml.graphic.HtmlColorUtils;
+import net.sourceforge.plantuml.graphic.StringBounder;
+import net.sourceforge.plantuml.ugraphic.UEllipse;
+import net.sourceforge.plantuml.ugraphic.UGraphic;
 
-	public static String versionString() {
-		if (beta()) {
-			return "" + (version() + 1) + "beta";
+public class FtileCircleStart implements Ftile {
+
+	private static final int SIZE = 20;
+
+	public void drawU(UGraphic ug, double xTheoricalPosition, double yTheoricalPosition) {
+		final UEllipse circle = new UEllipse(SIZE, SIZE);
+		if (SHADOWING) {
+			circle.setDeltaShadow(3);
 		}
-		return "" + version();
+		ug.getParam().setColor(null);
+		ug.getParam().setBackcolor(HtmlColorUtils.BLACK);
+		ug.draw(xTheoricalPosition, yTheoricalPosition, circle);
 	}
 
-	public static boolean beta() {
+	public Dimension2D calculateDimension(StringBounder stringBounder) {
+		return new Dimension2DDouble(SIZE, SIZE);
+	}
+
+	public List<Url> getUrls() {
+		return Collections.emptyList();
+	}
+	
+	public boolean isKilled() {
 		return false;
 	}
 
-	public static long compileTime() {
-		return 1360172551315L;
-	}
 
 }

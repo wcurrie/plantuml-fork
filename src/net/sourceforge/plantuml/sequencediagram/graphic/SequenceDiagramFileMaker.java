@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 9786 $
+ * Revision $Revision: 9794 $
  *
  */
 package net.sourceforge.plantuml.sequencediagram.graphic;
@@ -306,6 +306,7 @@ public class SequenceDiagramFileMaker implements FileMaker {
 
 		final int diff = (int) Math.round((imageWidth - getImageWidthWithoutMinsize(area, diagram.isRotation(),
 				dpiFactor)) / 2);
+		System.err.println("diffn="+diff);
 		if (diagram.isRotation()) {
 			ug.translate(0, diff / dpiFactor);
 		} else {

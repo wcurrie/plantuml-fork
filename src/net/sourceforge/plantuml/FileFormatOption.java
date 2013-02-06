@@ -43,10 +43,12 @@ import net.sourceforge.plantuml.graphic.HtmlColor;
 import net.sourceforge.plantuml.graphic.HtmlColorGradient;
 import net.sourceforge.plantuml.graphic.HtmlColorSimple;
 import net.sourceforge.plantuml.graphic.HtmlColorTransparent;
+import net.sourceforge.plantuml.graphic.HtmlColorUtils;
 import net.sourceforge.plantuml.ugraphic.ColorMapper;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
 import net.sourceforge.plantuml.ugraphic.URectangle;
 import net.sourceforge.plantuml.ugraphic.g2d.UGraphicG2d;
+import net.sourceforge.plantuml.ugraphic.svg.UGraphicSvg;
 
 public class FileFormatOption {
 
@@ -75,10 +77,25 @@ public class FileFormatOption {
 		switch (fileFormat) {
 		case PNG:
 			return createUGraphicPNG(colorMapper, dpiFactor, dim, mybackcolor, rotation);
+		case SVG:
+			return createUGraphicSVG(colorMapper, dpiFactor, dim, mybackcolor, rotation);
 		default:
 			throw new UnsupportedOperationException();
 		}
 
+	}
+
+	private UGraphic createUGraphicSVG(ColorMapper colorMapper, double dpiFactor, Dimension2D dim,
+			HtmlColor mybackcolor, boolean rotation) {
+		final UGraphicSvg ug;
+		if (mybackcolor instanceof HtmlColorGradient) {
+			ug = new UGraphicSvg(colorMapper, (HtmlColorGradient) mybackcolor, false);
+		} else if (mybackcolor == null || mybackcolor.equals(HtmlColorUtils.WHITE)) {
+			ug = new UGraphicSvg(colorMapper, false);
+		} else {
+			ug = new UGraphicSvg(colorMapper, StringUtils.getAsHtml(colorMapper.getMappedColor(mybackcolor)), false);
+		}
+		return ug;
 	}
 
 	private UGraphic createUGraphicPNG(ColorMapper colorMapper, double dpiFactor, final Dimension2D dim,

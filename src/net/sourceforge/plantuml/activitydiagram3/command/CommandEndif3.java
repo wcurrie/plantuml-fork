@@ -27,31 +27,40 @@
  * in the United States and other countries.]
  *
  * Original Author:  Arnaud Roques
- * 
- * Revision $Revision: 9857 $
+ *
+ * Revision $Revision: 4762 $
  *
  */
-package net.sourceforge.plantuml.version;
+package net.sourceforge.plantuml.activitydiagram3.command;
 
-public class Version {
+import net.sourceforge.plantuml.activitydiagram3.ActivityDiagram3;
+import net.sourceforge.plantuml.command.CommandExecutionResult;
+import net.sourceforge.plantuml.command.SingleLineCommand2;
+import net.sourceforge.plantuml.command.regex.RegexConcat;
+import net.sourceforge.plantuml.command.regex.RegexLeaf;
+import net.sourceforge.plantuml.command.regex.RegexResult;
 
-	public static int version() {
-		return 7955;
+public class CommandEndif3 extends SingleLineCommand2<ActivityDiagram3> {
+
+	public CommandEndif3(ActivityDiagram3 diagram) {
+		super(diagram, getRegexConcat());
 	}
 
-	public static String versionString() {
-		if (beta()) {
-			return "" + (version() + 1) + "beta";
-		}
-		return "" + version();
+	static RegexConcat getRegexConcat() {
+		return new RegexConcat(//
+				new RegexLeaf("^"), //
+				new RegexLeaf("endif"), //
+				new RegexLeaf("$"));
 	}
 
-	public static boolean beta() {
-		return false;
-	}
+	@Override
+	protected CommandExecutionResult executeArg(RegexResult arg) {
+		// if (getSystem().getLastEntityConsulted() == null) {
+		// return CommandExecutionResult.error("No if for this endif");
+		// }
+		getSystem().endif();
 
-	public static long compileTime() {
-		return 1360172551315L;
+		return CommandExecutionResult.ok();
 	}
 
 }

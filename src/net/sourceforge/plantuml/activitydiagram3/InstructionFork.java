@@ -27,31 +27,51 @@
  * in the United States and other countries.]
  *
  * Original Author:  Arnaud Roques
- * 
- * Revision $Revision: 9857 $
+ *
+ * Revision $Revision: 9786 $
  *
  */
-package net.sourceforge.plantuml.version;
+package net.sourceforge.plantuml.activitydiagram3;
 
-public class Version {
+import java.util.ArrayList;
+import java.util.List;
 
-	public static int version() {
-		return 7955;
+import net.sourceforge.plantuml.activitydiagram3.ftile.Ftile;
+import net.sourceforge.plantuml.activitydiagram3.ftile.FtileFork;
+import net.sourceforge.plantuml.activitydiagram3.ftile.FtileForkInner;
+
+public class InstructionFork implements Instruction {
+
+	private final List<InstructionList> forks = new ArrayList<InstructionList>();
+	private final Instruction parent;
+
+	public InstructionFork(Instruction parent) {
+		this.parent = parent;
+		this.forks.add(new InstructionList());
 	}
 
-	public static String versionString() {
-		if (beta()) {
-			return "" + (version() + 1) + "beta";
+	private InstructionList getLast() {
+		return forks.get(forks.size() - 1);
+	}
+
+	public void add(Instruction ins) {
+		getLast().add(ins);
+	}
+
+	public Ftile createFtile() {
+		final List<Ftile> all = new ArrayList<Ftile>();
+		for (InstructionList list : forks) {
+			all.add(list.createFtile());
 		}
-		return "" + version();
+		return new FtileFork(new FtileForkInner(all));
 	}
 
-	public static boolean beta() {
-		return false;
+	public Instruction getParent() {
+		return parent;
 	}
 
-	public static long compileTime() {
-		return 1360172551315L;
+	public void forkAgain() {
+		this.forks.add(new InstructionList());
 	}
 
 }

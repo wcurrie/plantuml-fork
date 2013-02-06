@@ -27,31 +27,54 @@
  * in the United States and other countries.]
  *
  * Original Author:  Arnaud Roques
- * 
- * Revision $Revision: 9857 $
+ *
+ * Revision $Revision: 8475 $
  *
  */
-package net.sourceforge.plantuml.version;
+package net.sourceforge.plantuml.activitydiagram3.ftile;
 
-public class Version {
+import java.awt.geom.Dimension2D;
+import java.util.Collections;
+import java.util.List;
 
-	public static int version() {
-		return 7955;
+import net.sourceforge.plantuml.Dimension2DDouble;
+import net.sourceforge.plantuml.Url;
+import net.sourceforge.plantuml.graphic.HtmlColorUtils;
+import net.sourceforge.plantuml.graphic.StringBounder;
+import net.sourceforge.plantuml.ugraphic.UGraphic;
+import net.sourceforge.plantuml.ugraphic.URectangle;
+
+public class FtileBlackBlock implements Ftile {
+
+	private final double width;
+	private final double height;
+
+	public FtileBlackBlock(double width, double height) {
+		this.height = height;
+		this.width = width;
 	}
 
-	public static String versionString() {
-		if (beta()) {
-			return "" + (version() + 1) + "beta";
+	public void drawU(UGraphic ug, double x, double y) {
+		ug.getParam().setColor(HtmlColorUtils.BLACK);
+		ug.getParam().setBackcolor(HtmlColorUtils.BLACK);
+		final URectangle rect = new URectangle(width, height, 5, 5);
+		if (Ftile.SHADOWING) {
+			rect.setDeltaShadow(3);
 		}
-		return "" + version();
+		ug.draw(x, y, rect);
 	}
 
-	public static boolean beta() {
+	public Dimension2D calculateDimension(StringBounder stringBounder) {
+		return new Dimension2DDouble(width, height);
+	}
+
+	public List<Url> getUrls() {
+		return Collections.emptyList();
+	}
+	
+	public boolean isKilled() {
 		return false;
 	}
 
-	public static long compileTime() {
-		return 1360172551315L;
-	}
 
 }

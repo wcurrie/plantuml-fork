@@ -27,31 +27,44 @@
  * in the United States and other countries.]
  *
  * Original Author:  Arnaud Roques
- * 
- * Revision $Revision: 9857 $
+ *
+ * Revision $Revision: 9786 $
  *
  */
-package net.sourceforge.plantuml.version;
+package net.sourceforge.plantuml.activitydiagram3;
 
-public class Version {
+import java.util.ArrayList;
+import java.util.List;
 
-	public static int version() {
-		return 7955;
+import net.sourceforge.plantuml.activitydiagram3.ftile.Ftile;
+import net.sourceforge.plantuml.activitydiagram3.ftile.FtileAssemblySimple;
+import net.sourceforge.plantuml.activitydiagram3.ftile.FtileEmpty;
+import net.sourceforge.plantuml.activitydiagram3.ftile.FtileVerticalArrow;
+
+public class InstructionList implements Instruction {
+
+	private final List<Instruction> all = new ArrayList<Instruction>();
+
+	public void add(Instruction ins) {
+		all.add(ins);
 	}
 
-	public static String versionString() {
-		if (beta()) {
-			return "" + (version() + 1) + "beta";
+	public Ftile createFtile() {
+		if (all.size() == 0) {
+			return new FtileEmpty();
 		}
-		return "" + version();
-	}
+		Ftile result = null;
+		for (Instruction ins : all) {
+			final Ftile cur = ins.createFtile();
+			if (result == null) {
+				result = cur;
+			} else {
+				final Ftile arrow = new FtileVerticalArrow(35);
+				result = new FtileAssemblySimple(result, new FtileAssemblySimple(arrow, cur));
+			}
 
-	public static boolean beta() {
-		return false;
-	}
-
-	public static long compileTime() {
-		return 1360172551315L;
+		}
+		return result;
 	}
 
 }
