@@ -99,6 +99,14 @@ public class SvekUtils {
 		return pointsList;
 	}
 
+	public static List<Point2D.Double> extractD(final String svg, final int starting, double yDelta) {
+		final int p2 = svg.indexOf("d=\"", starting);
+		final int p3 = svg.indexOf("\"", p2 + "d=\"".length());
+		final String points = svg.substring(p2 + "d=\"".length(), p3);
+		final List<Point2D.Double> pointsList = getPoints(points, yDelta);
+		return pointsList;
+	}
+
 	static public double getValue(String svg, int starting, String varName) {
 		final String varNameString = varName + "=\"";
 		int p1 = svg.indexOf(varNameString, starting);
@@ -157,7 +165,7 @@ public class SvekUtils {
 
 	static private List<Point2D.Double> getPoints(String points, double yDelta) {
 		final List<Point2D.Double> result = new ArrayList<Point2D.Double>();
-		final StringTokenizer st = new StringTokenizer(points, " ");
+		final StringTokenizer st = new StringTokenizer(points, " MC");
 		while (st.hasMoreTokens()) {
 			final String t = st.nextToken();
 			final StringTokenizer st2 = new StringTokenizer(t, ",");

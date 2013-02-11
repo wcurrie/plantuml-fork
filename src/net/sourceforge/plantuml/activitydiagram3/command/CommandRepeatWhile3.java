@@ -52,15 +52,13 @@ public class CommandRepeatWhile3 extends SingleLineCommand2<ActivityDiagram3> {
 				new RegexLeaf("^"), //
 				new RegexLeaf("repeat ?while"), //
 				new RegexLeaf("WHEN", "\\s*(?:\\(([^()]*)\\))?"), //
-				new RegexLeaf("$"));
+				new RegexLeaf(";?$"));
 	}
 
 	@Override
 	protected CommandExecutionResult executeArg(RegexResult arg) {
 
-		getSystem().repeatWhile(Display.getWithNewlines(arg.get("WHEN", 0)));
-
-		return CommandExecutionResult.ok();
+		return getSystem().repeatWhile(Display.getWithNewlines(arg.get("WHEN", 0)));
 	}
 
 }

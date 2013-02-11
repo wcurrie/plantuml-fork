@@ -47,17 +47,14 @@ public class CommandWhileEnd3 extends SingleLineCommand2<ActivityDiagram3> {
 	}
 
 	static RegexConcat getRegexConcat() {
-		return new RegexConcat(new RegexLeaf("^"), new RegexLeaf("end ?while|while ?end"), new RegexLeaf("$"));
+		return new RegexConcat(new RegexLeaf("^"), //
+				new RegexLeaf("end ?while|while ?end"), //
+				new RegexLeaf(";?$"));
 	}
 
 	@Override
 	protected CommandExecutionResult executeArg(RegexResult arg) {
-		// if (getSystem().getLastEntityConsulted() == null) {
-		// return CommandExecutionResult.error("No if for this endif");
-		// }
-		getSystem().endwhile();
-
-		return CommandExecutionResult.ok();
+		return getSystem().endwhile();
 	}
 
 }

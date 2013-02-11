@@ -474,4 +474,11 @@ public class SequenceDiagram extends UmlDiagram {
 		events.add(ref);
 	}
 
+	public boolean isOk() {
+		if (participants.size() == 0) {
+			return false;
+		}
+		return true;
+	}
+
 }

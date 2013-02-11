@@ -31,7 +31,7 @@
  * Revision $Revision: 8475 $
  *
  */
-package net.sourceforge.plantuml.activitydiagram3.ftile;
+package net.sourceforge.plantuml.activitydiagram3.ftile.vertical;
 
 import java.awt.geom.Dimension2D;
 import java.util.ArrayList;
@@ -39,18 +39,29 @@ import java.util.List;
 
 import net.sourceforge.plantuml.Dimension2DDouble;
 import net.sourceforge.plantuml.Url;
+import net.sourceforge.plantuml.activitydiagram3.ftile.Ftile;
+import net.sourceforge.plantuml.activitydiagram3.ftile.FtileMarged;
+import net.sourceforge.plantuml.graphic.HtmlColor;
 import net.sourceforge.plantuml.graphic.StringBounder;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
 
-public class FtileForkInner implements Ftile {
+class FtileForkInner implements Ftile {
 
 	private final double smallArrow = 20;
 
 	private final List<Ftile> forks = new ArrayList<Ftile>();
+	private final VerticalFactory factory;
 
-	public FtileForkInner(List<Ftile> forks) {
+	public FtileForkInner(List<Ftile> forks, VerticalFactory factory, HtmlColor color) {
+		this.factory = factory;
 		for (Ftile ftile : forks) {
-			final Ftile tmp = new FtileAssemblySimple(new FtileVerticalArrow(smallArrow), ftile);
+			final Ftile arrowStart;
+			if (ftile instanceof FtileGroup) {
+				arrowStart = new FtileVerticalLine(smallArrow, color);
+			} else {
+				arrowStart = new FtileVerticalArrow(smallArrow, color);
+			}
+			final Ftile tmp = new FtileAssemblySimple(arrowStart, ftile);
 			this.forks.add(new FtileMarged(tmp, 14));
 		}
 	}
@@ -64,7 +75,7 @@ public class FtileForkInner implements Ftile {
 			ftile.drawU(ug, xpos, y);
 			final Dimension2D dim = ftile.calculateDimension(stringBounder);
 			if (ftile.isKilled() == false) {
-				final Ftile arrow = new FtileVerticalArrow(dimTotal.getHeight() - dim.getHeight());
+				final Ftile arrow = factory.createVerticalArrow(dimTotal.getHeight() - dim.getHeight());
 				final double diffx = dim.getWidth() - arrow.calculateDimension(stringBounder).getWidth();
 				arrow.drawU(ug, xpos + diffx / 2, y + dim.getHeight());
 			}

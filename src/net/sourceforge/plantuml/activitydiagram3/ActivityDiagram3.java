@@ -42,14 +42,24 @@ import java.util.List;
 import net.sourceforge.plantuml.CMapData;
 import net.sourceforge.plantuml.Dimension2DDouble;
 import net.sourceforge.plantuml.FileFormatOption;
+import net.sourceforge.plantuml.FontParam;
 import net.sourceforge.plantuml.ISkinParam;
 import net.sourceforge.plantuml.UmlDiagram;
 import net.sourceforge.plantuml.UmlDiagramInfo;
 import net.sourceforge.plantuml.UmlDiagramType;
 import net.sourceforge.plantuml.activitydiagram3.ftile.Ftile;
+import net.sourceforge.plantuml.activitydiagram3.ftile.vertical.VerticalFactory;
+import net.sourceforge.plantuml.command.CommandExecutionResult;
 import net.sourceforge.plantuml.cucadiagram.Display;
+import net.sourceforge.plantuml.graphic.FontConfiguration;
+import net.sourceforge.plantuml.graphic.HorizontalAlignement;
+import net.sourceforge.plantuml.graphic.HtmlColor;
 import net.sourceforge.plantuml.graphic.StringBounder;
 import net.sourceforge.plantuml.graphic.StringBounderUtils;
+import net.sourceforge.plantuml.graphic.TextBlock;
+import net.sourceforge.plantuml.graphic.TextBlockUtils;
+import net.sourceforge.plantuml.svek.DecorateEntityImage2;
+import net.sourceforge.plantuml.ugraphic.UFont;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
 import net.sourceforge.plantuml.ugraphic.UGraphicUtils;
 
@@ -74,7 +84,7 @@ public class ActivityDiagram3 extends UmlDiagram {
 	@Override
 	protected UmlDiagramInfo exportDiagramInternal(OutputStream os, CMapData cmap, int index,
 			FileFormatOption fileFormatOption, List<BufferedImage> flashcodes) throws IOException {
-		final Ftile result = getFtile();
+		final TextBlock result = getResult();
 		final ISkinParam skinParam = getSkinParam();
 		final Dimension2D dim = Dimension2DDouble.delta(result.calculateDimension(dummyStringBounder), 20);
 
@@ -92,12 +102,56 @@ public class ActivityDiagram3 extends UmlDiagram {
 
 	private Instruction current = new InstructionList();
 
-	public void addActivity(Display activity) {
-		current.add(new InstructionSimple(activity));
+	public void addActivity(Display activity, HtmlColor color) {
+		current.add(new InstructionSimple(activity, color));
 	}
 
 	private Ftile getFtile() {
-		return current.createFtile();
+		return current.createFtile(new VerticalFactory(getSkinParam()));
+	}
+
+	private TextBlock getResult() {
+		TextBlock result = getFtile();
+		result = addTitle(result);
+		result = addHeaderAndFooter(result);
+		return result;
+	}
+
+	private TextBlock addTitle(TextBlock original) {
+		final Display title = getTitle();
+		if (title == null) {
+			return original;
+		}
+		final TextBlock text = TextBlockUtils.create(title, new FontConfiguration(getFont(FontParam.TITLE),
+				getFontColor(FontParam.TITLE, null)), HorizontalAlignement.CENTER, getSkinParam());
+
+		return new DecorateEntityImage2(original, text, HorizontalAlignement.CENTER);
+	}
+
+	private TextBlock addHeaderAndFooter(TextBlock original) {
+		final Display footer = getFooter();
+		final Display header = getHeader();
+		if (footer == null && header == null) {
+			return original;
+		}
+		final TextBlock textFooter = footer == null ? null : TextBlockUtils
+				.create(footer, new FontConfiguration(getFont(FontParam.FOOTER), getFontColor(FontParam.FOOTER, null)),
+						getFooterAlignement(), getSkinParam());
+		final TextBlock textHeader = header == null ? null : TextBlockUtils
+				.create(header, new FontConfiguration(getFont(FontParam.HEADER), getFontColor(FontParam.HEADER, null)),
+						getHeaderAlignement(), getSkinParam());
+
+		return new DecorateEntityImage2(original, textHeader, getHeaderAlignement(), textFooter, getFooterAlignement());
+	}
+
+	private final UFont getFont(FontParam fontParam) {
+		final ISkinParam skinParam = getSkinParam();
+		return skinParam.getFont(fontParam, null);
+	}
+
+	private final HtmlColor getFontColor(FontParam fontParam, String stereo) {
+		final ISkinParam skinParam = getSkinParam();
+		return skinParam.getFontHtmlColor(fontParam, stereo);
 	}
 
 	public void fork() {
@@ -107,26 +161,42 @@ public class ActivityDiagram3 extends UmlDiagram {
 
 	}
 
-	public void forkAgain() {
-		((InstructionFork) current).forkAgain();
+	public CommandExecutionResult forkAgain() {
+		if (current instanceof InstructionFork) {
+			((InstructionFork) current).forkAgain();
+			return CommandExecutionResult.ok();
+		}
+		return CommandExecutionResult.error("Cannot find fork");
 	}
 
-	public void endFork() {
-		current = ((InstructionFork) current).getParent();
+	public CommandExecutionResult endFork() {
+		if (current instanceof InstructionFork) {
+			current = ((InstructionFork) current).getParent();
+			return CommandExecutionResult.ok();
+		}
+		return CommandExecutionResult.error("Cannot find fork");
 	}
 
-	public void startIf(String test, Display whenThen) {
+	public void startIf(Display test, Display whenThen) {
 		final InstructionIf instructionIf = new InstructionIf(current, test, whenThen);
 		current.add(instructionIf);
 		current = instructionIf;
 	}
 
-	public void endif() {
-		current = ((InstructionIf) current).getParent();
+	public CommandExecutionResult endif() {
+		if (current instanceof InstructionIf) {
+			current = ((InstructionIf) current).getParent();
+			return CommandExecutionResult.ok();
+		}
+		return CommandExecutionResult.error("Cannot find if");
 	}
 
-	public void else2(Display whenElse) {
-		((InstructionIf) current).swithToElse(whenElse);
+	public CommandExecutionResult else2(Display whenElse) {
+		if (current instanceof InstructionIf) {
+			((InstructionIf) current).swithToElse(whenElse);
+			return CommandExecutionResult.ok();
+		}
+		return CommandExecutionResult.error("Cannot find if");
 	}
 
 	public void startRepeat() {
@@ -136,10 +206,14 @@ public class ActivityDiagram3 extends UmlDiagram {
 
 	}
 
-	public void repeatWhile(Display label) {
-		final InstructionRepeat instructionRepeat = (InstructionRepeat) current;
-		instructionRepeat.setTest(label);
-		current = instructionRepeat.getParent();
+	public CommandExecutionResult repeatWhile(Display label) {
+		if (current instanceof InstructionRepeat) {
+			final InstructionRepeat instructionRepeat = (InstructionRepeat) current;
+			instructionRepeat.setTest(label);
+			current = instructionRepeat.getParent();
+			return CommandExecutionResult.ok();
+		}
+		return CommandExecutionResult.error("Cannot find repeat");
 
 	}
 
@@ -149,8 +223,12 @@ public class ActivityDiagram3 extends UmlDiagram {
 		current = instructionWhile;
 	}
 
-	public void endwhile() {
-		current = ((InstructionWhile) current).getParent();
+	public CommandExecutionResult endwhile() {
+		if (current instanceof InstructionWhile) {
+			current = ((InstructionWhile) current).getParent();
+			return CommandExecutionResult.ok();
+		}
+		return CommandExecutionResult.error("Cannot find while");
 	}
 
 	public void start() {
@@ -159,6 +237,27 @@ public class ActivityDiagram3 extends UmlDiagram {
 
 	public void stop() {
 		current.add(new InstructionStop());
+	}
+
+	public CommandExecutionResult kill() {
+		if (current.kill() == false) {
+			return CommandExecutionResult.error("kill cannot be used here");
+		}
+		return CommandExecutionResult.ok();
+	}
+
+	public void startGroup(Display name) {
+		final InstructionGroup instructionGroup = new InstructionGroup(current, name);
+		current.add(instructionGroup);
+		current = instructionGroup;
+	}
+
+	public CommandExecutionResult endGroup() {
+		if (current instanceof InstructionGroup) {
+			current = ((InstructionGroup) current).getParent();
+			return CommandExecutionResult.ok();
+		}
+		return CommandExecutionResult.error("Cannot find group");
 	}
 
 }

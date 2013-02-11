@@ -31,74 +31,51 @@
  * Revision $Revision: 8475 $
  *
  */
-package net.sourceforge.plantuml.activitydiagram3.ftile;
+package net.sourceforge.plantuml.activitydiagram3.ftile.vertical;
 
-import java.awt.Font;
 import java.awt.geom.Dimension2D;
+import java.util.Collections;
 import java.util.List;
 
 import net.sourceforge.plantuml.Dimension2DDouble;
-import net.sourceforge.plantuml.SpriteContainerEmpty;
 import net.sourceforge.plantuml.Url;
-import net.sourceforge.plantuml.cucadiagram.Display;
-import net.sourceforge.plantuml.graphic.FontConfiguration;
-import net.sourceforge.plantuml.graphic.HorizontalAlignement;
-import net.sourceforge.plantuml.graphic.HtmlColorUtils;
+import net.sourceforge.plantuml.activitydiagram3.ftile.Arrows;
+import net.sourceforge.plantuml.activitydiagram3.ftile.Ftile;
+import net.sourceforge.plantuml.graphic.HtmlColor;
 import net.sourceforge.plantuml.graphic.StringBounder;
-import net.sourceforge.plantuml.graphic.TextBlock;
-import net.sourceforge.plantuml.graphic.TextBlockUtils;
-import net.sourceforge.plantuml.ugraphic.Shadowable;
-import net.sourceforge.plantuml.ugraphic.UFont;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
-import net.sourceforge.plantuml.ugraphic.URectangle;
+import net.sourceforge.plantuml.ugraphic.ULine;
 import net.sourceforge.plantuml.ugraphic.UStroke;
 
-public class FtileBox implements Ftile {
+class FtileVerticalArrow implements Ftile {
 
-	private static final int CORNER = 25;
-	private static final int MARGIN = 10;
+	private final double height;
+	private final HtmlColor color;
 
-	private final TextBlock tb;
-
-	public FtileBox(Display label) {
-		final UFont font = new UFont("Serif", Font.PLAIN, 14);
-		final FontConfiguration fc = new FontConfiguration(font, HtmlColorUtils.BLACK);
-		tb = TextBlockUtils.create(label, fc, HorizontalAlignement.LEFT, new SpriteContainerEmpty());
+	public FtileVerticalArrow(double height, HtmlColor color) {
+		this.height = height;
+		this.color = color;
 	}
 
 	public void drawU(UGraphic ug, double x, double y) {
-		final Dimension2D dimTotal = calculateDimension(ug.getStringBounder());
-		// final Dimension2D dimDesc =
-		// tb.calculateDimension(ug.getStringBounder());
-
-		final double widthTotal = dimTotal.getWidth();
-		final double heightTotal = dimTotal.getHeight();
-		final Shadowable rect = new URectangle(widthTotal, heightTotal, CORNER, CORNER);
-		if (SHADOWING) {
-			rect.setDeltaShadow(3);
-		}
-		ug.getParam().setColor(HtmlColorUtils.getColorIfValid("#A80036"));
-		ug.getParam().setBackcolor(HtmlColorUtils.getColorIfValid("#FEFECE"));
+		ug.getParam().setColor(color);
+		ug.getParam().setBackcolor(color);
 		ug.getParam().setStroke(new UStroke(1.5));
-		ug.draw(x, y, rect);
+		ug.draw(x, y, new ULine(0, height));
 		ug.getParam().setStroke(new UStroke(1));
-
-		tb.drawU(ug, x + MARGIN, y + MARGIN);
-
+		ug.draw(x, y + height, Arrows.asToDown());
 	}
 
 	public Dimension2D calculateDimension(StringBounder stringBounder) {
-		final Dimension2D dim = tb.calculateDimension(stringBounder);
-		return Dimension2DDouble.delta(dim, 2 * MARGIN, 2 * MARGIN);
+		return new Dimension2DDouble(2, height);
 	}
 
 	public List<Url> getUrls() {
-		return tb.getUrls();
+		return Collections.emptyList();
 	}
-	
+
 	public boolean isKilled() {
 		return false;
 	}
-
 
 }

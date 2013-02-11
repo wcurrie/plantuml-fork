@@ -52,7 +52,7 @@ public class CommandWhile3 extends SingleLineCommand2<ActivityDiagram3> {
 				new RegexLeaf("^"), //
 				new RegexLeaf("while"), //
 				new RegexLeaf("WHEN", "\\s*(?:\\(([^()]*)\\))?"), //
-				new RegexLeaf("$"));
+				new RegexLeaf(";?$"));
 	}
 
 	@Override

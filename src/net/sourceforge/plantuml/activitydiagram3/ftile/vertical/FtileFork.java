@@ -31,45 +31,48 @@
  * Revision $Revision: 8475 $
  *
  */
-package net.sourceforge.plantuml.activitydiagram3.ftile;
+package net.sourceforge.plantuml.activitydiagram3.ftile.vertical;
 
 import java.awt.geom.Dimension2D;
-import java.util.Collections;
 import java.util.List;
 
 import net.sourceforge.plantuml.Dimension2DDouble;
 import net.sourceforge.plantuml.Url;
-import net.sourceforge.plantuml.graphic.HtmlColorUtils;
+import net.sourceforge.plantuml.activitydiagram3.ftile.Ftile;
+import net.sourceforge.plantuml.graphic.HtmlColor;
 import net.sourceforge.plantuml.graphic.StringBounder;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
-import net.sourceforge.plantuml.ugraphic.URectangle;
 
-public class FtileBlackBlock implements Ftile {
+class FtileFork implements Ftile {
 
-	private final double width;
-	private final double height;
+	private final double barHeight = 6;
+	private final Ftile inner;
+	private final HtmlColor colorBar;
 
-	public FtileBlackBlock(double width, double height) {
-		this.height = height;
-		this.width = width;
+	public FtileFork(FtileForkInner inner, HtmlColor colorBar) {
+		this.inner = inner;
+		this.colorBar = colorBar;
 	}
 
-	public void drawU(UGraphic ug, double x, double y) {
-		ug.getParam().setColor(HtmlColorUtils.BLACK);
-		ug.getParam().setBackcolor(HtmlColorUtils.BLACK);
-		final URectangle rect = new URectangle(width, height, 5, 5);
-		if (Ftile.SHADOWING) {
-			rect.setDeltaShadow(3);
-		}
-		ug.draw(x, y, rect);
+	public void drawU(UGraphic ug, final double x, final double y) {
+		final StringBounder stringBounder = ug.getStringBounder();
+		final Dimension2D dimTotal = calculateDimension(stringBounder);
+		final Ftile black = new FtileBlackBlock(dimTotal.getWidth(), barHeight, colorBar);
+
+		inner.drawU(ug, x, y + barHeight);
+
+		black.drawU(ug, x, y);
+		black.drawU(ug, x, y + dimTotal.getHeight() - barHeight);
+
 	}
 
 	public Dimension2D calculateDimension(StringBounder stringBounder) {
-		return new Dimension2DDouble(width, height);
+		final Dimension2D dim = inner.calculateDimension(stringBounder);
+		return Dimension2DDouble.delta(dim, 0, 2 * barHeight);
 	}
 
 	public List<Url> getUrls() {
-		return Collections.emptyList();
+		throw new UnsupportedOperationException();
 	}
 	
 	public boolean isKilled() {

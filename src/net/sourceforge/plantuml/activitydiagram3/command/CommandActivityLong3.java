@@ -41,7 +41,10 @@ import net.sourceforge.plantuml.command.CommandMultilines2;
 import net.sourceforge.plantuml.command.MultilinesStrategy;
 import net.sourceforge.plantuml.command.regex.RegexConcat;
 import net.sourceforge.plantuml.command.regex.RegexLeaf;
+import net.sourceforge.plantuml.command.regex.RegexResult;
 import net.sourceforge.plantuml.cucadiagram.Display;
+import net.sourceforge.plantuml.graphic.HtmlColor;
+import net.sourceforge.plantuml.graphic.HtmlColorUtils;
 
 public class CommandActivityLong3 extends CommandMultilines2<ActivityDiagram3> {
 
@@ -57,23 +60,25 @@ public class CommandActivityLong3 extends CommandMultilines2<ActivityDiagram3> {
 	static RegexConcat getRegexConcat() {
 		return new RegexConcat(new RegexLeaf("^"), //
 				new RegexLeaf(":"), //
+				new RegexLeaf("COLOR", "(?:(#\\w+[-\\\\|/]?\\w+):)?"), //
 				new RegexLeaf("DATA", "(.*)"), //
 				new RegexLeaf("$"));
 	}
 
 	public CommandExecutionResult executeNow(List<String> lines) {
-		removeStarting(lines);
+		final RegexResult line0 = getStartingPattern().matcher(lines.get(0).trim());
+		final HtmlColor color = HtmlColorUtils.getColorIfValid(line0.get("COLOR", 0));
+		removeStarting(lines, line0.get("DATA", 0));
 		removeEnding(lines);
-		getSystem().addActivity(new Display(lines));
+		getSystem().addActivity(new Display(lines), color);
 		return CommandExecutionResult.ok();
 	}
 
-	private void removeStarting(List<String> lines) {
+	private void removeStarting(List<String> lines, String data) {
 		if (lines.size() == 0) {
 			return;
 		}
-		final String s = lines.get(0).trim();
-		lines.set(0, s.substring(1));
+		lines.set(0, data);
 	}
 
 	private void removeEnding(List<String> lines) {

@@ -50,7 +50,7 @@ public class CommandStart3 extends SingleLineCommand2<ActivityDiagram3> {
 		return new RegexConcat(//
 				new RegexLeaf("^"), //
 				new RegexLeaf("start"), //
-				new RegexLeaf("$"));
+				new RegexLeaf(";?$"));
 	}
 
 	@Override

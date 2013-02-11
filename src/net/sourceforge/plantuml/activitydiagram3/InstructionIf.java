@@ -34,7 +34,7 @@
 package net.sourceforge.plantuml.activitydiagram3;
 
 import net.sourceforge.plantuml.activitydiagram3.ftile.Ftile;
-import net.sourceforge.plantuml.activitydiagram3.ftile.FtileIf;
+import net.sourceforge.plantuml.activitydiagram3.ftile.FtileFactory;
 import net.sourceforge.plantuml.cucadiagram.Display;
 
 public class InstructionIf implements Instruction {
@@ -42,12 +42,12 @@ public class InstructionIf implements Instruction {
 	private final InstructionList thenList = new InstructionList();
 	private final InstructionList elseList = new InstructionList();
 	private final Instruction parent;
-	private final String labelTest;
+	private final Display labelTest;
 	private final Display whenThen;
 	private Display whenElse;
 	private InstructionList current = thenList;
 
-	public InstructionIf(Instruction parent, String labelTest, Display whenThen) {
+	public InstructionIf(Instruction parent, Display labelTest, Display whenThen) {
 		this.parent = parent;
 		this.labelTest = labelTest;
 		this.whenThen = whenThen;
@@ -57,8 +57,9 @@ public class InstructionIf implements Instruction {
 		current.add(ins);
 	}
 
-	public Ftile createFtile() {
-		return new FtileIf(thenList.createFtile(), elseList.createFtile(), labelTest, whenThen, whenElse);
+	public Ftile createFtile(FtileFactory factory) {
+		return factory.createIf(thenList.createFtile(factory), elseList.createFtile(factory), labelTest, whenThen,
+				whenElse);
 	}
 
 	public Instruction getParent() {
@@ -68,6 +69,10 @@ public class InstructionIf implements Instruction {
 	public void swithToElse(Display whenElse) {
 		this.whenElse = whenElse;
 		this.current = elseList;
+	}
+
+	public boolean kill() {
+		return current.kill();
 	}
 
 }

@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 9786 $
+ * Revision $Revision: 9885 $
  *
  */
 package net.sourceforge.plantuml;
@@ -90,8 +90,7 @@ public abstract class AbstractPSystem implements PSystem {
 		return 1;
 	}
 
-	public List<File> exportDiagrams(File suggestedFile, FileFormatOption fileFormat) throws IOException,
-			InterruptedException {
+	public List<File> exportDiagrams(File suggestedFile, FileFormatOption fileFormat) throws IOException {
 		if (suggestedFile.exists() && suggestedFile.isDirectory()) {
 			throw new IllegalArgumentException("File is a directory " + suggestedFile);
 		}

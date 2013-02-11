@@ -31,7 +31,7 @@
  * Revision $Revision: 8475 $
  *
  */
-package net.sourceforge.plantuml.activitydiagram3.ftile;
+package net.sourceforge.plantuml.activitydiagram3.ftile.vertical;
 
 import java.awt.Font;
 import java.awt.geom.Dimension2D;
@@ -40,77 +40,72 @@ import java.util.List;
 import net.sourceforge.plantuml.Dimension2DDouble;
 import net.sourceforge.plantuml.SpriteContainerEmpty;
 import net.sourceforge.plantuml.Url;
+import net.sourceforge.plantuml.activitydiagram3.ftile.Ftile;
+import net.sourceforge.plantuml.activitydiagram3.ftile.FtileFactory;
+import net.sourceforge.plantuml.activitydiagram3.ftile.FtileMarged;
 import net.sourceforge.plantuml.cucadiagram.Display;
 import net.sourceforge.plantuml.graphic.FontConfiguration;
 import net.sourceforge.plantuml.graphic.HorizontalAlignement;
+import net.sourceforge.plantuml.graphic.HtmlColor;
 import net.sourceforge.plantuml.graphic.HtmlColorUtils;
 import net.sourceforge.plantuml.graphic.StringBounder;
+import net.sourceforge.plantuml.graphic.SymbolContext;
 import net.sourceforge.plantuml.graphic.TextBlock;
 import net.sourceforge.plantuml.graphic.TextBlockUtils;
+import net.sourceforge.plantuml.graphic.USymbol;
 import net.sourceforge.plantuml.ugraphic.UFont;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
 import net.sourceforge.plantuml.ugraphic.UStroke;
 
-public class FtileRepeat implements Ftile {
+class FtileGroup implements Ftile {
 
-	private final double smallArrow = 20;
-	final private double heighttop = 0;
-	final private double heightbottom = 0;
+	private final Ftile inner;
+	private final TextBlock name;
+	private final HtmlColor color;
 
-	private final Ftile repeat;
-	private final TextBlock test;
-
-	public FtileRepeat(Ftile repeat, Display test) {
-		Ftile tmp = new FtileAssemblySimple(new FtileDiamond(), new FtileAssemblySimple(new FtileVerticalArrow(
-				smallArrow), repeat));
-		tmp = new FtileAssemblySimple(tmp, new FtileAssemblySimple(new FtileVerticalArrow(smallArrow),
-				new FtileDiamond()));
-		this.repeat = new FtileMarged(tmp, 10);
+	public FtileGroup(Ftile inner, Display test, HtmlColor color) {
+		this.inner = new FtileMarged(inner, 10);
+		this.color = color;
 		final UFont font = new UFont("Serif", Font.PLAIN, 14);
 		final FontConfiguration fc = new FontConfiguration(font, HtmlColorUtils.BLACK);
 		if (test == null) {
-			this.test = TextBlockUtils.empty(0, 0);
+			this.name = TextBlockUtils.empty(0, 0);
 		} else {
-			this.test = TextBlockUtils.create(test, fc, HorizontalAlignement.LEFT, new SpriteContainerEmpty());
+			this.name = TextBlockUtils.create(test, fc, HorizontalAlignement.LEFT, new SpriteContainerEmpty());
 		}
 	}
 
 	public void drawU(UGraphic ug, final double x, final double y) {
 		final StringBounder stringBounder = ug.getStringBounder();
 		final Dimension2D dimTotal = calculateDimension(stringBounder);
-		final Dimension2D dimRepeat = repeat.calculateDimension(stringBounder);
-		final double diffx = dimTotal.getWidth() - dimRepeat.getWidth();
+		final Dimension2D dimInner = inner.calculateDimension(stringBounder);
 
-		repeat.drawU(ug, x + diffx / 2, y + heighttop);
-
-		ug.getParam().setStroke(new UStroke(1.5));
-		final Snake s1 = new Snake();
-		s1.addPoint(x + dimTotal.getWidth() / 2 + Diamond.diamondHalfSize, y + Diamond.diamondHalfSize);
-		s1.addPoint(x + dimTotal.getWidth() / 2 + Diamond.diamondHalfSize + dimRepeat.getWidth() / 2, y
-				+ Diamond.diamondHalfSize);
-		s1.addPoint(x + dimTotal.getWidth() / 2 + Diamond.diamondHalfSize + dimRepeat.getWidth() / 2,
-				y + dimTotal.getHeight() - Diamond.diamondHalfSize);
-		s1.addPoint(x + dimTotal.getWidth() / 2 + Diamond.diamondHalfSize, y + dimTotal.getHeight()
-				- Diamond.diamondHalfSize);
-		s1.drawU(ug);
-
+		final SymbolContext symbolContext = new SymbolContext(HtmlColorUtils.WHITE, HtmlColorUtils.BLACK).withShadow(
+				SHADOWING).withStroke(new UStroke(2));
+		USymbol.FRAME.asBig(name, TextBlockUtils.empty(0, 0), dimTotal.getWidth(), dimTotal.getHeight(), symbolContext)
+				.drawU(ug, x, y);
 		ug.getParam().setStroke(new UStroke());
 
-		ug.getParam().setColor(HtmlColorUtils.getColorIfValid("#A80036"));
-		ug.getParam().setBackcolor(HtmlColorUtils.getColorIfValid("#A80036"));
-		ug.draw(x + dimTotal.getWidth() / 2 + Diamond.diamondHalfSize, y + Diamond.diamondHalfSize, Arrows.asToLeft());
-		ug.draw(x + dimTotal.getWidth() / 2 + Diamond.diamondHalfSize + dimRepeat.getWidth() / 2,
-				y + dimTotal.getHeight() / 2, Arrows.asToUp());
+		final double diffY = dimTotal.getHeight() - dimInner.getHeight();
+		inner.drawU(ug, x, y + diffY / 2);
 
-		final Dimension2D dimTest = test.calculateDimension(stringBounder);
-		test.drawU(ug, x + dimTotal.getWidth() / 2 + Diamond.diamondHalfSize, y + dimTotal.getHeight()
-				- Diamond.diamondHalfSize - dimTest.getHeight());
+		Ftile line1 = new FtileVerticalArrow(diffY / 2, color);
+		line1.drawU(ug, x + dimTotal.getWidth() / 2 - line1.calculateDimension(stringBounder).getWidth() / 2, y);
+
+		Ftile line2 = new FtileVerticalLine(diffY / 2, color);
+		line2.drawU(ug, x + dimTotal.getWidth() / 2 - line2.calculateDimension(stringBounder).getWidth() / 2, y
+				+ dimInner.getHeight() + diffY / 2);
+
+		// ug.getParam().setColor(HtmlColorUtils.BLACK);
+		// ug.getParam().setBackcolor(null);
+		// ug.draw(x, y, new URectangle(dimTotal.getWidth(),
+		// dimTotal.getHeight());
 
 	}
 
 	public Dimension2D calculateDimension(StringBounder stringBounder) {
-		Dimension2D dim = repeat.calculateDimension(stringBounder);
-		dim = Dimension2DDouble.delta(dim, 20, heighttop + heightbottom);
+		Dimension2D dim = inner.calculateDimension(stringBounder);
+		dim = Dimension2DDouble.delta(dim, 0, 50);
 		return dim;
 	}
 

@@ -34,16 +34,21 @@
 package net.sourceforge.plantuml.activitydiagram3;
 
 import net.sourceforge.plantuml.activitydiagram3.ftile.Ftile;
-import net.sourceforge.plantuml.activitydiagram3.ftile.FtileCircleStart;
+import net.sourceforge.plantuml.activitydiagram3.ftile.FtileFactory;
 
 public class InstructionStart implements Instruction {
 
-	public Ftile createFtile() {
-		return new FtileCircleStart();
+	public Ftile createFtile(FtileFactory factory) {
+		return factory.start();
 	}
 
 	public void add(Instruction other) {
 		throw new UnsupportedOperationException();
 	}
+	
+	public boolean kill() {
+		return false;
+	}
+
 
 }

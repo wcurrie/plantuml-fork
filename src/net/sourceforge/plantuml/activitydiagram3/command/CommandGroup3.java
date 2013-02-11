@@ -31,34 +31,36 @@
  * Revision $Revision: 4762 $
  *
  */
-package net.sourceforge.plantuml.activitydiagram2.command;
+package net.sourceforge.plantuml.activitydiagram3.command;
 
-import java.util.List;
-
-import net.sourceforge.plantuml.Direction;
-import net.sourceforge.plantuml.StringUtils;
-import net.sourceforge.plantuml.activitydiagram2.ActivityDiagram2;
+import net.sourceforge.plantuml.activitydiagram3.ActivityDiagram3;
 import net.sourceforge.plantuml.command.CommandExecutionResult;
-import net.sourceforge.plantuml.command.SingleLineCommand;
+import net.sourceforge.plantuml.command.SingleLineCommand2;
+import net.sourceforge.plantuml.command.regex.RegexConcat;
+import net.sourceforge.plantuml.command.regex.RegexLeaf;
+import net.sourceforge.plantuml.command.regex.RegexResult;
+import net.sourceforge.plantuml.cucadiagram.Display;
 
-public class CommandNewActivity2 extends SingleLineCommand<ActivityDiagram2> {
+public class CommandGroup3 extends SingleLineCommand2<ActivityDiagram3> {
 
-	public CommandNewActivity2(ActivityDiagram2 diagram) {
-		super(diagram, "(?i)^\\s*([-*<>^])\\s*([^\"\\s].*|\\s*\"[^\"\\s].*\")$");
+	public CommandGroup3(ActivityDiagram3 diagram) {
+		super(diagram, getRegexConcat());
+	}
+
+	static RegexConcat getRegexConcat() {
+		return new RegexConcat(new RegexLeaf("^"), //
+				new RegexLeaf("group"), //
+				new RegexLeaf("\\s*"), //
+				new RegexLeaf("NAME", "(.*)"), //
+				new RegexLeaf(";?$"));
 	}
 
 	@Override
-	protected CommandExecutionResult executeArg(List<String> arg) {
-		if (getSystem().getLeafs().size() == 0) {
-			return CommandExecutionResult.error("Missing start keyword");
-		}
+	protected CommandExecutionResult executeArg(RegexResult arg) {
 
-		if (getSystem().isReachable() == false) {
-			return CommandExecutionResult.error("Unreachable statement");
-		}
+		getSystem().startGroup(Display.getWithNewlines(arg.get("NAME", 0)));
 
-		getSystem().newActivity(StringUtils.eventuallyRemoveStartingAndEndingDoubleQuote(arg.get(1).trim()),
-				Direction.fromChar(arg.get(0).charAt(0)));
 		return CommandExecutionResult.ok();
 	}
+
 }

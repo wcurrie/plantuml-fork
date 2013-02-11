@@ -50,7 +50,7 @@ public class CommandForkAgain3 extends SingleLineCommand2<ActivityDiagram3> {
 		return new RegexConcat(//
 				new RegexLeaf("^"), //
 				new RegexLeaf("fork ?again"), //
-				new RegexLeaf("$"));
+				new RegexLeaf(";?$"));
 	}
 
 	@Override
@@ -58,9 +58,8 @@ public class CommandForkAgain3 extends SingleLineCommand2<ActivityDiagram3> {
 		// if (getSystem().getLastEntityConsulted() == null) {
 		// return CommandExecutionResult.error("No if for this endif");
 		// }
-		getSystem().forkAgain();
+		return getSystem().forkAgain();
 
-		return CommandExecutionResult.ok();
 	}
 
 }

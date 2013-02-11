@@ -40,6 +40,8 @@ import net.sourceforge.plantuml.command.regex.RegexConcat;
 import net.sourceforge.plantuml.command.regex.RegexLeaf;
 import net.sourceforge.plantuml.command.regex.RegexResult;
 import net.sourceforge.plantuml.cucadiagram.Display;
+import net.sourceforge.plantuml.graphic.HtmlColor;
+import net.sourceforge.plantuml.graphic.HtmlColorUtils;
 
 public class CommandActivity3 extends SingleLineCommand2<ActivityDiagram3> {
 
@@ -50,6 +52,7 @@ public class CommandActivity3 extends SingleLineCommand2<ActivityDiagram3> {
 	static RegexConcat getRegexConcat() {
 		return new RegexConcat(new RegexLeaf("^"), //
 				new RegexLeaf(":"), //
+				new RegexLeaf("COLOR", "(?:(#\\w+[-\\\\|/]?\\w+):)?"), //
 				new RegexLeaf("LABEL", "(.*)"), //
 				new RegexLeaf(";"), //
 				new RegexLeaf("$"));
@@ -57,7 +60,8 @@ public class CommandActivity3 extends SingleLineCommand2<ActivityDiagram3> {
 
 	@Override
 	protected CommandExecutionResult executeArg(RegexResult arg) {
-		getSystem().addActivity(Display.getWithNewlines(arg.get("LABEL", 0)));
+		final HtmlColor color = HtmlColorUtils.getColorIfValid(arg.get("COLOR", 0));
+		getSystem().addActivity(Display.getWithNewlines(arg.get("LABEL", 0)), color);
 		return CommandExecutionResult.ok();
 	}
 

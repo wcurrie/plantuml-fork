@@ -31,7 +31,7 @@
  * Revision $Revision: 8475 $
  *
  */
-package net.sourceforge.plantuml.activitydiagram3.ftile;
+package net.sourceforge.plantuml.activitydiagram3.ftile.vertical;
 
 import java.awt.geom.Dimension2D;
 import java.util.Collections;
@@ -39,23 +39,37 @@ import java.util.List;
 
 import net.sourceforge.plantuml.Dimension2DDouble;
 import net.sourceforge.plantuml.Url;
+import net.sourceforge.plantuml.activitydiagram3.ftile.Ftile;
+import net.sourceforge.plantuml.graphic.HtmlColor;
 import net.sourceforge.plantuml.graphic.HtmlColorUtils;
 import net.sourceforge.plantuml.graphic.StringBounder;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
-import net.sourceforge.plantuml.ugraphic.UStroke;
+import net.sourceforge.plantuml.ugraphic.URectangle;
 
-public class FtileDiamond implements Ftile {
+class FtileBlackBlock implements Ftile {
+
+	private final double width;
+	private final double height;
+	private final HtmlColor colorBar;
+
+	public FtileBlackBlock(double width, double height, HtmlColor colorBar) {
+		this.height = height;
+		this.width = width;
+		this.colorBar = colorBar;
+	}
 
 	public void drawU(UGraphic ug, double x, double y) {
-		ug.getParam().setColor(HtmlColorUtils.getColorIfValid("#A80036"));
-		ug.getParam().setBackcolor(HtmlColorUtils.getColorIfValid("#FEFECE"));
-		ug.getParam().setStroke(new UStroke(1.5));
-		ug.draw(x, y, Diamond.asPolygon());
-		ug.getParam().setStroke(new UStroke());
+		ug.getParam().setColor(colorBar);
+		ug.getParam().setBackcolor(colorBar);
+		final URectangle rect = new URectangle(width, height, 5, 5);
+		if (Ftile.SHADOWING) {
+			rect.setDeltaShadow(3);
+		}
+		ug.draw(x, y, rect);
 	}
 
 	public Dimension2D calculateDimension(StringBounder stringBounder) {
-		return new Dimension2DDouble(2 * Diamond.diamondHalfSize, 2 * Diamond.diamondHalfSize);
+		return new Dimension2DDouble(width, height);
 	}
 
 	public List<Url> getUrls() {

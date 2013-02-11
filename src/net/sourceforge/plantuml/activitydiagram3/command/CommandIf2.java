@@ -31,34 +31,36 @@
  * Revision $Revision: 4762 $
  *
  */
-package net.sourceforge.plantuml.activitydiagram2.command;
+package net.sourceforge.plantuml.activitydiagram3.command;
 
-import net.sourceforge.plantuml.activitydiagram2.ActivityDiagram2;
+import net.sourceforge.plantuml.activitydiagram3.ActivityDiagram3;
 import net.sourceforge.plantuml.command.CommandExecutionResult;
 import net.sourceforge.plantuml.command.SingleLineCommand2;
 import net.sourceforge.plantuml.command.regex.RegexConcat;
 import net.sourceforge.plantuml.command.regex.RegexLeaf;
 import net.sourceforge.plantuml.command.regex.RegexResult;
+import net.sourceforge.plantuml.cucadiagram.Display;
 
-public class CommandEndif2 extends SingleLineCommand2<ActivityDiagram2> {
+public class CommandIf2 extends SingleLineCommand2<ActivityDiagram3> {
 
-	public CommandEndif2(ActivityDiagram2 diagram) {
+	public CommandIf2(ActivityDiagram3 diagram) {
 		super(diagram, getRegexConcat());
 	}
 
 	static RegexConcat getRegexConcat() {
-		return new RegexConcat(new RegexLeaf("^"),
-					new RegexLeaf("endif"),
-					new RegexLeaf("$"));
+		return new RegexConcat(new RegexLeaf("^"), //
+				new RegexLeaf("if"), //
+				new RegexLeaf("\\s*"), //
+				new RegexLeaf("TEST", "\\((.+?)\\)"), //
+				new RegexLeaf("\\s*"), //
+				new RegexLeaf("WHEN", "(?:then\\s*(?:\\(([^()]*)\\))?)?"), //
+				new RegexLeaf(";?$"));
 	}
-
 
 	@Override
 	protected CommandExecutionResult executeArg(RegexResult arg) {
-//		if (getSystem().getLastEntityConsulted() == null) {
-//			return CommandExecutionResult.error("No if for this endif");
-//		}
-		getSystem().endif();
+
+		getSystem().startIf(Display.getWithNewlines(arg.get("TEST", 0)), Display.getWithNewlines(arg.get("WHEN", 0)));
 
 		return CommandExecutionResult.ok();
 	}

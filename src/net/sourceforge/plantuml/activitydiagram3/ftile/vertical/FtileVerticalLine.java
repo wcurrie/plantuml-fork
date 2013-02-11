@@ -31,7 +31,7 @@
  * Revision $Revision: 8475 $
  *
  */
-package net.sourceforge.plantuml.activitydiagram3.ftile;
+package net.sourceforge.plantuml.activitydiagram3.ftile.vertical;
 
 import java.awt.geom.Dimension2D;
 import java.util.Collections;
@@ -39,22 +39,26 @@ import java.util.List;
 
 import net.sourceforge.plantuml.Dimension2DDouble;
 import net.sourceforge.plantuml.Url;
+import net.sourceforge.plantuml.activitydiagram3.ftile.Ftile;
+import net.sourceforge.plantuml.graphic.HtmlColor;
 import net.sourceforge.plantuml.graphic.HtmlColorUtils;
 import net.sourceforge.plantuml.graphic.StringBounder;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
 import net.sourceforge.plantuml.ugraphic.ULine;
 import net.sourceforge.plantuml.ugraphic.UStroke;
 
-public class FtileVerticalLine implements Ftile {
+class FtileVerticalLine implements Ftile {
 
 	private final double height;
+	private final HtmlColor color;
 
-	public FtileVerticalLine(double height) {
+	public FtileVerticalLine(double height, HtmlColor color) {
 		this.height = height;
+		this.color = color;
 	}
 
 	public void drawU(UGraphic ug, double x, double y) {
-		ug.getParam().setColor(HtmlColorUtils.getColorIfValid("#A80036"));
+		ug.getParam().setColor(color);
 		ug.getParam().setStroke(new UStroke(1.5));
 		ug.draw(x, y, new ULine(0, height));
 		ug.getParam().setStroke(new UStroke(1));

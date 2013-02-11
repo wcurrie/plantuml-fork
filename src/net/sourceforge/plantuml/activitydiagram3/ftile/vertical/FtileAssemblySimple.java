@@ -27,48 +27,54 @@
  * in the United States and other countries.]
  *
  * Original Author:  Arnaud Roques
- * 
- * Revision $Revision: 5183 $
+ *
+ * Revision $Revision: 8475 $
  *
  */
-package net.sourceforge.plantuml.activitydiagram3.ftile;
+package net.sourceforge.plantuml.activitydiagram3.ftile.vertical;
 
 import java.awt.geom.Dimension2D;
-import java.util.Collections;
 import java.util.List;
 
 import net.sourceforge.plantuml.Dimension2DDouble;
 import net.sourceforge.plantuml.Url;
-import net.sourceforge.plantuml.graphic.HtmlColorUtils;
+import net.sourceforge.plantuml.activitydiagram3.ftile.Ftile;
 import net.sourceforge.plantuml.graphic.StringBounder;
-import net.sourceforge.plantuml.ugraphic.UEllipse;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
 
-public class FtileCircleStart implements Ftile {
+class FtileAssemblySimple implements Ftile {
 
-	private static final int SIZE = 20;
+	private final Ftile tile1;
+	private final Ftile tile2;
 
-	public void drawU(UGraphic ug, double xTheoricalPosition, double yTheoricalPosition) {
-		final UEllipse circle = new UEllipse(SIZE, SIZE);
-		if (SHADOWING) {
-			circle.setDeltaShadow(3);
-		}
-		ug.getParam().setColor(null);
-		ug.getParam().setBackcolor(HtmlColorUtils.BLACK);
-		ug.draw(xTheoricalPosition, yTheoricalPosition, circle);
+	FtileAssemblySimple(Ftile tile1, Ftile tile2) {
+		this.tile1 = tile1;
+		this.tile2 = tile2;
+	}
+
+	public void drawU(UGraphic ug, double x, double y) {
+		final StringBounder stringBounder = ug.getStringBounder();
+		final Dimension2D dimTotal = calculateDimension(stringBounder);
+		final Dimension2D dim1 = tile1.calculateDimension(stringBounder);
+		final Dimension2D dim2 = tile2.calculateDimension(stringBounder);
+		final double dx1 = dimTotal.getWidth() - dim1.getWidth();
+		final double dx2 = dimTotal.getWidth() - dim2.getWidth();
+		tile1.drawU(ug, x + dx1 / 2, y);
+		tile2.drawU(ug, x + dx2 / 2, y + dim1.getHeight());
+
 	}
 
 	public Dimension2D calculateDimension(StringBounder stringBounder) {
-		return new Dimension2DDouble(SIZE, SIZE);
+		return Dimension2DDouble.mergeTB(tile1.calculateDimension(stringBounder),
+				tile2.calculateDimension(stringBounder));
 	}
 
 	public List<Url> getUrls() {
-		return Collections.emptyList();
-	}
-	
-	public boolean isKilled() {
-		return false;
+		throw new UnsupportedOperationException();
 	}
 
+	public boolean isKilled() {
+		return tile2.isKilled();
+	}
 
 }

@@ -50,7 +50,7 @@ public class CommandFork3 extends SingleLineCommand2<ActivityDiagram3> {
 		return new RegexConcat(//
 				new RegexLeaf("^"), //
 				new RegexLeaf("fork"), //
-				new RegexLeaf("$"));
+				new RegexLeaf(";?$"));
 	}
 
 	@Override

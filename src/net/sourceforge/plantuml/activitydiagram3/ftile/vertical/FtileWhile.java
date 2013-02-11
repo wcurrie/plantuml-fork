@@ -31,7 +31,7 @@
  * Revision $Revision: 8475 $
  *
  */
-package net.sourceforge.plantuml.activitydiagram3.ftile;
+package net.sourceforge.plantuml.activitydiagram3.ftile.vertical;
 
 import java.awt.Font;
 import java.awt.geom.Dimension2D;
@@ -40,9 +40,15 @@ import java.util.List;
 import net.sourceforge.plantuml.Dimension2DDouble;
 import net.sourceforge.plantuml.SpriteContainerEmpty;
 import net.sourceforge.plantuml.Url;
+import net.sourceforge.plantuml.activitydiagram3.ftile.Arrows;
+import net.sourceforge.plantuml.activitydiagram3.ftile.Diamond;
+import net.sourceforge.plantuml.activitydiagram3.ftile.Ftile;
+import net.sourceforge.plantuml.activitydiagram3.ftile.FtileMarged;
+import net.sourceforge.plantuml.activitydiagram3.ftile.Snake;
 import net.sourceforge.plantuml.cucadiagram.Display;
 import net.sourceforge.plantuml.graphic.FontConfiguration;
 import net.sourceforge.plantuml.graphic.HorizontalAlignement;
+import net.sourceforge.plantuml.graphic.HtmlColor;
 import net.sourceforge.plantuml.graphic.HtmlColorUtils;
 import net.sourceforge.plantuml.graphic.StringBounder;
 import net.sourceforge.plantuml.graphic.TextBlock;
@@ -51,7 +57,7 @@ import net.sourceforge.plantuml.ugraphic.UFont;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
 import net.sourceforge.plantuml.ugraphic.UStroke;
 
-public class FtileWhile implements Ftile {
+class FtileWhile implements Ftile {
 
 	private final double smallArrow = 30;
 	final private double heightbottom = 45;
@@ -59,9 +65,15 @@ public class FtileWhile implements Ftile {
 	private final Ftile whileBlock;
 	private final TextBlock test;
 
-	public FtileWhile(Ftile whileBlock, Display test) {
-		final Ftile tmp = new FtileAssemblySimple(new FtileDiamond(), new FtileAssemblySimple(new FtileVerticalArrow(
-				smallArrow), whileBlock));
+	private final HtmlColor borderColor;
+	private final HtmlColor arrowColor;
+
+	public FtileWhile(Ftile whileBlock, Display test, VerticalFactory factory, HtmlColor borderColor,
+			HtmlColor backColor, HtmlColor arrowColor) {
+		this.borderColor = borderColor;
+		this.arrowColor = arrowColor;
+		final Ftile tmp = new FtileAssemblySimple(new FtileDiamond(borderColor, backColor), new FtileAssemblySimple(
+				new FtileVerticalArrow(smallArrow, arrowColor), whileBlock));
 
 		this.whileBlock = new FtileMarged(tmp, 10);
 		final UFont font = new UFont("Serif", Font.PLAIN, 14);
@@ -82,7 +94,7 @@ public class FtileWhile implements Ftile {
 		final Dimension2D dimWhile = whileBlock.calculateDimension(stringBounder);
 		ug.getParam().setStroke(new UStroke(1.5));
 		final Snake s1 = new Snake();
-		ug.getParam().setColor(HtmlColorUtils.getColorIfValid("#A80036"));
+		ug.getParam().setColor(arrowColor);
 		s1.addPoint(x + dimTotal.getWidth() / 2 - Diamond.diamondHalfSize, y + Diamond.diamondHalfSize);
 		s1.addPoint(x + 1, y + Diamond.diamondHalfSize);
 		s1.addPoint(x + 1, y + dimTotal.getHeight());
@@ -98,8 +110,8 @@ public class FtileWhile implements Ftile {
 		s2.drawU(ug);
 		ug.getParam().setStroke(new UStroke());
 
-		ug.getParam().setColor(HtmlColorUtils.getColorIfValid("#A80036"));
-		ug.getParam().setBackcolor(HtmlColorUtils.getColorIfValid("#A80036"));
+		ug.getParam().setColor(arrowColor);
+		ug.getParam().setBackcolor(arrowColor);
 		ug.draw(x + dimTotal.getWidth() / 2 + Diamond.diamondHalfSize, y + Diamond.diamondHalfSize, Arrows.asToLeft());
 		ug.draw(x + dimTotal.getWidth() - 2, y + dimTotal.getHeight() / 2, Arrows.asToUp());
 		ug.draw(x + 1, y + dimTotal.getHeight() / 2, Arrows.asToDown());

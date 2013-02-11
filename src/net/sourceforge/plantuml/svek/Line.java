@@ -41,6 +41,7 @@ import java.util.List;
 import net.sourceforge.plantuml.Direction;
 import net.sourceforge.plantuml.Hideable;
 import net.sourceforge.plantuml.ISkinParam;
+import net.sourceforge.plantuml.Log;
 import net.sourceforge.plantuml.OptionFlags;
 import net.sourceforge.plantuml.StringUtils;
 import net.sourceforge.plantuml.Url;
@@ -441,8 +442,10 @@ public class Line implements Moveable, Hideable {
 
 		if (this.noteLabelText != null) {
 			final Point2D pos = getXY(svg, this.noteLabelColor, fullHeight);
-			corner1.manage(pos);
-			this.noteLabelXY = TextBlockUtils.asPositionable(noteLabelText, stringBounder, pos);
+			if (pos!=null) {
+				corner1.manage(pos);
+				this.noteLabelXY = TextBlockUtils.asPositionable(noteLabelText, stringBounder, pos);
+			}
 		}
 
 		if (this.startTailText != null) {
@@ -468,6 +471,9 @@ public class Line implements Moveable, Hideable {
 
 	private Point2D.Double getXY(String svg, int color, int height) {
 		final int idx = getIndexFromColor(svg, color);
+		if (idx==-1) {
+			return null;
+		}
 		return SvekUtils.getMinXY(SvekUtils.extractPointsList(svg, idx, height));
 
 	}
@@ -488,7 +494,8 @@ public class Line implements Moveable, Hideable {
 		if (idx != -1) {
 			return idx;
 		}
-		throw new IllegalStateException("color=" + color + " " + StringUtils.getAsHtml(color).toLowerCase());
+		Log.info("Cannot find color=" + color + " " + StringUtils.getAsHtml(color).toLowerCase());
+		return -1;
 
 	}
 
@@ -577,7 +584,7 @@ public class Line implements Moveable, Hideable {
 			}
 			this.extremity2.drawU(ug, x + moveStartX, y + moveStartY);
 		}
-		if (this.noteLabelText != null) {
+		if (this.noteLabelText != null && this.noteLabelXY!=null) {
 			this.noteLabelText.drawU(ug, x + this.noteLabelXY.getPosition().getX(), y
 					+ this.noteLabelXY.getPosition().getY());
 		}

@@ -27,53 +27,73 @@
  * in the United States and other countries.]
  *
  * Original Author:  Arnaud Roques
- *
- * Revision $Revision: 8475 $
+ * 
+ * Revision $Revision: 5183 $
  *
  */
-package net.sourceforge.plantuml.activitydiagram3.ftile;
+package net.sourceforge.plantuml.activitydiagram3.ftile.vertical;
 
 import java.awt.geom.Dimension2D;
+import java.util.Collections;
 import java.util.List;
 
 import net.sourceforge.plantuml.Dimension2DDouble;
 import net.sourceforge.plantuml.Url;
+import net.sourceforge.plantuml.activitydiagram3.ftile.Ftile;
+import net.sourceforge.plantuml.graphic.HtmlColor;
+import net.sourceforge.plantuml.graphic.HtmlColorUtils;
 import net.sourceforge.plantuml.graphic.StringBounder;
+import net.sourceforge.plantuml.ugraphic.UEllipse;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
+import net.sourceforge.plantuml.ugraphic.UStroke;
 
-public class FtileAssemblySimple implements Ftile {
+public class FtileCircleStop implements Ftile {
 
-	private final Ftile tile1;
-	private final Ftile tile2;
-
-	public FtileAssemblySimple(Ftile tile1, Ftile tile2) {
-		this.tile1 = tile1;
-		this.tile2 = tile2;
+	private static final int SIZE = 20;
+	
+	private final HtmlColor backColor;
+	
+	FtileCircleStop(HtmlColor backColor) {
+		this.backColor = backColor;
 	}
 
-	public void drawU(UGraphic ug, double x, double y) {
-		final StringBounder stringBounder = ug.getStringBounder();
-		final Dimension2D dimTotal = calculateDimension(stringBounder);
-		final Dimension2D dim1 = tile1.calculateDimension(stringBounder);
-		final Dimension2D dim2 = tile2.calculateDimension(stringBounder);
-		final double dx1 = dimTotal.getWidth() - dim1.getWidth();
-		final double dx2 = dimTotal.getWidth() - dim2.getWidth();
-		tile1.drawU(ug, x + dx1 / 2, y);
-		tile2.drawU(ug, x + dx2 / 2, y + dim1.getHeight());
+
+	public void drawU(UGraphic ug, double xTheoricalPosition, double yTheoricalPosition) {
+
+		xTheoricalPosition = Math.round(xTheoricalPosition);
+		yTheoricalPosition = Math.round(yTheoricalPosition);
+
+		final UEllipse circle = new UEllipse(SIZE, SIZE);
+		if (SHADOWING) {
+			circle.setDeltaShadow(3);
+		}
+		ug.getParam().setStroke(new UStroke());
+		ug.getParam().setBackcolor(null);
+		ug.getParam().setColor(backColor);
+		ug.draw(xTheoricalPosition, yTheoricalPosition, circle);
+		ug.getParam().setStroke(new UStroke());
+
+		final double delta = 4;
+		final UEllipse circleSmall = new UEllipse(SIZE - delta * 2, SIZE - delta * 2);
+		if (SHADOWING) {
+			circleSmall.setDeltaShadow(3);
+		}
+		ug.getParam().setColor(null);
+		ug.getParam().setBackcolor(backColor);
+		ug.draw(xTheoricalPosition + delta + .5, yTheoricalPosition + delta + .5, circleSmall);
 
 	}
 
 	public Dimension2D calculateDimension(StringBounder stringBounder) {
-		return Dimension2DDouble.mergeTB(tile1.calculateDimension(stringBounder), tile2
-				.calculateDimension(stringBounder));
+		return new Dimension2DDouble(SIZE, SIZE);
 	}
 
 	public List<Url> getUrls() {
-		throw new UnsupportedOperationException();
+		return Collections.emptyList();
 	}
 	
 	public boolean isKilled() {
-		return tile2.isKilled();
+		return true;
 	}
 
 

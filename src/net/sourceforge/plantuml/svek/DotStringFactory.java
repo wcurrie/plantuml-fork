@@ -269,7 +269,7 @@ public class DotStringFactory implements Moveable {
 	public String getSvg(String... dotStrings) throws IOException, InterruptedException {
 		return getSVG(dotStrings);
 	}
-	
+
 	public ClusterPosition solve(String svg) throws IOException, InterruptedException {
 		if (svg.length() == 0) {
 			throw new EmptySvgException();
@@ -294,11 +294,18 @@ public class DotStringFactory implements Moveable {
 				corner1.manage(minX, minY);
 				sh.moveSvek(minX, minY);
 			} else if (sh.getType() == ShapeType.ROUND_RECTANGLE) {
+				final int idx2 = svg.indexOf("d=\"", idx + 1);
 				idx = svg.indexOf("points=\"", idx + 1);
-				final List<Point2D.Double> points = SvekUtils.extractPointsList(svg, idx, fullHeight);
-				for (int i = 0; i < 3; i++) {
-					idx = svg.indexOf("points=\"", idx + 1);
-					points.addAll(SvekUtils.extractPointsList(svg, idx, fullHeight));
+				final List<Point2D.Double> points;
+				if (idx2 != -1 && idx2 < idx) {
+					// GraphViz 2.30
+					points = SvekUtils.extractD(svg, idx2, fullHeight);
+				} else {
+					points = SvekUtils.extractPointsList(svg, idx, fullHeight);
+					for (int i = 0; i < 3; i++) {
+						idx = svg.indexOf("points=\"", idx + 1);
+						points.addAll(SvekUtils.extractPointsList(svg, idx, fullHeight));
+					}
 				}
 				final double minX = SvekUtils.getMinX(points);
 				final double minY = SvekUtils.getMinY(points);

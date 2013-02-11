@@ -28,36 +28,42 @@
  *
  * Original Author:  Arnaud Roques
  *
- * Revision $Revision: 4762 $
+ * Revision $Revision: 9786 $
  *
  */
-package net.sourceforge.plantuml.activitydiagram2.command;
+package net.sourceforge.plantuml.activitydiagram3;
 
-import net.sourceforge.plantuml.activitydiagram2.ActivityDiagram2;
-import net.sourceforge.plantuml.command.CommandExecutionResult;
-import net.sourceforge.plantuml.command.SingleLineCommand2;
-import net.sourceforge.plantuml.command.regex.RegexConcat;
-import net.sourceforge.plantuml.command.regex.RegexLeaf;
-import net.sourceforge.plantuml.command.regex.RegexResult;
+import net.sourceforge.plantuml.activitydiagram3.ftile.Ftile;
+import net.sourceforge.plantuml.activitydiagram3.ftile.FtileFactory;
+import net.sourceforge.plantuml.cucadiagram.Display;
 
-public class CommandGoto2 extends SingleLineCommand2<ActivityDiagram2> {
+public class InstructionGroup implements Instruction {
 
-	public CommandGoto2(ActivityDiagram2 diagram) {
-		super(diagram, getRegexConcat());
+	private final InstructionList list = new InstructionList();
+	private final Instruction parent;
+
+	private final Display test;
+
+	public InstructionGroup(Instruction parent, Display test) {
+		this.parent = parent;
+		this.test = test;
 	}
 
-	static RegexConcat getRegexConcat() {
-		return new RegexConcat(new RegexLeaf("^"), //
-				new RegexLeaf("goto\\s+"), //
-				new RegexLeaf("LABEL", "([\\p{L}0-9_.]+)"), //
-				new RegexLeaf(":?"), //
-				new RegexLeaf("$"));
+	public void add(Instruction ins) {
+		list.add(ins);
 	}
 
-	@Override
-	protected CommandExecutionResult executeArg(RegexResult arg) {
-		getSystem().callGoto(arg.get("LABEL", 0));
-		return CommandExecutionResult.ok();
+	public Ftile createFtile(FtileFactory factory) {
+		return factory.createGroup(list.createFtile(factory), test);
 	}
+
+	public Instruction getParent() {
+		return parent;
+	}
+	
+	public boolean kill() {
+		return list.kill();
+	}
+
 
 }

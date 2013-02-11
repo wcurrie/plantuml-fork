@@ -40,6 +40,7 @@ import net.sourceforge.plantuml.graphic.HtmlColor;
 import net.sourceforge.plantuml.graphic.StringBounder;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
 
+//TODO extends TextBlock
 public interface IEntityImage extends Hideable {
 
 	public static final int CORNER = 25;

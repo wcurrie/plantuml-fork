@@ -40,7 +40,11 @@ import net.sourceforge.plantuml.activitydiagram3.command.CommandEndif3;
 import net.sourceforge.plantuml.activitydiagram3.command.CommandFork3;
 import net.sourceforge.plantuml.activitydiagram3.command.CommandForkAgain3;
 import net.sourceforge.plantuml.activitydiagram3.command.CommandForkEnd3;
+import net.sourceforge.plantuml.activitydiagram3.command.CommandGroup3;
+import net.sourceforge.plantuml.activitydiagram3.command.CommandGroupEnd3;
+import net.sourceforge.plantuml.activitydiagram3.command.CommandIf2;
 import net.sourceforge.plantuml.activitydiagram3.command.CommandIf3;
+import net.sourceforge.plantuml.activitydiagram3.command.CommandKill3;
 import net.sourceforge.plantuml.activitydiagram3.command.CommandRepeat3;
 import net.sourceforge.plantuml.activitydiagram3.command.CommandRepeatWhile3;
 import net.sourceforge.plantuml.activitydiagram3.command.CommandStart3;
@@ -64,6 +68,7 @@ public class ActivityDiagramFactory3 extends AbstractUmlSystemCommandFactory {
 		addCommonCommands(system);
 		addCommand(new CommandActivity3(system));
 		addCommand(new CommandIf3(system));
+		addCommand(new CommandIf2(system));
 		addCommand(new CommandElse3(system));
 		addCommand(new CommandEndif3(system));
 		addCommand(new CommandRepeat3(system));
@@ -73,8 +78,11 @@ public class ActivityDiagramFactory3 extends AbstractUmlSystemCommandFactory {
 		addCommand(new CommandFork3(system));
 		addCommand(new CommandForkAgain3(system));
 		addCommand(new CommandForkEnd3(system));
+		addCommand(new CommandGroup3(system));
+		addCommand(new CommandGroupEnd3(system));
 		addCommand(new CommandStart3(system));
 		addCommand(new CommandStop3(system));
+		addCommand(new CommandKill3(system));
 
 		addCommand(new CommandActivityLong3(system));
 

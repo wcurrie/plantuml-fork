@@ -27,11 +27,11 @@
  * in the United States and other countries.]
  *
  * Original Author:  Arnaud Roques
- * 
- * Revision $Revision: 5183 $
+ *
+ * Revision $Revision: 8475 $
  *
  */
-package net.sourceforge.plantuml.activitydiagram3.ftile;
+package net.sourceforge.plantuml.activitydiagram3.ftile.vertical;
 
 import java.awt.geom.Dimension2D;
 import java.util.Collections;
@@ -39,45 +39,34 @@ import java.util.List;
 
 import net.sourceforge.plantuml.Dimension2DDouble;
 import net.sourceforge.plantuml.Url;
+import net.sourceforge.plantuml.activitydiagram3.ftile.Diamond;
+import net.sourceforge.plantuml.activitydiagram3.ftile.Ftile;
+import net.sourceforge.plantuml.graphic.HtmlColor;
 import net.sourceforge.plantuml.graphic.HtmlColorUtils;
 import net.sourceforge.plantuml.graphic.StringBounder;
-import net.sourceforge.plantuml.ugraphic.UEllipse;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
-import net.sourceforge.plantuml.ugraphic.UShape;
 import net.sourceforge.plantuml.ugraphic.UStroke;
 
-public class FtileCircleStop implements Ftile {
+class FtileDiamond implements Ftile {
+	
+	private final HtmlColor color;
+	private final HtmlColor backColor;
 
-	private static final int SIZE = 20;
+	FtileDiamond(HtmlColor color, HtmlColor backColor) {
+		this.color = color;
+		this.backColor = backColor;
+	}
 
-	public void drawU(UGraphic ug, double xTheoricalPosition, double yTheoricalPosition) {
-
-		xTheoricalPosition = Math.round(xTheoricalPosition);
-		yTheoricalPosition = Math.round(yTheoricalPosition);
-
-		final UEllipse circle = new UEllipse(SIZE, SIZE);
-		if (SHADOWING) {
-			circle.setDeltaShadow(3);
-		}
+	public void drawU(UGraphic ug, double x, double y) {
+		ug.getParam().setColor(color);
+		ug.getParam().setBackcolor(backColor);
+		ug.getParam().setStroke(new UStroke(1.5));
+		ug.draw(x, y, Diamond.asPolygon());
 		ug.getParam().setStroke(new UStroke());
-		ug.getParam().setBackcolor(null);
-		ug.getParam().setColor(HtmlColorUtils.BLACK);
-		ug.draw(xTheoricalPosition, yTheoricalPosition, circle);
-		ug.getParam().setStroke(new UStroke());
-
-		final double delta = 4;
-		final UEllipse circleSmall = new UEllipse(SIZE - delta * 2, SIZE - delta * 2);
-		if (SHADOWING) {
-			circleSmall.setDeltaShadow(3);
-		}
-		ug.getParam().setColor(null);
-		ug.getParam().setBackcolor(HtmlColorUtils.BLACK);
-		ug.draw(xTheoricalPosition + delta + .5, yTheoricalPosition + delta + .5, circleSmall);
-
 	}
 
 	public Dimension2D calculateDimension(StringBounder stringBounder) {
-		return new Dimension2DDouble(SIZE, SIZE);
+		return new Dimension2DDouble(2 * Diamond.diamondHalfSize, 2 * Diamond.diamondHalfSize);
 	}
 
 	public List<Url> getUrls() {
@@ -85,7 +74,7 @@ public class FtileCircleStop implements Ftile {
 	}
 	
 	public boolean isKilled() {
-		return true;
+		return false;
 	}
 
 

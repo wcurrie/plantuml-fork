@@ -34,7 +34,7 @@
 package net.sourceforge.plantuml.activitydiagram3;
 
 import net.sourceforge.plantuml.activitydiagram3.ftile.Ftile;
-import net.sourceforge.plantuml.activitydiagram3.ftile.FtileWhile;
+import net.sourceforge.plantuml.activitydiagram3.ftile.FtileFactory;
 import net.sourceforge.plantuml.cucadiagram.Display;
 
 public class InstructionWhile implements Instruction {
@@ -53,12 +53,17 @@ public class InstructionWhile implements Instruction {
 		repeatList.add(ins);
 	}
 
-	public Ftile createFtile() {
-		return new FtileWhile(repeatList.createFtile(), test);
+	public Ftile createFtile(FtileFactory factory) {
+		return factory.createWhile(repeatList.createFtile(factory), test);
 	}
 
 	public Instruction getParent() {
 		return parent;
 	}
+	
+	public boolean kill() {
+		return repeatList.kill();
+	}
+
 
 }

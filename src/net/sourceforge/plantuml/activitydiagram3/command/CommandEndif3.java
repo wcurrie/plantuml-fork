@@ -50,7 +50,7 @@ public class CommandEndif3 extends SingleLineCommand2<ActivityDiagram3> {
 		return new RegexConcat(//
 				new RegexLeaf("^"), //
 				new RegexLeaf("endif"), //
-				new RegexLeaf("$"));
+				new RegexLeaf(";?$"));
 	}
 
 	@Override
@@ -58,9 +58,7 @@ public class CommandEndif3 extends SingleLineCommand2<ActivityDiagram3> {
 		// if (getSystem().getLastEntityConsulted() == null) {
 		// return CommandExecutionResult.error("No if for this endif");
 		// }
-		getSystem().endif();
-
-		return CommandExecutionResult.ok();
+		return getSystem().endif();
 	}
 
 }

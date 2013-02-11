@@ -27,11 +27,11 @@
  * in the United States and other countries.]
  *
  * Original Author:  Arnaud Roques
- *
- * Revision $Revision: 8475 $
+ * 
+ * Revision $Revision: 5183 $
  *
  */
-package net.sourceforge.plantuml.activitydiagram3.ftile;
+package net.sourceforge.plantuml.activitydiagram3.ftile.vertical;
 
 import java.awt.geom.Dimension2D;
 import java.util.Collections;
@@ -39,39 +39,44 @@ import java.util.List;
 
 import net.sourceforge.plantuml.Dimension2DDouble;
 import net.sourceforge.plantuml.Url;
+import net.sourceforge.plantuml.activitydiagram3.ftile.Ftile;
+import net.sourceforge.plantuml.graphic.HtmlColor;
 import net.sourceforge.plantuml.graphic.HtmlColorUtils;
 import net.sourceforge.plantuml.graphic.StringBounder;
+import net.sourceforge.plantuml.ugraphic.UEllipse;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
-import net.sourceforge.plantuml.ugraphic.ULine;
-import net.sourceforge.plantuml.ugraphic.UStroke;
 
-public class FtileVerticalArrow implements Ftile {
+public class FtileCircleStart implements Ftile {
 
-	private final double height;
-
-	public FtileVerticalArrow(double height) {
-		this.height = height;
+	private static final int SIZE = 20;
+	
+	private final HtmlColor backColor;
+	
+	FtileCircleStart(HtmlColor backColor) {
+		this.backColor = backColor;
 	}
 
-	public void drawU(UGraphic ug, double x, double y) {
-		ug.getParam().setColor(HtmlColorUtils.getColorIfValid("#A80036"));
-		ug.getParam().setBackcolor(HtmlColorUtils.getColorIfValid("#A80036"));
-		ug.getParam().setStroke(new UStroke(1.5));
-		ug.draw(x, y, new ULine(0, height));
-		ug.getParam().setStroke(new UStroke(1));
-		ug.draw(x, y + height, Arrows.asToDown());
+	public void drawU(UGraphic ug, double xTheoricalPosition, double yTheoricalPosition) {
+		final UEllipse circle = new UEllipse(SIZE, SIZE);
+		if (SHADOWING) {
+			circle.setDeltaShadow(3);
+		}
+		ug.getParam().setColor(null);
+		ug.getParam().setBackcolor(backColor);
+		ug.draw(xTheoricalPosition, yTheoricalPosition, circle);
 	}
 
 	public Dimension2D calculateDimension(StringBounder stringBounder) {
-		return new Dimension2DDouble(2, height);
+		return new Dimension2DDouble(SIZE, SIZE);
 	}
 
 	public List<Url> getUrls() {
 		return Collections.emptyList();
 	}
-
+	
 	public boolean isKilled() {
 		return false;
 	}
+
 
 }

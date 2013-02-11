@@ -28,30 +28,35 @@
  *
  * Original Author:  Arnaud Roques
  *
- * Revision $Revision: 4762 $
+ * Revision $Revision: 8475 $
  *
  */
-package net.sourceforge.plantuml.activitydiagram2.command;
+package net.sourceforge.plantuml.activitydiagram3.ftile;
 
 import java.util.List;
 
-import net.sourceforge.plantuml.activitydiagram2.ActivityDiagram2;
-import net.sourceforge.plantuml.command.CommandExecutionResult;
-import net.sourceforge.plantuml.command.SingleLineCommand;
+import net.sourceforge.plantuml.cucadiagram.Display;
+import net.sourceforge.plantuml.graphic.HtmlColor;
 
-public class CommandStart2 extends SingleLineCommand<ActivityDiagram2> {
+public interface FtileFactory {
 
-	public CommandStart2(ActivityDiagram2 diagram) {
-		super(diagram, "(?i)^start$");
-	}
+	public Ftile start();
 
-	@Override
-	protected CommandExecutionResult executeArg(List<String> arg) {
-		if (getSystem().getLeafs().size() > 0) {
-			return CommandExecutionResult.error("Cannot start this here");
-		}
-		getSystem().start();
-		return CommandExecutionResult.ok();
-	}
+	public Ftile stop();
+
+	public Ftile activity(Display label, HtmlColor color);
+
+	public Ftile assembly(Ftile tile1, Ftile tile2);
+
+	public Ftile repeat(Ftile repeat, Display test);
+
+	public Ftile createWhile(Ftile whileBlock, Display test);
+
+	public Ftile createIf(Ftile tile1, Ftile tile2, Display labelTest, Display label1, Display label2);
+
+	public Ftile createFork(List<Ftile> all);
+
+	public Ftile createGroup(Ftile list, Display name);
+
 
 }

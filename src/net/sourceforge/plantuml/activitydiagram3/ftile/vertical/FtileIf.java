@@ -31,7 +31,7 @@
  * Revision $Revision: 8475 $
  *
  */
-package net.sourceforge.plantuml.activitydiagram3.ftile;
+package net.sourceforge.plantuml.activitydiagram3.ftile.vertical;
 
 import java.awt.Font;
 import java.awt.geom.Dimension2D;
@@ -40,9 +40,15 @@ import java.util.List;
 import net.sourceforge.plantuml.Dimension2DDouble;
 import net.sourceforge.plantuml.SpriteContainerEmpty;
 import net.sourceforge.plantuml.Url;
+import net.sourceforge.plantuml.activitydiagram3.ftile.Arrows;
+import net.sourceforge.plantuml.activitydiagram3.ftile.Diamond;
+import net.sourceforge.plantuml.activitydiagram3.ftile.Ftile;
+import net.sourceforge.plantuml.activitydiagram3.ftile.FtileMinWidth;
+import net.sourceforge.plantuml.activitydiagram3.ftile.Snake;
 import net.sourceforge.plantuml.cucadiagram.Display;
 import net.sourceforge.plantuml.graphic.FontConfiguration;
 import net.sourceforge.plantuml.graphic.HorizontalAlignement;
+import net.sourceforge.plantuml.graphic.HtmlColor;
 import net.sourceforge.plantuml.graphic.HtmlColorUtils;
 import net.sourceforge.plantuml.graphic.StringBounder;
 import net.sourceforge.plantuml.graphic.TextBlock;
@@ -51,15 +57,21 @@ import net.sourceforge.plantuml.ugraphic.UFont;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
 import net.sourceforge.plantuml.ugraphic.UStroke;
 
-public class FtileIf implements Ftile {
+class FtileIf implements Ftile {
 
 	private final Ftile tile1;
 	private final Ftile tile2;
 	private final TextBlock label;
 	private final TextBlock label1;
 	private final TextBlock label2;
+	private final HtmlColor borderColor;
+	private final HtmlColor arrowColor;
+	private final HtmlColor backColor;
 
-	public FtileIf(Ftile tile1, Ftile tile2, String labelTest, Display label1, Display label2) {
+	public FtileIf(Ftile tile1, Ftile tile2, Display labelTest, Display label1, Display label2, HtmlColor borderColor, HtmlColor backColor, HtmlColor arrowColor) {
+		this.borderColor = borderColor;
+		this.arrowColor = arrowColor;
+		this.backColor = backColor;
 		this.tile1 = new FtileMinWidth(tile1, 30);
 		this.tile2 = new FtileMinWidth(tile2, 30);
 		final UFont font = new UFont("Serif", Font.PLAIN, 14);
@@ -67,8 +79,7 @@ public class FtileIf implements Ftile {
 		if (labelTest == null) {
 			label = TextBlockUtils.empty(0, 0);
 		} else {
-			this.label = TextBlockUtils.create(Display.asList(labelTest), fc, HorizontalAlignement.LEFT,
-					new SpriteContainerEmpty());
+			this.label = TextBlockUtils.create(labelTest, fc, HorizontalAlignement.LEFT, new SpriteContainerEmpty());
 		}
 		if (label1 == null) {
 			this.label1 = TextBlockUtils.empty(0, 0);
@@ -98,6 +109,7 @@ public class FtileIf implements Ftile {
 		final double xDiamond = x + (dimTotal.getWidth() - 2 * Diamond.diamondHalfSize) / 2;
 		drawDiamond(ug, xDiamond, y);
 
+		ug.getParam().setColor(arrowColor);
 		ug.getParam().setStroke(new UStroke(1.5));
 		final Snake s1 = new Snake();
 		s1.addPoint(xDiamond, y + Diamond.diamondHalfSize);
@@ -129,8 +141,8 @@ public class FtileIf implements Ftile {
 		ug.getParam().setStroke(new UStroke());
 		drawDiamond(ug, xDiamond, y + dimTotal.getHeight() - 2 * Diamond.diamondHalfSize);
 
-		ug.getParam().setColor(HtmlColorUtils.getColorIfValid("#A80036"));
-		ug.getParam().setBackcolor(HtmlColorUtils.getColorIfValid("#A80036"));
+		ug.getParam().setColor(arrowColor);
+		ug.getParam().setBackcolor(arrowColor);
 		ug.draw(x1 + dim1.getWidth() / 2, y1, Arrows.asToDown());
 		ug.draw(x2 + dim2.getWidth() / 2, y2, Arrows.asToDown());
 
@@ -155,8 +167,8 @@ public class FtileIf implements Ftile {
 
 	private void drawDiamond(UGraphic ug, double xTheoricalPosition, double yTheoricalPosition) {
 		ug.getParam().setStroke(new UStroke(1.5));
-		ug.getParam().setColor(HtmlColorUtils.getColorIfValid("#A80036"));
-		ug.getParam().setBackcolor(HtmlColorUtils.getColorIfValid("#FEFECE"));
+		ug.getParam().setColor(borderColor);
+		ug.getParam().setBackcolor(backColor);
 		ug.draw(xTheoricalPosition, yTheoricalPosition, Diamond.asPolygon());
 		ug.getParam().setStroke(new UStroke());
 	}
@@ -164,7 +176,7 @@ public class FtileIf implements Ftile {
 	public Dimension2D calculateDimension(StringBounder stringBounder) {
 		Dimension2D dim = Dimension2DDouble.mergeLR(tile1.calculateDimension(stringBounder),
 				tile2.calculateDimension(stringBounder));
-		dim = Dimension2DDouble.delta(dim, 25, 80);
+		dim = Dimension2DDouble.delta(dim, 25, 100);
 		return dim;
 	}
 

@@ -37,34 +37,44 @@ import java.util.ArrayList;
 import java.util.List;
 
 import net.sourceforge.plantuml.activitydiagram3.ftile.Ftile;
-import net.sourceforge.plantuml.activitydiagram3.ftile.FtileAssemblySimple;
 import net.sourceforge.plantuml.activitydiagram3.ftile.FtileEmpty;
-import net.sourceforge.plantuml.activitydiagram3.ftile.FtileVerticalArrow;
+import net.sourceforge.plantuml.activitydiagram3.ftile.FtileFactory;
+import net.sourceforge.plantuml.activitydiagram3.ftile.FtileKilled;
 
 public class InstructionList implements Instruction {
 
 	private final List<Instruction> all = new ArrayList<Instruction>();
+	private boolean killed = false;
 
 	public void add(Instruction ins) {
-		all.add(ins);
+		if (killed == false) {
+			all.add(ins);
+		}
 	}
 
-	public Ftile createFtile() {
+	public Ftile createFtile(FtileFactory factory) {
 		if (all.size() == 0) {
 			return new FtileEmpty();
 		}
 		Ftile result = null;
 		for (Instruction ins : all) {
-			final Ftile cur = ins.createFtile();
+			final Ftile cur = ins.createFtile(factory);
 			if (result == null) {
 				result = cur;
 			} else {
-				final Ftile arrow = new FtileVerticalArrow(35);
-				result = new FtileAssemblySimple(result, new FtileAssemblySimple(arrow, cur));
+				result = factory.assembly(result, cur);
 			}
 
 		}
+		if (killed) {
+			result = new FtileKilled(result);
+		}
 		return result;
+	}
+
+	public boolean kill() {
+		this.killed = true;
+		return true;
 	}
 
 }

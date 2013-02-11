@@ -31,37 +31,30 @@
  * Revision $Revision: 4762 $
  *
  */
-package net.sourceforge.plantuml.activitydiagram2.command;
+package net.sourceforge.plantuml.activitydiagram3.command;
 
-import net.sourceforge.plantuml.activitydiagram2.ActivityDiagram2;
+import net.sourceforge.plantuml.activitydiagram3.ActivityDiagram3;
 import net.sourceforge.plantuml.command.CommandExecutionResult;
 import net.sourceforge.plantuml.command.SingleLineCommand2;
 import net.sourceforge.plantuml.command.regex.RegexConcat;
 import net.sourceforge.plantuml.command.regex.RegexLeaf;
 import net.sourceforge.plantuml.command.regex.RegexResult;
-import net.sourceforge.plantuml.cucadiagram.Display;
 
-public class CommandElse2 extends SingleLineCommand2<ActivityDiagram2> {
+public class CommandGroupEnd3 extends SingleLineCommand2<ActivityDiagram3> {
 
-	public CommandElse2(ActivityDiagram2 diagram) {
+	public CommandGroupEnd3(ActivityDiagram3 diagram) {
 		super(diagram, getRegexConcat());
 	}
 
 	static RegexConcat getRegexConcat() {
-		return new RegexConcat(new RegexLeaf("^"),
-					new RegexLeaf("WHEN", "(?:else\\s*(?:when\\s+(.*))?)?"),
-					new RegexLeaf("$"));
+		return new RegexConcat(new RegexLeaf("^"), //
+				new RegexLeaf("end ?group|group ?end"), //
+				new RegexLeaf(";?$"));
 	}
-
 
 	@Override
 	protected CommandExecutionResult executeArg(RegexResult arg) {
-//		if (getSystem().getLastEntityConsulted() == null) {
-//			return CommandExecutionResult.error("No if for this endif");
-//		}
-		getSystem().else2(Display.getWithNewlines(arg.get("WHEN", 0)));
-
-		return CommandExecutionResult.ok();
+		return getSystem().endGroup();
 	}
 
 }

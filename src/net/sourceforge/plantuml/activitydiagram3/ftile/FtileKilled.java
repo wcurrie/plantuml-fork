@@ -28,36 +28,40 @@
  *
  * Original Author:  Arnaud Roques
  *
- * Revision $Revision: 4762 $
+ * Revision $Revision: 8475 $
  *
  */
-package net.sourceforge.plantuml.activitydiagram2.command;
+package net.sourceforge.plantuml.activitydiagram3.ftile;
 
-import net.sourceforge.plantuml.activitydiagram2.ActivityDiagram2;
-import net.sourceforge.plantuml.command.CommandExecutionResult;
-import net.sourceforge.plantuml.command.SingleLineCommand2;
-import net.sourceforge.plantuml.command.regex.RegexConcat;
-import net.sourceforge.plantuml.command.regex.RegexLeaf;
-import net.sourceforge.plantuml.command.regex.RegexResult;
+import java.awt.geom.Dimension2D;
+import java.util.List;
 
-public class CommandLabel2 extends SingleLineCommand2<ActivityDiagram2> {
+import net.sourceforge.plantuml.Url;
+import net.sourceforge.plantuml.graphic.StringBounder;
+import net.sourceforge.plantuml.ugraphic.UGraphic;
 
-	public CommandLabel2(ActivityDiagram2 diagram) {
-		super(diagram, getRegexConcat());
+public class FtileKilled implements Ftile {
+
+	private final Ftile tile;
+
+	public FtileKilled(Ftile tileToKill) {
+		this.tile = tileToKill;
 	}
 
-	static RegexConcat getRegexConcat() {
-		return new RegexConcat(new RegexLeaf("^"),
-					new RegexLeaf("LABEL", "([\\p{L}0-9_.]+)"),
-					new RegexLeaf(":"),
-					new RegexLeaf("$"));
+	public Dimension2D calculateDimension(StringBounder stringBounder) {
+		return tile.calculateDimension(stringBounder);
 	}
 
+	public List<Url> getUrls() {
+		return tile.getUrls();
+	}
 
-	@Override
-	protected CommandExecutionResult executeArg(RegexResult arg) {
-		getSystem().label(arg.get("LABEL", 0));
-		return CommandExecutionResult.ok();
+	public void drawU(UGraphic ug, double x, double y) {
+		tile.drawU(ug, x, y);
+	}
+
+	public boolean isKilled() {
+		return true;
 	}
 
 }

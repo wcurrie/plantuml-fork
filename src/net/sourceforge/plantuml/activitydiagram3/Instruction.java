@@ -34,11 +34,14 @@
 package net.sourceforge.plantuml.activitydiagram3;
 
 import net.sourceforge.plantuml.activitydiagram3.ftile.Ftile;
+import net.sourceforge.plantuml.activitydiagram3.ftile.FtileFactory;
 
 public interface Instruction {
 
-	public Ftile createFtile();
+	public Ftile createFtile(FtileFactory factory);
 
 	public void add(Instruction other);
+
+	public boolean kill();
 
 }

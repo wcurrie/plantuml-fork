@@ -38,6 +38,7 @@ import net.sourceforge.plantuml.command.CommandExecutionResult;
 import net.sourceforge.plantuml.command.SingleLineCommand2;
 import net.sourceforge.plantuml.command.regex.RegexConcat;
 import net.sourceforge.plantuml.command.regex.RegexLeaf;
+import net.sourceforge.plantuml.command.regex.RegexOr;
 import net.sourceforge.plantuml.command.regex.RegexResult;
 import net.sourceforge.plantuml.cucadiagram.Display;
 
@@ -51,16 +52,19 @@ public class CommandIf3 extends SingleLineCommand2<ActivityDiagram3> {
 		return new RegexConcat(new RegexLeaf("^"), //
 				new RegexLeaf("if"), //
 				new RegexLeaf("\\s*"), //
-				new RegexLeaf("TEST", "\\(([^()]+)\\)"), //
+				new RegexOr(//
+						new RegexLeaf("TEST1", "\\(([^()]+)\\)"), //
+						new RegexLeaf("TEST2", "\"([^\"]+)\"")), //
 				new RegexLeaf("\\s*"), //
 				new RegexLeaf("WHEN", "(?:then\\s*(?:\\(([^()]*)\\))?)?"), //
-				new RegexLeaf("$"));
+				new RegexLeaf(";?$"));
 	}
 
 	@Override
 	protected CommandExecutionResult executeArg(RegexResult arg) {
 
-		getSystem().startIf(arg.get("TEST", 0), Display.getWithNewlines(arg.get("WHEN", 0)));
+		getSystem().startIf(Display.getWithNewlines(arg.getLazzy("TEST", 0)),
+				Display.getWithNewlines(arg.get("WHEN", 0)));
 
 		return CommandExecutionResult.ok();
 	}

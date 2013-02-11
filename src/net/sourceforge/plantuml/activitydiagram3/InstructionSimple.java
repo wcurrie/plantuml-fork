@@ -34,23 +34,30 @@
 package net.sourceforge.plantuml.activitydiagram3;
 
 import net.sourceforge.plantuml.activitydiagram3.ftile.Ftile;
-import net.sourceforge.plantuml.activitydiagram3.ftile.FtileBox;
+import net.sourceforge.plantuml.activitydiagram3.ftile.FtileFactory;
 import net.sourceforge.plantuml.cucadiagram.Display;
+import net.sourceforge.plantuml.graphic.HtmlColor;
 
 public class InstructionSimple implements Instruction {
 
 	private final Display label;
+	private final HtmlColor color;
 
-	public InstructionSimple(Display label) {
+	public InstructionSimple(Display label, HtmlColor color) {
 		this.label = label;
+		this.color = color;
 	}
 
-	public Ftile createFtile() {
-		return new FtileBox(label);
+	public Ftile createFtile(FtileFactory factory) {
+		return factory.activity(label, color);
 	}
 
 	public void add(Instruction other) {
 		throw new UnsupportedOperationException();
+	}
+
+	public boolean kill() {
+		return false;
 	}
 
 }

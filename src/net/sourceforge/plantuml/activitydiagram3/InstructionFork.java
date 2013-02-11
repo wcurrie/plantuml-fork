@@ -37,8 +37,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import net.sourceforge.plantuml.activitydiagram3.ftile.Ftile;
-import net.sourceforge.plantuml.activitydiagram3.ftile.FtileFork;
-import net.sourceforge.plantuml.activitydiagram3.ftile.FtileForkInner;
+import net.sourceforge.plantuml.activitydiagram3.ftile.FtileFactory;
 
 public class InstructionFork implements Instruction {
 
@@ -58,12 +57,12 @@ public class InstructionFork implements Instruction {
 		getLast().add(ins);
 	}
 
-	public Ftile createFtile() {
+	public Ftile createFtile(FtileFactory factory) {
 		final List<Ftile> all = new ArrayList<Ftile>();
 		for (InstructionList list : forks) {
-			all.add(list.createFtile());
+			all.add(list.createFtile(factory));
 		}
-		return new FtileFork(new FtileForkInner(all));
+		return factory.createFork(all);
 	}
 
 	public Instruction getParent() {
@@ -72,6 +71,10 @@ public class InstructionFork implements Instruction {
 
 	public void forkAgain() {
 		this.forks.add(new InstructionList());
+	}
+
+	public boolean kill() {
+		return getLast().kill();
 	}
 
 }

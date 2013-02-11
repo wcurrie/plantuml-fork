@@ -52,7 +52,7 @@ public class CommandElse3 extends SingleLineCommand2<ActivityDiagram3> {
 				new RegexLeaf("^"), //
 				new RegexLeaf("else"), //
 				new RegexLeaf("WHEN", "(?:\\s*(?:\\(([^()]*)\\))?)?"), //
-				new RegexLeaf("$"));
+				new RegexLeaf(";?$"));
 	}
 
 	@Override
@@ -60,9 +60,7 @@ public class CommandElse3 extends SingleLineCommand2<ActivityDiagram3> {
 		// if (getSystem().getLastEntityConsulted() == null) {
 		// return CommandExecutionResult.error("No if for this endif");
 		// }
-		getSystem().else2(Display.getWithNewlines(arg.get("WHEN", 0)));
-
-		return CommandExecutionResult.ok();
+		return getSystem().else2(Display.getWithNewlines(arg.get("WHEN", 0)));
 	}
 
 }

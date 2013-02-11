@@ -39,7 +39,6 @@ import java.util.List;
 
 import net.sourceforge.plantuml.acearth.PSystemXearthFactory;
 import net.sourceforge.plantuml.activitydiagram.ActivityDiagramFactory;
-import net.sourceforge.plantuml.activitydiagram2.ActivityDiagramFactory2;
 import net.sourceforge.plantuml.activitydiagram3.ActivityDiagramFactory3;
 import net.sourceforge.plantuml.classdiagram.ClassDiagramFactory;
 import net.sourceforge.plantuml.compositediagram.CompositeDiagramFactory;
@@ -103,7 +102,6 @@ public class PSystemBuilder {
 		factories.add(new SequenceDiagramFactory());
 		factories.add(new ClassDiagramFactory());
 		factories.add(new ActivityDiagramFactory());
-		factories.add(new ActivityDiagramFactory2());
 		factories.add(new DescriptionDiagramFactory());
 		factories.add(new StateDiagramFactory());
 		factories.add(new ActivityDiagramFactory3());

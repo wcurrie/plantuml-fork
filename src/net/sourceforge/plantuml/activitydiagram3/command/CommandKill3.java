@@ -31,42 +31,31 @@
  * Revision $Revision: 4762 $
  *
  */
-package net.sourceforge.plantuml.activitydiagram2.command;
+package net.sourceforge.plantuml.activitydiagram3.command;
 
-import net.sourceforge.plantuml.Direction;
-import net.sourceforge.plantuml.activitydiagram2.ActivityDiagram2;
+import net.sourceforge.plantuml.activitydiagram3.ActivityDiagram3;
 import net.sourceforge.plantuml.command.CommandExecutionResult;
 import net.sourceforge.plantuml.command.SingleLineCommand2;
 import net.sourceforge.plantuml.command.regex.RegexConcat;
 import net.sourceforge.plantuml.command.regex.RegexLeaf;
 import net.sourceforge.plantuml.command.regex.RegexResult;
 
-public class CommandEnd2 extends SingleLineCommand2<ActivityDiagram2> {
+public class CommandKill3 extends SingleLineCommand2<ActivityDiagram3> {
 
-	public CommandEnd2(ActivityDiagram2 diagram) {
+	public CommandKill3(ActivityDiagram3 diagram) {
 		super(diagram, getRegexConcat());
 	}
 
 	static RegexConcat getRegexConcat() {
-		return new RegexConcat(new RegexLeaf("^"), //
-				new RegexLeaf("direction", "([<>^])?\\s*"), //
-				new RegexLeaf("end"), //
-				new RegexLeaf("$"));
+		return new RegexConcat(//
+				new RegexLeaf("^"), //
+				new RegexLeaf("kill"), //
+				new RegexLeaf(";?$"));
 	}
 
 	@Override
 	protected CommandExecutionResult executeArg(RegexResult arg) {
-		// if (getSystem().getLastEntityConsulted() == null) {
-		// return CommandExecutionResult.error("No if for this endif");
-		// }
-		final String sdir = arg.get("direction", 0);
-		Direction direction = Direction.DOWN;
-		if (sdir != null) {
-			direction = Direction.fromChar(sdir.charAt(0));
-		}
-		getSystem().end(direction);
-
-		return CommandExecutionResult.ok();
+		return getSystem().kill();
 	}
 
 }
