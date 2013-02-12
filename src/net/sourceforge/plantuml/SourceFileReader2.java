@@ -67,7 +67,7 @@ public class SourceFileReader2 implements ISourceFileReader {
 		}
 		FileSystem.getInstance().setCurrentDir(file.getAbsoluteFile().getParentFile());
 
-		builder = new BlockUmlBuilder(config, defines, getReader(charset), file.getAbsoluteFile().getParentFile());
+		builder = new BlockUmlBuilder(config, charset, defines, getReader(charset), file.getAbsoluteFile().getParentFile());
 	}
 
 	public boolean hasError() throws IOException, InterruptedException {

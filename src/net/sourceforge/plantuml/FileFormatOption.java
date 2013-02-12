@@ -87,15 +87,20 @@ public class FileFormatOption {
 
 	private UGraphic createUGraphicSVG(ColorMapper colorMapper, double dpiFactor, Dimension2D dim,
 			HtmlColor mybackcolor, boolean rotation) {
+		Color backColor = Color.WHITE;
+		if (mybackcolor instanceof HtmlColorSimple) {
+			backColor = colorMapper.getMappedColor(mybackcolor);
+		}
 		final UGraphicSvg ug;
 		if (mybackcolor instanceof HtmlColorGradient) {
 			ug = new UGraphicSvg(colorMapper, (HtmlColorGradient) mybackcolor, false);
-		} else if (mybackcolor == null || mybackcolor.equals(HtmlColorUtils.WHITE)) {
+		} else if (backColor == null || backColor.equals(Color.WHITE)) {
 			ug = new UGraphicSvg(colorMapper, false);
 		} else {
-			ug = new UGraphicSvg(colorMapper, StringUtils.getAsHtml(colorMapper.getMappedColor(mybackcolor)), false);
+			ug = new UGraphicSvg(colorMapper, StringUtils.getAsHtml(backColor), false);
 		}
 		return ug;
+
 	}
 
 	private UGraphic createUGraphicPNG(ColorMapper colorMapper, double dpiFactor, final Dimension2D dim,

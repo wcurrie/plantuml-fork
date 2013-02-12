@@ -59,6 +59,7 @@ import net.sourceforge.plantuml.graphic.StringBounderUtils;
 import net.sourceforge.plantuml.graphic.TextBlock;
 import net.sourceforge.plantuml.graphic.TextBlockUtils;
 import net.sourceforge.plantuml.svek.DecorateEntityImage2;
+import net.sourceforge.plantuml.ugraphic.TextLimitFinder;
 import net.sourceforge.plantuml.ugraphic.UFont;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
 import net.sourceforge.plantuml.ugraphic.UGraphicUtils;
@@ -85,15 +86,26 @@ public class ActivityDiagram3 extends UmlDiagram {
 	protected UmlDiagramInfo exportDiagramInternal(OutputStream os, CMapData cmap, int index,
 			FileFormatOption fileFormatOption, List<BufferedImage> flashcodes) throws IOException {
 		final TextBlock result = getResult();
+
+		final TextLimitFinder limitFinder = new TextLimitFinder(dummyStringBounder);
+		result.drawU(limitFinder, 0, 0);
+		final double negX = Math.min(0, limitFinder.getMinX());
+		final double negY = Math.min(0, limitFinder.getMinY());
+		assert negX <= 0;
+		assert negY <= 0;
+
 		final ISkinParam skinParam = getSkinParam();
-		final Dimension2D dim = Dimension2DDouble.delta(result.calculateDimension(dummyStringBounder), 20);
+		Dimension2D dim = result.calculateDimension(dummyStringBounder);
+		dim = new Dimension2DDouble(Math.max(dim.getWidth(), limitFinder.getMaxX() - negX), Math.max(dim.getHeight(),
+				limitFinder.getMaxY() - negY));
+		dim = Dimension2DDouble.delta(dim, 20);
 
 		final double dpiFactor = getDpiFactor(fileFormatOption);
 
 		final UGraphic ug = fileFormatOption.createUGraphic(skinParam.getColorMapper(), dpiFactor, dim, getSkinParam()
 				.getBackgroundColor(), isRotation());
 
-		result.drawU(ug, 8, 5);
+		result.drawU(ug, 8 - negX, 5 - negY);
 		UGraphicUtils.writeImage(os, ug, getMetadata(), getDpi(fileFormatOption));
 		// final BufferedImage im = ((UGraphicG2d) ug).getBufferedImage();
 		// PngIO.write(im, os, getMetadata(), getDpi(fileFormatOption));

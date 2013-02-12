@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 9786 $
+ * Revision $Revision: 9911 $
  *
  */
 package net.sourceforge.plantuml.preproc;
@@ -48,9 +48,9 @@ public class Preprocessor implements ReadLine {
 	private final PreprocessorInclude rawSource;
 	private final IfManager source;
 
-	public Preprocessor(ReadLine reader, Defines defines, Set<File> filesUsed, File newCurrentDir) {
+	public Preprocessor(ReadLine reader, String charset, Defines defines, Set<File> filesUsed, File newCurrentDir) {
 		this.defines = defines;
-		this.rawSource = new PreprocessorInclude(reader, filesUsed, newCurrentDir);
+		this.rawSource = new PreprocessorInclude(reader, charset, filesUsed, newCurrentDir);
 		this.source = new IfManager(rawSource, defines);
 	}
 

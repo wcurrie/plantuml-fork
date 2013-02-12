@@ -70,7 +70,7 @@ public class License {
 			text.add("");
 			text.add("The generated images can then be used without any reference to the LGPL license.");
 			text.add("It is not even necessary to stipulate that they have been generated with PlantUML,");
-			text.add("also this will be appreciate by PlantUML team.");
+			text.add("although this will be appreciate by PlantUML team.");
 			text.add("");
 			text.add("There is an exception : if the textual description in PlantUML language is also covered");
 			text.add("by a license (like the LGPL), then the generated images are logically covered");

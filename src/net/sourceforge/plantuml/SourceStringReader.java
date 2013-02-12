@@ -56,7 +56,7 @@ public class SourceStringReader {
 
 	public SourceStringReader(Defines defines, String source, List<String> config) {
 		try {
-			final BlockUmlBuilder builder = new BlockUmlBuilder(config, defines, new StringReader(source), null);
+			final BlockUmlBuilder builder = new BlockUmlBuilder(config, null, defines, new StringReader(source), null);
 			this.blocks = builder.getBlockUmls();
 		} catch (IOException e) {
 			Log.error("error " + e);

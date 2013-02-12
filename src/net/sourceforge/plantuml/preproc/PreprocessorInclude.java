@@ -28,19 +28,22 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 9786 $
+ * Revision $Revision: 9911 $
  *
  */
 package net.sourceforge.plantuml.preproc;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import net.sourceforge.plantuml.FileSystem;
+import net.sourceforge.plantuml.Log;
 import net.sourceforge.plantuml.OptionFlags;
 
 class PreprocessorInclude implements ReadLine {
@@ -48,6 +51,8 @@ class PreprocessorInclude implements ReadLine {
 	private static final Pattern includePattern = Pattern.compile("^\\s*!include\\s+\"?([^\"]+)\"?$");
 
 	private final ReadLine reader2;
+	private final String charset;
+	
 	private int numLine = 0;
 
 	private PreprocessorInclude included = null;
@@ -55,7 +60,8 @@ class PreprocessorInclude implements ReadLine {
 	private final File oldCurrentDir;
 	private final Set<File> filesUsed;
 
-	public PreprocessorInclude(ReadLine reader, Set<File> filesUsed, File newCurrentDir) {
+	public PreprocessorInclude(ReadLine reader, String charset, Set<File> filesUsed, File newCurrentDir) {
+		this.charset = charset;
 		this.reader2 = reader;
 		this.filesUsed = filesUsed;
 		if (newCurrentDir == null) {
@@ -110,7 +116,7 @@ class PreprocessorInclude implements ReadLine {
 		final File f = FileSystem.getInstance().getFile(fileName);
 		if (f.exists()) {
 			filesUsed.add(f);
-			included = new PreprocessorInclude(getReaderInclude(f, suf), filesUsed, f.getParentFile());
+			included = new PreprocessorInclude(getReaderInclude(f, suf), charset, filesUsed, f.getParentFile());
 		} else {
 			return "Cannot include " + f.getAbsolutePath();
 		}
@@ -125,7 +131,12 @@ class PreprocessorInclude implements ReadLine {
 			}
 			return new StartDiagramExtractReader(f, bloc);
 		}
-		return new ReadLineReader(new FileReader(f));
+		if (charset==null) {
+			Log.info("Using default charset");
+			return new ReadLineReader(new FileReader(f));
+		}
+		Log.info("Using charset " + charset);
+		return new ReadLineReader(new InputStreamReader(new FileInputStream(f), charset));
 	}
 
 	public int getLineNumber() {
