@@ -33,39 +33,55 @@
  */
 package net.sourceforge.plantuml.ugraphic;
 
-import java.awt.geom.Dimension2D;
 import java.io.IOException;
 import java.io.OutputStream;
 
 import net.sourceforge.plantuml.Url;
 import net.sourceforge.plantuml.graphic.StringBounder;
 
-public class TextLimitFinder implements UGraphic {
+public class UGraphicCompress implements UGraphic {
 
-	private final StringBounder stringBounder;
+	private final UGraphic ug;
+	private final CompressionTransform compressionTransform;
 
-	public TextLimitFinder(StringBounder stringBounder) {
-		this.stringBounder = stringBounder;
+	public UGraphicCompress(UGraphic ug, CompressionTransform compressionTransform) {
+		this.ug = ug;
+		this.compressionTransform = compressionTransform;
 	}
 
-	private final UParam param = new UParam();
-
 	public StringBounder getStringBounder() {
-		return stringBounder;
+		return ug.getStringBounder();
 	}
 
 	public UParam getParam() {
-		return param;
+		return ug.getParam();
 	}
 
 	public void draw(double x, double y, UShape shape) {
-		if (shape instanceof UText) {
-			drawText(x, y, (UText) shape);
+		if (shape instanceof ULine) {
+			drawLine(x, y, (ULine) shape);
+		} else {
+			ug.draw(x, ct(y), shape);
 		}
 	}
 
+	private void drawLine(double x, double y, ULine shape) {
+		drawLine(x, ct(y), x + shape.getDX(), ct(y + shape.getDY()));
+	}
+
+	private double ct(double v) {
+		return compressionTransform.transform(v);
+	}
+
+	private void drawLine(double x1, double y1, double x2, double y2) {
+		final double xmin = Math.min(x1, x2);
+		final double xmax = Math.max(x1, x2);
+		final double ymin = Math.min(y1, y2);
+		final double ymax = Math.max(y1, y2);
+		ug.draw(xmin, ymin, new ULine(xmax - xmin, ymax - ymin));
+	}
+
 	public void centerChar(double x, double y, char c, UFont font) {
-		throw new UnsupportedOperationException();
 	}
 
 	public void translate(double dx, double dy) {
@@ -84,69 +100,32 @@ public class TextLimitFinder implements UGraphic {
 		throw new UnsupportedOperationException();
 	}
 
+	public void writeImage(OutputStream os, String metadata, int dpi) throws IOException {
+		ug.writeImage(os, metadata, dpi);
+	}
+
 	public void setClip(UClip clip) {
-		throw new UnsupportedOperationException();
+		ug.setClip(clip);
 	}
 
 	public void setAntiAliasing(boolean trueForOn) {
-		throw new UnsupportedOperationException();
+		ug.setAntiAliasing(trueForOn);
 	}
 
 	public ColorMapper getColorMapper() {
-		throw new UnsupportedOperationException();
+		return ug.getColorMapper();
 	}
 
 	public void startUrl(Url url) {
-		throw new UnsupportedOperationException();
+		ug.startUrl(url);
 	}
 
 	public void closeAction() {
-		throw new UnsupportedOperationException();
+		ug.closeAction();
 	}
 
 	public UGroup createGroup() {
-		throw new UnsupportedOperationException();
-	}
-
-	public void writeImage(OutputStream os, String metadata, int dpi) throws IOException {
-		throw new UnsupportedOperationException();
-	}
-
-	private double maxX;
-	private double maxY;
-	private double minX;
-	private double minY;
-
-	private void addPoint(double x, double y) {
-		this.maxX = Math.max(x, maxX);
-		this.maxY = Math.max(y, maxY);
-		this.minX = Math.min(x, minX);
-		this.minY = Math.min(y, minY);
-	}
-
-	private void drawText(double x, double y, UText text) {
-		final Dimension2D dim = stringBounder.calculateDimension(text.getFontConfiguration().getFont(), text.getText());
-		y -= dim.getHeight() - 1.5;
-		addPoint(x, y);
-		addPoint(x, y + dim.getHeight());
-		addPoint(x + dim.getWidth(), y);
-		addPoint(x + dim.getWidth(), y + dim.getHeight());
-	}
-
-	public double getMaxX() {
-		return maxX;
-	}
-
-	public double getMaxY() {
-		return maxY;
-	}
-
-	public double getMinX() {
-		return minX;
-	}
-
-	public double getMinY() {
-		return minY;
+		return ug.createGroup();
 	}
 
 }

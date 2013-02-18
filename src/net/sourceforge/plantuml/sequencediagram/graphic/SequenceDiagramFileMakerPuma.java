@@ -162,7 +162,7 @@ public class SequenceDiagramFileMakerPuma implements FileMaker {
 
 	public UmlDiagramInfo createOne2(OutputStream os, int index) throws IOException {
 		final UGraphic createImage = createImage((int) fullDimension.getWidth(), pages.get(index), index);
-		UGraphicUtils.writeImage(os, createImage, diagram.getMetadata(), diagram.getDpi(fileFormatOption));
+		createImage.writeImage(os, diagram.getMetadata(), diagram.getDpi(fileFormatOption));
 //		if (createImage instanceof UGraphicG2d) {
 //			final BufferedImage im = ((UGraphicG2d) createImage).getBufferedImage();
 //			PngIO.write(im, os, diagram.getMetadata(), diagram.getDpi(fileFormatOption));

@@ -181,6 +181,10 @@ public class UGraphicSvg extends AbstractUGraphic<SvgGraphics> implements ClipCo
 		return new SvgGroup();
 	}
 
+	public void writeImage(OutputStream os, String metadata, int dpi) throws IOException {
+		createXml(os);
+	}
+
 	// @Override
 	// public String startHiddenGroup() {
 	// getGraphicObject().startHiddenGroup();

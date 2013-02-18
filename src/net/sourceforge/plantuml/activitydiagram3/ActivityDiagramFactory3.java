@@ -44,6 +44,7 @@ import net.sourceforge.plantuml.activitydiagram3.command.CommandGroup3;
 import net.sourceforge.plantuml.activitydiagram3.command.CommandGroupEnd3;
 import net.sourceforge.plantuml.activitydiagram3.command.CommandIf2;
 import net.sourceforge.plantuml.activitydiagram3.command.CommandIf3;
+import net.sourceforge.plantuml.activitydiagram3.command.CommandIf4;
 import net.sourceforge.plantuml.activitydiagram3.command.CommandKill3;
 import net.sourceforge.plantuml.activitydiagram3.command.CommandRepeat3;
 import net.sourceforge.plantuml.activitydiagram3.command.CommandRepeatWhile3;
@@ -67,6 +68,7 @@ public class ActivityDiagramFactory3 extends AbstractUmlSystemCommandFactory {
 
 		addCommonCommands(system);
 		addCommand(new CommandActivity3(system));
+		addCommand(new CommandIf4(system));
 		addCommand(new CommandIf3(system));
 		addCommand(new CommandIf2(system));
 		addCommand(new CommandElse3(system));

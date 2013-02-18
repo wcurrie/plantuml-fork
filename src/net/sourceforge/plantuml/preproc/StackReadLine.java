@@ -28,30 +28,30 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 9963 $
+ * Revision $Revision: 9786 $
  *
  */
-package net.sourceforge.plantuml.version;
+package net.sourceforge.plantuml.preproc;
 
-public class Version {
+import java.util.Collection;
+import java.util.Iterator;
 
-	public static int version() {
-		return 7958;
+public class StackReadLine implements ReadLine {
+
+	final private Iterator<String> it;
+
+	public StackReadLine(Collection<String> all) {
+		this.it = all.iterator();
 	}
 
-	public static String versionString() {
-		if (beta()) {
-			return "" + (version() + 1) + "beta";
+	public void close() {
+	}
+
+	public String readLine() {
+		if (it.hasNext()) {
+			return it.next();
 		}
-		return "" + version();
-	}
-
-	public static boolean beta() {
-		return false;
-	}
-
-	public static long compileTime() {
-		return 1361215139377L;
+		return null;
 	}
 
 }

@@ -31,6 +31,9 @@
  */
 package net.sourceforge.plantuml.ugraphic.txt;
 
+import java.io.IOException;
+import java.io.OutputStream;
+
 import net.sourceforge.plantuml.Url;
 import net.sourceforge.plantuml.asciiart.TextStringBounder;
 import net.sourceforge.plantuml.asciiart.TranslatedCharArea;
@@ -98,6 +101,10 @@ public class UGraphicTxt extends AbstractCommonUGraphic {
 
 	public UGroup createGroup() {
 		return new UGroupNull();
+	}
+
+	public void writeImage(OutputStream os, String metadata, int dpi) throws IOException {
+		throw new UnsupportedOperationException();
 	}
 
 }

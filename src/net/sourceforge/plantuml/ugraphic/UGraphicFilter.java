@@ -33,39 +33,39 @@
  */
 package net.sourceforge.plantuml.ugraphic;
 
-import java.awt.geom.Dimension2D;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.util.Arrays;
+import java.util.Collection;
 
 import net.sourceforge.plantuml.Url;
 import net.sourceforge.plantuml.graphic.StringBounder;
 
-public class TextLimitFinder implements UGraphic {
+public class UGraphicFilter implements UGraphic {
 
-	private final StringBounder stringBounder;
+	private final UGraphic ug;
+	private final Collection<Class<? extends UShape>> toprint;
 
-	public TextLimitFinder(StringBounder stringBounder) {
-		this.stringBounder = stringBounder;
+	public UGraphicFilter(UGraphic ug, Class<? extends UShape>... toprint) {
+		this.ug = ug;
+		this.toprint = Arrays.asList(toprint);
 	}
 
-	private final UParam param = new UParam();
-
 	public StringBounder getStringBounder() {
-		return stringBounder;
+		return ug.getStringBounder();
 	}
 
 	public UParam getParam() {
-		return param;
+		return ug.getParam();
 	}
 
 	public void draw(double x, double y, UShape shape) {
-		if (shape instanceof UText) {
-			drawText(x, y, (UText) shape);
+		if (toprint.contains(shape.getClass())) {
+			ug.draw(x, y, shape);
 		}
 	}
 
 	public void centerChar(double x, double y, char c, UFont font) {
-		throw new UnsupportedOperationException();
 	}
 
 	public void translate(double dx, double dy) {
@@ -84,69 +84,32 @@ public class TextLimitFinder implements UGraphic {
 		throw new UnsupportedOperationException();
 	}
 
+	public void writeImage(OutputStream os, String metadata, int dpi) throws IOException {
+		ug.writeImage(os, metadata, dpi);
+	}
+
 	public void setClip(UClip clip) {
-		throw new UnsupportedOperationException();
+		ug.setClip(clip);
 	}
 
 	public void setAntiAliasing(boolean trueForOn) {
-		throw new UnsupportedOperationException();
+		ug.setAntiAliasing(trueForOn);
 	}
 
 	public ColorMapper getColorMapper() {
-		throw new UnsupportedOperationException();
+		return ug.getColorMapper();
 	}
 
 	public void startUrl(Url url) {
-		throw new UnsupportedOperationException();
+		ug.startUrl(url);
 	}
 
 	public void closeAction() {
-		throw new UnsupportedOperationException();
+		ug.closeAction();
 	}
 
 	public UGroup createGroup() {
-		throw new UnsupportedOperationException();
-	}
-
-	public void writeImage(OutputStream os, String metadata, int dpi) throws IOException {
-		throw new UnsupportedOperationException();
-	}
-
-	private double maxX;
-	private double maxY;
-	private double minX;
-	private double minY;
-
-	private void addPoint(double x, double y) {
-		this.maxX = Math.max(x, maxX);
-		this.maxY = Math.max(y, maxY);
-		this.minX = Math.min(x, minX);
-		this.minY = Math.min(y, minY);
-	}
-
-	private void drawText(double x, double y, UText text) {
-		final Dimension2D dim = stringBounder.calculateDimension(text.getFontConfiguration().getFont(), text.getText());
-		y -= dim.getHeight() - 1.5;
-		addPoint(x, y);
-		addPoint(x, y + dim.getHeight());
-		addPoint(x + dim.getWidth(), y);
-		addPoint(x + dim.getWidth(), y + dim.getHeight());
-	}
-
-	public double getMaxX() {
-		return maxX;
-	}
-
-	public double getMaxY() {
-		return maxY;
-	}
-
-	public double getMinX() {
-		return minX;
-	}
-
-	public double getMinY() {
-		return minY;
+		return ug.createGroup();
 	}
 
 }

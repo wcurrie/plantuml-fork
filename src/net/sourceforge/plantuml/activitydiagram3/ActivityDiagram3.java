@@ -59,10 +59,13 @@ import net.sourceforge.plantuml.graphic.StringBounderUtils;
 import net.sourceforge.plantuml.graphic.TextBlock;
 import net.sourceforge.plantuml.graphic.TextBlockUtils;
 import net.sourceforge.plantuml.svek.DecorateEntityImage2;
+import net.sourceforge.plantuml.ugraphic.CompressionTransform;
+import net.sourceforge.plantuml.ugraphic.SlotFinder;
+import net.sourceforge.plantuml.ugraphic.SlotSet;
 import net.sourceforge.plantuml.ugraphic.TextLimitFinder;
 import net.sourceforge.plantuml.ugraphic.UFont;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
-import net.sourceforge.plantuml.ugraphic.UGraphicUtils;
+import net.sourceforge.plantuml.ugraphic.UGraphicCompress;
 
 public class ActivityDiagram3 extends UmlDiagram {
 
@@ -82,7 +85,7 @@ public class ActivityDiagram3 extends UmlDiagram {
 		return UmlDiagramType.ACTIVITY;
 	}
 
-	@Override
+	//@Override
 	protected UmlDiagramInfo exportDiagramInternal(OutputStream os, CMapData cmap, int index,
 			FileFormatOption fileFormatOption, List<BufferedImage> flashcodes) throws IOException {
 		final TextBlock result = getResult();
@@ -105,10 +108,50 @@ public class ActivityDiagram3 extends UmlDiagram {
 		final UGraphic ug = fileFormatOption.createUGraphic(skinParam.getColorMapper(), dpiFactor, dim, getSkinParam()
 				.getBackgroundColor(), isRotation());
 
-		result.drawU(ug, 8 - negX, 5 - negY);
-		UGraphicUtils.writeImage(os, ug, getMetadata(), getDpi(fileFormatOption));
-		// final BufferedImage im = ((UGraphicG2d) ug).getBufferedImage();
-		// PngIO.write(im, os, getMetadata(), getDpi(fileFormatOption));
+		final double posy = 5 - negY;
+		result.drawU(ug, 8 - negX, posy);
+		ug.writeImage(os, getMetadata(), getDpi(fileFormatOption));
+
+		return new UmlDiagramInfo(dim.getWidth());
+	}
+
+	protected UmlDiagramInfo exportDiagramInternal2(OutputStream os, CMapData cmap, int index,
+			FileFormatOption fileFormatOption, List<BufferedImage> flashcodes) throws IOException {
+		final TextBlock result = getResult();
+
+		final TextLimitFinder limitFinder = new TextLimitFinder(dummyStringBounder);
+		result.drawU(limitFinder, 0, 0);
+		final double negX = Math.min(0, limitFinder.getMinX());
+		final double negY = Math.min(0, limitFinder.getMinY());
+		assert negX <= 0;
+		assert negY <= 0;
+
+		final SlotFinder slotFinder = new SlotFinder(dummyStringBounder);
+		result.drawU(slotFinder, 0, 0);
+		final SlotSet ysSlotSet = slotFinder.getYSlotSet().reverse();
+
+		final ISkinParam skinParam = getSkinParam();
+		Dimension2D dim = result.calculateDimension(dummyStringBounder);
+		dim = new Dimension2DDouble(Math.max(dim.getWidth(), limitFinder.getMaxX() - negX), Math.max(dim.getHeight(),
+				limitFinder.getMaxY() - negY));
+		dim = Dimension2DDouble.delta(dim, 20);
+
+		final double dpiFactor = getDpiFactor(fileFormatOption);
+
+		UGraphic ug = fileFormatOption.createUGraphic(skinParam.getColorMapper(), dpiFactor, dim, getSkinParam()
+				.getBackgroundColor(), isRotation());
+		// ug = new UGraphicFilter(ug, URectangle.class, UEllipse.class, UPolygon.class);
+
+		final double posy = 5 - negY;
+		// for (Slot sl : ysSlotSet) {
+		// ug.getParam().setBackcolor(HtmlColorUtils.RED);
+		// ug.draw(0, posy + sl.getStart(), new URectangle(dim.getWidth(), sl.size()));
+		// }
+
+		ug = new UGraphicCompress(ug, new CompressionTransform(ysSlotSet));
+		result.drawU(ug, 8 - negX, posy);
+		ug.writeImage(os, getMetadata(), getDpi(fileFormatOption));
+
 		return new UmlDiagramInfo(dim.getWidth());
 	}
 

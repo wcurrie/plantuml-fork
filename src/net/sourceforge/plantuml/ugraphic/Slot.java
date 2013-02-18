@@ -28,30 +28,61 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 9963 $
+ * Revision $Revision: 7696 $
  *
  */
-package net.sourceforge.plantuml.version;
+package net.sourceforge.plantuml.ugraphic;
 
-public class Version {
+public class Slot implements Comparable<Slot> {
 
-	public static int version() {
-		return 7958;
-	}
+	private final double start;
+	private final double end;
 
-	public static String versionString() {
-		if (beta()) {
-			return "" + (version() + 1) + "beta";
+	public Slot(double start, double end) {
+		if (start >= end) {
+			throw new IllegalArgumentException();
 		}
-		return "" + version();
+		this.start = start;
+		this.end = end;
 	}
 
-	public static boolean beta() {
-		return false;
+	@Override
+	public String toString() {
+		return "(" + start + "," + end + ")";
 	}
 
-	public static long compileTime() {
-		return 1361215139377L;
+	public double getStart() {
+		return start;
+	}
+
+	public double getEnd() {
+		return end;
+	}
+
+	public double size() {
+		return end - start;
+	}
+
+	public boolean contains(double v) {
+		return v >= start && v <= end;
+	}
+
+	public boolean intersect(Slot other) {
+		return contains(other.start) || contains(other.end) || other.contains(start) || other.contains(end);
+	}
+
+	public Slot merge(Slot other) {
+		return new Slot(Math.min(start, other.start), Math.max(end, other.end));
+	}
+
+	public int compareTo(Slot other) {
+		if (this.start < other.start) {
+			return -1;
+		}
+		if (this.start > other.start) {
+			return 1;
+		}
+		return 0;
 	}
 
 }

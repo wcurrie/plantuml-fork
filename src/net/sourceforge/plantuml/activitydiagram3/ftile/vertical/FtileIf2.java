@@ -33,13 +33,13 @@
  */
 package net.sourceforge.plantuml.activitydiagram3.ftile.vertical;
 
-import java.awt.Font;
 import java.awt.geom.Dimension2D;
 import java.util.List;
 
 import net.sourceforge.plantuml.Dimension2DDouble;
 import net.sourceforge.plantuml.SpriteContainerEmpty;
 import net.sourceforge.plantuml.Url;
+import net.sourceforge.plantuml.activitydiagram3.ftile.Arrows;
 import net.sourceforge.plantuml.activitydiagram3.ftile.Diamond;
 import net.sourceforge.plantuml.activitydiagram3.ftile.Ftile;
 import net.sourceforge.plantuml.activitydiagram3.ftile.FtileMinWidth;
@@ -47,6 +47,7 @@ import net.sourceforge.plantuml.activitydiagram3.ftile.Snake;
 import net.sourceforge.plantuml.cucadiagram.Display;
 import net.sourceforge.plantuml.graphic.FontConfiguration;
 import net.sourceforge.plantuml.graphic.HorizontalAlignement;
+import net.sourceforge.plantuml.graphic.HtmlColor;
 import net.sourceforge.plantuml.graphic.HtmlColorUtils;
 import net.sourceforge.plantuml.graphic.StringBounder;
 import net.sourceforge.plantuml.graphic.TextBlock;
@@ -62,11 +63,18 @@ class FtileIf2 implements Ftile {
 	private final TextBlock label;
 	private final TextBlock label1;
 	private final TextBlock label2;
+	private final HtmlColor borderColor;
+	private final HtmlColor arrowColor;
+	private final HtmlColor backColor;
 
-	public FtileIf2(Ftile tile1, Ftile tile2, Display labelTest, Display label1, Display label2) {
+	public FtileIf2(Ftile tile1, Ftile tile2, Display labelTest, Display label1, Display label2, HtmlColor borderColor,
+			HtmlColor backColor, HtmlColor arrowColor, UFont font) {
+		this.borderColor = borderColor;
+		this.arrowColor = arrowColor;
+		this.backColor = backColor;
 		this.tile1 = new FtileMinWidth(tile1, 30);
 		this.tile2 = new FtileMinWidth(tile2, 30);
-		final UFont font = new UFont("Serif", Font.PLAIN, 14);
+		// final UFont font = new UFont("Serif", Font.PLAIN, 14);
 		final FontConfiguration fc = new FontConfiguration(font, HtmlColorUtils.BLACK);
 		if (labelTest == null) {
 			label = TextBlockUtils.empty(0, 0);
@@ -90,91 +98,99 @@ class FtileIf2 implements Ftile {
 		final Dimension2D dimTotal = calculateDimension(stringBounder);
 		final Dimension2D dim1 = tile1.calculateDimension(stringBounder);
 		final Dimension2D dim2 = tile2.calculateDimension(stringBounder);
-		final Dimension2D dimLabel = label.calculateDimension(stringBounder);
 
-		final double delta1 = getDelta1(stringBounder);
-		final double y1 = y + delta1 + (dimTotal.getHeight() - delta1 - dim1.getHeight()) / 2;
+		final double y1 = y + (dimTotal.getHeight() - dim1.getHeight()) / 2;
 		final double x1 = x;
 		tile1.drawU(ug, x1, y1);
 		final double x2 = x + dimTotal.getWidth() - dim2.getWidth();
-		final double y2 = y + delta1 + (dimTotal.getHeight() - delta1 - dim2.getHeight()) / 2;
+		final double y2 = y + (dimTotal.getHeight() - dim2.getHeight()) / 2;
 		tile2.drawU(ug, x2, y2);
 
 		final double xDiamond = x + (dimTotal.getWidth() - 2 * Diamond.diamondHalfSize) / 2;
-		final double yDiamond = y + dimLabel.getHeight() - Diamond.diamondHalfSize / 2 + 10;
-		drawDiamond(ug, xDiamond, yDiamond);
+		drawDiamond(ug, xDiamond, y);
 
+		ug.getParam().setColor(arrowColor);
 		ug.getParam().setStroke(new UStroke(1.5));
 		final Snake s1 = new Snake();
 		s1.addPoint(xDiamond, y + Diamond.diamondHalfSize);
 		s1.addPoint(x1 + dim1.getWidth() / 2, y + Diamond.diamondHalfSize);
 		s1.addPoint(x1 + dim1.getWidth() / 2, y1);
-		// s1.drawU(ug);
+		s1.drawU(ug);
 
 		final Snake s2 = new Snake();
 		s2.addPoint(xDiamond + 2 * Diamond.diamondHalfSize, y + Diamond.diamondHalfSize);
 		s2.addPoint(x2 + dim2.getWidth() / 2, y + Diamond.diamondHalfSize);
 		s2.addPoint(x2 + dim2.getWidth() / 2, y2);
-		// s2.drawU(ug);
+		s2.drawU(ug);
 
 		if (tile1.isKilled() == false) {
 			final Snake s3 = new Snake();
 			s3.addPoint(x1 + dim1.getWidth() / 2, y1 + dim1.getHeight());
 			s3.addPoint(x1 + dim1.getWidth() / 2, y + dimTotal.getHeight() - Diamond.diamondHalfSize);
-			s3.addPoint(xDiamond, y + dimTotal.getHeight() - Diamond.diamondHalfSize);
-			// s3.drawU(ug);
+			if (tile2.isKilled()) {
+				s3.addPoint(x + dimTotal.getWidth() / 2 - 1, y + dimTotal.getHeight() - Diamond.diamondHalfSize);
+				s3.addPoint(x + dimTotal.getWidth() / 2 - 1, y + dimTotal.getHeight());
+			} else {
+				s3.addPoint(xDiamond, y + dimTotal.getHeight() - Diamond.diamondHalfSize);
+			}
+			s3.drawU(ug);
 		}
 
 		if (tile2.isKilled() == false) {
 			final Snake s4 = new Snake();
 			s4.addPoint(x2 + dim2.getWidth() / 2, y2 + dim2.getHeight());
 			s4.addPoint(x2 + dim2.getWidth() / 2, y + dimTotal.getHeight() - Diamond.diamondHalfSize);
-			s4.addPoint(xDiamond + 2 * Diamond.diamondHalfSize, y + dimTotal.getHeight() - Diamond.diamondHalfSize);
-			// s4.drawU(ug);
+			if (tile1.isKilled()) {
+				s4.addPoint(x + dimTotal.getWidth() / 2 - 1, y + dimTotal.getHeight() - Diamond.diamondHalfSize);
+				s4.addPoint(x + dimTotal.getWidth() / 2 - 1, y + dimTotal.getHeight());
+			} else {
+				s4.addPoint(xDiamond + 2 * Diamond.diamondHalfSize, y + dimTotal.getHeight() - Diamond.diamondHalfSize);
+
+			}
+			s4.drawU(ug);
 		}
 		ug.getParam().setStroke(new UStroke());
-		drawDiamond(ug, xDiamond, y + dimTotal.getHeight() - 2 * Diamond.diamondHalfSize);
+		ug.getParam().setColor(arrowColor);
+		ug.getParam().setBackcolor(arrowColor);
+		ug.draw(x1 + dim1.getWidth() / 2, y1, Arrows.asToDown());
+		ug.draw(x2 + dim2.getWidth() / 2, y2, Arrows.asToDown());
+		if (tile1.isKilled() == false && tile2.isKilled() == false) {
+			drawDiamond(ug, xDiamond, y + dimTotal.getHeight() - 2 * Diamond.diamondHalfSize);
 
-		ug.getParam().setColor(HtmlColorUtils.getColorIfValid("#A80036"));
-		ug.getParam().setBackcolor(HtmlColorUtils.getColorIfValid("#A80036"));
-		// ug.draw(x1 + dim1.getWidth() / 2, y1, Arrows.asToDown());
-		// ug.draw(x2 + dim2.getWidth() / 2, y2, Arrows.asToDown());
+			ug.getParam().setColor(arrowColor);
+			ug.getParam().setBackcolor(arrowColor);
+			if (tile1.isKilled() == false) {
+				ug.draw(xDiamond, y + dimTotal.getHeight() - Diamond.diamondHalfSize, Arrows.asToRight());
+			}
 
-		if (tile1.isKilled() == false) {
-			// ug.draw(xDiamond, y + dimTotal.getHeight() - Diamond.diamondHalfSize, Arrows.asToRight());
+			if (tile2.isKilled() == false) {
+				ug.draw(xDiamond + 2 * Diamond.diamondHalfSize, y + dimTotal.getHeight() - Diamond.diamondHalfSize,
+						Arrows.asToLeft());
+			}
 		}
-
-		if (tile2.isKilled() == false) {
-			// ug.draw(xDiamond + 2 * Diamond.diamondHalfSize, y + dimTotal.getHeight() - Diamond.diamondHalfSize,
-			// Arrows.asToLeft());
-		}
-		label.drawU(ug, x + dimTotal.getWidth() / 2 + 9, y);
+		final Dimension2D dimLabel = label.calculateDimension(stringBounder);
+		label.drawU(ug, x + dimTotal.getWidth() / 2 + 5, y - dimLabel.getHeight() - 7);
 
 		final Dimension2D dimLabel1 = label1.calculateDimension(stringBounder);
-		label1.drawU(ug, xDiamond - dimLabel1.getWidth(), yDiamond);
+		label1.drawU(ug, xDiamond - dimLabel1.getWidth(), y - dimLabel1.getHeight() + Diamond.diamondHalfSize);
 
 		final Dimension2D dimLabel2 = label2.calculateDimension(stringBounder);
-		label2.drawU(ug, xDiamond + 2 * Diamond.diamondHalfSize, yDiamond);
+		label2.drawU(ug, xDiamond + 2 * Diamond.diamondHalfSize, y - dimLabel2.getHeight() + Diamond.diamondHalfSize);
 
 	}
 
 	private void drawDiamond(UGraphic ug, double xTheoricalPosition, double yTheoricalPosition) {
 		ug.getParam().setStroke(new UStroke(1.5));
-		ug.getParam().setColor(HtmlColorUtils.getColorIfValid("#A80036"));
-		ug.getParam().setBackcolor(HtmlColorUtils.getColorIfValid("#FEFECE"));
+		ug.getParam().setColor(borderColor);
+		ug.getParam().setBackcolor(backColor);
 		ug.draw(xTheoricalPosition, yTheoricalPosition, Diamond.asPolygon());
 		ug.getParam().setStroke(new UStroke());
-	}
-
-	private double getDelta1(StringBounder stringBounder) {
-		final Dimension2D dimLabel = label.calculateDimension(stringBounder);
-		return dimLabel.getHeight();
 	}
 
 	public Dimension2D calculateDimension(StringBounder stringBounder) {
 		Dimension2D dim = Dimension2DDouble.mergeLR(tile1.calculateDimension(stringBounder),
 				tile2.calculateDimension(stringBounder));
-		dim = Dimension2DDouble.delta(dim, 25, 30 + 2 * Diamond.diamondHalfSize + getDelta1(stringBounder));
+		dim = Dimension2DDouble.delta(dim, 25, 100);
 		return dim;
 	}
 

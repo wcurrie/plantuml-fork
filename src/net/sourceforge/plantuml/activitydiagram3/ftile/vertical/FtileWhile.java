@@ -33,7 +33,6 @@
  */
 package net.sourceforge.plantuml.activitydiagram3.ftile.vertical;
 
-import java.awt.Font;
 import java.awt.geom.Dimension2D;
 import java.util.List;
 
@@ -69,14 +68,14 @@ class FtileWhile implements Ftile {
 	private final HtmlColor arrowColor;
 
 	public FtileWhile(Ftile whileBlock, Display test, VerticalFactory factory, HtmlColor borderColor,
-			HtmlColor backColor, HtmlColor arrowColor) {
+			HtmlColor backColor, HtmlColor arrowColor, UFont font) {
 		this.borderColor = borderColor;
 		this.arrowColor = arrowColor;
 		final Ftile tmp = new FtileAssemblySimple(new FtileDiamond(borderColor, backColor), new FtileAssemblySimple(
 				new FtileVerticalArrow(smallArrow, arrowColor), whileBlock));
 
 		this.whileBlock = new FtileMarged(tmp, 10);
-		final UFont font = new UFont("Serif", Font.PLAIN, 14);
+		// final UFont font = new UFont("Serif", Font.PLAIN, 14);
 		final FontConfiguration fc = new FontConfiguration(font, HtmlColorUtils.BLACK);
 		if (test == null) {
 			this.test = TextBlockUtils.empty(0, 0);

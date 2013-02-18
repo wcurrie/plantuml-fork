@@ -33,39 +33,54 @@
  */
 package net.sourceforge.plantuml.ugraphic;
 
-import java.awt.geom.Dimension2D;
 import java.io.IOException;
 import java.io.OutputStream;
 
 import net.sourceforge.plantuml.Url;
 import net.sourceforge.plantuml.graphic.StringBounder;
 
-public class TextLimitFinder implements UGraphic {
+public class SlotFinder implements UGraphic {
 
+	private final SlotSet yslot = new SlotSet();
 	private final StringBounder stringBounder;
 
-	public TextLimitFinder(StringBounder stringBounder) {
+	public SlotFinder(StringBounder stringBounder) {
 		this.stringBounder = stringBounder;
 	}
-
-	private final UParam param = new UParam();
 
 	public StringBounder getStringBounder() {
 		return stringBounder;
 	}
+
+	private final UParam param = new UParam();
 
 	public UParam getParam() {
 		return param;
 	}
 
 	public void draw(double x, double y, UShape shape) {
-		if (shape instanceof UText) {
-			drawText(x, y, (UText) shape);
+		if (shape instanceof URectangle) {
+			drawRectangle(x, y, (URectangle) shape);
+		} else if (shape instanceof UPolygon) {
+			drawPolygon(x, y, (UPolygon) shape);
+		} else if (shape instanceof UEllipse) {
+			drawEllipse(x, y, (UEllipse) shape);
 		}
 	}
 
+	private void drawEllipse(double x, double y, UEllipse shape) {
+		yslot.addSlot(y, y + shape.getHeight());
+	}
+
+	private void drawPolygon(double x, double y, UPolygon shape) {
+		yslot.addSlot(y + shape.getMinY(), y + shape.getMaxY());
+	}
+
+	private void drawRectangle(double x, double y, URectangle shape) {
+		yslot.addSlot(y, y + shape.getHeight());
+	}
+
 	public void centerChar(double x, double y, char c, UFont font) {
-		throw new UnsupportedOperationException();
 	}
 
 	public void translate(double dx, double dy) {
@@ -81,6 +96,10 @@ public class TextLimitFinder implements UGraphic {
 	}
 
 	public double getTranslateY() {
+		throw new UnsupportedOperationException();
+	}
+
+	public void writeImage(OutputStream os, String metadata, int dpi) throws IOException {
 		throw new UnsupportedOperationException();
 	}
 
@@ -108,45 +127,8 @@ public class TextLimitFinder implements UGraphic {
 		throw new UnsupportedOperationException();
 	}
 
-	public void writeImage(OutputStream os, String metadata, int dpi) throws IOException {
-		throw new UnsupportedOperationException();
-	}
-
-	private double maxX;
-	private double maxY;
-	private double minX;
-	private double minY;
-
-	private void addPoint(double x, double y) {
-		this.maxX = Math.max(x, maxX);
-		this.maxY = Math.max(y, maxY);
-		this.minX = Math.min(x, minX);
-		this.minY = Math.min(y, minY);
-	}
-
-	private void drawText(double x, double y, UText text) {
-		final Dimension2D dim = stringBounder.calculateDimension(text.getFontConfiguration().getFont(), text.getText());
-		y -= dim.getHeight() - 1.5;
-		addPoint(x, y);
-		addPoint(x, y + dim.getHeight());
-		addPoint(x + dim.getWidth(), y);
-		addPoint(x + dim.getWidth(), y + dim.getHeight());
-	}
-
-	public double getMaxX() {
-		return maxX;
-	}
-
-	public double getMaxY() {
-		return maxY;
-	}
-
-	public double getMinX() {
-		return minX;
-	}
-
-	public double getMinY() {
-		return minY;
+	public SlotSet getYSlotSet() {
+		return yslot;
 	}
 
 }

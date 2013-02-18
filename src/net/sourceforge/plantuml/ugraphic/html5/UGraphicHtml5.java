@@ -33,6 +33,8 @@ package net.sourceforge.plantuml.ugraphic.html5;
 
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.io.OutputStream;
 
 import net.sourceforge.plantuml.Url;
 import net.sourceforge.plantuml.graphic.StringBounder;
@@ -108,6 +110,10 @@ public class UGraphicHtml5 extends AbstractUGraphic<Html5Drawer> implements Clip
 
 	public String generateHtmlCode() {
 		return getGraphicObject().generateHtmlCode();
+	}
+
+	public void writeImage(OutputStream os, String metadata, int dpi) throws IOException {
+		os.write(generateHtmlCode().getBytes());
 	}
 
 //	public void centerChar(double x, double y, char c, UFont font) {

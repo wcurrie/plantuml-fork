@@ -34,10 +34,12 @@
 package net.sourceforge.plantuml.preproc;
 
 import java.io.File;
-import java.io.FileNotFoundException;
+import java.io.FileInputStream;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 
+import net.sourceforge.plantuml.Log;
 import net.sourceforge.plantuml.StartUtils;
 
 public class StartDiagramExtractReader implements ReadLine {
@@ -45,11 +47,12 @@ public class StartDiagramExtractReader implements ReadLine {
 	private final ReadLine raw;
 	private boolean finished = false;
 
-	public StartDiagramExtractReader(File f, int num) throws IOException {
+	public StartDiagramExtractReader(File f, int num, String charset) throws IOException {
 		if (num < 0) {
 			throw new IllegalArgumentException();
 		}
-		raw = getReadLine(f);
+		// this.charset = charset;
+		raw = getReadLine(f, charset);
 		String s = null;
 		while ((s = raw.readLine()) != null) {
 			if (StartUtils.isArobaseStartDiagram(s)) {
@@ -62,14 +65,20 @@ public class StartDiagramExtractReader implements ReadLine {
 		finished = true;
 	}
 
-	private static ReadLine getReadLine(File f) throws FileNotFoundException {
-		return new UncommentReadLine(new ReadLineReader(new FileReader(f)));
+	private static ReadLine getReadLine(File f, String charset) throws IOException {
+		
+		if (charset == null) {
+			Log.info("Using default charset");
+			return new UncommentReadLine(new ReadLineReader(new FileReader(f)));
+		}
+		Log.info("Using charset " + charset);
+		return new UncommentReadLine(new ReadLineReader(new InputStreamReader(new FileInputStream(f), charset)));
 	}
 
-	static public boolean containsStartDiagram(File f) throws IOException {
+	static public boolean containsStartDiagram(File f, String charset) throws IOException {
 		ReadLine r = null;
 		try {
-			r = getReadLine(f);
+			r = getReadLine(f, charset);
 			String s = null;
 			while ((s = r.readLine()) != null) {
 				if (StartUtils.isArobaseStartDiagram(s)) {

@@ -33,7 +33,6 @@
  */
 package net.sourceforge.plantuml.activitydiagram3.ftile.vertical;
 
-import java.awt.Font;
 import java.awt.geom.Dimension2D;
 import java.util.List;
 
@@ -65,10 +64,10 @@ class FtileBox implements Ftile {
 	private final HtmlColor color;
 	private final HtmlColor backColor;
 
-	public FtileBox(Display label, HtmlColor color, HtmlColor backColor) {
+	public FtileBox(Display label, HtmlColor color, HtmlColor backColor, UFont font) {
 		this.color = color;
 		this.backColor = backColor;
-		final UFont font = new UFont("Serif", Font.PLAIN, 14);
+		// final UFont font = new UFont("Serif", Font.PLAIN, 14);
 		final FontConfiguration fc = new FontConfiguration(font, HtmlColorUtils.BLACK);
 		tb = TextBlockUtils.create(label, fc, HorizontalAlignement.LEFT, new SpriteContainerEmpty());
 	}

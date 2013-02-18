@@ -35,6 +35,8 @@ package net.sourceforge.plantuml.svek.image;
 
 import java.awt.geom.Dimension2D;
 import java.awt.geom.Point2D;
+import java.io.IOException;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -126,6 +128,10 @@ public class Footprint {
 		}
 
 		public UGroup createGroup() {
+			throw new UnsupportedOperationException();
+		}
+
+		public void writeImage(OutputStream os, String metadata, int dpi) throws IOException {
 			throw new UnsupportedOperationException();
 		}
 

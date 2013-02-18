@@ -28,10 +28,13 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 9786 $
+ * Revision $Revision: 9935 $
  *
  */
 package net.sourceforge.plantuml.ugraphic;
+
+import java.io.IOException;
+import java.io.OutputStream;
 
 import net.sourceforge.plantuml.Url;
 import net.sourceforge.plantuml.graphic.StringBounder;
@@ -65,5 +68,8 @@ public interface UGraphic {
 	public void closeAction();
 
 	public UGroup createGroup();
+	
+	public void writeImage(OutputStream os, String metadata, int dpi) throws IOException;
+
 
 }

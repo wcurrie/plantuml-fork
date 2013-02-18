@@ -28,30 +28,60 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 9963 $
+ * Revision $Revision: 7696 $
  *
  */
-package net.sourceforge.plantuml.version;
+package net.sourceforge.plantuml.ugraphic;
 
-public class Version {
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Iterator;
+import java.util.List;
 
-	public static int version() {
-		return 7958;
-	}
+public class SlotSet implements Iterable<Slot> {
 
-	public static String versionString() {
-		if (beta()) {
-			return "" + (version() + 1) + "beta";
+	private final List<Slot> all = new ArrayList<Slot>();
+
+	public void addSlot(double start, double end) {
+		final List<Slot> collisions = new ArrayList<Slot>();
+		Slot newSlot = new Slot(start, end);
+		for (final Iterator<Slot> it = all.iterator(); it.hasNext();) {
+			final Slot s = it.next();
+			if (s.intersect(newSlot)) {
+				it.remove();
+				collisions.add(s);
+			}
 		}
-		return "" + version();
+		for (Slot s : collisions) {
+			newSlot = newSlot.merge(s);
+		}
+		all.add(newSlot);
+	}
+	
+	@Override
+	public String toString() {
+		return all.toString();
 	}
 
-	public static boolean beta() {
-		return false;
+	public List<Slot> getSlots() {
+		return Collections.unmodifiableList(all);
 	}
 
-	public static long compileTime() {
-		return 1361215139377L;
+	public Iterator<Slot> iterator() {
+		return getSlots().iterator();
+	}
+
+	public SlotSet reverse() {
+		final SlotSet result = new SlotSet();
+		Collections.sort(all);
+		Slot last = null;
+		for (Slot slot : all) {
+			if (last != null) {
+				result.addSlot(last.getEnd(), slot.getStart());
+			}
+			last = slot;
+		}
+		return result;
 	}
 
 }

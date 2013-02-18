@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 9911 $
+ * Revision $Revision: 9929 $
  *
  */
 package net.sourceforge.plantuml.preproc;
@@ -52,7 +52,7 @@ class PreprocessorInclude implements ReadLine {
 
 	private final ReadLine reader2;
 	private final String charset;
-	
+
 	private int numLine = 0;
 
 	private PreprocessorInclude included = null;
@@ -124,14 +124,24 @@ class PreprocessorInclude implements ReadLine {
 	}
 
 	private ReadLine getReaderInclude(final File f, String suf) throws IOException {
-		if (StartDiagramExtractReader.containsStartDiagram(f)) {
+		if (StartDiagramExtractReader.containsStartDiagram(f, charset)) {
 			int bloc = 0;
 			if (suf != null && suf.matches("\\d+")) {
 				bloc = Integer.parseInt(suf);
 			}
-			return new StartDiagramExtractReader(f, bloc);
+			return new StartDiagramExtractReader(f, bloc, charset);
 		}
-		if (charset==null) {
+//		if (f != null) {
+//			final Throwable t = new Throwable();
+//			t.fillInStackTrace();
+//			final List<String> li = new ArrayList<String>();
+//			li.add("charset=" + charset);
+//			for (StackTraceElement e : t.getStackTrace()) {
+//				li.add(e.toString());
+//			}
+//			return new StackReadLine(li);
+//		}
+		if (charset == null) {
 			Log.info("Using default charset");
 			return new ReadLineReader(new FileReader(f));
 		}

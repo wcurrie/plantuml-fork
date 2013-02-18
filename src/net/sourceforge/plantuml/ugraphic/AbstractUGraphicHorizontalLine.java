@@ -33,6 +33,9 @@
  */
 package net.sourceforge.plantuml.ugraphic;
 
+import java.io.IOException;
+import java.io.OutputStream;
+
 import net.sourceforge.plantuml.Url;
 import net.sourceforge.plantuml.graphic.StringBounder;
 
@@ -104,6 +107,10 @@ public abstract class AbstractUGraphicHorizontalLine implements UGraphic {
 
 	public UGroup createGroup() {
 		return ug.createGroup();
+	}
+
+	public void writeImage(OutputStream os, String metadata, int dpi) throws IOException {
+		throw new UnsupportedOperationException();
 	}
 
 }

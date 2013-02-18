@@ -28,30 +28,38 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 9963 $
+ * Revision $Revision: 7696 $
  *
  */
-package net.sourceforge.plantuml.version;
+package net.sourceforge.plantuml.ugraphic;
 
-public class Version {
+import java.util.List;
 
-	public static int version() {
-		return 7958;
+public class CompressionTransform {
+
+	private final List<Slot> all;
+
+	public CompressionTransform(SlotSet slotSet) {
+		this.all = slotSet.getSlots();
 	}
 
-	public static String versionString() {
-		if (beta()) {
-			return "" + (version() + 1) + "beta";
+	public double transform(double x) {
+		return x - getCompressDelta(x);
+	}
+
+	private double getCompressDelta(double x) {
+		double result = 0;
+		for (Slot s : all) {
+			if (s.getStart() > x) {
+				continue;
+			}
+			if (x > s.getEnd()) {
+				result += s.size();
+			} else {
+				result += x - s.getStart();
+			}
 		}
-		return "" + version();
-	}
-
-	public static boolean beta() {
-		return false;
-	}
-
-	public static long compileTime() {
-		return 1361215139377L;
+		return result;
 	}
 
 }

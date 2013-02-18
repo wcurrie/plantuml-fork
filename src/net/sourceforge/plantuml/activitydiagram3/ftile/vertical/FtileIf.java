@@ -33,7 +33,6 @@
  */
 package net.sourceforge.plantuml.activitydiagram3.ftile.vertical;
 
-import java.awt.Font;
 import java.awt.geom.Dimension2D;
 import java.util.List;
 
@@ -68,13 +67,14 @@ class FtileIf implements Ftile {
 	private final HtmlColor arrowColor;
 	private final HtmlColor backColor;
 
-	public FtileIf(Ftile tile1, Ftile tile2, Display labelTest, Display label1, Display label2, HtmlColor borderColor, HtmlColor backColor, HtmlColor arrowColor) {
+	public FtileIf(Ftile tile1, Ftile tile2, Display labelTest, Display label1, Display label2, HtmlColor borderColor,
+			HtmlColor backColor, HtmlColor arrowColor, UFont font) {
 		this.borderColor = borderColor;
 		this.arrowColor = arrowColor;
 		this.backColor = backColor;
 		this.tile1 = new FtileMinWidth(tile1, 30);
 		this.tile2 = new FtileMinWidth(tile2, 30);
-		final UFont font = new UFont("Serif", Font.PLAIN, 14);
+		// final UFont font = new UFont("Serif", Font.PLAIN, 14);
 		final FontConfiguration fc = new FontConfiguration(font, HtmlColorUtils.BLACK);
 		if (labelTest == null) {
 			label = TextBlockUtils.empty(0, 0);

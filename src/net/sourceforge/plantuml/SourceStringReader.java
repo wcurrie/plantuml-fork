@@ -54,9 +54,18 @@ public class SourceStringReader {
 		this(new Defines(), source, Collections.<String> emptyList());
 	}
 
+	public SourceStringReader(String source, String charset) {
+		this(new Defines(), source, "UTF-8", Collections.<String> emptyList());
+	}
+
 	public SourceStringReader(Defines defines, String source, List<String> config) {
+		this(defines, source, "UTF-8", config);
+	}
+
+	public SourceStringReader(Defines defines, String source, String charset, List<String> config) {
 		try {
-			final BlockUmlBuilder builder = new BlockUmlBuilder(config, null, defines, new StringReader(source), null);
+			final BlockUmlBuilder builder = new BlockUmlBuilder(config, charset, defines, new StringReader(source),
+					null);
 			this.blocks = builder.getBlockUmls();
 		} catch (IOException e) {
 			Log.error("error " + e);

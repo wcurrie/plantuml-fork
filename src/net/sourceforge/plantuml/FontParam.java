@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  *
- * Revision $Revision: 9786 $
+ * Revision $Revision: 9953 $
  *
  */
 package net.sourceforge.plantuml;
@@ -39,6 +39,8 @@ public enum FontParam {
 
 	ACTIVITY(14, Font.PLAIN, "black", null), //
 	ACTIVITY_ARROW(13, Font.PLAIN, "black", null), //
+	ACTIVITY2(12, Font.PLAIN, "black", null), //
+	ACTIVITY_ARROW2(11, Font.PLAIN, "black", null), //
 	CIRCLED_CHARACTER(17, Font.BOLD, "black", "Courier"), //
 	OBJECT_ARROW(10, Font.PLAIN, "black", null), //
 	OBJECT_ATTRIBUTE(10, Font.PLAIN, "black", null), //

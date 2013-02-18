@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 9786 $
+ * Revision $Revision: 9935 $
  *
  */
 package net.sourceforge.plantuml.ugraphic.g2d;
@@ -39,6 +39,8 @@ import java.awt.Shape;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -47,6 +49,7 @@ import net.sourceforge.plantuml.Url;
 import net.sourceforge.plantuml.graphic.StringBounder;
 import net.sourceforge.plantuml.graphic.StringBounderUtils;
 import net.sourceforge.plantuml.graphic.UnusedSpace;
+import net.sourceforge.plantuml.png.PngIO;
 import net.sourceforge.plantuml.posimo.DotPath;
 import net.sourceforge.plantuml.ugraphic.AbstractUGraphic;
 import net.sourceforge.plantuml.ugraphic.ColorMapper;
@@ -165,6 +168,11 @@ public class UGraphicG2d extends AbstractUGraphic<Graphics2D> implements EnsureV
 	
 	public Graphics2D getGraphics2D() {
 		return getGraphicObject();
+	}
+
+	public void writeImage(OutputStream os, String metadata, int dpi) throws IOException {
+		final BufferedImage im = getBufferedImage();
+		PngIO.write(im, os, metadata, dpi);
 	}
 
 }

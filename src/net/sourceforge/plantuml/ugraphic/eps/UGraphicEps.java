@@ -36,6 +36,7 @@ import java.awt.font.TextLayout;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.io.PrintWriter;
 
 import net.sourceforge.plantuml.Url;
@@ -149,4 +150,9 @@ public class UGraphicEps extends AbstractUGraphic<EpsGraphics> implements ClipCo
 		getGraphicObject().closeLink();
 	}
 
+	public void writeImage(OutputStream os, String metadata, int dpi) throws IOException {
+		os.write(getEPSCode().getBytes());
+	}
+
+	
 }
