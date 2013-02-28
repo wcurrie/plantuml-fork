@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 9786 $
+ * Revision $Revision: 10073 $
  *
  */
 package net.sourceforge.plantuml.sequencediagram.graphic;
@@ -37,6 +37,7 @@ import net.sourceforge.plantuml.graphic.StringBounder;
 import net.sourceforge.plantuml.skin.Component;
 import net.sourceforge.plantuml.skin.Context2D;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
+import net.sourceforge.plantuml.ugraphic.UTranslate;
 
 class LifeDestroy extends GraphicalElement {
 
@@ -53,7 +54,7 @@ class LifeDestroy extends GraphicalElement {
 	@Override
 	protected void drawInternalU(UGraphic ug, double maxX, Context2D context) {
 		final StringBounder stringBounder = ug.getStringBounder();
-		ug.translate(getStartingX(stringBounder), getStartingY());
+		ug = ug.apply(new UTranslate(getStartingX(stringBounder), getStartingY()));
 		comp.drawU(ug, null, context);
 	}
 

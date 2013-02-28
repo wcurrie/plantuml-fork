@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  *
- * Revision $Revision: 9786 $
+ * Revision $Revision: 10006 $
  *
  */
 package net.sourceforge.plantuml.activitydiagram;
@@ -40,12 +40,12 @@ import net.sourceforge.plantuml.activitydiagram.command.CommandIf;
 import net.sourceforge.plantuml.activitydiagram.command.CommandLinkActivity2;
 import net.sourceforge.plantuml.activitydiagram.command.CommandLinkLongActivity2;
 import net.sourceforge.plantuml.activitydiagram.command.CommandPartition;
-import net.sourceforge.plantuml.command.AbstractUmlSystemCommandFactory;
+import net.sourceforge.plantuml.command.PSystemCommandFactory;
 import net.sourceforge.plantuml.command.CommandRankDir;
 import net.sourceforge.plantuml.command.note.FactoryNoteActivityCommand;
 import net.sourceforge.plantuml.command.note.FactoryNoteOnLinkCommand;
 
-public class ActivityDiagramFactory extends AbstractUmlSystemCommandFactory {
+public class ActivityDiagramFactory extends PSystemCommandFactory {
 
 	private ActivityDiagram system;
 

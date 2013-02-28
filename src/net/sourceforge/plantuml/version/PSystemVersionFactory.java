@@ -39,7 +39,7 @@ import net.sourceforge.plantuml.DiagramType;
 import net.sourceforge.plantuml.Log;
 import net.sourceforge.plantuml.PSystemBasicFactory;
 
-public class PSystemVersionFactory implements PSystemBasicFactory {
+public class PSystemVersionFactory extends PSystemBasicFactory {
 
 	private PSystemVersion system;
 

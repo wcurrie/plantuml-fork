@@ -45,7 +45,7 @@ import net.sourceforge.plantuml.PSystemBasicFactory;
 
 import com.ctreber.acearth.plugins.markers.Marker;
 
-public class PSystemXearthFactory implements PSystemBasicFactory {
+public class PSystemXearthFactory extends PSystemBasicFactory {
 
 	private PSystemXearth system;
 	private final Map<String, String> config = new LinkedHashMap<String, String>();

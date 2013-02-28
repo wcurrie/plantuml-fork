@@ -41,12 +41,16 @@ public class InstructionWhile implements Instruction {
 
 	private final InstructionList repeatList = new InstructionList();
 	private final Instruction parent;
+	private final LinkRendering nextLinkRenderer;
 
 	private final Display test;
+	private LinkRendering endInlinkRendering;
+	private LinkRendering afterEndwhile;
 
-	public InstructionWhile(Instruction parent, Display test) {
+	public InstructionWhile(Instruction parent, Display test, LinkRendering nextLinkRenderer) {
 		this.parent = parent;
 		this.test = test;
+		this.nextLinkRenderer = nextLinkRenderer;
 	}
 
 	public void add(Instruction ins) {
@@ -54,16 +58,27 @@ public class InstructionWhile implements Instruction {
 	}
 
 	public Ftile createFtile(FtileFactory factory) {
-		return factory.createWhile(repeatList.createFtile(factory), test);
+		return factory.createWhile(repeatList.createFtile(factory), test, endInlinkRendering, afterEndwhile);
 	}
 
 	public Instruction getParent() {
 		return parent;
 	}
-	
+
 	public boolean kill() {
 		return repeatList.kill();
 	}
 
+	public LinkRendering getInLinkRendering() {
+		return nextLinkRenderer;
+	}
+
+	public void endwhile(LinkRendering nextLinkRenderer) {
+		this.endInlinkRendering = nextLinkRenderer;
+	}
+
+	public void afterEndwhile(LinkRendering linkRenderer) {
+		this.afterEndwhile = linkRenderer;
+	}
 
 }

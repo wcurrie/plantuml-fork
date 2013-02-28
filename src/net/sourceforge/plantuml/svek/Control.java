@@ -73,7 +73,7 @@ public class Control implements TextBlock {
 		ug.getParam().setColor(foregroundColor);
 		final UEllipse circle = new UEllipse(radius * 2, radius * 2);
 		circle.setDeltaShadow(deltaShadow);
-		ug.draw(x, y, circle);
+		ug.drawNewWay(x, y, circle);
 		ug.getParam().setStroke(new UStroke());
 
 		ug.getParam().setBackcolor(foregroundColor);
@@ -87,7 +87,7 @@ public class Control implements TextBlock {
 		polygon.addPoint(xAile, yOuverture);
 		polygon.addPoint(0, 0);
 
-		ug.draw(x + radius - xContact, y, polygon);
+		ug.drawNewWay(x + radius - xContact, y, polygon);
 
 	}
 

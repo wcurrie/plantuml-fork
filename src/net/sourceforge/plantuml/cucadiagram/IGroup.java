@@ -68,6 +68,6 @@ public interface IGroup extends IEntity {
 	public PackageStyle zgetPackageStyle();
 
 	public void overideImage(IEntityImage img, List<Url> urls, LeafType state);
-	
+
 	public SingleStrategy getSingleStrategy();
-	}
+}

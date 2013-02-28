@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 9786 $
+ * Revision $Revision: 10073 $
  *
  */
 package net.sourceforge.plantuml.sequencediagram.graphic;
@@ -44,6 +44,7 @@ import net.sourceforge.plantuml.skin.Area;
 import net.sourceforge.plantuml.skin.Component;
 import net.sourceforge.plantuml.skin.Context2D;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
+import net.sourceforge.plantuml.ugraphic.UTranslate;
 
 final class NoteBox extends GraphicalElement implements InGroupable {
 
@@ -96,7 +97,7 @@ final class NoteBox extends GraphicalElement implements InGroupable {
 	protected void drawInternalU(UGraphic ug, double maxX, Context2D context) {
 		final StringBounder stringBounder = ug.getStringBounder();
 		final double xStart = getStartingX(stringBounder);
-		ug.translate(xStart, getStartingY());
+		ug = ug.apply(new UTranslate(xStart, getStartingY()));
 		final Dimension2D dimensionToUse = new Dimension2DDouble(getPreferredWidth(stringBounder), comp
 				.getPreferredHeight(stringBounder));
 		if (url != null) {

@@ -42,6 +42,11 @@ public class ContainingEllipse {
 	private final SmallestEnclosingCircle sec = new SmallestEnclosingCircle();
 	private final YTransformer ytransformer;
 
+	@Override
+	public String toString() {
+		return "ContainingEllipse " + getWidth() + " " + getHeight();
+	}
+
 	public ContainingEllipse(double coefY) {
 		ytransformer = new YTransformer(coefY);
 	}

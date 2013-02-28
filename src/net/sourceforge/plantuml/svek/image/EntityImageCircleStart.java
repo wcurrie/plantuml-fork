@@ -66,7 +66,7 @@ public class EntityImageCircleStart extends AbstractEntityImage {
 		}
 		ug.getParam().setColor(null);
 		ug.getParam().setBackcolor(SkinParamUtils.getColor(getSkinParam(), ColorParam.activityStart, getStereo()));
-		ug.draw(xTheoricalPosition, yTheoricalPosition, circle);
+		ug.drawNewWay(xTheoricalPosition, yTheoricalPosition, circle);
 	}
 
 	public ShapeType getShapeType() {

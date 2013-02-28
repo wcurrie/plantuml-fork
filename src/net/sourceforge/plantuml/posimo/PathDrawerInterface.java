@@ -138,7 +138,7 @@ public class PathDrawerInterface implements PathDrawer {
 		if (linkType.isDashed()) {
 			goDash(ug);
 		}
-		ug.draw(0, 0, dotPath);
+		ug.drawOldWay(dotPath);
 		if (linkType.isDashed()) {
 			noDash(ug);
 		}
@@ -214,7 +214,7 @@ public class PathDrawerInterface implements PathDrawer {
 		ug.getParam().setColor(rose.getHtmlColor(param, ColorParam.classBorder));
 		final double width = 10;
 		final double height = 10;
-		ug.draw(centerX - width / 2, centerY - height / 2, new URectangle(width, height));
+		ug.drawNewWay(centerX - width / 2, centerY - height / 2, new URectangle(width, height));
 		return new Point2D.Double(centerX, centerY);
 	}
 
@@ -233,7 +233,7 @@ public class PathDrawerInterface implements PathDrawer {
 		triangle.addPoint(-width / 2, height);
 		triangle.addPoint(width / 2, height);
 		triangle.rotate(theta);
-		ug.draw(x, y, triangle);
+		ug.drawNewWay(x, y, triangle);
 
 		final Point2D middle = BezierUtils.middle(triangle.getPoints().get(1), triangle.getPoints().get(2));
 		middle.setLocation(middle.getX() + x, middle.getY() + y);
@@ -253,7 +253,7 @@ public class PathDrawerInterface implements PathDrawer {
 		triangle.addPoint(0, height);
 		triangle.addPoint(width / 2, height / 2);
 		triangle.rotate(theta);
-		ug.draw(x, y, triangle);
+		ug.drawNewWay(x, y, triangle);
 
 		final Point2D middle = triangle.getPoints().get(2);
 		middle.setLocation(middle.getX() + x, middle.getY() + y);
@@ -275,7 +275,7 @@ public class PathDrawerInterface implements PathDrawer {
 		triangle.addPoint(0, height2);
 		triangle.addPoint(width / 2, height);
 		triangle.rotate(theta);
-		ug.draw(x, y, triangle);
+		ug.drawNewWay(x, y, triangle);
 
 		final Point2D middle = triangle.getPoints().get(2);
 		middle.setLocation(middle.getX() + x, middle.getY() + y);

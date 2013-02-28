@@ -89,8 +89,8 @@ public class Tile implements TextBlock {
 		final double diffx2 = dimTotal.getWidth() - radius;
 		final double diffy2 = dimTotal.getHeight() - radius;
 		n.drawU(ug, x + diffx / 2, y + diffy / 2);
-		ug.draw(x, y, new URectangle(SIZE, SIZE));
-		ug.draw(x + diffx2 / 2, y + diffy2 / 2, new UEllipse(radius, radius));
+		ug.drawNewWay(x, y, new URectangle(SIZE, SIZE));
+		ug.drawNewWay(x + diffx2 / 2, y + diffy2 / 2, new UEllipse(radius, radius));
 	}
 
 	public Dimension2D calculateDimension(StringBounder stringBounder) {

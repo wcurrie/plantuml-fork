@@ -63,7 +63,7 @@ public class Snake {
 		final double xmax = Math.max(x1, x2);
 		final double ymin = Math.min(y1, y2);
 		final double ymax = Math.max(y1, y2);
-		ug.draw(xmin, ymin, new ULine(xmax - xmin, ymax - ymin));
+		ug.drawNewWay(xmin, ymin, new ULine(xmax - xmin, ymax - ymin));
 	}
 
 }

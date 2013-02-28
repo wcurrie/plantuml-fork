@@ -126,7 +126,7 @@ public class ComponentRoseArrow2 extends AbstractComponentRoseArrow {
 		if (getArrowConfiguration().isDotted()) {
 			stroke(ug, 2, 2);
 		}
-		ug.draw(start, textHeight, new ULine(len, 0));
+		ug.drawNewWay(start, textHeight, new ULine(len, 0));
 		if (getArrowConfiguration().isDotted()) {
 			ug.getParam().setStroke(new UStroke());
 		}
@@ -157,27 +157,27 @@ public class ComponentRoseArrow2 extends AbstractComponentRoseArrow {
 			ug.getParam().setColor(getForegroundColor());
 			ug.getParam().setBackcolor(null);
 			final UEllipse circle = new UEllipse(diamCircle, diamCircle);
-			ug.draw(x - diamCircle / 2 - thinCircle, textHeight - diamCircle / 2 - thinCircle / 2, circle);
+			ug.drawNewWay(x - diamCircle / 2 - thinCircle, textHeight - diamCircle / 2 - thinCircle / 2, circle);
 			ug.getParam().setStroke(new UStroke());
 			x += diamCircle / 2 + thinCircle;
 		}
 
 		if (dressing.getHead() == ArrowHead.ASYNC) {
 			if (dressing.getPart() != ArrowPart.BOTTOM_PART) {
-				ug.draw(x - 1, textHeight, new ULine(getArrowDeltaX(), -getArrowDeltaY()));
+				ug.drawNewWay(x - 1, textHeight, new ULine(getArrowDeltaX(), -getArrowDeltaY()));
 			}
 			if (dressing.getPart() != ArrowPart.TOP_PART) {
-				ug.draw(x - 1, textHeight, new ULine(getArrowDeltaX(), getArrowDeltaY()));
+				ug.drawNewWay(x - 1, textHeight, new ULine(getArrowDeltaX(), getArrowDeltaY()));
 			}
 		} else if (dressing.getHead() == ArrowHead.CROSSX) {
 			ug.getParam().setStroke(new UStroke(2));
-			ug.draw(spaceCrossX, textHeight - getArrowDeltaX() / 2, new ULine(getArrowDeltaX(), getArrowDeltaX()));
-			ug.draw(spaceCrossX, textHeight + getArrowDeltaX() / 2, new ULine(getArrowDeltaX(), -getArrowDeltaX()));
+			ug.drawNewWay(spaceCrossX, textHeight - getArrowDeltaX() / 2, new ULine(getArrowDeltaX(), getArrowDeltaX()));
+			ug.drawNewWay(spaceCrossX, textHeight + getArrowDeltaX() / 2, new ULine(getArrowDeltaX(), -getArrowDeltaX()));
 			ug.getParam().setStroke(new UStroke());
 		} else if (dressing.getHead() == ArrowHead.NORMAL) {
 			ug.getParam().setBackcolor(getForegroundColor());
 			final UPolygon polygon = getPolygonReverse(dressing.getPart(), textHeight);
-			ug.draw(x, 0, polygon);
+			ug.drawNewWay(x, 0, polygon);
 			ug.getParam().setBackcolor(null);
 		}
 
@@ -192,29 +192,29 @@ public class ComponentRoseArrow2 extends AbstractComponentRoseArrow {
 			ug.getParam().setColor(getForegroundColor());
 			ug.getParam().setBackcolor(null);
 			final UEllipse circle = new UEllipse(diamCircle, diamCircle);
-			ug.draw(x - diamCircle / 2 + thinCircle, textHeight - diamCircle / 2 - thinCircle / 2, circle);
+			ug.drawNewWay(x - diamCircle / 2 + thinCircle, textHeight - diamCircle / 2 - thinCircle / 2, circle);
 			ug.getParam().setStroke(new UStroke());
 			x -= diamCircle / 2 + thinCircle;
 		}
 
 		if (dressing.getHead() == ArrowHead.ASYNC) {
 			if (dressing.getPart() != ArrowPart.BOTTOM_PART) {
-				ug.draw(x, textHeight, new ULine(-getArrowDeltaX(), -getArrowDeltaY()));
+				ug.drawNewWay(x, textHeight, new ULine(-getArrowDeltaX(), -getArrowDeltaY()));
 			}
 			if (dressing.getPart() != ArrowPart.TOP_PART) {
-				ug.draw(x, textHeight, new ULine(-getArrowDeltaX(), getArrowDeltaY()));
+				ug.drawNewWay(x, textHeight, new ULine(-getArrowDeltaX(), getArrowDeltaY()));
 			}
 		} else if (dressing.getHead() == ArrowHead.CROSSX) {
 			ug.getParam().setStroke(new UStroke(2));
-			ug.draw(x - spaceCrossX - getArrowDeltaX(), textHeight - getArrowDeltaX() / 2, new ULine(getArrowDeltaX(),
+			ug.drawNewWay(x - spaceCrossX - getArrowDeltaX(), textHeight - getArrowDeltaX() / 2, new ULine(getArrowDeltaX(),
 					getArrowDeltaX()));
-			ug.draw(x - spaceCrossX - getArrowDeltaX(), textHeight + getArrowDeltaX() / 2, new ULine(getArrowDeltaX(),
+			ug.drawNewWay(x - spaceCrossX - getArrowDeltaX(), textHeight + getArrowDeltaX() / 2, new ULine(getArrowDeltaX(),
 					-getArrowDeltaX()));
 			ug.getParam().setStroke(new UStroke());
 		} else if (dressing.getHead() == ArrowHead.NORMAL) {
 			ug.getParam().setBackcolor(getForegroundColor());
 			final UPolygon polygon = getPolygonNormal(dressing.getPart(), textHeight, x);
-			ug.draw(0, 0, polygon);
+			ug.drawOldWay(polygon);
 			ug.getParam().setBackcolor(null);
 		}
 

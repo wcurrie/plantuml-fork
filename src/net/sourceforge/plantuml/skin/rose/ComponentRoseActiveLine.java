@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 9786 $
+ * Revision $Revision: 10041 $
  *
  */
 package net.sourceforge.plantuml.skin.rose;
@@ -72,24 +72,24 @@ public class ComponentRoseActiveLine extends AbstractComponent {
 		if (closeUp && closeDown) {
 			ug.getParam().setBackcolor(lifeLineBackground);
 			ug.getParam().setColor(foregroundColor);
-			ug.draw(x, 0, rect);
+			ug.drawNewWay(x, 0, rect);
 			return;
 		}
 		ug.getParam().setBackcolor(lifeLineBackground);
 		ug.getParam().setColor(lifeLineBackground);
-		ug.draw(x, 0, rect);
+		ug.drawNewWay(x, 0, rect);
 		ug.getParam().setColor(foregroundColor);
 
 		final ULine vline = new ULine(0, dimensionToUse.getHeight());
-		ug.draw(x, 0, vline);
-		ug.draw(x + getPreferredWidth(stringBounder), 0, vline);
+		ug.drawNewWay(x, 0, vline);
+		ug.drawNewWay(x + getPreferredWidth(stringBounder), 0, vline);
 
 		final ULine hline = new ULine(getPreferredWidth(stringBounder), 0);
 		if (closeUp) {
-			ug.draw(x, 0, hline);
+			ug.drawNewWay(x, 0, hline);
 		}
 		if (closeDown) {
-			ug.draw(x, dimensionToUse.getHeight(), hline);
+			ug.drawNewWay(x, dimensionToUse.getHeight(), hline);
 		}
 	}
 

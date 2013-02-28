@@ -58,7 +58,7 @@ class ExtremityCircleCross extends Extremity implements UDrawable {
 	public void drawU(UGraphic ug, double x, double y) {
 		ug.getParam().setBackcolor(HtmlColorUtils.WHITE);
 		ug.getParam().setStroke(new UStroke(1.5));
-		ug.draw(x + dest.getX() - radius, y + dest.getY() - radius, new UEllipse(radius * 2, radius * 2));
+		ug.drawNewWay(x + dest.getX() - radius, y + dest.getY() - radius, new UEllipse(radius * 2, radius * 2));
 		ug.getParam().setStroke(new UStroke());
 		drawLine(ug, x, y, getPointOnCircle(Math.PI / 4), getPointOnCircle(Math.PI + Math.PI / 4));
 		drawLine(ug, x, y, getPointOnCircle(-Math.PI / 4), getPointOnCircle(Math.PI - Math.PI / 4));
@@ -74,7 +74,7 @@ class ExtremityCircleCross extends Extremity implements UDrawable {
 	static private void drawLine(UGraphic ug, double x, double y, Point2D p1, Point2D p2) {
 		final double dx = p2.getX() - p1.getX();
 		final double dy = p2.getY() - p1.getY();
-		ug.draw(x + p1.getX(), y + p1.getY(), new ULine(dx, dy));
+		ug.drawNewWay(x + p1.getX(), y + p1.getY(), new ULine(dx, dy));
 
 	}
 

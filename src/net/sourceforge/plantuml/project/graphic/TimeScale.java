@@ -74,7 +74,7 @@ class TimeScale {
 		final int nb = getNbCase();
 
 		ug.getParam().setColor(HtmlColorUtils.BLACK);
-		ug.draw(x, y, new URectangle(nb * caseWidth, monthHeight));
+		ug.drawNewWay(x, y, new URectangle(nb * caseWidth, monthHeight));
 		final Instant end = project.getEnd();
 
 		Month printed = null;
@@ -83,7 +83,7 @@ class TimeScale {
 		for (Instant cur = project.getStart(); cur.compareTo(end) <= 0; cur = cur.next(project.getDayClose())) {
 			final Day d = cur.getDay();
 			if (printed == null || d.getMonth() != printed) {
-				ug.draw(curx, y, new ULine(0, monthHeight));
+				ug.drawNewWay(curx, y, new ULine(0, monthHeight));
 				printed = d.getMonth();
 				final TextBlock b = TextBlockUtils.create(Display.asList(printed.name()), fontConfig,
 						HorizontalAlignement.LEFT, new SpriteContainerEmpty());
@@ -95,7 +95,7 @@ class TimeScale {
 
 		curx = x;
 		y += monthHeight;
-		ug.draw(x, y, new URectangle(nb * caseWidth, caseHeight));
+		ug.drawNewWay(x, y, new URectangle(nb * caseWidth, caseHeight));
 
 		for (Instant cur = project.getStart(); cur.compareTo(end) <= 0; cur = cur.next(project.getDayClose())) {
 			final Day d = cur.getDay();
@@ -104,7 +104,7 @@ class TimeScale {
 			final Dimension2D dim = b.calculateDimension(stringBounder);
 			b.drawU(ug, curx + (caseWidth - dim.getWidth()) / 2, y + (caseHeight - dim.getHeight()) / 2);
 			curx += caseWidth;
-			ug.draw(curx, y, new ULine(0, caseHeight));
+			ug.drawNewWay(curx, y, new ULine(0, caseHeight));
 		}
 	}
 

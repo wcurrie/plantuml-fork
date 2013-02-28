@@ -85,7 +85,7 @@ public class EntityImageLollipopInterface extends AbstractEntityImage {
 		if (url.size()>0) {
 			ug.startUrl(url.get(0));
 		}
-		ug.draw(xTheoricalPosition, yTheoricalPosition, circle);
+		ug.drawNewWay(xTheoricalPosition, yTheoricalPosition, circle);
 		ug.getParam().setStroke(new UStroke());
 
 		final Dimension2D dimDesc = desc.calculateDimension(ug.getStringBounder());

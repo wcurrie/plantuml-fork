@@ -76,11 +76,11 @@ public class Boundary implements TextBlock {
 		circle.setDeltaShadow(deltaShadow);
 		final ULine line1 = new ULine(0, radius * 2);
 		line1.setDeltaShadow(deltaShadow);
-		ug.draw(x, y, line1);
+		ug.drawNewWay(x, y, line1);
 		final ULine line2 = new ULine(left, 0);
 		line2.setDeltaShadow(deltaShadow);
-		ug.draw(x, y + radius, line2);
-		ug.draw(x + left, y, circle);
+		ug.drawNewWay(x, y + radius, line2);
+		ug.drawNewWay(x + left, y, circle);
 
 		ug.getParam().setStroke(new UStroke());
 

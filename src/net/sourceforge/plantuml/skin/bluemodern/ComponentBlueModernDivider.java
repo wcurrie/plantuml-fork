@@ -49,6 +49,7 @@ import net.sourceforge.plantuml.ugraphic.UGraphic;
 import net.sourceforge.plantuml.ugraphic.ULine;
 import net.sourceforge.plantuml.ugraphic.URectangle;
 import net.sourceforge.plantuml.ugraphic.UStroke;
+import net.sourceforge.plantuml.ugraphic.UTranslate;
 
 public class ComponentBlueModernDivider extends AbstractTextualComponent {
 
@@ -81,17 +82,15 @@ public class ComponentBlueModernDivider extends AbstractTextualComponent {
 
 		ug.getParam().setStroke(new UStroke(2));
 
-		ug.draw(0, dimensionToUse.getHeight() / 2 - 1, new ULine(dimensionToUse.getWidth(), 0));
-		ug.draw(0, dimensionToUse.getHeight() / 2 + 2, new ULine(dimensionToUse.getWidth(), 0));
+		ug.drawNewWay(0, dimensionToUse.getHeight() / 2 - 1, new ULine(dimensionToUse.getWidth(), 0));
+		ug.drawNewWay(0, dimensionToUse.getHeight() / 2 + 2, new ULine(dimensionToUse.getWidth(), 0));
 
 		final FillRoundShape shape = new FillRoundShape(textWidth + deltaX, textHeight, background1, background2, 5);
-		ug.translate(xpos, ypos);
-		shape.drawU(ug);
-		ug.translate(-xpos, -ypos);
+		shape.drawU(ug.apply(new UTranslate(xpos, ypos)));
 
 		ug.getParam().setColor(borderColor);
 		ug.getParam().setBackcolor(null);
-		ug.draw(xpos, ypos, new URectangle(textWidth + deltaX, textHeight, 5, 5));
+		ug.drawNewWay(xpos, ypos, new URectangle(textWidth + deltaX, textHeight, 5, 5));
 		ug.getParam().setStroke(new UStroke());
 
 		textBlock.drawU(ug, xpos + deltaX, ypos + getMarginY());

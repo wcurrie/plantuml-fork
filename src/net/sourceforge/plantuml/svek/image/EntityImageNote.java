@@ -69,6 +69,7 @@ import net.sourceforge.plantuml.ugraphic.UGraphic;
 import net.sourceforge.plantuml.ugraphic.ULine;
 import net.sourceforge.plantuml.ugraphic.UPolygon;
 import net.sourceforge.plantuml.ugraphic.UShape;
+import net.sourceforge.plantuml.ugraphic.UTranslate;
 
 public class EntityImageNote extends AbstractEntityImage {
 
@@ -179,14 +180,12 @@ public class EntityImageNote extends AbstractEntityImage {
 	}
 
 	public void drawU(UGraphic ug, double xTheoricalPosition, double yTheoricalPosition) {
-		final double dx = ug.getTranslateX();
-		final double dy = ug.getTranslateY();
-		ug.translate(xTheoricalPosition, yTheoricalPosition);
+		ug = ug.apply(new UTranslate(xTheoricalPosition, yTheoricalPosition));
 		if (url.size() > 0 && url.get(0).isMember() == false) {
 			ug.startUrl(url.get(0));
 		}
 		if (opaleLine == null || opaleLine.isOpale() == false) {
-			drawNormal(ug, xTheoricalPosition, yTheoricalPosition);
+			drawNormal(ug);
 		} else {
 			final StringBounder stringBounder = ug.getStringBounder();
 			DotPath path = opaleLine.getDotPath();
@@ -207,7 +206,7 @@ public class EntityImageNote extends AbstractEntityImage {
 		if (url.size() > 0 && url.get(0).isMember() == false) {
 			ug.closeAction();
 		}
-		ug.setTranslate(dx, dy);
+
 	}
 
 	// private Point2D translateShape(Point2D pt) {
@@ -225,7 +224,7 @@ public class EntityImageNote extends AbstractEntityImage {
 		}
 		ug.getParam().setColor(borderColor);
 		ug.getParam().setBackcolor(noteBackgroundColor);
-		ug.draw(0, 0, polygon);
+		ug.drawOldWay(polygon);
 
 		final Point2D pp1 = path.getStartPoint();
 		final Point2D pp2 = path.getEndPoint();
@@ -248,14 +247,14 @@ public class EntityImageNote extends AbstractEntityImage {
 //		}
 		ug.getParam().setColor(borderColor);
 		ug.getParam().setBackcolor(noteBackgroundColor);
-		ug.draw(0, 0, polygonOpale);
+		ug.drawOldWay(polygonOpale);
 
-		ug.draw(getTextWidth(stringBounder) - cornersize, 0, new ULine(0, cornersize));
-		ug.draw(getTextWidth(stringBounder), cornersize, new ULine(-cornersize, 0));
+		ug.drawNewWay(getTextWidth(stringBounder) - cornersize, 0, new ULine(0, cornersize));
+		ug.drawNewWay(getTextWidth(stringBounder), cornersize, new ULine(-cornersize, 0));
 		getTextBlock().drawU(ug, marginX1, marginY);
 	}
 
-	private void drawNormal(UGraphic ug, double xTheoricalPosition, double yTheoricalPosition) {
+	private void drawNormal(UGraphic ug) {
 		final StringBounder stringBounder = ug.getStringBounder();
 		final UPolygon polygon = getPolygonNormal(stringBounder);
 		if (withShadow) {
@@ -263,10 +262,10 @@ public class EntityImageNote extends AbstractEntityImage {
 		}
 		ug.getParam().setColor(borderColor);
 		ug.getParam().setBackcolor(noteBackgroundColor);
-		ug.draw(0, 0, polygon);
+		ug.drawOldWay(polygon);
 
-		ug.draw(getTextWidth(stringBounder) - cornersize, 0, new ULine(0, cornersize));
-		ug.draw(getTextWidth(stringBounder), cornersize, new ULine(-cornersize, 0));
+		ug.drawNewWay(getTextWidth(stringBounder) - cornersize, 0, new ULine(0, cornersize));
+		ug.drawNewWay(getTextWidth(stringBounder), cornersize, new ULine(-cornersize, 0));
 		getTextBlock().drawU(ug, marginX1, marginY);
 
 	}

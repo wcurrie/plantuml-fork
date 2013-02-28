@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 9786 $
+ * Revision $Revision: 10078 $
  *
  */
 package net.sourceforge.plantuml.printskin;
@@ -48,6 +48,8 @@ import net.sourceforge.plantuml.EmptyImageBuilder;
 import net.sourceforge.plantuml.FileFormatOption;
 import net.sourceforge.plantuml.SkinParam;
 import net.sourceforge.plantuml.SpriteContainerEmpty;
+import net.sourceforge.plantuml.api.ImageData;
+import net.sourceforge.plantuml.api.ImageDataSimple;
 import net.sourceforge.plantuml.cucadiagram.Display;
 import net.sourceforge.plantuml.graphic.FontConfiguration;
 import net.sourceforge.plantuml.graphic.HorizontalAlignement;
@@ -66,6 +68,7 @@ import net.sourceforge.plantuml.ugraphic.ColorMapperIdentity;
 import net.sourceforge.plantuml.ugraphic.UFont;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
 import net.sourceforge.plantuml.ugraphic.URectangle;
+import net.sourceforge.plantuml.ugraphic.UTranslate;
 import net.sourceforge.plantuml.ugraphic.g2d.UGraphicG2d;
 
 class PrintSkin extends AbstractPSystem {
@@ -89,10 +92,12 @@ class PrintSkin extends AbstractPSystem {
 	//
 	// }
 
-	public void exportDiagram(OutputStream os, CMapData cmap, int index, FileFormatOption fileFormat)
+	public ImageData exportDiagram(OutputStream os, int num, FileFormatOption fileFormatOption)
 			throws IOException {
 		final BufferedImage im = createImage();
-		PngIO.write(im.getSubimage(0, 0, im.getWidth(), (int) maxYpos), os, 96);
+		final ImageData imageData = new ImageDataSimple(im.getWidth(), (int) maxYpos);
+		PngIO.write(im.getSubimage(0, 0, imageData.getWidth(), imageData.getHeight()), os, 96);
+		return imageData;
 	}
 
 	private BufferedImage createImage() {
@@ -118,8 +123,8 @@ class PrintSkin extends AbstractPSystem {
 
 	private void printComponent(ComponentType type) {
 		println(type.name());
-		final Component comp = skin.createComponent(type,
-				ArrowConfiguration.withDirectionNormal(), new SkinParam(null), new Display(toPrint));
+		final Component comp = skin.createComponent(type, ArrowConfiguration.withDirectionNormal(),
+				new SkinParam(null), new Display(toPrint));
 		if (comp == null) {
 			println("null");
 			return;
@@ -137,16 +142,11 @@ class PrintSkin extends AbstractPSystem {
 		}
 		ug.getParam().setColor(HtmlColorUtils.LIGHT_GRAY);
 		ug.getParam().setBackcolor(HtmlColorUtils.LIGHT_GRAY);
-		ug.draw(xpos - 1, ypos - 1, new URectangle(width + 2, height + 2));
+		ug.drawNewWay(xpos - 1, ypos - 1, new URectangle(width + 2, height + 2));
 		// g2d.drawRect((int) xpos - 1, (int) ypos - 1, (int) width + 2, (int) height + 2);
 
-		// final AffineTransform at = g2d.getTransform();
-		// g2d.translate(xpos, ypos);
-		ug.translate(xpos, ypos);
 		ug.getParam().reset();
-		comp.drawU(ug, new Area(new Dimension2DDouble(width, height)), new SimpleContext2D(false));
-		ug.translate(-xpos, -ypos);
-		// g2d.setTransform(at);
+		comp.drawU(ug.apply(new UTranslate(xpos, ypos)), new Area(new Dimension2DDouble(width, height)), new SimpleContext2D(false));
 
 		ypos += height;
 	}

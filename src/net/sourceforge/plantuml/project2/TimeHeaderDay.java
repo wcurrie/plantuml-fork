@@ -80,7 +80,7 @@ public class TimeHeaderDay implements TextBlock {
 			final double diffY = getHeight() - dimText.getHeight();
 			ug.getParam().setColor(HtmlColorUtils.BLACK);
 			ug.getParam().setBackcolor(HtmlColorUtils.WHITE);
-			ug.draw(x + n * dayWidth, y, new URectangle(dayWidth, getHeight()));
+			ug.drawNewWay(x + n * dayWidth, y, new URectangle(dayWidth, getHeight()));
 			b.drawU(ug, x + n * dayWidth + diffX / 2, y + diffY / 2);
 			n++;
 		}

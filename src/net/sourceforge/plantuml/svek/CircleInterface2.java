@@ -72,7 +72,7 @@ public class CircleInterface2 implements TextBlock {
 		ug.getParam().setColor(foregroundColor);
 		final UEllipse circle = new UEllipse(radius * 2, radius * 2);
 		circle.setDeltaShadow(deltaShadow);
-		ug.draw(x, y, circle);
+		ug.drawNewWay(x, y, circle);
 
 		ug.getParam().setStroke(new UStroke());
 	}

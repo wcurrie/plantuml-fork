@@ -39,6 +39,7 @@ import java.util.List;
 import net.sourceforge.plantuml.Dimension2DDouble;
 import net.sourceforge.plantuml.SpriteContainerEmpty;
 import net.sourceforge.plantuml.Url;
+import net.sourceforge.plantuml.activitydiagram3.LinkRendering;
 import net.sourceforge.plantuml.activitydiagram3.ftile.Ftile;
 import net.sourceforge.plantuml.cucadiagram.Display;
 import net.sourceforge.plantuml.graphic.FontConfiguration;
@@ -63,10 +64,12 @@ class FtileBox implements Ftile {
 
 	private final HtmlColor color;
 	private final HtmlColor backColor;
+	private final LinkRendering inLinkRendering;
 
-	public FtileBox(Display label, HtmlColor color, HtmlColor backColor, UFont font) {
+	public FtileBox(Display label, HtmlColor color, HtmlColor backColor, UFont font, LinkRendering inLinkRendering) {
 		this.color = color;
 		this.backColor = backColor;
+		this.inLinkRendering = inLinkRendering;
 		// final UFont font = new UFont("Serif", Font.PLAIN, 14);
 		final FontConfiguration fc = new FontConfiguration(font, HtmlColorUtils.BLACK);
 		tb = TextBlockUtils.create(label, fc, HorizontalAlignement.LEFT, new SpriteContainerEmpty());
@@ -86,7 +89,7 @@ class FtileBox implements Ftile {
 		ug.getParam().setColor(color);
 		ug.getParam().setBackcolor(backColor);
 		ug.getParam().setStroke(new UStroke(1.5));
-		ug.draw(x, y, rect);
+		ug.drawNewWay(x, y, rect);
 		ug.getParam().setStroke(new UStroke(1));
 
 		tb.drawU(ug, x + MARGIN, y + MARGIN);
@@ -104,6 +107,10 @@ class FtileBox implements Ftile {
 
 	public boolean isKilled() {
 		return false;
+	}
+
+	public LinkRendering getInLinkRendering() {
+		return inLinkRendering;
 	}
 
 }

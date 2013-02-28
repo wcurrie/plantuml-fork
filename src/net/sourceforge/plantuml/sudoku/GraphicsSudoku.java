@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 9786 $
+ * Revision $Revision: 10075 $
  *
  */
 package net.sourceforge.plantuml.sudoku;
@@ -44,6 +44,8 @@ import java.util.List;
 
 import net.sourceforge.plantuml.EmptyImageBuilder;
 import net.sourceforge.plantuml.SpriteContainerEmpty;
+import net.sourceforge.plantuml.api.ImageData;
+import net.sourceforge.plantuml.api.ImageDataSimple;
 import net.sourceforge.plantuml.cucadiagram.Display;
 import net.sourceforge.plantuml.graphic.FontConfiguration;
 import net.sourceforge.plantuml.graphic.HorizontalAlignement;
@@ -55,6 +57,7 @@ import net.sourceforge.plantuml.ugraphic.ColorMapperIdentity;
 import net.sourceforge.plantuml.ugraphic.UFont;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
 import net.sourceforge.plantuml.ugraphic.URectangle;
+import net.sourceforge.plantuml.ugraphic.UTranslate;
 import net.sourceforge.plantuml.ugraphic.g2d.UGraphicG2d;
 
 public class GraphicsSudoku {
@@ -71,6 +74,13 @@ public class GraphicsSudoku {
 		final BufferedImage im = createImage();
 		PngIO.write(im, os, 96);
 	}
+	
+	public ImageData writeImage1317(OutputStream os) throws IOException {
+		final BufferedImage im = createImage();
+		PngIO.write(im, os, 96);
+		return new ImageDataSimple(im.getWidth(), im.getHeight());
+	}
+
 
 	final private int xOffset = 5;
 	final private int yOffset = 5;
@@ -92,9 +102,9 @@ public class GraphicsSudoku {
 		final BufferedImage im = builder.getBufferedImage();
 		final Graphics2D g3d = builder.getGraphics2D();
 
-		final UGraphic ug = new UGraphicG2d(new ColorMapperIdentity(), g3d, 1.0);
+		UGraphic ug = new UGraphicG2d(new ColorMapperIdentity(), g3d, 1.0);
 
-		ug.translate(xOffset, yOffset);
+		ug = ug.apply(new UTranslate(xOffset, yOffset));
 
 		for (int x = 0; x < 9; x++) {
 			for (int y = 0; y < 9; y++) {
@@ -112,15 +122,15 @@ public class GraphicsSudoku {
 		for (int i = 0; i < 10; i++) {
 			final boolean bold = i % boldWidth == 0;
 			final int w = bold ? boldWidth : 1;
-			ug.draw(0, i * cellHeight, new URectangle(9 * cellWidth + boldWidth, w));
+			ug.drawNewWay(0, i * cellHeight, new URectangle(9 * cellWidth + boldWidth, w));
 		}
 		for (int i = 0; i < 10; i++) {
 			final boolean bold = i % boldWidth == 0;
 			final int w = bold ? boldWidth : 1;
-			ug.draw(i * cellWidth, 0, new URectangle(w, 9 * cellHeight + boldWidth));
+			ug.drawNewWay(i * cellWidth, 0, new URectangle(w, 9 * cellHeight + boldWidth));
 		}
 
-		ug.translate(0, sudoHeight);
+		ug = ug.apply(new UTranslate(0, sudoHeight));
 		final List<String> texts = new ArrayList<String>();
 		texts.add("http://plantuml.sourceforge.net");
 		texts.add("Seed " + Long.toString(sudoku.getSeed(), 36));
@@ -131,5 +141,6 @@ public class GraphicsSudoku {
 		g3d.dispose();
 		return im;
 	}
+
 
 }

@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 9935 $
+ * Revision $Revision: 10104 $
  *
  */
 package net.sourceforge.plantuml.ugraphic;
@@ -39,37 +39,44 @@ import java.io.OutputStream;
 import net.sourceforge.plantuml.Url;
 import net.sourceforge.plantuml.graphic.StringBounder;
 
-public interface UGraphic {
+public abstract class UGraphic {
 
-	public StringBounder getStringBounder();
+	abstract public StringBounder getStringBounder();
 
-	public UParam getParam();
+	abstract public UParam getParam();
 
-	public void draw(double x, double y, UShape shape);
+	abstract public void drawOldWay(UShape shape);
 
-	public void centerChar(double x, double y, char c, UFont font);
+	public final void drawNewWay(double x, double y, UShape shape) {
+		apply(new UTranslate(x, y)).drawOldWay(shape);
+	}
 
-	public void translate(double dx, double dy);
+	abstract public UGraphic apply(UChange change);
 
-	public void setTranslate(double dx, double dy);
+	abstract public void centerChar(double x, double y, char c, UFont font);
 
-	public double getTranslateX();
+	abstract public ColorMapper getColorMapper();
 
-	public double getTranslateY();
+	abstract public void startUrl(Url url);
 
-	public void setClip(UClip clip);
+	abstract public void closeAction();
 
-	public void setAntiAliasing(boolean trueForOn);
+	abstract public UGroup createGroup();
 
-	public ColorMapper getColorMapper();
-
-	public void startUrl(Url url);
-
-	public void closeAction();
-
-	public UGroup createGroup();
+	abstract public void writeImage(OutputStream os, String metadata, int dpi) throws IOException;
 	
-	public void writeImage(OutputStream os, String metadata, int dpi) throws IOException;
+	// bugnewway
+	// abstract public void translateTOBEREMOVED(double dx, double dy);
+
+//	public void setTranslateTOBEREMOVED(double dx, double dy) {
+//	}
+
+//	abstract public double getTranslateXTOBEREMOVED();
+//
+//	abstract public double getTranslateYTOBEREMOVED();
+	// abstract public void setClipTOBEREMOVED(UClip clip);
+
+
 
 
 }

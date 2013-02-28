@@ -68,7 +68,7 @@ public final class InnerActivity implements IEntityImage {
 		if (shadowing) {
 			rect.setDeltaShadow(4);
 		}
-		ug.draw(x, y, rect);
+		ug.drawNewWay(x, y, rect);
 		ug.getParam().setStroke(new UStroke());
 		im.drawU(ug, x, y);
 	}

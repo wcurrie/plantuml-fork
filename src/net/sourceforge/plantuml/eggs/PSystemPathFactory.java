@@ -39,7 +39,7 @@ import java.util.regex.Pattern;
 import net.sourceforge.plantuml.DiagramType;
 import net.sourceforge.plantuml.PSystemBasicFactory;
 
-public class PSystemPathFactory implements PSystemBasicFactory {
+public class PSystemPathFactory extends PSystemBasicFactory {
 
 	private PSystemPath system;
 

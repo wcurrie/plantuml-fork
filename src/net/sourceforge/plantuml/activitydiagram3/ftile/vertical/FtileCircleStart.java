@@ -39,9 +39,9 @@ import java.util.List;
 
 import net.sourceforge.plantuml.Dimension2DDouble;
 import net.sourceforge.plantuml.Url;
+import net.sourceforge.plantuml.activitydiagram3.LinkRendering;
 import net.sourceforge.plantuml.activitydiagram3.ftile.Ftile;
 import net.sourceforge.plantuml.graphic.HtmlColor;
-import net.sourceforge.plantuml.graphic.HtmlColorUtils;
 import net.sourceforge.plantuml.graphic.StringBounder;
 import net.sourceforge.plantuml.ugraphic.UEllipse;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
@@ -63,7 +63,7 @@ public class FtileCircleStart implements Ftile {
 		}
 		ug.getParam().setColor(null);
 		ug.getParam().setBackcolor(backColor);
-		ug.draw(xTheoricalPosition, yTheoricalPosition, circle);
+		ug.drawNewWay(xTheoricalPosition, yTheoricalPosition, circle);
 	}
 
 	public Dimension2D calculateDimension(StringBounder stringBounder) {
@@ -76,6 +76,10 @@ public class FtileCircleStart implements Ftile {
 	
 	public boolean isKilled() {
 		return false;
+	}
+
+	public LinkRendering getInLinkRendering() {
+		return null;
 	}
 
 

@@ -33,9 +33,9 @@
  */
 package net.sourceforge.plantuml.postit;
 
-import net.sourceforge.plantuml.command.AbstractUmlSystemCommandFactory;
+import net.sourceforge.plantuml.command.PSystemCommandFactory;
 
-public class PostIdDiagramFactory extends AbstractUmlSystemCommandFactory {
+public class PostIdDiagramFactory extends PSystemCommandFactory {
 
 	private PostItDiagram system;
 

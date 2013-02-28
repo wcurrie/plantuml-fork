@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 9786 $
+ * Revision $Revision: 10057 $
  *
  */
 package net.sourceforge.plantuml.skin.bluemodern;
@@ -72,7 +72,7 @@ public class FillRoundShape {
 		final HtmlColorGradient gradient = new HtmlColorGradient(c1, c2, '\\');
 		final URectangle r = new URectangle(width, height, corner * 2, corner * 2);
 		ug.getParam().setBackcolor(gradient);
-		ug.draw(0, 0, r);
+		ug.drawOldWay(r);
 	}
 
 }

@@ -28,18 +28,18 @@
  *
  * Original Author:  Arnaud Roques
  *
- * Revision $Revision: 9786 $
+ * Revision $Revision: 10103 $
  *
  */
 package net.sourceforge.plantuml;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
-import java.awt.RenderingHints;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 
 import net.sourceforge.plantuml.ugraphic.ColorMapperIdentity;
+import net.sourceforge.plantuml.ugraphic.UAntiAliasing;
 import net.sourceforge.plantuml.ugraphic.g2d.UGraphicG2d;
 
 public class EmptyImageBuilder {
@@ -56,7 +56,7 @@ public class EmptyImageBuilder {
 		im = new BufferedImage(width, height, background == null ? BufferedImage.TYPE_INT_ARGB
 				: BufferedImage.TYPE_INT_RGB);
 		g2d = im.createGraphics();
-		g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+		UAntiAliasing.ANTI_ALIASING_ON.apply(g2d);
 		if (background != null) {
 			g2d.setColor(background);
 			g2d.fillRect(0, 0, width, height);

@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 9786 $
+ * Revision $Revision: 10085 $
  *
  */
 package net.sourceforge.plantuml.sequencediagram.graphic;
@@ -54,10 +54,8 @@ abstract class GraphicalElement {
 	}
 
 	public final void drawU(UGraphic ug, double maxX, Context2D context) {
-		final double atX = ug.getTranslateX();
-		final double atY = ug.getTranslateY();
+		// bugnewway
 		drawInternalU(ug, maxX, context);
-		ug.setTranslate(atX, atY);
 	}
 
 	protected abstract void drawInternalU(UGraphic ug, double maxX, Context2D context);

@@ -78,7 +78,7 @@ class EmbededSystemLine implements Line {
 		try {
 			final BufferedImage im = getImage();
 			final UShape image = new UImage(im);
-			ug.draw(x, y, image);
+			ug.drawNewWay(x, y, image);
 		} catch (IOException e) {
 			e.printStackTrace();
 		} catch (InterruptedException e) {
@@ -90,7 +90,7 @@ class EmbededSystemLine implements Line {
 	private BufferedImage getImage() throws IOException, InterruptedException {
 		final PSystem system = getSystem();
 		final ByteArrayOutputStream os = new ByteArrayOutputStream();
-		system.exportDiagram(os, null, 0, new FileFormatOption(FileFormat.PNG));
+		system.exportDiagram(os, 0, new FileFormatOption(FileFormat.PNG));
 		os.close();
 		final ByteArrayInputStream is = new ByteArrayInputStream(os.toByteArray());
 		final BufferedImage im = ImageIO.read(is);

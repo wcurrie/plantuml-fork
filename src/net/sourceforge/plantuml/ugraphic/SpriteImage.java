@@ -56,7 +56,7 @@ public class SpriteImage implements Sprite {
 		return new TextBlock() {
 
 			public void drawU(UGraphic ug, double x, double y) {
-				ug.draw(x, y, img);
+				ug.drawNewWay(x, y, img);
 			}
 
 			public Dimension2D calculateDimension(StringBounder stringBounder) {

@@ -31,10 +31,8 @@
  */
 package net.sourceforge.plantuml.sequencediagram;
 
+import java.awt.geom.Dimension2D;
 import java.awt.image.BufferedImage;
-import java.io.BufferedOutputStream;
-import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.text.DecimalFormat;
@@ -49,11 +47,11 @@ import java.util.Stack;
 import net.sourceforge.plantuml.CMapData;
 import net.sourceforge.plantuml.FileFormat;
 import net.sourceforge.plantuml.FileFormatOption;
-import net.sourceforge.plantuml.Log;
 import net.sourceforge.plantuml.OptionFlags;
 import net.sourceforge.plantuml.UmlDiagram;
-import net.sourceforge.plantuml.UmlDiagramInfo;
 import net.sourceforge.plantuml.UmlDiagramType;
+import net.sourceforge.plantuml.api.ImageData;
+import net.sourceforge.plantuml.api.ImageDataComplex;
 import net.sourceforge.plantuml.cucadiagram.Display;
 import net.sourceforge.plantuml.graphic.HtmlColor;
 import net.sourceforge.plantuml.sequencediagram.graphic.FileMaker;
@@ -193,38 +191,16 @@ public class SequenceDiagram extends UmlDiagram {
 		return new SequenceDiagramFileMaker(this, skin, fileFormatOption, flashcodes);
 	}
 
-	public List<File> exportDiagrams(File suggestedFile, FileFormatOption fileFormat) throws IOException {
-		final List<File> result = new ArrayList<File>();
-		final int nbImages = getNbImages();
-		for (int i = 0; i < nbImages; i++) {
-
-			final File f = fileFormat.getFileFormat().computeFilename(suggestedFile, i);
-			Log.info("Creating file: " + f);
-			final OutputStream fos = new BufferedOutputStream(new FileOutputStream(f));
-			final CMapData cmap = new CMapData();
-			try {
-				exportDiagram(fos, cmap, i, fileFormat);
-			} finally {
-				fos.close();
-			}
-			if (this.hasUrl() && cmap.containsData()) {
-				exportCmap(suggestedFile, cmap);
-			}
-			Log.info("File size : " + f.length());
-			result.add(f);
-		}
-		return result;
-	}
-
 	@Override
-	protected UmlDiagramInfo exportDiagramInternal(OutputStream os, CMapData cmap, int index,
-			FileFormatOption fileFormat, List<BufferedImage> flashcodes) throws IOException {
+	protected ImageData exportDiagramInternal(OutputStream os, int index, FileFormatOption fileFormat,
+			List<BufferedImage> flashcodes) throws IOException {
 		final FileMaker sequenceDiagramPngMaker = getSequenceDiagramPngMaker(fileFormat, flashcodes);
-		final UmlDiagramInfo info = sequenceDiagramPngMaker.createOne2(os, index);
-		if (cmap != null && this.hasUrl() && fileFormat.getFileFormat() == FileFormat.PNG) {
+		final Dimension2D info = sequenceDiagramPngMaker.createOne2(os, index);
+		final CMapData cmap = new CMapData();
+		if (this.hasUrl() && fileFormat.getFileFormat() == FileFormat.PNG) {
 			sequenceDiagramPngMaker.appendCmap(cmap);
 		}
-		return info;
+		return new ImageDataComplex(info, cmap);
 	}
 
 	// support for CommandReturn

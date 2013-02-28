@@ -235,4 +235,8 @@ public class GroupRoot implements IGroup {
 		return SingleStrategy.SQUARRE;
 	}
 
+	public boolean isRemoved() {
+		return false;
+	}
+
 }

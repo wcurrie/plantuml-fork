@@ -105,9 +105,9 @@ public enum PackageStyle {
 		if (shadowing) {
 			polygon.setDeltaShadow(3.0);
 		}
-		ug.draw(xTheoricalPosition, yTheoricalPosition, polygon);
-		ug.draw(xTheoricalPosition + width - cornersize, yTheoricalPosition, new ULine(0, cornersize));
-		ug.draw(xTheoricalPosition + width, yTheoricalPosition + cornersize, new ULine(-cornersize, 0));
+		ug.drawNewWay(xTheoricalPosition, yTheoricalPosition, polygon);
+		ug.drawNewWay(xTheoricalPosition + width - cornersize, yTheoricalPosition, new ULine(0, cornersize));
+		ug.drawNewWay(xTheoricalPosition + width, yTheoricalPosition + cornersize, new ULine(-cornersize, 0));
 	}
 
 	private void drawStorage(UGraphic ug, double xTheoricalPosition, double yTheoricalPosition, double width,
@@ -116,7 +116,7 @@ public enum PackageStyle {
 		if (shadowing) {
 			shape.setDeltaShadow(3.0);
 		}
-		ug.draw(xTheoricalPosition, yTheoricalPosition, shape);
+		ug.drawNewWay(xTheoricalPosition, yTheoricalPosition, shape);
 	}
 
 	private void drawComponent1(UGraphic ug, double xTheoricalPosition, double yTheoricalPosition, double widthTotal,
@@ -129,11 +129,11 @@ public enum PackageStyle {
 
 		final UShape small = new URectangle(10, 5);
 
-		ug.draw(xTheoricalPosition, yTheoricalPosition, form);
+		ug.drawNewWay(xTheoricalPosition, yTheoricalPosition, form);
 
 		// UML 1 Component Notation
-		ug.draw(xTheoricalPosition - 5, yTheoricalPosition + 5, small);
-		ug.draw(xTheoricalPosition - 5, yTheoricalPosition + heightTotal - 10, small);
+		ug.drawNewWay(xTheoricalPosition - 5, yTheoricalPosition + 5, small);
+		ug.drawNewWay(xTheoricalPosition - 5, yTheoricalPosition + heightTotal - 10, small);
 	}
 
 	private void drawComponent2(UGraphic ug, double xTheoricalPosition, double yTheoricalPosition, double widthTotal,
@@ -147,12 +147,12 @@ public enum PackageStyle {
 		final UShape small = new URectangle(15, 10);
 		final UShape tiny = new URectangle(4, 2);
 
-		ug.draw(xTheoricalPosition, yTheoricalPosition, form);
+		ug.drawNewWay(xTheoricalPosition, yTheoricalPosition, form);
 
 		// UML 2 Component Notation
-		ug.draw(xTheoricalPosition + widthTotal - 20, yTheoricalPosition + 5, small);
-		ug.draw(xTheoricalPosition + widthTotal - 22, yTheoricalPosition + 7, tiny);
-		ug.draw(xTheoricalPosition + widthTotal - 22, yTheoricalPosition + 11, tiny);
+		ug.drawNewWay(xTheoricalPosition + widthTotal - 20, yTheoricalPosition + 5, small);
+		ug.drawNewWay(xTheoricalPosition + widthTotal - 22, yTheoricalPosition + 7, tiny);
+		ug.drawNewWay(xTheoricalPosition + widthTotal - 22, yTheoricalPosition + 11, tiny);
 	}
 
 	private void drawRect(UGraphic ug, double xTheoricalPosition, double yTheoricalPosition, double width,
@@ -161,7 +161,7 @@ public enum PackageStyle {
 		if (shadowing) {
 			shape.setDeltaShadow(3.0);
 		}
-		ug.draw(xTheoricalPosition, yTheoricalPosition, shape);
+		ug.drawNewWay(xTheoricalPosition, yTheoricalPosition, shape);
 	}
 
 	private void drawCloud(UGraphic ug, double xTheoricalPosition, double yTheoricalPosition, double width,
@@ -170,7 +170,7 @@ public enum PackageStyle {
 		if (shadowing) {
 			shape.setDeltaShadow(3.0);
 		}
-		ug.draw(xTheoricalPosition + 3, yTheoricalPosition - 3, shape);
+		ug.drawNewWay(xTheoricalPosition + 3, yTheoricalPosition - 3, shape);
 	}
 
 	private UPath getSpecificFrontierForCloud(double width, double height) {
@@ -206,7 +206,7 @@ public enum PackageStyle {
 			shape.setDeltaShadow(3.0);
 		}
 
-		ug.draw(xTheoricalPosition, yTheoricalPosition, shape);
+		ug.drawNewWay(xTheoricalPosition, yTheoricalPosition, shape);
 
 		final double textWidth;
 		final double textHeight;
@@ -228,7 +228,7 @@ public enum PackageStyle {
 		polygon.lineTo(textWidth - cornersize, textHeight);
 
 		polygon.lineTo(0, textHeight);
-		ug.draw(xTheoricalPosition, yTheoricalPosition, polygon);
+		ug.drawNewWay(xTheoricalPosition, yTheoricalPosition, polygon);
 
 	}
 
@@ -248,8 +248,8 @@ public enum PackageStyle {
 		if (shadowing) {
 			shape.setDeltaShadow(3.0);
 		}
-		ug.draw(xTheoricalPosition, yTheoricalPosition, shape);
-		ug.draw(xTheoricalPosition, yTheoricalPosition + htitle, new ULine(wtitle + marginTitleX3, 0));
+		ug.drawNewWay(xTheoricalPosition, yTheoricalPosition, shape);
+		ug.drawNewWay(xTheoricalPosition, yTheoricalPosition + htitle, new ULine(wtitle + marginTitleX3, 0));
 	}
 
 	private void drawDatabase(UGraphic ug, double xTheoricalPosition, double yTheoricalPosition, double width,
@@ -266,14 +266,14 @@ public enum PackageStyle {
 		shape.cubicTo(width / 2 + 10, height, 10, height, 0, height - 10);
 		shape.lineTo(0, 10);
 
-		ug.draw(xTheoricalPosition, yTheoricalPosition, shape);
+		ug.drawNewWay(xTheoricalPosition, yTheoricalPosition, shape);
 
 		final UPath closing = new UPath();
 		closing.moveTo(0, 10);
 		closing.cubicTo(10, 20, width / 2 - 10, 20, width / 2, 20);
 		closing.cubicTo(width / 2 + 10, 20, width - 10, 20, width, 10);
 
-		ug.draw(xTheoricalPosition, yTheoricalPosition, closing);
+		ug.drawNewWay(xTheoricalPosition, yTheoricalPosition, closing);
 
 	}
 
@@ -290,14 +290,14 @@ public enum PackageStyle {
 		if (shadowing) {
 			shape.setDeltaShadow(2);
 		}
-		ug.draw(xTheoricalPosition, yTheoricalPosition, shape);
+		ug.drawNewWay(xTheoricalPosition, yTheoricalPosition, shape);
 
-		ug.draw(xTheoricalPosition + width - 10, yTheoricalPosition + 10, new ULine(9, -9));
+		ug.drawNewWay(xTheoricalPosition + width - 10, yTheoricalPosition + 10, new ULine(9, -9));
 		final UPath path = new UPath();
 		path.moveTo(0, 0);
 		path.lineTo(width - 10, 0);
 		path.lineTo(width - 10, height - 10);
-		ug.draw(xTheoricalPosition, yTheoricalPosition + 10, path);
+		ug.drawNewWay(xTheoricalPosition, yTheoricalPosition + 10, path);
 	}
 
 }

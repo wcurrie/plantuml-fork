@@ -39,7 +39,7 @@ import java.util.List;
 import net.sourceforge.plantuml.DiagramType;
 import net.sourceforge.plantuml.PSystemBasicFactory;
 
-public class PSystemSaltFactory implements PSystemBasicFactory {
+public class PSystemSaltFactory extends PSystemBasicFactory {
 
 	private List<String> data2;
 	private boolean first;

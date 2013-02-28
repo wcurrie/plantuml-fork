@@ -39,9 +39,9 @@ import java.util.List;
 
 import net.sourceforge.plantuml.Dimension2DDouble;
 import net.sourceforge.plantuml.Url;
+import net.sourceforge.plantuml.activitydiagram3.LinkRendering;
 import net.sourceforge.plantuml.activitydiagram3.ftile.Ftile;
 import net.sourceforge.plantuml.graphic.HtmlColor;
-import net.sourceforge.plantuml.graphic.HtmlColorUtils;
 import net.sourceforge.plantuml.graphic.StringBounder;
 import net.sourceforge.plantuml.ugraphic.UEllipse;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
@@ -50,13 +50,12 @@ import net.sourceforge.plantuml.ugraphic.UStroke;
 public class FtileCircleStop implements Ftile {
 
 	private static final int SIZE = 20;
-	
+
 	private final HtmlColor backColor;
-	
+
 	FtileCircleStop(HtmlColor backColor) {
 		this.backColor = backColor;
 	}
-
 
 	public void drawU(UGraphic ug, double xTheoricalPosition, double yTheoricalPosition) {
 
@@ -70,7 +69,7 @@ public class FtileCircleStop implements Ftile {
 		ug.getParam().setStroke(new UStroke());
 		ug.getParam().setBackcolor(null);
 		ug.getParam().setColor(backColor);
-		ug.draw(xTheoricalPosition, yTheoricalPosition, circle);
+		ug.drawNewWay(xTheoricalPosition, yTheoricalPosition, circle);
 		ug.getParam().setStroke(new UStroke());
 
 		final double delta = 4;
@@ -80,7 +79,7 @@ public class FtileCircleStop implements Ftile {
 		}
 		ug.getParam().setColor(null);
 		ug.getParam().setBackcolor(backColor);
-		ug.draw(xTheoricalPosition + delta + .5, yTheoricalPosition + delta + .5, circleSmall);
+		ug.drawNewWay(xTheoricalPosition + delta + .5, yTheoricalPosition + delta + .5, circleSmall);
 
 	}
 
@@ -91,10 +90,13 @@ public class FtileCircleStop implements Ftile {
 	public List<Url> getUrls() {
 		return Collections.emptyList();
 	}
-	
+
 	public boolean isKilled() {
 		return true;
 	}
 
+	public LinkRendering getInLinkRendering() {
+		return null;
+	}
 
 }

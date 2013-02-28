@@ -100,7 +100,7 @@ public class EntityImageActivity extends AbstractEntityImage {
 		}
 		ug.getParam().setBackcolor(backcolor);
 
-		ug.draw(xTheoricalPosition, yTheoricalPosition, rect);
+		ug.drawNewWay(xTheoricalPosition, yTheoricalPosition, rect);
 		ug.getParam().setStroke(new UStroke());
 
 		final double x = xTheoricalPosition + MARGIN;

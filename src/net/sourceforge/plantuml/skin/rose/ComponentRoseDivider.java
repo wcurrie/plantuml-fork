@@ -85,13 +85,13 @@ public class ComponentRoseDivider extends AbstractTextualComponent {
 		if (withShadow) {
 			rectLong.setDeltaShadow(2);
 		}
-		ug.draw(0, dimensionToUse.getHeight() / 2 - 1, rectLong);
+		ug.drawNewWay(0, dimensionToUse.getHeight() / 2 - 1, rectLong);
 
 		ug.getParam().setColor(HtmlColorUtils.BLACK);
 
 		ug.getParam().setStroke(new UStroke(stroke.getThickness() / 2));
-		ug.draw(0, dimensionToUse.getHeight() / 2 - 1, new ULine(dimensionToUse.getWidth(), 0));
-		ug.draw(0, dimensionToUse.getHeight() / 2 + 2, new ULine(dimensionToUse.getWidth(), 0));
+		ug.drawNewWay(0, dimensionToUse.getHeight() / 2 - 1, new ULine(dimensionToUse.getWidth(), 0));
+		ug.drawNewWay(0, dimensionToUse.getHeight() / 2 + 2, new ULine(dimensionToUse.getWidth(), 0));
 
 		if (empty == false) {
 			ug.getParam().setColor(HtmlColorUtils.BLACK);
@@ -102,7 +102,7 @@ public class ComponentRoseDivider extends AbstractTextualComponent {
 			if (withShadow) {
 				rect.setDeltaShadow(4);
 			}
-			ug.draw(xpos, ypos, rect);
+			ug.drawNewWay(xpos, ypos, rect);
 			ug.getParam().setStroke(new UStroke());
 
 			textBlock.drawU(ug, xpos + deltaX, ypos + getMarginY());

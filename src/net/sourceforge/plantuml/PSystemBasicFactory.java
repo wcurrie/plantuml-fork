@@ -28,11 +28,11 @@
  *
  * Original Author:  Arnaud Roques
  *
- * Revision $Revision: 9786 $
+ * Revision $Revision: 10005 $
  */
 package net.sourceforge.plantuml;
 
-public interface PSystemBasicFactory extends PSystemFactory {
+public abstract class PSystemBasicFactory implements PSystemFactory {
 
-	boolean executeLine(String line);
+	public abstract boolean executeLine(String line);
 }

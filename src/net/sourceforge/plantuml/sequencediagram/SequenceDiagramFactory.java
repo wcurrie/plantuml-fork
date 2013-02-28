@@ -28,12 +28,12 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 9884 $
+ * Revision $Revision: 10006 $
  *
  */
 package net.sourceforge.plantuml.sequencediagram;
 
-import net.sourceforge.plantuml.command.AbstractUmlSystemCommandFactory;
+import net.sourceforge.plantuml.command.PSystemCommandFactory;
 import net.sourceforge.plantuml.command.note.sequence.FactorySequenceNoteCommand;
 import net.sourceforge.plantuml.command.note.sequence.FactorySequenceNoteOnArrowCommand;
 import net.sourceforge.plantuml.command.note.sequence.FactorySequenceNoteOverSeveralCommand;
@@ -65,7 +65,7 @@ import net.sourceforge.plantuml.sequencediagram.command.CommandReturn;
 import net.sourceforge.plantuml.sequencediagram.command.CommandSkin;
 import net.sourceforge.plantuml.sequencediagram.command.CommandUrl;
 
-public class SequenceDiagramFactory extends AbstractUmlSystemCommandFactory {
+public class SequenceDiagramFactory extends PSystemCommandFactory {
 
 	private SequenceDiagram system;
 

@@ -46,15 +46,16 @@ import net.sourceforge.plantuml.activitydiagram3.command.CommandIf2;
 import net.sourceforge.plantuml.activitydiagram3.command.CommandIf3;
 import net.sourceforge.plantuml.activitydiagram3.command.CommandIf4;
 import net.sourceforge.plantuml.activitydiagram3.command.CommandKill3;
+import net.sourceforge.plantuml.activitydiagram3.command.CommandLink3;
 import net.sourceforge.plantuml.activitydiagram3.command.CommandRepeat3;
 import net.sourceforge.plantuml.activitydiagram3.command.CommandRepeatWhile3;
 import net.sourceforge.plantuml.activitydiagram3.command.CommandStart3;
 import net.sourceforge.plantuml.activitydiagram3.command.CommandStop3;
 import net.sourceforge.plantuml.activitydiagram3.command.CommandWhile3;
 import net.sourceforge.plantuml.activitydiagram3.command.CommandWhileEnd3;
-import net.sourceforge.plantuml.command.AbstractUmlSystemCommandFactory;
+import net.sourceforge.plantuml.command.PSystemCommandFactory;
 
-public class ActivityDiagramFactory3 extends AbstractUmlSystemCommandFactory {
+public class ActivityDiagramFactory3 extends PSystemCommandFactory {
 
 	private ActivityDiagram3 system;
 
@@ -85,6 +86,7 @@ public class ActivityDiagramFactory3 extends AbstractUmlSystemCommandFactory {
 		addCommand(new CommandStart3(system));
 		addCommand(new CommandStop3(system));
 		addCommand(new CommandKill3(system));
+		addCommand(new CommandLink3(system));
 
 		addCommand(new CommandActivityLong3(system));
 

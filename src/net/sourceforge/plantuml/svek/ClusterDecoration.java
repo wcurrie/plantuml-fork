@@ -184,8 +184,8 @@ public class ClusterDecoration {
 		ug.getParam().setBackcolor(stateBack);
 		ug.getParam().setColor(borderColor);
 		ug.getParam().setStroke(new UStroke(2));
-		ug.draw(x + minX, y + minY, shape);
-		ug.draw(x + minX, y + minY + htitle, new ULine(wtitle + marginTitleX3, 0));
+		ug.drawNewWay(x + minX, y + minY, shape);
+		ug.drawNewWay(x + minX, y + minY + htitle, new ULine(wtitle + marginTitleX3, 0));
 		ug.getParam().setStroke(new UStroke());
 		title.drawU(ug, x + minX + marginTitleX1, y + minY + marginTitleY1);
 	}
@@ -204,7 +204,7 @@ public class ClusterDecoration {
 		ug.getParam().setColor(borderColor);
 		ug.getParam().setStroke(new UStroke(2));
 
-		ug.draw(x + minX, y + minY, shape);
+		ug.drawNewWay(x + minX, y + minY, shape);
 		ug.getParam().setStroke(new UStroke());
 		final double deltax = width - dimTitle.getWidth();
 		title.drawU(ug, x + minX + deltax / 2, y + minY + 5);

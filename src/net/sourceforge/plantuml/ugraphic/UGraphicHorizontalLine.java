@@ -44,6 +44,12 @@ public class UGraphicHorizontalLine extends AbstractUGraphicHorizontalLine {
 		this.startingX = startingX;
 		this.endingX = endingX;
 	}
+	
+	@Override
+	protected AbstractUGraphicHorizontalLine copy() {
+		return new UGraphicHorizontalLine(getUg(), startingX, endingX);
+	}
+
 
 	@Override
 	protected void drawHline(UGraphic ug, double x, double y, UHorizontalLine line) {

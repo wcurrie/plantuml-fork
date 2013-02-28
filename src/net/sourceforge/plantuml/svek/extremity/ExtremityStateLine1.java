@@ -67,10 +67,10 @@ class ExtremityStateLine1 extends Extremity implements UDrawable {
 
 	public void drawU(UGraphic ug, double x, double y) {
 		ug.getParam().setBackcolor(ug.getParam().getColor());
-		ug.draw(x - radius * Math.cos(angle), y - radius * Math.sin(angle), polygon);
+		ug.drawNewWay(x - radius * Math.cos(angle), y - radius * Math.sin(angle), polygon);
 		ug.getParam().setBackcolor(HtmlColorUtils.WHITE);
 		ug.getParam().setStroke(new UStroke(1.5));
-		ug.draw(x + dest.getX() - radius, y + dest.getY() - radius, new UEllipse(radius * 2, radius * 2));
+		ug.drawNewWay(x + dest.getX() - radius, y + dest.getY() - radius, new UEllipse(radius * 2, radius * 2));
 		ug.getParam().setStroke(new UStroke());
 		drawLine(ug, getPointOnCircle(x + dest.getX(), y + dest.getY(), Math.PI / 4),
 				getPointOnCircle(x + dest.getX(), y + dest.getY(), Math.PI + Math.PI / 4));
@@ -88,7 +88,7 @@ class ExtremityStateLine1 extends Extremity implements UDrawable {
 	static private void drawLine(UGraphic ug, Point2D p1, Point2D p2) {
 		final double dx = p2.getX() - p1.getX();
 		final double dy = p2.getY() - p1.getY();
-		ug.draw(p1.getX(), p1.getY(), new ULine(dx, dy));
+		ug.drawNewWay(p1.getX(), p1.getY(), new ULine(dx, dy));
 
 	}
 

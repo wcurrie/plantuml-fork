@@ -43,6 +43,7 @@ import net.sourceforge.plantuml.skin.Area;
 import net.sourceforge.plantuml.skin.Component;
 import net.sourceforge.plantuml.skin.Context2D;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
+import net.sourceforge.plantuml.ugraphic.UTranslate;
 
 class GraphicalReference extends GraphicalElement implements InGroupable {
 
@@ -69,7 +70,7 @@ class GraphicalReference extends GraphicalElement implements InGroupable {
 		final StringBounder stringBounder = ug.getStringBounder();
 		final double posX = getMinX(stringBounder);
 
-		ug.translate(posX, getStartingY());
+		ug = ug.apply(new UTranslate(posX, getStartingY()));
 		final double preferredWidth = comp.getPreferredWidth(stringBounder);
 		final double w = getMaxX(stringBounder) - getMinX(stringBounder);
 

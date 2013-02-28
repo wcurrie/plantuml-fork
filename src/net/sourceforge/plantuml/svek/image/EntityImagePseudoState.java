@@ -81,7 +81,7 @@ public class EntityImagePseudoState extends AbstractEntityImage {
 		ug.getParam().setStroke(new UStroke(1.5));
 		ug.getParam().setColor(SkinParamUtils.getColor(getSkinParam(), ColorParam.stateBorder, getStereo()));
 		ug.getParam().setBackcolor(SkinParamUtils.getColor(getSkinParam(), ColorParam.stateBackground, getStereo()));
-		ug.draw(xTheoricalPosition, yTheoricalPosition, circle);
+		ug.drawNewWay(xTheoricalPosition, yTheoricalPosition, circle);
 		ug.getParam().setStroke(new UStroke());
 
 		final Dimension2D dimDesc = desc.calculateDimension(ug.getStringBounder());

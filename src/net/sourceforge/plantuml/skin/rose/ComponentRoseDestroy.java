@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 9786 $
+ * Revision $Revision: 10057 $
  *
  */
 package net.sourceforge.plantuml.skin.rose;
@@ -56,8 +56,8 @@ public class ComponentRoseDestroy extends AbstractComponent {
 		ug.getParam().setStroke(new UStroke(2));
 
 		ug.getParam().setColor(foregroundColor);
-		ug.draw(0, 0, new ULine(2 * crossSize, 2 * crossSize));
-		ug.draw(0, 2 * crossSize, new ULine(2 * crossSize, -2 * crossSize));
+		ug.drawOldWay(new ULine(2 * crossSize, 2 * crossSize));
+		ug.drawNewWay(0, 2 * crossSize, new ULine(2 * crossSize, -2 * crossSize));
 		ug.getParam().setStroke(new UStroke());
 	}
 

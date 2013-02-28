@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  *
- * Revision $Revision: 9786 $
+ * Revision $Revision: 10018 $
  */
 package net.sourceforge.plantuml;
 
@@ -41,6 +41,7 @@ import java.util.Collections;
 import java.util.LinkedHashSet;
 import java.util.List;
 
+import net.sourceforge.plantuml.api.ImageData;
 import net.sourceforge.plantuml.graphic.GraphicStrings;
 
 public class PSystemError extends AbstractPSystem {
@@ -76,9 +77,8 @@ public class PSystemError extends AbstractPSystem {
 		this(source, Collections.singletonList(singleError));
 	}
 
-	public void exportDiagram(OutputStream os, CMapData cmap, int index, FileFormatOption fileFormat)
-			throws IOException {
-		getPngError().writeImage(os, getMetadata(), fileFormat);
+	public ImageData exportDiagram(OutputStream os, int num, FileFormatOption fileFormat) throws IOException {
+		return getPngError().exportDiagram1317(os, getMetadata(), fileFormat);
 	}
 
 	public GraphicStrings getPngError() throws IOException {

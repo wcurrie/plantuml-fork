@@ -60,10 +60,10 @@ class USymbolDatabase extends USymbol {
 		shape.cubicTo(width / 2 + 10, height, 10, height, 0, height - 10);
 		shape.lineTo(0, 10);
 
-		ug.draw(xTheoricalPosition, yTheoricalPosition, shape);
+		ug.drawNewWay(xTheoricalPosition, yTheoricalPosition, shape);
 
 		final UPath closing = getClosingPath(width);
-		ug.draw(xTheoricalPosition, yTheoricalPosition, closing);
+		ug.drawNewWay(xTheoricalPosition, yTheoricalPosition, closing);
 
 	}
 
@@ -80,6 +80,11 @@ class USymbolDatabase extends USymbol {
 		private final double startingX;
 		private final double endingX;
 
+		@Override
+		protected AbstractUGraphicHorizontalLine copy() {
+			return this;
+		}
+
 		public MyUGraphic(UGraphic ug, double startingX, double endingX) {
 			super(ug);
 			this.startingX = startingX;
@@ -91,7 +96,7 @@ class USymbolDatabase extends USymbol {
 			final UPath closing = getClosingPath(endingX - startingX);
 			final HtmlColor backcolor = ug.getParam().getBackcolor();
 			ug.getParam().setBackcolor(null);
-			ug.draw(startingX, y - 15, closing);
+			ug.drawNewWay(startingX, y - 15, closing);
 			ug.getParam().setBackcolor(backcolor);
 			line.drawTitle(ug, startingX, endingX, y, true);
 		}

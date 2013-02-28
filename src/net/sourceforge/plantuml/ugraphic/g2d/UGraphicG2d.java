@@ -28,13 +28,12 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 9935 $
+ * Revision $Revision: 10104 $
  *
  */
 package net.sourceforge.plantuml.ugraphic.g2d;
 
 import java.awt.Graphics2D;
-import java.awt.RenderingHints;
 import java.awt.Shape;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Rectangle2D;
@@ -51,11 +50,15 @@ import net.sourceforge.plantuml.graphic.StringBounderUtils;
 import net.sourceforge.plantuml.graphic.UnusedSpace;
 import net.sourceforge.plantuml.png.PngIO;
 import net.sourceforge.plantuml.posimo.DotPath;
+import net.sourceforge.plantuml.ugraphic.AbstractCommonUGraphic;
 import net.sourceforge.plantuml.ugraphic.AbstractUGraphic;
 import net.sourceforge.plantuml.ugraphic.ColorMapper;
+import net.sourceforge.plantuml.ugraphic.UAntiAliasing;
+import net.sourceforge.plantuml.ugraphic.UChange;
 import net.sourceforge.plantuml.ugraphic.UClip;
 import net.sourceforge.plantuml.ugraphic.UEllipse;
 import net.sourceforge.plantuml.ugraphic.UFont;
+import net.sourceforge.plantuml.ugraphic.UGraphic;
 import net.sourceforge.plantuml.ugraphic.UImage;
 import net.sourceforge.plantuml.ugraphic.ULine;
 import net.sourceforge.plantuml.ugraphic.UPath;
@@ -70,13 +73,39 @@ public class UGraphicG2d extends AbstractUGraphic<Graphics2D> implements EnsureV
 
 	private final double dpiFactor;
 
+	private UAntiAliasing antiAliasing = UAntiAliasing.ANTI_ALIASING_ON;
+
+	private/* final */List<Url> urls = new ArrayList<Url>();
+
+	@Override
+	public UGraphic apply(UChange change) {
+		final UGraphicG2d copy = (UGraphicG2d) super.apply(change);
+		if (change instanceof UAntiAliasing) {
+			copy.antiAliasing = (UAntiAliasing) change;
+		}
+		return copy;
+	}
+
+	@Override
+	protected AbstractCommonUGraphic copyUGraphic() {
+		return new UGraphicG2d(this);
+	}
+
+	private UGraphicG2d(UGraphicG2d other) {
+		super(other);
+		this.dpiFactor = other.dpiFactor;
+		this.bufferedImage = other.bufferedImage;
+		this.urls = other.urls;
+		this.antiAliasing = other.antiAliasing;
+		register(dpiFactor);
+	}
+
 	public UGraphicG2d(ColorMapper colorMapper, Graphics2D g2d, double dpiFactor) {
 		this(colorMapper, g2d, dpiFactor, null);
 
 	}
 
-	public UGraphicG2d(ColorMapper colorMapper, Graphics2D g2d, double dpiFactor,
-			AffineTransform affineTransform) {
+	public UGraphicG2d(ColorMapper colorMapper, Graphics2D g2d, double dpiFactor, AffineTransform affineTransform) {
 		super(colorMapper, g2d);
 		this.dpiFactor = dpiFactor;
 		if (dpiFactor != 1.0) {
@@ -85,6 +114,10 @@ public class UGraphicG2d extends AbstractUGraphic<Graphics2D> implements EnsureV
 		if (affineTransform != null) {
 			g2d.transform(affineTransform);
 		}
+		register(dpiFactor);
+	}
+
+	private void register(double dpiFactor) {
 		registerDriver(URectangle.class, new DriverRectangleG2d(dpiFactor, this));
 		registerDriver(UText.class, new DriverTextG2d(this));
 		registerDriver(ULine.class, new DriverLineG2d(dpiFactor));
@@ -100,12 +133,19 @@ public class UGraphicG2d extends AbstractUGraphic<Graphics2D> implements EnsureV
 		return StringBounderUtils.asStringBounder(getGraphicObject());
 	}
 
-	public void setClip(UClip uclip) {
+	@Override
+	protected void beforeDraw() {
+		super.beforeDraw();
+		applyClip();
+		antiAliasing.apply(getGraphicObject());
+	}
+
+	private void applyClip() {
+		final UClip uclip = getClip();
 		if (uclip == null) {
 			getGraphicObject().setClip(null);
 		} else {
-			final Shape clip = new Rectangle2D.Double(uclip.getX() + getTranslateX(), uclip.getY() + getTranslateY(),
-					uclip.getWidth(), uclip.getHeight());
+			final Shape clip = new Rectangle2D.Double(uclip.getX(), uclip.getY(), uclip.getWidth(), uclip.getHeight());
 			getGraphicObject().setClip(clip);
 		}
 	}
@@ -118,7 +158,8 @@ public class UGraphicG2d extends AbstractUGraphic<Graphics2D> implements EnsureV
 		final double ypos = y - unusedSpace.getCenterY() - 0.5;
 
 		getGraphicObject().setFont(font.getFont());
-		getGraphicObject().drawString("" + c, (float) (xpos + getTranslateX()), (float) (ypos + getTranslateY()));
+		getGraphicObject().drawString("" + c, (float) (xpos + getTranslateXTOBEREMOVED()),
+				(float) (ypos + getTranslateYTOBEREMOVED()));
 		// getGraphicObject().drawString("" + c, Math.round(xpos +
 		// getTranslateX()), Math.round(ypos + getTranslateY()));
 	}
@@ -132,17 +173,6 @@ public class UGraphicG2d extends AbstractUGraphic<Graphics2D> implements EnsureV
 	protected final double getDpiFactor() {
 		return dpiFactor;
 	}
-
-	public void setAntiAliasing(boolean trueForOn) {
-		if (trueForOn) {
-			getGraphicObject().setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-		} else {
-			getGraphicObject().setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_OFF);
-		}
-
-	}
-
-	private final List<Url> urls = new ArrayList<Url>();
 
 	public void startUrl(Url url) {
 		urls.add(url);
@@ -165,7 +195,7 @@ public class UGraphicG2d extends AbstractUGraphic<Graphics2D> implements EnsureV
 	public void setBufferedImage(BufferedImage bufferedImage) {
 		this.bufferedImage = bufferedImage;
 	}
-	
+
 	public Graphics2D getGraphics2D() {
 		return getGraphicObject();
 	}

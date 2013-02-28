@@ -114,7 +114,7 @@ public class ElementTree implements Element {
 			}
 
 			public void drawRectangle(UGraphic ug) {
-				ug.draw(xpos, ypos, new URectangle(2, 2));
+				ug.drawNewWay(xpos, ypos, new URectangle(2, 2));
 			}
 		}
 
@@ -143,10 +143,10 @@ public class ElementTree implements Element {
 
 		private void drawChild(UGraphic ug, Entry parent, Entry child) {
 			final double dy = child.ypos - parent.ypos - 2;
-			ug.draw(parent.xpos + 1, parent.ypos + 3, new ULine(0, dy));
+			ug.drawNewWay(parent.xpos + 1, parent.ypos + 3, new ULine(0, dy));
 
 			final double dx = child.xpos - parent.xpos - 2;
-			ug.draw(parent.xpos + 1, child.ypos + 1, new ULine(dx, 0));
+			ug.drawNewWay(parent.xpos + 1, child.ypos + 1, new ULine(dx, 0));
 
 		}
 

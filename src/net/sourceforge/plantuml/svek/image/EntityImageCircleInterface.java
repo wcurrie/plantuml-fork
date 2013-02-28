@@ -117,7 +117,7 @@ public class EntityImageCircleInterface extends AbstractEntityImage {
 		if (url.size()>0) {
 			ug.startUrl(url.get(0));
 		}
-		ug.draw(xTheoricalPosition + circleX, yTheoricalPosition + circleY, circle);
+		ug.drawNewWay(xTheoricalPosition + circleX, yTheoricalPosition + circleY, circle);
 		ug.getParam().setStroke(new UStroke());
 
 		final double nameX = (dimTotal.getWidth() - dimName.getWidth()) / 2;

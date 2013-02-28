@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 9794 $
+ * Revision $Revision: 10069 $
  *
  */
 package net.sourceforge.plantuml.sequencediagram.graphic;
@@ -52,7 +52,6 @@ import net.sourceforge.plantuml.FileFormat;
 import net.sourceforge.plantuml.FileFormatOption;
 import net.sourceforge.plantuml.FontParam;
 import net.sourceforge.plantuml.StringUtils;
-import net.sourceforge.plantuml.UmlDiagramInfo;
 import net.sourceforge.plantuml.cucadiagram.Display;
 import net.sourceforge.plantuml.eps.EpsStrategy;
 import net.sourceforge.plantuml.graphic.HtmlColor;
@@ -77,6 +76,7 @@ import net.sourceforge.plantuml.skin.SimpleContext2D;
 import net.sourceforge.plantuml.skin.Skin;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
 import net.sourceforge.plantuml.ugraphic.URectangle;
+import net.sourceforge.plantuml.ugraphic.UTranslate;
 import net.sourceforge.plantuml.ugraphic.eps.UGraphicEps;
 import net.sourceforge.plantuml.ugraphic.g2d.UGraphicG2d;
 import net.sourceforge.plantuml.ugraphic.html5.UGraphicHtml5;
@@ -162,7 +162,7 @@ public class SequenceDiagramFileMaker implements FileMaker {
 				newpageHeight, title);
 	}
 
-	public UmlDiagramInfo createOne2(OutputStream os, int index) throws IOException {
+	public Dimension2D createOne2(OutputStream os, int index) throws IOException {
 		final UGraphic createImage = createImage((int) fullDimension.getWidth(), pages.get(index), index);
 		if (createImage instanceof UGraphicG2d) {
 			final BufferedImage im = ((UGraphicG2d) createImage).getBufferedImage();
@@ -177,7 +177,7 @@ public class SequenceDiagramFileMaker implements FileMaker {
 			final UGraphicHtml5 html5 = (UGraphicHtml5) createImage;
 			os.write(html5.generateHtmlCode().getBytes());
 		}
-		return new UmlDiagramInfo(fullDimension.getWidth());
+		return new Dimension2DDouble(fullDimension.getWidth(), fullDimension.getHeight());
 	}
 
 	private double getImageWidth(SequenceDiagramArea area, boolean rotate, double dpiFactor) {
@@ -246,7 +246,7 @@ public class SequenceDiagramFileMaker implements FileMaker {
 			backColor = diagram.getSkinParam().getColorMapper()
 					.getMappedColor(diagram.getSkinParam().getBackgroundColor());
 		}
-		final UGraphic ug;
+		UGraphic ug;
 		final FileFormat fileFormat = fileFormatOption.getFileFormat();
 		final double dpiFactor = diagram.getDpiFactor(fileFormatOption);
 		final double imageWidth = getImageWidth(area, diagram.isRotation(), dpiFactor);
@@ -282,7 +282,7 @@ public class SequenceDiagramFileMaker implements FileMaker {
 			if (diagram.getSkinParam().getBackgroundColor() instanceof HtmlColorGradient) {
 				final BufferedImage im = ((UGraphicG2d) ug).getBufferedImage();
 				ug.getParam().setBackcolor(diagram.getSkinParam().getBackgroundColor());
-				ug.draw(0, 0, new URectangle(im.getWidth(), im.getHeight()));
+				ug.drawOldWay(new URectangle(im.getWidth(), im.getHeight()));
 				ug.getParam().setBackcolor(null);
 			}
 		} else if (fileFormat == FileFormat.SVG) {
@@ -306,27 +306,26 @@ public class SequenceDiagramFileMaker implements FileMaker {
 
 		final int diff = (int) Math.round((imageWidth - getImageWidthWithoutMinsize(area, diagram.isRotation(),
 				dpiFactor)) / 2);
-		System.err.println("diffn="+diff);
+		System.err.println("diffn=" + diff);
 		if (diagram.isRotation()) {
-			ug.translate(0, diff / dpiFactor);
+			ug = ug.apply(new UTranslate(0, diff / dpiFactor));
 		} else {
-			ug.translate(diff / dpiFactor, 0);
+			ug = ug.apply(new UTranslate(diff / dpiFactor, 0));
 		}
 
 		if (compTitle != null) {
-			ug.translate(area.getTitleX(), area.getTitleY());
 			final StringBounder stringBounder = ug.getStringBounder();
 			final double h = compTitle.getPreferredHeight(stringBounder);
 			final double w = compTitle.getPreferredWidth(stringBounder);
-			compTitle.drawU(ug, new Area(new Dimension2DDouble(w, h)), new SimpleContext2D(false));
-			ug.translate(-area.getTitleX(), -area.getTitleY());
+			compTitle.drawU(ug.apply(new UTranslate(area.getTitleX(), area.getTitleY())), new Area(
+					new Dimension2DDouble(w, h)), new SimpleContext2D(false));
 		}
 
 		addHeader3(area, ug);
 		addFooter3(area, ug);
 
-		ug.translate(area.getSequenceAreaX(), area.getSequenceAreaY());
-		drawableSet.drawU(ug, delta, diagramWidth, page, diagram.isShowFootbox());
+		drawableSet.drawU(ug.apply(new UTranslate(area.getSequenceAreaX(), area.getSequenceAreaY())), delta,
+				diagramWidth, page, diagram.isShowFootbox());
 
 		return ug;
 	}

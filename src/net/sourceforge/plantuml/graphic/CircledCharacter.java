@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 9786 $
+ * Revision $Revision: 10041 $
  *
  */
 package net.sourceforge.plantuml.graphic;
@@ -79,7 +79,7 @@ public class CircledCharacter implements UDrawable, TextBlock {
 		}
 		final HtmlColor back = ug.getParam().getBackcolor();
 		ug.getParam().setBackcolor(innerCircle);
-		ug.draw(x, y, new UEllipse(radius * 2, radius * 2));
+		ug.drawNewWay(x, y, new UEllipse(radius * 2, radius * 2));
 		ug.getParam().setColor(fontColor);
 		ug.centerChar(x + radius, y + radius, c.charAt(0), font);
 		ug.getParam().setBackcolor(back);

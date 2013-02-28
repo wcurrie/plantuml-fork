@@ -42,13 +42,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import net.sourceforge.plantuml.CMapData;
 import net.sourceforge.plantuml.EmptyImageBuilder;
 import net.sourceforge.plantuml.FileFormat;
 import net.sourceforge.plantuml.FileFormatOption;
 import net.sourceforge.plantuml.UmlDiagram;
-import net.sourceforge.plantuml.UmlDiagramInfo;
 import net.sourceforge.plantuml.UmlDiagramType;
+import net.sourceforge.plantuml.api.ImageData;
+import net.sourceforge.plantuml.api.ImageDataSimple;
 import net.sourceforge.plantuml.cucadiagram.Display;
 import net.sourceforge.plantuml.png.PngIO;
 import net.sourceforge.plantuml.sequencediagram.graphic.SequenceDiagramFileMaker;
@@ -70,8 +70,8 @@ public class PostItDiagram extends UmlDiagram {
 	}
 
 	@Override
-	final protected UmlDiagramInfo exportDiagramInternal(OutputStream os, CMapData cmap, int index,
-			FileFormatOption fileFormatOption, List<BufferedImage> flashcodes) throws IOException {
+	final protected ImageData exportDiagramInternal(OutputStream os, int index, FileFormatOption fileFormatOption,
+			List<BufferedImage> flashcodes) throws IOException {
 		final UGraphic ug = createImage(fileFormatOption);
 		drawU(ug);
 		if (ug instanceof UGraphicG2d) {
@@ -84,7 +84,7 @@ public class PostItDiagram extends UmlDiagram {
 			final UGraphicEps eps = (UGraphicEps) ug;
 			os.write(eps.getEPSCode().getBytes());
 		}
-		return new UmlDiagramInfo();
+		return new ImageDataSimple();
 	}
 
 	public String getDescription() {

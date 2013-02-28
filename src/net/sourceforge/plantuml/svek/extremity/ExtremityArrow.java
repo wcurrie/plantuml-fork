@@ -65,9 +65,9 @@ class ExtremityArrow extends Extremity implements UDrawable {
 
 	public void drawU(UGraphic ug, double x, double y) {
 		ug.getParam().setBackcolor(ug.getParam().getColor());
-		ug.draw(x, y, polygon);
+		ug.drawNewWay(x, y, polygon);
 		if (line.getLength() > 2) {
-			ug.draw(x + contact.getX(), y + contact.getY(), line);
+			ug.drawNewWay(x + contact.getX(), y + contact.getY(), line);
 		}
 		ug.getParam().setBackcolor(null);
 	}

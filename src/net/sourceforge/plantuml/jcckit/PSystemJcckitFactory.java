@@ -43,7 +43,7 @@ import net.sourceforge.plantuml.DiagramType;
 import net.sourceforge.plantuml.Log;
 import net.sourceforge.plantuml.PSystemBasicFactory;
 
-public class PSystemJcckitFactory implements PSystemBasicFactory {
+public class PSystemJcckitFactory extends PSystemBasicFactory {
 
 	private StringBuilder data;
 	private boolean first;

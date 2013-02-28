@@ -63,7 +63,7 @@ public class ElementImage implements Element {
 			for (int j = 0; j < h; j++) {
 				final char c = img.get(j).charAt(i);
 				if (c == 'X') {
-					ug.draw(x + i, y + j, new UPixel());
+					ug.drawNewWay(x + i, y + j, new UPixel());
 				}
 			}
 		}

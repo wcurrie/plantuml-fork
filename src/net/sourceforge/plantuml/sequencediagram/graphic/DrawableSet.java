@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 9786 $
+ * Revision $Revision: 10096 $
  *
  */
 package net.sourceforge.plantuml.sequencediagram.graphic;
@@ -64,6 +64,7 @@ import net.sourceforge.plantuml.skin.SimpleContext2D;
 import net.sourceforge.plantuml.skin.Skin;
 import net.sourceforge.plantuml.ugraphic.UClip;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
+import net.sourceforge.plantuml.ugraphic.UTranslate;
 
 class DrawableSet {
 
@@ -87,7 +88,7 @@ class DrawableSet {
 		this.skin = skin;
 		this.skinParam = skinParam;
 	}
-	
+
 	public ParticipantBox getVeryfirst() {
 		return participants.values().iterator().next().getParticipantBox();
 	}
@@ -241,34 +242,31 @@ class DrawableSet {
 	}
 
 	void drawU(UGraphic ug, final double delta, double width, Page page, boolean showTail) {
-
-		final double atX = ug.getTranslateX();
-		final double atY = ug.getTranslateY();
+		
+		final UGraphic ugOrig = ug;
 
 		final int height = (int) page.getHeight();
 
-		clipAndTranslate(delta, width, page, ug);
+		ug = clipAndTranslate2(delta, width, page, ug);
 		final SimpleContext2D context = new SimpleContext2D(true);
 		this.drawPlaygroundU(ug, height, context);
-		ug.setClip(null);
-		ug.setTranslate(atX, atY);
+		ug = ugOrig;
+
 		this.drawEnglobers(ug, height - MARGIN_FOR_ENGLOBERS1, context);
-		// ug.setClip(null);
-		// ug.setTranslate(atX, atY);
 
 		this.drawLineU(ug, showTail, page);
 		this.drawHeadTailU(ug, page, showTail ? height - getTailHeight(ug.getStringBounder(), true) : 0);
 
-		clipAndTranslate(delta, width, page, ug);
+		ug = clipAndTranslate2(delta, width, page, ug);
 		this.drawPlaygroundU(ug, height, new SimpleContext2D(false));
-		ug.setClip(null);
 	}
 
-	private void clipAndTranslate(final double delta, double width, Page p, final UGraphic ug) {
-		ug.setClip(new UClip(0, p.getBodyRelativePosition(), width, p.getBodyHeight() + 1));
+	private UGraphic clipAndTranslate2(final double delta, double width, Page p, UGraphic ug) {
+		ug = ug.apply(new UClip(0, p.getBodyRelativePosition(), width, p.getBodyHeight() + 1));
 		if (delta > 0) {
-			ug.translate(0, -delta);
+			ug = ug.apply(new UTranslate(0, -delta));
 		}
+		return ug;
 	}
 
 	private void drawLineU(UGraphic ug, boolean showTail, Page page) {
@@ -348,14 +346,10 @@ class DrawableSet {
 				x1 -= (preferedWidth - width) / 2;
 				// }
 				final Dimension2DDouble dim = new Dimension2DDouble(preferedWidth, height);
-				ug.translate(x1, 1);
-				comp.drawU(ug, new Area(dim), context);
-				ug.translate(-x1, -1);
+				comp.drawU(ug.apply(new UTranslate(x1, 1)), new Area(dim), context);
 			} else {
 				final Dimension2DDouble dim = new Dimension2DDouble(width, height);
-				ug.translate(x1, 1);
-				comp.drawU(ug, new Area(dim), context);
-				ug.translate(-x1, -1);
+				comp.drawU(ug.apply(new UTranslate(x1, 1)), new Area(dim), context);
 			}
 		}
 	}

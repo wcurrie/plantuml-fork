@@ -80,7 +80,7 @@ public class EntityImageAssociation extends AbstractEntityImage {
 		ug.getParam().setStroke(new UStroke(1.5));
 		ug.getParam().setColor(SkinParamUtils.getColor(getSkinParam(), ColorParam.classBorder, getStereo()));
 		ug.getParam().setBackcolor(SkinParamUtils.getColor(getSkinParam(), ColorParam.classBackground, getStereo()));
-		ug.draw(xTheoricalPosition, yTheoricalPosition, diams);
+		ug.drawNewWay(xTheoricalPosition, yTheoricalPosition, diams);
 		ug.getParam().setStroke(new UStroke());
 	}
 

@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 9786 $
+ * Revision $Revision: 10077 $
  *
  */
 package net.sourceforge.plantuml.sequencediagram.graphic;
@@ -47,6 +47,7 @@ import net.sourceforge.plantuml.skin.Component;
 import net.sourceforge.plantuml.skin.ComponentType;
 import net.sourceforge.plantuml.skin.Skin;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
+import net.sourceforge.plantuml.ugraphic.UTranslate;
 
 class LifeLine {
 
@@ -209,10 +210,7 @@ class LifeLine {
 	public void drawU(UGraphic ug, Skin skin, ISkinParam skinParam) {
 		final StringBounder stringBounder = ug.getStringBounder();
 
-		final double atX = ug.getTranslateX();
-		final double atY = ug.getTranslateY();
-
-		ug.translate(getStartingX(stringBounder), 0);
+		ug = ug.apply(new UTranslate(getStartingX(stringBounder), 0));
 		
 		for (int i = 0; i < events.size(); i++) {
 			ComponentType type = ComponentType.ALIVE_BOX_CLOSE_OPEN;
@@ -229,9 +227,6 @@ class LifeLine {
 				seg.drawU(ug, comp, currentLevel);
 			}
 		}
-
-		ug.setTranslate(atX, atY);
-
 	}
 
 	private double create = 0;

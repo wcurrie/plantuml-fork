@@ -28,22 +28,20 @@
  *
  * Original Author:  Arnaud Roques
  *
- * Revision $Revision: 9885 $
+ * Revision $Revision: 10018 $
  *
  */
 package net.sourceforge.plantuml;
 
-import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.util.List;
+
+import net.sourceforge.plantuml.api.ImageData;
 
 public interface PSystem {
 
-	List<File> exportDiagrams(File suggestedFile, FileFormatOption fileFormatOption) throws IOException;
+	ImageData exportDiagram(OutputStream os, int num, FileFormatOption fileFormat) throws IOException;
 
-	void exportDiagram(OutputStream os, CMapData cmap, int index, FileFormatOption fileFormatOption) throws IOException;
-	
 	int getNbImages();
 
 	String getDescription();

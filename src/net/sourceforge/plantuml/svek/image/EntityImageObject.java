@@ -165,7 +165,7 @@ public class EntityImageObject extends AbstractEntityImage {
 		double x = xTheoricalPosition;
 		double y = yTheoricalPosition;
 		ug.getParam().setStroke(new UStroke(1.5));
-		ug.draw(x, y, rect);
+		ug.drawNewWay(x, y, rect);
 		ug.getParam().setStroke(new UStroke());
 
 		final ULayoutGroup header = new ULayoutGroup(new PlacementStrategyY1Y2(ug.getStringBounder()));

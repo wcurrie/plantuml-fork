@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 9786 $
+ * Revision $Revision: 10057 $
  *
  */
 package net.sourceforge.plantuml.skin.bluemodern;
@@ -73,12 +73,12 @@ public class ComponentBlueModernSelfArrow extends AbstractComponentBlueModernArr
 			ug.getParam().setStroke(new UStroke(2));
 		}
 
-		ug.draw(0, textHeight, new ULine(x2, 0));
+		ug.drawNewWay(0, textHeight, new ULine(x2, 0));
 
 		final int textAndArrowHeight = (int) (textHeight + getArrowOnlyHeight(stringBounder));
 
-		ug.draw(x2, textHeight, new ULine(0, textAndArrowHeight - textHeight));
-		ug.draw(x2, textAndArrowHeight, new ULine(2 - x2, 0));
+		ug.drawNewWay(x2, textHeight, new ULine(0, textAndArrowHeight - textHeight));
+		ug.drawNewWay(x2, textAndArrowHeight, new ULine(2 - x2, 0));
 
 		ug.getParam().setStroke(new UStroke());
 
@@ -87,17 +87,17 @@ public class ComponentBlueModernSelfArrow extends AbstractComponentBlueModernArr
 		if (getArrowConfiguration().isAsync()) {
 			ug.getParam().setStroke(new UStroke(1.5));
 			if (getArrowConfiguration().getPart() != ArrowPart.BOTTOM_PART) {
-				ug.draw(getArrowDeltaX2(), textHeight - getArrowDeltaY2() + delta, new ULine(-getArrowDeltaX2(),
+				ug.drawNewWay(getArrowDeltaX2(), textHeight - getArrowDeltaY2() + delta, new ULine(-getArrowDeltaX2(),
 						getArrowDeltaY2()));
 			}
 			if (getArrowConfiguration().getPart() != ArrowPart.TOP_PART) {
-				ug.draw(getArrowDeltaX2(), textHeight + getArrowDeltaY2() + delta, new ULine(-getArrowDeltaX2(),
+				ug.drawNewWay(getArrowDeltaX2(), textHeight + getArrowDeltaY2() + delta, new ULine(-getArrowDeltaX2(),
 						-getArrowDeltaY2()));
 			}
 			ug.getParam().setStroke(new UStroke());
 		} else {
 			final UPolygon polygon = getPolygon(textHeight, delta);
-			ug.draw(0, 0, polygon);
+			ug.drawOldWay(polygon);
 		}
 
 		getTextBlock().drawU(ug, getMarginX1(), 0);

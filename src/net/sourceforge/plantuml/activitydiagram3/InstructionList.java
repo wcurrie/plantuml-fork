@@ -62,7 +62,7 @@ public class InstructionList implements Instruction {
 			if (result == null) {
 				result = cur;
 			} else {
-				result = factory.assembly(result, cur);
+				result = factory.assembly(result, cur, ins.getInLinkRendering());
 			}
 
 		}
@@ -75,6 +75,17 @@ public class InstructionList implements Instruction {
 	public boolean kill() {
 		this.killed = true;
 		return true;
+	}
+
+	public LinkRendering getInLinkRendering() {
+		return all.iterator().next().getInLinkRendering();
+	}
+
+	public Instruction getLast() {
+		if (all.size() == 0) {
+			return null;
+		}
+		return all.get(all.size() - 1);
 	}
 
 }

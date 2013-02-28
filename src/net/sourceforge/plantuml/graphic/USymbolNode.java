@@ -59,14 +59,14 @@ class USymbolNode extends USymbol {
 		if (shadowing) {
 			shape.setDeltaShadow(2);
 		}
-		ug.draw(xTheoricalPosition, yTheoricalPosition, shape);
+		ug.drawNewWay(xTheoricalPosition, yTheoricalPosition, shape);
 
-		ug.draw(xTheoricalPosition + width - 10, yTheoricalPosition + 10, new ULine(9, -9));
+		ug.drawNewWay(xTheoricalPosition + width - 10, yTheoricalPosition + 10, new ULine(9, -9));
 		final UPath path = new UPath();
 		path.moveTo(0, 0);
 		path.lineTo(width - 10, 0);
 		path.lineTo(width - 10, height - 10);
-		ug.draw(xTheoricalPosition, yTheoricalPosition + 10, path);
+		ug.drawNewWay(xTheoricalPosition, yTheoricalPosition + 10, path);
 	}
 
 	private Margin getMargin() {

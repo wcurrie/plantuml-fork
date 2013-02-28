@@ -38,6 +38,7 @@ import java.util.List;
 
 import net.sourceforge.plantuml.Dimension2DDouble;
 import net.sourceforge.plantuml.Url;
+import net.sourceforge.plantuml.activitydiagram3.LinkRendering;
 import net.sourceforge.plantuml.activitydiagram3.ftile.Ftile;
 import net.sourceforge.plantuml.graphic.StringBounder;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
@@ -75,6 +76,10 @@ class FtileAssemblySimple implements Ftile {
 
 	public boolean isKilled() {
 		return tile2.isKilled();
+	}
+
+	public LinkRendering getInLinkRendering() {
+		return tile1.getInLinkRendering();
 	}
 
 }

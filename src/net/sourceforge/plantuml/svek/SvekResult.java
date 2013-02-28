@@ -115,7 +115,7 @@ public final class SvekResult implements IEntityImage, Moveable {
 			ug.getParam().setColor(clusterBorder);
 			ug.getParam().setStroke(new UStroke(DASH, 10, THICKNESS_BORDER));
 			for (Double xv : middeling(xdots)) {
-				ug.draw(xv, y, new ULine(0, height));
+				ug.drawNewWay(xv, y, new ULine(0, height));
 			}
 			ug.getParam().setStroke(new UStroke());
 		}

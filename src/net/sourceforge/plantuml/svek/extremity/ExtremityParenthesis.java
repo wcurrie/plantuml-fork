@@ -58,7 +58,7 @@ class ExtremityParenthesis extends Extremity implements UDrawable {
 
 		final double deg = -ortho * 180 / Math.PI + 90 - ang;
 		final UEllipse arc1 = new UEllipse(2 * radius2, 2 * radius2, deg, 2 * ang);
-		ug.draw(x + dest.getX() - radius2, y + dest.getY() - radius2, arc1);
+		ug.drawNewWay(x + dest.getX() - radius2, y + dest.getY() - radius2, arc1);
 
 		ug.getParam().setBackcolor(null);
 	}

@@ -75,8 +75,8 @@ class USymbolFolder extends USymbol {
 		if (shadowing) {
 			shape.setDeltaShadow(3.0);
 		}
-		ug.draw(xTheoricalPosition, yTheoricalPosition, shape);
-		ug.draw(xTheoricalPosition, yTheoricalPosition + htitle, new ULine(wtitle + marginTitleX3, 0));
+		ug.drawNewWay(xTheoricalPosition, yTheoricalPosition, shape);
+		ug.drawNewWay(xTheoricalPosition, yTheoricalPosition + htitle, new ULine(wtitle + marginTitleX3, 0));
 	}
 
 	private double getHTitle(Dimension2D dimTitle) {

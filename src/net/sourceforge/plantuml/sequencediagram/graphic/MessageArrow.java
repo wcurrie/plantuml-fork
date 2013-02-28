@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 9786 $
+ * Revision $Revision: 10067 $
  *
  */
 package net.sourceforge.plantuml.sequencediagram.graphic;
@@ -45,6 +45,7 @@ import net.sourceforge.plantuml.skin.Component;
 import net.sourceforge.plantuml.skin.Context2D;
 import net.sourceforge.plantuml.skin.Skin;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
+import net.sourceforge.plantuml.ugraphic.UTranslate;
 
 class MessageArrow extends Arrow {
 
@@ -126,7 +127,7 @@ class MessageArrow extends Arrow {
 	@Override
 	protected void drawInternalU(UGraphic ug, double maxX, Context2D context) {
 		final StringBounder stringBounder = ug.getStringBounder();
-		ug.translate(getStartingX(stringBounder), getStartingY());
+		ug = ug.apply(new UTranslate(getStartingX(stringBounder), getStartingY()));
 		startUrl(ug);
 		getArrowComponent().drawU(ug, new Area(getActualDimension(stringBounder)), context);
 		endUrl(ug);

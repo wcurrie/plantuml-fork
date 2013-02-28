@@ -28,20 +28,17 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 9885 $
+ * Revision $Revision: 10028 $
  *
  */
 package net.sourceforge.plantuml.cucadiagram;
 
 import java.awt.image.BufferedImage;
-import java.io.BufferedOutputStream;
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.PrintStream;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
@@ -50,19 +47,16 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import net.sourceforge.plantuml.CMapData;
 import net.sourceforge.plantuml.FileFormat;
 import net.sourceforge.plantuml.FileFormatOption;
 import net.sourceforge.plantuml.Log;
 import net.sourceforge.plantuml.UmlDiagram;
-import net.sourceforge.plantuml.UmlDiagramInfo;
 import net.sourceforge.plantuml.UmlDiagramType;
-import net.sourceforge.plantuml.cucadiagram.dot.CucaDiagramFileMakerResult;
+import net.sourceforge.plantuml.api.ImageData;
+import net.sourceforge.plantuml.api.ImageDataSimple;
 import net.sourceforge.plantuml.cucadiagram.dot.CucaDiagramPngMaker3;
 import net.sourceforge.plantuml.cucadiagram.dot.CucaDiagramTxtMaker;
 import net.sourceforge.plantuml.cucadiagram.entity.EntityFactory;
-import net.sourceforge.plantuml.html.CucaDiagramHtmlMaker;
-import net.sourceforge.plantuml.png.PngSplitter;
 import net.sourceforge.plantuml.skin.VisibilityModifier;
 import net.sourceforge.plantuml.svek.CucaDiagramFileMakerSvek;
 import net.sourceforge.plantuml.svek.SingleStrategy;
@@ -97,10 +91,9 @@ public abstract class CucaDiagram extends UmlDiagram implements GroupHierarchy, 
 		return false;
 	}
 
-
-//	public ILeaf getOrCreateLeaf1(Code code, LeafType type) {
-//		return getOrCreateLeaf1Default(code, type);
-//	}
+	// public ILeaf getOrCreateLeaf1(Code code, LeafType type) {
+	// return getOrCreateLeaf1Default(code, type);
+	// }
 
 	final protected ILeaf getOrCreateLeaf1Default(Code code, LeafType type) {
 		if (type == null) {
@@ -120,8 +113,7 @@ public abstract class CucaDiagram extends UmlDiagram implements GroupHierarchy, 
 		return createLeafInternal(code, display, type, getCurrentGroup());
 	}
 
-	final protected ILeaf createLeafInternal(Code code, Display display, LeafType type,
-			IGroup group) {
+	final protected ILeaf createLeafInternal(Code code, Display display, LeafType type, IGroup group) {
 		if (display == null) {
 			display = Display.getWithNewlines(code);
 		}
@@ -144,15 +136,14 @@ public abstract class CucaDiagram extends UmlDiagram implements GroupHierarchy, 
 		return Collections.unmodifiableCollection(result);
 	}
 
-	public final IGroup getOrCreateGroup(Code code, Display display, String namespace,
-			GroupType type, IGroup parent) {
+	public final IGroup getOrCreateGroup(Code code, Display display, String namespace, GroupType type, IGroup parent) {
 		final IGroup g = getOrCreateGroupInternal(code, display, namespace, type, parent);
 		currentGroup = g;
 		return g;
 	}
 
-	protected final IGroup getOrCreateGroupInternal(Code code, Display display, String namespace,
-			GroupType type, IGroup parent) {
+	protected final IGroup getOrCreateGroupInternal(Code code, Display display, String namespace, GroupType type,
+			IGroup parent) {
 		IGroup result = entityFactory.getGroups().get(code);
 		if (result != null) {
 			return result;
@@ -266,51 +257,9 @@ public abstract class CucaDiagram extends UmlDiagram implements GroupHierarchy, 
 		maker.createFiles(suggestedFile);
 	}
 
-	private List<File> createFilesHtml(File suggestedFile) throws IOException {
-		final String name = suggestedFile.getName();
-		final int idx = name.lastIndexOf('.');
-		final File dir = new File(suggestedFile.getParentFile(), name.substring(0, idx));
-		final CucaDiagramHtmlMaker maker = new CucaDiagramHtmlMaker(this, dir);
-		return maker.create();
-	}
-
 	@Override
-	public List<File> exportDiagrams(File suggestedFile, FileFormatOption fileFormat) throws IOException {
-		if (suggestedFile.exists() && suggestedFile.isDirectory()) {
-			throw new IllegalArgumentException("File is a directory " + suggestedFile);
-		}
-
-		if (fileFormat.getFileFormat() == FileFormat.HTML) {
-			return createFilesHtml(suggestedFile);
-		}
-
-		final CMapData cmap = new CMapData();
-		OutputStream os = null;
-		try {
-			os = new BufferedOutputStream(new FileOutputStream(suggestedFile));
-			this.exportDiagram(os, cmap, 0, fileFormat);
-		} finally {
-			if (os != null) {
-				os.close();
-			}
-		}
-		List<File> result = Arrays.asList(suggestedFile);
-
-		if (this.hasUrl() && cmap.containsData()) {
-			exportCmap(suggestedFile, cmap);
-		}
-
-		if (fileFormat.getFileFormat() == FileFormat.PNG) {
-			result = new PngSplitter(suggestedFile, this.getHorizontalPages(), this.getVerticalPages(),
-					this.getMetadata(), this.getDpi(fileFormat)).getFiles();
-		}
-		return result;
-
-	}
-
-	@Override
-	final protected UmlDiagramInfo exportDiagramInternal(OutputStream os, CMapData cmap, int index,
-			FileFormatOption fileFormatOption, List<BufferedImage> flashcodes) throws IOException {
+	final protected ImageData exportDiagramInternal(OutputStream os, int index, FileFormatOption fileFormatOption,
+			List<BufferedImage> flashcodes) throws IOException {
 		final FileFormat fileFormat = fileFormatOption.getFileFormat();
 
 		if (fileFormat == FileFormat.ATXT || fileFormat == FileFormat.UTXT) {
@@ -319,12 +268,12 @@ public abstract class CucaDiagram extends UmlDiagram implements GroupHierarchy, 
 			} catch (Throwable t) {
 				t.printStackTrace(new PrintStream(os));
 			}
-			return new UmlDiagramInfo();
+			return new ImageDataSimple();
 		}
 
 		if (fileFormat.name().startsWith("XMI")) {
 			createFilesXmi(os, fileFormat);
-			return new UmlDiagramInfo();
+			return new ImageDataSimple();
 		}
 
 		if (getUmlDiagramType() == UmlDiagramType.COMPOSITE) {
@@ -332,14 +281,13 @@ public abstract class CucaDiagram extends UmlDiagram implements GroupHierarchy, 
 		}
 
 		final CucaDiagramFileMakerSvek maker = new CucaDiagramFileMakerSvek(this, flashcodes);
-		final CucaDiagramFileMakerResult result = maker.createFile(os, getDotStrings(), fileFormatOption);
-		if (result != null && cmap != null && result.getCmapResult() != null) {
-			cmap.copy(result.getCmapResult());
+		final ImageData result = maker.createFile(os, getDotStrings(), fileFormatOption);
+
+		if (result == null) {
+			return new ImageDataSimple();
 		}
-		if (result != null) {
-			this.warningOrError = result.getWarningOrError();
-		}
-		return result == null ? new UmlDiagramInfo() : new UmlDiagramInfo(result.getWidth());
+		this.warningOrError = result.getWarningOrError();
+		return result;
 	}
 
 	private String warningOrError;
@@ -483,6 +431,10 @@ public abstract class CucaDiagram extends UmlDiagram implements GroupHierarchy, 
 		} else {
 			hides.addAll(visibilities);
 		}
+	}
+
+	public void hideOrShow(ILeaf leaf, boolean show) {
+		leaf.setRemoved(!show);
 	}
 
 	private final List<HideOrShow> hideOrShows = new ArrayList<HideOrShow>();

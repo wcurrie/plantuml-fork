@@ -44,6 +44,8 @@ import net.sourceforge.plantuml.AbstractPSystem;
 import net.sourceforge.plantuml.CMapData;
 import net.sourceforge.plantuml.EmptyImageBuilder;
 import net.sourceforge.plantuml.FileFormatOption;
+import net.sourceforge.plantuml.api.ImageData;
+import net.sourceforge.plantuml.api.ImageDataSimple;
 import net.sourceforge.plantuml.png.PngIO;
 import net.sourceforge.plantuml.ugraphic.ColorMapperIdentity;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
@@ -56,9 +58,7 @@ public class PSystemLogo extends AbstractPSystem {
 	public PSystemLogo() {
 	}
 
-	public void exportDiagram(OutputStream os, CMapData cmap, int index, FileFormatOption fileFormat)
-			throws IOException {
-		// getGraphicStrings().writeImage(os, fileFormat);
+	public ImageData exportDiagram(OutputStream os, int num, FileFormatOption fileFormat) throws IOException {
 		final int width = 640;
 		final int height = 480;
 		final EmptyImageBuilder builder = new EmptyImageBuilder(width, height, Color.WHITE);
@@ -73,8 +73,9 @@ public class PSystemLogo extends AbstractPSystem {
 		}
 		turtleGraphicsPane.paint(ug);
 		PngIO.write(im, os, 96);
-
+		return new ImageDataSimple(im.getWidth(), im.getHeight());
 	}
+
 
 	// private GraphicStrings getGraphicStrings() throws IOException {
 	// final UFont font = new UFont("SansSerif", Font.PLAIN, 12);
@@ -92,5 +93,6 @@ public class PSystemLogo extends AbstractPSystem {
 	public void doCommandLine(String line) {
 		lines.add(line);
 	}
+
 
 }

@@ -45,6 +45,8 @@ import net.sourceforge.plantuml.EmptyImageBuilder;
 import net.sourceforge.plantuml.FileFormat;
 import net.sourceforge.plantuml.FileFormatOption;
 import net.sourceforge.plantuml.StringUtils;
+import net.sourceforge.plantuml.api.ImageData;
+import net.sourceforge.plantuml.api.ImageDataSimple;
 import net.sourceforge.plantuml.eps.EpsStrategy;
 import net.sourceforge.plantuml.png.PngIO;
 import net.sourceforge.plantuml.ugraphic.ColorMapper;
@@ -67,8 +69,7 @@ public class PSystemProject2 extends AbstractPSystem {
 		return "(Project)";
 	}
 
-	public void exportDiagram(OutputStream os, CMapData cmap, int index, FileFormatOption fileFormatOption)
-			throws IOException {
+	public ImageData exportDiagram(OutputStream os, int num, FileFormatOption fileFormatOption) throws IOException {
 		final GanttDiagram2 diagram = new GanttDiagram2(project);
 		final FileFormat fileFormat = fileFormatOption.getFileFormat();
 		if (fileFormat == FileFormat.PNG) {
@@ -89,7 +90,9 @@ public class PSystemProject2 extends AbstractPSystem {
 		} else {
 			throw new UnsupportedOperationException();
 		}
+		return new ImageDataSimple();
 	}
+
 
 	private BufferedImage createImage(GanttDiagram2 diagram) {
 		EmptyImageBuilder builder = new EmptyImageBuilder(10, 10, background);
@@ -115,5 +118,6 @@ public class PSystemProject2 extends AbstractPSystem {
 	public final Project2 getProject() {
 		return project;
 	}
+
 
 }

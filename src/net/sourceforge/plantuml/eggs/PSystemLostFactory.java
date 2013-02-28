@@ -36,7 +36,7 @@ package net.sourceforge.plantuml.eggs;
 import net.sourceforge.plantuml.DiagramType;
 import net.sourceforge.plantuml.PSystemBasicFactory;
 
-public class PSystemLostFactory implements PSystemBasicFactory {
+public class PSystemLostFactory extends PSystemBasicFactory {
 
 	private PSystemLost system;
 

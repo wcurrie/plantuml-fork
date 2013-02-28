@@ -135,6 +135,9 @@ public final class CucaDiagramFileMakerSvek2 {
 		printEntities(getUnpackagedEntities());
 
 		for (Link link : dotData.getLinks()) {
+			if (link.isRemoved()) {
+				continue;
+			}
 			try {
 				final String shapeUid1 = getBibliotekon().getShapeUid((ILeaf) link.getEntity1());
 				final String shapeUid2 = getBibliotekon().getShapeUid((ILeaf) link.getEntity2());
@@ -292,11 +295,17 @@ public final class CucaDiagramFileMakerSvek2 {
 
 	private void printEntities(Collection<ILeaf> entities2) {
 		for (ILeaf ent : entities2) {
+			if (ent.isRemoved()) {
+				continue;
+			}
 			printEntity(ent);
 		}
 	}
 
 	private void printEntity(ILeaf ent) {
+		if (ent.isRemoved()) {
+			throw new IllegalStateException();
+		}
 		final IEntityImage image = printEntity(ent, dotData);
 		final Dimension2D dim = image.getDimension(stringBounder);
 		final Shape shape = new Shape(image, image.getShapeType(), dim.getWidth(), dim.getHeight(), colorSequence,
@@ -306,6 +315,9 @@ public final class CucaDiagramFileMakerSvek2 {
 	}
 
 	private IEntityImage printEntity(ILeaf ent, DotData dotData) {
+		if (ent.isRemoved()) {
+			throw new IllegalStateException();
+		}
 		if (ent.getSvekImage() == null) {
 			return createEntityImageBlock(dotData, ent);
 		}
@@ -313,6 +325,9 @@ public final class CucaDiagramFileMakerSvek2 {
 	}
 
 	private IEntityImage createEntityImageBlock(DotData dotData, ILeaf leaf) {
+		if (leaf.isRemoved()) {
+			throw new IllegalStateException();
+		}
 		if (leaf.getEntityType() == LeafType.CLASS || leaf.getEntityType() == LeafType.ABSTRACT_CLASS
 				|| leaf.getEntityType() == LeafType.INTERFACE || leaf.getEntityType() == LeafType.ENUM) {
 			return new EntityImageClass((ILeaf) leaf, dotData.getSkinParam(), dotData);
@@ -428,6 +443,9 @@ public final class CucaDiagramFileMakerSvek2 {
 
 	private void printGroups(IGroup parent) throws IOException {
 		for (IGroup g : dotData.getGroupHierarchy().getChildrenGroups(parent)) {
+			if (g.isRemoved()) {
+				continue;
+			}
 			if (dotData.isEmpty(g) && g.zgetGroupType() == GroupType.PACKAGE) {
 				final ILeaf folder = entityFactory.createLeaf(g.getCode(), g.getDisplay(), LeafType.EMPTY_PACKAGE,
 						g.getParentContainer(), null);

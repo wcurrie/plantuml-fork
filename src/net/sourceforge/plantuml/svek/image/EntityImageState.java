@@ -133,10 +133,10 @@ public class EntityImageState extends AbstractEntityImage {
 		}
 		ug.getParam().setBackcolor(backcolor);
 
-		ug.draw(xTheoricalPosition, yTheoricalPosition, rect);
+		ug.drawNewWay(xTheoricalPosition, yTheoricalPosition, rect);
 
 		final double yLine = yTheoricalPosition + MARGIN + dimDesc.getHeight() + MARGIN_LINE;
-		ug.draw(xTheoricalPosition, yLine, new ULine(widthTotal, 0));
+		ug.drawNewWay(xTheoricalPosition, yLine, new ULine(widthTotal, 0));
 
 		ug.getParam().setStroke(new UStroke(1.3));
 		ug.getParam().setStroke(new UStroke());
@@ -164,9 +164,9 @@ public class EntityImageState extends AbstractEntityImage {
 		xSymbol -= 4 * smallRadius + smallLine + smallMarginX;
 		ySymbol -= 2 * smallRadius + smallMarginY;
 		final UEllipse small = new UEllipse(2 * smallRadius, 2 * smallRadius);
-		ug.draw(xSymbol, ySymbol, small);
-		ug.draw(xSymbol + smallLine + 2 * smallRadius, ySymbol, small);
-		ug.draw(xSymbol + 2 * smallRadius, ySymbol + smallLine, new ULine(smallLine, 0));
+		ug.drawNewWay(xSymbol, ySymbol, small);
+		ug.drawNewWay(xSymbol + smallLine + 2 * smallRadius, ySymbol, small);
+		ug.drawNewWay(xSymbol + 2 * smallRadius, ySymbol + smallLine, new ULine(smallLine, 0));
 	}
 
 	public ShapeType getShapeType() {

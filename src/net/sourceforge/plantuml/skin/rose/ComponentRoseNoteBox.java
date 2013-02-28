@@ -94,7 +94,7 @@ final public class ComponentRoseNoteBox extends AbstractTextualComponent {
 		ug.getParam().setStroke(stroke);
 		final URectangle rect = new URectangle(x2, textHeight);
 		rect.setDeltaShadow(deltaShadow);
-		ug.draw(0, 0, rect);
+		ug.drawOldWay(rect);
 		ug.getParam().setStroke(new UStroke());
 
 		getTextBlock().drawU(ug, getMarginX1(), getMarginY());

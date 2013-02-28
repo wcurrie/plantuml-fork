@@ -28,14 +28,13 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 9786 $
+ * Revision $Revision: 10104 $
  *
  */
 package net.sourceforge.plantuml.graphic;
 
 import java.awt.Font;
 import java.awt.Graphics2D;
-import java.awt.RenderingHints;
 import java.awt.geom.Dimension2D;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
@@ -49,6 +48,8 @@ import net.sourceforge.plantuml.FileFormat;
 import net.sourceforge.plantuml.FileFormatOption;
 import net.sourceforge.plantuml.SpriteContainerEmpty;
 import net.sourceforge.plantuml.StringUtils;
+import net.sourceforge.plantuml.api.ImageData;
+import net.sourceforge.plantuml.api.ImageDataSimple;
 import net.sourceforge.plantuml.cucadiagram.Display;
 import net.sourceforge.plantuml.eps.EpsStrategy;
 import net.sourceforge.plantuml.png.PngIO;
@@ -56,6 +57,7 @@ import net.sourceforge.plantuml.svek.IEntityImage;
 import net.sourceforge.plantuml.svek.ShapeType;
 import net.sourceforge.plantuml.ugraphic.ColorMapper;
 import net.sourceforge.plantuml.ugraphic.ColorMapperIdentity;
+import net.sourceforge.plantuml.ugraphic.UAntiAliasing;
 import net.sourceforge.plantuml.ugraphic.UFont;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
 import net.sourceforge.plantuml.ugraphic.UImage;
@@ -78,41 +80,41 @@ public class GraphicStrings implements IEntityImage {
 
 	private final GraphicPosition position;
 
-	private final boolean disableTextAliasing;
+	private final UAntiAliasing antiAliasing;
 
 	private final ColorMapper colorMapper = new ColorMapperIdentity();
 
 	public GraphicStrings(List<String> strings) {
-		this(strings, new UFont("SansSerif", Font.BOLD, 14), HtmlColorUtils.getColorIfValid("#33FF02"), HtmlColorUtils.BLACK,
-				null, null, false);
+		this(strings, new UFont("SansSerif", Font.BOLD, 14), HtmlColorUtils.getColorIfValid("#33FF02"),
+				HtmlColorUtils.BLACK, null, null, UAntiAliasing.ANTI_ALIASING_ON);
 	}
 
 	public GraphicStrings(List<String> strings, BufferedImage image) {
-		this(strings, new UFont("SansSerif", Font.BOLD, 14), HtmlColorUtils.getColorIfValid("#33FF02"), HtmlColorUtils.BLACK,
-				image, null, false);
+		this(strings, new UFont("SansSerif", Font.BOLD, 14), HtmlColorUtils.getColorIfValid("#33FF02"),
+				HtmlColorUtils.BLACK, image, null, UAntiAliasing.ANTI_ALIASING_ON);
 	}
 
 	public GraphicStrings(List<String> strings, UFont font, HtmlColor green, HtmlColor background,
-			boolean disableTextAliasing) {
-		this(strings, font, green, background, null, null, disableTextAliasing);
+			UAntiAliasing antiAliasing) {
+		this(strings, font, green, background, null, null, antiAliasing);
 	}
 
 	public GraphicStrings(List<String> strings, UFont font, HtmlColor green, HtmlColor background, BufferedImage image,
-			GraphicPosition position, boolean disableTextAliasing) {
+			GraphicPosition position, UAntiAliasing antiAliasing) {
 		this.strings = strings;
 		this.font = font;
 		this.green = green;
 		this.background = background;
 		this.image = image;
 		this.position = position;
-		this.disableTextAliasing = disableTextAliasing;
+		this.antiAliasing = antiAliasing;
 	}
 
 	public void writeImage(OutputStream os, FileFormatOption fileFormat) throws IOException {
 		writeImage(os, null, fileFormat);
 	}
 
-	public void writeImage(OutputStream os, String metadata, FileFormatOption fileFormatOption) throws IOException {
+	private void writeImage(OutputStream os, String metadata, FileFormatOption fileFormatOption) throws IOException {
 		final FileFormat fileFormat = fileFormatOption.getFileFormat();
 		if (fileFormat == FileFormat.PNG) {
 			final BufferedImage im = createImage();
@@ -135,6 +137,35 @@ public class GraphicStrings implements IEntityImage {
 		}
 	}
 
+	public ImageData exportDiagram1317(OutputStream os, FileFormatOption fileFormatOption) throws IOException {
+		return exportDiagram1317(os, null, fileFormatOption);
+	}
+
+	public ImageData exportDiagram1317(OutputStream os, String metadata, FileFormatOption fileFormatOption)
+			throws IOException {
+		final FileFormat fileFormat = fileFormatOption.getFileFormat();
+		if (fileFormat == FileFormat.PNG) {
+			final BufferedImage im = createImage();
+			PngIO.write(im, os, metadata, 96);
+		} else if (fileFormat == FileFormat.SVG) {
+			final UGraphicSvg svg = new UGraphicSvg(colorMapper, StringUtils.getAsHtml(colorMapper
+					.getMappedColor(background)), false);
+			drawU(svg);
+			svg.createXml(os);
+		} else if (fileFormat == FileFormat.ATXT || fileFormat == FileFormat.UTXT) {
+			final UGraphicTxt txt = new UGraphicTxt();
+			drawU(txt);
+			txt.getCharArea().print(new PrintStream(os));
+		} else if (fileFormat == FileFormat.EPS) {
+			final UGraphicEps ug = new UGraphicEps(colorMapper, EpsStrategy.getDefault2());
+			drawU(ug);
+			os.write(ug.getEPSCode().getBytes());
+		} else {
+			throw new UnsupportedOperationException();
+		}
+		return new ImageDataSimple();
+	}
+
 	private BufferedImage createImage() {
 		EmptyImageBuilder builder = new EmptyImageBuilder(10, 10, colorMapper.getMappedColor(background));
 		Graphics2D g2d = builder.getGraphics2D();
@@ -145,10 +176,7 @@ public class GraphicStrings implements IEntityImage {
 		builder = new EmptyImageBuilder(size.getWidth(), size.getHeight(), colorMapper.getMappedColor(background));
 		final BufferedImage im = builder.getBufferedImage();
 		g2d = builder.getGraphics2D();
-		if (disableTextAliasing) {
-			g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_OFF);
-		}
-		drawU(new UGraphicG2d(colorMapper, g2d, 1.0));
+		drawU(new UGraphicG2d(colorMapper, g2d, 1.0).apply(antiAliasing));
 		g2d.dispose();
 		return im;
 	}
@@ -177,10 +205,11 @@ public class GraphicStrings implements IEntityImage {
 
 		if (image != null) {
 			if (position == GraphicPosition.BOTTOM) {
-				ug.draw((size.getWidth() - image.getWidth()) / 2, size.getHeight(), new UImage(image));
+				ug.drawNewWay((size.getWidth() - image.getWidth()) / 2, size.getHeight(), new UImage(image));
 				size = new Dimension2DDouble(size.getWidth(), size.getHeight() + image.getHeight());
 			} else if (position == GraphicPosition.BACKGROUND_CORNER) {
-				ug.draw(size.getWidth() - image.getWidth(), size.getHeight() - image.getHeight(), new UImage(image));
+				ug.drawNewWay(size.getWidth() - image.getWidth(), size.getHeight() - image.getHeight(), new UImage(
+						image));
 			}
 		}
 		return size;

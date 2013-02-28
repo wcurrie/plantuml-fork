@@ -73,7 +73,7 @@ public class TextBlockInEllipse implements TextBlock {
 		final double dx = sh.getWidth() / 2 - center.getX();
 		final double dy = sh.getHeight() / 2 - center.getY();
 
-		ug.draw(x, y, sh);
+		ug.drawNewWay(x, y, sh);
 
 		text.drawU(ug, x + dx, y + dy - 2);
 	}

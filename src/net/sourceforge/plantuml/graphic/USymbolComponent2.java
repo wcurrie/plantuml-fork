@@ -56,12 +56,12 @@ class USymbolComponent2 extends USymbol {
 		final UShape small = new URectangle(15, 10);
 		final UShape tiny = new URectangle(4, 2);
 
-		ug.draw(xTheoricalPosition, yTheoricalPosition, form);
+		ug.drawNewWay(xTheoricalPosition, yTheoricalPosition, form);
 
 		// UML 2 Component Notation
-		ug.draw(xTheoricalPosition + widthTotal - 20, yTheoricalPosition + 5, small);
-		ug.draw(xTheoricalPosition + widthTotal - 22, yTheoricalPosition + 7, tiny);
-		ug.draw(xTheoricalPosition + widthTotal - 22, yTheoricalPosition + 11, tiny);
+		ug.drawNewWay(xTheoricalPosition + widthTotal - 20, yTheoricalPosition + 5, small);
+		ug.drawNewWay(xTheoricalPosition + widthTotal - 22, yTheoricalPosition + 7, tiny);
+		ug.drawNewWay(xTheoricalPosition + widthTotal - 22, yTheoricalPosition + 11, tiny);
 
 	}
 

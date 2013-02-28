@@ -35,7 +35,7 @@ package net.sourceforge.plantuml.objectdiagram;
 
 import net.sourceforge.plantuml.classdiagram.command.CommandLinkClass;
 import net.sourceforge.plantuml.classdiagram.command.CommandUrl;
-import net.sourceforge.plantuml.command.AbstractUmlSystemCommandFactory;
+import net.sourceforge.plantuml.command.PSystemCommandFactory;
 import net.sourceforge.plantuml.command.CommandEndPackage;
 import net.sourceforge.plantuml.command.CommandPackage;
 import net.sourceforge.plantuml.command.CommandPage;
@@ -48,7 +48,7 @@ import net.sourceforge.plantuml.objectdiagram.command.CommandAddData;
 import net.sourceforge.plantuml.objectdiagram.command.CommandCreateEntityObject;
 import net.sourceforge.plantuml.objectdiagram.command.CommandCreateEntityObjectMultilines;
 
-public class ObjectDiagramFactory extends AbstractUmlSystemCommandFactory {
+public class ObjectDiagramFactory extends PSystemCommandFactory {
 
 	private ObjectDiagram system;
 

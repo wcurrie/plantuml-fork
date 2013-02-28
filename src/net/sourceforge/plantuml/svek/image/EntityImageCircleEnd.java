@@ -69,14 +69,14 @@ public class EntityImageCircleEnd extends AbstractEntityImage {
 		ug.getParam().setStroke(new UStroke());
 		ug.getParam().setBackcolor(null);
 		ug.getParam().setColor(SkinParamUtils.getColor(getSkinParam(), ColorParam.activityEnd, getStereo()));
-		ug.draw(xTheoricalPosition, yTheoricalPosition, circle);
+		ug.drawNewWay(xTheoricalPosition, yTheoricalPosition, circle);
 		ug.getParam().setStroke(new UStroke());
 
 		final double delta = 4;
 		final UShape circleSmall = new UEllipse(SIZE - delta * 2, SIZE - delta * 2);
 		ug.getParam().setColor(null);
 		ug.getParam().setBackcolor(SkinParamUtils.getColor(getSkinParam(), ColorParam.activityEnd, getStereo()));
-		ug.draw(xTheoricalPosition + delta + 0.5, yTheoricalPosition + delta + 0.5, circleSmall);
+		ug.drawNewWay(xTheoricalPosition + delta + 0.5, yTheoricalPosition + delta + 0.5, circleSmall);
 
 	}
 

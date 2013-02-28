@@ -50,5 +50,9 @@ public class InstructionStop implements Instruction {
 		return false;
 	}
 
+	public LinkRendering getInLinkRendering() {
+		return null;
+	}
+
 
 }

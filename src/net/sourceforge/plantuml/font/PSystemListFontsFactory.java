@@ -36,7 +36,7 @@ package net.sourceforge.plantuml.font;
 import net.sourceforge.plantuml.DiagramType;
 import net.sourceforge.plantuml.PSystemBasicFactory;
 
-public class PSystemListFontsFactory implements PSystemBasicFactory {
+public class PSystemListFontsFactory extends PSystemBasicFactory {
 
 	private PSystemListFonts system;
 

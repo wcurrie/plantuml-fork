@@ -31,9 +31,11 @@
  */
 package net.sourceforge.plantuml.ugraphic.txt;
 
+import java.awt.geom.Dimension2D;
 import java.io.IOException;
 import java.io.OutputStream;
 
+import net.sourceforge.plantuml.Dimension2DDouble;
 import net.sourceforge.plantuml.Url;
 import net.sourceforge.plantuml.asciiart.TextStringBounder;
 import net.sourceforge.plantuml.asciiart.TranslatedCharArea;
@@ -52,18 +54,33 @@ import net.sourceforge.plantuml.ugraphic.UText;
 
 public class UGraphicTxt extends AbstractCommonUGraphic {
 
-	private final UmlCharArea charArea = new UmlCharAreaImpl();
+	private /*final*/ UmlCharArea charArea = new UmlCharAreaImpl();
 	private int lastPrint = 0;
+
+	@Override
+	protected AbstractCommonUGraphic copyUGraphic() {
+		// return new UGraphicTxt(this);
+		return this;
+	}
+
+
+	private UGraphicTxt(UGraphicTxt other) {
+		super(other);
+		this.charArea = other.charArea;
+		this.lastPrint = other.lastPrint;
+	}
 
 	public UGraphicTxt() {
 		super(new ColorMapperIdentity());
 	}
 
+
+
 	public StringBounder getStringBounder() {
 		return new TextStringBounder();
 	}
 
-	public void draw(double x, double y, UShape shape) {
+	public void drawOldWay(UShape shape) {
 		if (shape instanceof UText) {
 			final UText txt = (UText) shape;
 			charArea.drawStringLR(txt.getText(), 0, lastPrint);
@@ -77,19 +94,12 @@ public class UGraphicTxt extends AbstractCommonUGraphic {
 		throw new UnsupportedOperationException();
 	}
 
-	public void setClip(UClip clip) {
-		// throw new UnsupportedOperationException();
-	}
-
 	public void centerChar(double x, double y, char c, UFont font) {
 		throw new UnsupportedOperationException();
 	}
 
 	public final UmlCharArea getCharArea() {
-		return new TranslatedCharArea(charArea, (int) getTranslateX(), (int) getTranslateY());
-	}
-
-	public void setAntiAliasing(boolean trueForOn) {
+		return new TranslatedCharArea(charArea, (int) getTranslateXTOBEREMOVED(), (int) getTranslateYTOBEREMOVED());
 	}
 
 	public void startUrl(Url url) {
@@ -105,6 +115,11 @@ public class UGraphicTxt extends AbstractCommonUGraphic {
 
 	public void writeImage(OutputStream os, String metadata, int dpi) throws IOException {
 		throw new UnsupportedOperationException();
+	}
+
+
+	public Dimension2D getDimension() {
+		return new Dimension2DDouble(0, 0);
 	}
 
 }

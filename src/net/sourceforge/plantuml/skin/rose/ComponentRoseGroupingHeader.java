@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 9786 $
+ * Revision $Revision: 10057 $
  *
  */
 package net.sourceforge.plantuml.skin.rose;
@@ -116,7 +116,7 @@ public class ComponentRoseGroupingHeader extends AbstractTextualComponent {
 		ug.getParam().setStroke(stroke);
 		final URectangle rect = new URectangle(dimensionToUse.getWidth(), dimensionToUse.getHeight());
 		rect.setDeltaShadow(deltaShadow);
-		ug.draw(0, 0, rect);
+		ug.drawOldWay(rect);
 		ug.getParam().setStroke(new UStroke());
 	}
 
@@ -127,7 +127,7 @@ public class ComponentRoseGroupingHeader extends AbstractTextualComponent {
 		ug.getParam().setBackcolor(null);
 		ug.getParam().setStroke(stroke);
 		final URectangle rect = new URectangle(dimensionToUse.getWidth(), dimensionToUse.getHeight());
-		ug.draw(0, 0, rect);
+		ug.drawOldWay(rect);
 		// ug.getParam().setStroke(new UStroke());
 
 		final StringBounder stringBounder = ug.getStringBounder();
@@ -147,7 +147,7 @@ public class ComponentRoseGroupingHeader extends AbstractTextualComponent {
 		// ug.getParam().setStroke(new UStroke(2));
 		ug.getParam().setColor(groupBorder);
 		ug.getParam().setBackcolor(groupBackground);
-		ug.draw(0, 0, polygon);
+		ug.drawOldWay(polygon);
 
 		ug.getParam().setStroke(new UStroke());
 

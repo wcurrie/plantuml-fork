@@ -58,7 +58,7 @@ class ExtremityPlus extends Extremity implements UDrawable {
 
 	public void drawU(UGraphic ug, double x, double y) {
 		ug.getParam().setBackcolor(HtmlColorUtils.WHITE);
-		ug.draw(px + x, py + y, circle);
+		ug.drawNewWay(px + x, py + y, circle);
 		ug.getParam().setBackcolor(null);
 		drawLine(ug, x, y, getPointOnCircle(angle - Math.PI / 2), getPointOnCircle(angle + Math.PI / 2));
 		drawLine(ug, x, y, getPointOnCircle(angle), getPointOnCircle(angle + Math.PI));
@@ -73,7 +73,7 @@ class ExtremityPlus extends Extremity implements UDrawable {
 	static private void drawLine(UGraphic ug, double x, double y, Point2D p1, Point2D p2) {
 		final double dx = p2.getX() - p1.getX();
 		final double dy = p2.getY() - p1.getY();
-		ug.draw(x + p1.getX(), y + p1.getY(), new ULine(dx, dy));
+		ug.drawNewWay(x + p1.getX(), y + p1.getY(), new ULine(dx, dy));
 
 	}
 

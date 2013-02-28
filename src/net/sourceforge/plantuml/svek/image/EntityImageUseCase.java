@@ -53,6 +53,7 @@ import net.sourceforge.plantuml.graphic.TextBlock;
 import net.sourceforge.plantuml.graphic.TextBlockUtils;
 import net.sourceforge.plantuml.svek.AbstractEntityImage;
 import net.sourceforge.plantuml.svek.ShapeType;
+import net.sourceforge.plantuml.ugraphic.AbstractCommonUGraphic;
 import net.sourceforge.plantuml.ugraphic.AbstractUGraphicHorizontalLine;
 import net.sourceforge.plantuml.ugraphic.TextBlockInEllipse;
 import net.sourceforge.plantuml.ugraphic.UEllipse;
@@ -138,6 +139,11 @@ public class EntityImageUseCase extends AbstractEntityImage {
 		private final double yTheoricalPosition;
 		private final UEllipse ellipse;
 
+		@Override
+		protected AbstractUGraphicHorizontalLine copy() {
+			return new MyUGraphic(getUg(), startingX, yTheoricalPosition, ellipse);
+		}
+
 		MyUGraphic(UGraphic ug, double startingX, double yTheoricalPosition, UEllipse ellipse) {
 			super(ug);
 			this.startingX = startingX;
@@ -168,6 +174,7 @@ public class EntityImageUseCase extends AbstractEntityImage {
 		protected void drawHline(UGraphic ug, double x, double y, UHorizontalLine line) {
 			line.drawLine(ug, getStartingX(y), getEndingX(y), y);
 		}
+
 
 	}
 

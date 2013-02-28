@@ -74,34 +74,34 @@ public class TextBlockLineBefore2 implements TextBlock {
 
 	public static void drawLine(UGraphic ug, double y, UHorizontalLine line, char separator) {
 		if (separator == '=') {
-			ug.draw(0, y, line);
-			ug.draw(0, y + 2, line.blankTitle());
+			ug.drawNewWay(0, y, line);
+			ug.drawNewWay(0, y + 2, line.blankTitle());
 		} else if (separator == '.') {
 			ug.getParam().setStroke(new UStroke(1, 2, 1));
-			ug.draw(0, y, line);
+			ug.drawNewWay(0, y, line);
 			ug.getParam().setStroke(new UStroke());
 		} else if (separator == '-') {
-			ug.draw(0, y, line);
+			ug.drawNewWay(0, y, line);
 		} else {
 			ug.getParam().setStroke(new UStroke(1.5));
-			ug.draw(0, y, line);
+			ug.drawNewWay(0, y, line);
 			ug.getParam().setStroke(new UStroke());
 		}
 	}
 
 	public static void drawLine(UGraphic ug, double x, double y, double widthToUse, char separator) {
 		if (separator == '=') {
-			ug.draw(x, y, new ULine(widthToUse, 0));
-			ug.draw(x, y + 2, new ULine(widthToUse, 0));
+			ug.drawNewWay(x, y, new ULine(widthToUse, 0));
+			ug.drawNewWay(x, y + 2, new ULine(widthToUse, 0));
 		} else if (separator == '.') {
 			ug.getParam().setStroke(new UStroke(1, 2, 1));
-			ug.draw(x, y, new ULine(widthToUse, 0));
+			ug.drawNewWay(x, y, new ULine(widthToUse, 0));
 			ug.getParam().setStroke(new UStroke());
 		} else if (separator == '-') {
-			ug.draw(x, y, new ULine(widthToUse, 0));
+			ug.drawNewWay(x, y, new ULine(widthToUse, 0));
 		} else {
 			ug.getParam().setStroke(new UStroke(1.5));
-			ug.draw(x, y, new ULine(widthToUse, 0));
+			ug.drawNewWay(x, y, new ULine(widthToUse, 0));
 			ug.getParam().setStroke(new UStroke());
 		}
 	}

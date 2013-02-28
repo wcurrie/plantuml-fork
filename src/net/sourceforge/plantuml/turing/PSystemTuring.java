@@ -38,11 +38,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import net.sourceforge.plantuml.AbstractPSystem;
-import net.sourceforge.plantuml.CMapData;
 import net.sourceforge.plantuml.FileFormatOption;
+import net.sourceforge.plantuml.api.ImageData;
 import net.sourceforge.plantuml.graphic.GraphicPosition;
 import net.sourceforge.plantuml.graphic.GraphicStrings;
 import net.sourceforge.plantuml.graphic.HtmlColorUtils;
+import net.sourceforge.plantuml.ugraphic.UAntiAliasing;
 import net.sourceforge.plantuml.ugraphic.UFont;
 
 public class PSystemTuring extends AbstractPSystem {
@@ -58,19 +59,19 @@ public class PSystemTuring extends AbstractPSystem {
 		}
 	}
 
-	public void exportDiagram(OutputStream os, CMapData cmap, int index, FileFormatOption fileFormat)
-			throws IOException {
-		getGraphicStrings().writeImage(os, fileFormat);
+	public ImageData exportDiagram(OutputStream os, int num, FileFormatOption fileFormat) throws IOException {
+		return getGraphicStrings().exportDiagram1317(os, fileFormat);
 	}
 
 	private GraphicStrings getGraphicStrings() throws IOException {
 		final UFont font = new UFont("Monospaced", Font.PLAIN, 14);
 		return new GraphicStrings(strings, font, HtmlColorUtils.BLACK, HtmlColorUtils.WHITE, null,
-				GraphicPosition.BACKGROUND_CORNER, false);
+				GraphicPosition.BACKGROUND_CORNER, UAntiAliasing.ANTI_ALIASING_ON);
 	}
 
 	public String getDescription() {
 		return "(Turing)";
 	}
+
 
 }

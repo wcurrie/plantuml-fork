@@ -54,7 +54,7 @@ class USymbolArtifact extends USymbol {
 			form.setDeltaShadow(4);
 		}
 
-		ug.draw(xTheoricalPosition, yTheoricalPosition, form);
+		ug.drawNewWay(xTheoricalPosition, yTheoricalPosition, form);
 
 		final UPolygon polygon = new UPolygon();
 		polygon.addPoint(0, 0);
@@ -73,9 +73,9 @@ class USymbolArtifact extends USymbol {
 		final double xSymbol = xTheoricalPosition + widthTotal - widthSymbol - 5;
 		final double ySymbol = yTheoricalPosition + 5;
 
-		ug.draw(xSymbol, ySymbol, polygon);
-		ug.draw(xSymbol + widthSymbol - cornersize, ySymbol, new ULine(0, cornersize));
-		ug.draw(xSymbol + widthSymbol, ySymbol + cornersize, new ULine(-cornersize, 0));
+		ug.drawNewWay(xSymbol, ySymbol, polygon);
+		ug.drawNewWay(xSymbol + widthSymbol - cornersize, ySymbol, new ULine(0, cornersize));
+		ug.drawNewWay(xSymbol + widthSymbol, ySymbol + cornersize, new ULine(-cornersize, 0));
 
 	}
 

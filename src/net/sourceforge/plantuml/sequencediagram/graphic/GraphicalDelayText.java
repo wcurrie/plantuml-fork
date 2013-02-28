@@ -41,6 +41,7 @@ import net.sourceforge.plantuml.skin.Area;
 import net.sourceforge.plantuml.skin.Component;
 import net.sourceforge.plantuml.skin.Context2D;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
+import net.sourceforge.plantuml.ugraphic.UTranslate;
 
 class GraphicalDelayText extends GraphicalElement {
 
@@ -63,7 +64,7 @@ class GraphicalDelayText extends GraphicalElement {
 		final double x2 = p2.getCenterX(stringBounder);
 		final double middle = (x1 + x2) / 2;
 		final double textWidth = compText.getPreferredWidth(stringBounder);
-		ug.translate(middle - textWidth / 2, getStartingY());
+		ug = ug.apply(new UTranslate(middle - textWidth / 2, getStartingY()));
 		// ug.translate(x1, getStartingY());
 		final Dimension2D dim = new Dimension2DDouble(textWidth, compText.getPreferredHeight(stringBounder));
 		compText.drawU(ug, new Area(dim), context);

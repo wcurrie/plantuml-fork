@@ -63,7 +63,7 @@ public class EntityImageAssociationPoint extends AbstractEntityImage {
 		final UShape circle = new UEllipse(SIZE, SIZE);
 		ug.getParam().setColor(null);
 		ug.getParam().setBackcolor(HtmlColorUtils.BLACK);
-		ug.draw(xTheoricalPosition, yTheoricalPosition, circle);
+		ug.drawNewWay(xTheoricalPosition, yTheoricalPosition, circle);
 	}
 
 	public ShapeType getShapeType() {

@@ -39,7 +39,7 @@ import net.sourceforge.plantuml.DiagramType;
 import net.sourceforge.plantuml.Log;
 import net.sourceforge.plantuml.PSystemBasicFactory;
 
-public class PSystemRIPFactory implements PSystemBasicFactory {
+public class PSystemRIPFactory extends PSystemBasicFactory {
 
 	private PSystemRIP system;
 

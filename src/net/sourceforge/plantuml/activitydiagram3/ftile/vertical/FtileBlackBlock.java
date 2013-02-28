@@ -39,9 +39,9 @@ import java.util.List;
 
 import net.sourceforge.plantuml.Dimension2DDouble;
 import net.sourceforge.plantuml.Url;
+import net.sourceforge.plantuml.activitydiagram3.LinkRendering;
 import net.sourceforge.plantuml.activitydiagram3.ftile.Ftile;
 import net.sourceforge.plantuml.graphic.HtmlColor;
-import net.sourceforge.plantuml.graphic.HtmlColorUtils;
 import net.sourceforge.plantuml.graphic.StringBounder;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
 import net.sourceforge.plantuml.ugraphic.URectangle;
@@ -65,7 +65,7 @@ class FtileBlackBlock implements Ftile {
 		if (Ftile.SHADOWING) {
 			rect.setDeltaShadow(3);
 		}
-		ug.draw(x, y, rect);
+		ug.drawNewWay(x, y, rect);
 	}
 
 	public Dimension2D calculateDimension(StringBounder stringBounder) {
@@ -78,6 +78,10 @@ class FtileBlackBlock implements Ftile {
 	
 	public boolean isKilled() {
 		return false;
+	}
+
+	public LinkRendering getInLinkRendering() {
+		return null;
 	}
 
 

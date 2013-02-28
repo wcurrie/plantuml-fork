@@ -103,7 +103,7 @@ public class ElementMenuBar implements Element {
 		double x1 = x;
 		if (zIndex == 0) {
 			ug.getParam().setBackcolor(HtmlColorUtils.getColorIfValid("#DDDDDD"));
-			ug.draw(x, y, new URectangle(dimToUse.getWidth(), dimToUse.getHeight()));
+			ug.drawNewWay(x, y, new URectangle(dimToUse.getWidth(), dimToUse.getHeight()));
 			ug.getParam().setBackcolor(null);
 			for (ElementMenuEntry entry : entries) {
 				entry.drawU(ug, x1, y, zIndex, dimToUse);

@@ -46,6 +46,7 @@ import net.sourceforge.plantuml.skin.Component;
 import net.sourceforge.plantuml.skin.Context2D;
 import net.sourceforge.plantuml.skin.Skin;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
+import net.sourceforge.plantuml.ugraphic.UTranslate;
 
 public class MessageExoArrow extends Arrow {
 
@@ -104,7 +105,7 @@ public class MessageExoArrow extends Arrow {
 	@Override
 	protected void drawInternalU(UGraphic ug, double maxX, Context2D context) {
 		final StringBounder stringBounder = ug.getStringBounder();
-		ug.translate(getStartingX(stringBounder), getStartingY());
+		ug = ug.apply(new UTranslate(getStartingX(stringBounder), getStartingY()));
 		startUrl(ug);
 		getArrowComponent().drawU(ug, new Area(getActualDimension(stringBounder, maxX)), context);
 		endUrl(ug);

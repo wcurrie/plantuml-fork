@@ -61,7 +61,7 @@ class MiddleCircleCircled extends Extremity implements UDrawable {
 		if (mode == MiddleCircleCircledMode.BOTH) {
 			final HtmlColor color = ug.getParam().getColor();
 			ug.getParam().setColor(HtmlColorUtils.WHITE);
-			ug.draw(x - radius2, y - radius2, bigcircle);
+			ug.drawNewWay(x - radius2, y - radius2, bigcircle);
 			ug.getParam().setColor(color);
 		}
 
@@ -70,13 +70,13 @@ class MiddleCircleCircled extends Extremity implements UDrawable {
 		final double d = 0;
 		if (mode == MiddleCircleCircledMode.MODE1 || mode == MiddleCircleCircledMode.BOTH) {
 			final UEllipse arc1 = new UEllipse(2 * radius2, 2 * radius2, angle, 90);
-			ug.draw(x - radius2 + d, y - radius2 + d, arc1);
+			ug.drawNewWay(x - radius2 + d, y - radius2 + d, arc1);
 		}
 		if (mode == MiddleCircleCircledMode.MODE2 || mode == MiddleCircleCircledMode.BOTH) {
 			final UEllipse arc2 = new UEllipse(2 * radius2, 2 * radius2, angle + 180, 90);
-			ug.draw(x - radius2 + d, y - radius2 + d, arc2);
+			ug.drawNewWay(x - radius2 + d, y - radius2 + d, arc2);
 		}
-		ug.draw(x - radius1, y - radius1, circle);
+		ug.drawNewWay(x - radius1, y - radius1, circle);
 		ug.getParam().setStroke(new UStroke());
 
 	}

@@ -41,7 +41,12 @@ import java.util.Collection;
 import net.sourceforge.plantuml.Url;
 import net.sourceforge.plantuml.graphic.StringBounder;
 
-public class UGraphicFilter implements UGraphic {
+public class UGraphicFilter extends UGraphic {
+
+	@Override
+	public UGraphic apply(UChange translate) {
+		throw new UnsupportedOperationException();
+	}
 
 	private final UGraphic ug;
 	private final Collection<Class<? extends UShape>> toprint;
@@ -59,41 +64,17 @@ public class UGraphicFilter implements UGraphic {
 		return ug.getParam();
 	}
 
-	public void draw(double x, double y, UShape shape) {
+	public void drawOldWay(UShape shape) {
 		if (toprint.contains(shape.getClass())) {
-			ug.draw(x, y, shape);
+			ug.drawOldWay(shape);
 		}
 	}
 
 	public void centerChar(double x, double y, char c, UFont font) {
 	}
 
-	public void translate(double dx, double dy) {
-		throw new UnsupportedOperationException();
-	}
-
-	public void setTranslate(double dx, double dy) {
-		throw new UnsupportedOperationException();
-	}
-
-	public double getTranslateX() {
-		throw new UnsupportedOperationException();
-	}
-
-	public double getTranslateY() {
-		throw new UnsupportedOperationException();
-	}
-
 	public void writeImage(OutputStream os, String metadata, int dpi) throws IOException {
 		ug.writeImage(os, metadata, dpi);
-	}
-
-	public void setClip(UClip clip) {
-		ug.setClip(clip);
-	}
-
-	public void setAntiAliasing(boolean trueForOn) {
-		ug.setAntiAliasing(trueForOn);
 	}
 
 	public ColorMapper getColorMapper() {

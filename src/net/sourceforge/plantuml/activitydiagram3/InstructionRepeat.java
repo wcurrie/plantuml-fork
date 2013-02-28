@@ -41,11 +41,14 @@ public class InstructionRepeat implements Instruction {
 
 	private final InstructionList repeatList = new InstructionList();
 	private final Instruction parent;
+	private final LinkRendering nextLinkRenderer;
 
 	private Display test;
+	private LinkRendering endRepeatLinkRendering;
 
-	public InstructionRepeat(Instruction parent) {
+	public InstructionRepeat(Instruction parent, LinkRendering nextLinkRenderer) {
 		this.parent = parent;
+		this.nextLinkRenderer = nextLinkRenderer;
 	}
 
 	public void add(Instruction ins) {
@@ -53,19 +56,25 @@ public class InstructionRepeat implements Instruction {
 	}
 
 	public Ftile createFtile(FtileFactory factory) {
-		return factory.repeat(repeatList.createFtile(factory), test);
+		return factory.repeat(repeatList.createFtile(factory), test, endRepeatLinkRendering);
 	}
 
 	public Instruction getParent() {
 		return parent;
 	}
 
-	public void setTest(Display test) {
+	public void setTest(Display test, LinkRendering linkRenderer) {
 		this.test = test;
+		this.endRepeatLinkRendering = linkRenderer;
 	}
 
 	public boolean kill() {
 		return repeatList.kill();
 	}
+	
+	public LinkRendering getInLinkRendering() {
+		return nextLinkRenderer;
+	}
+
 
 }

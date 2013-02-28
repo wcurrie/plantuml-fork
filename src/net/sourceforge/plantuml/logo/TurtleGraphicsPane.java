@@ -120,7 +120,7 @@ class TurtleGraphicsPane {
 
 		ug.getParam().setColor(turtleColor1);
 		ug.getParam().setBackcolor(turtleColor2);
-		ug.draw(x, -y, poly);
+		ug.drawNewWay(x, -y, poly);
 		// ug.setAntiAliasing(true);
 	}
 
@@ -189,7 +189,7 @@ class TurtleGraphicsPane {
 			final Rectangle2D.Double r = lines.get(i);
 			ug.getParam().setColor(color);
 			final ULine line = new ULine(r.width - r.x, -r.height + r.y);
-			ug.draw(r.x, -r.y, line);
+			ug.drawNewWay(r.x, -r.y, line);
 
 		}
 		drawTurtle(ug);

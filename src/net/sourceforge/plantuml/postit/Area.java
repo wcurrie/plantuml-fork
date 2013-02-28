@@ -41,6 +41,7 @@ import java.util.Map;
 
 import net.sourceforge.plantuml.graphic.StringBounder;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
+import net.sourceforge.plantuml.ugraphic.UTranslate;
 
 public class Area implements Elastic {
 
@@ -99,12 +100,9 @@ public class Area implements Elastic {
 	public void drawU(UGraphic ug, double width) {
 		final AreaLayout layout = new AreaLayoutFixedWidth(width);
 		final Map<PostIt, Point2D> pos = layout.getPositions(postIts, ug.getStringBounder());
-		final double tx = ug.getTranslateX();
-		final double ty = ug.getTranslateY();
 		for (Map.Entry<PostIt, Point2D> ent : pos.entrySet()) {
-			ug.translate(ent.getValue().getX(), ent.getValue().getY());
-			ent.getKey().drawU(ug);
-			ug.setTranslate(tx, ty);
+			final UGraphic ugTranslated = ug.apply(new UTranslate(ent.getValue().getX(), ent.getValue().getY()));
+			ent.getKey().drawU(ugTranslated);
 		}
 
 	}

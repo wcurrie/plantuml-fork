@@ -34,9 +34,9 @@
 package net.sourceforge.plantuml.flowdiagram;
 
 import net.sourceforge.plantuml.DiagramType;
-import net.sourceforge.plantuml.command.AbstractUmlSystemCommandFactory;
+import net.sourceforge.plantuml.command.PSystemCommandFactory;
 
-public class FlowDiagramFactory extends AbstractUmlSystemCommandFactory {
+public class FlowDiagramFactory extends PSystemCommandFactory {
 
 	private FlowDiagram system;
 

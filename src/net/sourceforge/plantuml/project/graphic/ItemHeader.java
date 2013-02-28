@@ -66,7 +66,7 @@ class ItemHeader {
 		final StringBounder stringBounder = ug.getStringBounder();
 
 		ug.getParam().setColor(HtmlColorUtils.BLACK);
-		ug.draw(x, y, new URectangle(getWidth(stringBounder), getHeight(stringBounder)));
+		ug.drawNewWay(x, y, new URectangle(getWidth(stringBounder), getHeight(stringBounder)));
 
 		for (Item it : project.getValidItems()) {
 			final TextBlock b = TextBlockUtils.create(Display.asList("" + it.getCode()), fontConfig,
@@ -74,7 +74,7 @@ class ItemHeader {
 			final Dimension2D dim = b.calculateDimension(stringBounder);
 			b.drawU(ug, x, y);
 			y += dim.getHeight();
-			ug.draw(x, y, new ULine(getWidth(stringBounder), 0));
+			ug.drawNewWay(x, y, new ULine(getWidth(stringBounder), 0));
 		}
 	}
 

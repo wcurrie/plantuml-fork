@@ -64,7 +64,7 @@ public class TextBlockGeneric implements TextBlock {
 		ug.getParam().setColor(border);
 		ug.getParam().setStroke(new UStroke(2, 2, 1));
 		final Dimension2D dim = calculateDimension(ug.getStringBounder());
-		ug.draw(x, y, new URectangle(dim.getWidth(), dim.getHeight()));
+		ug.drawNewWay(x, y, new URectangle(dim.getWidth(), dim.getHeight()));
 		ug.getParam().setStroke(new UStroke());
 
 		textBlock.drawU(ug, x, y);

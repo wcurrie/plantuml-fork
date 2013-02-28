@@ -39,6 +39,7 @@ import java.util.List;
 
 import net.sourceforge.plantuml.Dimension2DDouble;
 import net.sourceforge.plantuml.Url;
+import net.sourceforge.plantuml.activitydiagram3.LinkRendering;
 import net.sourceforge.plantuml.activitydiagram3.ftile.Arrows;
 import net.sourceforge.plantuml.activitydiagram3.ftile.Ftile;
 import net.sourceforge.plantuml.graphic.HtmlColor;
@@ -61,9 +62,9 @@ class FtileVerticalArrow implements Ftile {
 		ug.getParam().setColor(color);
 		ug.getParam().setBackcolor(color);
 		ug.getParam().setStroke(new UStroke(1.5));
-		ug.draw(x, y, new ULine(0, height));
+		ug.drawNewWay(x, y, new ULine(0, height));
 		ug.getParam().setStroke(new UStroke(1));
-		ug.draw(x, y + height, Arrows.asToDown());
+		ug.drawNewWay(x, y + height, Arrows.asToDown());
 	}
 
 	public Dimension2D calculateDimension(StringBounder stringBounder) {
@@ -76,6 +77,10 @@ class FtileVerticalArrow implements Ftile {
 
 	public boolean isKilled() {
 		return false;
+	}
+
+	public LinkRendering getInLinkRendering() {
+		return null;
 	}
 
 }

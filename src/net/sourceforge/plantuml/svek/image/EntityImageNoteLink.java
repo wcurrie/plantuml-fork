@@ -49,6 +49,7 @@ import net.sourceforge.plantuml.skin.rose.Rose;
 import net.sourceforge.plantuml.svek.IEntityImage;
 import net.sourceforge.plantuml.svek.ShapeType;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
+import net.sourceforge.plantuml.ugraphic.UTranslate;
 
 public class EntityImageNoteLink implements IEntityImage {
 
@@ -66,11 +67,8 @@ public class EntityImageNoteLink implements IEntityImage {
 	}
 
 	public void drawU(UGraphic ug, double xTheoricalPosition, double yTheoricalPosition) {
-		final double dx = ug.getTranslateX();
-		final double dy = ug.getTranslateY();
-		ug.translate(xTheoricalPosition, yTheoricalPosition);
+		ug = ug.apply(new UTranslate(xTheoricalPosition, yTheoricalPosition));
 		comp.drawU(ug, new Area(getDimension(ug.getStringBounder())), new SimpleContext2D(false));
-		ug.setTranslate(dx, dy);
 
 	}
 

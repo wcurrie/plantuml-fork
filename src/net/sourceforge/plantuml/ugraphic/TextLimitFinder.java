@@ -40,12 +40,39 @@ import java.io.OutputStream;
 import net.sourceforge.plantuml.Url;
 import net.sourceforge.plantuml.graphic.StringBounder;
 
-public class TextLimitFinder implements UGraphic {
+public class TextLimitFinder extends UGraphic {
+	
+	@Override
+	public UGraphic apply(UChange translate) {
+		if (translate instanceof UTranslate) {
+			this.translate = (UTranslate) translate;
+			return this;
+		}
+		throw new UnsupportedOperationException();
+	}
+
 
 	private final StringBounder stringBounder;
 
-	public TextLimitFinder(StringBounder stringBounder) {
+	private double maxX;
+	private double maxY;
+	private double minX;
+	private double minY;
+	private UTranslate translate = new UTranslate();
+
+	public TextLimitFinder(StringBounder stringBounder, boolean initToZero) {
 		this.stringBounder = stringBounder;
+		if (initToZero) {
+			this.minX = 0;
+			this.maxX = 0;
+			this.minY = 0;
+			this.maxY = 0;
+		} else {
+			this.minX = Double.MAX_VALUE;
+			this.maxX = -Double.MAX_VALUE;
+			this.minY = Double.MAX_VALUE;
+			this.maxY = -Double.MAX_VALUE;
+		}
 	}
 
 	private final UParam param = new UParam();
@@ -58,37 +85,15 @@ public class TextLimitFinder implements UGraphic {
 		return param;
 	}
 
-	public void draw(double x, double y, UShape shape) {
+	public void drawOldWay(UShape shape) {
 		if (shape instanceof UText) {
+			final double x = translate.getDx();
+			final double y = translate.getDy();
 			drawText(x, y, (UText) shape);
 		}
 	}
 
 	public void centerChar(double x, double y, char c, UFont font) {
-		throw new UnsupportedOperationException();
-	}
-
-	public void translate(double dx, double dy) {
-		throw new UnsupportedOperationException();
-	}
-
-	public void setTranslate(double dx, double dy) {
-		throw new UnsupportedOperationException();
-	}
-
-	public double getTranslateX() {
-		throw new UnsupportedOperationException();
-	}
-
-	public double getTranslateY() {
-		throw new UnsupportedOperationException();
-	}
-
-	public void setClip(UClip clip) {
-		throw new UnsupportedOperationException();
-	}
-
-	public void setAntiAliasing(boolean trueForOn) {
 		throw new UnsupportedOperationException();
 	}
 
@@ -112,10 +117,6 @@ public class TextLimitFinder implements UGraphic {
 		throw new UnsupportedOperationException();
 	}
 
-	private double maxX;
-	private double maxY;
-	private double minX;
-	private double minY;
 
 	private void addPoint(double x, double y) {
 		this.maxX = Math.max(x, maxX);

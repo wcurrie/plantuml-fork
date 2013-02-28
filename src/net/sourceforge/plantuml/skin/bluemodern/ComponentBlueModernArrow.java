@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 9786 $
+ * Revision $Revision: 10057 $
  *
  */
 package net.sourceforge.plantuml.skin.bluemodern;
@@ -75,7 +75,7 @@ public class ComponentBlueModernArrow extends AbstractComponentBlueModernArrow {
 			ug.getParam().setStroke(new UStroke(2));
 		}
 
-		ug.draw(2, textHeight, new ULine(x2 - 4, 0));
+		ug.drawNewWay(2, textHeight, new ULine(x2 - 4, 0));
 		ug.getParam().setStroke(new UStroke());
 
 		final int direction = getDirection();
@@ -85,20 +85,20 @@ public class ComponentBlueModernArrow extends AbstractComponentBlueModernArrow {
 			ug.getParam().setStroke(new UStroke(1.5));
 			if (direction == 1) {
 				if (getArrowConfiguration().getPart() != ArrowPart.BOTTOM_PART) {
-					ug.draw(x2 - getArrowDeltaX2(), textHeight - getArrowDeltaY2(), new ULine(getArrowDeltaX2(),
+					ug.drawNewWay(x2 - getArrowDeltaX2(), textHeight - getArrowDeltaY2(), new ULine(getArrowDeltaX2(),
 							getArrowDeltaY2()));
 				}
 				if (getArrowConfiguration().getPart() != ArrowPart.TOP_PART) {
-					ug.draw(x2 - getArrowDeltaX2(), textHeight + getArrowDeltaY2(), new ULine(getArrowDeltaX2(),
+					ug.drawNewWay(x2 - getArrowDeltaX2(), textHeight + getArrowDeltaY2(), new ULine(getArrowDeltaX2(),
 							-getArrowDeltaY2()));
 				}
 			} else {
 				if (getArrowConfiguration().getPart() != ArrowPart.BOTTOM_PART) {
-					ug.draw(getArrowDeltaX2(), textHeight - getArrowDeltaY2(), new ULine(-getArrowDeltaX2(),
+					ug.drawNewWay(getArrowDeltaX2(), textHeight - getArrowDeltaY2(), new ULine(-getArrowDeltaX2(),
 							getArrowDeltaY2()));
 				}
 				if (getArrowConfiguration().getPart() != ArrowPart.TOP_PART) {
-					ug.draw(getArrowDeltaX2(), textHeight + getArrowDeltaY2(), new ULine(-getArrowDeltaX2(),
+					ug.drawNewWay(getArrowDeltaX2(), textHeight + getArrowDeltaY2(), new ULine(-getArrowDeltaX2(),
 							-getArrowDeltaY2()));
 				}
 			}
@@ -108,7 +108,7 @@ public class ComponentBlueModernArrow extends AbstractComponentBlueModernArrow {
 		} else {
 			createPolygonReverse(textHeight, polygon);
 		}
-		ug.draw(0, 0, polygon);
+		ug.drawOldWay(polygon);
 
 		getTextBlock().drawU(ug, getMarginX1(), 0);
 	}

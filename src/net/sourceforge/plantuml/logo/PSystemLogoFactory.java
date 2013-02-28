@@ -36,7 +36,7 @@ package net.sourceforge.plantuml.logo;
 import net.sourceforge.plantuml.DiagramType;
 import net.sourceforge.plantuml.PSystemBasicFactory;
 
-public class PSystemLogoFactory implements PSystemBasicFactory {
+public class PSystemLogoFactory extends PSystemBasicFactory {
 
 	private PSystemLogo system;
 	private int width;

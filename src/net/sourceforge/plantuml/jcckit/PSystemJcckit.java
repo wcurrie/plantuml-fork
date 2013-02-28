@@ -47,6 +47,8 @@ import jcckit.util.PropertiesBasedConfigData;
 import net.sourceforge.plantuml.AbstractPSystem;
 import net.sourceforge.plantuml.CMapData;
 import net.sourceforge.plantuml.FileFormatOption;
+import net.sourceforge.plantuml.api.ImageData;
+import net.sourceforge.plantuml.api.ImageDataSimple;
 
 public class PSystemJcckit extends AbstractPSystem {
 
@@ -60,8 +62,7 @@ public class PSystemJcckit extends AbstractPSystem {
 		prop = new PropertiesBasedConfigData(p);
 	}
 
-	public void exportDiagram(OutputStream os, CMapData cmap, int index, FileFormatOption fileFormat)
-			throws IOException {
+	public ImageData exportDiagram(OutputStream os, int num, FileFormatOption fileFormat) throws IOException {
 		BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
 
 		// Sets up a Graphics2DPlotCanvas
@@ -72,10 +73,13 @@ public class PSystemJcckit extends AbstractPSystem {
 
 		// Writes the off-screen image into a PNG file
 		ImageIO.write(image, "png", os);
+		
+		return new ImageDataSimple(width, height);
 	}
 
 	public String getDescription() {
 		return "(JCCKit)";
 	}
+
 
 }

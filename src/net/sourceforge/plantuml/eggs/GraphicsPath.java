@@ -40,6 +40,8 @@ import java.io.IOException;
 import java.io.OutputStream;
 
 import net.sourceforge.plantuml.EmptyImageBuilder;
+import net.sourceforge.plantuml.api.ImageData;
+import net.sourceforge.plantuml.api.ImageDataSimple;
 import net.sourceforge.plantuml.graphic.HtmlColorUtils;
 import net.sourceforge.plantuml.png.PngIO;
 import net.sourceforge.plantuml.ugraphic.ColorMapper;
@@ -64,6 +66,12 @@ public class GraphicsPath {
 		PngIO.write(im, os, 96);
 	}
 
+	public ImageData writeImage1317(OutputStream os) throws IOException {
+		final BufferedImage im = createImage();
+		PngIO.write(im, os, 96);
+		return new ImageDataSimple(im.getWidth(), im.getHeight());
+	}
+
 	private BufferedImage createImage() {
 		final EmptyImageBuilder builder = new EmptyImageBuilder(50, 50,
 				Color.WHITE);
@@ -79,5 +87,6 @@ public class GraphicsPath {
 		g2d.dispose();
 		return im;
 	}
+
 
 }

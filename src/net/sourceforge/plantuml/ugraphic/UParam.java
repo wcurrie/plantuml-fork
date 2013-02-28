@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 9786 $
+ * Revision $Revision: 10054 $
  *
  */
 package net.sourceforge.plantuml.ugraphic;
@@ -42,6 +42,15 @@ public class UParam {
 	private HtmlColor backcolor = null;
 	private UStroke stroke = new UStroke(1);
 	private boolean hidden = false;
+	
+	public UParam copy() {
+		final UParam result = new UParam();
+		result.color = this.color;
+		result.backcolor = this.backcolor;
+		result.stroke = this.stroke;
+		result.hidden = this.hidden;
+		return result;
+	}
 
 	public void reset() {
 		color = null;

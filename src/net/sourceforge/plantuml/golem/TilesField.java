@@ -253,7 +253,7 @@ public class TilesField implements TextBlock {
 			final TileArea dest = p.getDest();
 			final Point2D pstart = getPoint2D(dimSingle, start);
 			final Point2D pdest = getPoint2D(dimSingle, dest);
-			ug.draw(x + pstart.getX(), y + pstart.getY(),
+			ug.drawNewWay(x + pstart.getX(), y + pstart.getY(),
 					new ULine(pdest.getX() - pstart.getX(), pdest.getY() - pstart.getY()));
 		}
 	}

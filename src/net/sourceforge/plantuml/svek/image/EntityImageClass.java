@@ -148,7 +148,7 @@ public class EntityImageClass extends AbstractEntityImage {
 		double x = xTheoricalPosition;
 		double y = yTheoricalPosition;
 		ug.getParam().setStroke(new UStroke(1.5));
-		ug.draw(x, y, rect);
+		ug.drawNewWay(x, y, rect);
 		ug.getParam().setStroke(new UStroke());
 
 		ug.getParam().setBackcolor(backcolor);
@@ -160,7 +160,6 @@ public class EntityImageClass extends AbstractEntityImage {
 		if (body != null) {
 			ug.getParam().setBackcolor(backcolor);
 			ug.getParam().setColor(classBorder);
-			// body.asTextBlock(widthTotal).drawU(ug, x, y);
 			final UGraphic ug2 = new UGraphicHorizontalLine(ug, x, x + widthTotal);
 			body.drawU(ug2, x, y);
 		}

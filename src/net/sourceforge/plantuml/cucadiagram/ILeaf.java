@@ -33,6 +33,7 @@
  */
 package net.sourceforge.plantuml.cucadiagram;
 
+import net.sourceforge.plantuml.Removeable;
 import net.sourceforge.plantuml.svek.IEntityImage;
 
 public interface ILeaf extends IEntity {
@@ -62,5 +63,7 @@ public interface ILeaf extends IEntity {
 	public void setGeneric(String generic);
 
 	public void setSvekImage(IEntityImage svekImage);
+	
+	public void setRemoved(boolean removed);
 
 }

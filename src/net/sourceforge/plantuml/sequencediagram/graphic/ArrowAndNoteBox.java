@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 9786 $
+ * Revision $Revision: 10060 $
  *
  */
 package net.sourceforge.plantuml.sequencediagram.graphic;
@@ -76,12 +76,8 @@ class ArrowAndNoteBox extends Arrow implements InGroupable {
 
 	@Override
 	protected void drawInternalU(UGraphic ug, double maxX, Context2D context) {
-		final double atX = ug.getTranslateX();
-		final double atY = ug.getTranslateY();
 		arrow.drawU(ug, maxX, context);
-		ug.setTranslate(atX, atY);
 		noteBox.drawU(ug, maxX, context);
-		ug.setTranslate(atX, atY);
 	}
 
 	@Override

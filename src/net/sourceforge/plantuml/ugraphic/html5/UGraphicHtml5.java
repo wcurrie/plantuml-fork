@@ -39,10 +39,10 @@ import java.io.OutputStream;
 import net.sourceforge.plantuml.Url;
 import net.sourceforge.plantuml.graphic.StringBounder;
 import net.sourceforge.plantuml.graphic.StringBounderUtils;
+import net.sourceforge.plantuml.ugraphic.AbstractCommonUGraphic;
 import net.sourceforge.plantuml.ugraphic.AbstractUGraphic;
 import net.sourceforge.plantuml.ugraphic.ClipContainer;
 import net.sourceforge.plantuml.ugraphic.ColorMapper;
-import net.sourceforge.plantuml.ugraphic.UClip;
 import net.sourceforge.plantuml.ugraphic.UFont;
 import net.sourceforge.plantuml.ugraphic.ULine;
 import net.sourceforge.plantuml.ugraphic.UPolygon;
@@ -52,9 +52,14 @@ import net.sourceforge.plantuml.ugraphic.UText;
 public class UGraphicHtml5 extends AbstractUGraphic<Html5Drawer> implements ClipContainer {
 
 	final static Graphics2D imDummy = new BufferedImage(10, 10, BufferedImage.TYPE_INT_RGB).createGraphics();
-	private UClip clip;
 
 	private final StringBounder stringBounder;
+
+	@Override
+	protected AbstractCommonUGraphic copyUGraphic() {
+		return this;
+	}
+
 
 	public UGraphicHtml5(ColorMapper colorMapper) {
 		super(colorMapper, new Html5Drawer());
@@ -80,11 +85,6 @@ public class UGraphicHtml5 extends AbstractUGraphic<Html5Drawer> implements Clip
 		
 	}
 
-	public void setAntiAliasing(boolean trueForOn) {
-		throw new UnsupportedOperationException();
-		
-	}
-
 	public void startUrl(Url url) {
 //		throw new UnsupportedOperationException();
 		
@@ -99,14 +99,6 @@ public class UGraphicHtml5 extends AbstractUGraphic<Html5Drawer> implements Clip
 //		getEpsGraphics().close();
 //	}
 
-
-	public void setClip(UClip clip) {
-		this.clip = clip == null ? null : clip.translate(getTranslateX(), getTranslateY());
-	}
-
-	public UClip getClip() {
-		return clip;
-	}
 
 	public String generateHtmlCode() {
 		return getGraphicObject().generateHtmlCode();

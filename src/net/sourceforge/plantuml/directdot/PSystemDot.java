@@ -38,6 +38,8 @@ import java.io.UnsupportedEncodingException;
 import net.sourceforge.plantuml.AbstractPSystem;
 import net.sourceforge.plantuml.CMapData;
 import net.sourceforge.plantuml.FileFormatOption;
+import net.sourceforge.plantuml.api.ImageData;
+import net.sourceforge.plantuml.api.ImageDataSimple;
 import net.sourceforge.plantuml.cucadiagram.dot.Graphviz;
 import net.sourceforge.plantuml.cucadiagram.dot.GraphvizUtils;
 
@@ -53,9 +55,8 @@ public class PSystemDot extends AbstractPSystem {
 		return "(Dot)";
 	}
 
-	public void exportDiagram(OutputStream os, CMapData cmap, int index, FileFormatOption fileFormatOption)
-			throws IOException {
-		final Graphviz graphviz = GraphvizUtils.create(data, fileFormatOption.getFileFormat().name().toLowerCase());
+	public ImageData exportDiagram(OutputStream os, int num, FileFormatOption fileFormat) throws IOException {
+		final Graphviz graphviz = GraphvizUtils.create(data, fileFormat.getFileFormat().name().toLowerCase());
 		try {
 			graphviz.createFile(os);
 		} catch (InterruptedException e) {
@@ -63,6 +64,6 @@ public class PSystemDot extends AbstractPSystem {
 			e.printStackTrace();
 			throw new IOException(e.toString());
 		}
-
+		return new ImageDataSimple();
 	}
 }

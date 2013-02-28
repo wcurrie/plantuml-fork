@@ -120,7 +120,7 @@ public class SourceFileReader implements ISourceFileReader {
 			suggested.getParentFile().mkdirs();
 
 			final PSystem system = blockUml.getSystem();
-			final List<File> exportDiagrams = system.exportDiagrams(suggested, fileFormatOption);
+			final List<File> exportDiagrams = PSystemUtils.exportDiagrams(system, suggested, fileFormatOption);
 			OptionFlags.getInstance().logData(file, system);
 
 			for (File f : exportDiagrams) {

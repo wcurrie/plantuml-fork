@@ -66,7 +66,7 @@ public class EntityImageSynchroBar extends AbstractEntityImage {
 		}
 		ug.getParam().setColor(null);
 		ug.getParam().setBackcolor(SkinParamUtils.getColor(getSkinParam(), ColorParam.activityBar, getStereo()));
-		ug.draw(xTheoricalPosition, yTheoricalPosition, rect);
+		ug.drawNewWay(xTheoricalPosition, yTheoricalPosition, rect);
 	}
 
 	public ShapeType getShapeType() {

@@ -40,7 +40,6 @@ import java.io.PrintStream;
 
 import net.sourceforge.plantuml.CMapData;
 import net.sourceforge.plantuml.FileFormat;
-import net.sourceforge.plantuml.UmlDiagramInfo;
 import net.sourceforge.plantuml.asciiart.TextSkin;
 import net.sourceforge.plantuml.asciiart.TextStringBounder;
 import net.sourceforge.plantuml.graphic.StringBounder;
@@ -113,7 +112,7 @@ public class SequenceDiagramTxtMaker implements FileMaker {
 	// return Collections.singletonList(suggestedFile);
 	// }
 
-	public UmlDiagramInfo createOne2(OutputStream os, int index) throws IOException {
+	public Dimension2D createOne2(OutputStream os, int index) throws IOException {
 		if (fileFormat == FileFormat.UTXT) {
 			final PrintStream ps = new PrintStream(os, true, "UTF-8");
 			ug.getCharArea().print(ps);
@@ -121,7 +120,7 @@ public class SequenceDiagramTxtMaker implements FileMaker {
 			final PrintStream ps = new PrintStream(os);
 			ug.getCharArea().print(ps);
 		}
-		return null;
+		return ug.getDimension();
 	}
 
 	public int getNbPages() {

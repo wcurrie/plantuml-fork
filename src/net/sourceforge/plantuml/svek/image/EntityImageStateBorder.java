@@ -120,7 +120,7 @@ public class EntityImageStateBorder extends AbstractEntityImage {
 		}
 		ug.getParam().setBackcolor(backcolor);
 
-		ug.draw(xTheoricalPosition, yTheoricalPosition, circle);
+		ug.drawNewWay(xTheoricalPosition, yTheoricalPosition, circle);
 		if (entityPosition == EntityPosition.EXIT_POINT) {
 			final double xc = xTheoricalPosition + RADIUS + .5;
 			final double yc = yTheoricalPosition + RADIUS + .5;
@@ -143,7 +143,7 @@ public class EntityImageStateBorder extends AbstractEntityImage {
 	static private void drawLine(UGraphic ug, Point2D p1, Point2D p2) {
 		final double dx = p2.getX() - p1.getX();
 		final double dy = p2.getY() - p1.getY();
-		ug.draw(p1.getX(), p1.getY(), new ULine(dx, dy));
+		ug.drawNewWay(p1.getX(), p1.getY(), new ULine(dx, dy));
 
 	}
 

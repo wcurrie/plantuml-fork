@@ -37,6 +37,7 @@ import java.awt.geom.Dimension2D;
 import java.util.List;
 
 import net.sourceforge.plantuml.Url;
+import net.sourceforge.plantuml.activitydiagram3.LinkRendering;
 import net.sourceforge.plantuml.graphic.StringBounder;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
 
@@ -62,6 +63,10 @@ public class FtileKilled implements Ftile {
 
 	public boolean isKilled() {
 		return true;
+	}
+
+	public LinkRendering getInLinkRendering() {
+		return tile.getInLinkRendering();
 	}
 
 }

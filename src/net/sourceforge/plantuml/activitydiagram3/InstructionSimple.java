@@ -42,14 +42,16 @@ public class InstructionSimple implements Instruction {
 
 	private final Display label;
 	private final HtmlColor color;
+	private final LinkRendering inlinkRendering;
 
-	public InstructionSimple(Display label, HtmlColor color) {
+	public InstructionSimple(Display label, HtmlColor color, LinkRendering inlinkRendering) {
 		this.label = label;
 		this.color = color;
+		this.inlinkRendering = inlinkRendering;
 	}
 
 	public Ftile createFtile(FtileFactory factory) {
-		return factory.activity(label, color);
+		return factory.activity(label, color, inlinkRendering);
 	}
 
 	public void add(Instruction other) {
@@ -58,6 +60,10 @@ public class InstructionSimple implements Instruction {
 
 	public boolean kill() {
 		return false;
+	}
+
+	public LinkRendering getInLinkRendering() {
+		return inlinkRendering;
 	}
 
 }

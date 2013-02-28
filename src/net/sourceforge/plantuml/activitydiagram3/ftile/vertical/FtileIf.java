@@ -39,6 +39,7 @@ import java.util.List;
 import net.sourceforge.plantuml.Dimension2DDouble;
 import net.sourceforge.plantuml.SpriteContainerEmpty;
 import net.sourceforge.plantuml.Url;
+import net.sourceforge.plantuml.activitydiagram3.LinkRendering;
 import net.sourceforge.plantuml.activitydiagram3.ftile.Arrows;
 import net.sourceforge.plantuml.activitydiagram3.ftile.Diamond;
 import net.sourceforge.plantuml.activitydiagram3.ftile.Ftile;
@@ -66,12 +67,17 @@ class FtileIf implements Ftile {
 	private final HtmlColor borderColor;
 	private final HtmlColor arrowColor;
 	private final HtmlColor backColor;
+	private final HtmlColor endThenInlinkColor;
+	private final HtmlColor endElseInlinkColor;
 
 	public FtileIf(Ftile tile1, Ftile tile2, Display labelTest, Display label1, Display label2, HtmlColor borderColor,
-			HtmlColor backColor, HtmlColor arrowColor, UFont font) {
+			HtmlColor backColor, HtmlColor arrowColor, UFont font, HtmlColor endThenInlinkColor,
+			HtmlColor endElseInlinkColor) {
 		this.borderColor = borderColor;
 		this.arrowColor = arrowColor;
 		this.backColor = backColor;
+		this.endThenInlinkColor = endThenInlinkColor;
+		this.endElseInlinkColor = endElseInlinkColor;
 		this.tile1 = new FtileMinWidth(tile1, 30);
 		this.tile2 = new FtileMinWidth(tile2, 30);
 		// final UFont font = new UFont("Serif", Font.PLAIN, 14);
@@ -109,7 +115,7 @@ class FtileIf implements Ftile {
 		final double xDiamond = x + (dimTotal.getWidth() - 2 * Diamond.diamondHalfSize) / 2;
 		drawDiamond(ug, xDiamond, y);
 
-		ug.getParam().setColor(arrowColor);
+		ug.getParam().setColor(LinkRendering.getColor(tile1.getInLinkRendering(), arrowColor));
 		ug.getParam().setStroke(new UStroke(1.5));
 		final Snake s1 = new Snake();
 		s1.addPoint(xDiamond, y + Diamond.diamondHalfSize);
@@ -117,6 +123,7 @@ class FtileIf implements Ftile {
 		s1.addPoint(x1 + dim1.getWidth() / 2, y1);
 		s1.drawU(ug);
 
+		ug.getParam().setColor(LinkRendering.getColor(tile2.getInLinkRendering(), arrowColor));
 		final Snake s2 = new Snake();
 		s2.addPoint(xDiamond + 2 * Diamond.diamondHalfSize, y + Diamond.diamondHalfSize);
 		s2.addPoint(x2 + dim2.getWidth() / 2, y + Diamond.diamondHalfSize);
@@ -124,35 +131,55 @@ class FtileIf implements Ftile {
 		s2.drawU(ug);
 
 		if (tile1.isKilled() == false) {
+			ug.getParam().setColor(LinkRendering.getColor(endThenInlinkColor, arrowColor));
 			final Snake s3 = new Snake();
 			s3.addPoint(x1 + dim1.getWidth() / 2, y1 + dim1.getHeight());
 			s3.addPoint(x1 + dim1.getWidth() / 2, y + dimTotal.getHeight() - Diamond.diamondHalfSize);
-			s3.addPoint(xDiamond, y + dimTotal.getHeight() - Diamond.diamondHalfSize);
+			if (tile2.isKilled()) {
+				s3.addPoint(x + dimTotal.getWidth() / 2 - 1, y + dimTotal.getHeight() - Diamond.diamondHalfSize);
+				s3.addPoint(x + dimTotal.getWidth() / 2 - 1, y + dimTotal.getHeight());
+			} else {
+				s3.addPoint(xDiamond, y + dimTotal.getHeight() - Diamond.diamondHalfSize);
+			}
 			s3.drawU(ug);
 		}
 
 		if (tile2.isKilled() == false) {
+			ug.getParam().setColor(LinkRendering.getColor(endElseInlinkColor, arrowColor));
 			final Snake s4 = new Snake();
 			s4.addPoint(x2 + dim2.getWidth() / 2, y2 + dim2.getHeight());
 			s4.addPoint(x2 + dim2.getWidth() / 2, y + dimTotal.getHeight() - Diamond.diamondHalfSize);
-			s4.addPoint(xDiamond + 2 * Diamond.diamondHalfSize, y + dimTotal.getHeight() - Diamond.diamondHalfSize);
+			if (tile1.isKilled()) {
+				s4.addPoint(x + dimTotal.getWidth() / 2 - 1, y + dimTotal.getHeight() - Diamond.diamondHalfSize);
+				s4.addPoint(x + dimTotal.getWidth() / 2 - 1, y + dimTotal.getHeight());
+			} else {
+				s4.addPoint(xDiamond + 2 * Diamond.diamondHalfSize, y + dimTotal.getHeight() - Diamond.diamondHalfSize);
+
+			}
 			s4.drawU(ug);
 		}
 		ug.getParam().setStroke(new UStroke());
-		drawDiamond(ug, xDiamond, y + dimTotal.getHeight() - 2 * Diamond.diamondHalfSize);
+		ug.getParam().setColor(LinkRendering.getColor(tile1.getInLinkRendering(), arrowColor));
+		ug.getParam().setBackcolor(LinkRendering.getColor(tile1.getInLinkRendering(), arrowColor));
+		ug.drawNewWay(x1 + dim1.getWidth() / 2, y1, Arrows.asToDown());
+		ug.getParam().setColor(LinkRendering.getColor(tile2.getInLinkRendering(), arrowColor));
+		ug.getParam().setBackcolor(LinkRendering.getColor(tile2.getInLinkRendering(), arrowColor));
+		ug.drawNewWay(x2 + dim2.getWidth() / 2, y2, Arrows.asToDown());
+		if (tile1.isKilled() == false && tile2.isKilled() == false) {
+			drawDiamond(ug, xDiamond, y + dimTotal.getHeight() - 2 * Diamond.diamondHalfSize);
 
-		ug.getParam().setColor(arrowColor);
-		ug.getParam().setBackcolor(arrowColor);
-		ug.draw(x1 + dim1.getWidth() / 2, y1, Arrows.asToDown());
-		ug.draw(x2 + dim2.getWidth() / 2, y2, Arrows.asToDown());
+			if (tile1.isKilled() == false) {
+				ug.getParam().setColor(LinkRendering.getColor(endThenInlinkColor, arrowColor));
+				ug.getParam().setBackcolor(LinkRendering.getColor(endThenInlinkColor, arrowColor));
+				ug.drawNewWay(xDiamond, y + dimTotal.getHeight() - Diamond.diamondHalfSize, Arrows.asToRight());
+			}
 
-		if (tile1.isKilled() == false) {
-			ug.draw(xDiamond, y + dimTotal.getHeight() - Diamond.diamondHalfSize, Arrows.asToRight());
-		}
-
-		if (tile2.isKilled() == false) {
-			ug.draw(xDiamond + 2 * Diamond.diamondHalfSize, y + dimTotal.getHeight() - Diamond.diamondHalfSize,
-					Arrows.asToLeft());
+			if (tile2.isKilled() == false) {
+				ug.getParam().setColor(LinkRendering.getColor(endElseInlinkColor, arrowColor));
+				ug.getParam().setBackcolor(LinkRendering.getColor(endElseInlinkColor, arrowColor));
+				ug.drawNewWay(xDiamond + 2 * Diamond.diamondHalfSize, y + dimTotal.getHeight() - Diamond.diamondHalfSize,
+						Arrows.asToLeft());
+			}
 		}
 		final Dimension2D dimLabel = label.calculateDimension(stringBounder);
 		label.drawU(ug, x + dimTotal.getWidth() / 2 + 5, y - dimLabel.getHeight() - 7);
@@ -169,7 +196,7 @@ class FtileIf implements Ftile {
 		ug.getParam().setStroke(new UStroke(1.5));
 		ug.getParam().setColor(borderColor);
 		ug.getParam().setBackcolor(backColor);
-		ug.draw(xTheoricalPosition, yTheoricalPosition, Diamond.asPolygon());
+		ug.drawNewWay(xTheoricalPosition, yTheoricalPosition, Diamond.asPolygon());
 		ug.getParam().setStroke(new UStroke());
 	}
 
@@ -186,6 +213,10 @@ class FtileIf implements Ftile {
 
 	public boolean isKilled() {
 		return false;
+	}
+
+	public LinkRendering getInLinkRendering() {
+		return null;
 	}
 
 }

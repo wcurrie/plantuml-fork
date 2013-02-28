@@ -39,9 +39,27 @@ import java.io.OutputStream;
 import net.sourceforge.plantuml.Url;
 import net.sourceforge.plantuml.graphic.StringBounder;
 
-public abstract class AbstractUGraphicHorizontalLine implements UGraphic {
+public abstract class AbstractUGraphicHorizontalLine extends UGraphic {
 
 	private final UGraphic ug;
+
+	protected UGraphic getUg() {
+		return ug;
+	}
+
+	private UTranslate translate = new UTranslate();
+
+	@Override
+	public UGraphic apply(UChange translate) {
+		if (translate instanceof UTranslate) {
+			final AbstractUGraphicHorizontalLine copy = copy();
+			copy.translate = (UTranslate) translate;
+			return copy;
+		}
+		throw new UnsupportedOperationException();
+	}
+
+	protected abstract AbstractUGraphicHorizontalLine copy();
 
 	public AbstractUGraphicHorizontalLine(UGraphic ug) {
 		this.ug = ug;
@@ -54,43 +72,23 @@ public abstract class AbstractUGraphicHorizontalLine implements UGraphic {
 	public UParam getParam() {
 		return ug.getParam();
 	}
-	
+
 	protected abstract void drawHline(UGraphic ug, double x, double y, UHorizontalLine line);
 
-	public void draw(double x, double y, UShape shape) {
+	public void drawOldWay(UShape shape) {
+		final double x = translate.getDx();
+		final double y = translate.getDy();
 		if (shape instanceof UHorizontalLine) {
 			drawHline(ug, x, y, (UHorizontalLine) shape);
 		} else {
-			ug.draw(x, y, shape);
+			ug.drawNewWay(x, y, shape);
 		}
 	}
 
 	public void centerChar(double x, double y, char c, UFont font) {
+		x += translate.getDx();
+		y += translate.getDy();
 		ug.centerChar(x, y, c, font);
-	}
-
-	public void translate(double dx, double dy) {
-		ug.translate(dx, dy);
-	}
-
-	public void setTranslate(double dx, double dy) {
-		ug.setTranslate(dx, dy);
-	}
-
-	public double getTranslateX() {
-		return ug.getTranslateX();
-	}
-
-	public double getTranslateY() {
-		return ug.getTranslateY();
-	}
-
-	public void setClip(UClip clip) {
-		ug.setClip(clip);
-	}
-
-	public void setAntiAliasing(boolean trueForOn) {
-		ug.setAntiAliasing(trueForOn);
 	}
 
 	public ColorMapper getColorMapper() {

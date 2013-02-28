@@ -77,4 +77,8 @@ public class InstructionFork implements Instruction {
 		return getLast().kill();
 	}
 
+	public LinkRendering getInLinkRendering() {
+		return null;
+	}
+
 }

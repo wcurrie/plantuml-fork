@@ -39,10 +39,20 @@ import java.io.OutputStream;
 import net.sourceforge.plantuml.Url;
 import net.sourceforge.plantuml.graphic.StringBounder;
 
-public class SlotFinder implements UGraphic {
+public class SlotFinder extends UGraphic {
+
+	@Override
+	public UGraphic apply(UChange translate) {
+		if (translate instanceof UTranslate) {
+			this.translate = (UTranslate) translate;
+			return this;
+		}
+		throw new UnsupportedOperationException();
+	}
 
 	private final SlotSet yslot = new SlotSet();
 	private final StringBounder stringBounder;
+	private UTranslate translate = new UTranslate();
 
 	public SlotFinder(StringBounder stringBounder) {
 		this.stringBounder = stringBounder;
@@ -58,14 +68,30 @@ public class SlotFinder implements UGraphic {
 		return param;
 	}
 
-	public void draw(double x, double y, UShape shape) {
+	public void drawOldWay(UShape shape) {
+		final double x = translate.getDx();
+		final double y = translate.getDy();
 		if (shape instanceof URectangle) {
 			drawRectangle(x, y, (URectangle) shape);
 		} else if (shape instanceof UPolygon) {
 			drawPolygon(x, y, (UPolygon) shape);
 		} else if (shape instanceof UEllipse) {
 			drawEllipse(x, y, (UEllipse) shape);
+		} else if (shape instanceof UText) {
+			drawText(x, y, (UText) shape);
+		} else if (shape instanceof UEmpty) {
+			drawEmpty(x, y, (UEmpty) shape);
 		}
+	}
+
+	private void drawEmpty(double x, double y, UEmpty shape) {
+		yslot.addSlot(y, y + shape.getHeight());
+	}
+
+	private void drawText(double x, double y, UText shape) {
+		final TextLimitFinder finder = new TextLimitFinder(stringBounder, false);
+		finder.drawNewWay(x, y, shape);
+		yslot.addSlot(finder.getMinY(), finder.getMaxY());
 	}
 
 	private void drawEllipse(double x, double y, UEllipse shape) {
@@ -83,31 +109,7 @@ public class SlotFinder implements UGraphic {
 	public void centerChar(double x, double y, char c, UFont font) {
 	}
 
-	public void translate(double dx, double dy) {
-		throw new UnsupportedOperationException();
-	}
-
-	public void setTranslate(double dx, double dy) {
-		throw new UnsupportedOperationException();
-	}
-
-	public double getTranslateX() {
-		throw new UnsupportedOperationException();
-	}
-
-	public double getTranslateY() {
-		throw new UnsupportedOperationException();
-	}
-
 	public void writeImage(OutputStream os, String metadata, int dpi) throws IOException {
-		throw new UnsupportedOperationException();
-	}
-
-	public void setClip(UClip clip) {
-		throw new UnsupportedOperationException();
-	}
-
-	public void setAntiAliasing(boolean trueForOn) {
 		throw new UnsupportedOperationException();
 	}
 

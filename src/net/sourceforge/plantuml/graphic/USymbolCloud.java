@@ -50,7 +50,7 @@ class USymbolCloud extends USymbol {
 		if (shadowing) {
 			shape.setDeltaShadow(3.0);
 		}
-		ug.draw(xTheoricalPosition + 3, yTheoricalPosition - 3, shape);
+		ug.drawNewWay(xTheoricalPosition + 3, yTheoricalPosition - 3, shape);
 	}
 
 	private UPath getSpecificFrontierForCloud(double width, double height) {

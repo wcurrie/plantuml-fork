@@ -54,11 +54,12 @@ import net.sourceforge.plantuml.Scale;
 import net.sourceforge.plantuml.StringUtils;
 import net.sourceforge.plantuml.UmlDiagramType;
 import net.sourceforge.plantuml.Url;
+import net.sourceforge.plantuml.api.ImageData;
+import net.sourceforge.plantuml.api.ImageDataComplex;
 import net.sourceforge.plantuml.cucadiagram.CucaDiagram;
 import net.sourceforge.plantuml.cucadiagram.Display;
 import net.sourceforge.plantuml.cucadiagram.IEntity;
 import net.sourceforge.plantuml.cucadiagram.Link;
-import net.sourceforge.plantuml.cucadiagram.dot.CucaDiagramFileMakerResult;
 import net.sourceforge.plantuml.cucadiagram.dot.CucaDiagramSimplifierActivity;
 import net.sourceforge.plantuml.cucadiagram.dot.CucaDiagramSimplifierState;
 import net.sourceforge.plantuml.cucadiagram.dot.DotData;
@@ -97,8 +98,8 @@ public final class CucaDiagramFileMakerSvek {
 		this.flashcodes = flashcodes;
 	}
 
-	public CucaDiagramFileMakerResult createFile(OutputStream os, List<String> dotStrings,
-			FileFormatOption fileFormatOption) throws IOException {
+	public ImageData createFile(OutputStream os, List<String> dotStrings, FileFormatOption fileFormatOption)
+			throws IOException {
 		try {
 			return createFileInternal(os, dotStrings, fileFormatOption);
 		} catch (InterruptedException e) {
@@ -107,8 +108,8 @@ public final class CucaDiagramFileMakerSvek {
 		}
 	}
 
-	private CucaDiagramFileMakerResult createFileInternal(OutputStream os, List<String> dotStrings,
-			FileFormatOption fileFormatOption) throws IOException, InterruptedException {
+	private ImageData createFileInternal(OutputStream os, List<String> dotStrings, FileFormatOption fileFormatOption)
+			throws IOException, InterruptedException {
 		if (diagram.getUmlDiagramType() == UmlDiagramType.ACTIVITY) {
 			new CucaDiagramSimplifierActivity(diagram, dotStrings);
 		} else if (diagram.getUmlDiagramType() == UmlDiagramType.STATE) {
@@ -161,7 +162,7 @@ public final class CucaDiagramFileMakerSvek {
 			this.warningOrError = null;
 		}
 
-		return new CucaDiagramFileMakerResult(cmap, finalDimension.getWidth(), getWarningOrError());
+		return new ImageDataComplex(finalDimension, cmap, getWarningOrError());
 	}
 
 	private String warningOrError;
@@ -254,8 +255,8 @@ public final class CucaDiagramFileMakerSvek {
 		} else {
 			dpiFactor = scale.getScale(dim.getWidth(), dim.getHeight());
 		}
-		final UGraphicG2d ug = (UGraphicG2d) fileFormatOption.createUGraphic(diagram.getSkinParam()
-				.getColorMapper(), dpiFactor, dim, result.getBackcolor(), diagram.isRotation());
+		final UGraphicG2d ug = (UGraphicG2d) fileFormatOption.createUGraphic(diagram.getSkinParam().getColorMapper(),
+				dpiFactor, dim, result.getBackcolor(), diagram.isRotation());
 		result.drawU(ug, 0, 0);
 
 		PngIO.write(ug.getBufferedImage(), os, diagram.getMetadata(), diagram.getDpi(fileFormatOption));
@@ -296,7 +297,7 @@ public final class CucaDiagramFileMakerSvek {
 		final BufferedImage im = ((UGraphicG2d) ug).getBufferedImage();
 		if (result.getBackcolor() instanceof HtmlColorGradient) {
 			ug.getParam().setBackcolor(result.getBackcolor());
-			ug.draw(0, 0, new URectangle(im.getWidth(), im.getHeight()));
+			ug.drawOldWay(new URectangle(im.getWidth(), im.getHeight()));
 			ug.getParam().setBackcolor(null);
 		}
 		result.drawU(ug, 0, 0);

@@ -27,40 +27,45 @@
  * in the United States and other countries.]
  *
  * Original Author:  Arnaud Roques
- * 
- * Revision $Revision: 6711 $
+ *
+ * Revision $Revision: 9885 $
  *
  */
-package net.sourceforge.plantuml.cucadiagram.dot;
+package net.sourceforge.plantuml.api;
 
-import net.sourceforge.plantuml.CMapData;
+public class ImageDataSimple implements ImageData {
 
-public class CucaDiagramFileMakerResult {
+	private final int width;
+	private final int height;
 
-	private final CMapData cmapResult;
-	private final double width;
-	private final String warningOrError;
-
-	public CucaDiagramFileMakerResult(CMapData cmapResult) {
-		this(cmapResult, 0, null);
-	}
-
-	public CucaDiagramFileMakerResult(CMapData cmap, double width, String warningOrError) {
-		this.cmapResult = cmap;
+	public ImageDataSimple(int width, int height) {
 		this.width = width;
-		this.warningOrError = warningOrError;
+		this.height = height;
 	}
 
-	public CMapData getCmapResult() {
-		return cmapResult;
+	public ImageDataSimple() {
+		this(0, 0);
 	}
 
-	public double getWidth() {
+	public int getWidth() {
 		return width;
 	}
 
-	public String getWarningOrError() {
-		return warningOrError;
+	public int getHeight() {
+		return height;
 	}
+
+	public boolean containsData() {
+		return false;
+	}
+
+	public String asString(String nameId) {
+		throw new UnsupportedOperationException();
+	}
+	
+	public String getWarningOrError() {
+		return null;
+	}
+
 
 }

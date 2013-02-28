@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 9786 $
+ * Revision $Revision: 10070 $
  *
  */
 package net.sourceforge.plantuml.sequencediagram.graphic;
@@ -45,6 +45,7 @@ import net.sourceforge.plantuml.skin.Area;
 import net.sourceforge.plantuml.skin.Component;
 import net.sourceforge.plantuml.skin.SimpleContext2D;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
+import net.sourceforge.plantuml.ugraphic.UTranslate;
 
 class SegmentColored {
 
@@ -83,15 +84,11 @@ class SegmentColored {
 	}
 
 	public void drawU(UGraphic ug, Component comp, int level) {
-		final double atX = ug.getTranslateX();
-		final double atY = ug.getTranslateY();
-
 		final StringBounder stringBounder = ug.getStringBounder();
-		ug.translate((level - 1) * comp.getPreferredWidth(stringBounder) / 2, segment.getPos1());
+		ug = ug.apply(new UTranslate((level - 1) * comp.getPreferredWidth(stringBounder) / 2, segment.getPos1()));
 		final Dimension2D dim = new Dimension2DDouble(comp.getPreferredWidth(stringBounder), segment.getPos2()
 				- segment.getPos1());
 		comp.drawU(ug, new Area(dim), new SimpleContext2D(false));
-		ug.setTranslate(atX, atY);
 	}
 
 	public Collection<SegmentColored> cutSegmentIfNeed(Collection<Segment> allDelays) {

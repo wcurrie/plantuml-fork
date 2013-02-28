@@ -47,10 +47,10 @@ import net.sourceforge.plantuml.graphic.StringBounderUtils;
 import net.sourceforge.plantuml.graphic.UnusedSpace;
 import net.sourceforge.plantuml.posimo.DotPath;
 import net.sourceforge.plantuml.svg.SvgGraphics;
+import net.sourceforge.plantuml.ugraphic.AbstractCommonUGraphic;
 import net.sourceforge.plantuml.ugraphic.AbstractUGraphic;
 import net.sourceforge.plantuml.ugraphic.ClipContainer;
 import net.sourceforge.plantuml.ugraphic.ColorMapper;
-import net.sourceforge.plantuml.ugraphic.UClip;
 import net.sourceforge.plantuml.ugraphic.UEllipse;
 import net.sourceforge.plantuml.ugraphic.UFont;
 import net.sourceforge.plantuml.ugraphic.UGroup;
@@ -65,9 +65,23 @@ import net.sourceforge.plantuml.ugraphic.UText;
 public class UGraphicSvg extends AbstractUGraphic<SvgGraphics> implements ClipContainer {
 
 	final static Graphics2D imDummy = new BufferedImage(10, 10, BufferedImage.TYPE_INT_RGB).createGraphics();
-	private UClip clip;
 
 	private final StringBounder stringBounder;
+	private final boolean textAsPath2;
+	
+	@Override
+	protected AbstractCommonUGraphic copyUGraphic() {
+		return new UGraphicSvg(this);
+	}
+	
+	private UGraphicSvg(UGraphicSvg other) {
+		super(other);
+		this.stringBounder = other.stringBounder;
+		this.textAsPath2 = other.textAsPath2;
+		register();
+	}
+
+
 
 	public UGraphicSvg(ColorMapper colorMapper, String backcolor, boolean textAsPath) {
 		this(colorMapper, new SvgGraphics(backcolor), textAsPath);
@@ -102,9 +116,13 @@ public class UGraphicSvg extends AbstractUGraphic<SvgGraphics> implements ClipCo
 	private UGraphicSvg(ColorMapper colorMapper, SvgGraphics svg, boolean textAsPath) {
 		super(colorMapper, svg);
 		stringBounder = StringBounderUtils.asStringBounder(imDummy);
+		this.textAsPath2 = textAsPath;
+		register();
+	}
+
+	private void register() {
 		registerDriver(URectangle.class, new DriverRectangleSvg(this));
-		textAsPath = false;
-		if (textAsPath) {
+		if (textAsPath2) {
 			registerDriver(UText.class, new DriverTextAsPathSvg(imDummy.getFontRenderContext(), this));
 		} else {
 			registerDriver(UText.class, new DriverTextSvg(getStringBounder(), this));
@@ -116,6 +134,8 @@ public class UGraphicSvg extends AbstractUGraphic<SvgGraphics> implements ClipCo
 		registerDriver(UPath.class, new DriverPathSvg(this));
 		registerDriver(DotPath.class, new DriverDotPathSvg());
 	}
+
+
 
 	public SvgGraphics getSvgGraphics() {
 		return this.getGraphicObject();
@@ -133,14 +153,6 @@ public class UGraphicSvg extends AbstractUGraphic<SvgGraphics> implements ClipCo
 		}
 	}
 
-	public void setClip(UClip clip) {
-		this.clip = clip == null ? null : clip.translate(getTranslateX(), getTranslateY());
-	}
-
-	public UClip getClip() {
-		return clip;
-	}
-
 	public void centerChar(double x, double y, char c, UFont font) {
 		final UnusedSpace unusedSpace = UnusedSpace.getUnusedSpace(font, c);
 
@@ -150,11 +162,8 @@ public class UGraphicSvg extends AbstractUGraphic<SvgGraphics> implements ClipCo
 		final TextLayout t = new TextLayout("" + c, font.getFont(), imDummy.getFontRenderContext());
 		getGraphicObject()
 				.setStrokeColor(StringUtils.getAsHtml(getColorMapper().getMappedColor(getParam().getColor())));
-		DriverTextAsPathSvg.drawPathIterator(getGraphicObject(), xpos + getTranslateX(), ypos + getTranslateY(), t
+		DriverTextAsPathSvg.drawPathIterator(getGraphicObject(), xpos + getTranslateXTOBEREMOVED(), ypos + getTranslateYTOBEREMOVED(), t
 				.getOutline(null).getPathIterator(null));
-	}
-
-	public void setAntiAliasing(boolean trueForOn) {
 	}
 
 	public void startUrl(Url url) {
@@ -184,6 +193,7 @@ public class UGraphicSvg extends AbstractUGraphic<SvgGraphics> implements ClipCo
 	public void writeImage(OutputStream os, String metadata, int dpi) throws IOException {
 		createXml(os);
 	}
+
 
 	// @Override
 	// public String startHiddenGroup() {

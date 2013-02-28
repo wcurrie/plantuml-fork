@@ -107,12 +107,12 @@ public class UMotif {
 
 	public void drawHorizontal(UGraphic ug, double x, double y, int nb) {
 		final DotPath path = drawHorizontal(x, y, nb);
-		ug.draw(0, 0, path);
+		ug.drawOldWay(path);
 	}
 
 	public void drawVertical(UGraphic ug, double x, double y, int nb) {
 		final DotPath path = drawVertical(x, y, nb);
-		ug.draw(0, 0, path);
+		ug.drawOldWay(path);
 	}
 
 	DotPath drawHorizontal(double x, double y, int nb) {

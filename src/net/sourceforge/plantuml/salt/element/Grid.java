@@ -78,14 +78,14 @@ public class Grid {
 			final int row1 = seg.getRow();
 			final int col1 = seg.getCol();
 			final double width = colsStart[col1 + 1] - colsStart[col1];
-			ug.draw(x + colsStart[col1], y + rowsStart[row1], new ULine(width, 0));
+			ug.drawNewWay(x + colsStart[col1], y + rowsStart[row1], new ULine(width, 0));
 		}
 		// Vlines
 		for (Segment seg : verticals) {
 			final int row1 = seg.getRow();
 			final int col1 = seg.getCol();
 			final double height = rowsStart[row1 + 1] - rowsStart[row1];
-			ug.draw(x + colsStart[col1], y + rowsStart[row1], new ULine(0, height));
+			ug.drawNewWay(x + colsStart[col1], y + rowsStart[row1], new ULine(0, height));
 		}
 	}
 

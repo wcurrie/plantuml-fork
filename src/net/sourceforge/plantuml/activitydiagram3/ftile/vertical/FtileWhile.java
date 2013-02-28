@@ -39,6 +39,7 @@ import java.util.List;
 import net.sourceforge.plantuml.Dimension2DDouble;
 import net.sourceforge.plantuml.SpriteContainerEmpty;
 import net.sourceforge.plantuml.Url;
+import net.sourceforge.plantuml.activitydiagram3.LinkRendering;
 import net.sourceforge.plantuml.activitydiagram3.ftile.Arrows;
 import net.sourceforge.plantuml.activitydiagram3.ftile.Diamond;
 import net.sourceforge.plantuml.activitydiagram3.ftile.Ftile;
@@ -52,6 +53,7 @@ import net.sourceforge.plantuml.graphic.HtmlColorUtils;
 import net.sourceforge.plantuml.graphic.StringBounder;
 import net.sourceforge.plantuml.graphic.TextBlock;
 import net.sourceforge.plantuml.graphic.TextBlockUtils;
+import net.sourceforge.plantuml.ugraphic.UEmpty;
 import net.sourceforge.plantuml.ugraphic.UFont;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
 import net.sourceforge.plantuml.ugraphic.UStroke;
@@ -66,13 +68,21 @@ class FtileWhile implements Ftile {
 
 	private final HtmlColor borderColor;
 	private final HtmlColor arrowColor;
+	private final HtmlColor endInlinkColor;
+	private final HtmlColor afterEndwhileColor;
 
 	public FtileWhile(Ftile whileBlock, Display test, VerticalFactory factory, HtmlColor borderColor,
-			HtmlColor backColor, HtmlColor arrowColor, UFont font) {
+			HtmlColor backColor, HtmlColor arrowColor, UFont font, HtmlColor endInlinkColor,
+			HtmlColor afterEndwhileColor) {
 		this.borderColor = borderColor;
 		this.arrowColor = arrowColor;
+		this.endInlinkColor = endInlinkColor;
+		this.afterEndwhileColor = afterEndwhileColor;
+
+		final HtmlColor firstArrowColor = LinkRendering.getColor(whileBlock.getInLinkRendering(), arrowColor);
+
 		final Ftile tmp = new FtileAssemblySimple(new FtileDiamond(borderColor, backColor), new FtileAssemblySimple(
-				new FtileVerticalArrow(smallArrow, arrowColor), whileBlock));
+				new FtileVerticalArrow(smallArrow, firstArrowColor), whileBlock));
 
 		this.whileBlock = new FtileMarged(tmp, 10);
 		// final UFont font = new UFont("Serif", Font.PLAIN, 14);
@@ -93,7 +103,7 @@ class FtileWhile implements Ftile {
 		final Dimension2D dimWhile = whileBlock.calculateDimension(stringBounder);
 		ug.getParam().setStroke(new UStroke(1.5));
 		final Snake s1 = new Snake();
-		ug.getParam().setColor(arrowColor);
+		ug.getParam().setColor(LinkRendering.getColor(afterEndwhileColor, arrowColor));
 		s1.addPoint(x + dimTotal.getWidth() / 2 - Diamond.diamondHalfSize, y + Diamond.diamondHalfSize);
 		s1.addPoint(x + 1, y + Diamond.diamondHalfSize);
 		s1.addPoint(x + 1, y + dimTotal.getHeight());
@@ -101,19 +111,24 @@ class FtileWhile implements Ftile {
 		s1.drawU(ug);
 
 		final Snake s2 = new Snake();
+		ug.getParam().setColor(LinkRendering.getColor(endInlinkColor, arrowColor));
 		s2.addPoint(x + dimTotal.getWidth() / 2 + Diamond.diamondHalfSize, y + Diamond.diamondHalfSize);
 		s2.addPoint(x + dimTotal.getWidth() - 2, y + Diamond.diamondHalfSize);
-		s2.addPoint(x + dimTotal.getWidth() - 2, y + 20 + dimWhile.getHeight());
-		s2.addPoint(x + dimTotal.getWidth() / 2, y + 20 + dimWhile.getHeight());
+		s2.addPoint(x + dimTotal.getWidth() - 2, y + 12 + dimWhile.getHeight());
+		s2.addPoint(x + dimTotal.getWidth() / 2, y + 12 + dimWhile.getHeight());
 		s2.addPoint(x + dimTotal.getWidth() / 2, y + dimWhile.getHeight());
 		s2.drawU(ug);
 		ug.getParam().setStroke(new UStroke());
+		ug.drawNewWay(x + dimTotal.getWidth() / 2, y + dimWhile.getHeight(), new UEmpty(20, 20));
 
-		ug.getParam().setColor(arrowColor);
-		ug.getParam().setBackcolor(arrowColor);
-		ug.draw(x + dimTotal.getWidth() / 2 + Diamond.diamondHalfSize, y + Diamond.diamondHalfSize, Arrows.asToLeft());
-		ug.draw(x + dimTotal.getWidth() - 2, y + dimTotal.getHeight() / 2, Arrows.asToUp());
-		ug.draw(x + 1, y + dimTotal.getHeight() / 2, Arrows.asToDown());
+		ug.getParam().setColor(LinkRendering.getColor(endInlinkColor, arrowColor));
+		ug.getParam().setBackcolor(LinkRendering.getColor(endInlinkColor, arrowColor));
+		ug.drawNewWay(x + dimTotal.getWidth() / 2 + Diamond.diamondHalfSize, y + Diamond.diamondHalfSize, Arrows.asToLeft());
+		ug.drawNewWay(x + dimTotal.getWidth() - 2, y + dimTotal.getHeight() / 2, Arrows.asToUp());
+
+		ug.getParam().setColor(LinkRendering.getColor(afterEndwhileColor, arrowColor));
+		ug.getParam().setBackcolor(LinkRendering.getColor(afterEndwhileColor, arrowColor));
+		ug.drawNewWay(x + 1, y + dimTotal.getHeight() / 2, Arrows.asToDown());
 
 		final Dimension2D dimLabel = test.calculateDimension(stringBounder);
 		test.drawU(ug, x + dimTotal.getWidth() / 2 - dimLabel.getWidth() / 2, y + 2 * Diamond.diamondHalfSize - 5);
@@ -132,6 +147,14 @@ class FtileWhile implements Ftile {
 
 	public boolean isKilled() {
 		return false;
+	}
+
+	public LinkRendering getInLinkRendering() {
+		// if (endInlinkColor == null) {
+		// return null;
+		// }
+		// return new LinkRendering(endInlinkColor);
+		return null;
 	}
 
 }

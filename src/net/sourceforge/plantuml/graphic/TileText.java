@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 9786 $
+ * Revision $Revision: 10041 $
  *
  */
 package net.sourceforge.plantuml.graphic;
@@ -102,7 +102,7 @@ class TileText implements TextBlock {
 					} else {
 						ypos = y + space;
 					}
-					ug.draw(x, ypos, utext);
+					ug.drawNewWay(x, ypos, utext);
 					x += dim.getWidth();
 				}
 			}

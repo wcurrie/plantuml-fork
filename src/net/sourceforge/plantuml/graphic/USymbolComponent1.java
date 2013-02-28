@@ -53,12 +53,12 @@ class USymbolComponent1 extends USymbol {
 			form.setDeltaShadow(4);
 		}
 
-		ug.draw(xTheoricalPosition, yTheoricalPosition, form);
+		ug.drawNewWay(xTheoricalPosition, yTheoricalPosition, form);
 		final UShape small = new URectangle(10, 5);
 
 		// UML 1 Component Notation
-		ug.draw(xTheoricalPosition - 5, yTheoricalPosition + 5, small);
-		ug.draw(xTheoricalPosition - 5, yTheoricalPosition + heightTotal - 10, small);
+		ug.drawNewWay(xTheoricalPosition - 5, yTheoricalPosition + 5, small);
+		ug.drawNewWay(xTheoricalPosition - 5, yTheoricalPosition + heightTotal - 10, small);
 
 	}
 

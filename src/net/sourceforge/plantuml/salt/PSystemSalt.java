@@ -35,7 +35,6 @@ package net.sourceforge.plantuml.salt;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
-import java.awt.RenderingHints;
 import java.awt.geom.Dimension2D;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
@@ -45,13 +44,15 @@ import java.util.List;
 import javax.imageio.ImageIO;
 
 import net.sourceforge.plantuml.AbstractPSystem;
-import net.sourceforge.plantuml.CMapData;
 import net.sourceforge.plantuml.Dimension2DDouble;
 import net.sourceforge.plantuml.EmptyImageBuilder;
 import net.sourceforge.plantuml.FileFormatOption;
+import net.sourceforge.plantuml.api.ImageData;
+import net.sourceforge.plantuml.api.ImageDataSimple;
 import net.sourceforge.plantuml.graphic.HtmlColorUtils;
 import net.sourceforge.plantuml.salt.element.Element;
 import net.sourceforge.plantuml.ugraphic.ColorMapperIdentity;
+import net.sourceforge.plantuml.ugraphic.UAntiAliasing;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
 import net.sourceforge.plantuml.ugraphic.g2d.UGraphicG2d;
 
@@ -63,9 +64,7 @@ public class PSystemSalt extends AbstractPSystem {
 		this.data = data;
 	}
 
-	public void exportDiagram(OutputStream os, CMapData cmap, int index, FileFormatOption fileFormat)
-			throws IOException {
-
+	public ImageData exportDiagram(OutputStream os, int num, FileFormatOption fileFormat) throws IOException {
 		final Element salt = SaltUtils.createElement(data);
 
 		EmptyImageBuilder builder = new EmptyImageBuilder(10, 10, Color.WHITE);
@@ -79,7 +78,7 @@ public class PSystemSalt extends AbstractPSystem {
 		final BufferedImage im = builder.getBufferedImage();
 		g2d = builder.getGraphics2D();
 		g2d.translate(3, 3);
-		g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+		UAntiAliasing.ANTI_ALIASING_ON.apply(g2d);
 		final UGraphic ug = new UGraphicG2d(new ColorMapperIdentity(), g2d, 1.0);
 		ug.getParam().setColor(HtmlColorUtils.BLACK);
 		salt.drawU(ug, 0, 0, 0, new Dimension2DDouble(size.getWidth(), size.getHeight()));
@@ -88,6 +87,7 @@ public class PSystemSalt extends AbstractPSystem {
 
 		// Writes the off-screen image into a PNG file
 		ImageIO.write(im, "png", os);
+		return new ImageDataSimple(im.getWidth(), im.getHeight());
 	}
 
 	public String getDescription() {

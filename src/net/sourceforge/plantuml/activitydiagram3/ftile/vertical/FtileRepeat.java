@@ -39,6 +39,7 @@ import java.util.List;
 import net.sourceforge.plantuml.Dimension2DDouble;
 import net.sourceforge.plantuml.SpriteContainerEmpty;
 import net.sourceforge.plantuml.Url;
+import net.sourceforge.plantuml.activitydiagram3.LinkRendering;
 import net.sourceforge.plantuml.activitydiagram3.ftile.Arrows;
 import net.sourceforge.plantuml.activitydiagram3.ftile.Diamond;
 import net.sourceforge.plantuml.activitydiagram3.ftile.Ftile;
@@ -68,12 +69,18 @@ class FtileRepeat implements Ftile {
 	private final HtmlColor arrowColor;
 
 	public FtileRepeat(Ftile repeat, Display test, VerticalFactory factory, HtmlColor borderColor, HtmlColor backColor,
-			HtmlColor arrowColor, UFont font) {
+			HtmlColor arrowColor, UFont font, HtmlColor endRepeatLinkColor) {
 		this.arrowColor = arrowColor;
+
+		final HtmlColor firstArrowColor = LinkRendering.getColor(repeat.getInLinkRendering(), arrowColor);
+
 		Ftile tmp = new FtileAssemblySimple(new FtileDiamond(borderColor, backColor), new FtileAssemblySimple(
-				new FtileVerticalArrow(smallArrow, arrowColor), repeat));
-		tmp = new FtileAssemblySimple(tmp, new FtileAssemblySimple(factory.createVerticalArrow(smallArrow),
-				new FtileDiamond(borderColor, backColor)));
+				new FtileVerticalArrow(smallArrow, firstArrowColor), repeat));
+
+		endRepeatLinkColor = LinkRendering.getColor(endRepeatLinkColor, arrowColor);
+
+		tmp = new FtileAssemblySimple(tmp, new FtileAssemblySimple(new FtileVerticalArrow(smallArrow,
+				endRepeatLinkColor), new FtileDiamond(borderColor, backColor)));
 		this.repeat = new FtileMarged(tmp, 10);
 		// final UFont font = new UFont("Serif", Font.PLAIN, 14);
 		final FontConfiguration fc = new FontConfiguration(font, HtmlColorUtils.BLACK);
@@ -98,8 +105,8 @@ class FtileRepeat implements Ftile {
 		s1.addPoint(x + dimTotal.getWidth() / 2 + Diamond.diamondHalfSize, y + Diamond.diamondHalfSize);
 		s1.addPoint(x + dimTotal.getWidth() / 2 + Diamond.diamondHalfSize + dimRepeat.getWidth() / 2, y
 				+ Diamond.diamondHalfSize);
-		s1.addPoint(x + dimTotal.getWidth() / 2 + Diamond.diamondHalfSize + dimRepeat.getWidth() / 2, y
-				+ dimTotal.getHeight() - Diamond.diamondHalfSize);
+		s1.addPoint(x + dimTotal.getWidth() / 2 + Diamond.diamondHalfSize + dimRepeat.getWidth() / 2,
+				y + dimTotal.getHeight() - Diamond.diamondHalfSize);
 		s1.addPoint(x + dimTotal.getWidth() / 2 + Diamond.diamondHalfSize, y + dimTotal.getHeight()
 				- Diamond.diamondHalfSize);
 		s1.drawU(ug);
@@ -108,9 +115,9 @@ class FtileRepeat implements Ftile {
 
 		ug.getParam().setColor(arrowColor);
 		ug.getParam().setBackcolor(arrowColor);
-		ug.draw(x + dimTotal.getWidth() / 2 + Diamond.diamondHalfSize, y + Diamond.diamondHalfSize, Arrows.asToLeft());
-		ug.draw(x + dimTotal.getWidth() / 2 + Diamond.diamondHalfSize + dimRepeat.getWidth() / 2, y
-				+ dimTotal.getHeight() / 2, Arrows.asToUp());
+		ug.drawNewWay(x + dimTotal.getWidth() / 2 + Diamond.diamondHalfSize, y + Diamond.diamondHalfSize, Arrows.asToLeft());
+		ug.drawNewWay(x + dimTotal.getWidth() / 2 + Diamond.diamondHalfSize + dimRepeat.getWidth() / 2,
+				y + dimTotal.getHeight() / 2, Arrows.asToUp());
 
 		final Dimension2D dimTest = test.calculateDimension(stringBounder);
 		test.drawU(ug, x + dimTotal.getWidth() / 2 + Diamond.diamondHalfSize, y + dimTotal.getHeight()
@@ -130,6 +137,10 @@ class FtileRepeat implements Ftile {
 
 	public boolean isKilled() {
 		return false;
+	}
+
+	public LinkRendering getInLinkRendering() {
+		return null;
 	}
 
 }

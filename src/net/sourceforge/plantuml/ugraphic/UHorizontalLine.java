@@ -71,14 +71,14 @@ public class UHorizontalLine implements UShape {
 	public void drawLine(UGraphic ug, double startingX, double endingX, double y) {
 		final double widthToUse = endingX - startingX;
 		if (title == null) {
-			ug.draw(startingX + skipAtStart, y, new ULine(widthToUse - skipAtStart - skipAtEnd, 0));
+			ug.drawNewWay(startingX + skipAtStart, y, new ULine(widthToUse - skipAtStart - skipAtEnd, 0));
 			return;
 		}
 		final Dimension2D dimTitle = title.calculateDimension(ug.getStringBounder());
 		final double space = (widthToUse - dimTitle.getWidth()) / 2;
-		ug.draw(startingX + skipAtStart - 1, y, new ULine(space - skipAtEnd - skipAtEnd, 0));
+		ug.drawNewWay(startingX + skipAtStart - 1, y, new ULine(space - skipAtEnd - skipAtEnd, 0));
 		drawTitle(ug, startingX, endingX, y, false);
-		ug.draw(startingX + skipAtStart + widthToUse - space, y, new ULine(space - skipAtStart - skipAtEnd, 0));
+		ug.drawNewWay(startingX + skipAtStart + widthToUse - space, y, new ULine(space - skipAtStart - skipAtEnd, 0));
 	}
 
 	public void drawTitle(UGraphic ug, double startingX, double endingX, double y, boolean clearArea) {
@@ -92,7 +92,7 @@ public class UHorizontalLine implements UShape {
 		final double x1 = startingX + space;
 		final double y1 = y - dimTitle.getHeight() / 2 - 0.5;
 		if (clearArea) {
-			ug.draw(x1, y1, new URectangle(dimTitle.getWidth(), dimTitle.getHeight()));
+			ug.drawNewWay(x1, y1, new URectangle(dimTitle.getWidth(), dimTitle.getHeight()));
 		}
 		title.drawU(ug, x1, y1);
 		ug.getParam().setColor(color);

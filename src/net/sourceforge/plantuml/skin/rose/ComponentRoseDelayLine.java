@@ -39,6 +39,7 @@ import net.sourceforge.plantuml.graphic.HtmlColor;
 import net.sourceforge.plantuml.graphic.StringBounder;
 import net.sourceforge.plantuml.skin.AbstractComponent;
 import net.sourceforge.plantuml.skin.Area;
+import net.sourceforge.plantuml.ugraphic.UAntiAliasing;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
 import net.sourceforge.plantuml.ugraphic.ULine;
 
@@ -56,9 +57,7 @@ public class ComponentRoseDelayLine extends AbstractComponent {
 		ug.getParam().setColor(color);
 		stroke(ug, 1, 4);
 		final int x = (int) (dimensionToUse.getWidth() / 2);
-		ug.setAntiAliasing(false);
-		ug.draw(x, 0, new ULine(0, dimensionToUse.getHeight()));
-		ug.setAntiAliasing(true);
+		ug.apply(UAntiAliasing.ANTI_ALIASING_OFF).drawNewWay(x, 0, new ULine(0, dimensionToUse.getHeight()));
 	}
 
 	@Override

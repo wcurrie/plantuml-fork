@@ -41,6 +41,7 @@ import net.sourceforge.plantuml.skin.Area;
 import net.sourceforge.plantuml.skin.Component;
 import net.sourceforge.plantuml.skin.Context2D;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
+import net.sourceforge.plantuml.ugraphic.UTranslate;
 
 class GraphicalDivider extends GraphicalElement {
 
@@ -53,7 +54,7 @@ class GraphicalDivider extends GraphicalElement {
 
 	@Override
 	protected void drawInternalU(UGraphic ug, double maxX, Context2D context) {
-		ug.translate(0, getStartingY());
+		ug = ug.apply(new UTranslate(0, getStartingY()));
 		final StringBounder stringBounder = ug.getStringBounder();
 		final Dimension2D dim = new Dimension2DDouble(maxX, comp.getPreferredHeight(stringBounder));
 		comp.drawU(ug, new Area(dim), context);

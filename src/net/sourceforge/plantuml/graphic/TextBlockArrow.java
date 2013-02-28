@@ -70,9 +70,9 @@ public class TextBlockArrow implements TextBlock {
 		}
 		final UPolygon triangle = getTriangle(triSize);
 		if (arrow == Direction.RIGHT || arrow == Direction.LEFT) {
-			ug.draw(x + 2, y + (size - triSize) - 2, triangle);
+			ug.drawNewWay(x + 2, y + (size - triSize) - 2, triangle);
 		} else {
-			ug.draw(x + 2, y + (size - triSize) - 2, triangle);
+			ug.drawNewWay(x + 2, y + (size - triSize) - 2, triangle);
 		}
 	}
 

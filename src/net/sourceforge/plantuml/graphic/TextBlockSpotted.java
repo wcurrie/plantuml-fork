@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 9786 $
+ * Revision $Revision: 10085 $
  *
  */
 package net.sourceforge.plantuml.graphic;
@@ -39,6 +39,7 @@ import net.sourceforge.plantuml.Dimension2DDouble;
 import net.sourceforge.plantuml.SpriteContainer;
 import net.sourceforge.plantuml.cucadiagram.Display;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
+import net.sourceforge.plantuml.ugraphic.UTranslate;
 
 class TextBlockSpotted extends TextBlockSimple {
 
@@ -66,23 +67,14 @@ class TextBlockSpotted extends TextBlockSimple {
 
 	@Override
 	public void drawU(UGraphic ug, double x, double y) {
-		final double atX = ug.getTranslateX();
-		final double atY = ug.getTranslateY();
 		final StringBounder stringBounder = ug.getStringBounder();
 
-		// final double deltaY = calculateDimension(stringBounder).getHeight()
-		// - circledCharacter.getPreferredHeight(stringBounder);
-
-		// circledCharacter.drawU(ug, (int) x, (int) (y + deltaY / 2.0));
 		circledCharacter.drawU(ug, x, y);
 
-		ug.setTranslate(atX, atY);
 		final double widthCircledCharacter = getCircledCharacterWithAndMargin(stringBounder);
-		ug.translate(widthCircledCharacter, 0);
 
-		super.drawU(ug, x, y);
+		super.drawU(ug.apply(new UTranslate(widthCircledCharacter, 0)), x, y);
 
-		ug.setTranslate(atX, atY);
 	}
 
 }

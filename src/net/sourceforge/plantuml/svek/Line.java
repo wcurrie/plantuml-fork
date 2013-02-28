@@ -413,7 +413,7 @@ public class Line implements Moveable, Hideable {
 			final UShape sh = new UPolygon(pointListIterator.next());
 			return new UDrawable() {
 				public void drawU(UGraphic ug, double x, double y) {
-					ug.draw(x, y, sh);
+					ug.drawNewWay(x, y, sh);
 				}
 			};
 		}
@@ -539,7 +539,7 @@ public class Line implements Moveable, Hideable {
 			moveStartX = proj.getX() - start.getX();
 			moveStartY = proj.getY() - start.getY();
 			copy.forceStartPoint(proj.getX(), proj.getY());
-			ug.draw(x, y, copy);
+			ug.drawNewWay(x, y, copy);
 		} else if (projectionCluster != null && link.getEntity2() == projectionCluster.getGroup()) {
 			final DotPath copy = new DotPath(dotPath);
 			final Point2D end = copy.getEndPoint();
@@ -547,9 +547,9 @@ public class Line implements Moveable, Hideable {
 			moveEndX = proj.getX() - end.getX();
 			moveEndY = proj.getY() - end.getY();
 			copy.forceEndPoint(proj.getX(), proj.getY());
-			ug.draw(x, y, copy);
+			ug.drawNewWay(x, y, copy);
 		} else {
-			ug.draw(x, y, dotPath);
+			ug.drawNewWay(x, y, dotPath);
 		}
 
 		// if (picLine1 != null) {

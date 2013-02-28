@@ -67,7 +67,7 @@ public class ElementButton extends AbstractElementText implements Element {
 		final Dimension2D dim = getPreferredDimension(ug.getStringBounder(), x, y);
 		ug.getParam().setStroke(new UStroke(stroke));
 		ug.getParam().setBackcolor(HtmlColorUtils.getColorIfValid("#EEEEEE"));
-		ug.draw(x + stroke, y + stroke, new URectangle(dim.getWidth() - 2 * stroke, dim.getHeight() - 2 * stroke, 10,
+		ug.drawNewWay(x + stroke, y + stroke, new URectangle(dim.getWidth() - 2 * stroke, dim.getHeight() - 2 * stroke, 10,
 				10));
 		ug.getParam().setBackcolor(null);
 		ug.getParam().setStroke(new UStroke());

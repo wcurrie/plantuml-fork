@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 9786 $
+ * Revision $Revision: 10076 $
  *
  */
 package net.sourceforge.plantuml.skin.bluemodern;
@@ -44,6 +44,7 @@ import net.sourceforge.plantuml.ugraphic.UFont;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
 import net.sourceforge.plantuml.ugraphic.ULine;
 import net.sourceforge.plantuml.ugraphic.UPolygon;
+import net.sourceforge.plantuml.ugraphic.UTranslate;
 
 final public class ComponentBlueModernNote extends AbstractTextualComponent {
 
@@ -88,9 +89,7 @@ final public class ComponentBlueModernNote extends AbstractTextualComponent {
 		final double textWidth = getTextWidth(stringBounder);
 
 		final ShadowShape shadowShape = new ShadowShape(textWidth, textHeight, 3);
-		ug.translate(shadowview, shadowview);
-		shadowShape.drawU(ug);
-		ug.translate(-shadowview, -shadowview);
+		shadowShape.drawU(ug.apply(new UTranslate(shadowview, shadowview)));
 
 		final UPolygon polygon = new UPolygon();
 		polygon.addPoint(0, 0);
@@ -102,10 +101,10 @@ final public class ComponentBlueModernNote extends AbstractTextualComponent {
 
 		ug.getParam().setBackcolor(back);
 		ug.getParam().setColor(foregroundColor);
-		ug.draw(0, 0, polygon);
+		ug.drawOldWay(polygon);
 
-		ug.draw(textWidth - cornersize, 0, new ULine(0, cornersize));
-		ug.draw(textWidth, cornersize, new ULine(-cornersize, 0));
+		ug.drawNewWay(textWidth - cornersize, 0, new ULine(0, cornersize));
+		ug.drawNewWay(textWidth, cornersize, new ULine(-cornersize, 0));
 
 		getTextBlock().drawU(ug, getMarginX1(), getMarginY());
 

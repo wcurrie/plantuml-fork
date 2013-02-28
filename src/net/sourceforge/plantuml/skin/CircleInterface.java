@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 9786 $
+ * Revision $Revision: 10041 $
  *
  */
 package net.sourceforge.plantuml.skin;
@@ -67,7 +67,7 @@ public class CircleInterface implements UDrawable {
 
 		ug.getParam().setBackcolor(backgroundColor);
 		ug.getParam().setColor(foregroundColor);
-		ug.draw(x + thickness, y + thickness, head);
+		ug.drawNewWay(x + thickness, y + thickness, head);
 
 		ug.getParam().setStroke(new UStroke());
 	}

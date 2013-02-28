@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 9786 $
+ * Revision $Revision: 9994 $
  *
  */
 package net.sourceforge.plantuml.cucadiagram;
@@ -36,6 +36,7 @@ package net.sourceforge.plantuml.cucadiagram;
 import java.awt.geom.Dimension2D;
 
 import net.sourceforge.plantuml.Hideable;
+import net.sourceforge.plantuml.Removeable;
 import net.sourceforge.plantuml.SpriteContainer;
 import net.sourceforge.plantuml.UniqueSequence;
 import net.sourceforge.plantuml.Url;
@@ -49,7 +50,7 @@ import net.sourceforge.plantuml.graphic.TextBlock;
 import net.sourceforge.plantuml.graphic.TextBlockUtils;
 import net.sourceforge.plantuml.ugraphic.UFont;
 
-public class Link implements Hideable {
+public class Link implements Hideable, Removeable {
 
 	final private IEntity cl1;
 	final private IEntity cl2;
@@ -393,6 +394,10 @@ public class Link implements Hideable {
 			return true;
 		}
 		return false;
+	}
+
+	public boolean isRemoved() {
+		return cl1.isRemoved() || cl2.isRemoved();
 	}
 
 	// private Group containerEntryPoint;

@@ -60,13 +60,13 @@ class ExtremityCircleConnect extends Extremity implements UDrawable {
 	public void drawU(UGraphic ug, double x, double y) {
 		ug.getParam().setBackcolor(HtmlColorUtils.WHITE);
 		ug.getParam().setStroke(new UStroke(1.5));
-		ug.draw(x + dest.getX() - radius, y + dest.getY() - radius, new UEllipse(radius * 2, radius * 2));
+		ug.drawNewWay(x + dest.getX() - radius, y + dest.getY() - radius, new UEllipse(radius * 2, radius * 2));
 		// Point2D pp1 = getPointOnCircle(ortho - Math.PI / 4);
 		// Point2D pp2 = getPointOnCircle(ortho + Math.PI / 4);
 
 		final double deg = -ortho * 180 / Math.PI + 90 - 45;
 		final UEllipse arc1 = new UEllipse(2 * radius2, 2 * radius2, deg, 90);
-		ug.draw(x + dest.getX() - radius2, y + dest.getY() - radius2, arc1);
+		ug.drawNewWay(x + dest.getX() - radius2, y + dest.getY() - radius2, arc1);
 
 		// drawLine(ug, x, y, pp1, pp2);
 		ug.getParam().setBackcolor(null);

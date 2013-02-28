@@ -42,6 +42,8 @@ import net.sourceforge.plantuml.AbstractPSystem;
 import net.sourceforge.plantuml.CMapData;
 import net.sourceforge.plantuml.FileFormat;
 import net.sourceforge.plantuml.FileFormatOption;
+import net.sourceforge.plantuml.api.ImageData;
+import net.sourceforge.plantuml.api.ImageDataSimple;
 
 import org.stathissideris.ascii2image.core.ConversionOptions;
 import org.stathissideris.ascii2image.core.ProcessingOptions;
@@ -55,7 +57,8 @@ public class PSystemDitaa extends AbstractPSystem {
 	private final ProcessingOptions processingOptions = new ProcessingOptions();
 	private final boolean dropShadows;
 
-	public PSystemDitaa(String data, boolean performSeparationOfCommonEdges, boolean dropShadows) throws UnsupportedEncodingException {
+	public PSystemDitaa(String data, boolean performSeparationOfCommonEdges, boolean dropShadows)
+			throws UnsupportedEncodingException {
 		this.dropShadows = dropShadows;
 		grid.initialiseWithText(data, null);
 		processingOptions.setPerformSeparationOfCommonEdges(performSeparationOfCommonEdges);
@@ -65,20 +68,19 @@ public class PSystemDitaa extends AbstractPSystem {
 		return "(Ditaa)";
 	}
 
-	public void exportDiagram(OutputStream os, CMapData cmap, int index, FileFormatOption fileFormatOption)
-			throws IOException {
-
-		if (fileFormatOption.getFileFormat() == FileFormat.ATXT) {
+	public ImageData exportDiagram(OutputStream os, int num, FileFormatOption fileFormat) throws IOException {
+		if (fileFormat.getFileFormat() == FileFormat.ATXT) {
 			os.write(getSource().getPlainString().getBytes());
-		} else {
-			// ditaa can only export png so file format is mostly ignored
-			final ConversionOptions options = new ConversionOptions();
-			options.setDropShadows(dropShadows);
-			final Diagram diagram = new Diagram(grid, options, processingOptions);
-			final BufferedImage image = (BufferedImage) new BitmapRenderer().renderToImage(diagram,
-					options.renderingOptions);
-			ImageIO.write(image, "png", os);
+			return new ImageDataSimple();
 		}
+		// ditaa can only export png so file format is mostly ignored
+		final ConversionOptions options = new ConversionOptions();
+		options.setDropShadows(dropShadows);
+		final Diagram diagram = new Diagram(grid, options, processingOptions);
+		final BufferedImage image = (BufferedImage) new BitmapRenderer().renderToImage(diagram,
+				options.renderingOptions);
+		ImageIO.write(image, "png", os);
+		return new ImageDataSimple(image.getWidth(), image.getHeight());
 
 	}
 }

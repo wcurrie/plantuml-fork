@@ -139,11 +139,11 @@ public enum VisibilityModifier {
 	}
 
 	private void drawSquare(UGraphic ug, boolean filled, int size, double x, double y) {
-		ug.draw(x + 2, y + 2, new URectangle(size - 4, size - 4));
+		ug.drawNewWay(x + 2, y + 2, new URectangle(size - 4, size - 4));
 	}
 
 	private void drawCircle(UGraphic ug, boolean filled, int size, double x, double y) {
-		ug.draw(x + 2, y + 2, new UEllipse(size - 4, size - 4));
+		ug.drawNewWay(x + 2, y + 2, new UEllipse(size - 4, size - 4));
 	}
 
 	static private int ensureEven(int n) {
@@ -160,7 +160,7 @@ public enum VisibilityModifier {
 		poly.addPoint(size, size / 2.0);
 		poly.addPoint(size / 2.0, size);
 		poly.addPoint(0, size / 2.0);
-		ug.draw(x + 1, y, poly);
+		ug.drawNewWay(x + 1, y, poly);
 	}
 
 	private void drawTriangle(UGraphic ug, boolean filled, int size, double x, double y) {
@@ -169,7 +169,7 @@ public enum VisibilityModifier {
 		poly.addPoint(size / 2.0, 1);
 		poly.addPoint(0, size - 1);
 		poly.addPoint(size, size - 1);
-		ug.draw(x + 1, y, poly);
+		ug.drawNewWay(x + 1, y, poly);
 	}
 
 	public static boolean isVisibilityCharacter(char c) {

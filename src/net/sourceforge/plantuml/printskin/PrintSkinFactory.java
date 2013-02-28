@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 9786 $
+ * Revision $Revision: 10005 $
  *
  */
 package net.sourceforge.plantuml.printskin;
@@ -40,7 +40,7 @@ import java.util.regex.Pattern;
 import net.sourceforge.plantuml.DiagramType;
 import net.sourceforge.plantuml.PSystemBasicFactory;
 
-public class PrintSkinFactory implements PSystemBasicFactory {
+public class PrintSkinFactory extends PSystemBasicFactory {
 
 	private PrintSkin system;
 

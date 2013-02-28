@@ -34,7 +34,7 @@
 package net.sourceforge.plantuml.descdiagram;
 
 import net.sourceforge.plantuml.classdiagram.command.CommandUrl;
-import net.sourceforge.plantuml.command.AbstractUmlSystemCommandFactory;
+import net.sourceforge.plantuml.command.PSystemCommandFactory;
 import net.sourceforge.plantuml.command.CommandEndPackage;
 import net.sourceforge.plantuml.command.CommandPackage;
 import net.sourceforge.plantuml.command.CommandPage;
@@ -49,7 +49,7 @@ import net.sourceforge.plantuml.descdiagram.command.CommandCreateElementMultilin
 import net.sourceforge.plantuml.descdiagram.command.CommandLinkElement;
 import net.sourceforge.plantuml.descdiagram.command.CommandPackageWithUSymbol;
 
-public class DescriptionDiagramFactory extends AbstractUmlSystemCommandFactory {
+public class DescriptionDiagramFactory extends PSystemCommandFactory {
 
 	private DescriptionDiagram system;
 

@@ -51,13 +51,14 @@ import java.util.regex.Pattern;
 import javax.imageio.ImageIO;
 
 import net.sourceforge.plantuml.AbstractPSystem;
-import net.sourceforge.plantuml.CMapData;
 import net.sourceforge.plantuml.FileFormatOption;
 import net.sourceforge.plantuml.Log;
+import net.sourceforge.plantuml.api.ImageData;
 import net.sourceforge.plantuml.cucadiagram.dot.GraphvizUtils;
 import net.sourceforge.plantuml.graphic.GraphicPosition;
 import net.sourceforge.plantuml.graphic.GraphicStrings;
 import net.sourceforge.plantuml.graphic.HtmlColorUtils;
+import net.sourceforge.plantuml.ugraphic.UAntiAliasing;
 import net.sourceforge.plantuml.ugraphic.UFont;
 
 public class PSystemVersion extends AbstractPSystem {
@@ -118,10 +119,10 @@ public class PSystemVersion extends AbstractPSystem {
 		return transparentIcon;
 	}
 
-	public void exportDiagram(OutputStream os, CMapData cmap, int index, FileFormatOption fileFormat)
-			throws IOException {
-		getGraphicStrings().writeImage(os, fileFormat);
+	public ImageData exportDiagram(OutputStream os, int num, FileFormatOption fileFormat) throws IOException {
+		return getGraphicStrings().exportDiagram1317(os, fileFormat);
 	}
+
 
 	public static PSystemVersion createShowVersion() {
 		final List<String> strings = new ArrayList<String>();
@@ -244,9 +245,7 @@ public class PSystemVersion extends AbstractPSystem {
 	private GraphicStrings getGraphicStrings() throws IOException {
 		final UFont font = new UFont("SansSerif", Font.PLAIN, 12);
 		return new GraphicStrings(strings, font, HtmlColorUtils.BLACK, HtmlColorUtils.WHITE, image,
-				GraphicPosition.BACKGROUND_CORNER, false);
-		// return new GraphicStrings(strings, font, Color.BLACK, Color.WHITE,
-		// false);
+				GraphicPosition.BACKGROUND_CORNER, UAntiAliasing.ANTI_ALIASING_ON);
 	}
 
 	public String getDescription() {
@@ -256,5 +255,6 @@ public class PSystemVersion extends AbstractPSystem {
 	public List<String> getLines() {
 		return Collections.unmodifiableList(strings);
 	}
+
 
 }

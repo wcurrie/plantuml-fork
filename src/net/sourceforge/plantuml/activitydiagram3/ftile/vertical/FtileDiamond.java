@@ -39,10 +39,10 @@ import java.util.List;
 
 import net.sourceforge.plantuml.Dimension2DDouble;
 import net.sourceforge.plantuml.Url;
+import net.sourceforge.plantuml.activitydiagram3.LinkRendering;
 import net.sourceforge.plantuml.activitydiagram3.ftile.Diamond;
 import net.sourceforge.plantuml.activitydiagram3.ftile.Ftile;
 import net.sourceforge.plantuml.graphic.HtmlColor;
-import net.sourceforge.plantuml.graphic.HtmlColorUtils;
 import net.sourceforge.plantuml.graphic.StringBounder;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
 import net.sourceforge.plantuml.ugraphic.UStroke;
@@ -61,7 +61,7 @@ class FtileDiamond implements Ftile {
 		ug.getParam().setColor(color);
 		ug.getParam().setBackcolor(backColor);
 		ug.getParam().setStroke(new UStroke(1.5));
-		ug.draw(x, y, Diamond.asPolygon());
+		ug.drawNewWay(x, y, Diamond.asPolygon());
 		ug.getParam().setStroke(new UStroke());
 	}
 
@@ -75,6 +75,10 @@ class FtileDiamond implements Ftile {
 	
 	public boolean isKilled() {
 		return false;
+	}
+
+	public LinkRendering getInLinkRendering() {
+		return null;
 	}
 
 

@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 9786 $
+ * Revision $Revision: 10073 $
  *
  */
 package net.sourceforge.plantuml.sequencediagram.graphic;
@@ -41,6 +41,7 @@ import net.sourceforge.plantuml.skin.Area;
 import net.sourceforge.plantuml.skin.Component;
 import net.sourceforge.plantuml.skin.Context2D;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
+import net.sourceforge.plantuml.ugraphic.UTranslate;
 
 class GraphicalNewpage extends GraphicalElement {
 
@@ -55,7 +56,7 @@ class GraphicalNewpage extends GraphicalElement {
 	@Override
 	protected void drawInternalU(UGraphic ug, double maxX, Context2D context) {
 		//final double x = ug.getTranslateX();
-		ug.translate(0, getStartingY());
+		ug = ug.apply(new UTranslate(0, getStartingY()));
 		final StringBounder stringBounder = ug.getStringBounder();
 		final Dimension2D dim = new Dimension2DDouble(maxX, comp.getPreferredHeight(stringBounder));
 		comp.drawU(ug, new Area(dim), context);

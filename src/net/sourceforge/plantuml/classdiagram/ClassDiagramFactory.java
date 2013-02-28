@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  *
- * Revision $Revision: 9786 $
+ * Revision $Revision: 10006 $
  *
  */
 package net.sourceforge.plantuml.classdiagram;
@@ -42,6 +42,7 @@ import net.sourceforge.plantuml.classdiagram.command.CommandCreateClassMultiline
 import net.sourceforge.plantuml.classdiagram.command.CommandDiamondAssociation;
 import net.sourceforge.plantuml.classdiagram.command.CommandHideShow;
 import net.sourceforge.plantuml.classdiagram.command.CommandHideShow3;
+import net.sourceforge.plantuml.classdiagram.command.CommandHideShow4;
 import net.sourceforge.plantuml.classdiagram.command.CommandImport;
 import net.sourceforge.plantuml.classdiagram.command.CommandLinkClass;
 import net.sourceforge.plantuml.classdiagram.command.CommandLinkLollipop;
@@ -49,7 +50,7 @@ import net.sourceforge.plantuml.classdiagram.command.CommandMouseOver;
 import net.sourceforge.plantuml.classdiagram.command.CommandNamespaceSeparator;
 import net.sourceforge.plantuml.classdiagram.command.CommandStereotype;
 import net.sourceforge.plantuml.classdiagram.command.CommandUrl;
-import net.sourceforge.plantuml.command.AbstractUmlSystemCommandFactory;
+import net.sourceforge.plantuml.command.PSystemCommandFactory;
 import net.sourceforge.plantuml.command.CommandEndNamespace;
 import net.sourceforge.plantuml.command.CommandEndPackage;
 import net.sourceforge.plantuml.command.CommandNamespace;
@@ -68,7 +69,7 @@ import net.sourceforge.plantuml.cucadiagram.Link;
 import net.sourceforge.plantuml.cucadiagram.LinkDecor;
 import net.sourceforge.plantuml.cucadiagram.LinkType;
 
-public class ClassDiagramFactory extends AbstractUmlSystemCommandFactory {
+public class ClassDiagramFactory extends PSystemCommandFactory {
 
 	private ClassDiagram system;
 
@@ -120,6 +121,7 @@ public class ClassDiagramFactory extends AbstractUmlSystemCommandFactory {
 
 		addCommand(new CommandHideShow3(system));
 		addCommand(new CommandHideShow(system));
+		addCommand(new CommandHideShow4(system));
 		
 		addCommand(new CommandNamespaceSeparator(system));
 

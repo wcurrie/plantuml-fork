@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 9786 $
+ * Revision $Revision: 10076 $
  *
  */
 package net.sourceforge.plantuml.skin.bluemodern;
@@ -44,6 +44,7 @@ import net.sourceforge.plantuml.skin.Area;
 import net.sourceforge.plantuml.skin.StickMan;
 import net.sourceforge.plantuml.ugraphic.UFont;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
+import net.sourceforge.plantuml.ugraphic.UTranslate;
 
 public class ComponentBlueModernActor extends AbstractTextualComponent {
 
@@ -66,10 +67,10 @@ public class ComponentBlueModernActor extends AbstractTextualComponent {
 
 		if (head) {
 			textBlock.drawU(ug, getTextMiddlePostion(stringBounder), stickman.getPreferredHeight());
-			ug.translate(delta, 0);
+			ug = ug.apply(new UTranslate(delta, 0));
 		} else {
 			textBlock.drawU(ug, getTextMiddlePostion(stringBounder), 0);
-			ug.translate(delta, getTextHeight(stringBounder));
+			ug = ug.apply(new UTranslate(delta, getTextHeight(stringBounder)));
 		}
 		stickman.drawU(ug, 0, 0);
 

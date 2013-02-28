@@ -38,6 +38,7 @@ import net.sourceforge.plantuml.sequencediagram.InGroupable;
 import net.sourceforge.plantuml.sequencediagram.NotePosition;
 import net.sourceforge.plantuml.skin.Context2D;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
+import net.sourceforge.plantuml.ugraphic.UTranslate;
 
 class ArrowAndParticipant extends Arrow implements InGroupable {
 
@@ -85,10 +86,7 @@ class ArrowAndParticipant extends Arrow implements InGroupable {
 
 	@Override
 	protected void drawInternalU(UGraphic ug, double maxX, Context2D context) {
-		final double atX = ug.getTranslateX();
-		final double atY = ug.getTranslateY();
 		arrow.drawInternalU(ug, maxX, context);
-		ug.setTranslate(atX, atY);
 		final double arrowHeight = arrow.getPreferredHeight(ug.getStringBounder());
 		final double boxHeight = participantBox.getHeadHeight(ug.getStringBounder());
 		// final double diff = getDiff(ug);
@@ -96,10 +94,8 @@ class ArrowAndParticipant extends Arrow implements InGroupable {
 		if (arrowHeight > boxHeight) {
 			diff = arrowHeight - boxHeight;
 		}
-		ug.translate(participantBox.getStartingX(), getStartingY() + diff);
+		ug = ug.apply(new UTranslate(participantBox.getStartingX(), getStartingY() + diff));
 		participantBox.drawParticipantHead(ug);
-		ug.setTranslate(atX, atY);
-
 	}
 
 	private double getDiff(UGraphic ug) {

@@ -80,7 +80,7 @@ public class EntityImageBranch extends AbstractEntityImage {
 		ug.getParam().setStroke(new UStroke(1.5));
 		ug.getParam().setColor(SkinParamUtils.getColor(getSkinParam(), ColorParam.activityBorder, getStereo()));
 		ug.getParam().setBackcolor(SkinParamUtils.getColor(getSkinParam(), ColorParam.activityBackground, getStereo()));
-		ug.draw(xTheoricalPosition, yTheoricalPosition, diams);
+		ug.drawNewWay(xTheoricalPosition, yTheoricalPosition, diams);
 		ug.getParam().setStroke(new UStroke());
 	}
 

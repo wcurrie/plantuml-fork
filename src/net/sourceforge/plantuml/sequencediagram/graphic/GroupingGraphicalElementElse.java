@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 9786 $
+ * Revision $Revision: 10066 $
  *
  */
 package net.sourceforge.plantuml.sequencediagram.graphic;
@@ -42,6 +42,7 @@ import net.sourceforge.plantuml.skin.Area;
 import net.sourceforge.plantuml.skin.Component;
 import net.sourceforge.plantuml.skin.Context2D;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
+import net.sourceforge.plantuml.ugraphic.UTranslate;
 
 class GroupingGraphicalElementElse extends GroupingGraphicalElement {
 
@@ -62,7 +63,7 @@ class GroupingGraphicalElementElse extends GroupingGraphicalElement {
 		final StringBounder stringBounder = ug.getStringBounder();
 		final double x1 = getInGroupableList().getMinX(stringBounder);
 		final double x2 = getInGroupableList().getMaxX(stringBounder);
-		ug.translate(x1, getStartingY());
+		ug = ug.apply(new UTranslate(x1, getStartingY()));
 
 		final double height = afterY.getNow() - getStartingY();
 		if (height <= 0) {

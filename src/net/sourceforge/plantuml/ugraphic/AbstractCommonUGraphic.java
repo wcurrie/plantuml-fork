@@ -28,46 +28,77 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 9786 $
+ * Revision $Revision: 10104 $
  *
  */
 package net.sourceforge.plantuml.ugraphic;
 
-public abstract class AbstractCommonUGraphic implements UGraphic {
+import net.sourceforge.plantuml.ugraphic.txt.UGraphicTxt;
 
-	private final UParam param = new UParam();
+public abstract class AbstractCommonUGraphic extends UGraphic {
+
+	private/* final */UParam param;
 	private double dx;
 	private double dy;
+
 	private final ColorMapper colorMapper;
+	private UClip clip;
+
+	@Override
+	public UGraphic apply(UChange change) {
+		final AbstractCommonUGraphic copy = copyUGraphic();
+		if (change instanceof UTranslate) {
+			final double x = ((UTranslate) change).getDx();
+			final double y = ((UTranslate) change).getDy();
+			copy.dx += x;
+			copy.dy += y;
+		} else if (change instanceof UClip) {
+			copy.clip = (UClip) change;
+			copy.clip = copy.clip.translate(getTranslateXTOBEREMOVED(), getTranslateYTOBEREMOVED());
+		}
+		return copy;
+	}
+
+	final public UClip getClip() {
+		return clip;
+	}
 
 	public AbstractCommonUGraphic(ColorMapper colorMapper) {
 		this.colorMapper = colorMapper;
+		this.param = new UParam();
 	}
+
+	protected AbstractCommonUGraphic(AbstractCommonUGraphic other) {
+		this.colorMapper = other.colorMapper;
+		this.dx = other.dx;
+		this.dy = other.dy;
+		this.param = other.param.copy();
+		this.clip = other.clip;
+	}
+
+	protected abstract AbstractCommonUGraphic copyUGraphic();
 
 	final public UParam getParam() {
 		return param;
 	}
 
-	final public void translate(double dx, double dy) {
-		this.dx += dx;
-		this.dy += dy;
-	}
-
-	final public void setTranslate(double dx, double dy) {
+	final public void setTranslateTOBEREMOVED(double dx, double dy) {
+		if (this instanceof UGraphicTxt == false) {
+			throw new UnsupportedOperationException();
+		}
 		this.dx = dx;
 		this.dy = dy;
 	}
 
-	final public double getTranslateX() {
+	final protected double getTranslateXTOBEREMOVED() {
 		return dx;
 	}
 
-	final public double getTranslateY() {
+	final protected double getTranslateYTOBEREMOVED() {
 		return dy;
 	}
 
 	final public ColorMapper getColorMapper() {
 		return colorMapper;
 	}
-
 }

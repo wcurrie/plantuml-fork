@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 9786 $
+ * Revision $Revision: 10057 $
  *
  */
 package net.sourceforge.plantuml.skin;
@@ -64,7 +64,7 @@ class GrayComponent extends AbstractComponent {
 		final StringBounder stringBounder = ug.getStringBounder();
 		ug.getParam().setBackcolor(HtmlColorUtils.LIGHT_GRAY);
 		ug.getParam().setColor(HtmlColorUtils.BLACK);
-		ug.draw(0, 0, new URectangle(getPreferredWidth(stringBounder), getPreferredHeight(stringBounder)));
+		ug.drawOldWay(new URectangle(getPreferredWidth(stringBounder), getPreferredHeight(stringBounder)));
 
 		final String n = type.name();
 		final int split = 9;

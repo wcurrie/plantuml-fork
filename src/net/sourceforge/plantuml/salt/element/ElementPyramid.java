@@ -113,7 +113,7 @@ public class ElementPyramid implements Element {
 		double ytmp = y + 2;
 		final Dimension2D preferred = getPreferredDimension(ug.getStringBounder(), 0, 0);
 		if (tableStrategy == TableStrategy.DRAW_OUTSIDE || tableStrategy == TableStrategy.DRAW_ALL) {
-			ug.draw(x, y, new URectangle(preferred.getWidth() - 1, preferred.getHeight() - 1));
+			ug.drawNewWay(x, y, new URectangle(preferred.getWidth() - 1, preferred.getHeight() - 1));
 		}
 		for (int r = 0; r < rows; r++) {
 			double xtmp = x + 2;
@@ -122,20 +122,20 @@ public class ElementPyramid implements Element {
 				final double colWidth = getColWidth(ug.getStringBounder(), c);
 				this.elements[r][c].drawU(ug, xtmp, ytmp, zIndex, new Dimension2DDouble(colWidth, rowHeight));
 				if (tableStrategy == TableStrategy.DRAW_ALL || tableStrategy == TableStrategy.DRAW_VERTICAL) {
-					ug.draw(xtmp - 2, y, new ULine(0, preferred.getHeight() - 1));
+					ug.drawNewWay(xtmp - 2, y, new ULine(0, preferred.getHeight() - 1));
 				}
 				xtmp += colWidth + 3;
 			}
 			if (tableStrategy == TableStrategy.DRAW_VERTICAL) {
-				ug.draw(xtmp - 2, y, new ULine(0, preferred.getHeight() - 1));
+				ug.drawNewWay(xtmp - 2, y, new ULine(0, preferred.getHeight() - 1));
 			}
 			if (tableStrategy == TableStrategy.DRAW_ALL || tableStrategy == TableStrategy.DRAW_HORIZONTAL) {
-				ug.draw(x, ytmp - 2, new ULine(preferred.getWidth() - 1, 0));
+				ug.drawNewWay(x, ytmp - 2, new ULine(preferred.getWidth() - 1, 0));
 			}
 			ytmp += rowHeight + 3;
 		}
 		if (tableStrategy == TableStrategy.DRAW_HORIZONTAL) {
-			ug.draw(x, ytmp - 2, new ULine(preferred.getWidth() - 1, 0));
+			ug.drawNewWay(x, ytmp - 2, new ULine(preferred.getWidth() - 1, 0));
 		}
 	}
 

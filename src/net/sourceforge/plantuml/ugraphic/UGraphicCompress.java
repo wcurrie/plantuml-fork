@@ -39,10 +39,21 @@ import java.io.OutputStream;
 import net.sourceforge.plantuml.Url;
 import net.sourceforge.plantuml.graphic.StringBounder;
 
-public class UGraphicCompress implements UGraphic {
+public class UGraphicCompress extends UGraphic {
+
+	@Override
+	public UGraphic apply(UChange translate) {
+		if (translate instanceof UTranslate) {
+			final UGraphicCompress result = new UGraphicCompress(ug, compressionTransform);
+			result.translate = (UTranslate) translate;
+			return result;
+		}
+		throw new UnsupportedOperationException();
+	}
 
 	private final UGraphic ug;
 	private final CompressionTransform compressionTransform;
+	private UTranslate translate = new UTranslate();
 
 	public UGraphicCompress(UGraphic ug, CompressionTransform compressionTransform) {
 		this.ug = ug;
@@ -57,11 +68,13 @@ public class UGraphicCompress implements UGraphic {
 		return ug.getParam();
 	}
 
-	public void draw(double x, double y, UShape shape) {
+	public void drawOldWay(UShape shape) {
+		final double x = translate.getDx();
+		final double y = translate.getDy();
 		if (shape instanceof ULine) {
 			drawLine(x, y, (ULine) shape);
 		} else {
-			ug.draw(x, ct(y), shape);
+			ug.drawNewWay(x, ct(y), shape);
 		}
 	}
 
@@ -78,38 +91,14 @@ public class UGraphicCompress implements UGraphic {
 		final double xmax = Math.max(x1, x2);
 		final double ymin = Math.min(y1, y2);
 		final double ymax = Math.max(y1, y2);
-		ug.draw(xmin, ymin, new ULine(xmax - xmin, ymax - ymin));
+		ug.drawNewWay(xmin, ymin, new ULine(xmax - xmin, ymax - ymin));
 	}
 
 	public void centerChar(double x, double y, char c, UFont font) {
 	}
 
-	public void translate(double dx, double dy) {
-		throw new UnsupportedOperationException();
-	}
-
-	public void setTranslate(double dx, double dy) {
-		throw new UnsupportedOperationException();
-	}
-
-	public double getTranslateX() {
-		throw new UnsupportedOperationException();
-	}
-
-	public double getTranslateY() {
-		throw new UnsupportedOperationException();
-	}
-
 	public void writeImage(OutputStream os, String metadata, int dpi) throws IOException {
 		ug.writeImage(os, metadata, dpi);
-	}
-
-	public void setClip(UClip clip) {
-		ug.setClip(clip);
-	}
-
-	public void setAntiAliasing(boolean trueForOn) {
-		ug.setAntiAliasing(trueForOn);
 	}
 
 	public ColorMapper getColorMapper() {

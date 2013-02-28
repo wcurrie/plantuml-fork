@@ -33,12 +33,12 @@
  */
 package net.sourceforge.plantuml;
 
-import net.sourceforge.plantuml.command.AbstractUmlSystemCommandFactory;
+import net.sourceforge.plantuml.command.PSystemCommandFactory;
 import net.sourceforge.plantuml.command.CommandComment;
 import net.sourceforge.plantuml.command.CommandMultilinesComment;
 import net.sourceforge.plantuml.command.CommandNope;
 
-public class EmptyDiagramFactory extends AbstractUmlSystemCommandFactory {
+public class EmptyDiagramFactory extends PSystemCommandFactory {
 
 	private PSystemError system;
 

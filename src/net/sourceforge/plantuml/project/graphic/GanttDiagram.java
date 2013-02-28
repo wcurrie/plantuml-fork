@@ -93,7 +93,7 @@ public class GanttDiagram {
 			}
 			ug.getParam().setColor(HtmlColorUtils.GREEN);
 			ug.getParam().setBackcolor(HtmlColorUtils.GRAY);
-			ug.draw(x0start + x1, yitem, rect);
+			ug.drawNewWay(x0start + x1, yitem, rect);
 
 		}
 
@@ -118,7 +118,7 @@ public class GanttDiagram {
 			} else {
 				ug.getParam().setColor(HtmlColorUtils.BLACK);
 			}
-			ug.draw(x + xcur, y, line);
+			ug.drawNewWay(x + xcur, y, line);
 			last = ent.getKey();
 		}
 	}

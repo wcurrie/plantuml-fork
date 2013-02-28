@@ -87,17 +87,17 @@ public class ElementRadioCheckbox implements Element {
 		ug.getParam().setStroke(new UStroke(stroke));
 		if (radio) {
 			ug.getParam().setBackcolor(null);
-			ug.draw(x + 2, y + (height - ELLIPSE) / 2, new UEllipse(ELLIPSE, ELLIPSE));
+			ug.drawNewWay(x + 2, y + (height - ELLIPSE) / 2, new UEllipse(ELLIPSE, ELLIPSE));
 			if (checked) {
 				ug.getParam().setBackcolor(ug.getParam().getColor());
 				ug
-						.draw(x + 2 + (ELLIPSE - ELLIPSE2) / 2, y + (height - ELLIPSE2) / 2, new UEllipse(ELLIPSE2,
+						.drawNewWay(x + 2 + (ELLIPSE - ELLIPSE2) / 2, y + (height - ELLIPSE2) / 2, new UEllipse(ELLIPSE2,
 								ELLIPSE2));
 				ug.getParam().setBackcolor(null);
 			}
 		} else {
 			ug.getParam().setBackcolor(null);
-			ug.draw(x + 2, y + (height - RECTANGLE) / 2, new URectangle(RECTANGLE, RECTANGLE));
+			ug.drawNewWay(x + 2, y + (height - RECTANGLE) / 2, new URectangle(RECTANGLE, RECTANGLE));
 			if (checked) {
 				ug.getParam().setBackcolor(ug.getParam().getColor());
 				final UPolygon poly = new UPolygon();
@@ -105,7 +105,7 @@ public class ElementRadioCheckbox implements Element {
 				poly.addPoint(3, 3);
 				poly.addPoint(10, -6);
 				poly.addPoint(3, 1);
-				ug.draw(x + 3, y + 6, poly);
+				ug.drawNewWay(x + 3, y + 6, poly);
 				ug.getParam().setBackcolor(null);
 			}
 		}

@@ -69,34 +69,39 @@ public class DirWatcher2 {
 
 	public Map<File, Future<List<GeneratedImage>>> buildCreatedFiles() throws IOException, InterruptedException {
 		final Map<File, Future<List<GeneratedImage>>> result = new TreeMap<File, Future<List<GeneratedImage>>>();
-		for (final File f : dir.listFiles()) {
-			if (f.isFile() == false) {
-				continue;
-			}
-			if (fileToProcess(f.getName()) == false) {
-				continue;
-			}
-			final FileWatcher watcher = modifieds.get(f);
+		if (dir.listFiles() != null) {
+			for (final File f : dir.listFiles()) {
+				if (f.isFile() == false) {
+					continue;
+				}
+				if (fileToProcess(f.getName()) == false) {
+					continue;
+				}
+				final FileWatcher watcher = modifieds.get(f);
 
-			if (watcher == null || watcher.hasChanged()) {
-				final SourceFileReader sourceFileReader = new SourceFileReader(new Defines(), f, option.getOutputDir(),
-						option.getConfig(), option.getCharset(), option.getFileFormatOption());
-				modifieds.put(f, new FileWatcher(Collections.singleton(f)));
-				final Future<List<GeneratedImage>> value = executorService.submit(new Callable<List<GeneratedImage>>() {
-					public List<GeneratedImage> call() throws Exception {
-						try {
-							final List<GeneratedImage> generatedImages = sourceFileReader.getGeneratedImages();
-							final Set<File> files = new HashSet<File>(sourceFileReader.getIncludedFiles());
-							files.add(f);
-							modifieds.put(f, new FileWatcher(files));
-							return Collections.unmodifiableList(generatedImages);
-						} catch (Exception e) {
-							e.printStackTrace();
-							return Collections.emptyList();
-						}
-					}
-				});
-				result.put(f, value);
+				if (watcher == null || watcher.hasChanged()) {
+					final SourceFileReader sourceFileReader = new SourceFileReader(new Defines(), f,
+							option.getOutputDir(), option.getConfig(), option.getCharset(),
+							option.getFileFormatOption());
+					modifieds.put(f, new FileWatcher(Collections.singleton(f)));
+					final Future<List<GeneratedImage>> value = executorService
+							.submit(new Callable<List<GeneratedImage>>() {
+								public List<GeneratedImage> call() throws Exception {
+									try {
+										final List<GeneratedImage> generatedImages = sourceFileReader
+												.getGeneratedImages();
+										final Set<File> files = new HashSet<File>(sourceFileReader.getIncludedFiles());
+										files.add(f);
+										modifieds.put(f, new FileWatcher(files));
+										return Collections.unmodifiableList(generatedImages);
+									} catch (Exception e) {
+										e.printStackTrace();
+										return Collections.emptyList();
+									}
+								}
+							});
+					result.put(f, value);
+				}
 			}
 		}
 		return Collections.unmodifiableMap(result);

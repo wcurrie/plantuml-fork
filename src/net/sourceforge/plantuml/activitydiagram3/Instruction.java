@@ -43,5 +43,7 @@ public interface Instruction {
 	public void add(Instruction other);
 
 	public boolean kill();
+	
+	public LinkRendering getInLinkRendering();
 
 }

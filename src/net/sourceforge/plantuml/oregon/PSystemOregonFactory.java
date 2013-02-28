@@ -40,7 +40,7 @@ import net.sourceforge.plantuml.DiagramType;
 import net.sourceforge.plantuml.PSystemBasicFactory;
 import net.sourceforge.plantuml.StringUtils;
 
-public class PSystemOregonFactory implements PSystemBasicFactory {
+public class PSystemOregonFactory extends PSystemBasicFactory {
 
 	private PSystemOregon system;
 	private List<String> inputs;

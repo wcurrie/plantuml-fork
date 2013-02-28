@@ -28,12 +28,12 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 9786 $
+ * Revision $Revision: 10104 $
  *
  */
 package net.sourceforge.plantuml.ugraphic;
 
-public class UStroke {
+public class UStroke implements UChange {
 
 	private final double dashVisible;
 	private final double dashSpace;
@@ -72,11 +72,11 @@ public class UStroke {
 		return "" + dashVisible + "," + dashSpace;
 	}
 
-//	public String getDasharrayEps() {
-//		if (dashVisible == 0) {
-//			return null;
-//		}
-//		return "" + dashVisible + " " + dashSpace;
-//	}
+	// public String getDasharrayEps() {
+	// if (dashVisible == 0) {
+	// return null;
+	// }
+	// return "" + dashVisible + " " + dashSpace;
+	// }
 
 }

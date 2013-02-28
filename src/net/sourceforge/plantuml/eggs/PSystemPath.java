@@ -39,6 +39,7 @@ import java.io.OutputStream;
 import net.sourceforge.plantuml.AbstractPSystem;
 import net.sourceforge.plantuml.CMapData;
 import net.sourceforge.plantuml.FileFormatOption;
+import net.sourceforge.plantuml.api.ImageData;
 import net.sourceforge.plantuml.ugraphic.ColorMapperIdentity;
 
 public class PSystemPath extends AbstractPSystem {
@@ -50,13 +51,15 @@ public class PSystemPath extends AbstractPSystem {
 	}
 
 
-	public void exportDiagram(OutputStream os, CMapData cmap, int index, FileFormatOption fileFormat) throws IOException {
-		path.writeImage(os);
+	public ImageData exportDiagram(OutputStream os, int num, FileFormatOption fileFormat) throws IOException {
+		return path.writeImage1317(os);
 	}
 
 	public String getDescription() {
 		return "(Path)";
 	}
+
+
 
 
 }

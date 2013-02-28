@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 9786 $
+ * Revision $Revision: 10041 $
  *
  */
 package net.sourceforge.plantuml.skin.rose;
@@ -76,12 +76,12 @@ public class ComponentRoseSelfArrow extends AbstractComponentRoseArrow {
 		final double dx1 = area.getDeltaX1() < 0 ? area.getDeltaX1() : 0;
 		final double dx2 = area.getDeltaX1() > 0 ? -area.getDeltaX1() : 0;
 
-		ug.draw(dx1, textHeight, new ULine(x2 - dx1, 0));
+		ug.drawNewWay(dx1, textHeight, new ULine(x2 - dx1, 0));
 
 		final double textAndArrowHeight = textHeight + getArrowOnlyHeight(stringBounder);
 
-		ug.draw(x2, textHeight, new ULine(0, textAndArrowHeight - textHeight));
-		ug.draw(dx2, textAndArrowHeight, new ULine(x2 - dx2, 0));
+		ug.drawNewWay(x2, textHeight, new ULine(0, textAndArrowHeight - textHeight));
+		ug.drawNewWay(dx2, textAndArrowHeight, new ULine(x2 - dx2, 0));
 
 		if (getArrowConfiguration().isDotted()) {
 			ug.getParam().setStroke(new UStroke());
@@ -89,15 +89,15 @@ public class ComponentRoseSelfArrow extends AbstractComponentRoseArrow {
 
 		if (getArrowConfiguration().isAsync()) {
 			if (getArrowConfiguration().getPart() != ArrowPart.BOTTOM_PART) {
-				ug.draw(dx2, textAndArrowHeight, new ULine(getArrowDeltaX(), -getArrowDeltaY()));
+				ug.drawNewWay(dx2, textAndArrowHeight, new ULine(getArrowDeltaX(), -getArrowDeltaY()));
 			}
 			if (getArrowConfiguration().getPart() != ArrowPart.TOP_PART) {
-				ug.draw(dx2, textAndArrowHeight, new ULine(getArrowDeltaX(), getArrowDeltaY()));
+				ug.drawNewWay(dx2, textAndArrowHeight, new ULine(getArrowDeltaX(), getArrowDeltaY()));
 			}
 		} else {
 			ug.getParam().setBackcolor(getForegroundColor());
 			final UPolygon polygon = getPolygon(textAndArrowHeight);
-			ug.draw(dx2, 0, polygon);
+			ug.drawNewWay(dx2, 0, polygon);
 			ug.getParam().setBackcolor(null);
 		}
 

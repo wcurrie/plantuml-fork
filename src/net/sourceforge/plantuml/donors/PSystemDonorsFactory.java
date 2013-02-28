@@ -36,7 +36,7 @@ package net.sourceforge.plantuml.donors;
 import net.sourceforge.plantuml.DiagramType;
 import net.sourceforge.plantuml.PSystemBasicFactory;
 
-public class PSystemDonorsFactory implements PSystemBasicFactory {
+public class PSystemDonorsFactory extends PSystemBasicFactory {
 
 	private PSystemDonors system;
 

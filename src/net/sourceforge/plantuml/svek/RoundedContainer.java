@@ -72,7 +72,7 @@ public final class RoundedContainer {
 		if (shadowing) {
 			rect.setDeltaShadow(3.0);
 		}
-		ug.draw(x, y, rect);
+		ug.drawNewWay(x, y, rect);
 
 		final double yLine = y + titleHeight + attributeHeight;
 
@@ -81,19 +81,19 @@ public final class RoundedContainer {
 		ug.getParam().setStroke(new UStroke());
 		final URectangle inner = new URectangle(dim.getWidth() - 4 * THICKNESS_BORDER, dim.getHeight() - titleHeight
 				- 4 * THICKNESS_BORDER - attributeHeight, IEntityImage.CORNER, IEntityImage.CORNER);
-		ug.draw(x + 2 * THICKNESS_BORDER, yLine + 2 * THICKNESS_BORDER, inner);
+		ug.drawNewWay(x + 2 * THICKNESS_BORDER, yLine + 2 * THICKNESS_BORDER, inner);
 
 		if (titleHeight > 0) {
 			ug.getParam().setColor(borderColor);
 			ug.getParam().setStroke(new UStroke(THICKNESS_BORDER));
-			ug.draw(x, yLine, new ULine(dim.getWidth(), 0));
+			ug.drawNewWay(x, yLine, new ULine(dim.getWidth(), 0));
 			ug.getParam().setStroke(new UStroke());
 		}
 
 		if (attributeHeight > 0) {
 			ug.getParam().setColor(borderColor);
 			ug.getParam().setStroke(new UStroke(THICKNESS_BORDER));
-			ug.draw(x, yLine - attributeHeight, new ULine(dim.getWidth(), 0));
+			ug.drawNewWay(x, yLine - attributeHeight, new ULine(dim.getWidth(), 0));
 			ug.getParam().setStroke(new UStroke());
 		}
 

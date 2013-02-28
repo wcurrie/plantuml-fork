@@ -44,6 +44,7 @@ import net.sourceforge.plantuml.Url;
 import net.sourceforge.plantuml.graphic.StringBounder;
 import net.sourceforge.plantuml.graphic.UDrawable;
 import net.sourceforge.plantuml.ugraphic.ColorMapper;
+import net.sourceforge.plantuml.ugraphic.UChange;
 import net.sourceforge.plantuml.ugraphic.UClip;
 import net.sourceforge.plantuml.ugraphic.UFont;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
@@ -53,6 +54,7 @@ import net.sourceforge.plantuml.ugraphic.ULine;
 import net.sourceforge.plantuml.ugraphic.UParam;
 import net.sourceforge.plantuml.ugraphic.UShape;
 import net.sourceforge.plantuml.ugraphic.UText;
+import net.sourceforge.plantuml.ugraphic.UTranslate;
 
 public class Footprint {
 
@@ -63,9 +65,22 @@ public class Footprint {
 
 	}
 
-	class MyUGraphic implements UGraphic {
+	class MyUGraphic extends UGraphic {
 
 		private final UParam param = new UParam();
+		private UTranslate translate = new UTranslate();
+		/* final */private List<Point2D.Double> all = new ArrayList<Point2D.Double>();
+
+		@Override
+		public UGraphic apply(UChange translate) {
+			if (translate instanceof UTranslate) {
+				final MyUGraphic result = new MyUGraphic();
+				result.translate = (UTranslate) translate;
+				result.all = this.all;
+				return result;
+			}
+			throw new UnsupportedOperationException();
+		}
 
 		public StringBounder getStringBounder() {
 			return stringBounder;
@@ -75,7 +90,9 @@ public class Footprint {
 			return param;
 		}
 
-		public void draw(double x, double y, UShape shape) {
+		public void drawOldWay(UShape shape) {
+			final double x = translate.getDx();
+			final double y = translate.getDy();
 			if (shape instanceof UText) {
 				drawText(x, y, (UText) shape);
 			} else if (shape instanceof UHorizontalLine) {
@@ -88,30 +105,6 @@ public class Footprint {
 		}
 
 		public void centerChar(double x, double y, char c, UFont font) {
-			throw new UnsupportedOperationException();
-		}
-
-		public void translate(double dx, double dy) {
-			throw new UnsupportedOperationException();
-		}
-
-		public void setTranslate(double dx, double dy) {
-			throw new UnsupportedOperationException();
-		}
-
-		public double getTranslateX() {
-			throw new UnsupportedOperationException();
-		}
-
-		public double getTranslateY() {
-			throw new UnsupportedOperationException();
-		}
-
-		public void setClip(UClip clip) {
-			throw new UnsupportedOperationException();
-		}
-
-		public void setAntiAliasing(boolean trueForOn) {
 			throw new UnsupportedOperationException();
 		}
 
@@ -134,8 +127,6 @@ public class Footprint {
 		public void writeImage(OutputStream os, String metadata, int dpi) throws IOException {
 			throw new UnsupportedOperationException();
 		}
-
-		final private List<Point2D.Double> all = new ArrayList<Point2D.Double>();
 
 		private void addPoint(double x, double y) {
 			all.add(new Point2D.Double(x, y));

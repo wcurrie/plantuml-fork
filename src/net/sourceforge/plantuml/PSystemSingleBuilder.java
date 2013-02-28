@@ -38,11 +38,10 @@ import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
-import net.sourceforge.plantuml.command.AbstractUmlSystemCommandFactory;
+import net.sourceforge.plantuml.command.PSystemCommandFactory;
 import net.sourceforge.plantuml.command.Command;
 import net.sourceforge.plantuml.command.CommandControl;
 import net.sourceforge.plantuml.command.CommandExecutionResult;
-import net.sourceforge.plantuml.command.PSystemCommandFactory;
 import net.sourceforge.plantuml.command.ProtectedCommand;
 import net.sourceforge.plantuml.suggest.SuggestEngine;
 import net.sourceforge.plantuml.suggest.SuggestEngineResult;
@@ -132,7 +131,7 @@ final public class PSystemSingleBuilder {
 		while (hasNext()) {
 			final String s = next();
 			if (StartUtils.isArobaseEndDiagram(s)) {
-				final String err = ((AbstractUmlSystemCommandFactory) systemFactory).checkFinalError();
+				final String err = ((PSystemCommandFactory) systemFactory).checkFinalError();
 				if (err != null) {
 					sys = buildEmptyError(err);
 				}

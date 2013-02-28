@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 9786 $
+ * Revision $Revision: 10091 $
  *
  */
 package net.sourceforge.plantuml.ugraphic;
@@ -39,6 +39,11 @@ public class UText implements UShape {
 
 	private final String text;
 	private final FontConfiguration font;
+
+	@Override
+	public String toString() {
+		return "UText[" + text + "]";
+	}
 
 	public UText(String text, FontConfiguration font) {
 		assert text.indexOf('\t') == -1;

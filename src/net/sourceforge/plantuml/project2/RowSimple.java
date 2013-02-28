@@ -84,7 +84,7 @@ public class RowSimple implements Row {
 				final UShape rect = new URectangle(x2 - x1, height, 4, 4);
 				ug.getParam().setBackcolor(backcolor);
 				ug.getParam().setColor(HtmlColorUtils.RED);
-				ug.draw(x + x1, y + 2, rect);
+				ug.drawNewWay(x + x1, y + 2, rect);
 			}
 
 			public Dimension2D calculateDimension(StringBounder stringBounder) {

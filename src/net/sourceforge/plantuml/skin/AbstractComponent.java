@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 9786 $
+ * Revision $Revision: 10058 $
  *
  */
 package net.sourceforge.plantuml.skin;
@@ -39,6 +39,7 @@ import java.awt.Graphics2D;
 import net.sourceforge.plantuml.graphic.StringBounder;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
 import net.sourceforge.plantuml.ugraphic.UStroke;
+import net.sourceforge.plantuml.ugraphic.UTranslate;
 
 public abstract class AbstractComponent implements Component {
 
@@ -65,15 +66,12 @@ public abstract class AbstractComponent implements Component {
 	}
 
 	public final void drawU(UGraphic ug, Area area, Context2D context) {
-		final double dx = ug.getTranslateX();
-		final double dy = ug.getTranslateY();
-		ug.translate(getPaddingX(), getPaddingY());
+		ug = ug.apply(new UTranslate(getPaddingX(), getPaddingY()));
 		if (context.isBackground()) {
 			drawBackgroundInternalU(ug, area);
 		} else {
 			drawInternalU(ug, area);
 		}
-		ug.setTranslate(dx, dy);
 	}
 
 	public double getPaddingX() {

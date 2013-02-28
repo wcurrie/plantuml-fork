@@ -50,7 +50,7 @@ class USymbolRect extends USymbol {
 		if (shadowing) {
 			shape.setDeltaShadow(3.0);
 		}
-		ug.draw(xTheoricalPosition, yTheoricalPosition, shape);
+		ug.drawNewWay(xTheoricalPosition, yTheoricalPosition, shape);
 	}
 
 	private Margin getMargin() {

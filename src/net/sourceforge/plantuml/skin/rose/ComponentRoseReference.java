@@ -95,7 +95,7 @@ public class ComponentRoseReference extends AbstractTextualComponent {
 		rect.setDeltaShadow(deltaShadow);
 		ug.getParam().setColor(borderColor);
 		ug.getParam().setBackcolor(background);
-		ug.draw(xMargin, 0, rect);
+		ug.drawNewWay(xMargin, 0, rect);
 
 		final UPolygon polygon = new UPolygon();
 		polygon.addPoint(0, 0);
@@ -109,7 +109,7 @@ public class ComponentRoseReference extends AbstractTextualComponent {
 
 		ug.getParam().setColor(borderColor);
 		ug.getParam().setBackcolor(backgroundHeader);
-		ug.draw(xMargin, 0, polygon);
+		ug.drawNewWay(xMargin, 0, polygon);
 
 		ug.getParam().setStroke(new UStroke());
 

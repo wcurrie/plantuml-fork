@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  *
- * Revision $Revision: 9786 $
+ * Revision $Revision: 10006 $
  *
  */
 package net.sourceforge.plantuml;
@@ -54,7 +54,7 @@ import net.sourceforge.plantuml.activitydiagram.ActivityDiagramFactory;
 import net.sourceforge.plantuml.classdiagram.ClassDiagramFactory;
 import net.sourceforge.plantuml.code.Transcoder;
 import net.sourceforge.plantuml.code.TranscoderUtil;
-import net.sourceforge.plantuml.command.AbstractUmlSystemCommandFactory;
+import net.sourceforge.plantuml.command.PSystemCommandFactory;
 import net.sourceforge.plantuml.descdiagram.DescriptionDiagramFactory;
 import net.sourceforge.plantuml.ftp.FtpServer;
 import net.sourceforge.plantuml.objectdiagram.ObjectDiagramFactory;
@@ -196,7 +196,7 @@ public class Run {
 		printPattern(new ObjectDiagramFactory());
 	}
 
-	private static void printPattern(AbstractUmlSystemCommandFactory factory) {
+	private static void printPattern(PSystemCommandFactory factory) {
 		factory.init(null);
 		System.out.println();
 		System.out.println(factory.getClass().getSimpleName().replaceAll("Factory", ""));

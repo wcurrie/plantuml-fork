@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 9786 $
+ * Revision $Revision: 10018 $
  *
  */
 package net.sourceforge.plantuml.sudoku;
@@ -39,15 +39,17 @@ import java.io.OutputStream;
 import net.sourceforge.plantuml.AbstractPSystem;
 import net.sourceforge.plantuml.CMapData;
 import net.sourceforge.plantuml.FileFormatOption;
+import net.sourceforge.plantuml.api.ImageData;
 
 public class PSystemSudoku extends AbstractPSystem {
 
 	final private ISudoku sudoku;
 
-	public void exportDiagram(OutputStream os, CMapData cmap, int index, FileFormatOption fileFormat)
-			throws IOException {
-		new GraphicsSudoku(sudoku).writeImage(os);
+	public ImageData exportDiagram(OutputStream os, int num, FileFormatOption fileFormat) throws IOException {
+		return new GraphicsSudoku(sudoku).writeImage1317(os);
 	}
+
+
 
 	public String getDescription() {
 		return "(Sudoku)";

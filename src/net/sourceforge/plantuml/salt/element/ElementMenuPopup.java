@@ -77,13 +77,13 @@ public class ElementMenuPopup implements Element {
 			return;
 		}
 		ug.getParam().setBackcolor(HtmlColorUtils.getColorIfValid("#DDDDDD"));
-		ug.draw(x, y, new URectangle(dimToUse.getWidth(), dimToUse.getHeight()));
+		ug.drawNewWay(x, y, new URectangle(dimToUse.getWidth(), dimToUse.getHeight()));
 		ug.getParam().setBackcolor(null);
 
 		for (ElementMenuEntry entry : entries) {
 			final double h = entry.getPreferredDimension(ug.getStringBounder(), x, y).getHeight();
 			if (entry.getText().equals("-")) {
-				ug.draw(x, y + h / 2, new ULine(dimToUse.getWidth(), 0));
+				ug.drawNewWay(x, y + h / 2, new ULine(dimToUse.getWidth(), 0));
 			} else {
 				entry.drawU(ug, x, y, zIndex, dimToUse);
 			}

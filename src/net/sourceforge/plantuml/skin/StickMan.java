@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 9786 $
+ * Revision $Revision: 10041 $
  *
  */
 package net.sourceforge.plantuml.skin;
@@ -108,8 +108,8 @@ public class StickMan implements TextBlock {
 
 		ug.getParam().setBackcolor(backgroundColor);
 		ug.getParam().setColor(foregroundColor);
-		ug.draw(x + startX, y + thickness, head);
-		ug.draw(x + centerX, y + headDiam + thickness, path);
+		ug.drawNewWay(x + startX, y + thickness, head);
+		ug.drawNewWay(x + centerX, y + headDiam + thickness, path);
 
 		ug.getParam().setStroke(new UStroke());
 	}

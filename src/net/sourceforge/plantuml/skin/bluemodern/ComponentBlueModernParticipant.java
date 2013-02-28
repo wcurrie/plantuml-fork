@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 9786 $
+ * Revision $Revision: 10074 $
  *
  */
 package net.sourceforge.plantuml.skin.bluemodern;
@@ -42,6 +42,7 @@ import net.sourceforge.plantuml.skin.AbstractTextualComponent;
 import net.sourceforge.plantuml.skin.Area;
 import net.sourceforge.plantuml.ugraphic.UFont;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
+import net.sourceforge.plantuml.ugraphic.UTranslate;
 
 public class ComponentBlueModernParticipant extends AbstractTextualComponent {
 
@@ -61,10 +62,11 @@ public class ComponentBlueModernParticipant extends AbstractTextualComponent {
 		final StringBounder stringBounder = ug.getStringBounder();
 
 		final ShadowShape shadowShape = new ShadowShape(getTextWidth(stringBounder), getTextHeight(stringBounder), 10);
-		ug.translate(shadowview, shadowview);
-		ug.getParam().setColor(null);
-		shadowShape.drawU(ug);
-		ug.translate(-shadowview, -shadowview);
+		final UGraphic ugShadow = ug.apply(new UTranslate(shadowview, shadowview));
+		//ug.translate(shadowview, shadowview);
+		ugShadow.getParam().setColor(null);
+		shadowShape.drawU(ugShadow);
+		// ug.translate(-shadowview, -shadowview);
 
 		final FillRoundShape shape = new FillRoundShape(getTextWidth(stringBounder), getTextHeight(stringBounder),
 				blue1, blue2, 10);

@@ -95,7 +95,7 @@ public class ActivityBox implements TextBlock {
 		ug.getParam().setColor(HtmlColorUtils.getColorIfValid("#A80036"));
 		ug.getParam().setBackcolor(HtmlColorUtils.getColorIfValid("#FEFECE"));
 		ug.getParam().setStroke(new UStroke(1.5));
-		ug.draw(x, y, rect);
+		ug.drawNewWay(x, y, rect);
 		ug.getParam().setStroke(new UStroke(1));
 
 		tb.drawU(ug, x + MARGIN, y + MARGIN);

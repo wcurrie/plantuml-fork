@@ -34,7 +34,7 @@ package net.sourceforge.plantuml.ugraphic;
 import java.awt.geom.Line2D;
 import java.awt.geom.Rectangle2D;
 
-public class UClip {
+public class UClip implements UChange {
 
 	private final double x;
 	private final double y;

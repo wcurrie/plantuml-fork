@@ -81,7 +81,7 @@ public class Frame implements Component {
 		ug.getParam().setColor(lineColor);
 		ug.getParam().setBackcolor(null);
 		ug.getParam().setStroke(new UStroke(1.4));
-		ug.draw(0, 0, new URectangle(dimensionToUse.getWidth(), dimensionToUse.getHeight()));
+		ug.drawOldWay(new URectangle(dimensionToUse.getWidth(), dimensionToUse.getHeight()));
 		ug.getParam().setStroke(new UStroke());
 
 		final TextBlock textBlock = createTextBloc();
@@ -98,7 +98,7 @@ public class Frame implements Component {
 		poly.addPoint(0, 0);
 		ug.getParam().setColor(lineColor);
 		ug.getParam().setStroke(new UStroke(1.4));
-		ug.draw(0, 0, poly);
+		ug.drawOldWay(poly);
 		ug.getParam().setStroke(new UStroke());
 
 	}

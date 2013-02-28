@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 9786 $
+ * Revision $Revision: 10041 $
  *
  */
 package net.sourceforge.plantuml.graphic;
@@ -58,7 +58,7 @@ class TileImage implements TextBlock {
 	}
 
 	public void drawU(UGraphic ug, double x, double y) {
-		ug.draw(x, y + vspace, new UImage(image));
+		ug.drawNewWay(x, y + vspace, new UImage(image));
 	}
 
 	public List<Url> getUrls() {

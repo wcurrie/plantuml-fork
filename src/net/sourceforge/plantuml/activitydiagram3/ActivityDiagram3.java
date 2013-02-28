@@ -45,10 +45,11 @@ import net.sourceforge.plantuml.FileFormatOption;
 import net.sourceforge.plantuml.FontParam;
 import net.sourceforge.plantuml.ISkinParam;
 import net.sourceforge.plantuml.UmlDiagram;
-import net.sourceforge.plantuml.UmlDiagramInfo;
 import net.sourceforge.plantuml.UmlDiagramType;
 import net.sourceforge.plantuml.activitydiagram3.ftile.Ftile;
 import net.sourceforge.plantuml.activitydiagram3.ftile.vertical.VerticalFactory;
+import net.sourceforge.plantuml.api.ImageData;
+import net.sourceforge.plantuml.api.ImageDataSimple;
 import net.sourceforge.plantuml.command.CommandExecutionResult;
 import net.sourceforge.plantuml.cucadiagram.Display;
 import net.sourceforge.plantuml.graphic.FontConfiguration;
@@ -85,12 +86,12 @@ public class ActivityDiagram3 extends UmlDiagram {
 		return UmlDiagramType.ACTIVITY;
 	}
 
-	//@Override
-	protected UmlDiagramInfo exportDiagramInternal(OutputStream os, CMapData cmap, int index,
+	// @Override
+	private Dimension2D exportDiagramInternalUnused(OutputStream os, CMapData cmap, int index,
 			FileFormatOption fileFormatOption, List<BufferedImage> flashcodes) throws IOException {
 		final TextBlock result = getResult();
 
-		final TextLimitFinder limitFinder = new TextLimitFinder(dummyStringBounder);
+		final TextLimitFinder limitFinder = new TextLimitFinder(dummyStringBounder, true);
 		result.drawU(limitFinder, 0, 0);
 		final double negX = Math.min(0, limitFinder.getMinX());
 		final double negY = Math.min(0, limitFinder.getMinY());
@@ -112,14 +113,14 @@ public class ActivityDiagram3 extends UmlDiagram {
 		result.drawU(ug, 8 - negX, posy);
 		ug.writeImage(os, getMetadata(), getDpi(fileFormatOption));
 
-		return new UmlDiagramInfo(dim.getWidth());
+		return new Dimension2DDouble(dim.getWidth(), dim.getHeight());
 	}
 
-	protected UmlDiagramInfo exportDiagramInternal2(OutputStream os, CMapData cmap, int index,
-			FileFormatOption fileFormatOption, List<BufferedImage> flashcodes) throws IOException {
+	protected ImageData exportDiagramInternal(OutputStream os, int index, FileFormatOption fileFormatOption,
+			List<BufferedImage> flashcodes) throws IOException {
 		final TextBlock result = getResult();
 
-		final TextLimitFinder limitFinder = new TextLimitFinder(dummyStringBounder);
+		final TextLimitFinder limitFinder = new TextLimitFinder(dummyStringBounder, true);
 		result.drawU(limitFinder, 0, 0);
 		final double negX = Math.min(0, limitFinder.getMinX());
 		final double negY = Math.min(0, limitFinder.getMinY());
@@ -128,12 +129,13 @@ public class ActivityDiagram3 extends UmlDiagram {
 
 		final SlotFinder slotFinder = new SlotFinder(dummyStringBounder);
 		result.drawU(slotFinder, 0, 0);
-		final SlotSet ysSlotSet = slotFinder.getYSlotSet().reverse();
+		final SlotSet ysSlotSet = slotFinder.getYSlotSet().reverse().smaller(5.0);
 
 		final ISkinParam skinParam = getSkinParam();
 		Dimension2D dim = result.calculateDimension(dummyStringBounder);
-		dim = new Dimension2DDouble(Math.max(dim.getWidth(), limitFinder.getMaxX() - negX), Math.max(dim.getHeight(),
-				limitFinder.getMaxY() - negY));
+		final CompressionTransform compressionTransform = new CompressionTransform(ysSlotSet);
+		dim = new Dimension2DDouble(Math.max(dim.getWidth(), limitFinder.getMaxX() - negX),
+				compressionTransform.transform(Math.max(dim.getHeight(), limitFinder.getMaxY() - negY)));
 		dim = Dimension2DDouble.delta(dim, 20);
 
 		final double dpiFactor = getDpiFactor(fileFormatOption);
@@ -142,23 +144,23 @@ public class ActivityDiagram3 extends UmlDiagram {
 				.getBackgroundColor(), isRotation());
 		// ug = new UGraphicFilter(ug, URectangle.class, UEllipse.class, UPolygon.class);
 
-		final double posy = 5 - negY;
 		// for (Slot sl : ysSlotSet) {
 		// ug.getParam().setBackcolor(HtmlColorUtils.RED);
 		// ug.draw(0, posy + sl.getStart(), new URectangle(dim.getWidth(), sl.size()));
 		// }
 
-		ug = new UGraphicCompress(ug, new CompressionTransform(ysSlotSet));
-		result.drawU(ug, 8 - negX, posy);
+		ug = new UGraphicCompress(ug, compressionTransform);
+		result.drawU(ug, 8 - negX, 0);
 		ug.writeImage(os, getMetadata(), getDpi(fileFormatOption));
 
-		return new UmlDiagramInfo(dim.getWidth());
+		return new ImageDataSimple((int) dim.getWidth(), (int) dim.getHeight());
 	}
 
 	private Instruction current = new InstructionList();
 
 	public void addActivity(Display activity, HtmlColor color) {
-		current.add(new InstructionSimple(activity, color));
+		current.add(new InstructionSimple(activity, color, nextLinkRenderer));
+		nextLinkRenderer = null;
 	}
 
 	private Ftile getFtile() {
@@ -233,13 +235,15 @@ public class ActivityDiagram3 extends UmlDiagram {
 	}
 
 	public void startIf(Display test, Display whenThen) {
-		final InstructionIf instructionIf = new InstructionIf(current, test, whenThen);
+		final InstructionIf instructionIf = new InstructionIf(current, test, whenThen, nextLinkRenderer);
 		current.add(instructionIf);
 		current = instructionIf;
 	}
 
 	public CommandExecutionResult endif() {
 		if (current instanceof InstructionIf) {
+			((InstructionIf) current).endif(nextLinkRenderer);
+			nextLinkRenderer = null;
 			current = ((InstructionIf) current).getParent();
 			return CommandExecutionResult.ok();
 		}
@@ -248,14 +252,15 @@ public class ActivityDiagram3 extends UmlDiagram {
 
 	public CommandExecutionResult else2(Display whenElse) {
 		if (current instanceof InstructionIf) {
-			((InstructionIf) current).swithToElse(whenElse);
+			((InstructionIf) current).swithToElse(whenElse, nextLinkRenderer);
+			nextLinkRenderer = null;
 			return CommandExecutionResult.ok();
 		}
 		return CommandExecutionResult.error("Cannot find if");
 	}
 
 	public void startRepeat() {
-		final InstructionRepeat instructionRepeat = new InstructionRepeat(current);
+		final InstructionRepeat instructionRepeat = new InstructionRepeat(current, nextLinkRenderer);
 		current.add(instructionRepeat);
 		current = instructionRepeat;
 
@@ -264,8 +269,9 @@ public class ActivityDiagram3 extends UmlDiagram {
 	public CommandExecutionResult repeatWhile(Display label) {
 		if (current instanceof InstructionRepeat) {
 			final InstructionRepeat instructionRepeat = (InstructionRepeat) current;
-			instructionRepeat.setTest(label);
+			instructionRepeat.setTest(label, nextLinkRenderer);
 			current = instructionRepeat.getParent();
+			this.nextLinkRenderer = null;
 			return CommandExecutionResult.ok();
 		}
 		return CommandExecutionResult.error("Cannot find repeat");
@@ -273,13 +279,15 @@ public class ActivityDiagram3 extends UmlDiagram {
 	}
 
 	public void doWhile(Display test) {
-		final InstructionWhile instructionWhile = new InstructionWhile(current, test);
+		final InstructionWhile instructionWhile = new InstructionWhile(current, test, nextLinkRenderer);
 		current.add(instructionWhile);
 		current = instructionWhile;
 	}
 
 	public CommandExecutionResult endwhile() {
 		if (current instanceof InstructionWhile) {
+			((InstructionWhile) current).endwhile(nextLinkRenderer);
+			nextLinkRenderer = null;
 			current = ((InstructionWhile) current).getParent();
 			return CommandExecutionResult.ok();
 		}
@@ -313,6 +321,18 @@ public class ActivityDiagram3 extends UmlDiagram {
 			return CommandExecutionResult.ok();
 		}
 		return CommandExecutionResult.error("Cannot find group");
+	}
+
+	private LinkRendering nextLinkRenderer;
+
+	public void setNextLinkRenderer(LinkRendering linkRenderer) {
+		if (current instanceof InstructionList) {
+			final Instruction last = ((InstructionList) current).getLast();
+			if (last instanceof InstructionWhile) {
+				((InstructionWhile) last).afterEndwhile(linkRenderer);
+			}
+		}
+		this.nextLinkRenderer = linkRenderer;
 	}
 
 }

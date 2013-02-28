@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 9786 $
+ * Revision $Revision: 10061 $
  *
  */
 package net.sourceforge.plantuml.skin.rose;
@@ -47,6 +47,7 @@ import net.sourceforge.plantuml.skin.StickMan;
 import net.sourceforge.plantuml.ugraphic.UFont;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
 import net.sourceforge.plantuml.ugraphic.UStroke;
+import net.sourceforge.plantuml.ugraphic.UTranslate;
 
 public class ComponentRoseActor extends AbstractTextualComponent {
 
@@ -71,10 +72,10 @@ public class ComponentRoseActor extends AbstractTextualComponent {
 
 		if (head) {
 			textBlock.drawU(ug, getTextMiddlePostion(stringBounder), dimStickman.getHeight());
-			ug.translate(delta, 0);
+			ug = ug.apply(new UTranslate(delta, 0));
 		} else {
 			textBlock.drawU(ug, getTextMiddlePostion(stringBounder), 0);
-			ug.translate(delta, getTextHeight(stringBounder));
+			ug = ug.apply(new UTranslate(delta, getTextHeight(stringBounder)));
 		}
 		stickman.drawU(ug, 0, 0);
 	}

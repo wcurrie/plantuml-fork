@@ -47,7 +47,7 @@ class MiddleCircle extends Extremity implements UDrawable {
 	public void drawU(UGraphic ug, double x, double y) {
 		ug.getParam().setBackcolor(HtmlColorUtils.WHITE);
 		ug.getParam().setStroke(new UStroke(1.5));
-		ug.draw(x - radius, y - radius, circle);
+		ug.drawNewWay(x - radius, y - radius, circle);
 		ug.getParam().setStroke(new UStroke());
 
 	}

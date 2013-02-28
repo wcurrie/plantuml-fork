@@ -101,13 +101,13 @@ public final class CucaDiagramTxtMaker {
 			}
 			solver.solve(root, paths);
 			for (Path p : paths) {
-				ug.setTranslate(0, 0);
+				ug.setTranslateTOBEREMOVED(0, 0);
 				p.getDotPath().draw(ug.getCharArea(), getXPixelPerChar(), getYPixelPerChar());
 			}
 			for (IEntity ent : diagram.getLeafs().values()) {
 				final Block b = blocks.get(ent);
 				final Point2D p = b.getPosition();
-				ug.setTranslate(p.getX() / getXPixelPerChar(), p.getY() / getYPixelPerChar());
+				ug.setTranslateTOBEREMOVED(p.getX() / getXPixelPerChar(), p.getY() / getYPixelPerChar());
 				printClass(ent);
 			}
 

@@ -73,7 +73,7 @@ public class ElementMenuEntry implements Element {
 		if (background!=null) {
 			final Dimension2D dim = getPreferredDimension(ug.getStringBounder(), x, y);
 			ug.getParam().setBackcolor(background);
-			ug.draw(x, y, new URectangle(dim.getWidth(), dim.getHeight()));
+			ug.drawNewWay(x, y, new URectangle(dim.getWidth(), dim.getHeight()));
 			ug.getParam().setBackcolor(null);
 		}
 		block.drawU(ug, x, y);

@@ -33,13 +33,13 @@
  */
 package net.sourceforge.plantuml.compositediagram;
 
-import net.sourceforge.plantuml.command.AbstractUmlSystemCommandFactory;
+import net.sourceforge.plantuml.command.PSystemCommandFactory;
 import net.sourceforge.plantuml.compositediagram.command.CommandCreateBlock;
 import net.sourceforge.plantuml.compositediagram.command.CommandCreatePackageBlock;
 import net.sourceforge.plantuml.compositediagram.command.CommandEndPackageBlock;
 import net.sourceforge.plantuml.compositediagram.command.CommandLinkBlock;
 
-public class CompositeDiagramFactory extends AbstractUmlSystemCommandFactory {
+public class CompositeDiagramFactory extends PSystemCommandFactory {
 
 	private CompositeDiagram system;
 

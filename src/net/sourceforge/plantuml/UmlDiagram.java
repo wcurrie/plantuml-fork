@@ -28,13 +28,14 @@
  *
  * Original Author:  Arnaud Roques
  *
- * Revision $Revision: 9786 $
+ * Revision $Revision: 10103 $
  *
  */
 package net.sourceforge.plantuml;
 
 import java.awt.Font;
 import java.awt.geom.AffineTransform;
+import java.awt.geom.Dimension2D;
 import java.awt.image.BufferedImage;
 import java.io.BufferedOutputStream;
 import java.io.ByteArrayInputStream;
@@ -50,6 +51,8 @@ import java.util.List;
 
 import javax.imageio.ImageIO;
 
+import net.sourceforge.plantuml.api.ImageData;
+import net.sourceforge.plantuml.api.ImageDataSimple;
 import net.sourceforge.plantuml.cucadiagram.Display;
 import net.sourceforge.plantuml.cucadiagram.UnparsableGraphvizException;
 import net.sourceforge.plantuml.flashcode.FlashCodeFactory;
@@ -61,6 +64,7 @@ import net.sourceforge.plantuml.mjpeg.MJPEGGenerator;
 import net.sourceforge.plantuml.pdf.PdfConverter;
 import net.sourceforge.plantuml.svek.EmptySvgException;
 import net.sourceforge.plantuml.ugraphic.Sprite;
+import net.sourceforge.plantuml.ugraphic.UAntiAliasing;
 import net.sourceforge.plantuml.ugraphic.UFont;
 import net.sourceforge.plantuml.version.Version;
 
@@ -178,8 +182,9 @@ public abstract class UmlDiagram extends AbstractPSystem implements PSystem {
 		this.hideUnlinkedData = hideUnlinkedData;
 	}
 
-	final public void exportDiagram(OutputStream os, CMapData cmap, int index, FileFormatOption fileFormatOption)
+	final public ImageData exportDiagram(OutputStream os, int index, FileFormatOption fileFormatOption)
 			throws IOException {
+
 		List<BufferedImage> flashcodes = null;
 		try {
 			if ("split".equalsIgnoreCase(getSkinParam().getValue("flashcode"))
@@ -201,8 +206,7 @@ public abstract class UmlDiagram extends AbstractPSystem implements PSystem {
 			flashcodes = null;
 		}
 		if (fileFormatOption.getFileFormat() == FileFormat.PDF) {
-			exportDiagramInternalPdf(os, cmap, index, flashcodes);
-			return;
+			return exportDiagramInternalPdf(os, index, flashcodes);
 		}
 		if (fileFormatOption.getFileFormat() == FileFormat.MJPEG) {
 			// exportDiagramInternalMjpeg(os);
@@ -210,7 +214,9 @@ public abstract class UmlDiagram extends AbstractPSystem implements PSystem {
 			throw new UnsupportedOperationException();
 		}
 		try {
-			lastInfo = exportDiagramInternal(os, cmap, index, fileFormatOption, flashcodes);
+			final ImageData imageData = exportDiagramInternal(os, index, fileFormatOption, flashcodes);
+			this.lastInfo = new Dimension2DDouble(imageData.getWidth(), imageData.getHeight());
+			return imageData;
 		} catch (UnparsableGraphvizException e) {
 			e.printStackTrace();
 			exportDiagramError(os, e.getCause(), fileFormatOption, e.getGraphvizVersion());
@@ -218,6 +224,8 @@ public abstract class UmlDiagram extends AbstractPSystem implements PSystem {
 			e.printStackTrace();
 			exportDiagramError(os, e, fileFormatOption, null);
 		}
+		return new ImageDataSimple();
+
 	}
 
 	private void exportDiagramError(OutputStream os, Throwable exception, FileFormatOption fileFormat,
@@ -248,7 +256,7 @@ public abstract class UmlDiagram extends AbstractPSystem implements PSystem {
 
 		}
 		final GraphicStrings graphicStrings = new GraphicStrings(strings, font, HtmlColorUtils.BLACK,
-				HtmlColorUtils.WHITE, false);
+				HtmlColorUtils.WHITE, UAntiAliasing.ANTI_ALIASING_ON);
 		graphicStrings.writeImage(os, fileFormat);
 	}
 
@@ -267,7 +275,7 @@ public abstract class UmlDiagram extends AbstractPSystem implements PSystem {
 			final double coef = (nb - 1 - i) * 1.0 / nb;
 			at.setToShear(coef, coef);
 			final ByteArrayOutputStream baos = new ByteArrayOutputStream();
-			exportDiagram(baos, null, 0, new FileFormatOption(FileFormat.PNG, at));
+			// exportDiagramTOxxBEREMOVED(baos, null, 0, new FileFormatOption(FileFormat.PNG, at));
 			baos.close();
 			final BufferedImage im = ImageIO.read(new ByteArrayInputStream(baos.toByteArray()));
 			m.addImage(im);
@@ -276,23 +284,24 @@ public abstract class UmlDiagram extends AbstractPSystem implements PSystem {
 
 	}
 
-	private UmlDiagramInfo lastInfo;
+	private Dimension2D lastInfo;
 
-	private void exportDiagramInternalPdf(OutputStream os, CMapData cmap, int index, List<BufferedImage> flashcodes)
+	private ImageData exportDiagramInternalPdf(OutputStream os, int index, List<BufferedImage> flashcodes)
 			throws IOException {
 		final File svg = FileUtils.createTempFile("pdf", ".svf");
 		final File pdfFile = FileUtils.createTempFile("pdf", ".pdf");
 		final OutputStream fos = new BufferedOutputStream(new FileOutputStream(svg));
-		exportDiagram(fos, cmap, index, new FileFormatOption(FileFormat.SVG));
+		final ImageData result = exportDiagram(fos, index, new FileFormatOption(FileFormat.SVG));
 		fos.close();
 		PdfConverter.convert(svg, pdfFile);
 		FileUtils.copyToStream(pdfFile, os);
+		return result;
 	}
 
-	protected abstract UmlDiagramInfo exportDiagramInternal(OutputStream os, CMapData cmap, int index,
+	protected abstract ImageData exportDiagramInternal(OutputStream os, int index,
 			FileFormatOption fileFormatOption, List<BufferedImage> flashcodes) throws IOException;
 
-	final protected void exportCmap(File suggestedFile, final CMapData cmapdata) throws FileNotFoundException {
+	final protected void exportCmap(File suggestedFile, final ImageData cmapdata) throws FileNotFoundException {
 		final String name = changeName(suggestedFile.getAbsolutePath());
 		final File cmapFile = new File(name);
 		PrintWriter pw = null;
@@ -334,10 +343,6 @@ public abstract class UmlDiagram extends AbstractPSystem implements PSystem {
 		return null;
 	}
 
-	// public final Map<String, Sprite> getSprites() {
-	// return Collections.unmodifiableMap(sprites);
-	// }
-	// private final Map<String, Sprite> sprites = new HashMap<String, Sprite>();
 
 	public void addSprite(String name, Sprite sprite) {
 		skinParam.addSprite(name, sprite);

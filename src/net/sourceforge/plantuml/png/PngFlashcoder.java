@@ -35,9 +35,10 @@ package net.sourceforge.plantuml.png;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
-import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
 import java.util.List;
+
+import net.sourceforge.plantuml.ugraphic.UAntiAliasing;
 
 public class PngFlashcoder {
 
@@ -63,7 +64,7 @@ public class PngFlashcoder {
 		final BufferedImage newIm = new BufferedImage((int) width, (int) height, BufferedImage.TYPE_INT_RGB);
 		final Graphics2D g2d = newIm.createGraphics();
 
-		g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_OFF);
+		UAntiAliasing.ANTI_ALIASING_OFF.apply(g2d);
 		g2d.setColor(background);
 		g2d.fillRect(0, 0, newIm.getWidth(), newIm.getHeight());
 		g2d.drawImage(im, null, 0, 0);

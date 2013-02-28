@@ -52,7 +52,7 @@ class USymbolFrame extends USymbol {
 			shape.setDeltaShadow(3.0);
 		}
 
-		ug.draw(xTheoricalPosition, yTheoricalPosition, shape);
+		ug.drawNewWay(xTheoricalPosition, yTheoricalPosition, shape);
 
 		final double textWidth;
 		final int cornersize;
@@ -72,7 +72,7 @@ class USymbolFrame extends USymbol {
 		polygon.lineTo(textWidth - cornersize, textHeight);
 
 		polygon.lineTo(0, textHeight);
-		ug.draw(xTheoricalPosition, yTheoricalPosition, polygon);
+		ug.drawNewWay(xTheoricalPosition, yTheoricalPosition, polygon);
 
 	}
 

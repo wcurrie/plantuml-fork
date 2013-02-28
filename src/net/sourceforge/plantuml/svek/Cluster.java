@@ -313,7 +313,7 @@ public class Cluster implements Moveable {
 		ug.getParam().setBackcolor(stateBack);
 		ug.getParam().setColor(borderColor);
 		ug.getParam().setStroke(new UStroke(2));
-		ug.draw(x + minX, y + minY, rect);
+		ug.drawNewWay(x + minX, y + minY, rect);
 		ug.getParam().setStroke(new UStroke());
 	}
 
@@ -351,8 +351,8 @@ public class Cluster implements Moveable {
 		}
 		final ULine line = new ULine(0, maxY - minY);
 		ug.getParam().setColor(borderColor);
-		ug.draw(x + minX, y, line);
-		ug.draw(x + maxX, y, line);
+		ug.drawNewWay(x + minX, y, line);
+		ug.drawNewWay(x + maxX, y, line);
 
 	}
 

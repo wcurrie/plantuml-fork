@@ -37,22 +37,9 @@ public class CMapData {
 
 	private final StringBuilder stringBuilder = new StringBuilder();
 
-	public void copy(CMapData other) {
-		this.stringBuilder.setLength(0);
-		this.stringBuilder.append(other.stringBuilder);
-	}
-
 	public String asString(String nameId) {
 		return "<map id=\"" + nameId + "_map\" name=\"" + nameId + "_map\">\n" + stringBuilder.toString() + "</map>\n";
 	}
-
-	// public void appendHeader(UmlDiagram diag) {
-	// if (diag.getUmlDiagramType() == UmlDiagramType.SEQUENCE) {
-	// stringBuilder.append("<map id=\"sequence\" name=\"sequence\">\n");
-	// } else {
-	// stringBuilder.append("<map id=\"unix\" name=\"unix\">\n");
-	// }
-	// }
 
 	public boolean containsData() {
 		return stringBuilder.length() > 0;

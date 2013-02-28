@@ -37,7 +37,7 @@ import net.sourceforge.plantuml.DiagramType;
 import net.sourceforge.plantuml.Log;
 import net.sourceforge.plantuml.PSystemBasicFactory;
 
-public class PSystemLicenseFactory implements PSystemBasicFactory {
+public class PSystemLicenseFactory extends PSystemBasicFactory {
 
 	private PSystemLicense system;
 

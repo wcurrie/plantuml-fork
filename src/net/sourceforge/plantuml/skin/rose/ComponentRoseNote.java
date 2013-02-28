@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 9786 $
+ * Revision $Revision: 10057 $
  *
  */
 package net.sourceforge.plantuml.skin.rose;
@@ -116,10 +116,10 @@ final public class ComponentRoseNote extends AbstractTextualComponent {
 		ug.getParam().setColor(foregroundColor);
 		ug.getParam().setBackcolor(back);
 		ug.getParam().setStroke(stroke);
-		ug.draw(0, 0, polygon);
+		ug.drawOldWay(polygon);
 
-		ug.draw(x2 - cornersize, 0, new ULine(0, cornersize));
-		ug.draw(x2, cornersize, new ULine(-cornersize, 0));
+		ug.drawNewWay(x2 - cornersize, 0, new ULine(0, cornersize));
+		ug.drawNewWay(x2, cornersize, new ULine(-cornersize, 0));
 		ug.getParam().setStroke(new UStroke());
 
 		getTextBlock().drawU(ug, getMarginX1() + diffX / 2, getMarginY());

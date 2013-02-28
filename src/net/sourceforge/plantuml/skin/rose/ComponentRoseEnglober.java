@@ -62,7 +62,7 @@ public class ComponentRoseEnglober extends AbstractTextualComponent {
 		final Dimension2D dimensionToUse = area.getDimensionToUse();
 		ug.getParam().setColor(borderColor);
 		ug.getParam().setBackcolor(backColor);
-		ug.draw(0, 0, new URectangle(dimensionToUse.getWidth(), dimensionToUse.getHeight()));
+		ug.drawOldWay(new URectangle(dimensionToUse.getWidth(), dimensionToUse.getHeight()));
 		final double xpos = (dimensionToUse.getWidth() - getPureTextWidth(ug.getStringBounder())) / 2;
 		getTextBlock().drawU(ug, xpos, 0);
 	}

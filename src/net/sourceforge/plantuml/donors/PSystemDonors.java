@@ -41,21 +41,21 @@ import java.util.List;
 import java.util.StringTokenizer;
 
 import net.sourceforge.plantuml.AbstractPSystem;
-import net.sourceforge.plantuml.CMapData;
 import net.sourceforge.plantuml.FileFormatOption;
+import net.sourceforge.plantuml.api.ImageData;
 import net.sourceforge.plantuml.code.Transcoder;
 import net.sourceforge.plantuml.code.TranscoderImpl;
 import net.sourceforge.plantuml.graphic.GraphicPosition;
 import net.sourceforge.plantuml.graphic.GraphicStrings;
 import net.sourceforge.plantuml.graphic.HtmlColorUtils;
+import net.sourceforge.plantuml.ugraphic.UAntiAliasing;
 import net.sourceforge.plantuml.ugraphic.UFont;
 import net.sourceforge.plantuml.version.PSystemVersion;
 
 public class PSystemDonors extends AbstractPSystem {
 
-	public void exportDiagram(OutputStream os, CMapData cmap, int index, FileFormatOption fileFormat)
-			throws IOException {
-		getGraphicStrings().writeImage(os, fileFormat);
+	public ImageData exportDiagram(OutputStream os, int num, FileFormatOption fileFormat) throws IOException {
+		return getGraphicStrings().exportDiagram1317(os, fileFormat);
 	}
 
 	private GraphicStrings getGraphicStrings() throws IOException {
@@ -72,7 +72,7 @@ public class PSystemDonors extends AbstractPSystem {
 		lines.add(" ");
 		final UFont font = new UFont("SansSerif", Font.PLAIN, 12);
 		return new GraphicStrings(lines, font, HtmlColorUtils.BLACK, HtmlColorUtils.WHITE,
-				PSystemVersion.getPlantumlImage(), GraphicPosition.BACKGROUND_CORNER, false);
+				PSystemVersion.getPlantumlImage(), GraphicPosition.BACKGROUND_CORNER, UAntiAliasing.ANTI_ALIASING_ON);
 	}
 
 	public String getDescription() {

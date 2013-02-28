@@ -39,7 +39,7 @@ import net.sourceforge.plantuml.DiagramType;
 import net.sourceforge.plantuml.Log;
 import net.sourceforge.plantuml.PSystemBasicFactory;
 
-public class PSystemAppleTwoFactory implements PSystemBasicFactory {
+public class PSystemAppleTwoFactory extends PSystemBasicFactory {
 
 	private PSystemAppleTwo system;
 

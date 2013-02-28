@@ -65,5 +65,9 @@ public class InstructionGroup implements Instruction {
 		return list.kill();
 	}
 
+	public LinkRendering getInLinkRendering() {
+		return null;
+	}
+
 
 }

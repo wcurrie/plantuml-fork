@@ -63,7 +63,7 @@ class ExtremityDiamond extends Extremity implements UDrawable {
 		if (fill) {
 			ug.getParam().setBackcolor(ug.getParam().getColor());
 		}
-		ug.draw(x, y, polygon);
+		ug.drawNewWay(x, y, polygon);
 		ug.getParam().setBackcolor(null);
 
 	}

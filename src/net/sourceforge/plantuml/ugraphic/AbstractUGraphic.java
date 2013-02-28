@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 9786 $
+ * Revision $Revision: 10093 $
  *
  */
 package net.sourceforge.plantuml.ugraphic;
@@ -46,6 +46,12 @@ public abstract class AbstractUGraphic<O> extends AbstractCommonUGraphic {
 		super(colorMapper);
 		this.g2d = g2d;
 	}
+	
+	protected AbstractUGraphic(AbstractUGraphic<O> other) {
+		super(other);
+		this.g2d = other.g2d;
+		// this.drivers.putAll(other.drivers);
+	}
 
 	protected final O getGraphicObject() {
 		return g2d;
@@ -59,7 +65,10 @@ public abstract class AbstractUGraphic<O> extends AbstractCommonUGraphic {
 		this.drivers.put(cl, driver);
 	}
 
-	public final void draw(double x, double y, UShape shape) {
+	public final void drawOldWay(UShape shape) {
+		if (shape instanceof UEmpty) {
+			return;
+		}
 		final UDriver<O> driver = drivers.get(shape.getClass());
 		if (driver == null) {
 			throw new UnsupportedOperationException(shape.getClass().toString() + " " + this.getClass());
@@ -68,7 +77,7 @@ public abstract class AbstractUGraphic<O> extends AbstractCommonUGraphic {
 			return;
 		}
 		beforeDraw();
-		driver.draw(shape, x + getTranslateX(), y + getTranslateY(), getColorMapper(), getParam(), g2d);
+		driver.draw(shape, getTranslateXTOBEREMOVED(), getTranslateYTOBEREMOVED(), getColorMapper(), getParam(), g2d);
 		afterDraw();
 	}
 

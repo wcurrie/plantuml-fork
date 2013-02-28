@@ -556,4 +556,30 @@ class EntityImpl implements ILeaf, IGroup {
 	public SingleStrategy getSingleStrategy() {
 		return SingleStrategy.SQUARRE;
 	}
+
+	private boolean removed = false;
+
+	public boolean isRemoved() {
+		if (isGroup()) {
+			if (getLeafsDirect().size() == 0) {
+				return false;
+			}
+			for (ILeaf leaf : getLeafsDirect()) {
+				if (leaf.isRemoved() == false) {
+					return false;
+				}
+			}
+			for (IGroup g : zgetChildren()) {
+				if (g.isRemoved() == false) {
+					return false;
+				}
+			}
+			return true;
+		}
+		return removed;
+	}
+
+	public void setRemoved(boolean removed) {
+		this.removed = removed;
+	}
 }

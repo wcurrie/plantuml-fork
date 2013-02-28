@@ -46,11 +46,16 @@ public class InstructionIf implements Instruction {
 	private final Display whenThen;
 	private Display whenElse;
 	private InstructionList current = thenList;
+	private final LinkRendering inlinkRendering;
+	private LinkRendering endThenInlinkRendering;
+	private LinkRendering elseThenInlinkRendering;
+	private boolean isThereElse = false;
 
-	public InstructionIf(Instruction parent, Display labelTest, Display whenThen) {
+	public InstructionIf(Instruction parent, Display labelTest, Display whenThen, LinkRendering inlinkRendering) {
 		this.parent = parent;
 		this.labelTest = labelTest;
 		this.whenThen = whenThen;
+		this.inlinkRendering = inlinkRendering;
 	}
 
 	public void add(Instruction ins) {
@@ -59,20 +64,34 @@ public class InstructionIf implements Instruction {
 
 	public Ftile createFtile(FtileFactory factory) {
 		return factory.createIf(thenList.createFtile(factory), elseList.createFtile(factory), labelTest, whenThen,
-				whenElse);
+				whenElse, endThenInlinkRendering, elseThenInlinkRendering);
 	}
 
 	public Instruction getParent() {
 		return parent;
 	}
 
-	public void swithToElse(Display whenElse) {
+	public void swithToElse(Display whenElse, LinkRendering nextLinkRenderer) {
 		this.whenElse = whenElse;
 		this.current = elseList;
+		this.endThenInlinkRendering = nextLinkRenderer;
+		this.isThereElse = true;
+	}
+
+	public void endif(LinkRendering nextLinkRenderer) {
+		if (isThereElse) {
+			this.elseThenInlinkRendering = nextLinkRenderer;
+		} else {
+			this.endThenInlinkRendering = nextLinkRenderer;
+		}
 	}
 
 	public boolean kill() {
 		return current.kill();
+	}
+
+	public LinkRendering getInLinkRendering() {
+		return inlinkRendering;
 	}
 
 }

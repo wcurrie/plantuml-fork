@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 9786 $
+ * Revision $Revision: 10057 $
  *
  */
 package net.sourceforge.plantuml.skin.bluemodern;
@@ -107,7 +107,7 @@ public class ComponentBlueModernGroupingHeader extends AbstractTextualComponent 
 		ug.getParam().setColor(borderColor);
 		ug.getParam().setBackcolor(generalBackgroundColor);
 		ug.getParam().setStroke(new UStroke(2));
-		ug.draw(0, 0, new URectangle(dimensionToUse.getWidth(), dimensionToUse.getHeight()));
+		ug.drawOldWay(new URectangle(dimensionToUse.getWidth(), dimensionToUse.getHeight()));
 		ug.getParam().setStroke(new UStroke());
 	}
 
@@ -117,7 +117,7 @@ public class ComponentBlueModernGroupingHeader extends AbstractTextualComponent 
 		ug.getParam().setColor(borderColor);
 		ug.getParam().setBackcolor(null);
 		ug.getParam().setStroke(new UStroke(2));
-		ug.draw(0, 0, new URectangle(dimensionToUse.getWidth(), dimensionToUse.getHeight()));
+		ug.drawOldWay(new URectangle(dimensionToUse.getWidth(), dimensionToUse.getHeight()));
 		ug.getParam().setStroke(new UStroke());
 		
 		final StringBounder stringBounder = ug.getStringBounder();
@@ -137,13 +137,13 @@ public class ComponentBlueModernGroupingHeader extends AbstractTextualComponent 
 		ug.getParam().setStroke(new UStroke(2));
 		ug.getParam().setBackcolor(headerBackgroundColor);
 		ug.getParam().setColor(borderColor);
-		ug.draw(0, 0, polygon);
-		ug.draw(0, 0, new ULine(dimensionToUse.getWidth(), 0));
+		ug.drawOldWay(polygon);
+		ug.drawOldWay(new ULine(dimensionToUse.getWidth(), 0));
 
 		final double heightWithoutPadding = dimensionToUse.getHeight() - getPaddingY();
 
-		ug.draw(dimensionToUse.getWidth(), 0, new ULine(0, heightWithoutPadding));
-		ug.draw(0, textHeight, new ULine(0, heightWithoutPadding - textHeight));
+		ug.drawNewWay(dimensionToUse.getWidth(), 0, new ULine(0, heightWithoutPadding));
+		ug.drawNewWay(0, textHeight, new ULine(0, heightWithoutPadding - textHeight));
 		ug.getParam().setStroke(new UStroke());
 
 		getTextBlock().drawU(ug, getMarginX1(), getMarginY());

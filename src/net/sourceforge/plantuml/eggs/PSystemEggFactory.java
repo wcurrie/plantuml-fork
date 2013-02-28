@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 9786 $
+ * Revision $Revision: 10005 $
  *
  */
 package net.sourceforge.plantuml.eggs;
@@ -40,7 +40,7 @@ import java.util.List;
 import net.sourceforge.plantuml.DiagramType;
 import net.sourceforge.plantuml.PSystemBasicFactory;
 
-public class PSystemEggFactory implements PSystemBasicFactory {
+public class PSystemEggFactory extends PSystemBasicFactory {
 
 	private PSystemEgg system;
 

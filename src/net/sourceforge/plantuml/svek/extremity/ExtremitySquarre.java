@@ -53,7 +53,7 @@ class ExtremitySquarre extends Extremity implements UDrawable {
 	public void drawU(UGraphic ug, double x, double y) {
 		ug.getParam().setBackcolor(HtmlColorUtils.WHITE);
 		ug.getParam().setStroke(new UStroke(1.5));
-		ug.draw(x + dest.getX() - radius, y + dest.getY() - radius, new URectangle(radius * 2, radius * 2));
+		ug.drawNewWay(x + dest.getX() - radius, y + dest.getY() - radius, new URectangle(radius * 2, radius * 2));
 		ug.getParam().setStroke(new UStroke());
 		ug.getParam().setBackcolor(null);
 	}

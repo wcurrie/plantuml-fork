@@ -36,7 +36,7 @@ import java.io.UnsupportedEncodingException;
 import net.sourceforge.plantuml.DiagramType;
 import net.sourceforge.plantuml.PSystemBasicFactory;
 
-public class PSystemDitaaFactory implements PSystemBasicFactory {
+public class PSystemDitaaFactory extends PSystemBasicFactory {
 
 	private StringBuilder data;
 	private boolean first;

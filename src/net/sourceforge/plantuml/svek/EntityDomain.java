@@ -74,8 +74,8 @@ public class EntityDomain implements TextBlock {
 		ug.getParam().setColor(foregroundColor);
 		final UEllipse circle = new UEllipse(radius * 2, radius * 2);
 		circle.setDeltaShadow(deltaShadow);
-		ug.draw(x, y, circle);
-		ug.draw(x, y + 2 * radius + suppY, new ULine(2 * radius, 0));
+		ug.drawNewWay(x, y, circle);
+		ug.drawNewWay(x, y + 2 * radius + suppY, new ULine(2 * radius, 0));
 		ug.getParam().setStroke(new UStroke());
 
 	}

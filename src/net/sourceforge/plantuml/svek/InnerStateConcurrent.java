@@ -61,7 +61,7 @@ public final class InnerStateConcurrent implements IEntityImage {
 		ug.getParam().setBackcolor(null);
 		ug.getParam().setColor(HtmlColorUtils.BLACK);
 		ug.getParam().setStroke(new UStroke(DASH, 10, THICKNESS_BORDER));
-		ug.draw(x, y, rect);
+		ug.drawNewWay(x, y, rect);
 		ug.getParam().setStroke(new UStroke());
 
 		im.drawU(ug, x, y);

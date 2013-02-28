@@ -33,6 +33,7 @@
  */
 package net.sourceforge.plantuml.activitydiagram3.ftile;
 
+import net.sourceforge.plantuml.activitydiagram3.LinkRendering;
 import net.sourceforge.plantuml.graphic.TextBlock;
 
 public interface Ftile extends TextBlock {
@@ -40,4 +41,6 @@ public interface Ftile extends TextBlock {
 	public static final boolean SHADOWING = true;
 	
 	public boolean isKilled();
+
+	public LinkRendering getInLinkRendering();
 }

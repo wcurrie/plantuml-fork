@@ -43,13 +43,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import net.sourceforge.plantuml.CMapData;
 import net.sourceforge.plantuml.Dimension2DDouble;
 import net.sourceforge.plantuml.FileFormatOption;
 import net.sourceforge.plantuml.UmlDiagram;
-import net.sourceforge.plantuml.UmlDiagramInfo;
 import net.sourceforge.plantuml.UmlDiagramType;
 import net.sourceforge.plantuml.Url;
+import net.sourceforge.plantuml.api.ImageData;
+import net.sourceforge.plantuml.api.ImageDataSimple;
 import net.sourceforge.plantuml.golem.MinMax;
 import net.sourceforge.plantuml.golem.Path;
 import net.sourceforge.plantuml.golem.Position;
@@ -115,10 +115,10 @@ public class FlowDiagram extends UmlDiagram implements TextBlock {
 	}
 
 	@Override
-	protected UmlDiagramInfo exportDiagramInternal(OutputStream os, CMapData cmap, int index,
-			FileFormatOption fileFormatOption, List<BufferedImage> flashcodes) throws IOException {
+	protected ImageData exportDiagramInternal(OutputStream os, int index, FileFormatOption fileFormatOption,
+			List<BufferedImage> flashcodes) throws IOException {
 		UGraphicUtils.writeImage(os, null, fileFormatOption, new ColorMapperIdentity(), HtmlColorUtils.WHITE, this);
-		return new UmlDiagramInfo();
+		return new ImageDataSimple();
 	}
 
 	public void drawU(UGraphic ug, double x, double y) {
@@ -146,8 +146,8 @@ public class FlowDiagram extends UmlDiagram implements TextBlock {
 			final Point2D pStart = movePoint(getCenter(start), start.getTile(), start.getGeometry(), stringBounder);
 			final Point2D pDest = movePoint(getCenter(dest), dest.getTile(), dest.getGeometry(), stringBounder);
 			final ULine line = new ULine(pDest.getX() - pStart.getX(), pDest.getY() - pStart.getY());
-			ug.draw(x + pStart.getX(), y + pStart.getY(), line);
-			ug.draw(x + pDest.getX() - 3, y + pDest.getY() - 3, arrow);
+			ug.drawNewWay(x + pStart.getX(), y + pStart.getY(), line);
+			ug.drawNewWay(x + pDest.getX() - 3, y + pDest.getY() - 3, arrow);
 
 		}
 	}
