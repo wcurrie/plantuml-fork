@@ -36,9 +36,9 @@ package net.sourceforge.plantuml.oregon;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.sourceforge.plantuml.DiagramType;
 import net.sourceforge.plantuml.PSystemBasicFactory;
 import net.sourceforge.plantuml.StringUtils;
+import net.sourceforge.plantuml.core.DiagramType;
 
 public class PSystemOregonFactory extends PSystemBasicFactory {
 

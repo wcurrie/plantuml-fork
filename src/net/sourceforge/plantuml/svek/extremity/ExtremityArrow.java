@@ -35,12 +35,12 @@ package net.sourceforge.plantuml.svek.extremity;
 
 import java.awt.geom.Point2D;
 
-import net.sourceforge.plantuml.graphic.UDrawable;
+import net.sourceforge.plantuml.ugraphic.UChangeBackColor;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
 import net.sourceforge.plantuml.ugraphic.ULine;
 import net.sourceforge.plantuml.ugraphic.UPolygon;
 
-class ExtremityArrow extends Extremity implements UDrawable {
+class ExtremityArrow extends Extremity {
 
 	private UPolygon polygon = new UPolygon();
 	private final ULine line;
@@ -63,13 +63,12 @@ class ExtremityArrow extends Extremity implements UDrawable {
 		this.line = new ULine(center.getX() - contact.getX(), center.getY() - contact.getY());
 	}
 
-	public void drawU(UGraphic ug, double x, double y) {
-		ug.getParam().setBackcolor(ug.getParam().getColor());
-		ug.drawNewWay(x, y, polygon);
+	public void drawUNewWayINLINED(UGraphic ug) {
+		ug = ug.apply(new UChangeBackColor(ug.getParam().getColor()));
+		ug.drawOldWay(polygon);
 		if (line.getLength() > 2) {
-			ug.drawNewWay(x + contact.getX(), y + contact.getY(), line);
+			ug.drawNewWay(contact.getX(), contact.getY(), line);
 		}
-		ug.getParam().setBackcolor(null);
 	}
 
 }

@@ -48,9 +48,9 @@ import net.sourceforge.plantuml.UmlDiagram;
 import net.sourceforge.plantuml.UmlDiagramType;
 import net.sourceforge.plantuml.activitydiagram3.ftile.Ftile;
 import net.sourceforge.plantuml.activitydiagram3.ftile.vertical.VerticalFactory;
-import net.sourceforge.plantuml.api.ImageData;
 import net.sourceforge.plantuml.api.ImageDataSimple;
 import net.sourceforge.plantuml.command.CommandExecutionResult;
+import net.sourceforge.plantuml.core.ImageData;
 import net.sourceforge.plantuml.cucadiagram.Display;
 import net.sourceforge.plantuml.graphic.FontConfiguration;
 import net.sourceforge.plantuml.graphic.HorizontalAlignement;
@@ -67,6 +67,7 @@ import net.sourceforge.plantuml.ugraphic.TextLimitFinder;
 import net.sourceforge.plantuml.ugraphic.UFont;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
 import net.sourceforge.plantuml.ugraphic.UGraphicCompress;
+import net.sourceforge.plantuml.ugraphic.UTranslate;
 
 public class ActivityDiagram3 extends UmlDiagram {
 
@@ -92,7 +93,7 @@ public class ActivityDiagram3 extends UmlDiagram {
 		final TextBlock result = getResult();
 
 		final TextLimitFinder limitFinder = new TextLimitFinder(dummyStringBounder, true);
-		result.drawU(limitFinder, 0, 0);
+		result.drawUNewWayINLINED(limitFinder);
 		final double negX = Math.min(0, limitFinder.getMinX());
 		final double negY = Math.min(0, limitFinder.getMinY());
 		assert negX <= 0;
@@ -110,7 +111,7 @@ public class ActivityDiagram3 extends UmlDiagram {
 				.getBackgroundColor(), isRotation());
 
 		final double posy = 5 - negY;
-		result.drawU(ug, 8 - negX, posy);
+		result.drawUNewWayINLINED(ug.apply(new UTranslate((8 - negX), posy)));
 		ug.writeImage(os, getMetadata(), getDpi(fileFormatOption));
 
 		return new Dimension2DDouble(dim.getWidth(), dim.getHeight());
@@ -121,14 +122,14 @@ public class ActivityDiagram3 extends UmlDiagram {
 		final TextBlock result = getResult();
 
 		final TextLimitFinder limitFinder = new TextLimitFinder(dummyStringBounder, true);
-		result.drawU(limitFinder, 0, 0);
+		result.drawUNewWayINLINED(limitFinder);
 		final double negX = Math.min(0, limitFinder.getMinX());
 		final double negY = Math.min(0, limitFinder.getMinY());
 		assert negX <= 0;
 		assert negY <= 0;
 
 		final SlotFinder slotFinder = new SlotFinder(dummyStringBounder);
-		result.drawU(slotFinder, 0, 0);
+		result.drawUNewWayINLINED(slotFinder);
 		final SlotSet ysSlotSet = slotFinder.getYSlotSet().reverse().smaller(5.0);
 
 		final ISkinParam skinParam = getSkinParam();
@@ -150,7 +151,7 @@ public class ActivityDiagram3 extends UmlDiagram {
 		// }
 
 		ug = new UGraphicCompress(ug, compressionTransform);
-		result.drawU(ug, 8 - negX, 0);
+		result.drawUNewWayINLINED(ug.apply(new UTranslate((8 - negX), 0)));
 		ug.writeImage(os, getMetadata(), getDpi(fileFormatOption));
 
 		return new ImageDataSimple((int) dim.getWidth(), (int) dim.getHeight());
@@ -215,7 +216,6 @@ public class ActivityDiagram3 extends UmlDiagram {
 		final InstructionFork instructionFork = new InstructionFork(current);
 		current.add(instructionFork);
 		current = instructionFork;
-
 	}
 
 	public CommandExecutionResult forkAgain() {
@@ -232,6 +232,28 @@ public class ActivityDiagram3 extends UmlDiagram {
 			return CommandExecutionResult.ok();
 		}
 		return CommandExecutionResult.error("Cannot find fork");
+	}
+
+	public void split() {
+		final InstructionSplit instructionSplit = new InstructionSplit(current);
+		current.add(instructionSplit);
+		current = instructionSplit;
+	}
+
+	public CommandExecutionResult splitAgain() {
+		if (current instanceof InstructionSplit) {
+			((InstructionSplit) current).splitAgain();
+			return CommandExecutionResult.ok();
+		}
+		return CommandExecutionResult.error("Cannot find split");
+	}
+
+	public CommandExecutionResult endSplit() {
+		if (current instanceof InstructionSplit) {
+			current = ((InstructionSplit) current).getParent();
+			return CommandExecutionResult.ok();
+		}
+		return CommandExecutionResult.error("Cannot find split");
 	}
 
 	public void startIf(Display test, Display whenThen) {
@@ -278,15 +300,15 @@ public class ActivityDiagram3 extends UmlDiagram {
 
 	}
 
-	public void doWhile(Display test) {
-		final InstructionWhile instructionWhile = new InstructionWhile(current, test, nextLinkRenderer);
+	public void doWhile(Display test, Display yes) {
+		final InstructionWhile instructionWhile = new InstructionWhile(current, test, nextLinkRenderer, yes);
 		current.add(instructionWhile);
 		current = instructionWhile;
 	}
 
-	public CommandExecutionResult endwhile() {
+	public CommandExecutionResult endwhile(Display out) {
 		if (current instanceof InstructionWhile) {
-			((InstructionWhile) current).endwhile(nextLinkRenderer);
+			((InstructionWhile) current).endwhile(nextLinkRenderer, out);
 			nextLinkRenderer = null;
 			current = ((InstructionWhile) current).getParent();
 			return CommandExecutionResult.ok();
@@ -333,6 +355,11 @@ public class ActivityDiagram3 extends UmlDiagram {
 			}
 		}
 		this.nextLinkRenderer = linkRenderer;
+	}
+
+	public CommandExecutionResult addNote(Display note) {
+		current.addNote(note);
+		return CommandExecutionResult.ok();
 	}
 
 }

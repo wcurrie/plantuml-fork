@@ -43,27 +43,28 @@ import net.sourceforge.plantuml.activitydiagram3.LinkRendering;
 import net.sourceforge.plantuml.activitydiagram3.ftile.Ftile;
 import net.sourceforge.plantuml.graphic.HtmlColor;
 import net.sourceforge.plantuml.graphic.StringBounder;
+import net.sourceforge.plantuml.ugraphic.UChangeBackColor;
+import net.sourceforge.plantuml.ugraphic.UChangeColor;
 import net.sourceforge.plantuml.ugraphic.UEllipse;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
 
 public class FtileCircleStart implements Ftile {
 
 	private static final int SIZE = 20;
-	
+
 	private final HtmlColor backColor;
-	
+
 	FtileCircleStart(HtmlColor backColor) {
 		this.backColor = backColor;
 	}
 
-	public void drawU(UGraphic ug, double xTheoricalPosition, double yTheoricalPosition) {
+	public void drawUNewWayINLINED(UGraphic ug) {
 		final UEllipse circle = new UEllipse(SIZE, SIZE);
 		if (SHADOWING) {
 			circle.setDeltaShadow(3);
 		}
-		ug.getParam().setColor(null);
-		ug.getParam().setBackcolor(backColor);
-		ug.drawNewWay(xTheoricalPosition, yTheoricalPosition, circle);
+		ug.apply(new UChangeColor(null)).apply(new UChangeBackColor(backColor))
+				.drawOldWay(circle);
 	}
 
 	public Dimension2D calculateDimension(StringBounder stringBounder) {
@@ -73,7 +74,7 @@ public class FtileCircleStart implements Ftile {
 	public List<Url> getUrls() {
 		return Collections.emptyList();
 	}
-	
+
 	public boolean isKilled() {
 		return false;
 	}
@@ -81,6 +82,5 @@ public class FtileCircleStart implements Ftile {
 	public LinkRendering getInLinkRendering() {
 		return null;
 	}
-
 
 }

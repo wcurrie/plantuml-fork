@@ -106,8 +106,4 @@ public class GraphvizCached implements Graphviz {
 		return graphviz.getDotExe();
 	}
 
-	public String testFile(String dotfilename, String outfile) throws IOException, InterruptedException {
-		return graphviz.testFile(dotfilename, outfile);
-	}
-
 }

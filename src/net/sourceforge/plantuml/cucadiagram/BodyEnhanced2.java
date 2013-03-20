@@ -175,8 +175,8 @@ public class BodyEnhanced2 implements TextBlock {
 				spriteContainer);
 	}
 
-	public void drawU(UGraphic ug, double x, double y) {
-		getArea(ug.getStringBounder()).drawU(ug, x, y);
+	public void drawUNewWayINLINED(UGraphic ug) {
+		getArea(ug.getStringBounder()).drawUNewWayINLINED(ug);
 	}
 
 	public List<Url> getUrls() {

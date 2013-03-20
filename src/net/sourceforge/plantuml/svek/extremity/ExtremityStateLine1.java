@@ -36,14 +36,14 @@ package net.sourceforge.plantuml.svek.extremity;
 import java.awt.geom.Point2D;
 
 import net.sourceforge.plantuml.graphic.HtmlColorUtils;
-import net.sourceforge.plantuml.graphic.UDrawable;
+import net.sourceforge.plantuml.ugraphic.UChangeBackColor;
 import net.sourceforge.plantuml.ugraphic.UEllipse;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
 import net.sourceforge.plantuml.ugraphic.ULine;
 import net.sourceforge.plantuml.ugraphic.UPolygon;
 import net.sourceforge.plantuml.ugraphic.UStroke;
 
-class ExtremityStateLine1 extends Extremity implements UDrawable {
+class ExtremityStateLine1 extends Extremity {
 
 	private UPolygon polygon = new UPolygon();
 	private final Point2D dest;
@@ -65,18 +65,16 @@ class ExtremityStateLine1 extends Extremity implements UDrawable {
 		polygon = polygon.translate(center.getX(), center.getY());
 	}
 
-	public void drawU(UGraphic ug, double x, double y) {
-		ug.getParam().setBackcolor(ug.getParam().getColor());
-		ug.drawNewWay(x - radius * Math.cos(angle), y - radius * Math.sin(angle), polygon);
-		ug.getParam().setBackcolor(HtmlColorUtils.WHITE);
-		ug.getParam().setStroke(new UStroke(1.5));
-		ug.drawNewWay(x + dest.getX() - radius, y + dest.getY() - radius, new UEllipse(radius * 2, radius * 2));
-		ug.getParam().setStroke(new UStroke());
-		drawLine(ug, getPointOnCircle(x + dest.getX(), y + dest.getY(), Math.PI / 4),
-				getPointOnCircle(x + dest.getX(), y + dest.getY(), Math.PI + Math.PI / 4));
-		drawLine(ug, getPointOnCircle(x + dest.getX(), y + dest.getY(), -Math.PI / 4),
-				getPointOnCircle(x + dest.getX(), y + dest.getY(), Math.PI - Math.PI / 4));
-		ug.getParam().setBackcolor(null);
+	public void drawUNewWayINLINED(UGraphic ug) {
+		ug.apply(new UChangeBackColor(ug.getParam().getColor())).drawNewWay(-radius * Math.cos(angle),
+				-radius * Math.sin(angle), polygon);
+		ug = ug.apply(new UChangeBackColor(HtmlColorUtils.WHITE));
+		ug.apply(new UStroke(1.5)).drawNewWay(dest.getX() - radius, dest.getY() - radius,
+				new UEllipse(radius * 2, radius * 2));
+		drawLine(ug, getPointOnCircle(dest.getX(), dest.getY(), Math.PI / 4),
+				getPointOnCircle(dest.getX(), dest.getY(), Math.PI + Math.PI / 4));
+		drawLine(ug, getPointOnCircle(dest.getX(), dest.getY(), -Math.PI / 4),
+				getPointOnCircle(dest.getX(), dest.getY(), Math.PI - Math.PI / 4));
 	}
 
 	private Point2D getPointOnCircle(double centerX, double centerY, double angle) {

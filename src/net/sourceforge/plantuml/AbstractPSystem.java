@@ -28,26 +28,21 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 10004 $
+ * Revision $Revision: 10298 $
  *
  */
 package net.sourceforge.plantuml;
 
-import java.io.BufferedOutputStream;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.OutputStream;
-import java.util.Arrays;
 import java.util.Date;
-import java.util.List;
 import java.util.Properties;
 
+import net.sourceforge.plantuml.core.Diagram;
+import net.sourceforge.plantuml.core.UmlSource;
 import net.sourceforge.plantuml.cucadiagram.Display;
 import net.sourceforge.plantuml.version.License;
 import net.sourceforge.plantuml.version.Version;
 
-public abstract class AbstractPSystem implements PSystem {
+public abstract class AbstractPSystem implements Diagram {
 
 	private UmlSource source;
 

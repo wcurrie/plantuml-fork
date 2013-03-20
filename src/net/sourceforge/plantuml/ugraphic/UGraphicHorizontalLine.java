@@ -33,28 +33,26 @@
  */
 package net.sourceforge.plantuml.ugraphic;
 
-
-public class UGraphicHorizontalLine extends AbstractUGraphicHorizontalLine {
+public class UGraphicHorizontalLine extends AbstractUGraphicHorizontalLine2 {
 
 	private final double startingX;
 	private final double endingX;
+	private final UStroke defaultStroke;
 
-	public UGraphicHorizontalLine(UGraphic ug, double startingX, double endingX) {
+	public UGraphicHorizontalLine(UGraphic ug, double startingX, double endingX, UStroke defaultStroke) {
 		super(ug);
 		this.startingX = startingX;
 		this.endingX = endingX;
+		this.defaultStroke = defaultStroke;
 	}
-	
-	@Override
-	protected AbstractUGraphicHorizontalLine copy() {
-		return new UGraphicHorizontalLine(getUg(), startingX, endingX);
-	}
-
 
 	@Override
-	protected void drawHline(UGraphic ug, double x, double y, UHorizontalLine line) {
-		line.drawLine(ug, startingX, endingX, y);
+	protected AbstractUGraphicHorizontalLine2 copy(UGraphic ug) {
+		return new UGraphicHorizontalLine(ug, startingX, endingX, defaultStroke);
 	}
 
-
+	@Override
+	protected void drawHline(UGraphic ug, UHorizontalLine line, UTranslate translate) {
+		line.drawLine(ug.apply(translate), startingX, endingX, 0, defaultStroke);
+	}
 }

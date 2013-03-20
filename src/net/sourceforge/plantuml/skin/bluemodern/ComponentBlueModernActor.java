@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 10076 $
+ * Revision $Revision: 10265 $
  *
  */
 package net.sourceforge.plantuml.skin.bluemodern;
@@ -42,6 +42,7 @@ import net.sourceforge.plantuml.graphic.TextBlock;
 import net.sourceforge.plantuml.skin.AbstractTextualComponent;
 import net.sourceforge.plantuml.skin.Area;
 import net.sourceforge.plantuml.skin.StickMan;
+import net.sourceforge.plantuml.ugraphic.UChangeColor;
 import net.sourceforge.plantuml.ugraphic.UFont;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
 import net.sourceforge.plantuml.ugraphic.UTranslate;
@@ -51,8 +52,8 @@ public class ComponentBlueModernActor extends AbstractTextualComponent {
 	private final StickMan stickman;
 	private final boolean head;
 
-	public ComponentBlueModernActor(HtmlColor backgroundColor, HtmlColor foregroundColor, HtmlColor fontColor, UFont font,
-			Display stringsToDisplay, boolean head, SpriteContainer spriteContainer) {
+	public ComponentBlueModernActor(HtmlColor backgroundColor, HtmlColor foregroundColor, HtmlColor fontColor,
+			UFont font, Display stringsToDisplay, boolean head, SpriteContainer spriteContainer) {
 		super(stringsToDisplay, fontColor, font, HorizontalAlignement.CENTER, 3, 3, 0, spriteContainer);
 		this.head = head;
 		stickman = new StickMan(backgroundColor, foregroundColor);
@@ -60,19 +61,19 @@ public class ComponentBlueModernActor extends AbstractTextualComponent {
 
 	@Override
 	protected void drawInternalU(UGraphic ug, Area area) {
-		ug.getParam().setColor(getFontColor());
+		ug = ug.apply(new UChangeColor(getFontColor()));
 		final TextBlock textBlock = getTextBlock();
 		final StringBounder stringBounder = ug.getStringBounder();
 		final double delta = (getPreferredWidth(stringBounder) - stickman.getPreferredWidth()) / 2;
 
 		if (head) {
-			textBlock.drawU(ug, getTextMiddlePostion(stringBounder), stickman.getPreferredHeight());
+			textBlock.drawUNewWayINLINED(ug.apply(new UTranslate(getTextMiddlePostion(stringBounder), stickman.getPreferredHeight())));
 			ug = ug.apply(new UTranslate(delta, 0));
 		} else {
-			textBlock.drawU(ug, getTextMiddlePostion(stringBounder), 0);
+			textBlock.drawUNewWayINLINED(ug.apply(new UTranslate(getTextMiddlePostion(stringBounder), 0)));
 			ug = ug.apply(new UTranslate(delta, getTextHeight(stringBounder)));
 		}
-		stickman.drawU(ug, 0, 0);
+		stickman.drawUNewWayINLINED(ug);
 
 	}
 

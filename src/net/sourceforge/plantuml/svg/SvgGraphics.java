@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 9786 $
+ * Revision $Revision: 10277 $
  *
  */
 package net.sourceforge.plantuml.svg;
@@ -444,7 +444,22 @@ public class SvgGraphics {
 		return transformer;
 	}
 
-	public void createXml(OutputStream os) throws TransformerException {
+	public void createXml(OutputStream os) throws TransformerException, IOException {
+		if (images.size() == 0) {
+			createXmlInternal(os);
+			return;
+		}
+		final ByteArrayOutputStream baos = new ByteArrayOutputStream();
+		createXmlInternal(baos);
+		String s = new String(baos.toByteArray());
+		for (Map.Entry<String, String> ent : images.entrySet()) {
+			final String k = "\\<" + ent.getKey() + "/\\>";
+			s = s.replaceAll(k, ent.getValue());
+		}
+		os.write(s.getBytes());
+	}
+
+	private void createXmlInternal(OutputStream os) throws TransformerException {
 
 		// // Add lines
 		// for (Line l : lines) {
@@ -585,7 +600,26 @@ public class SvgGraphics {
 		}
 		ensureVisible(x, y);
 		ensureVisible(x + image.getWidth(), y + image.getHeight());
+	}
 
+	private final Map<String, String> images = new HashMap<String, String>();
+
+	public void svgImage(String svg, double x, double y) {
+		if (svg.startsWith("<svg>") == false) {
+			throw new IllegalArgumentException();
+		}
+		if (hidden == false) {
+			final String pos = "<svg x=\"" + format(x) + "\" y=\"" + format(y) + "\">";
+			svg = pos + svg.substring(5);
+			System.err.println("svg=" + svg);
+			System.err.println("x=" + x);
+			System.err.println("y=" + y);
+			final String key = "imagesvginlined" + images.size();
+			final Element elt = (Element) document.createElement(key);
+			getG().appendChild(elt);
+			images.put(key, svg);
+		}
+		ensureVisible(x, y);
 	}
 
 	private String toBase64(BufferedImage image) throws IOException {

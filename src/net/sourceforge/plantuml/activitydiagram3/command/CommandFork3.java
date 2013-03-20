@@ -55,9 +55,6 @@ public class CommandFork3 extends SingleLineCommand2<ActivityDiagram3> {
 
 	@Override
 	protected CommandExecutionResult executeArg(RegexResult arg) {
-		// if (getSystem().getLastEntityConsulted() == null) {
-		// return CommandExecutionResult.error("No if for this endif");
-		// }
 		getSystem().fork();
 
 		return CommandExecutionResult.ok();

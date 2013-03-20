@@ -45,10 +45,9 @@ import jcckit.data.DataPlot;
 import jcckit.util.ConfigParameters;
 import jcckit.util.PropertiesBasedConfigData;
 import net.sourceforge.plantuml.AbstractPSystem;
-import net.sourceforge.plantuml.CMapData;
 import net.sourceforge.plantuml.FileFormatOption;
-import net.sourceforge.plantuml.api.ImageData;
 import net.sourceforge.plantuml.api.ImageDataSimple;
+import net.sourceforge.plantuml.core.ImageData;
 
 public class PSystemJcckit extends AbstractPSystem {
 

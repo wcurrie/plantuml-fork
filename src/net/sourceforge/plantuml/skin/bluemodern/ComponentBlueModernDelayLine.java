@@ -40,9 +40,10 @@ import net.sourceforge.plantuml.graphic.StringBounder;
 import net.sourceforge.plantuml.skin.AbstractComponent;
 import net.sourceforge.plantuml.skin.Area;
 import net.sourceforge.plantuml.ugraphic.UAntiAliasing;
+import net.sourceforge.plantuml.ugraphic.UChangeBackColor;
+import net.sourceforge.plantuml.ugraphic.UChangeColor;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
 import net.sourceforge.plantuml.ugraphic.ULine;
-import net.sourceforge.plantuml.ugraphic.UStroke;
 
 public class ComponentBlueModernDelayLine extends AbstractComponent {
 
@@ -55,12 +56,11 @@ public class ComponentBlueModernDelayLine extends AbstractComponent {
 	@Override
 	protected void drawInternalU(UGraphic ug, Area area) {
 		final Dimension2D dimensionToUse = area.getDimensionToUse();
-		ug.getParam().setColor(color);
-		ug.getParam().setBackcolor(color);
-		stroke(ug, 1, 4);
+		ug = ug.apply(new UChangeColor(color));
+		ug = stroke(ug, 1, 4);
 		final int x = (int) (dimensionToUse.getWidth() / 2);
-		ug.apply(UAntiAliasing.ANTI_ALIASING_OFF).drawNewWay(x + 1, 0, new ULine(0, dimensionToUse.getHeight()));
-		ug.getParam().setStroke(new UStroke());
+		ug.apply(new UChangeBackColor(color)).apply(UAntiAliasing.ANTI_ALIASING_OFF)
+				.drawNewWay(x + 1, 0, new ULine(0, dimensionToUse.getHeight()));
 	}
 
 	@Override

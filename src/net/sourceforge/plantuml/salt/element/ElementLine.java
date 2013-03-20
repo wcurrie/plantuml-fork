@@ -36,11 +36,12 @@ package net.sourceforge.plantuml.salt.element;
 import java.awt.geom.Dimension2D;
 
 import net.sourceforge.plantuml.Dimension2DDouble;
-import net.sourceforge.plantuml.graphic.HtmlColor;
 import net.sourceforge.plantuml.graphic.HtmlColorUtils;
 import net.sourceforge.plantuml.graphic.StringBounder;
-import net.sourceforge.plantuml.graphic.TextBlockLineBefore2;
+import net.sourceforge.plantuml.ugraphic.UChangeColor;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
+import net.sourceforge.plantuml.ugraphic.ULine;
+import net.sourceforge.plantuml.ugraphic.UStroke;
 
 public class ElementLine implements Element {
 
@@ -58,13 +59,25 @@ public class ElementLine implements Element {
 		if (zIndex != 0) {
 			return;
 		}
-		final HtmlColor old = ug.getParam().getColor();
-		ug.getParam().setColor(HtmlColorUtils.getColorIfValid("#AAAAAA"));
+		ug = ug.apply(new UChangeColor(HtmlColorUtils.getColorIfValid("#AAAAAA")));
 		double y2 = y + dimToUse.getHeight() / 2;
 		if (separator == '=') {
 			y2 = y2 - 1;
 		}
-		TextBlockLineBefore2.drawLine(ug, x, y2, dimToUse.getWidth(), separator);
-		ug.getParam().setColor(old);
+		drawLine(ug, x, y2, dimToUse.getWidth(), separator);
 	}
+
+	private static void drawLine(UGraphic ug, double x, double y, double widthToUse, char separator) {
+		if (separator == '=') {
+			ug.apply(new UStroke()).drawNewWay(x, y, new ULine(widthToUse, 0));
+			ug.apply(new UStroke()).drawNewWay(x, y + 2, new ULine(widthToUse, 0));
+		} else if (separator == '.') {
+			ug.apply(new UStroke(1, 2, 1)).drawNewWay(x, y, new ULine(widthToUse, 0));
+		} else if (separator == '-') {
+			ug.apply(new UStroke()).drawNewWay(x, y, new ULine(widthToUse, 0));
+		} else {
+			ug.apply(new UStroke(1.5)).drawNewWay(x, y, new ULine(widthToUse, 0));
+		}
+	}
+
 }

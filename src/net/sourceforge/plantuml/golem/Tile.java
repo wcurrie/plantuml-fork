@@ -50,10 +50,12 @@ import net.sourceforge.plantuml.graphic.HtmlColorUtils;
 import net.sourceforge.plantuml.graphic.StringBounder;
 import net.sourceforge.plantuml.graphic.TextBlock;
 import net.sourceforge.plantuml.graphic.TextBlockUtils;
+import net.sourceforge.plantuml.ugraphic.UChangeColor;
 import net.sourceforge.plantuml.ugraphic.UEllipse;
 import net.sourceforge.plantuml.ugraphic.UFont;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
 import net.sourceforge.plantuml.ugraphic.URectangle;
+import net.sourceforge.plantuml.ugraphic.UTranslate;
 
 public class Tile implements TextBlock {
 
@@ -77,8 +79,8 @@ public class Tile implements TextBlock {
 		return this.geometries.get(geometry);
 	}
 
-	public void drawU(UGraphic ug, double x, double y) {
-		ug.getParam().setColor(HtmlColorUtils.BLACK);
+	public void drawUNewWayINLINED(UGraphic ug) {
+		ug = ug.apply(new UChangeColor(HtmlColorUtils.BLACK));
 		final TextBlock n = TextBlockUtils.create(Display.asList("" + num), fc, HorizontalAlignement.LEFT,
 				new SpriteContainerEmpty());
 		final Dimension2D dimNum = n.calculateDimension(ug.getStringBounder());
@@ -88,9 +90,9 @@ public class Tile implements TextBlock {
 		final double radius = Math.max(dimNum.getWidth(), dimNum.getHeight());
 		final double diffx2 = dimTotal.getWidth() - radius;
 		final double diffy2 = dimTotal.getHeight() - radius;
-		n.drawU(ug, x + diffx / 2, y + diffy / 2);
-		ug.drawNewWay(x, y, new URectangle(SIZE, SIZE));
-		ug.drawNewWay(x + diffx2 / 2, y + diffy2 / 2, new UEllipse(radius, radius));
+		n.drawUNewWayINLINED(ug.apply(new UTranslate((diffx / 2), (diffy / 2))));
+		ug.drawOldWay(new URectangle(SIZE, SIZE));
+		ug.drawNewWay(diffx2 / 2, diffy2 / 2, new UEllipse(radius, radius));
 	}
 
 	public Dimension2D calculateDimension(StringBounder stringBounder) {

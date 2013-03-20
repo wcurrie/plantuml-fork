@@ -42,11 +42,11 @@ import net.sourceforge.plantuml.Url;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
 import net.sourceforge.plantuml.ugraphic.URectangle;
 import net.sourceforge.plantuml.ugraphic.UShape;
+import net.sourceforge.plantuml.ugraphic.UTranslate;
 
 class USymbolComponent2 extends USymbol {
 
-	private void drawNode(UGraphic ug, double xTheoricalPosition, double yTheoricalPosition, double widthTotal,
-			double heightTotal, boolean shadowing) {
+	private void drawNode(UGraphic ug, double widthTotal, double heightTotal, boolean shadowing) {
 
 		final URectangle form = new URectangle(widthTotal, heightTotal);
 		if (shadowing) {
@@ -56,12 +56,12 @@ class USymbolComponent2 extends USymbol {
 		final UShape small = new URectangle(15, 10);
 		final UShape tiny = new URectangle(4, 2);
 
-		ug.drawNewWay(xTheoricalPosition, yTheoricalPosition, form);
+		ug.drawOldWay(form);
 
 		// UML 2 Component Notation
-		ug.drawNewWay(xTheoricalPosition + widthTotal - 20, yTheoricalPosition + 5, small);
-		ug.drawNewWay(xTheoricalPosition + widthTotal - 22, yTheoricalPosition + 7, tiny);
-		ug.drawNewWay(xTheoricalPosition + widthTotal - 22, yTheoricalPosition + 11, tiny);
+		ug.drawNewWay(widthTotal - 20, 5, small);
+		ug.drawNewWay(widthTotal - 22, 7, tiny);
+		ug.drawNewWay(widthTotal - 22, 11, tiny);
 
 	}
 
@@ -72,13 +72,12 @@ class USymbolComponent2 extends USymbol {
 	public TextBlock asSmall(final TextBlock label, TextBlock stereotype, final SymbolContext symbolContext) {
 		return new TextBlock() {
 
-			public void drawU(UGraphic ug, double x, double y) {
+			public void drawUNewWayINLINED(UGraphic ug) {
 				final Dimension2D dim = calculateDimension(ug.getStringBounder());
-				symbolContext.apply(ug);
-				drawNode(ug, x, y, dim.getWidth(), dim.getHeight(), symbolContext.isShadowing());
+				ug = symbolContext.apply(ug);
+				drawNode(ug, dim.getWidth(), dim.getHeight(), symbolContext.isShadowing());
 				final Margin margin = getMargin();
-				label.drawU(ug, x + margin.getX1(), y + margin.getY1());
-
+				label.drawUNewWayINLINED(ug.apply(new UTranslate(margin.getX1(), margin.getY1())));
 			}
 
 			public Dimension2D calculateDimension(StringBounder stringBounder) {
@@ -92,16 +91,15 @@ class USymbolComponent2 extends USymbol {
 		};
 	}
 
-	public TextBlock asBig(final TextBlock title, TextBlock stereotype, final double width,
-			final double height, final SymbolContext symbolContext) {
+	public TextBlock asBig(final TextBlock title, TextBlock stereotype, final double width, final double height,
+			final SymbolContext symbolContext) {
 		return new TextBlock() {
 
-			public void drawU(UGraphic ug, double x, double y) {
+			public void drawUNewWayINLINED(UGraphic ug) {
 				final Dimension2D dim = calculateDimension(ug.getStringBounder());
-				symbolContext.apply(ug);
-				drawNode(ug, x, y, dim.getWidth(), dim.getHeight(), symbolContext.isShadowing());
-				title.drawU(ug, x + 3, y + 13);
-
+				ug = symbolContext.apply(ug);
+				drawNode(ug, dim.getWidth(), dim.getHeight(), symbolContext.isShadowing());
+				title.drawUNewWayINLINED(ug.apply(new UTranslate(3, 13)));
 			}
 
 			public Dimension2D calculateDimension(StringBounder stringBounder) {

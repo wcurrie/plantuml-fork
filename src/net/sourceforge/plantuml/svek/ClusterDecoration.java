@@ -43,11 +43,14 @@ import net.sourceforge.plantuml.graphic.StringBounder;
 import net.sourceforge.plantuml.graphic.SymbolContext;
 import net.sourceforge.plantuml.graphic.TextBlock;
 import net.sourceforge.plantuml.graphic.USymbol;
+import net.sourceforge.plantuml.ugraphic.UChangeBackColor;
+import net.sourceforge.plantuml.ugraphic.UChangeColor;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
 import net.sourceforge.plantuml.ugraphic.ULine;
 import net.sourceforge.plantuml.ugraphic.UPolygon;
 import net.sourceforge.plantuml.ugraphic.URectangle;
 import net.sourceforge.plantuml.ugraphic.UStroke;
+import net.sourceforge.plantuml.ugraphic.UTranslate;
 
 public class ClusterDecoration {
 
@@ -78,80 +81,81 @@ public class ClusterDecoration {
 		}
 	}
 
-	public void drawU(UGraphic ug, double x, double y, HtmlColor borderColor, boolean shadowing) {
+	public void drawU(UGraphic ug, HtmlColor borderColor, boolean shadowing) {
 		if (symbol != null) {
 			final SymbolContext symbolContext = new SymbolContext(stateBack, borderColor).withShadow(shadowing)
 					.withStroke(new UStroke(2));
-			symbol.asBig(title, stereo, maxX - minX, maxY - minY, symbolContext).drawU(ug, x + minX, y + minY);
-			ug.getParam().setStroke(new UStroke());
+			symbol.asBig(title, stereo, maxX - minX, maxY - minY, symbolContext).drawUNewWayINLINED(
+					ug.apply(new UTranslate(minX, minY)));
+			// ug.getParam().resetStroke();
 			return;
 		}
 		if (style == PackageStyle.NODE) {
-			drawWithTitleNode(ug, x, y, borderColor, shadowing);
+			drawWithTitleNode(ug, borderColor, shadowing);
 		} else if (style == PackageStyle.DATABASE) {
-			drawWithTitleDatabase(ug, x, y, borderColor, shadowing);
+			drawWithTitleDatabase(ug, borderColor, shadowing);
 		} else if (style == PackageStyle.CLOUD) {
-			drawWithTitleCloud(ug, x, y, borderColor, shadowing);
+			drawWithTitleCloud(ug, borderColor, shadowing);
 		} else if (style == PackageStyle.FRAME) {
-			drawWithTitleFrame(ug, x, y, borderColor, shadowing);
+			drawWithTitleFrame(ug, borderColor, shadowing);
 		} else if (style == PackageStyle.RECT) {
-			drawWithTitleRect(ug, x, y, borderColor, shadowing);
+			drawWithTitleRect(ug, borderColor, shadowing);
 		} else {
-			drawWithTitleFolder(ug, x, y, borderColor, shadowing);
+			drawWithTitleFolder(ug, borderColor, shadowing);
 		}
 	}
 
 	// Cloud
-	private void drawWithTitleCloud(UGraphic ug, double x, double y, HtmlColor borderColor, boolean shadowing) {
+	private void drawWithTitleCloud(UGraphic ug, HtmlColor borderColor, boolean shadowing) {
 		final Dimension2D dimTitle = title.calculateDimension(ug.getStringBounder());
 		final double width = maxX - minX;
 		final double height = maxY - minY;
-		ug.getParam().setBackcolor(stateBack);
-		ug.getParam().setColor(borderColor);
-		ug.getParam().setStroke(new UStroke(2));
-		PackageStyle.CLOUD.drawU(ug, x + minX, y + minY, new Dimension2DDouble(width, height), dimTitle, shadowing);
-		ug.getParam().setStroke(new UStroke());
-		title.drawU(ug, x + minX + (width - dimTitle.getWidth()) / 2, y + minY + 10);
+		ug = ug.apply(new UChangeBackColor(stateBack)).apply(new UChangeColor(borderColor));
+		ug = ug.apply(new UStroke(2));
+		PackageStyle.CLOUD.drawU(ug.apply(new UTranslate(minX, minY)), new Dimension2DDouble(width, height), dimTitle,
+				shadowing);
+		ug = ug.apply(new UStroke());
+		title.drawUNewWayINLINED(ug.apply(new UTranslate(minX + (width - dimTitle.getWidth()) / 2, minY + 10)));
 
 	}
 
 	// Database
-	private void drawWithTitleDatabase(UGraphic ug, double x, double y, HtmlColor borderColor, boolean shadowing) {
+	private void drawWithTitleDatabase(UGraphic ug, HtmlColor borderColor, boolean shadowing) {
 		final Dimension2D dimTitle = title.calculateDimension(ug.getStringBounder());
 		final double width = maxX - minX;
 		final double height = maxY - minY;
-		ug.getParam().setStroke(new UStroke(2));
-		ug.getParam().setBackcolor(stateBack);
-		ug.getParam().setColor(borderColor);
-		PackageStyle.DATABASE.drawU(ug, x + minX, y + minY - 10, new Dimension2DDouble(width, height + 10), dimTitle,
-				shadowing);
-		ug.getParam().setStroke(new UStroke());
-		title.drawU(ug, x + minX + marginTitleX1, y + minY + 10);
+		ug = ug.apply(new UStroke(2));
+		ug = ug.apply(new UChangeBackColor(stateBack)).apply(new UChangeColor(borderColor));
+		PackageStyle.DATABASE.drawU(ug.apply(new UTranslate(minX, minY - 10)),
+				new Dimension2DDouble(width, height + 10), dimTitle, shadowing);
+		ug = ug.apply(new UStroke());
+		title.drawUNewWayINLINED(ug.apply(new UTranslate(minX + marginTitleX1, minY + 10)));
 
 	}
 
 	// Corner
-	private void drawWithTitleFrame(UGraphic ug, double x, double y, HtmlColor borderColor, boolean shadowing) {
+	private void drawWithTitleFrame(UGraphic ug, HtmlColor borderColor, boolean shadowing) {
 		final Dimension2D dimTitle = title.calculateDimension(ug.getStringBounder());
 		final double width = maxX - minX;
 		final double height = maxY - minY;
-		ug.getParam().setBackcolor(stateBack);
-		ug.getParam().setColor(borderColor);
-		ug.getParam().setStroke(new UStroke(2));
-		PackageStyle.FRAME.drawU(ug, x + minX, y + minY, new Dimension2DDouble(width, height), dimTitle, shadowing);
-		ug.getParam().setStroke(new UStroke());
-		title.drawU(ug, x + minX + marginTitleX1, y + minY);
+		ug = ug.apply(new UChangeBackColor(stateBack)).apply(new UChangeColor(borderColor));
+		ug = ug.apply(new UStroke(2));
+		PackageStyle.FRAME.drawU(ug.apply(new UTranslate(minX, minY)), new Dimension2DDouble(width, height), dimTitle,
+				shadowing);
+		ug = ug.apply(new UStroke());
+		title.drawUNewWayINLINED(ug.apply(new UTranslate(minX + marginTitleX1, minY)));
 
 	}
 
 	// Node
-	private void drawWithTitleNode(UGraphic ug, double x, double y, HtmlColor borderColor, boolean shadowing) {
+	private void drawWithTitleNode(UGraphic ug, HtmlColor borderColor, boolean shadowing) {
 		final double width = maxX - minX;
 		final double height = maxY - minY;
 		final SymbolContext ctx = new SymbolContext(stateBack, borderColor).withStroke(new UStroke(2)).withShadow(
 				shadowing);
-		USymbol.NODE.asBig(title, stereo, width + 10, height, ctx).drawU(ug, x + minX, y + minY);
-		ug.getParam().setStroke(new UStroke());
+		USymbol.NODE.asBig(title, stereo, width + 10, height, ctx).drawUNewWayINLINED(
+				ug.apply(new UTranslate(minX, minY)));
+		// ug.getParam().resetStroke();
 	}
 
 	// Folder
@@ -172,7 +176,7 @@ public class ClusterDecoration {
 		return shape;
 	}
 
-	private void drawWithTitleFolder(UGraphic ug, double x, double y, HtmlColor borderColor, boolean shadowing) {
+	private void drawWithTitleFolder(UGraphic ug, HtmlColor borderColor, boolean shadowing) {
 		final Dimension2D dimTitle = title.calculateDimension(ug.getStringBounder());
 		final double wtitle = dimTitle.getWidth() + marginTitleX1 + marginTitleX2;
 		final double htitle = dimTitle.getHeight() + marginTitleY1 + marginTitleY2;
@@ -181,17 +185,16 @@ public class ClusterDecoration {
 			shape.setDeltaShadow(3.0);
 		}
 
-		ug.getParam().setBackcolor(stateBack);
-		ug.getParam().setColor(borderColor);
-		ug.getParam().setStroke(new UStroke(2));
-		ug.drawNewWay(x + minX, y + minY, shape);
-		ug.drawNewWay(x + minX, y + minY + htitle, new ULine(wtitle + marginTitleX3, 0));
-		ug.getParam().setStroke(new UStroke());
-		title.drawU(ug, x + minX + marginTitleX1, y + minY + marginTitleY1);
+		ug = ug.apply(new UChangeBackColor(stateBack)).apply(new UChangeColor(borderColor));
+		ug = ug.apply(new UStroke(2));
+		ug.drawNewWay(minX, minY, shape);
+		ug.drawNewWay(minX, minY + htitle, new ULine(wtitle + marginTitleX3, 0));
+		ug = ug.apply(new UStroke());
+		title.drawUNewWayINLINED(ug.apply(new UTranslate(minX + marginTitleX1, minY + marginTitleY1)));
 	}
 
 	// Rect
-	private void drawWithTitleRect(UGraphic ug, double x, double y, HtmlColor borderColor, boolean shadowing) {
+	private void drawWithTitleRect(UGraphic ug, HtmlColor borderColor, boolean shadowing) {
 		final Dimension2D dimTitle = title.calculateDimension(ug.getStringBounder());
 		final double width = maxX - minX;
 		final double height = maxY - minY;
@@ -200,14 +203,13 @@ public class ClusterDecoration {
 			shape.setDeltaShadow(3.0);
 		}
 
-		ug.getParam().setBackcolor(stateBack);
-		ug.getParam().setColor(borderColor);
-		ug.getParam().setStroke(new UStroke(2));
+		ug = ug.apply(new UChangeBackColor(stateBack)).apply(new UChangeColor(borderColor));
+		ug = ug.apply(new UStroke(2));
 
-		ug.drawNewWay(x + minX, y + minY, shape);
-		ug.getParam().setStroke(new UStroke());
+		ug.drawNewWay(minX, minY, shape);
+		ug = ug.apply(new UStroke());
 		final double deltax = width - dimTitle.getWidth();
-		title.drawU(ug, x + minX + deltax / 2, y + minY + 5);
+		title.drawUNewWayINLINED(ug.apply(new UTranslate(minX + deltax / 2, minY + 5)));
 	}
 
 	public final static int marginTitleX1 = 3;

@@ -39,6 +39,7 @@ import net.sourceforge.plantuml.Dimension2DDouble;
 import net.sourceforge.plantuml.SpriteContainer;
 import net.sourceforge.plantuml.graphic.HtmlColorUtils;
 import net.sourceforge.plantuml.graphic.StringBounder;
+import net.sourceforge.plantuml.ugraphic.UChangeBackColor;
 import net.sourceforge.plantuml.ugraphic.UFont;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
 import net.sourceforge.plantuml.ugraphic.URectangle;
@@ -65,12 +66,9 @@ public class ElementButton extends AbstractElementText implements Element {
 			return;
 		}
 		final Dimension2D dim = getPreferredDimension(ug.getStringBounder(), x, y);
-		ug.getParam().setStroke(new UStroke(stroke));
-		ug.getParam().setBackcolor(HtmlColorUtils.getColorIfValid("#EEEEEE"));
-		ug.drawNewWay(x + stroke, y + stroke, new URectangle(dim.getWidth() - 2 * stroke, dim.getHeight() - 2 * stroke, 10,
-				10));
-		ug.getParam().setBackcolor(null);
-		ug.getParam().setStroke(new UStroke());
+		ug = ug.apply(new UStroke(stroke));
+		ug.apply(new UChangeBackColor(HtmlColorUtils.getColorIfValid("#EEEEEE"))).drawNewWay(x + stroke, y + stroke,
+				new URectangle(dim.getWidth() - 2 * stroke, dim.getHeight() - 2 * stroke, 10, 10));
 		final Dimension2D dimPureText = getPureTextDimension(ug.getStringBounder());
 		drawText(ug, x + (dim.getWidth() - dimPureText.getWidth()) / 2, y + stroke + marginY);
 	}

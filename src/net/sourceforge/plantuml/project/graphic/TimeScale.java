@@ -51,10 +51,12 @@ import net.sourceforge.plantuml.project.Day;
 import net.sourceforge.plantuml.project.Instant;
 import net.sourceforge.plantuml.project.Month;
 import net.sourceforge.plantuml.project.Project;
+import net.sourceforge.plantuml.ugraphic.UChangeColor;
 import net.sourceforge.plantuml.ugraphic.UFont;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
 import net.sourceforge.plantuml.ugraphic.ULine;
 import net.sourceforge.plantuml.ugraphic.URectangle;
+import net.sourceforge.plantuml.ugraphic.UTranslate;
 
 class TimeScale {
 
@@ -73,7 +75,7 @@ class TimeScale {
 		final double caseHeight = getCaseHeight(stringBounder);
 		final int nb = getNbCase();
 
-		ug.getParam().setColor(HtmlColorUtils.BLACK);
+		ug = ug.apply(new UChangeColor(HtmlColorUtils.BLACK));
 		ug.drawNewWay(x, y, new URectangle(nb * caseWidth, monthHeight));
 		final Instant end = project.getEnd();
 
@@ -88,7 +90,7 @@ class TimeScale {
 				final TextBlock b = TextBlockUtils.create(Display.asList(printed.name()), fontConfig,
 						HorizontalAlignement.LEFT, new SpriteContainerEmpty());
 				final Dimension2D dim = b.calculateDimension(stringBounder);
-				b.drawU(ug, curx, y + (monthHeight - dim.getHeight()) / 2);
+				b.drawUNewWayINLINED(ug.apply(new UTranslate(curx, (y + (monthHeight - dim.getHeight()) / 2))));
 			}
 			curx += caseWidth;
 		}
@@ -102,7 +104,7 @@ class TimeScale {
 			final TextBlock b = TextBlockUtils.create(Display.asList("" + d.getNumDay()), fontConfig,
 					HorizontalAlignement.LEFT, new SpriteContainerEmpty());
 			final Dimension2D dim = b.calculateDimension(stringBounder);
-			b.drawU(ug, curx + (caseWidth - dim.getWidth()) / 2, y + (caseHeight - dim.getHeight()) / 2);
+			b.drawUNewWayINLINED(ug.apply(new UTranslate((curx + (caseWidth - dim.getWidth()) / 2), (y + (caseHeight - dim.getHeight()) / 2))));
 			curx += caseWidth;
 			ug.drawNewWay(curx, y, new ULine(0, caseHeight));
 		}

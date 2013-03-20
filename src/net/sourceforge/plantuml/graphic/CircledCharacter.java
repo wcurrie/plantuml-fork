@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 10041 $
+ * Revision $Revision: 10266 $
  *
  */
 package net.sourceforge.plantuml.graphic;
@@ -43,13 +43,17 @@ import java.util.List;
 
 import net.sourceforge.plantuml.Dimension2DDouble;
 import net.sourceforge.plantuml.Url;
+import net.sourceforge.plantuml.ugraphic.UCenteredCharacter;
+import net.sourceforge.plantuml.ugraphic.UChangeBackColor;
+import net.sourceforge.plantuml.ugraphic.UChangeColor;
 import net.sourceforge.plantuml.ugraphic.UEllipse;
 import net.sourceforge.plantuml.ugraphic.UFont;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
 import net.sourceforge.plantuml.ugraphic.UPath;
 import net.sourceforge.plantuml.ugraphic.USegmentType;
+import net.sourceforge.plantuml.ugraphic.UTranslate;
 
-public class CircledCharacter implements UDrawable, TextBlock {
+public class CircledCharacter implements TextBlock {
 
 	private final String c;
 	private final UFont font;
@@ -68,22 +72,21 @@ public class CircledCharacter implements UDrawable, TextBlock {
 		this.fontColor = fontColor;
 	}
 
-//	public void draw(ColorMapper colorMapper, Graphics2D g2d, int x, int y, double dpiFactor) {
-//		drawU(new UGraphicG2d(colorMapper, g2d, null, 1.0), x, y);
-//	}
+	// public void draw(ColorMapper colorMapper, Graphics2D g2d, int x, int y, double dpiFactor) {
+	// drawU(new UGraphicG2d(colorMapper, g2d, null, 1.0), x, y);
+	// }
 
-	public void drawU(UGraphic ug, double x, double y) {
-
+	public void drawUNewWayINLINED(UGraphic ug) {
 		if (circle != null) {
-			ug.getParam().setColor(circle);
+			ug = ug.apply(new UChangeColor(circle));
 		}
-		final HtmlColor back = ug.getParam().getBackcolor();
-		ug.getParam().setBackcolor(innerCircle);
-		ug.drawNewWay(x, y, new UEllipse(radius * 2, radius * 2));
-		ug.getParam().setColor(fontColor);
-		ug.centerChar(x + radius, y + radius, c.charAt(0), font);
-		ug.getParam().setBackcolor(back);
-
+		// final HtmlColor back = ug.getParam().getBackcolor();
+		ug = ug.apply(new UChangeBackColor(innerCircle));
+		ug = ug.apply(new UTranslate(0, 0));
+		ug.drawOldWay(new UEllipse(radius * 2, radius * 2));
+		ug = ug.apply(new UChangeColor(fontColor));
+		ug = ug.apply(new UTranslate(radius, radius));
+		ug.drawOldWay(new UCenteredCharacter(c.charAt(0), font));
 	}
 
 	final public double getPreferredWidth(StringBounder stringBounder) {

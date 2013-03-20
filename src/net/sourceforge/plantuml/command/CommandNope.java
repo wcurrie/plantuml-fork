@@ -35,11 +35,11 @@ package net.sourceforge.plantuml.command;
 
 import java.util.List;
 
-import net.sourceforge.plantuml.PSystem;
+import net.sourceforge.plantuml.core.Diagram;
 
-public class CommandNope extends SingleLineCommand<PSystem> {
+public class CommandNope extends SingleLineCommand<Diagram> {
 
-	public CommandNope(PSystem diagram) {
+	public CommandNope(Diagram diagram) {
 		super(diagram, "(?i)^\\s*$");
 	}
 

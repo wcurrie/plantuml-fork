@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 10006 $
+ * Revision $Revision: 10298 $
  *
  */
 package net.sourceforge.plantuml.command;
@@ -38,9 +38,9 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-import net.sourceforge.plantuml.DiagramType;
 import net.sourceforge.plantuml.PSystemFactory;
 import net.sourceforge.plantuml.UmlDiagram;
+import net.sourceforge.plantuml.core.DiagramType;
 
 public abstract class PSystemCommandFactory implements PSystemFactory {
 

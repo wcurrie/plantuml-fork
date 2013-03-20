@@ -46,8 +46,10 @@ import net.sourceforge.plantuml.Url;
 import net.sourceforge.plantuml.graphic.HtmlColorUtils;
 import net.sourceforge.plantuml.graphic.StringBounder;
 import net.sourceforge.plantuml.graphic.TextBlock;
+import net.sourceforge.plantuml.ugraphic.UChangeColor;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
 import net.sourceforge.plantuml.ugraphic.ULine;
+import net.sourceforge.plantuml.ugraphic.UTranslate;
 
 public class TilesField implements TextBlock {
 
@@ -234,7 +236,9 @@ public class TilesField implements TextBlock {
 	}
 
 	// -----------
-	public void drawU(UGraphic ug, double x, double y) {
+	public void drawUNewWayINLINED(UGraphic ug) {
+		double x = 0;
+		double y = 0;
 		final int xmin = getXmin();
 		final int ymin = getYmin();
 		final Dimension2D dimSingle = root.calculateDimension(ug.getStringBounder());
@@ -245,16 +249,16 @@ public class TilesField implements TextBlock {
 			final Tile t = ent.getKey();
 			final double xt = p.getXmin() * dimSingle.getWidth() / 2;
 			final double yt = p.getYmin() * dimSingle.getHeight() / 2;
-			t.drawU(ug, x + xt, y + yt);
+			t.drawUNewWayINLINED(ug.apply(new UTranslate((x + xt), (y + yt))));
 		}
-		ug.getParam().setColor(HtmlColorUtils.RED);
+		ug = ug.apply(new UChangeColor(HtmlColorUtils.RED));
 		for (Path p : paths) {
 			final TileArea start = p.getStart();
 			final TileArea dest = p.getDest();
 			final Point2D pstart = getPoint2D(dimSingle, start);
 			final Point2D pdest = getPoint2D(dimSingle, dest);
-			ug.drawNewWay(x + pstart.getX(), y + pstart.getY(),
-					new ULine(pdest.getX() - pstart.getX(), pdest.getY() - pstart.getY()));
+			ug.drawNewWay(x + pstart.getX(), y + pstart.getY(), new ULine(pdest.getX() - pstart.getX(), pdest.getY()
+					- pstart.getY()));
 		}
 	}
 

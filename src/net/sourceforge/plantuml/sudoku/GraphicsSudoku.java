@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 10075 $
+ * Revision $Revision: 10298 $
  *
  */
 package net.sourceforge.plantuml.sudoku;
@@ -44,8 +44,8 @@ import java.util.List;
 
 import net.sourceforge.plantuml.EmptyImageBuilder;
 import net.sourceforge.plantuml.SpriteContainerEmpty;
-import net.sourceforge.plantuml.api.ImageData;
 import net.sourceforge.plantuml.api.ImageDataSimple;
+import net.sourceforge.plantuml.core.ImageData;
 import net.sourceforge.plantuml.cucadiagram.Display;
 import net.sourceforge.plantuml.graphic.FontConfiguration;
 import net.sourceforge.plantuml.graphic.HorizontalAlignement;
@@ -54,6 +54,8 @@ import net.sourceforge.plantuml.graphic.TextBlock;
 import net.sourceforge.plantuml.graphic.TextBlockUtils;
 import net.sourceforge.plantuml.png.PngIO;
 import net.sourceforge.plantuml.ugraphic.ColorMapperIdentity;
+import net.sourceforge.plantuml.ugraphic.UChangeBackColor;
+import net.sourceforge.plantuml.ugraphic.UChangeColor;
 import net.sourceforge.plantuml.ugraphic.UFont;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
 import net.sourceforge.plantuml.ugraphic.URectangle;
@@ -74,13 +76,12 @@ public class GraphicsSudoku {
 		final BufferedImage im = createImage();
 		PngIO.write(im, os, 96);
 	}
-	
+
 	public ImageData writeImage1317(OutputStream os) throws IOException {
 		final BufferedImage im = createImage();
 		PngIO.write(im, os, 96);
 		return new ImageDataSimple(im.getWidth(), im.getHeight());
 	}
-
 
 	final private int xOffset = 5;
 	final private int yOffset = 5;
@@ -112,13 +113,12 @@ public class GraphicsSudoku {
 				if (num > 0) {
 					final TextBlock text = TextBlockUtils.create(Display.asList("" + num), new FontConfiguration(
 							numberFont, HtmlColorUtils.BLACK), HorizontalAlignement.CENTER, new SpriteContainerEmpty());
-					text.drawU(ug, numberxOffset + x * cellWidth, numberyOffset + y * cellHeight);
+					text.drawUNewWayINLINED(ug.apply(new UTranslate((numberxOffset + x * cellWidth), (numberyOffset + y * cellHeight))));
 				}
 			}
 		}
 
-		ug.getParam().setBackcolor(HtmlColorUtils.BLACK);
-		ug.getParam().setColor(null);
+		ug = ug.apply(new UChangeBackColor(HtmlColorUtils.BLACK)).apply(new UChangeColor(null));
 		for (int i = 0; i < 10; i++) {
 			final boolean bold = i % boldWidth == 0;
 			final int w = bold ? boldWidth : 1;
@@ -135,12 +135,11 @@ public class GraphicsSudoku {
 		texts.add("http://plantuml.sourceforge.net");
 		texts.add("Seed " + Long.toString(sudoku.getSeed(), 36));
 		texts.add("Difficulty " + sudoku.getRatting());
-		final TextBlock textBlock = TextBlockUtils.create(new Display(texts), new FontConfiguration(font, HtmlColorUtils.BLACK),
-				HorizontalAlignement.LEFT, new SpriteContainerEmpty());
-		textBlock.drawU(ug, 0, 0);
+		final TextBlock textBlock = TextBlockUtils.create(new Display(texts), new FontConfiguration(font,
+				HtmlColorUtils.BLACK), HorizontalAlignement.LEFT, new SpriteContainerEmpty());
+		textBlock.drawUNewWayINLINED(ug);
 		g3d.dispose();
 		return im;
 	}
-
 
 }

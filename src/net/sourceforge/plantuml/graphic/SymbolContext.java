@@ -33,6 +33,8 @@
  */
 package net.sourceforge.plantuml.graphic;
 
+import net.sourceforge.plantuml.ugraphic.UChangeBackColor;
+import net.sourceforge.plantuml.ugraphic.UChangeColor;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
 import net.sourceforge.plantuml.ugraphic.UStroke;
 
@@ -53,10 +55,8 @@ public class SymbolContext {
 		}
 	}
 
-	public void apply(UGraphic ug) {
-		ug.getParam().setColor(foreColor);
-		ug.getParam().setBackcolor(backColor);
-		ug.getParam().setStroke(stroke);
+	final public UGraphic apply(UGraphic ug) {
+		return ug.apply(new UChangeColor(foreColor)).apply(new UChangeBackColor(backColor)).apply(stroke);
 	}
 
 	public SymbolContext(HtmlColor backColor, HtmlColor foreColor) {

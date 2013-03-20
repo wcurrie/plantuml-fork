@@ -33,8 +33,8 @@ package net.sourceforge.plantuml.directdot;
 
 import java.io.UnsupportedEncodingException;
 
-import net.sourceforge.plantuml.DiagramType;
 import net.sourceforge.plantuml.PSystemBasicFactory;
+import net.sourceforge.plantuml.core.DiagramType;
 
 public class PSystemDotFactory extends PSystemBasicFactory {
 

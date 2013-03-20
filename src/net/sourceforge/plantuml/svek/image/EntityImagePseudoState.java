@@ -50,9 +50,12 @@ import net.sourceforge.plantuml.graphic.TextBlock;
 import net.sourceforge.plantuml.graphic.TextBlockUtils;
 import net.sourceforge.plantuml.svek.AbstractEntityImage;
 import net.sourceforge.plantuml.svek.ShapeType;
+import net.sourceforge.plantuml.ugraphic.UChangeBackColor;
+import net.sourceforge.plantuml.ugraphic.UChangeColor;
 import net.sourceforge.plantuml.ugraphic.UEllipse;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
 import net.sourceforge.plantuml.ugraphic.UStroke;
+import net.sourceforge.plantuml.ugraphic.UTranslate;
 
 public class EntityImagePseudoState extends AbstractEntityImage {
 
@@ -62,35 +65,36 @@ public class EntityImagePseudoState extends AbstractEntityImage {
 	public EntityImagePseudoState(ILeaf entity, ISkinParam skinParam) {
 		super(entity, skinParam);
 		final Stereotype stereotype = entity.getStereotype();
-		this.desc = TextBlockUtils.create(Display.asList("H"), new FontConfiguration(
-				SkinParamUtils.getFont(getSkinParam(), FontParam.STATE, stereotype), SkinParamUtils.getFontColor(getSkinParam(), FontParam.STATE, stereotype)),
+		this.desc = TextBlockUtils.create(Display.asList("H"),
+				new FontConfiguration(SkinParamUtils.getFont(getSkinParam(), FontParam.STATE, stereotype),
+						SkinParamUtils.getFontColor(getSkinParam(), FontParam.STATE, stereotype)),
 				HorizontalAlignement.CENTER, skinParam);
 
 	}
 
-	@Override
-	public Dimension2D getDimension(StringBounder stringBounder) {
+	public Dimension2D calculateDimension(StringBounder stringBounder) {
 		return new Dimension2DDouble(SIZE, SIZE);
 	}
 
-	public void drawU(UGraphic ug, double xTheoricalPosition, double yTheoricalPosition) {
+	final public void drawUNewWayINLINED(UGraphic ug) {
 		final UEllipse circle = new UEllipse(SIZE, SIZE);
 		if (getSkinParam().shadowing()) {
 			circle.setDeltaShadow(4);
 		}
-		ug.getParam().setStroke(new UStroke(1.5));
-		ug.getParam().setColor(SkinParamUtils.getColor(getSkinParam(), ColorParam.stateBorder, getStereo()));
-		ug.getParam().setBackcolor(SkinParamUtils.getColor(getSkinParam(), ColorParam.stateBackground, getStereo()));
-		ug.drawNewWay(xTheoricalPosition, yTheoricalPosition, circle);
-		ug.getParam().setStroke(new UStroke());
+		ug = ug.apply(new UStroke(1.5));
+		ug = ug.apply(
+				new UChangeBackColor(SkinParamUtils.getColor(getSkinParam(), ColorParam.stateBackground, getStereo())))
+				.apply(new UChangeColor(SkinParamUtils.getColor(getSkinParam(), ColorParam.stateBorder, getStereo())));
+		ug.drawOldWay(circle);
+		ug = ug.apply(new UStroke());
 
 		final Dimension2D dimDesc = desc.calculateDimension(ug.getStringBounder());
 		final double widthDesc = dimDesc.getWidth();
 		final double heightDesc = dimDesc.getHeight();
 
-		final double x = xTheoricalPosition + (SIZE - widthDesc) / 2;
-		final double y = yTheoricalPosition + (SIZE - heightDesc) / 2;
-		desc.drawU(ug, x, y);
+		final double x = (SIZE - widthDesc) / 2;
+		final double y = (SIZE - heightDesc) / 2;
+		desc.drawUNewWayINLINED(ug.apply(new UTranslate(x, y)));
 	}
 
 	public ShapeType getShapeType() {

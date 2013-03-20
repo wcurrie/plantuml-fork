@@ -70,9 +70,6 @@ public class UGraphicFilter extends UGraphic {
 		}
 	}
 
-	public void centerChar(double x, double y, char c, UFont font) {
-	}
-
 	public void writeImage(OutputStream os, String metadata, int dpi) throws IOException {
 		ug.writeImage(os, metadata, dpi);
 	}
@@ -87,10 +84,6 @@ public class UGraphicFilter extends UGraphic {
 
 	public void closeAction() {
 		ug.closeAction();
-	}
-
-	public UGroup createGroup() {
-		return ug.createGroup();
 	}
 
 }

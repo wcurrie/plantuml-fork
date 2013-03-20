@@ -56,13 +56,12 @@ public abstract class UGraphicUtils {
 
 	public static UDrawable translate(final UDrawable d, final double dx, final double dy) {
 		return new UDrawable() {
-			public void drawU(UGraphic ug, double x, double y) {
-				d.drawU(ug, x + dx, y + dy);
+			public void drawUNewWayINLINED(UGraphic ug) {
+				d.drawUNewWayINLINED(ug.apply(new UTranslate(dx, dy)));
 			}
 		};
 
 	}
-
 
 	public static void writeImage(OutputStream os, String metadata, FileFormatOption fileFormatOption,
 			ColorMapper colorMapper, HtmlColor background, TextBlock image) throws IOException {
@@ -73,11 +72,11 @@ public abstract class UGraphicUtils {
 		} else if (fileFormat == FileFormat.SVG) {
 			final UGraphicSvg svg = new UGraphicSvg(colorMapper, StringUtils.getAsHtml(colorMapper
 					.getMappedColor(background)), false);
-			image.drawU(svg, 0, 0);
+			image.drawUNewWayINLINED(svg);
 			svg.createXml(os);
 		} else if (fileFormat == FileFormat.EPS) {
 			final UGraphicEps ug = new UGraphicEps(colorMapper, EpsStrategy.getDefault2());
-			image.drawU(ug, 0, 0);
+			image.drawUNewWayINLINED(ug);
 			os.write(ug.getEPSCode().getBytes());
 		} else {
 			throw new UnsupportedOperationException();
@@ -97,7 +96,7 @@ public abstract class UGraphicUtils {
 		g2d = builder.getGraphics2D();
 
 		final UGraphicG2d ug = new UGraphicG2d(colorMapper, g2d, 1.0);
-		image.drawU(ug, 0, 0);
+		image.drawUNewWayINLINED(ug);
 		g2d.dispose();
 		return im;
 	}

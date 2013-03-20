@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 10074 $
+ * Revision $Revision: 10265 $
  *
  */
 package net.sourceforge.plantuml.skin.bluemodern;
@@ -40,6 +40,7 @@ import net.sourceforge.plantuml.graphic.HtmlColor;
 import net.sourceforge.plantuml.graphic.StringBounder;
 import net.sourceforge.plantuml.skin.AbstractTextualComponent;
 import net.sourceforge.plantuml.skin.Area;
+import net.sourceforge.plantuml.ugraphic.UChangeColor;
 import net.sourceforge.plantuml.ugraphic.UFont;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
 import net.sourceforge.plantuml.ugraphic.UTranslate;
@@ -62,9 +63,8 @@ public class ComponentBlueModernParticipant extends AbstractTextualComponent {
 		final StringBounder stringBounder = ug.getStringBounder();
 
 		final ShadowShape shadowShape = new ShadowShape(getTextWidth(stringBounder), getTextHeight(stringBounder), 10);
-		final UGraphic ugShadow = ug.apply(new UTranslate(shadowview, shadowview));
-		//ug.translate(shadowview, shadowview);
-		ugShadow.getParam().setColor(null);
+		final UGraphic ugShadow = ug.apply(new UTranslate(shadowview, shadowview)).apply(new UChangeColor(null));
+		// ug.translate(shadowview, shadowview);
 		shadowShape.drawU(ugShadow);
 		// ug.translate(-shadowview, -shadowview);
 
@@ -72,7 +72,7 @@ public class ComponentBlueModernParticipant extends AbstractTextualComponent {
 				blue1, blue2, 10);
 		shape.drawU(ug);
 
-		getTextBlock().drawU(ug, getMarginX1(), getMarginY());
+		getTextBlock().drawUNewWayINLINED(ug.apply(new UTranslate(getMarginX1(), getMarginY())));
 	}
 
 	@Override

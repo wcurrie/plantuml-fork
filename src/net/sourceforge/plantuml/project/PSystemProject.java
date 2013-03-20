@@ -40,13 +40,12 @@ import java.io.IOException;
 import java.io.OutputStream;
 
 import net.sourceforge.plantuml.AbstractPSystem;
-import net.sourceforge.plantuml.CMapData;
 import net.sourceforge.plantuml.EmptyImageBuilder;
 import net.sourceforge.plantuml.FileFormat;
 import net.sourceforge.plantuml.FileFormatOption;
 import net.sourceforge.plantuml.StringUtils;
-import net.sourceforge.plantuml.api.ImageData;
 import net.sourceforge.plantuml.api.ImageDataSimple;
+import net.sourceforge.plantuml.core.ImageData;
 import net.sourceforge.plantuml.eps.EpsStrategy;
 import net.sourceforge.plantuml.png.PngIO;
 import net.sourceforge.plantuml.project.graphic.GanttDiagram;

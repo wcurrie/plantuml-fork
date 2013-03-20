@@ -50,7 +50,7 @@ public class ULayoutGroup {
 		for (Map.Entry<TextBlock, Point2D> ent : placementStrategy.getPositions(width, height).entrySet()) {
 			final TextBlock block = ent.getKey();
 			final Point2D pos = ent.getValue();
-			block.drawU(ug, x + pos.getX(), y + pos.getY());
+			block.drawUNewWayINLINED(ug.apply(new UTranslate((x + pos.getX()), (y + pos.getY()))));
 		}
 	}
 

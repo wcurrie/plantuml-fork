@@ -36,6 +36,8 @@ package net.sourceforge.plantuml.svek;
 import java.awt.geom.Dimension2D;
 
 import net.sourceforge.plantuml.graphic.HtmlColor;
+import net.sourceforge.plantuml.ugraphic.UChangeBackColor;
+import net.sourceforge.plantuml.ugraphic.UChangeColor;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
 import net.sourceforge.plantuml.ugraphic.ULine;
 import net.sourceforge.plantuml.ugraphic.URectangle;
@@ -62,41 +64,32 @@ public final class RoundedContainer {
 
 	public final static double THICKNESS_BORDER = 1.5;
 
-	public void drawU(UGraphic ug, double x, double y, boolean shadowing) {
+	public void drawU(UGraphic ug, boolean shadowing) {
 
-		ug.getParam().setColor(borderColor);
-		ug.getParam().setBackcolor(backColor);
-		ug.getParam().setStroke(new UStroke(THICKNESS_BORDER));
+		ug = ug.apply(new UChangeBackColor(backColor)).apply(new UChangeColor(borderColor));
 		final URectangle rect = new URectangle(dim.getWidth(), dim.getHeight(), IEntityImage.CORNER,
 				IEntityImage.CORNER);
 		if (shadowing) {
 			rect.setDeltaShadow(3.0);
 		}
-		ug.drawNewWay(x, y, rect);
+		ug.apply(new UStroke(THICKNESS_BORDER)).drawOldWay(rect);
 
-		final double yLine = y + titleHeight + attributeHeight;
+		final double yLine = titleHeight + attributeHeight;
 
-		ug.getParam().setBackcolor(imgBackcolor);
-		ug.getParam().setColor(imgBackcolor);
-		ug.getParam().setStroke(new UStroke());
+		ug = ug.apply(new UChangeBackColor(imgBackcolor));
+
 		final URectangle inner = new URectangle(dim.getWidth() - 4 * THICKNESS_BORDER, dim.getHeight() - titleHeight
 				- 4 * THICKNESS_BORDER - attributeHeight, IEntityImage.CORNER, IEntityImage.CORNER);
-		ug.drawNewWay(x + 2 * THICKNESS_BORDER, yLine + 2 * THICKNESS_BORDER, inner);
+		ug.apply(new UChangeColor(imgBackcolor)).drawNewWay(2 * THICKNESS_BORDER, yLine + 2 * THICKNESS_BORDER, inner);
 
 		if (titleHeight > 0) {
-			ug.getParam().setColor(borderColor);
-			ug.getParam().setStroke(new UStroke(THICKNESS_BORDER));
-			ug.drawNewWay(x, yLine, new ULine(dim.getWidth(), 0));
-			ug.getParam().setStroke(new UStroke());
+			ug.apply(new UStroke(THICKNESS_BORDER)).drawNewWay(0, yLine, new ULine(dim.getWidth(), 0));
 		}
 
 		if (attributeHeight > 0) {
-			ug.getParam().setColor(borderColor);
-			ug.getParam().setStroke(new UStroke(THICKNESS_BORDER));
-			ug.drawNewWay(x, yLine - attributeHeight, new ULine(dim.getWidth(), 0));
-			ug.getParam().setStroke(new UStroke());
+			ug.apply(new UStroke(THICKNESS_BORDER))
+					.drawNewWay(0, yLine - attributeHeight, new ULine(dim.getWidth(), 0));
 		}
 
 	}
-
 }

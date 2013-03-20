@@ -38,35 +38,24 @@ import net.sourceforge.plantuml.command.CommandExecutionResult;
 import net.sourceforge.plantuml.command.SingleLineCommand2;
 import net.sourceforge.plantuml.command.regex.RegexConcat;
 import net.sourceforge.plantuml.command.regex.RegexLeaf;
-import net.sourceforge.plantuml.command.regex.RegexOr;
 import net.sourceforge.plantuml.command.regex.RegexResult;
-import net.sourceforge.plantuml.cucadiagram.Display;
 
-public class CommandIf3 extends SingleLineCommand2<ActivityDiagram3> {
+public class CommandSplitEnd3 extends SingleLineCommand2<ActivityDiagram3> {
 
-	public CommandIf3(ActivityDiagram3 diagram) {
+	public CommandSplitEnd3(ActivityDiagram3 diagram) {
 		super(diagram, getRegexConcat());
 	}
 
 	static RegexConcat getRegexConcat() {
-		return new RegexConcat(new RegexLeaf("^"), //
-				new RegexLeaf("if"), //
-				new RegexLeaf("\\s*"), //
-				new RegexOr(//
-						new RegexLeaf("TEST1", "\\(([^()]+)\\)"), //
-						new RegexLeaf("TEST2", "\"([^\"]+)\"")), //
-				new RegexLeaf("\\s*"), //
-				new RegexLeaf("WHEN", "(?:then\\s*(?:\\(([^()]*)\\))?)?"), //
+		return new RegexConcat(//
+				new RegexLeaf("^"), //
+				new RegexLeaf("(end ?split|split ?end)"), //
 				new RegexLeaf(";?$"));
 	}
 
 	@Override
 	protected CommandExecutionResult executeArg(RegexResult arg) {
-
-		getSystem().startIf(Display.getWithNewlines(arg.getLazzy("TEST", 0)),
-				Display.getWithNewlines(arg.get("WHEN", 0)));
-
-		return CommandExecutionResult.ok();
+		return getSystem().endSplit();
 	}
 
 }

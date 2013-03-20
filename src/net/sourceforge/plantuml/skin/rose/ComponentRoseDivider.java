@@ -44,11 +44,14 @@ import net.sourceforge.plantuml.graphic.StringBounder;
 import net.sourceforge.plantuml.graphic.TextBlock;
 import net.sourceforge.plantuml.skin.AbstractTextualComponent;
 import net.sourceforge.plantuml.skin.Area;
+import net.sourceforge.plantuml.ugraphic.UChangeBackColor;
+import net.sourceforge.plantuml.ugraphic.UChangeColor;
 import net.sourceforge.plantuml.ugraphic.UFont;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
 import net.sourceforge.plantuml.ugraphic.ULine;
 import net.sourceforge.plantuml.ugraphic.URectangle;
 import net.sourceforge.plantuml.ugraphic.UStroke;
+import net.sourceforge.plantuml.ugraphic.UTranslate;
 
 public class ComponentRoseDivider extends AbstractTextualComponent {
 
@@ -79,35 +82,30 @@ public class ComponentRoseDivider extends AbstractTextualComponent {
 		final double xpos = (dimensionToUse.getWidth() - textWidth - deltaX) / 2;
 		final double ypos = (dimensionToUse.getHeight() - textHeight) / 2;
 
-		ug.getParam().setColor(background);
-		ug.getParam().setBackcolor(background);
+		ug = ug.apply(new UChangeBackColor(background)).apply(new UChangeColor(background));
 		final URectangle rectLong = new URectangle(dimensionToUse.getWidth(), 3);
 		if (withShadow) {
 			rectLong.setDeltaShadow(2);
 		}
 		ug.drawNewWay(0, dimensionToUse.getHeight() / 2 - 1, rectLong);
 
-		ug.getParam().setColor(HtmlColorUtils.BLACK);
-
-		ug.getParam().setStroke(new UStroke(stroke.getThickness() / 2));
+		ug = ug.apply(new UStroke(stroke.getThickness() / 2)).apply(new UChangeColor(HtmlColorUtils.BLACK));
 		ug.drawNewWay(0, dimensionToUse.getHeight() / 2 - 1, new ULine(dimensionToUse.getWidth(), 0));
 		ug.drawNewWay(0, dimensionToUse.getHeight() / 2 + 2, new ULine(dimensionToUse.getWidth(), 0));
 
 		if (empty == false) {
-			ug.getParam().setColor(HtmlColorUtils.BLACK);
-			ug.getParam().setBackcolor(background);
+			ug = ug.apply(new UChangeBackColor(background)).apply(new UChangeColor(HtmlColorUtils.BLACK));
 
-			ug.getParam().setStroke(stroke);
+			ug = ug.apply(stroke);
 			final URectangle rect = new URectangle(textWidth + deltaX, textHeight);
 			if (withShadow) {
 				rect.setDeltaShadow(4);
 			}
 			ug.drawNewWay(xpos, ypos, rect);
-			ug.getParam().setStroke(new UStroke());
+			ug = ug.apply(new UStroke());
 
-			textBlock.drawU(ug, xpos + deltaX, ypos + getMarginY());
+			textBlock.drawUNewWayINLINED(ug.apply(new UTranslate((xpos + deltaX), (ypos + getMarginY()))));
 		}
-		ug.getParam().setStroke(new UStroke());
 	}
 
 	@Override

@@ -42,6 +42,7 @@ import net.sourceforge.plantuml.Url;
 import net.sourceforge.plantuml.graphic.StringBounder;
 import net.sourceforge.plantuml.graphic.TextBlock;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
+import net.sourceforge.plantuml.ugraphic.UTranslate;
 
 class RowMerge implements Row {
 
@@ -56,9 +57,9 @@ class RowMerge implements Row {
 	public TextBlock asTextBloc(final TimeConverter timeConverter) {
 		return new TextBlock() {
 
-			public void drawU(UGraphic ug, double x, double y) {
-				r1.asTextBloc(timeConverter).drawU(ug, x, y);
-				r2.asTextBloc(timeConverter).drawU(ug, x, y + r1.getHeight());
+			public void drawUNewWayINLINED(UGraphic ug) {
+				r1.asTextBloc(timeConverter).drawUNewWayINLINED(ug);
+				r2.asTextBloc(timeConverter).drawUNewWayINLINED(ug.apply(new UTranslate(0, r1.getHeight())));
 			}
 
 			public Dimension2D calculateDimension(StringBounder stringBounder) {
@@ -88,9 +89,9 @@ class RowMerge implements Row {
 	public TextBlock header() {
 		return new TextBlock() {
 
-			public void drawU(UGraphic ug, double x, double y) {
-				r1.header().drawU(ug, x, y);
-				r2.header().drawU(ug, x, y + r1.getHeight());
+			public void drawUNewWayINLINED(UGraphic ug) {
+				r1.header().drawUNewWayINLINED(ug);
+				r2.header().drawUNewWayINLINED(ug.apply(new UTranslate(0, r1.getHeight())));
 			}
 
 			public Dimension2D calculateDimension(StringBounder stringBounder) {

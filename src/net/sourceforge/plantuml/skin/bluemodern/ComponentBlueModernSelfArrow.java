@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 10057 $
+ * Revision $Revision: 10265 $
  *
  */
 package net.sourceforge.plantuml.skin.bluemodern;
@@ -43,11 +43,14 @@ import net.sourceforge.plantuml.graphic.StringBounder;
 import net.sourceforge.plantuml.skin.Area;
 import net.sourceforge.plantuml.skin.ArrowConfiguration;
 import net.sourceforge.plantuml.skin.ArrowPart;
+import net.sourceforge.plantuml.ugraphic.UChangeBackColor;
+import net.sourceforge.plantuml.ugraphic.UChangeColor;
 import net.sourceforge.plantuml.ugraphic.UFont;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
 import net.sourceforge.plantuml.ugraphic.ULine;
 import net.sourceforge.plantuml.ugraphic.UPolygon;
 import net.sourceforge.plantuml.ugraphic.UStroke;
+import net.sourceforge.plantuml.ugraphic.UTranslate;
 
 public class ComponentBlueModernSelfArrow extends AbstractComponentBlueModernArrow {
 
@@ -63,14 +66,13 @@ public class ComponentBlueModernSelfArrow extends AbstractComponentBlueModernArr
 		final StringBounder stringBounder = ug.getStringBounder();
 		final int textHeight = (int) getTextHeight(stringBounder);
 
-		ug.getParam().setBackcolor(getForegroundColor());
-		ug.getParam().setColor(getForegroundColor());
+		ug = ug.apply(new UChangeBackColor(getForegroundColor())).apply(new UChangeColor(getForegroundColor()));
 		final double x2 = arrowWidth - 3;
 
 		if (getArrowConfiguration().isDotted()) {
-			stroke(ug, 5, 2);
+			ug = stroke(ug, 5, 2);
 		} else {
-			ug.getParam().setStroke(new UStroke(2));
+			ug = ug.apply(new UStroke(2));
 		}
 
 		ug.drawNewWay(0, textHeight, new ULine(x2, 0));
@@ -80,27 +82,25 @@ public class ComponentBlueModernSelfArrow extends AbstractComponentBlueModernArr
 		ug.drawNewWay(x2, textHeight, new ULine(0, textAndArrowHeight - textHeight));
 		ug.drawNewWay(x2, textAndArrowHeight, new ULine(2 - x2, 0));
 
-		ug.getParam().setStroke(new UStroke());
+		ug = ug.apply(new UStroke());
 
 		final int delta = (int) getArrowOnlyHeight(stringBounder);
 
 		if (getArrowConfiguration().isAsync()) {
-			ug.getParam().setStroke(new UStroke(1.5));
 			if (getArrowConfiguration().getPart() != ArrowPart.BOTTOM_PART) {
-				ug.drawNewWay(getArrowDeltaX2(), textHeight - getArrowDeltaY2() + delta, new ULine(-getArrowDeltaX2(),
-						getArrowDeltaY2()));
+				ug.apply(new UStroke(1.5)).drawNewWay(getArrowDeltaX2(), textHeight - getArrowDeltaY2() + delta,
+						new ULine(-getArrowDeltaX2(), getArrowDeltaY2()));
 			}
 			if (getArrowConfiguration().getPart() != ArrowPart.TOP_PART) {
-				ug.drawNewWay(getArrowDeltaX2(), textHeight + getArrowDeltaY2() + delta, new ULine(-getArrowDeltaX2(),
-						-getArrowDeltaY2()));
+				ug.apply(new UStroke(1.5)).drawNewWay(getArrowDeltaX2(), textHeight + getArrowDeltaY2() + delta,
+						new ULine(-getArrowDeltaX2(), -getArrowDeltaY2()));
 			}
-			ug.getParam().setStroke(new UStroke());
 		} else {
 			final UPolygon polygon = getPolygon(textHeight, delta);
 			ug.drawOldWay(polygon);
 		}
 
-		getTextBlock().drawU(ug, getMarginX1(), 0);
+		getTextBlock().drawUNewWayINLINED(ug.apply(new UTranslate(getMarginX1(), 0)));
 
 	}
 

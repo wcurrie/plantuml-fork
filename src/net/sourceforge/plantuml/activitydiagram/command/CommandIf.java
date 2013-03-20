@@ -40,6 +40,7 @@ import net.sourceforge.plantuml.command.CommandExecutionResult;
 import net.sourceforge.plantuml.command.SingleLineCommand2;
 import net.sourceforge.plantuml.command.regex.RegexConcat;
 import net.sourceforge.plantuml.command.regex.RegexLeaf;
+import net.sourceforge.plantuml.command.regex.RegexOptional;
 import net.sourceforge.plantuml.command.regex.RegexOr;
 import net.sourceforge.plantuml.command.regex.RegexResult;
 import net.sourceforge.plantuml.cucadiagram.Code;
@@ -57,11 +58,12 @@ public class CommandIf extends SingleLineCommand2<ActivityDiagram> {
 
 	static RegexConcat getRegexConcat() {
 		return new RegexConcat(new RegexLeaf("^"), //
-				new RegexOr("FIRST", true, //
-						new RegexLeaf("STAR", "(\\(\\*(top)?\\))"), //
-						new RegexLeaf("CODE", "([\\p{L}0-9_.]+)"), //
-						new RegexLeaf("BAR", "(?:==+)\\s*([\\p{L}0-9_.]+)\\s*(?:==+)"), //
-						new RegexLeaf("QUOTED", "\"([^\"]+)\"(?:\\s+as\\s+([\\p{L}0-9_.]+))?")), //
+				new RegexOptional(//
+						new RegexOr("FIRST", //
+								new RegexLeaf("STAR", "(\\(\\*(top)?\\))"), //
+								new RegexLeaf("CODE", "([\\p{L}0-9_.]+)"), //
+								new RegexLeaf("BAR", "(?:==+)\\s*([\\p{L}0-9_.]+)\\s*(?:==+)"), //
+								new RegexLeaf("QUOTED", "\"([^\"]+)\"(?:\\s+as\\s+([\\p{L}0-9_.]+))?"))), //
 				new RegexLeaf("\\s*"), //
 				new RegexLeaf("ARROW", "([=-]+(?:(left|right|up|down|le?|ri?|up?|do?)(?=[-=.]))?[=-]*\\>)?"), //
 				new RegexLeaf("\\s*"), //
@@ -97,8 +99,9 @@ public class CommandIf extends SingleLineCommand2<ActivityDiagram> {
 
 		final IEntity branch = getSystem().getCurrentContext().getBranch();
 
-		Link link = new Link(entity1, branch, new LinkType(LinkDecor.ARROW, LinkDecor.NONE), Display.getWithNewlines(arg.get("BRACKET", 0)),
-				lenght, null, ifLabel, getSystem().getLabeldistance(), getSystem().getLabelangle());
+		Link link = new Link(entity1, branch, new LinkType(LinkDecor.ARROW, LinkDecor.NONE),
+				Display.getWithNewlines(arg.get("BRACKET", 0)), lenght, null, ifLabel, getSystem().getLabeldistance(),
+				getSystem().getLabelangle());
 		if (arg.get("ARROW", 0) != null) {
 			final Direction direction = StringUtils.getArrowDirection(arg.get("ARROW", 0));
 			if (direction == Direction.LEFT || direction == Direction.UP) {

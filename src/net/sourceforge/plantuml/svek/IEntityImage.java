@@ -33,29 +33,20 @@
  */
 package net.sourceforge.plantuml.svek;
 
-import java.awt.geom.Dimension2D;
-
 import net.sourceforge.plantuml.Hideable;
 import net.sourceforge.plantuml.graphic.HtmlColor;
-import net.sourceforge.plantuml.graphic.StringBounder;
-import net.sourceforge.plantuml.ugraphic.UGraphic;
+import net.sourceforge.plantuml.graphic.TextBlock;
 
-//TODO extends TextBlock
-public interface IEntityImage extends Hideable {
+public interface IEntityImage extends Hideable, TextBlock {
 
 	public static final int CORNER = 25;
 	public static final int MARGIN = 5;
 	public static final int MARGIN_LINE = 5;
 
-	Dimension2D getDimension(StringBounder stringBounder);
-
-	void drawU(UGraphic ug, double xTheoricalPosition, double yTheoricalPosition);
-
 	ShapeType getShapeType();
-	
+
 	HtmlColor getBackcolor();
-	
+
 	int getShield();
-	
 
 }

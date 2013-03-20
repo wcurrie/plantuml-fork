@@ -49,15 +49,12 @@ public class CommandForkEnd3 extends SingleLineCommand2<ActivityDiagram3> {
 	static RegexConcat getRegexConcat() {
 		return new RegexConcat(//
 				new RegexLeaf("^"), //
-				new RegexLeaf("end ?fork|fork ?end"), //
+				new RegexLeaf("(end ?fork|fork ?end)"), //
 				new RegexLeaf(";?$"));
 	}
 
 	@Override
 	protected CommandExecutionResult executeArg(RegexResult arg) {
-		// if (getSystem().getLastEntityConsulted() == null) {
-		// return CommandExecutionResult.error("No if for this endif");
-		// }
 		return getSystem().endFork();
 	}
 

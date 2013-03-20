@@ -58,41 +58,39 @@ public enum PackageStyle {
 		return null;
 	}
 
-	public void drawU(UGraphic ug, double xTheoricalPosition, double yTheoricalPosition, Dimension2D dim,
-			Dimension2D titleDim, boolean shadowing) {
+	public void drawU(UGraphic ug, Dimension2D dim, Dimension2D titleDim, boolean shadowing) {
 		if (titleDim == null) {
 			titleDim = new Dimension2DDouble(0, 0);
 		}
 		final double width = dim.getWidth();
 		final double height = dim.getHeight();
 		if (this == DATABASE) {
-			drawDatabase(ug, xTheoricalPosition, yTheoricalPosition, width, height, shadowing);
+			drawDatabase(ug, width, height, shadowing);
 		} else if (this == FOLDER) {
-			drawFolder(ug, xTheoricalPosition, yTheoricalPosition, width, height, shadowing);
+			drawFolder(ug, width, height, shadowing);
 		} else if (this == FRAME) {
-			drawFrame(ug, xTheoricalPosition, yTheoricalPosition, width, height, titleDim, shadowing);
+			drawFrame(ug, width, height, titleDim, shadowing);
 		} else if (this == CLOUD) {
-			drawCloud(ug, xTheoricalPosition, yTheoricalPosition, width, height, shadowing);
+			drawCloud(ug, width, height, shadowing);
 		} else if (this == RECT) {
-			drawRect(ug, xTheoricalPosition, yTheoricalPosition, width, height, shadowing);
+			drawRect(ug, width, height, shadowing);
 		} else if (this == COMPONENT1) {
-			drawComponent1(ug, xTheoricalPosition, yTheoricalPosition, width, height, shadowing);
+			drawComponent1(ug, width, height, shadowing);
 		} else if (this == COMPONENT2) {
-			drawComponent2(ug, xTheoricalPosition, yTheoricalPosition, width, height, shadowing);
+			drawComponent2(ug, width, height, shadowing);
 		} else if (this == STORAGE) {
-			drawStorage(ug, xTheoricalPosition, yTheoricalPosition, width, height, shadowing);
+			drawStorage(ug, width, height, shadowing);
 		} else if (this == AGENT) {
-			drawRect(ug, xTheoricalPosition, yTheoricalPosition, width, height, shadowing);
+			drawRect(ug, width, height, shadowing);
 		} else if (this == ARTIFACT) {
-			drawArtifact(ug, xTheoricalPosition, yTheoricalPosition, width, height, shadowing);
+			drawArtifact(ug, width, height, shadowing);
 		} else {
 			// drawNode(ug, xTheoricalPosition, yTheoricalPosition, width, height, shadowing);
 			throw new UnsupportedOperationException();
 		}
 	}
 
-	private void drawArtifact(UGraphic ug, double xTheoricalPosition, double yTheoricalPosition, double width,
-			double height, boolean shadowing) {
+	private void drawArtifact(UGraphic ug, double width, double height, boolean shadowing) {
 
 		final UPolygon polygon = new UPolygon();
 		polygon.addPoint(0, 0);
@@ -105,22 +103,20 @@ public enum PackageStyle {
 		if (shadowing) {
 			polygon.setDeltaShadow(3.0);
 		}
-		ug.drawNewWay(xTheoricalPosition, yTheoricalPosition, polygon);
-		ug.drawNewWay(xTheoricalPosition + width - cornersize, yTheoricalPosition, new ULine(0, cornersize));
-		ug.drawNewWay(xTheoricalPosition + width, yTheoricalPosition + cornersize, new ULine(-cornersize, 0));
+		ug.drawOldWay(polygon);
+		ug.drawNewWay(width - cornersize, 0, new ULine(0, cornersize));
+		ug.drawNewWay(width, cornersize, new ULine(-cornersize, 0));
 	}
 
-	private void drawStorage(UGraphic ug, double xTheoricalPosition, double yTheoricalPosition, double width,
-			double height, boolean shadowing) {
+	private void drawStorage(UGraphic ug, double width, double height, boolean shadowing) {
 		final URectangle shape = new URectangle(width, height, 70, 70);
 		if (shadowing) {
 			shape.setDeltaShadow(3.0);
 		}
-		ug.drawNewWay(xTheoricalPosition, yTheoricalPosition, shape);
+		ug.drawOldWay(shape);
 	}
 
-	private void drawComponent1(UGraphic ug, double xTheoricalPosition, double yTheoricalPosition, double widthTotal,
-			double heightTotal, boolean shadowing) {
+	private void drawComponent1(UGraphic ug, double widthTotal, double heightTotal, boolean shadowing) {
 
 		final URectangle form = new URectangle(widthTotal, heightTotal);
 		if (shadowing) {
@@ -129,15 +125,14 @@ public enum PackageStyle {
 
 		final UShape small = new URectangle(10, 5);
 
-		ug.drawNewWay(xTheoricalPosition, yTheoricalPosition, form);
+		ug.drawOldWay(form);
 
 		// UML 1 Component Notation
-		ug.drawNewWay(xTheoricalPosition - 5, yTheoricalPosition + 5, small);
-		ug.drawNewWay(xTheoricalPosition - 5, yTheoricalPosition + heightTotal - 10, small);
+		ug.drawNewWay(-5, 5, small);
+		ug.drawNewWay(-5, heightTotal - 10, small);
 	}
 
-	private void drawComponent2(UGraphic ug, double xTheoricalPosition, double yTheoricalPosition, double widthTotal,
-			double heightTotal, boolean shadowing) {
+	private void drawComponent2(UGraphic ug, double widthTotal, double heightTotal, boolean shadowing) {
 
 		final URectangle form = new URectangle(widthTotal, heightTotal);
 		if (shadowing) {
@@ -147,30 +142,28 @@ public enum PackageStyle {
 		final UShape small = new URectangle(15, 10);
 		final UShape tiny = new URectangle(4, 2);
 
-		ug.drawNewWay(xTheoricalPosition, yTheoricalPosition, form);
+		ug.drawOldWay(form);
 
 		// UML 2 Component Notation
-		ug.drawNewWay(xTheoricalPosition + widthTotal - 20, yTheoricalPosition + 5, small);
-		ug.drawNewWay(xTheoricalPosition + widthTotal - 22, yTheoricalPosition + 7, tiny);
-		ug.drawNewWay(xTheoricalPosition + widthTotal - 22, yTheoricalPosition + 11, tiny);
+		ug.drawNewWay(widthTotal - 20, 5, small);
+		ug.drawNewWay(widthTotal - 22, 7, tiny);
+		ug.drawNewWay(widthTotal - 22, 11, tiny);
 	}
 
-	private void drawRect(UGraphic ug, double xTheoricalPosition, double yTheoricalPosition, double width,
-			double height, boolean shadowing) {
+	private void drawRect(UGraphic ug, double width, double height, boolean shadowing) {
 		final URectangle shape = new URectangle(width, height);
 		if (shadowing) {
 			shape.setDeltaShadow(3.0);
 		}
-		ug.drawNewWay(xTheoricalPosition, yTheoricalPosition, shape);
+		ug.drawOldWay(shape);
 	}
 
-	private void drawCloud(UGraphic ug, double xTheoricalPosition, double yTheoricalPosition, double width,
-			double height, boolean shadowing) {
+	private void drawCloud(UGraphic ug, double width, double height, boolean shadowing) {
 		final UPath shape = getSpecificFrontierForCloud(width, height);
 		if (shadowing) {
 			shape.setDeltaShadow(3.0);
 		}
-		ug.drawNewWay(xTheoricalPosition + 3, yTheoricalPosition - 3, shape);
+		ug.drawNewWay(3, -3, shape);
 	}
 
 	private UPath getSpecificFrontierForCloud(double width, double height) {
@@ -178,13 +171,13 @@ public enum PackageStyle {
 		path.moveTo(0, 10);
 		double x = 0;
 		for (int i = 0; i < width - 9; i += 10) {
-			path.cubicTo(0 + i, -3 + 10, 2 + i, -5 + 10, 5 + i, -5 + 10);
-			path.cubicTo(8 + i, -5 + 10, 10 + i, -3 + 10, 10 + i, 0 + 10);
+			path.cubicTo(i, -3 + 10, 2 + i, -5 + 10, 5 + i, -5 + 10);
+			path.cubicTo(8 + i, -5 + 10, 10 + i, -3 + 10, 10 + i, 10);
 			x = i + 10;
 		}
 		double y = 0;
 		for (int j = 10; j < height - 9; j += 10) {
-			path.cubicTo(x + 3, 0 + j, x + 5, 2 + j, x + 5, 5 + j);
+			path.cubicTo(x + 3, j, x + 5, 2 + j, x + 5, 5 + j);
 			path.cubicTo(x + 5, 8 + j, x + 3, 10 + j, x, 10 + j);
 			y = j + 10;
 		}
@@ -199,14 +192,13 @@ public enum PackageStyle {
 		return path;
 	}
 
-	private void drawFrame(UGraphic ug, double xTheoricalPosition, double yTheoricalPosition, double width,
-			double height, Dimension2D dimTitle, boolean shadowing) {
+	private void drawFrame(UGraphic ug, double width, double height, Dimension2D dimTitle, boolean shadowing) {
 		final URectangle shape = new URectangle(width, height);
 		if (shadowing) {
 			shape.setDeltaShadow(3.0);
 		}
 
-		ug.drawNewWay(xTheoricalPosition, yTheoricalPosition, shape);
+		ug.drawOldWay(shape);
 
 		final double textWidth;
 		final double textHeight;
@@ -228,12 +220,11 @@ public enum PackageStyle {
 		polygon.lineTo(textWidth - cornersize, textHeight);
 
 		polygon.lineTo(0, textHeight);
-		ug.drawNewWay(xTheoricalPosition, yTheoricalPosition, polygon);
+		ug.drawOldWay(polygon);
 
 	}
 
-	private void drawFolder(UGraphic ug, double xTheoricalPosition, double yTheoricalPosition, double width,
-			double height, boolean shadowing) {
+	private void drawFolder(UGraphic ug, double width, double height, boolean shadowing) {
 		final double wtitle = Math.max(30, width / 4);
 		final UPolygon shape = new UPolygon();
 		shape.addPoint(0, 0);
@@ -248,12 +239,11 @@ public enum PackageStyle {
 		if (shadowing) {
 			shape.setDeltaShadow(3.0);
 		}
-		ug.drawNewWay(xTheoricalPosition, yTheoricalPosition, shape);
-		ug.drawNewWay(xTheoricalPosition, yTheoricalPosition + htitle, new ULine(wtitle + marginTitleX3, 0));
+		ug.drawOldWay(shape);
+		ug.drawNewWay(0, htitle, new ULine(wtitle + marginTitleX3, 0));
 	}
 
-	private void drawDatabase(UGraphic ug, double xTheoricalPosition, double yTheoricalPosition, double width,
-			double height, boolean shadowing) {
+	private void drawDatabase(UGraphic ug, double width, double height, boolean shadowing) {
 		final UPath shape = new UPath();
 		if (shadowing) {
 			shape.setDeltaShadow(3.0);
@@ -266,14 +256,14 @@ public enum PackageStyle {
 		shape.cubicTo(width / 2 + 10, height, 10, height, 0, height - 10);
 		shape.lineTo(0, 10);
 
-		ug.drawNewWay(xTheoricalPosition, yTheoricalPosition, shape);
+		ug.drawOldWay(shape);
 
 		final UPath closing = new UPath();
 		closing.moveTo(0, 10);
 		closing.cubicTo(10, 20, width / 2 - 10, 20, width / 2, 20);
 		closing.cubicTo(width / 2 + 10, 20, width - 10, 20, width, 10);
 
-		ug.drawNewWay(xTheoricalPosition, yTheoricalPosition, closing);
+		ug.drawOldWay(closing);
 
 	}
 

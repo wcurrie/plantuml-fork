@@ -33,11 +33,11 @@
  */
 package net.sourceforge.plantuml.project;
 
-import net.sourceforge.plantuml.DiagramType;
-import net.sourceforge.plantuml.PSystem;
 import net.sourceforge.plantuml.command.PSystemCommandFactory;
 import net.sourceforge.plantuml.command.CommandComment;
 import net.sourceforge.plantuml.command.CommandNope;
+import net.sourceforge.plantuml.core.Diagram;
+import net.sourceforge.plantuml.core.DiagramType;
 import net.sourceforge.plantuml.project.command.CommandAffectation;
 import net.sourceforge.plantuml.project.command.CommandCloseWeekDay;
 
@@ -49,7 +49,7 @@ public class PSystemProjectFactory extends PSystemCommandFactory {
 		super(DiagramType.PROJECT);
 	}
 
-	public PSystem getSystem() {
+	public Diagram getSystem() {
 		return systemProject;
 	}
 

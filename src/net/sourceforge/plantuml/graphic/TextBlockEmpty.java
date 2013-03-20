@@ -41,7 +41,7 @@ import net.sourceforge.plantuml.Dimension2DDouble;
 import net.sourceforge.plantuml.Url;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
 
-public class TextBlockEmpty implements TextBlock, TextBlockWidth {
+public class TextBlockEmpty implements TextBlockWidth, TextBlock {
 
 	private final double width;
 	private final double height;
@@ -59,7 +59,7 @@ public class TextBlockEmpty implements TextBlock, TextBlockWidth {
 		return new Dimension2DDouble(width, height);
 	}
 
-	public void drawU(UGraphic ug, double x, double y) {
+	public void drawUNewWayINLINED(UGraphic ug) {
 	}
 
 	public List<Url> getUrls() {
@@ -69,7 +69,7 @@ public class TextBlockEmpty implements TextBlock, TextBlockWidth {
 	public TextBlock asTextBlock(final double widthToUse) {
 		return new TextBlock() {
 
-			public void drawU(UGraphic ug, double x, double y) {
+			public void drawUNewWayINLINED(UGraphic ug) {
 			}
 
 			public Dimension2D calculateDimension(StringBounder stringBounder) {

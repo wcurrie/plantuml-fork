@@ -33,21 +33,19 @@
  */
 package net.sourceforge.plantuml.svek;
 
-import java.awt.geom.Dimension2D;
+import java.util.Collections;
+import java.util.List;
 
 import net.sourceforge.plantuml.ISkinParam;
+import net.sourceforge.plantuml.Url;
 import net.sourceforge.plantuml.cucadiagram.IEntity;
 import net.sourceforge.plantuml.cucadiagram.Stereotype;
 import net.sourceforge.plantuml.graphic.HtmlColor;
-import net.sourceforge.plantuml.graphic.StringBounder;
 
 public abstract class AbstractEntityImage implements IEntityImage {
 
 	private final IEntity entity;
 	private final ISkinParam skinParam;
-	// private final String stereoLabel;
-
-	// private final Rose rose = new Rose();
 
 	public AbstractEntityImage(IEntity entity, ISkinParam skinParam) {
 		if (entity == null) {
@@ -55,22 +53,11 @@ public abstract class AbstractEntityImage implements IEntityImage {
 		}
 		this.entity = entity;
 		this.skinParam = skinParam;
-
-		// final Stereotype stereotype = entity.getStereotype();
-		// if (stereotype == null) {
-		// stereoLabel = null;
-		// } else {
-		// stereoLabel = stereotype.getLabel();
-		// }
 	}
-	
+
 	public boolean isHidden() {
 		return entity.isHidden();
 	}
-
-
-
-	public abstract Dimension2D getDimension(StringBounder stringBounder);
 
 	protected final IEntity getEntity() {
 		return entity;
@@ -87,5 +74,9 @@ public abstract class AbstractEntityImage implements IEntityImage {
 	protected final Stereotype getStereo() {
 		return entity.getStereotype();
 	}
-	
+
+	final public List<Url> getUrls() {
+		return Collections.emptyList();
+	}
+
 }

@@ -44,10 +44,11 @@ import net.sourceforge.plantuml.cucadiagram.LinkDecor;
 import net.sourceforge.plantuml.cucadiagram.LinkStyle;
 import net.sourceforge.plantuml.cucadiagram.LinkType;
 import net.sourceforge.plantuml.skin.rose.Rose;
+import net.sourceforge.plantuml.ugraphic.UChangeBackColor;
+import net.sourceforge.plantuml.ugraphic.UChangeColor;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
 import net.sourceforge.plantuml.ugraphic.UPolygon;
 import net.sourceforge.plantuml.ugraphic.URectangle;
-import net.sourceforge.plantuml.ugraphic.UStroke;
 
 public class PathDrawerInterface implements PathDrawer {
 
@@ -73,18 +74,20 @@ public class PathDrawerInterface implements PathDrawer {
 	}
 
 	private void noDash(UGraphic ug) {
-		ug.getParam().setStroke(new UStroke());
+		// ug.getParam().resetStroke();
+		throw new UnsupportedOperationException();
 	}
 
 	private void goDash(UGraphic ug) {
-		ug.getParam().setStroke(new UStroke(8, 8, 1.0));
+		// ug.getParam().setStroke(new UStroke(8, 8, 1.0));
+		throw new UnsupportedOperationException();
 	}
 
 	public void drawPathAfter(UGraphic ug, Positionable start, Positionable end, Path path) {
 		DotPath dotPath = path.getDotPath();
 		final Racorder racorder = new RacorderOrthogonal();
-		//final Racorder racorder = new RacorderInToCenter();
-		//final Racorder racorder = new RacorderFollowTangeante();
+		// final Racorder racorder = new RacorderInToCenter();
+		// final Racorder racorder = new RacorderFollowTangeante();
 
 		final Point2D endPath = dotPath.getEndPoint();
 		final DotPath in = racorder.getRacordIn(PositionableUtils.convert(end), dotPath.getEndTangeante());
@@ -113,13 +116,13 @@ public class PathDrawerInterface implements PathDrawer {
 		if (middle1 != null) {
 			final CubicCurve2D.Double after = getLine(endPath, middle1);
 			dotPath = dotPath.addAfter(after);
-			//dotPath = dotPath.addAfter(in);
+			// dotPath = dotPath.addAfter(in);
 		}
 
 		if (middle2 != null) {
 			final CubicCurve2D.Double before = getLine(middle2, startPath);
 			dotPath = dotPath.addBefore(before);
-			//dotPath = dotPath.addBefore(out);
+			// dotPath = dotPath.addBefore(out);
 		}
 
 		final LinkStyle style = linkType.getStyle();
@@ -128,13 +131,13 @@ public class PathDrawerInterface implements PathDrawer {
 			final Map<Point2D, Double> all = dotPath.somePoints();
 			final Point2D p = getFarest(outPoint, inPoint, all.keySet());
 
-			ug.getParam().setBackcolor(rose.getHtmlColor(param, ColorParam.background));
-			ug.getParam().setColor(rose.getHtmlColor(param, ColorParam.classBorder));
+			ug = ug.apply(new UChangeBackColor(rose.getHtmlColor(param, ColorParam.background)));
+			ug = ug.apply(new UChangeColor(rose.getHtmlColor(param, ColorParam.classBorder)));
 
 			decor.drawDecor(ug, p, all.get(p));
 		}
 
-		ug.getParam().setColor(rose.getHtmlColor(param, ColorParam.classBorder));
+		ug = ug.apply(new UChangeColor(rose.getHtmlColor(param, ColorParam.classBorder)));
 		if (linkType.isDashed()) {
 			goDash(ug);
 		}
@@ -148,44 +151,44 @@ public class PathDrawerInterface implements PathDrawer {
 		final double y = -endPath.getX() + inPoint.getX();
 		final double x = endPath.getY() - inPoint.getY();
 		final double angle = Math.atan2(y, x);
-// Log.println("x=" + x + " y=" + y + " angle=" + angle + " " + angle * 180.0 / Math.PI);
+		// Log.println("x=" + x + " y=" + y + " angle=" + angle + " " + angle * 180.0 / Math.PI);
 		return angle;
 	}
 
 	private Point2D drawSymbol(UGraphic ug, double theta, final Point2D position, LinkDecor decor) {
-//		if (1==1) {
-//			return null;
-//		}
-//		Point2D middle1 = null;
-//		// final double theta = Math.atan2(
-//		// -direction.getX() + position.getX(), direction.getY()
-//		// - position.getY());
-//		if (decor == LinkDecor.SQUARRE) {
-//			middle1 = drawSquare(ug, position.getX(), position.getY());
-//		} else if (decor == LinkDecor.EXTENDS) {
-//			middle1 = drawExtends(ug, position.getX(), position.getY(), theta);
-//		} else if (decor == LinkDecor.AGREGATION) {
-//			ug.getParam().setBackcolor(rose.getHtmlColor(param, ColorParam.background));
-//			ug.getParam().setColor(rose.getHtmlColor(param, ColorParam.classBorder));
-//			middle1 = drawDiamond(ug, position.getX(), position.getY(), theta);
-//		} else if (decor == LinkDecor.COMPOSITION) {
-//			ug.getParam().setBackcolor(rose.getHtmlColor(param, ColorParam.classBorder));
-//			ug.getParam().setColor(null);
-//			middle1 = drawDiamond(ug, position.getX(), position.getY(), theta);
-//		} else if (decor == LinkDecor.NONE) {
-//			middle1 = position;
-//		} else if (decor == LinkDecor.ARROW) {
-//			ug.getParam().setBackcolor(rose.getHtmlColor(param, ColorParam.classBorder));
-//			ug.getParam().setColor(rose.getHtmlColor(param, ColorParam.classBorder));
-//			middle1 = drawArrow(ug, position.getX(), position.getY(), theta);
-//		}
-//		return middle1;
+		// if (1==1) {
+		// return null;
+		// }
+		// Point2D middle1 = null;
+		// // final double theta = Math.atan2(
+		// // -direction.getX() + position.getX(), direction.getY()
+		// // - position.getY());
+		// if (decor == LinkDecor.SQUARRE) {
+		// middle1 = drawSquare(ug, position.getX(), position.getY());
+		// } else if (decor == LinkDecor.EXTENDS) {
+		// middle1 = drawExtends(ug, position.getX(), position.getY(), theta);
+		// } else if (decor == LinkDecor.AGREGATION) {
+		// ug.getParam().setBackcolor(rose.getHtmlColor(param, ColorParam.background));
+		// ug.getParam().setColor(rose.getHtmlColor(param, ColorParam.classBorder));
+		// middle1 = drawDiamond(ug, position.getX(), position.getY(), theta);
+		// } else if (decor == LinkDecor.COMPOSITION) {
+		// ug.getParam().setBackcolor(rose.getHtmlColor(param, ColorParam.classBorder));
+		// ug.getParam().setColor(null);
+		// middle1 = drawDiamond(ug, position.getX(), position.getY(), theta);
+		// } else if (decor == LinkDecor.NONE) {
+		// middle1 = position;
+		// } else if (decor == LinkDecor.ARROW) {
+		// ug.getParam().setBackcolor(rose.getHtmlColor(param, ColorParam.classBorder));
+		// ug.getParam().setColor(rose.getHtmlColor(param, ColorParam.classBorder));
+		// middle1 = drawArrow(ug, position.getX(), position.getY(), theta);
+		// }
+		// return middle1;
 		throw new UnsupportedOperationException();
 	}
 
 	private CubicCurve2D.Double getLine(final Point2D p1, Point2D p2) {
-		return new CubicCurve2D.Double(p1.getX(), p1.getY(), p1.getX(), p1.getY(), p2.getX(), p2.getY(), p2.getX(), p2
-				.getY());
+		return new CubicCurve2D.Double(p1.getX(), p1.getY(), p1.getX(), p1.getY(), p2.getX(), p2.getY(), p2.getX(),
+				p2.getY());
 	}
 
 	private static Point2D getFarest(Point2D p1, Point2D p2, Collection<Point2D> all) {
@@ -210,8 +213,8 @@ public class PathDrawerInterface implements PathDrawer {
 	}
 
 	private Point2D drawSquare(UGraphic ug, double centerX, double centerY) {
-		ug.getParam().setBackcolor(rose.getHtmlColor(param, ColorParam.classBackground));
-		ug.getParam().setColor(rose.getHtmlColor(param, ColorParam.classBorder));
+		ug = ug.apply(new UChangeBackColor(rose.getHtmlColor(param, ColorParam.classBackground)));
+		ug = ug.apply(new UChangeColor(rose.getHtmlColor(param, ColorParam.classBorder)));
 		final double width = 10;
 		final double height = 10;
 		ug.drawNewWay(centerX - width / 2, centerY - height / 2, new URectangle(width, height));
@@ -219,9 +222,8 @@ public class PathDrawerInterface implements PathDrawer {
 	}
 
 	Point2D drawExtends(UGraphic ug, double x, double y, double theta) {
-		ug.getParam().setBackcolor(rose.getHtmlColor(param, ColorParam.background));
-		ug.getParam().setColor(rose.getHtmlColor(param, ColorParam.classBorder));
-
+		ug = ug.apply(new UChangeBackColor(rose.getHtmlColor(param, ColorParam.background)));
+		ug = ug.apply(new UChangeColor(rose.getHtmlColor(param, ColorParam.classBorder)));
 
 		// final double theta = Math.atan2(-pathPoint.getX() + x,
 		// pathPoint.getY() - y);

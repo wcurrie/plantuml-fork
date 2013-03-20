@@ -42,23 +42,23 @@ import net.sourceforge.plantuml.Url;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
 import net.sourceforge.plantuml.ugraphic.URectangle;
 import net.sourceforge.plantuml.ugraphic.UShape;
+import net.sourceforge.plantuml.ugraphic.UTranslate;
 
 class USymbolComponent1 extends USymbol {
 
-	private void drawNode(UGraphic ug, double xTheoricalPosition, double yTheoricalPosition, double widthTotal,
-			double heightTotal, boolean shadowing) {
+	private void drawNode(UGraphic ug, double widthTotal, double heightTotal, boolean shadowing) {
 
 		final URectangle form = new URectangle(widthTotal, heightTotal);
 		if (shadowing) {
 			form.setDeltaShadow(4);
 		}
 
-		ug.drawNewWay(xTheoricalPosition, yTheoricalPosition, form);
+		ug.drawOldWay(form);
 		final UShape small = new URectangle(10, 5);
 
 		// UML 1 Component Notation
-		ug.drawNewWay(xTheoricalPosition - 5, yTheoricalPosition + 5, small);
-		ug.drawNewWay(xTheoricalPosition - 5, yTheoricalPosition + heightTotal - 10, small);
+		ug.drawNewWay(-5, 5, small);
+		ug.drawNewWay(-5, heightTotal - 10, small);
 
 	}
 
@@ -69,14 +69,14 @@ class USymbolComponent1 extends USymbol {
 	public TextBlock asSmall(final TextBlock label, final TextBlock stereotype, final SymbolContext symbolContext) {
 		return new TextBlock() {
 
-			public void drawU(UGraphic ug, double x, double y) {
+			public void drawUNewWayINLINED(UGraphic ug) {
 				final StringBounder stringBounder = ug.getStringBounder();
 				final Dimension2D dimTotal = calculateDimension(stringBounder);
-				symbolContext.apply(ug);
-				drawNode(ug, x, y, dimTotal.getWidth(), dimTotal.getHeight(), symbolContext.isShadowing());
+				ug = symbolContext.apply(ug);
+				drawNode(ug, dimTotal.getWidth(), dimTotal.getHeight(), symbolContext.isShadowing());
 				final Margin margin = getMargin();
 				final TextBlock tb = TextBlockUtils.mergeTB(stereotype, label, HorizontalAlignement.CENTER);
-				tb.drawU(ug, x + margin.getX1(), y + margin.getY1());
+				tb.drawUNewWayINLINED(ug.apply(new UTranslate(margin.getX1(), margin.getY1())));
 			}
 
 			public Dimension2D calculateDimension(StringBounder stringBounder) {

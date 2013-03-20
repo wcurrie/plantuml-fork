@@ -43,6 +43,8 @@ import net.sourceforge.plantuml.cucadiagram.ILeaf;
 import net.sourceforge.plantuml.graphic.StringBounder;
 import net.sourceforge.plantuml.svek.AbstractEntityImage;
 import net.sourceforge.plantuml.svek.ShapeType;
+import net.sourceforge.plantuml.ugraphic.UChangeBackColor;
+import net.sourceforge.plantuml.ugraphic.UChangeColor;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
 import net.sourceforge.plantuml.ugraphic.UPolygon;
 import net.sourceforge.plantuml.ugraphic.UStroke;
@@ -55,18 +57,11 @@ public class EntityImageBranch extends AbstractEntityImage {
 		super(entity, skinParam);
 	}
 
-	@Override
-	public Dimension2D getDimension(StringBounder stringBounder) {
+	public Dimension2D calculateDimension(StringBounder stringBounder) {
 		return new Dimension2DDouble(SIZE * 2, SIZE * 2);
 	}
 
-	public void drawU(UGraphic ug, double xTheoricalPosition, double yTheoricalPosition) {
-		// final StringBounder stringBounder = ug.getStringBounder();
-		// final Dimension2D dimTotal = getDimension(stringBounder);
-		//
-		// final double widthTotal = dimTotal.getWidth();
-		// final double heightTotal = dimTotal.getHeight();
-
+	final public void drawUNewWayINLINED(UGraphic ug) {
 		final UPolygon diams = new UPolygon();
 		if (getSkinParam().shadowing()) {
 			diams.setDeltaShadow(5);
@@ -77,11 +72,9 @@ public class EntityImageBranch extends AbstractEntityImage {
 		diams.addPoint(0, SIZE);
 		diams.addPoint(SIZE, 0);
 
-		ug.getParam().setStroke(new UStroke(1.5));
-		ug.getParam().setColor(SkinParamUtils.getColor(getSkinParam(), ColorParam.activityBorder, getStereo()));
-		ug.getParam().setBackcolor(SkinParamUtils.getColor(getSkinParam(), ColorParam.activityBackground, getStereo()));
-		ug.drawNewWay(xTheoricalPosition, yTheoricalPosition, diams);
-		ug.getParam().setStroke(new UStroke());
+		ug.apply(new UChangeColor(SkinParamUtils.getColor(getSkinParam(), ColorParam.activityBorder, getStereo())))
+				.apply(new UChangeBackColor(SkinParamUtils.getColor(getSkinParam(), ColorParam.activityBackground,
+						getStereo()))).apply(new UStroke(1.5)).drawOldWay(diams);
 	}
 
 	public ShapeType getShapeType() {

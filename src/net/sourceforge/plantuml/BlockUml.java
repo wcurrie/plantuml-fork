@@ -39,14 +39,18 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import net.sourceforge.plantuml.core.Diagram;
+
 public class BlockUml {
 
 	private final List<? extends CharSequence> data;
-	private PSystem system;
+	private Diagram system;
 
-	//private static final Pattern patternFilename = Pattern.compile("^@start\\S+\\s+\"?(.*?)\"?$");
-	private static final Pattern patternFilename = Pattern.compile("^@start[^\\s{}\"]+[\\s{][\\s\"]*([^\"]*?)[\\s}\"]*$");
-	
+	// private static final Pattern patternFilename =
+	// Pattern.compile("^@start\\S+\\s+\"?(.*?)\"?$");
+	private static final Pattern patternFilename = Pattern
+			.compile("^@start[^\\s{}\"]+[\\s{][\\s\"]*([^\"]*?)[\\s}\"]*$");
+
 	BlockUml(String... strings) {
 		this(Arrays.asList(strings));
 	}
@@ -78,7 +82,7 @@ public class BlockUml {
 		return result;
 	}
 
-	public PSystem getSystem() {
+	public Diagram getSystem() {
 		if (system == null) {
 			createSystem();
 		}
@@ -86,6 +90,10 @@ public class BlockUml {
 	}
 
 	private void createSystem() {
+		if (OptionFlags.USE_1317) {
+			system = new PSystemBuilder1317().createPSystem(data);
+			return;
+		}
 		system = new PSystemBuilder().createPSystem(data);
 
 	}

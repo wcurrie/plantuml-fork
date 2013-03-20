@@ -46,10 +46,12 @@ import net.sourceforge.plantuml.graphic.TextBlock;
 import net.sourceforge.plantuml.graphic.TextBlockUtils;
 import net.sourceforge.plantuml.project.Item;
 import net.sourceforge.plantuml.project.Project;
+import net.sourceforge.plantuml.ugraphic.UChangeColor;
 import net.sourceforge.plantuml.ugraphic.UFont;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
 import net.sourceforge.plantuml.ugraphic.ULine;
 import net.sourceforge.plantuml.ugraphic.URectangle;
+import net.sourceforge.plantuml.ugraphic.UTranslate;
 
 class ItemHeader {
 
@@ -65,14 +67,14 @@ class ItemHeader {
 
 		final StringBounder stringBounder = ug.getStringBounder();
 
-		ug.getParam().setColor(HtmlColorUtils.BLACK);
+		ug = ug.apply(new UChangeColor(HtmlColorUtils.BLACK));
 		ug.drawNewWay(x, y, new URectangle(getWidth(stringBounder), getHeight(stringBounder)));
 
 		for (Item it : project.getValidItems()) {
 			final TextBlock b = TextBlockUtils.create(Display.asList("" + it.getCode()), fontConfig,
 					HorizontalAlignement.LEFT, new SpriteContainerEmpty());
 			final Dimension2D dim = b.calculateDimension(stringBounder);
-			b.drawU(ug, x, y);
+			b.drawUNewWayINLINED(ug.apply(new UTranslate(x, y)));
 			y += dim.getHeight();
 			ug.drawNewWay(x, y, new ULine(getWidth(stringBounder), 0));
 		}

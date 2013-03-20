@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 9786 $
+ * Revision $Revision: 10445 $
  *
  */
 package net.sourceforge.plantuml.cucadiagram.dot;
@@ -44,6 +44,4 @@ public interface Graphviz {
 	File getDotExe();
 
 	String dotVersion() throws IOException, InterruptedException;
-	
-	String testFile(String dotfilename, String outfile) throws IOException, InterruptedException;
 }

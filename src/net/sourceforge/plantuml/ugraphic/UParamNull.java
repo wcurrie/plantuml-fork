@@ -28,28 +28,29 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 10054 $
+ * Revision $Revision: 10203 $
  *
  */
 package net.sourceforge.plantuml.ugraphic;
 
 import net.sourceforge.plantuml.graphic.HtmlColor;
 
-public class UParamBackColor implements UParamNew {
-	
-	private final HtmlColor color;
-	
-	public UParamBackColor(HtmlColor color) {
-		this.color = color;
+public class UParamNull implements UParam {
+
+	public HtmlColor getColor() {
+		return null;
 	}
 
-	public HtmlColor getBackColor() {
-		return color;
+	public HtmlColor getBackcolor() {
+		return null;
 	}
 
-	// private HtmlColor color = null;
-	// private HtmlColor backcolor = null;
-	// private UStroke stroke = new UStroke(1);
-	// private boolean hidden = false;
+	public UStroke getStroke() {
+		return new UStroke();
+	}
+
+	public boolean isHidden() {
+		return false;
+	}
 
 }

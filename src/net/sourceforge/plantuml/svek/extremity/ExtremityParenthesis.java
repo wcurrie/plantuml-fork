@@ -35,12 +35,11 @@ package net.sourceforge.plantuml.svek.extremity;
 
 import java.awt.geom.Point2D;
 
-import net.sourceforge.plantuml.graphic.UDrawable;
 import net.sourceforge.plantuml.ugraphic.UEllipse;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
 import net.sourceforge.plantuml.ugraphic.UStroke;
 
-class ExtremityParenthesis extends Extremity implements UDrawable {
+class ExtremityParenthesis extends Extremity {
 
 	private final Point2D dest;
 	private final double radius2 = 9;
@@ -53,14 +52,10 @@ class ExtremityParenthesis extends Extremity implements UDrawable {
 		this.ortho = ortho;
 	}
 
-	public void drawU(UGraphic ug, double x, double y) {
-		ug.getParam().setStroke(new UStroke(1.5));
-
+	public void drawUNewWayINLINED(UGraphic ug) {
 		final double deg = -ortho * 180 / Math.PI + 90 - ang;
 		final UEllipse arc1 = new UEllipse(2 * radius2, 2 * radius2, deg, 2 * ang);
-		ug.drawNewWay(x + dest.getX() - radius2, y + dest.getY() - radius2, arc1);
-
-		ug.getParam().setBackcolor(null);
+		ug.apply(new UStroke(1.5)).drawNewWay(dest.getX() - radius2, dest.getY() - radius2, arc1);
 	}
 
 }

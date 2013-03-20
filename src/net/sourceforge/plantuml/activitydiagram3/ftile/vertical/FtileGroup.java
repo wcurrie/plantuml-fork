@@ -56,6 +56,7 @@ import net.sourceforge.plantuml.graphic.USymbol;
 import net.sourceforge.plantuml.ugraphic.UFont;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
 import net.sourceforge.plantuml.ugraphic.UStroke;
+import net.sourceforge.plantuml.ugraphic.UTranslate;
 
 class FtileGroup implements Ftile {
 
@@ -75,32 +76,26 @@ class FtileGroup implements Ftile {
 		}
 	}
 
-	public void drawU(UGraphic ug, final double x, final double y) {
+	public void drawUNewWayINLINED(UGraphic ug) {
 		final StringBounder stringBounder = ug.getStringBounder();
 		final Dimension2D dimTotal = calculateDimension(stringBounder);
 		final Dimension2D dimInner = inner.calculateDimension(stringBounder);
-
+		
 		final SymbolContext symbolContext = new SymbolContext(HtmlColorUtils.WHITE, HtmlColorUtils.BLACK).withShadow(
 				SHADOWING).withStroke(new UStroke(2));
 		USymbol.FRAME.asBig(name, TextBlockUtils.empty(0, 0), dimTotal.getWidth(), dimTotal.getHeight(), symbolContext)
-				.drawU(ug, x, y);
-		ug.getParam().setStroke(new UStroke());
-
+				.drawUNewWayINLINED(ug);
+		// ug.getParam().resetStroke();
+		
 		final double diffY = dimTotal.getHeight() - dimInner.getHeight();
-		inner.drawU(ug, x, y + diffY / 2);
-
+		inner.drawUNewWayINLINED(ug.apply(new UTranslate(0, (diffY / 2))));
+		
 		Ftile line1 = new FtileVerticalArrow(diffY / 2, color);
-		line1.drawU(ug, x + dimTotal.getWidth() / 2 - line1.calculateDimension(stringBounder).getWidth() / 2, y);
-
+		line1.drawUNewWayINLINED(ug.apply(new UTranslate((dimTotal.getWidth() / 2 - line1.calculateDimension(stringBounder).getWidth() / 2), 0)));
+		
 		Ftile line2 = new FtileVerticalLine(diffY / 2, color);
-		line2.drawU(ug, x + dimTotal.getWidth() / 2 - line2.calculateDimension(stringBounder).getWidth() / 2, y
-				+ dimInner.getHeight() + diffY / 2);
-
-		// ug.getParam().setColor(HtmlColorUtils.BLACK);
-		// ug.getParam().setBackcolor(null);
-		// ug.draw(x, y, new URectangle(dimTotal.getWidth(),
-		// dimTotal.getHeight());
-
+		line2.drawUNewWayINLINED(ug.apply(new UTranslate((dimTotal.getWidth() / 2 - line2.calculateDimension(stringBounder).getWidth() / 2), (0
+		+ dimInner.getHeight() + diffY / 2))));
 	}
 
 	public Dimension2D calculateDimension(StringBounder stringBounder) {

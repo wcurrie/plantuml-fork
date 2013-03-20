@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 10057 $
+ * Revision $Revision: 10204 $
  *
  */
 package net.sourceforge.plantuml.skin.bluemodern;
@@ -39,9 +39,9 @@ import net.sourceforge.plantuml.graphic.HtmlColor;
 import net.sourceforge.plantuml.graphic.StringBounder;
 import net.sourceforge.plantuml.skin.AbstractComponent;
 import net.sourceforge.plantuml.skin.Area;
+import net.sourceforge.plantuml.ugraphic.UChangeColor;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
 import net.sourceforge.plantuml.ugraphic.ULine;
-import net.sourceforge.plantuml.ugraphic.UStroke;
 
 public class ComponentBlueModernNewpage extends AbstractComponent {
 
@@ -54,12 +54,8 @@ public class ComponentBlueModernNewpage extends AbstractComponent {
 	@Override
 	protected void drawInternalU(UGraphic ug, Area area) {
 		final Dimension2D dimensionToUse = area.getDimensionToUse();
-		stroke(ug, 10, 2);
-		ug.getParam().setColor(foregroundColor);
-
-		ug.drawOldWay(new ULine(dimensionToUse.getWidth(), 0));
-
-		ug.getParam().setStroke(new UStroke());
+		ug = stroke(ug, 10, 2);
+		ug.apply(new UChangeColor(foregroundColor)).drawOldWay(new ULine(dimensionToUse.getWidth(), 0));
 	}
 
 	@Override

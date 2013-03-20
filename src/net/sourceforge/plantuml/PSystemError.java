@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  *
- * Revision $Revision: 10018 $
+ * Revision $Revision: 10459 $
  */
 package net.sourceforge.plantuml;
 
@@ -41,7 +41,8 @@ import java.util.Collections;
 import java.util.LinkedHashSet;
 import java.util.List;
 
-import net.sourceforge.plantuml.api.ImageData;
+import net.sourceforge.plantuml.core.ImageData;
+import net.sourceforge.plantuml.core.UmlSource;
 import net.sourceforge.plantuml.graphic.GraphicStrings;
 
 public class PSystemError extends AbstractPSystem {

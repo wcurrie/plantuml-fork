@@ -40,6 +40,7 @@ import net.sourceforge.plantuml.activitydiagram3.ftile.Ftile;
 import net.sourceforge.plantuml.activitydiagram3.ftile.FtileEmpty;
 import net.sourceforge.plantuml.activitydiagram3.ftile.FtileFactory;
 import net.sourceforge.plantuml.activitydiagram3.ftile.FtileKilled;
+import net.sourceforge.plantuml.cucadiagram.Display;
 
 public class InstructionList implements Instruction {
 
@@ -86,6 +87,10 @@ public class InstructionList implements Instruction {
 			return null;
 		}
 		return all.get(all.size() - 1);
+	}
+
+	public void addNote(Display note) {
+		getLast().addNote(note);
 	}
 
 }

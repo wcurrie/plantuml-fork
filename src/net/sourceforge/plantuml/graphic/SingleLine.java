@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 9786 $
+ * Revision $Revision: 10265 $
  *
  */
 package net.sourceforge.plantuml.graphic;
@@ -43,6 +43,7 @@ import net.sourceforge.plantuml.SpriteContainer;
 import net.sourceforge.plantuml.Url;
 import net.sourceforge.plantuml.ugraphic.Sprite;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
+import net.sourceforge.plantuml.ugraphic.UTranslate;
 
 class SingleLine implements Line {
 
@@ -124,10 +125,10 @@ class SingleLine implements Line {
 		final Dimension2D dim = calculateDimension(stringBounder);
 		for (TextBlock b : blocs) {
 			if (b instanceof TileText) {
-				b.drawU(ug, x, y + deltaY);
+				b.drawUNewWayINLINED(ug.apply(new UTranslate(x, (y + deltaY))));
 			} else {
 				final double dy = dim.getHeight() - b.calculateDimension(stringBounder).getHeight();
-				b.drawU(ug, x, y + dy);
+				b.drawUNewWayINLINED(ug.apply(new UTranslate(x, (y + dy))));
 			}
 			x += b.calculateDimension(stringBounder).getWidth();
 		}

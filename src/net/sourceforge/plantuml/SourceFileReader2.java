@@ -47,6 +47,7 @@ import java.util.Set;
 
 import net.sourceforge.plantuml.code.Transcoder;
 import net.sourceforge.plantuml.code.TranscoderUtil;
+import net.sourceforge.plantuml.core.Diagram;
 import net.sourceforge.plantuml.preproc.Defines;
 
 public class SourceFileReader2 implements ISourceFileReader {
@@ -87,7 +88,7 @@ public class SourceFileReader2 implements ISourceFileReader {
 		for (BlockUml blockUml : builder.getBlockUmls()) {
 			final File suggested = outputFile;
 
-			final PSystem system = blockUml.getSystem();
+			final Diagram system = blockUml.getSystem();
 			OptionFlags.getInstance().logData(file, system);
 
 			for (File f : PSystemUtils.exportDiagrams(system, suggested, fileFormatOption)) {

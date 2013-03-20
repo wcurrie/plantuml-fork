@@ -45,12 +45,14 @@ import net.sourceforge.plantuml.graphic.HtmlColorUtils;
 import net.sourceforge.plantuml.graphic.StringBounder;
 import net.sourceforge.plantuml.graphic.TextBlock;
 import net.sourceforge.plantuml.graphic.TextBlockUtils;
+import net.sourceforge.plantuml.ugraphic.UChangeBackColor;
 import net.sourceforge.plantuml.ugraphic.UEllipse;
 import net.sourceforge.plantuml.ugraphic.UFont;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
 import net.sourceforge.plantuml.ugraphic.UPolygon;
 import net.sourceforge.plantuml.ugraphic.URectangle;
 import net.sourceforge.plantuml.ugraphic.UStroke;
+import net.sourceforge.plantuml.ugraphic.UTranslate;
 
 public class ElementRadioCheckbox implements Element {
 
@@ -63,7 +65,8 @@ public class ElementRadioCheckbox implements Element {
 	private final boolean radio;
 	private final boolean checked;
 
-	public ElementRadioCheckbox(List<String> text, UFont font, boolean radio, boolean checked, SpriteContainer spriteContainer) {
+	public ElementRadioCheckbox(List<String> text, UFont font, boolean radio, boolean checked,
+			SpriteContainer spriteContainer) {
 		final FontConfiguration config = new FontConfiguration(font, HtmlColorUtils.BLACK);
 		this.block = TextBlockUtils.create(new Display(text), config, HorizontalAlignement.LEFT, spriteContainer);
 		this.radio = radio;
@@ -79,43 +82,28 @@ public class ElementRadioCheckbox implements Element {
 		if (zIndex != 0) {
 			return;
 		}
-		block.drawU(ug, x + margin, y);
+		block.drawUNewWayINLINED(ug.apply(new UTranslate((x + margin), y)));
 
 		final Dimension2D dim = getPreferredDimension(ug.getStringBounder(), 0, 0);
 		final double height = dim.getHeight();
 
-		ug.getParam().setStroke(new UStroke(stroke));
+		ug = ug.apply(new UStroke(stroke));
 		if (radio) {
-			ug.getParam().setBackcolor(null);
 			ug.drawNewWay(x + 2, y + (height - ELLIPSE) / 2, new UEllipse(ELLIPSE, ELLIPSE));
 			if (checked) {
-				ug.getParam().setBackcolor(ug.getParam().getColor());
-				ug
-						.drawNewWay(x + 2 + (ELLIPSE - ELLIPSE2) / 2, y + (height - ELLIPSE2) / 2, new UEllipse(ELLIPSE2,
-								ELLIPSE2));
-				ug.getParam().setBackcolor(null);
+				ug.apply(new UChangeBackColor(ug.getParam().getColor())).drawNewWay(x + 2 + (ELLIPSE - ELLIPSE2) / 2,
+						y + (height - ELLIPSE2) / 2, new UEllipse(ELLIPSE2, ELLIPSE2));
 			}
 		} else {
-			ug.getParam().setBackcolor(null);
 			ug.drawNewWay(x + 2, y + (height - RECTANGLE) / 2, new URectangle(RECTANGLE, RECTANGLE));
 			if (checked) {
-				ug.getParam().setBackcolor(ug.getParam().getColor());
 				final UPolygon poly = new UPolygon();
 				poly.addPoint(0, 0);
 				poly.addPoint(3, 3);
 				poly.addPoint(10, -6);
 				poly.addPoint(3, 1);
-				ug.drawNewWay(x + 3, y + 6, poly);
-				ug.getParam().setBackcolor(null);
+				ug.apply(new UChangeBackColor(ug.getParam().getColor())).drawNewWay(x + 3, y + 6, poly);
 			}
 		}
-		ug.getParam().setStroke(new UStroke());
-
-		// ug.getParam().setColor(HtmlColorUtils.BLACK);
-		// final Dimension2D dim = getDimension(ug.getStringBounder());
-		// ug.getParam().setStroke(new UStroke(stroke));
-		// ug.draw(x, y, new URectangle(dim.getWidth() - 2 * stroke,
-		// dim.getHeight() - 2 * stroke, 10, 10));
-		// ug.getParam().setStroke(new UStroke());
 	}
 }

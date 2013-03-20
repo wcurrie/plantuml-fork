@@ -33,14 +33,14 @@
  */
 package net.sourceforge.plantuml.svek.extremity;
 
-import net.sourceforge.plantuml.graphic.HtmlColor;
 import net.sourceforge.plantuml.graphic.HtmlColorUtils;
-import net.sourceforge.plantuml.graphic.UDrawable;
+import net.sourceforge.plantuml.ugraphic.UChangeBackColor;
+import net.sourceforge.plantuml.ugraphic.UChangeColor;
 import net.sourceforge.plantuml.ugraphic.UEllipse;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
 import net.sourceforge.plantuml.ugraphic.UStroke;
 
-class MiddleCircleCircled extends Extremity implements UDrawable {
+class MiddleCircleCircled extends Extremity {
 
 	private final double angle;
 	private final MiddleCircleCircledMode mode;
@@ -55,30 +55,24 @@ class MiddleCircleCircled extends Extremity implements UDrawable {
 		this.mode = mode;
 	}
 
-	public void drawU(UGraphic ug, double x, double y) {
-
-		ug.getParam().setBackcolor(HtmlColorUtils.WHITE);
+	public void drawUNewWayINLINED(UGraphic ug) {
+		ug = ug.apply(new UChangeBackColor(HtmlColorUtils.WHITE));
 		if (mode == MiddleCircleCircledMode.BOTH) {
-			final HtmlColor color = ug.getParam().getColor();
-			ug.getParam().setColor(HtmlColorUtils.WHITE);
-			ug.drawNewWay(x - radius2, y - radius2, bigcircle);
-			ug.getParam().setColor(color);
+			ug.apply(new UChangeColor(HtmlColorUtils.WHITE)).drawNewWay(-radius2, -radius2, bigcircle);
 		}
 
-		ug.getParam().setStroke(new UStroke(1.5));
+		ug = ug.apply(new UStroke(1.5));
 
 		final double d = 0;
 		if (mode == MiddleCircleCircledMode.MODE1 || mode == MiddleCircleCircledMode.BOTH) {
 			final UEllipse arc1 = new UEllipse(2 * radius2, 2 * radius2, angle, 90);
-			ug.drawNewWay(x - radius2 + d, y - radius2 + d, arc1);
+			ug.drawNewWay(-radius2 + d, -radius2 + d, arc1);
 		}
 		if (mode == MiddleCircleCircledMode.MODE2 || mode == MiddleCircleCircledMode.BOTH) {
 			final UEllipse arc2 = new UEllipse(2 * radius2, 2 * radius2, angle + 180, 90);
-			ug.drawNewWay(x - radius2 + d, y - radius2 + d, arc2);
+			ug.drawNewWay(-radius2 + d, -radius2 + d, arc2);
 		}
-		ug.drawNewWay(x - radius1, y - radius1, circle);
-		ug.getParam().setStroke(new UStroke());
-
+		ug.drawNewWay(-radius1, -radius1, circle);
 	}
 
 }

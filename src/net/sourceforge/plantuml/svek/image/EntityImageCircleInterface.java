@@ -52,9 +52,12 @@ import net.sourceforge.plantuml.graphic.TextBlock;
 import net.sourceforge.plantuml.graphic.TextBlockUtils;
 import net.sourceforge.plantuml.svek.AbstractEntityImage;
 import net.sourceforge.plantuml.svek.ShapeType;
+import net.sourceforge.plantuml.ugraphic.UChangeBackColor;
+import net.sourceforge.plantuml.ugraphic.UChangeColor;
 import net.sourceforge.plantuml.ugraphic.UEllipse;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
 import net.sourceforge.plantuml.ugraphic.UStroke;
+import net.sourceforge.plantuml.ugraphic.UTranslate;
 
 public class EntityImageCircleInterface extends AbstractEntityImage {
 
@@ -69,39 +72,35 @@ public class EntityImageCircleInterface extends AbstractEntityImage {
 
 		final Stereotype stereotype = entity.getStereotype();
 
-		this.name = TextBlockUtils.create(entity.getDisplay(), new FontConfiguration(
-				SkinParamUtils.getFont(getSkinParam(), FontParam.COMPONENT, stereotype), SkinParamUtils.getFontColor(getSkinParam(), FontParam.COMPONENT, stereotype)),
+		this.name = TextBlockUtils.create(entity.getDisplay(),
+				new FontConfiguration(SkinParamUtils.getFont(getSkinParam(), FontParam.COMPONENT, stereotype),
+						SkinParamUtils.getFontColor(getSkinParam(), FontParam.COMPONENT, stereotype)),
 				HorizontalAlignement.CENTER, skinParam);
 
 		if (stereotype == null || stereotype.getLabel() == null) {
 			this.stereo = null;
 		} else {
-			this.stereo = TextBlockUtils.create(Display.getWithNewlines(stereotype.getLabel()),
-					new FontConfiguration(SkinParamUtils.getFont(getSkinParam(), FontParam.COMPONENT_STEREOTYPE, stereotype), SkinParamUtils.getFontColor(getSkinParam(), FontParam.COMPONENT_STEREOTYPE, null)), HorizontalAlignement.CENTER, skinParam);
+			this.stereo = TextBlockUtils.create(
+					Display.getWithNewlines(stereotype.getLabel()),
+					new FontConfiguration(SkinParamUtils.getFont(getSkinParam(), FontParam.COMPONENT_STEREOTYPE,
+							stereotype), SkinParamUtils.getFontColor(getSkinParam(), FontParam.COMPONENT_STEREOTYPE,
+							null)), HorizontalAlignement.CENTER, skinParam);
 		}
 		this.url = entity.getUrls();
 
 	}
 
-	@Override
-	public Dimension2D getDimension(StringBounder stringBounder) {
+	public Dimension2D calculateDimension(StringBounder stringBounder) {
 		final Dimension2D dimName = name.calculateDimension(stringBounder);
 		final Dimension2D dimStereo = getStereoDimension(stringBounder);
 		final Dimension2D circle = new Dimension2DDouble(SIZE, SIZE);
 		return Dimension2DDouble.mergeLayoutT12B3(dimStereo, circle, dimName);
 	}
 
-	private Dimension2D getStereoDimension(StringBounder stringBounder) {
-		if (stereo == null) {
-			return new Dimension2DDouble(0, 0);
-		}
-		return stereo.calculateDimension(stringBounder);
-	}
-
-	public void drawU(UGraphic ug, double xTheoricalPosition, double yTheoricalPosition) {
+	final public void drawUNewWayINLINED(UGraphic ug) {
 		final StringBounder stringBounder = ug.getStringBounder();
 		final Dimension2D dimStereo = getStereoDimension(stringBounder);
-		final Dimension2D dimTotal = getDimension(stringBounder);
+		final Dimension2D dimTotal = calculateDimension(stringBounder);
 		final Dimension2D dimName = name.calculateDimension(stringBounder);
 
 		final double circleX = (dimTotal.getWidth() - SIZE) / 2;
@@ -111,36 +110,44 @@ public class EntityImageCircleInterface extends AbstractEntityImage {
 		if (getSkinParam().shadowing()) {
 			circle.setDeltaShadow(4);
 		}
-		ug.getParam().setStroke(new UStroke(2));
-		ug.getParam().setColor(SkinParamUtils.getColor(getSkinParam(), ColorParam.componentInterfaceBorder, getStereo()));
-		ug.getParam().setBackcolor(SkinParamUtils.getColor(getSkinParam(), ColorParam.componentInterfaceBackground, getStereo()));
-		if (url.size()>0) {
+		ug = ug.apply(new UStroke(2));
+		ug = ug.apply(
+				new UChangeBackColor(SkinParamUtils.getColor(getSkinParam(), ColorParam.componentInterfaceBackground,
+						getStereo()))).apply(
+				new UChangeColor(SkinParamUtils.getColor(getSkinParam(), ColorParam.componentInterfaceBorder,
+						getStereo())));
+		if (url.size() > 0) {
 			ug.startUrl(url.get(0));
 		}
-		ug.drawNewWay(xTheoricalPosition + circleX, yTheoricalPosition + circleY, circle);
-		ug.getParam().setStroke(new UStroke());
+		ug.drawNewWay(circleX, circleY, circle);
+		ug = ug.apply(new UStroke());
 
 		final double nameX = (dimTotal.getWidth() - dimName.getWidth()) / 2;
 		final double nameY = SIZE + dimStereo.getHeight();
-		name.drawU(ug, xTheoricalPosition + nameX, yTheoricalPosition + nameY);
+		name.drawUNewWayINLINED(ug.apply(new UTranslate(nameX, nameY)));
 
 		if (stereo != null) {
 			final double stereoX = (dimTotal.getWidth() - dimStereo.getWidth()) / 2;
-			stereo.drawU(ug, xTheoricalPosition + stereoX, yTheoricalPosition);
+			stereo.drawUNewWayINLINED(ug.apply(new UTranslate(stereoX, 0)));
 		}
-		if (url.size()>0) {
+		if (url.size() > 0) {
 			ug.closeAction();
 		}
+	}
 
+	private Dimension2D getStereoDimension(StringBounder stringBounder) {
+		if (stereo == null) {
+			return new Dimension2DDouble(0, 0);
+		}
+		return stereo.calculateDimension(stringBounder);
 	}
 
 	public ShapeType getShapeType() {
 		return ShapeType.RECTANGLE;
 	}
-	
+
 	public int getShield() {
 		return 0;
 	}
-
 
 }

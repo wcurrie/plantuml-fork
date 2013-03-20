@@ -41,6 +41,7 @@ import net.sourceforge.plantuml.Url;
 import net.sourceforge.plantuml.activitydiagram3.LinkRendering;
 import net.sourceforge.plantuml.graphic.StringBounder;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
+import net.sourceforge.plantuml.ugraphic.UTranslate;
 
 public class FtileMinWidth implements Ftile {
 
@@ -52,11 +53,11 @@ public class FtileMinWidth implements Ftile {
 		this.minWidth = minWidth;
 	}
 
-	public void drawU(UGraphic ug, double x, double y) {
+	public void drawUNewWayINLINED(UGraphic ug) {
 		final StringBounder stringBounder = ug.getStringBounder();
 		final Dimension2D dimTile = tile.calculateDimension(stringBounder);
 		final Dimension2D dimTotal = calculateDimension(stringBounder);
-		tile.drawU(ug, x + (dimTotal.getWidth() - dimTile.getWidth()) / 2, y);
+		tile.drawUNewWayINLINED(ug.apply(new UTranslate(((dimTotal.getWidth() - dimTile.getWidth()) / 2), 0)));
 	}
 
 	public Dimension2D calculateDimension(StringBounder stringBounder) {

@@ -43,10 +43,11 @@ import net.sourceforge.plantuml.cucadiagram.ILeaf;
 import net.sourceforge.plantuml.graphic.StringBounder;
 import net.sourceforge.plantuml.svek.AbstractEntityImage;
 import net.sourceforge.plantuml.svek.ShapeType;
+import net.sourceforge.plantuml.ugraphic.UChangeBackColor;
+import net.sourceforge.plantuml.ugraphic.UChangeColor;
 import net.sourceforge.plantuml.ugraphic.UEllipse;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
 import net.sourceforge.plantuml.ugraphic.UShape;
-import net.sourceforge.plantuml.ugraphic.UStroke;
 
 public class EntityImageCircleEnd extends AbstractEntityImage {
 
@@ -56,28 +57,23 @@ public class EntityImageCircleEnd extends AbstractEntityImage {
 		super(entity, skinParam);
 	}
 
-	@Override
-	public Dimension2D getDimension(StringBounder stringBounder) {
+	public Dimension2D calculateDimension(StringBounder stringBounder) {
 		return new Dimension2DDouble(SIZE, SIZE);
 	}
 
-	public void drawU(UGraphic ug, double xTheoricalPosition, double yTheoricalPosition) {
+	final public void drawUNewWayINLINED(UGraphic ug) {
 		final UEllipse circle = new UEllipse(SIZE, SIZE);
 		if (getSkinParam().shadowing()) {
 			circle.setDeltaShadow(3);
 		}
-		ug.getParam().setStroke(new UStroke());
-		ug.getParam().setBackcolor(null);
-		ug.getParam().setColor(SkinParamUtils.getColor(getSkinParam(), ColorParam.activityEnd, getStereo()));
-		ug.drawNewWay(xTheoricalPosition, yTheoricalPosition, circle);
-		ug.getParam().setStroke(new UStroke());
+		ug.apply(new UChangeBackColor(null))
+				.apply(new UChangeColor(SkinParamUtils.getColor(getSkinParam(), ColorParam.activityEnd, getStereo())))
+				.drawOldWay(circle);
 
 		final double delta = 4;
 		final UShape circleSmall = new UEllipse(SIZE - delta * 2, SIZE - delta * 2);
-		ug.getParam().setColor(null);
-		ug.getParam().setBackcolor(SkinParamUtils.getColor(getSkinParam(), ColorParam.activityEnd, getStereo()));
-		ug.drawNewWay(xTheoricalPosition + delta + 0.5, yTheoricalPosition + delta + 0.5, circleSmall);
-
+		ug.apply(new UChangeBackColor(SkinParamUtils.getColor(getSkinParam(), ColorParam.activityEnd, getStereo())))
+				.apply(new UChangeColor(null)).drawNewWay(delta + 0.5, delta + 0.5, circleSmall);
 	}
 
 	public ShapeType getShapeType() {

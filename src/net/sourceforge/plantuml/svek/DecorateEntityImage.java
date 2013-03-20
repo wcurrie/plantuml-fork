@@ -34,13 +34,17 @@
 package net.sourceforge.plantuml.svek;
 
 import java.awt.geom.Dimension2D;
+import java.util.Collections;
+import java.util.List;
 
 import net.sourceforge.plantuml.Dimension2DDouble;
+import net.sourceforge.plantuml.Url;
 import net.sourceforge.plantuml.graphic.HorizontalAlignement;
 import net.sourceforge.plantuml.graphic.HtmlColor;
 import net.sourceforge.plantuml.graphic.StringBounder;
 import net.sourceforge.plantuml.graphic.TextBlock;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
+import net.sourceforge.plantuml.ugraphic.UTranslate;
 
 public class DecorateEntityImage implements IEntityImage {
 
@@ -66,29 +70,28 @@ public class DecorateEntityImage implements IEntityImage {
 		this.text2 = text2;
 	}
 
-	public void drawU(UGraphic ug, double x, double y) {
+	public void drawUNewWayINLINED(UGraphic ug) {
 		final StringBounder stringBounder = ug.getStringBounder();
-		final Dimension2D dimOriginal = original.getDimension(stringBounder);
+		final Dimension2D dimOriginal = original.calculateDimension(stringBounder);
 		final Dimension2D dimText1 = getTextDim(text1, stringBounder);
 		final Dimension2D dimText2 = getTextDim(text2, stringBounder);
-		final Dimension2D dimTotal = getDimension(stringBounder);
+		final Dimension2D dimTotal = calculateDimension(stringBounder);
 
-		final double yText1 = y;
-		final double yImage = yText1 + dimText1.getHeight();
+		final double yImage = dimText1.getHeight();
 		final double yText2 = yImage + dimOriginal.getHeight();
 
 		final double xImage = (dimTotal.getWidth() - dimOriginal.getWidth()) / 2;
 
 		if (text1 != null) {
 			final double xText1 = getTextX(dimText1, dimTotal, horizontal1);
-			text1.drawU(ug, xText1, yText1);
+			text1.drawUNewWayINLINED(ug.apply(new UTranslate(xText1, 0)));
 		}
-		original.drawU(ug, xImage, yImage);
+		original.drawUNewWayINLINED(ug.apply(new UTranslate(xImage, yImage)));
 		deltaX = xImage;
 		deltaY = yImage;
 		if (text2 != null) {
 			final double xText2 = getTextX(dimText2, dimTotal, horizontal2);
-			text2.drawU(ug, xText2, yText2);
+			text2.drawUNewWayINLINED(ug.apply(new UTranslate(xText2, yText2)));
 		}
 	}
 
@@ -115,10 +118,10 @@ public class DecorateEntityImage implements IEntityImage {
 		return original.getBackcolor();
 	}
 
-	public Dimension2D getDimension(StringBounder stringBounder) {
-		final Dimension2D dimOriginal = original.getDimension(stringBounder);
-		final Dimension2D dimText = Dimension2DDouble.mergeTB(getTextDim(text1, stringBounder), getTextDim(text2,
-				stringBounder));
+	public Dimension2D calculateDimension(StringBounder stringBounder) {
+		final Dimension2D dimOriginal = original.calculateDimension(stringBounder);
+		final Dimension2D dimText = Dimension2DDouble.mergeTB(getTextDim(text1, stringBounder),
+				getTextDim(text2, stringBounder));
 		return Dimension2DDouble.mergeTB(dimOriginal, dimText);
 	}
 
@@ -146,6 +149,10 @@ public class DecorateEntityImage implements IEntityImage {
 
 	public boolean isHidden() {
 		return original.isHidden();
+	}
+
+	final public List<Url> getUrls() {
+		return Collections.emptyList();
 	}
 
 }

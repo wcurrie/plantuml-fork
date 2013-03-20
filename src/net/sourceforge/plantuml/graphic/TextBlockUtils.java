@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 9786 $
+ * Revision $Revision: 10307 $
  *
  */
 package net.sourceforge.plantuml.graphic;
@@ -46,7 +46,6 @@ import net.sourceforge.plantuml.cucadiagram.Stereotype;
 import net.sourceforge.plantuml.posimo.Positionable;
 import net.sourceforge.plantuml.posimo.PositionableImpl;
 import net.sourceforge.plantuml.sequencediagram.MessageNumber;
-import net.sourceforge.plantuml.svek.IEntityImage;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
 
 public class TextBlockUtils {
@@ -108,7 +107,7 @@ public class TextBlockUtils {
 
 	public static TextBlock empty(final double width, final double height) {
 		return new TextBlock() {
-			public void drawU(UGraphic ug, double x, double y) {
+			public void drawUNewWayINLINED(UGraphic ug) {
 			}
 
 			public Dimension2D calculateDimension(StringBounder stringBounder) {
@@ -123,22 +122,6 @@ public class TextBlockUtils {
 
 	public static Positionable asPositionable(TextBlock textBlock, StringBounder stringBounder, Point2D pt) {
 		return new PositionableImpl(pt, textBlock.calculateDimension(stringBounder));
-	}
-
-	public static TextBlock fromIEntityImage(final IEntityImage image) {
-		return new TextBlock() {
-			public Dimension2D calculateDimension(StringBounder stringBounder) {
-				return image.getDimension(stringBounder);
-			}
-
-			public void drawU(UGraphic ug, double x, double y) {
-				image.drawU(ug, x, y);
-			}
-
-			public List<Url> getUrls() {
-				return Collections.emptyList();
-			}
-		};
 	}
 
 	public static TextBlock mergeLR(TextBlock b1, TextBlock b2) {

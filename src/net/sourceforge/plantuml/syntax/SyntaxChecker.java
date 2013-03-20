@@ -39,10 +39,10 @@ import java.util.List;
 
 import net.sourceforge.plantuml.ErrorUml;
 import net.sourceforge.plantuml.OptionFlags;
-import net.sourceforge.plantuml.PSystem;
 import net.sourceforge.plantuml.PSystemError;
 import net.sourceforge.plantuml.SourceStringReader;
 import net.sourceforge.plantuml.UmlDiagram;
+import net.sourceforge.plantuml.core.Diagram;
 import net.sourceforge.plantuml.preproc.Defines;
 
 public class SyntaxChecker {
@@ -77,7 +77,7 @@ public class SyntaxChecker {
 		final SourceStringReader sourceStringReader = new SourceStringReader(new Defines(), source,
 				Collections.<String> emptyList());
 
-		final PSystem system = sourceStringReader.getBlocks().get(0).getSystem();
+		final Diagram system = sourceStringReader.getBlocks().get(0).getSystem();
 		if (system instanceof UmlDiagram) {
 			result.setUmlDiagramType(((UmlDiagram) system).getUmlDiagramType());
 			result.setDescription(system.getDescription());

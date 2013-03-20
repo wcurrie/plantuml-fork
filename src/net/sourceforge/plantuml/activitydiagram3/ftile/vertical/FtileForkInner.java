@@ -45,6 +45,7 @@ import net.sourceforge.plantuml.activitydiagram3.ftile.FtileMarged;
 import net.sourceforge.plantuml.graphic.HtmlColor;
 import net.sourceforge.plantuml.graphic.StringBounder;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
+import net.sourceforge.plantuml.ugraphic.UTranslate;
 
 class FtileForkInner implements Ftile {
 
@@ -67,18 +68,18 @@ class FtileForkInner implements Ftile {
 		}
 	}
 
-	public void drawU(UGraphic ug, final double x, final double y) {
+	public void drawUNewWayINLINED(UGraphic ug) {
 		final StringBounder stringBounder = ug.getStringBounder();
 		final Dimension2D dimTotal = calculateDimension(stringBounder);
-
-		double xpos = x;
+		
+		double xpos = 0;
 		for (Ftile ftile : forks) {
-			ftile.drawU(ug, xpos, y);
+			ftile.drawUNewWayINLINED(ug.apply(new UTranslate(xpos, 0)));
 			final Dimension2D dim = ftile.calculateDimension(stringBounder);
 			if (ftile.isKilled() == false) {
 				final Ftile arrow = factory.createVerticalArrow(dimTotal.getHeight() - dim.getHeight());
 				final double diffx = dim.getWidth() - arrow.calculateDimension(stringBounder).getWidth();
-				arrow.drawU(ug, xpos + diffx / 2, y + dim.getHeight());
+				arrow.drawUNewWayINLINED(ug.apply(new UTranslate((xpos + diffx / 2), dim.getHeight())));
 			}
 			xpos += dim.getWidth();
 		}

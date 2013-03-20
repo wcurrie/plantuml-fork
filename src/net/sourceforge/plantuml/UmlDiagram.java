@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  *
- * Revision $Revision: 10103 $
+ * Revision $Revision: 10459 $
  *
  */
 package net.sourceforge.plantuml;
@@ -51,8 +51,9 @@ import java.util.List;
 
 import javax.imageio.ImageIO;
 
-import net.sourceforge.plantuml.api.ImageData;
 import net.sourceforge.plantuml.api.ImageDataSimple;
+import net.sourceforge.plantuml.core.Diagram;
+import net.sourceforge.plantuml.core.ImageData;
 import net.sourceforge.plantuml.cucadiagram.Display;
 import net.sourceforge.plantuml.cucadiagram.UnparsableGraphvizException;
 import net.sourceforge.plantuml.flashcode.FlashCodeFactory;
@@ -68,7 +69,7 @@ import net.sourceforge.plantuml.ugraphic.UAntiAliasing;
 import net.sourceforge.plantuml.ugraphic.UFont;
 import net.sourceforge.plantuml.version.Version;
 
-public abstract class UmlDiagram extends AbstractPSystem implements PSystem {
+public abstract class UmlDiagram extends AbstractPSystem implements Diagram {
 
 	private boolean rotation;
 	private boolean hideUnlinkedData;
@@ -307,7 +308,7 @@ public abstract class UmlDiagram extends AbstractPSystem implements PSystem {
 		PrintWriter pw = null;
 		try {
 			pw = new PrintWriter(cmapFile);
-			pw.print(cmapdata.asString(cmapFile.getName().substring(0, cmapFile.getName().length() - 6)));
+			pw.print(cmapdata.getCMapData(cmapFile.getName().substring(0, cmapFile.getName().length() - 6)));
 			pw.close();
 		} finally {
 			if (pw != null) {

@@ -37,6 +37,8 @@ import java.awt.geom.Dimension2D;
 import java.util.List;
 
 import net.sourceforge.plantuml.Url;
+import net.sourceforge.plantuml.ugraphic.UChangeBackColor;
+import net.sourceforge.plantuml.ugraphic.UChangeColor;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
 import net.sourceforge.plantuml.ugraphic.URectangle;
 import net.sourceforge.plantuml.ugraphic.UStroke;
@@ -58,16 +60,13 @@ public class TextBlockGeneric implements TextBlock {
 		return dim;
 	}
 
-	public void drawU(UGraphic ug, double x, double y) {
-		
-		ug.getParam().setBackcolor(background);
-		ug.getParam().setColor(border);
-		ug.getParam().setStroke(new UStroke(2, 2, 1));
+	public void drawUNewWayINLINED(UGraphic ug) {
+		ug = ug.apply(new UChangeBackColor(background));
+		ug = ug.apply(new UChangeColor(border));
 		final Dimension2D dim = calculateDimension(ug.getStringBounder());
-		ug.drawNewWay(x, y, new URectangle(dim.getWidth(), dim.getHeight()));
-		ug.getParam().setStroke(new UStroke());
-
-		textBlock.drawU(ug, x, y);
+		ug.apply(new UStroke(2, 2, 1)).drawOldWay(new URectangle(dim.getWidth(), dim.getHeight()));
+		
+		textBlock.drawUNewWayINLINED(ug);
 	}
 
 	public List<Url> getUrls() {

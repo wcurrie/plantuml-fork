@@ -42,6 +42,7 @@ import net.sourceforge.plantuml.Url;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
 import net.sourceforge.plantuml.ugraphic.ULine;
 import net.sourceforge.plantuml.ugraphic.UPolygon;
+import net.sourceforge.plantuml.ugraphic.UTranslate;
 
 class USymbolFolder extends USymbol {
 
@@ -52,8 +53,7 @@ class USymbolFolder extends USymbol {
 	private final static int marginTitleY1 = 3;
 	private final static int marginTitleY2 = 3;
 
-	private void drawFolder(UGraphic ug, double xTheoricalPosition, double yTheoricalPosition, double width,
-			double height, Dimension2D dimTitle, boolean shadowing) {
+	private void drawFolder(UGraphic ug, double width, double height, Dimension2D dimTitle, boolean shadowing) {
 
 		final double wtitle;
 		if (dimTitle.getWidth() == 0) {
@@ -75,8 +75,8 @@ class USymbolFolder extends USymbol {
 		if (shadowing) {
 			shape.setDeltaShadow(3.0);
 		}
-		ug.drawNewWay(xTheoricalPosition, yTheoricalPosition, shape);
-		ug.drawNewWay(xTheoricalPosition, yTheoricalPosition + htitle, new ULine(wtitle + marginTitleX3, 0));
+		ug.drawOldWay(shape);
+		ug.drawNewWay(0, htitle, new ULine(wtitle + marginTitleX3, 0));
 	}
 
 	private double getHTitle(Dimension2D dimTitle) {
@@ -96,15 +96,14 @@ class USymbolFolder extends USymbol {
 	public TextBlock asSmall(final TextBlock label, final TextBlock stereotype, final SymbolContext symbolContext) {
 		return new TextBlock() {
 
-			public void drawU(UGraphic ug, double x, double y) {
+			public void drawUNewWayINLINED(UGraphic ug) {
 				final Dimension2D dim = calculateDimension(ug.getStringBounder());
-				symbolContext.apply(ug);
-				drawFolder(ug, x, y, dim.getWidth(), dim.getHeight(), new Dimension2DDouble(0, 0),
+				ug = symbolContext.apply(ug);
+				drawFolder(ug, dim.getWidth(), dim.getHeight(), new Dimension2DDouble(0, 0),
 						symbolContext.isShadowing());
 				final Margin margin = getMargin();
 				final TextBlock tb = TextBlockUtils.mergeTB(stereotype, label, HorizontalAlignement.CENTER);
-				tb.drawU(ug, x + margin.getX1(), y + margin.getY1());
-
+				tb.drawUNewWayINLINED(ug.apply(new UTranslate(margin.getX1(), margin.getY1())));
 			}
 
 			public Dimension2D calculateDimension(StringBounder stringBounder) {
@@ -123,18 +122,17 @@ class USymbolFolder extends USymbol {
 			final SymbolContext symbolContext) {
 		return new TextBlock() {
 
-			public void drawU(UGraphic ug, double x, double y) {
+			public void drawUNewWayINLINED(UGraphic ug) {
 				final StringBounder stringBounder = ug.getStringBounder();
 				final Dimension2D dim = calculateDimension(stringBounder);
-				symbolContext.apply(ug);
+				ug = symbolContext.apply(ug);
 				final Dimension2D dimTitle = title.calculateDimension(stringBounder);
-				drawFolder(ug, x, y, dim.getWidth(), dim.getHeight(), dimTitle, symbolContext.isShadowing());
-				title.drawU(ug, x + 4, y + 2);
+				drawFolder(ug, dim.getWidth(), dim.getHeight(), dimTitle, symbolContext.isShadowing());
+				title.drawUNewWayINLINED(ug.apply(new UTranslate(4, 2)));
 				final Dimension2D dimStereo = stereotype.calculateDimension(stringBounder);
 				final double posStereo = (width - dimStereo.getWidth()) / 2;
 
-				stereotype.drawU(ug, x + 4 + posStereo, y + 2 + getHTitle(dimTitle));
-
+				stereotype.drawUNewWayINLINED(ug.apply(new UTranslate(4 + posStereo, 2 + getHTitle(dimTitle))));
 			}
 
 			public Dimension2D calculateDimension(StringBounder stringBounder) {

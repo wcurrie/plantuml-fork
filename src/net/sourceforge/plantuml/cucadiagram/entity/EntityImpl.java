@@ -63,12 +63,14 @@ import net.sourceforge.plantuml.cucadiagram.Rankdir;
 import net.sourceforge.plantuml.cucadiagram.Stereotype;
 import net.sourceforge.plantuml.graphic.HorizontalAlignement;
 import net.sourceforge.plantuml.graphic.HtmlColor;
+import net.sourceforge.plantuml.graphic.HtmlColorUtils;
 import net.sourceforge.plantuml.graphic.TextBlock;
 import net.sourceforge.plantuml.graphic.TextBlockVertical2;
 import net.sourceforge.plantuml.graphic.USymbol;
 import net.sourceforge.plantuml.svek.IEntityImage;
 import net.sourceforge.plantuml.svek.PackageStyle;
 import net.sourceforge.plantuml.svek.SingleStrategy;
+import net.sourceforge.plantuml.ugraphic.UStroke;
 
 class EntityImpl implements ILeaf, IGroup {
 
@@ -105,6 +107,11 @@ class EntityImpl implements ILeaf, IGroup {
 	private boolean nearDecoration = false;
 	private int xposition;
 	private IEntityImage svekImage;
+
+	private boolean removed = false;
+	private HtmlColor specificLineColor;
+	private UStroke specificStroke;
+
 
 	// Back to Entity
 	public final boolean isTop() {
@@ -557,8 +564,6 @@ class EntityImpl implements ILeaf, IGroup {
 		return SingleStrategy.SQUARRE;
 	}
 
-	private boolean removed = false;
-
 	public boolean isRemoved() {
 		if (isGroup()) {
 			if (getLeafsDirect().size() == 0) {
@@ -582,4 +587,23 @@ class EntityImpl implements ILeaf, IGroup {
 	public void setRemoved(boolean removed) {
 		this.removed = removed;
 	}
+	
+	
+
+	public HtmlColor getSpecificLineColor() {
+		return specificLineColor;
+	}
+
+	public void setSpecificLineColor(HtmlColor specificLinecolor) {
+		this.specificLineColor = specificLinecolor;
+	}
+
+	public UStroke getSpecificLineStroke() {
+		return specificStroke;
+	}
+
+	public void setSpecificLineStroke(UStroke specificLineStroke) {
+		this.specificStroke = specificLineStroke;
+	}
+
 }

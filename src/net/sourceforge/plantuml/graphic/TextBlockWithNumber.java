@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 9786 $
+ * Revision $Revision: 10254 $
  *
  */
 package net.sourceforge.plantuml.graphic;
@@ -39,6 +39,7 @@ import net.sourceforge.plantuml.Dimension2DDouble;
 import net.sourceforge.plantuml.SpriteContainer;
 import net.sourceforge.plantuml.cucadiagram.Display;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
+import net.sourceforge.plantuml.ugraphic.UTranslate;
 
 class TextBlockWithNumber extends TextBlockSimple {
 
@@ -66,14 +67,15 @@ class TextBlockWithNumber extends TextBlockSimple {
 	}
 
 	@Override
-	public void drawU(UGraphic ug, double x, double y) {
+	public void drawUNewWayINLINED(UGraphic ug) {
 		final StringBounder stringBounder = ug.getStringBounder();
 		final double heightNum = numText.calculateDimension(stringBounder).getHeight();
-
+		
 		final double deltaY = calculateDimension(stringBounder).getHeight() - heightNum;
-
-		numText.drawU(ug, x, y + deltaY / 2.0);
-		super.drawU(ug, x + getNumberWithAndMargin(stringBounder), y);
+		
+		numText.drawUNewWayINLINED(ug.apply(new UTranslate(0, deltaY / 2.0)));
+		super.drawUNewWayINLINED(ug.apply(new UTranslate(getNumberWithAndMargin(stringBounder), 0)));
 	}
+
 
 }

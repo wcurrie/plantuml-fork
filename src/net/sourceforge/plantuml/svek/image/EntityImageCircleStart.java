@@ -43,6 +43,8 @@ import net.sourceforge.plantuml.cucadiagram.ILeaf;
 import net.sourceforge.plantuml.graphic.StringBounder;
 import net.sourceforge.plantuml.svek.AbstractEntityImage;
 import net.sourceforge.plantuml.svek.ShapeType;
+import net.sourceforge.plantuml.ugraphic.UChangeBackColor;
+import net.sourceforge.plantuml.ugraphic.UChangeColor;
 import net.sourceforge.plantuml.ugraphic.UEllipse;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
 
@@ -54,19 +56,17 @@ public class EntityImageCircleStart extends AbstractEntityImage {
 		super(entity, skinParam);
 	}
 
-	@Override
-	public Dimension2D getDimension(StringBounder stringBounder) {
+	public Dimension2D calculateDimension(StringBounder stringBounder) {
 		return new Dimension2DDouble(SIZE, SIZE);
 	}
 
-	public void drawU(UGraphic ug, double xTheoricalPosition, double yTheoricalPosition) {
+	final public void drawUNewWayINLINED(UGraphic ug) {
 		final UEllipse circle = new UEllipse(SIZE, SIZE);
 		if (getSkinParam().shadowing()) {
 			circle.setDeltaShadow(3);
 		}
-		ug.getParam().setColor(null);
-		ug.getParam().setBackcolor(SkinParamUtils.getColor(getSkinParam(), ColorParam.activityStart, getStereo()));
-		ug.drawNewWay(xTheoricalPosition, yTheoricalPosition, circle);
+		ug.apply(new UChangeBackColor(SkinParamUtils.getColor(getSkinParam(), ColorParam.activityStart, getStereo())))
+				.apply(new UChangeColor(null)).drawOldWay(circle);
 	}
 
 	public ShapeType getShapeType() {

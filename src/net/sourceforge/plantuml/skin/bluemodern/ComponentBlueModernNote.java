@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 10076 $
+ * Revision $Revision: 10265 $
  *
  */
 package net.sourceforge.plantuml.skin.bluemodern;
@@ -40,6 +40,8 @@ import net.sourceforge.plantuml.graphic.HtmlColor;
 import net.sourceforge.plantuml.graphic.StringBounder;
 import net.sourceforge.plantuml.skin.AbstractTextualComponent;
 import net.sourceforge.plantuml.skin.Area;
+import net.sourceforge.plantuml.ugraphic.UChangeBackColor;
+import net.sourceforge.plantuml.ugraphic.UChangeColor;
 import net.sourceforge.plantuml.ugraphic.UFont;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
 import net.sourceforge.plantuml.ugraphic.ULine;
@@ -99,14 +101,14 @@ final public class ComponentBlueModernNote extends AbstractTextualComponent {
 		polygon.addPoint(textWidth - cornersize, 0);
 		polygon.addPoint(0, 0);
 
-		ug.getParam().setBackcolor(back);
-		ug.getParam().setColor(foregroundColor);
+		ug = ug.apply(new UChangeBackColor(back));
+		ug = ug.apply(new UChangeColor(foregroundColor));
 		ug.drawOldWay(polygon);
 
 		ug.drawNewWay(textWidth - cornersize, 0, new ULine(0, cornersize));
 		ug.drawNewWay(textWidth, cornersize, new ULine(-cornersize, 0));
 
-		getTextBlock().drawU(ug, getMarginX1(), getMarginY());
+		getTextBlock().drawUNewWayINLINED(ug.apply(new UTranslate(getMarginX1(), getMarginY())));
 
 	}
 

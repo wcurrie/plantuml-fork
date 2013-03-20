@@ -48,9 +48,12 @@ import net.sourceforge.plantuml.graphic.HtmlColorUtils;
 import net.sourceforge.plantuml.graphic.StringBounder;
 import net.sourceforge.plantuml.graphic.TextBlock;
 import net.sourceforge.plantuml.graphic.TextBlockUtils;
+import net.sourceforge.plantuml.ugraphic.UChangeBackColor;
+import net.sourceforge.plantuml.ugraphic.UChangeColor;
 import net.sourceforge.plantuml.ugraphic.UFont;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
 import net.sourceforge.plantuml.ugraphic.URectangle;
+import net.sourceforge.plantuml.ugraphic.UTranslate;
 
 public class TimeHeaderMonth implements TextBlock {
 
@@ -69,10 +72,10 @@ public class TimeHeaderMonth implements TextBlock {
 		this.dayWidth = dayWidth;
 	}
 
-	public void drawU(UGraphic ug, double x, double y) {
+	public void drawUNewWayINLINED(UGraphic ug) {
 		int n = 0;
 		String last = null;
-
+		
 		double pendingX = -1;
 		for (Day d = start; d.compareTo(end) <= 0; d = (Day) timeline.next(d)) {
 			final String text = "" + d.getMonth().name();
@@ -80,17 +83,16 @@ public class TimeHeaderMonth implements TextBlock {
 				pendingX = n * dayWidth;
 				last = text;
 			}
-			ug.getParam().setColor(HtmlColorUtils.BLACK);
-			ug.getParam().setBackcolor(HtmlColorUtils.WHITE);
+			ug = ug.apply(new UChangeColor(HtmlColorUtils.BLACK));
+			ug = ug.apply(new UChangeBackColor(HtmlColorUtils.WHITE));
 			if (text.equals(last) == false) {
-				manage(ug, x, y, n, last, pendingX);
+				manage(ug, 0, 0, n, last, pendingX);
 				pendingX = n * dayWidth;
 			}
 			last = text;
 			n++;
 		}
-		manage(ug, x, y, n, last, pendingX);
-
+		manage(ug, 0, 0, n, last, pendingX);
 	}
 
 	private void manage(UGraphic ug, double x, double y, int n, String last, double pendingX) {
@@ -101,7 +103,7 @@ public class TimeHeaderMonth implements TextBlock {
 		final Dimension2D dimText = b.calculateDimension(ug.getStringBounder());
 		final double diffX = width - dimText.getWidth();
 		final double diffY = getHeight() - dimText.getHeight();
-		b.drawU(ug, x + pendingX + diffX / 2, y + diffY / 2);
+		b.drawUNewWayINLINED(ug.apply(new UTranslate((x + pendingX + diffX / 2), (y + diffY / 2))));
 	}
 
 	private double getHeight() {

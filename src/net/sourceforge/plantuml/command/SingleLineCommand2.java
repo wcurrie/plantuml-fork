@@ -35,11 +35,11 @@ package net.sourceforge.plantuml.command;
 
 import java.util.List;
 
-import net.sourceforge.plantuml.PSystem;
 import net.sourceforge.plantuml.command.regex.RegexConcat;
 import net.sourceforge.plantuml.command.regex.RegexResult;
+import net.sourceforge.plantuml.core.Diagram;
 
-public abstract class SingleLineCommand2<S extends PSystem> implements Command {
+public abstract class SingleLineCommand2<S extends Diagram> implements Command {
 
 	private final S system;
 	private final RegexConcat pattern;
@@ -102,6 +102,8 @@ public abstract class SingleLineCommand2<S extends PSystem> implements Command {
 		if (arg == null) {
 			return CommandExecutionResult.error("Cannot parse line " + line);
 		}
+		// System.err.println("lines="+lines);
+		// System.err.println("pattern="+pattern.getPattern());
 		return executeArg(arg);
 	}
 

@@ -70,10 +70,13 @@ import net.sourceforge.plantuml.posimo.PositionableUtils;
 import net.sourceforge.plantuml.svek.SvekUtils.PointListIterator;
 import net.sourceforge.plantuml.svek.extremity.ExtremityFactory;
 import net.sourceforge.plantuml.svek.image.EntityImageNoteLink;
+import net.sourceforge.plantuml.ugraphic.UChangeBackColor;
+import net.sourceforge.plantuml.ugraphic.UChangeColor;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
 import net.sourceforge.plantuml.ugraphic.UPolygon;
 import net.sourceforge.plantuml.ugraphic.UShape;
 import net.sourceforge.plantuml.ugraphic.UStroke;
+import net.sourceforge.plantuml.ugraphic.UTranslate;
 
 public class Line implements Moveable, Hideable {
 
@@ -125,23 +128,23 @@ public class Line implements Moveable, Hideable {
 			this.down = down;
 		}
 
-		public void drawU(UGraphic ug, double x, double y) {
+		public void drawUNewWayINLINED(UGraphic ug) {
 			Direction dir = getDirection();
 			if (getLinkArrow() == LinkArrow.BACKWARD) {
 				dir = dir.getInv();
 			}
 			switch (dir) {
 			case RIGHT:
-				right.drawU(ug, x, y);
+				right.drawUNewWayINLINED(ug);
 				break;
 			case LEFT:
-				left.drawU(ug, x, y);
+				left.drawUNewWayINLINED(ug);
 				break;
 			case UP:
-				up.drawU(ug, x, y);
+				up.drawUNewWayINLINED(ug);
 				break;
 			case DOWN:
-				down.drawU(ug, x, y);
+				down.drawUNewWayINLINED(ug);
 				break;
 			default:
 				throw new UnsupportedOperationException();
@@ -235,8 +238,7 @@ public class Line implements Moveable, Hideable {
 		if (link.getNote() == null) {
 			noteOnly = null;
 		} else {
-			noteOnly = TextBlockUtils.fromIEntityImage(new EntityImageNoteLink(link.getNote(), link.getNoteColor(),
-					skinParam));
+			noteOnly = new EntityImageNoteLink(link.getNote(), link.getNoteColor(), skinParam);
 		}
 
 		if (labelOnly != null && noteOnly != null) {
@@ -309,7 +311,7 @@ public class Line implements Moveable, Hideable {
 			sb.append("label=<");
 			appendTable(sb, noteLabelText.calculateDimension(stringBounder), noteLabelColor);
 			sb.append(">");
-//			sb.append(",labelfloat=true");
+			// sb.append(",labelfloat=true");
 		}
 
 		if (startTailText != null) {
@@ -317,14 +319,14 @@ public class Line implements Moveable, Hideable {
 			sb.append("taillabel=<");
 			appendTable(sb, startTailText.calculateDimension(stringBounder), startTailColor);
 			sb.append(">");
-//			sb.append(",labelangle=0");
+			// sb.append(",labelangle=0");
 		}
 		if (endHeadText != null) {
 			sb.append(",");
 			sb.append("headlabel=<");
 			appendTable(sb, endHeadText.calculateDimension(stringBounder), endHeadColor);
 			sb.append(">");
-//			sb.append(",labelangle=0");
+			// sb.append(",labelangle=0");
 		}
 
 		if (ltail != null) {
@@ -346,13 +348,13 @@ public class Line implements Moveable, Hideable {
 			sb.append("constraint=false,");
 		}
 
-//		if (link.getLabeldistance() != null) {
-//			sb.append("labeldistance=" + link.getLabeldistance() + ",");
-//		}
-//		if (link.getLabelangle() != null) {
-//			sb.append("labelangle=" + link.getLabelangle() + ",");
-//		}
-//		sb.append("labelangle=1,");
+		// if (link.getLabeldistance() != null) {
+		// sb.append("labeldistance=" + link.getLabeldistance() + ",");
+		// }
+		// if (link.getLabelangle() != null) {
+		// sb.append("labelangle=" + link.getLabelangle() + ",");
+		// }
+		// sb.append("labelangle=1,");
 
 		sb.append("];");
 		SvekUtils.println(sb);
@@ -412,8 +414,8 @@ public class Line implements Moveable, Hideable {
 		} else if (decor != LinkDecor.NONE) {
 			final UShape sh = new UPolygon(pointListIterator.next());
 			return new UDrawable() {
-				public void drawU(UGraphic ug, double x, double y) {
-					ug.drawNewWay(x, y, sh);
+				public void drawUNewWayINLINED(UGraphic ug) {
+					ug.drawOldWay(sh);
 				}
 			};
 		}
@@ -442,7 +444,7 @@ public class Line implements Moveable, Hideable {
 
 		if (this.noteLabelText != null) {
 			final Point2D pos = getXY(svg, this.noteLabelColor, fullHeight);
-			if (pos!=null) {
+			if (pos != null) {
 				corner1.manage(pos);
 				this.noteLabelXY = TextBlockUtils.asPositionable(noteLabelText, stringBounder, pos);
 			}
@@ -471,7 +473,7 @@ public class Line implements Moveable, Hideable {
 
 	private Point2D.Double getXY(String svg, int color, int height) {
 		final int idx = getIndexFromColor(svg, color);
-		if (idx==-1) {
+		if (idx == -1) {
 			return null;
 		}
 		return SvekUtils.getMinXY(SvekUtils.extractPointsList(svg, idx, height));
@@ -525,9 +527,8 @@ public class Line implements Moveable, Hideable {
 			color = this.link.getSpecificColor();
 		}
 
-		ug.getParam().setColor(color);
-		ug.getParam().setBackcolor(null);
-		ug.getParam().setStroke(link.getType().getStroke());
+		ug = ug.apply(new UChangeBackColor(null)).apply(new UChangeColor(color));
+		ug = ug.apply(link.getType().getStroke());
 		double moveStartX = 0;
 		double moveStartY = 0;
 		double moveEndX = 0;
@@ -564,46 +565,43 @@ public class Line implements Moveable, Hideable {
 		// extr2.drawU(ug, x, y);
 		// }
 
-		ug.getParam().setStroke(new UStroke());
+		ug = ug.apply(new UStroke()).apply(new UChangeColor(color));
 
 		if (this.extremity1 != null) {
-			ug.getParam().setColor(color);
 			if (this.link.getType().getDecor1().isFill()) {
-				ug.getParam().setBackcolor(color);
+				ug = ug.apply(new UChangeBackColor(color));
 			} else {
-				ug.getParam().setBackcolor(null);
+				ug = ug.apply(new UChangeBackColor(null));
 			}
-			this.extremity1.drawU(ug, x + moveEndX, y + moveEndY);
+			this.extremity1.drawUNewWayINLINED(ug.apply(new UTranslate(x + moveEndX, y + moveEndY)));
 		}
 		if (this.extremity2 != null) {
-			ug.getParam().setColor(color);
 			if (this.link.getType().getDecor2().isFill()) {
-				ug.getParam().setBackcolor(color);
+				ug = ug.apply(new UChangeBackColor(color));
 			} else {
-				ug.getParam().setBackcolor(null);
+				ug = ug.apply(new UChangeBackColor(null));
 			}
-			this.extremity2.drawU(ug, x + moveStartX, y + moveStartY);
+			this.extremity2.drawUNewWayINLINED(ug.apply(new UTranslate(x + moveStartX, y + moveStartY)));
 		}
-		if (this.noteLabelText != null && this.noteLabelXY!=null) {
-			this.noteLabelText.drawU(ug, x + this.noteLabelXY.getPosition().getX(), y
-					+ this.noteLabelXY.getPosition().getY());
+		if (this.noteLabelText != null && this.noteLabelXY != null) {
+			this.noteLabelText.drawUNewWayINLINED(ug.apply(new UTranslate(x + this.noteLabelXY.getPosition().getX(), y
+					+ this.noteLabelXY.getPosition().getY())));
 		}
 		if (this.startTailText != null) {
-			this.startTailText.drawU(ug, x + this.startTailLabelXY.getPosition().getX(), y
-					+ this.startTailLabelXY.getPosition().getY());
+			this.startTailText.drawUNewWayINLINED(ug.apply(new UTranslate(x
+					+ this.startTailLabelXY.getPosition().getX(), y + this.startTailLabelXY.getPosition().getY())));
 		}
 		if (this.endHeadText != null) {
-			this.endHeadText.drawU(ug, x + this.endHeadLabelXY.getPosition().getX(), y
-					+ this.endHeadLabelXY.getPosition().getY());
+			this.endHeadText.drawUNewWayINLINED(ug.apply(new UTranslate(x + this.endHeadLabelXY.getPosition().getX(), y
+					+ this.endHeadLabelXY.getPosition().getY())));
 		}
 
 		if (link.getType().getMiddleDecor() != LinkMiddleDecor.NONE) {
-			ug.getParam().setColor(color);
 			final PointAndAngle middle = dotPath.getMiddle();
 			final double angleRad = middle.getAngle();
 			final double angleDeg = -angleRad * 180.0 / Math.PI;
 			final UDrawable mi = link.getType().getMiddleDecor().getMiddleFactory().createUDrawable(angleDeg - 45);
-			mi.drawU(ug, x + middle.getX(), y + middle.getY());
+			mi.drawUNewWayINLINED(ug.apply(new UTranslate(x + middle.getX(), y + middle.getY())));
 		}
 
 		if (url != null) {

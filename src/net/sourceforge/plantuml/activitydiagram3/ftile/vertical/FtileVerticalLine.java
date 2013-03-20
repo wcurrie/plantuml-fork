@@ -43,6 +43,7 @@ import net.sourceforge.plantuml.activitydiagram3.LinkRendering;
 import net.sourceforge.plantuml.activitydiagram3.ftile.Ftile;
 import net.sourceforge.plantuml.graphic.HtmlColor;
 import net.sourceforge.plantuml.graphic.StringBounder;
+import net.sourceforge.plantuml.ugraphic.UChangeColor;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
 import net.sourceforge.plantuml.ugraphic.ULine;
 import net.sourceforge.plantuml.ugraphic.UStroke;
@@ -57,11 +58,8 @@ class FtileVerticalLine implements Ftile {
 		this.color = color;
 	}
 
-	public void drawU(UGraphic ug, double x, double y) {
-		ug.getParam().setColor(color);
-		ug.getParam().setStroke(new UStroke(1.5));
-		ug.drawNewWay(x, y, new ULine(0, height));
-		ug.getParam().setStroke(new UStroke(1));
+	public void drawUNewWayINLINED(UGraphic ug) {
+		ug.apply(new UStroke(1.5)).apply(new UChangeColor(color)).drawOldWay(new ULine(0, height));
 	}
 
 	public Dimension2D calculateDimension(StringBounder stringBounder) {

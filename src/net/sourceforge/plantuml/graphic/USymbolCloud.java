@@ -41,16 +41,16 @@ import net.sourceforge.plantuml.Dimension2DDouble;
 import net.sourceforge.plantuml.Url;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
 import net.sourceforge.plantuml.ugraphic.UPath;
+import net.sourceforge.plantuml.ugraphic.UTranslate;
 
 class USymbolCloud extends USymbol {
 
-	private void drawCloud(UGraphic ug, double xTheoricalPosition, double yTheoricalPosition, double width,
-			double height, boolean shadowing) {
+	private void drawCloud(UGraphic ug, double width, double height, boolean shadowing) {
 		final UPath shape = getSpecificFrontierForCloud(width, height);
 		if (shadowing) {
 			shape.setDeltaShadow(3.0);
 		}
-		ug.drawNewWay(xTheoricalPosition + 3, yTheoricalPosition - 3, shape);
+		ug.drawNewWay(3, -3, shape);
 	}
 
 	private UPath getSpecificFrontierForCloud(double width, double height) {
@@ -58,13 +58,13 @@ class USymbolCloud extends USymbol {
 		path.moveTo(0, 10);
 		double x = 0;
 		for (int i = 0; i < width - 9; i += 10) {
-			path.cubicTo(0 + i, -3 + 10, 2 + i, -5 + 10, 5 + i, -5 + 10);
-			path.cubicTo(8 + i, -5 + 10, 10 + i, -3 + 10, 10 + i, 0 + 10);
+			path.cubicTo(i, -3 + 10, 2 + i, -5 + 10, 5 + i, -5 + 10);
+			path.cubicTo(8 + i, -5 + 10, 10 + i, -3 + 10, 10 + i, 10);
 			x = i + 10;
 		}
 		double y = 0;
 		for (int j = 10; j < height - 9; j += 10) {
-			path.cubicTo(x + 3, 0 + j, x + 5, 2 + j, x + 5, 5 + j);
+			path.cubicTo(x + 3, j, x + 5, 2 + j, x + 5, 5 + j);
 			path.cubicTo(x + 5, 8 + j, x + 3, 10 + j, x, 10 + j);
 			y = j + 10;
 		}
@@ -86,14 +86,13 @@ class USymbolCloud extends USymbol {
 	public TextBlock asSmall(final TextBlock label, final TextBlock stereotype, final SymbolContext symbolContext) {
 		return new TextBlock() {
 
-			public void drawU(UGraphic ug, double x, double y) {
+			public void drawUNewWayINLINED(UGraphic ug) {
 				final Dimension2D dim = calculateDimension(ug.getStringBounder());
-				symbolContext.apply(ug);
-				drawCloud(ug, x, y, dim.getWidth(), dim.getHeight(), symbolContext.isShadowing());
+				ug = symbolContext.apply(ug);
+				drawCloud(ug, dim.getWidth(), dim.getHeight(), symbolContext.isShadowing());
 				final Margin margin = getMargin();
 				final TextBlock tb = TextBlockUtils.mergeTB(stereotype, label, HorizontalAlignement.CENTER);
-				tb.drawU(ug, x + margin.getX1(), y + margin.getY1());
-
+				tb.drawUNewWayINLINED(ug.apply(new UTranslate(margin.getX1(), margin.getY1())));
 			}
 
 			public Dimension2D calculateDimension(StringBounder stringBounder) {
@@ -112,17 +111,16 @@ class USymbolCloud extends USymbol {
 			final SymbolContext symbolContext) {
 		return new TextBlock() {
 
-			public void drawU(UGraphic ug, double x, double y) {
+			public void drawUNewWayINLINED(UGraphic ug) {
 				final Dimension2D dim = calculateDimension(ug.getStringBounder());
-				symbolContext.apply(ug);
-				drawCloud(ug, x, y, dim.getWidth(), dim.getHeight(), symbolContext.isShadowing());
+				ug = symbolContext.apply(ug);
+				drawCloud(ug, dim.getWidth(), dim.getHeight(), symbolContext.isShadowing());
 				final Dimension2D dimStereo = stereotype.calculateDimension(ug.getStringBounder());
 				final double posStereo = (width - dimStereo.getWidth()) / 2;
-				stereotype.drawU(ug, x + posStereo, y + 13);
+				stereotype.drawUNewWayINLINED(ug.apply(new UTranslate(posStereo, 13)));
 				final Dimension2D dimTitle = title.calculateDimension(ug.getStringBounder());
 				final double posTitle = (width - dimTitle.getWidth()) / 2;
-				title.drawU(ug, x + posTitle, y + 13 + dimStereo.getHeight());
-
+				title.drawUNewWayINLINED(ug.apply(new UTranslate(posTitle, 13 + dimStereo.getHeight())));
 			}
 
 			public Dimension2D calculateDimension(StringBounder stringBounder) {

@@ -58,6 +58,7 @@ import net.sourceforge.plantuml.svek.AbstractEntityImage;
 import net.sourceforge.plantuml.svek.ShapeType;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
 import net.sourceforge.plantuml.ugraphic.UStroke;
+import net.sourceforge.plantuml.ugraphic.UTranslate;
 
 public class EntityImageComponentForDescriptionDiagram extends AbstractEntityImage {
 
@@ -72,14 +73,14 @@ public class EntityImageComponentForDescriptionDiagram extends AbstractEntityIma
 		if (symbol == null) {
 			throw new IllegalArgumentException();
 		}
-		
+
 		final TextBlock desc = new BodyEnhanced2(entity.getDisplay(), getFontParam(symbol), skinParam,
 				HorizontalAlignement.CENTER, stereotype, symbol.manageHorizontalLine(), false);
 
-//		final TextBlock desc = TextBlockUtils.create(
-//				entity.getDisplay(),
-//				new FontConfiguration(getFont(getFontParam(symbol), stereotype), getFontColor(getFontParam(symbol),
-//						stereotype)), HorizontalAlignement.CENTER, skinParam);
+		// final TextBlock desc = TextBlockUtils.create(
+		// entity.getDisplay(),
+		// new FontConfiguration(getFont(getFontParam(symbol), stereotype), getFontColor(getFontParam(symbol),
+		// stereotype)), HorizontalAlignement.CENTER, skinParam);
 
 		this.url = entity.getUrls();
 
@@ -95,7 +96,9 @@ public class EntityImageComponentForDescriptionDiagram extends AbstractEntityIma
 		if (stereotype != null && stereotype.getLabel() != null) {
 			stereo = TextBlockUtils.create(
 					Display.getWithNewlines(stereotype.getLabel()),
-					new FontConfiguration(SkinParamUtils.getFont(getSkinParam(), getFontParamStereotype(symbol), stereotype), SkinParamUtils.getFontColor(getSkinParam(), getFontParamStereotype(symbol), null)), HorizontalAlignement.CENTER, skinParam);
+					new FontConfiguration(SkinParamUtils.getFont(getSkinParam(), getFontParamStereotype(symbol),
+							stereotype), SkinParamUtils.getFontColor(getSkinParam(), getFontParamStereotype(symbol),
+							null)), HorizontalAlignement.CENTER, skinParam);
 		}
 
 		asSmall = symbol.asSmall(desc, stereo, ctx);
@@ -108,11 +111,12 @@ public class EntityImageComponentForDescriptionDiagram extends AbstractEntityIma
 		if (symbol == USymbol.ACTOR) {
 			return FontParam.USECASE_ACTOR_STEREOTYPE;
 		}
-		if (symbol == USymbol.ARTIFACT || symbol == USymbol.FOLDER || symbol == USymbol.BOUNDARY || symbol == USymbol.ENTITY_DOMAIN || symbol == USymbol.CONTROL) {
+		if (symbol == USymbol.ARTIFACT || symbol == USymbol.FOLDER || symbol == USymbol.BOUNDARY
+				|| symbol == USymbol.ENTITY_DOMAIN || symbol == USymbol.CONTROL) {
 			return FontParam.USECASE_ACTOR_STEREOTYPE;
 		}
 		return FontParam.USECASE_ACTOR_STEREOTYPE;
-//		throw new UnsupportedOperationException("symbol=" + symbol.getClass());
+		// throw new UnsupportedOperationException("symbol=" + symbol.getClass());
 	}
 
 	private FontParam getFontParam(USymbol symbol) {
@@ -122,7 +126,8 @@ public class EntityImageComponentForDescriptionDiagram extends AbstractEntityIma
 		if (symbol == USymbol.ACTOR) {
 			return FontParam.USECASE_ACTOR;
 		}
-		if (symbol == USymbol.ARTIFACT || symbol == USymbol.FOLDER || symbol == USymbol.BOUNDARY || symbol == USymbol.ENTITY_DOMAIN || symbol == USymbol.CONTROL) {
+		if (symbol == USymbol.ARTIFACT || symbol == USymbol.FOLDER || symbol == USymbol.BOUNDARY
+				|| symbol == USymbol.ENTITY_DOMAIN || symbol == USymbol.CONTROL) {
 			return FontParam.USECASE_ACTOR;
 		}
 		return FontParam.USECASE_ACTOR;
@@ -136,11 +141,12 @@ public class EntityImageComponentForDescriptionDiagram extends AbstractEntityIma
 		if (symbol == USymbol.ACTOR) {
 			return ColorParam.usecaseActorBorder;
 		}
-		if (symbol == USymbol.ARTIFACT || symbol == USymbol.FOLDER || symbol == USymbol.BOUNDARY || symbol == USymbol.ENTITY_DOMAIN || symbol == USymbol.CONTROL) {
+		if (symbol == USymbol.ARTIFACT || symbol == USymbol.FOLDER || symbol == USymbol.BOUNDARY
+				|| symbol == USymbol.ENTITY_DOMAIN || symbol == USymbol.CONTROL) {
 			return ColorParam.usecaseActorBorder;
 		}
 		return ColorParam.usecaseActorBorder;
-//		throw new UnsupportedOperationException("symbol=" + symbol.getClass());
+		// throw new UnsupportedOperationException("symbol=" + symbol.getClass());
 	}
 
 	private ColorParam getColorParamBack(USymbol symbol) {
@@ -150,29 +156,26 @@ public class EntityImageComponentForDescriptionDiagram extends AbstractEntityIma
 		if (symbol == USymbol.ACTOR) {
 			return ColorParam.usecaseActorBackground;
 		}
-		if (symbol == USymbol.ARTIFACT || symbol == USymbol.FOLDER || symbol == USymbol.BOUNDARY || symbol == USymbol.ENTITY_DOMAIN || symbol == USymbol.CONTROL) {
+		if (symbol == USymbol.ARTIFACT || symbol == USymbol.FOLDER || symbol == USymbol.BOUNDARY
+				|| symbol == USymbol.ENTITY_DOMAIN || symbol == USymbol.CONTROL) {
 			return ColorParam.usecaseActorBackground;
 		}
 		return ColorParam.usecaseActorBackground;
-//		throw new UnsupportedOperationException("symbol=" + symbol.getClass());
 	}
 
-	@Override
-	public Dimension2D getDimension(StringBounder stringBounder) {
+	public Dimension2D calculateDimension(StringBounder stringBounder) {
 		return asSmall.calculateDimension(stringBounder);
 	}
 
-	public void drawU(UGraphic ug, final double xTheoricalPosition, final double yTheoricalPosition) {
+	final public void drawUNewWayINLINED(UGraphic ug) {
 		if (url.size() > 0) {
 			ug.startUrl(url.get(0));
 		}
-		asSmall.drawU(ug, xTheoricalPosition, yTheoricalPosition);
-		ug.getParam().setStroke(new UStroke());
+		asSmall.drawUNewWayINLINED(ug);
 
 		if (url.size() > 0) {
 			ug.closeAction();
 		}
-
 	}
 
 	public ShapeType getShapeType() {

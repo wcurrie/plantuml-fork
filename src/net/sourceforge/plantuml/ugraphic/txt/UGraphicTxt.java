@@ -45,36 +45,27 @@ import net.sourceforge.plantuml.graphic.FontStyle;
 import net.sourceforge.plantuml.graphic.StringBounder;
 import net.sourceforge.plantuml.ugraphic.AbstractCommonUGraphic;
 import net.sourceforge.plantuml.ugraphic.ColorMapperIdentity;
-import net.sourceforge.plantuml.ugraphic.UClip;
-import net.sourceforge.plantuml.ugraphic.UFont;
-import net.sourceforge.plantuml.ugraphic.UGroup;
-import net.sourceforge.plantuml.ugraphic.UGroupNull;
 import net.sourceforge.plantuml.ugraphic.UShape;
 import net.sourceforge.plantuml.ugraphic.UText;
 
 public class UGraphicTxt extends AbstractCommonUGraphic {
 
-	private /*final*/ UmlCharArea charArea = new UmlCharAreaImpl();
-	private int lastPrint = 0;
+	private final UmlCharArea charArea;
 
 	@Override
 	protected AbstractCommonUGraphic copyUGraphic() {
-		// return new UGraphicTxt(this);
-		return this;
+		return new UGraphicTxt(this);
 	}
-
 
 	private UGraphicTxt(UGraphicTxt other) {
 		super(other);
 		this.charArea = other.charArea;
-		this.lastPrint = other.lastPrint;
 	}
 
 	public UGraphicTxt() {
 		super(new ColorMapperIdentity());
+		this.charArea = new UmlCharAreaImpl();
 	}
-
-
 
 	public StringBounder getStringBounder() {
 		return new TextStringBounder();
@@ -83,40 +74,39 @@ public class UGraphicTxt extends AbstractCommonUGraphic {
 	public void drawOldWay(UShape shape) {
 		if (shape instanceof UText) {
 			final UText txt = (UText) shape;
-			charArea.drawStringLR(txt.getText(), 0, lastPrint);
-			lastPrint++;
+			final int y = getDy() / 10 - 1;
 			if (txt.getFontConfiguration().containsStyle(FontStyle.WAVE)) {
-				charArea.drawHLine('^', lastPrint, 0, txt.getText().length());
-				lastPrint++;
+				charArea.drawHLine('^', y, getDx(), txt.getText().length());
+				charArea.drawStringLR(txt.getText(), 0, y + 1);
+			} else {
+				charArea.drawStringLR(txt.getText(), 0, y);
 			}
 			return;
 		}
 		throw new UnsupportedOperationException();
 	}
 
-	public void centerChar(double x, double y, char c, UFont font) {
-		throw new UnsupportedOperationException();
+	public final UmlCharArea getCharArea() {
+		return new TranslatedCharArea(charArea, getDx(), getDy());
 	}
 
-	public final UmlCharArea getCharArea() {
-		return new TranslatedCharArea(charArea, (int) getTranslateXTOBEREMOVED(), (int) getTranslateYTOBEREMOVED());
+	private int getDy() {
+		return (int) getTranslateYTOBEREMOVED();
+	}
+
+	private int getDx() {
+		return (int) getTranslateXTOBEREMOVED();
 	}
 
 	public void startUrl(Url url) {
 	}
-	
+
 	public void closeAction() {
-	}
-
-
-	public UGroup createGroup() {
-		return new UGroupNull();
 	}
 
 	public void writeImage(OutputStream os, String metadata, int dpi) throws IOException {
 		throw new UnsupportedOperationException();
 	}
-
 
 	public Dimension2D getDimension() {
 		return new Dimension2DDouble(0, 0);

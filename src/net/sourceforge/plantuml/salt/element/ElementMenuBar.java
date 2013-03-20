@@ -43,6 +43,7 @@ import net.sourceforge.plantuml.Dimension2DDouble;
 import net.sourceforge.plantuml.SpriteContainer;
 import net.sourceforge.plantuml.graphic.HtmlColorUtils;
 import net.sourceforge.plantuml.graphic.StringBounder;
+import net.sourceforge.plantuml.ugraphic.UChangeBackColor;
 import net.sourceforge.plantuml.ugraphic.UFont;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
 import net.sourceforge.plantuml.ugraphic.URectangle;
@@ -102,9 +103,8 @@ public class ElementMenuBar implements Element {
 
 		double x1 = x;
 		if (zIndex == 0) {
-			ug.getParam().setBackcolor(HtmlColorUtils.getColorIfValid("#DDDDDD"));
-			ug.drawNewWay(x, y, new URectangle(dimToUse.getWidth(), dimToUse.getHeight()));
-			ug.getParam().setBackcolor(null);
+			ug.apply(new UChangeBackColor(HtmlColorUtils.getColorIfValid("#DDDDDD"))).drawNewWay(x, y,
+					new URectangle(dimToUse.getWidth(), dimToUse.getHeight()));
 			for (ElementMenuEntry entry : entries) {
 				entry.drawU(ug, x1, y, zIndex, dimToUse);
 				final double w = entry.getPreferredDimension(ug.getStringBounder(), x1, y).getWidth();

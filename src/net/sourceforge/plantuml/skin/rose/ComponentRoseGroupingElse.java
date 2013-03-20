@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 10057 $
+ * Revision $Revision: 10265 $
  *
  */
 package net.sourceforge.plantuml.skin.rose;
@@ -41,11 +41,14 @@ import net.sourceforge.plantuml.graphic.HtmlColor;
 import net.sourceforge.plantuml.graphic.StringBounder;
 import net.sourceforge.plantuml.skin.AbstractTextualComponent;
 import net.sourceforge.plantuml.skin.Area;
+import net.sourceforge.plantuml.ugraphic.UChangeBackColor;
+import net.sourceforge.plantuml.ugraphic.UChangeColor;
 import net.sourceforge.plantuml.ugraphic.UFont;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
 import net.sourceforge.plantuml.ugraphic.ULine;
 import net.sourceforge.plantuml.ugraphic.URectangle;
 import net.sourceforge.plantuml.ugraphic.UStroke;
+import net.sourceforge.plantuml.ugraphic.UTranslate;
 
 public class ComponentRoseGroupingElse extends AbstractTextualComponent {
 
@@ -61,25 +64,21 @@ public class ComponentRoseGroupingElse extends AbstractTextualComponent {
 		this.backgroundColor = backgroundColor;
 		this.stroke = stroke;
 	}
-	
+
 	@Override
 	protected void drawBackgroundInternalU(UGraphic ug, Area area) {
 		final Dimension2D dimensionToUse = area.getDimensionToUse();
-		ug.getParam().setColor(null);
-		ug.getParam().setBackcolor(backgroundColor);
 		final URectangle rect = new URectangle(dimensionToUse.getWidth(), dimensionToUse.getHeight());
-		ug.drawOldWay(rect);
+		ug.apply(new UChangeColor(null)).apply(new UChangeBackColor(backgroundColor)).drawOldWay(rect);
 	}
 
-	
 	@Override
 	protected void drawInternalU(UGraphic ug, Area area) {
 		final Dimension2D dimensionToUse = area.getDimensionToUse();
-		stroke(ug, 2, 2);
-		ug.getParam().setColor(groupBorder);
+		ug = stroke(ug, 2, 2).apply(new UChangeColor(groupBorder));
 		ug.drawNewWay(0, 1, new ULine(dimensionToUse.getWidth(), 0));
-		ug.getParam().setStroke(new UStroke());
-		getTextBlock().drawU(ug, getMarginX1(), getMarginY());
+		ug = ug.apply(new UStroke());
+		getTextBlock().drawUNewWayINLINED(ug.apply(new UTranslate(getMarginX1(), getMarginY())));
 	}
 
 	@Override

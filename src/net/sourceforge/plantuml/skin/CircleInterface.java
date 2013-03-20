@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 10041 $
+ * Revision $Revision: 10266 $
  *
  */
 package net.sourceforge.plantuml.skin;
@@ -36,6 +36,8 @@ package net.sourceforge.plantuml.skin;
 import net.sourceforge.plantuml.graphic.HtmlColor;
 import net.sourceforge.plantuml.graphic.StringBounder;
 import net.sourceforge.plantuml.graphic.UDrawable;
+import net.sourceforge.plantuml.ugraphic.UChangeBackColor;
+import net.sourceforge.plantuml.ugraphic.UChangeColor;
 import net.sourceforge.plantuml.ugraphic.UEllipse;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
 import net.sourceforge.plantuml.ugraphic.UStroke;
@@ -58,20 +60,12 @@ public class CircleInterface implements UDrawable {
 		this.thickness = thickness;
 	}
 
-	
-	public void drawU(UGraphic ug, double x, double y) {
-
-		ug.getParam().setStroke(new UStroke(thickness));
-
+	public void drawUNewWayINLINED(UGraphic ug) {
 		final UEllipse head = new UEllipse(headDiam, headDiam);
-
-		ug.getParam().setBackcolor(backgroundColor);
-		ug.getParam().setColor(foregroundColor);
-		ug.drawNewWay(x + thickness, y + thickness, head);
-
-		ug.getParam().setStroke(new UStroke());
+		
+		ug.apply(new UStroke(thickness)).apply(new UChangeBackColor(backgroundColor))
+				.apply(new UChangeColor(foregroundColor)).drawNewWay(thickness, thickness, head);
 	}
-
 
 	public double getPreferredWidth(StringBounder stringBounder) {
 		return headDiam + 2 * thickness;

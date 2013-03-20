@@ -51,11 +51,14 @@ import net.sourceforge.plantuml.skin.Area;
 import net.sourceforge.plantuml.skin.Component;
 import net.sourceforge.plantuml.skin.Context2D;
 import net.sourceforge.plantuml.skin.rose.Rose;
+import net.sourceforge.plantuml.ugraphic.UChangeBackColor;
+import net.sourceforge.plantuml.ugraphic.UChangeColor;
 import net.sourceforge.plantuml.ugraphic.UFont;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
 import net.sourceforge.plantuml.ugraphic.UPolygon;
 import net.sourceforge.plantuml.ugraphic.URectangle;
 import net.sourceforge.plantuml.ugraphic.UStroke;
+import net.sourceforge.plantuml.ugraphic.UTranslate;
 
 public class Frame implements Component {
 
@@ -78,14 +81,12 @@ public class Frame implements Component {
 	public void drawU(UGraphic ug, Area area, Context2D context) {
 		final Dimension2D dimensionToUse = area.getDimensionToUse();
 		final HtmlColor lineColor = rose.getHtmlColor(skinParam, ColorParam.packageBorder);
-		ug.getParam().setColor(lineColor);
-		ug.getParam().setBackcolor(null);
-		ug.getParam().setStroke(new UStroke(1.4));
-		ug.drawOldWay(new URectangle(dimensionToUse.getWidth(), dimensionToUse.getHeight()));
-		ug.getParam().setStroke(new UStroke());
+		ug = ug.apply(new UChangeColor(lineColor));
+		ug = ug.apply(new UChangeBackColor(null));
+		ug.apply(new UStroke(1.4)).drawOldWay(new URectangle(dimensionToUse.getWidth(), dimensionToUse.getHeight()));
 
 		final TextBlock textBlock = createTextBloc();
-		textBlock.drawU(ug, 2, 2);
+		textBlock.drawUNewWayINLINED(ug.apply(new UTranslate(2, 2)));
 
 		final Dimension2D textDim = getTextDim(ug.getStringBounder());
 		final double x = textDim.getWidth() + 6;
@@ -96,10 +97,7 @@ public class Frame implements Component {
 		poly.addPoint(x - 6, y);
 		poly.addPoint(0, y);
 		poly.addPoint(0, 0);
-		ug.getParam().setColor(lineColor);
-		ug.getParam().setStroke(new UStroke(1.4));
-		ug.drawOldWay(poly);
-		ug.getParam().setStroke(new UStroke());
+		ug.apply(new UStroke(1.4)).drawOldWay(poly);
 
 	}
 

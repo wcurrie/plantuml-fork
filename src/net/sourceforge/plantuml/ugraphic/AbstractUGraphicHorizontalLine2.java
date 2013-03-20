@@ -39,29 +39,26 @@ import java.io.OutputStream;
 import net.sourceforge.plantuml.Url;
 import net.sourceforge.plantuml.graphic.StringBounder;
 
-public abstract class AbstractUGraphicHorizontalLine extends UGraphic {
+public abstract class AbstractUGraphicHorizontalLine2 extends UGraphic {
 
-	private final UGraphic ug;
-
-	protected UGraphic getUg() {
-		return ug;
-	}
-
+	private UGraphic ug;
 	private UTranslate translate = new UTranslate();
 
-	@Override
-	public UGraphic apply(UChange translate) {
-		if (translate instanceof UTranslate) {
-			final AbstractUGraphicHorizontalLine copy = copy();
-			copy.translate = (UTranslate) translate;
-			return copy;
+	public UGraphic apply(UChange change) {
+		final AbstractUGraphicHorizontalLine2 result;
+		if (change instanceof UTranslate) {
+			result = copy(ug);
+			result.translate = this.translate.compose((UTranslate) change);
+		} else {
+			result = copy(ug.apply(change));
+			result.translate = this.translate;
 		}
-		throw new UnsupportedOperationException();
+		return result;
 	}
 
-	protected abstract AbstractUGraphicHorizontalLine copy();
+	protected abstract AbstractUGraphicHorizontalLine2 copy(UGraphic ug);
 
-	public AbstractUGraphicHorizontalLine(UGraphic ug) {
+	protected AbstractUGraphicHorizontalLine2(UGraphic ug) {
 		this.ug = ug;
 	}
 
@@ -73,22 +70,14 @@ public abstract class AbstractUGraphicHorizontalLine extends UGraphic {
 		return ug.getParam();
 	}
 
-	protected abstract void drawHline(UGraphic ug, double x, double y, UHorizontalLine line);
+	protected abstract void drawHline(UGraphic ug, UHorizontalLine line, UTranslate translate);
 
 	public void drawOldWay(UShape shape) {
-		final double x = translate.getDx();
-		final double y = translate.getDy();
 		if (shape instanceof UHorizontalLine) {
-			drawHline(ug, x, y, (UHorizontalLine) shape);
+			drawHline(ug, (UHorizontalLine) shape, new UTranslate(0, translate.getDy()));
 		} else {
-			ug.drawNewWay(x, y, shape);
+			ug.apply(translate).drawOldWay(shape);
 		}
-	}
-
-	public void centerChar(double x, double y, char c, UFont font) {
-		x += translate.getDx();
-		y += translate.getDy();
-		ug.centerChar(x, y, c, font);
 	}
 
 	public ColorMapper getColorMapper() {
@@ -101,10 +90,6 @@ public abstract class AbstractUGraphicHorizontalLine extends UGraphic {
 
 	public void closeAction() {
 		ug.closeAction();
-	}
-
-	public UGroup createGroup() {
-		return ug.createGroup();
 	}
 
 	public void writeImage(OutputStream os, String metadata, int dpi) throws IOException {

@@ -66,16 +66,16 @@ public class TextBlockInEllipse implements TextBlock {
 		return ellipse.asUEllipse().bigger(6);
 	}
 
-	public void drawU(UGraphic ug, double x, double y) {
+	public void drawUNewWayINLINED(UGraphic ug) {
 		final UEllipse sh = getUEllipse();
 		final Point2D center = ellipse.getCenter();
-
+		
 		final double dx = sh.getWidth() / 2 - center.getX();
 		final double dy = sh.getHeight() / 2 - center.getY();
-
-		ug.drawNewWay(x, y, sh);
-
-		text.drawU(ug, x + dx, y + dy - 2);
+		
+		ug.drawOldWay(sh);
+		
+		text.drawUNewWayINLINED(ug.apply(new UTranslate(dx, (dy - 2))));
 	}
 
 	public Dimension2D calculateDimension(StringBounder stringBounder) {

@@ -44,6 +44,8 @@ import net.sourceforge.plantuml.activitydiagram3.ftile.Arrows;
 import net.sourceforge.plantuml.activitydiagram3.ftile.Ftile;
 import net.sourceforge.plantuml.graphic.HtmlColor;
 import net.sourceforge.plantuml.graphic.StringBounder;
+import net.sourceforge.plantuml.ugraphic.UChangeBackColor;
+import net.sourceforge.plantuml.ugraphic.UChangeColor;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
 import net.sourceforge.plantuml.ugraphic.ULine;
 import net.sourceforge.plantuml.ugraphic.UStroke;
@@ -58,13 +60,10 @@ class FtileVerticalArrow implements Ftile {
 		this.color = color;
 	}
 
-	public void drawU(UGraphic ug, double x, double y) {
-		ug.getParam().setColor(color);
-		ug.getParam().setBackcolor(color);
-		ug.getParam().setStroke(new UStroke(1.5));
-		ug.drawNewWay(x, y, new ULine(0, height));
-		ug.getParam().setStroke(new UStroke(1));
-		ug.drawNewWay(x, y + height, Arrows.asToDown());
+	public void drawUNewWayINLINED(UGraphic ug) {
+		ug = ug.apply(new UChangeBackColor(color)).apply(new UChangeColor(color));
+		ug.apply(new UStroke(1.5)).drawOldWay(new ULine(0, height));
+		ug.drawNewWay(0, height, Arrows.asToDown());
 	}
 
 	public Dimension2D calculateDimension(StringBounder stringBounder) {

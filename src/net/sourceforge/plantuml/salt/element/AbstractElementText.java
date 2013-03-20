@@ -46,6 +46,7 @@ import net.sourceforge.plantuml.graphic.TextBlock;
 import net.sourceforge.plantuml.graphic.TextBlockUtils;
 import net.sourceforge.plantuml.ugraphic.UFont;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
+import net.sourceforge.plantuml.ugraphic.UTranslate;
 
 abstract class AbstractElementText implements Element {
 
@@ -65,7 +66,7 @@ abstract class AbstractElementText implements Element {
 	}
 
 	protected void drawText(UGraphic ug, double x, double y) {
-		block.drawU(ug, x, y);
+		block.drawUNewWayINLINED(ug.apply(new UTranslate(x, y)));
 	}
 
 	protected Dimension2D getPureTextDimension(StringBounder stringBounder) {

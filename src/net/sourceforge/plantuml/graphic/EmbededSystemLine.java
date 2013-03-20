@@ -48,8 +48,8 @@ import net.sourceforge.plantuml.Dimension2DDouble;
 import net.sourceforge.plantuml.EmbededDiagram;
 import net.sourceforge.plantuml.FileFormat;
 import net.sourceforge.plantuml.FileFormatOption;
-import net.sourceforge.plantuml.PSystem;
 import net.sourceforge.plantuml.Url;
+import net.sourceforge.plantuml.core.Diagram;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
 import net.sourceforge.plantuml.ugraphic.UImage;
 import net.sourceforge.plantuml.ugraphic.UShape;
@@ -88,7 +88,7 @@ class EmbededSystemLine implements Line {
 	}
 
 	private BufferedImage getImage() throws IOException, InterruptedException {
-		final PSystem system = getSystem();
+		final Diagram system = getSystem();
 		final ByteArrayOutputStream os = new ByteArrayOutputStream();
 		system.exportDiagram(os, 0, new FileFormatOption(FileFormat.PNG));
 		os.close();
@@ -102,7 +102,7 @@ class EmbededSystemLine implements Line {
 		return HorizontalAlignement.LEFT;
 	}
 
-	private PSystem getSystem() throws IOException, InterruptedException {
+	private Diagram getSystem() throws IOException, InterruptedException {
 		final BlockUml blockUml = new BlockUml(lines);
 		return blockUml.getSystem();
 

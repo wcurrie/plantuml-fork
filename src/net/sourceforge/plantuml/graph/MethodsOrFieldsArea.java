@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 9786 $
+ * Revision $Revision: 10265 $
  *
  */
 package net.sourceforge.plantuml.graph;
@@ -50,6 +50,7 @@ import net.sourceforge.plantuml.graphic.TextBlockUtils;
 import net.sourceforge.plantuml.skin.VisibilityModifier;
 import net.sourceforge.plantuml.ugraphic.UFont;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
+import net.sourceforge.plantuml.ugraphic.UTranslate;
 
 public class MethodsOrFieldsArea {
 
@@ -87,7 +88,7 @@ public class MethodsOrFieldsArea {
 	public void draw(UGraphic ug, double x, double y) {
 		for (String s : strings) {
 			final TextBlock bloc = createTextBlock(s);
-			bloc.drawU(ug, x, y);
+			bloc.drawUNewWayINLINED(ug.apply(new UTranslate(x, y)));
 			y += bloc.calculateDimension(ug.getStringBounder()).getHeight();
 		}
 	}

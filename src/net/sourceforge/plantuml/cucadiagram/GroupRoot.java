@@ -45,6 +45,7 @@ import net.sourceforge.plantuml.graphic.USymbol;
 import net.sourceforge.plantuml.svek.IEntityImage;
 import net.sourceforge.plantuml.svek.PackageStyle;
 import net.sourceforge.plantuml.svek.SingleStrategy;
+import net.sourceforge.plantuml.ugraphic.UStroke;
 
 public class GroupRoot implements IGroup {
 
@@ -237,6 +238,22 @@ public class GroupRoot implements IGroup {
 
 	public boolean isRemoved() {
 		return false;
+	}
+
+	public HtmlColor getSpecificLineColor() {
+		return null;
+	}
+
+	public void setSpecificLineColor(HtmlColor specificLinecolor) {
+		throw new UnsupportedOperationException();
+	}
+
+	public UStroke getSpecificLineStroke() {
+		return null;
+	}
+
+	public void setSpecificLineStroke(UStroke specificLineStoke) {
+		throw new UnsupportedOperationException();
 	}
 
 }

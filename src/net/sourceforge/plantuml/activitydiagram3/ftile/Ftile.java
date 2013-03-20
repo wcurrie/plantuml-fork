@@ -40,7 +40,7 @@ public interface Ftile extends TextBlock {
 
 	public static final boolean SHADOWING = true;
 	
-	public boolean isKilled();
+	abstract public boolean isKilled();
 
-	public LinkRendering getInLinkRendering();
+	abstract public LinkRendering getInLinkRendering();
 }

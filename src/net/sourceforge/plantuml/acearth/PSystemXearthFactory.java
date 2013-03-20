@@ -40,8 +40,8 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import net.sourceforge.plantuml.DiagramType;
 import net.sourceforge.plantuml.PSystemBasicFactory;
+import net.sourceforge.plantuml.core.DiagramType;
 
 import com.ctreber.acearth.plugins.markers.Marker;
 

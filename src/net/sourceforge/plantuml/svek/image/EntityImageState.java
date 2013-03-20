@@ -55,11 +55,14 @@ import net.sourceforge.plantuml.graphic.TextBlockUtils;
 import net.sourceforge.plantuml.svek.AbstractEntityImage;
 import net.sourceforge.plantuml.svek.ShapeType;
 import net.sourceforge.plantuml.ugraphic.Shadowable;
+import net.sourceforge.plantuml.ugraphic.UChangeBackColor;
+import net.sourceforge.plantuml.ugraphic.UChangeColor;
 import net.sourceforge.plantuml.ugraphic.UEllipse;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
 import net.sourceforge.plantuml.ugraphic.ULine;
 import net.sourceforge.plantuml.ugraphic.URectangle;
 import net.sourceforge.plantuml.ugraphic.UStroke;
+import net.sourceforge.plantuml.ugraphic.UTranslate;
 
 public class EntityImageState extends AbstractEntityImage {
 
@@ -83,7 +86,8 @@ public class EntityImageState extends AbstractEntityImage {
 		this.withSymbol = stereotype != null && stereotype.isWithOOSymbol();
 
 		this.desc = TextBlockUtils.create(entity.getDisplay(),
-				new FontConfiguration(SkinParamUtils.getFont(getSkinParam(), FontParam.STATE, stereotype), SkinParamUtils.getFontColor(getSkinParam(), FontParam.STATE, stereotype)),
+				new FontConfiguration(SkinParamUtils.getFont(getSkinParam(), FontParam.STATE, stereotype),
+						SkinParamUtils.getFontColor(getSkinParam(), FontParam.STATE, stereotype)),
 				HorizontalAlignement.CENTER, skinParam);
 
 		Display list = new Display();
@@ -93,13 +97,14 @@ public class EntityImageState extends AbstractEntityImage {
 
 		this.url = entity.getUrls();
 
-		this.fields = TextBlockUtils.create(list, new FontConfiguration(SkinParamUtils.getFont(getSkinParam(), FontParam.STATE_ATTRIBUTE, stereotype),
-				SkinParamUtils.getFontColor(getSkinParam(), FontParam.STATE_ATTRIBUTE, stereotype)), HorizontalAlignement.LEFT, skinParam);
+		this.fields = TextBlockUtils.create(list,
+				new FontConfiguration(SkinParamUtils.getFont(getSkinParam(), FontParam.STATE_ATTRIBUTE, stereotype),
+						SkinParamUtils.getFontColor(getSkinParam(), FontParam.STATE_ATTRIBUTE, stereotype)),
+				HorizontalAlignement.LEFT, skinParam);
 
 	}
 
-	@Override
-	public Dimension2D getDimension(StringBounder stringBounder) {
+	public Dimension2D calculateDimension(StringBounder stringBounder) {
 		final Dimension2D dim = Dimension2DDouble.mergeTB(desc.calculateDimension(stringBounder),
 				fields.calculateDimension(stringBounder));
 		double heightSymbol = 0;
@@ -110,12 +115,12 @@ public class EntityImageState extends AbstractEntityImage {
 		return Dimension2DDouble.atLeast(result, MIN_WIDTH, MIN_HEIGHT);
 	}
 
-	public void drawU(UGraphic ug, double xTheoricalPosition, double yTheoricalPosition) {
+	final public void drawUNewWayINLINED(UGraphic ug) {
 		if (url.size() > 0) {
 			ug.startUrl(url.get(0));
 		}
 		final StringBounder stringBounder = ug.getStringBounder();
-		final Dimension2D dimTotal = getDimension(stringBounder);
+		final Dimension2D dimTotal = calculateDimension(stringBounder);
 		final Dimension2D dimDesc = desc.calculateDimension(stringBounder);
 
 		final double widthTotal = dimTotal.getWidth();
@@ -125,35 +130,34 @@ public class EntityImageState extends AbstractEntityImage {
 			rect.setDeltaShadow(4);
 		}
 
-		ug.getParam().setStroke(new UStroke(1.5));
-		ug.getParam().setColor(SkinParamUtils.getColor(getSkinParam(), ColorParam.stateBorder, getStereo()));
+		ug = ug.apply(new UStroke(1.5)).apply(
+				new UChangeColor(SkinParamUtils.getColor(getSkinParam(), ColorParam.stateBorder, getStereo())));
 		HtmlColor backcolor = getEntity().getSpecificBackColor();
 		if (backcolor == null) {
 			backcolor = SkinParamUtils.getColor(getSkinParam(), ColorParam.stateBackground, getStereo());
 		}
-		ug.getParam().setBackcolor(backcolor);
+		ug = ug.apply(new UChangeBackColor(backcolor));
 
-		ug.drawNewWay(xTheoricalPosition, yTheoricalPosition, rect);
+		ug.drawOldWay(rect);
 
-		final double yLine = yTheoricalPosition + MARGIN + dimDesc.getHeight() + MARGIN_LINE;
-		ug.drawNewWay(xTheoricalPosition, yLine, new ULine(widthTotal, 0));
+		final double yLine = MARGIN + dimDesc.getHeight() + MARGIN_LINE;
+		ug.drawNewWay(0, yLine, new ULine(widthTotal, 0));
 
-		ug.getParam().setStroke(new UStroke(1.3));
-		ug.getParam().setStroke(new UStroke());
+		ug = ug.apply(new UStroke());
 
 		if (withSymbol) {
-			final double xSymbol = xTheoricalPosition + dimTotal.getWidth();
-			final double ySymbol = yTheoricalPosition + dimTotal.getHeight();
+			final double xSymbol = dimTotal.getWidth();
+			final double ySymbol = dimTotal.getHeight();
 			drawSymbol(ug, xSymbol, ySymbol);
 		}
 
 		final double xDesc = (widthTotal - dimDesc.getWidth()) / 2;
-		final double yDesc = yTheoricalPosition + MARGIN;
-		desc.drawU(ug, xTheoricalPosition + xDesc, yDesc);
+		final double yDesc = MARGIN;
+		desc.drawUNewWayINLINED(ug.apply(new UTranslate(xDesc, yDesc)));
 
-		final double xFields = xTheoricalPosition + MARGIN;
+		final double xFields = MARGIN;
 		final double yFields = yLine + MARGIN_LINE;
-		fields.drawU(ug, xFields, yFields);
+		fields.drawUNewWayINLINED(ug.apply(new UTranslate(xFields, yFields)));
 
 		if (url.size() > 0) {
 			ug.closeAction();
@@ -176,6 +180,5 @@ public class EntityImageState extends AbstractEntityImage {
 	public int getShield() {
 		return 0;
 	}
-	
 
 }

@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 10057 $
+ * Revision $Revision: 10265 $
  *
  */
 package net.sourceforge.plantuml.skin.rose;
@@ -40,11 +40,14 @@ import net.sourceforge.plantuml.graphic.HtmlColor;
 import net.sourceforge.plantuml.graphic.StringBounder;
 import net.sourceforge.plantuml.skin.AbstractTextualComponent;
 import net.sourceforge.plantuml.skin.Area;
+import net.sourceforge.plantuml.ugraphic.UChangeBackColor;
+import net.sourceforge.plantuml.ugraphic.UChangeColor;
 import net.sourceforge.plantuml.ugraphic.UFont;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
 import net.sourceforge.plantuml.ugraphic.ULine;
 import net.sourceforge.plantuml.ugraphic.UPolygon;
 import net.sourceforge.plantuml.ugraphic.UStroke;
+import net.sourceforge.plantuml.ugraphic.UTranslate;
 
 final public class ComponentRoseNote extends AbstractTextualComponent {
 
@@ -57,8 +60,8 @@ final public class ComponentRoseNote extends AbstractTextualComponent {
 	private final UStroke stroke;
 
 	public ComponentRoseNote(HtmlColor back, HtmlColor foregroundColor, HtmlColor fontColor, UFont font,
-			Display strings, double paddingX, double paddingY, SpriteContainer spriteContainer,
-			double deltaShadow, UStroke stroke) {
+			Display strings, double paddingX, double paddingY, SpriteContainer spriteContainer, double deltaShadow,
+			UStroke stroke) {
 		super(strings, fontColor, font, HorizontalAlignement.LEFT, 6, 15, 5, spriteContainer);
 		this.back = back;
 		this.foregroundColor = foregroundColor;
@@ -113,16 +116,15 @@ final public class ComponentRoseNote extends AbstractTextualComponent {
 		polygon.addPoint(0, 0);
 		polygon.setDeltaShadow(deltaShadow);
 
-		ug.getParam().setColor(foregroundColor);
-		ug.getParam().setBackcolor(back);
-		ug.getParam().setStroke(stroke);
+		ug = ug.apply(new UChangeBackColor(back)).apply(new UChangeColor(foregroundColor));
+		ug = ug.apply(stroke);
 		ug.drawOldWay(polygon);
 
 		ug.drawNewWay(x2 - cornersize, 0, new ULine(0, cornersize));
 		ug.drawNewWay(x2, cornersize, new ULine(-cornersize, 0));
-		ug.getParam().setStroke(new UStroke());
+		ug = ug.apply(new UStroke());
 
-		getTextBlock().drawU(ug, getMarginX1() + diffX / 2, getMarginY());
+		getTextBlock().drawUNewWayINLINED(ug.apply(new UTranslate((getMarginX1() + diffX / 2), getMarginY())));
 
 	}
 

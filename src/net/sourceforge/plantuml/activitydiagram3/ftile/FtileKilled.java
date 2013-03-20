@@ -57,8 +57,8 @@ public class FtileKilled implements Ftile {
 		return tile.getUrls();
 	}
 
-	public void drawU(UGraphic ug, double x, double y) {
-		tile.drawU(ug, x, y);
+	public void drawUNewWayINLINED(UGraphic ug) {
+		tile.drawUNewWayINLINED(ug);
 	}
 
 	public boolean isKilled() {

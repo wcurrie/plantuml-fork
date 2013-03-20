@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 10028 $
+ * Revision $Revision: 10459 $
  *
  */
 package net.sourceforge.plantuml.cucadiagram;
@@ -52,8 +52,8 @@ import net.sourceforge.plantuml.FileFormatOption;
 import net.sourceforge.plantuml.Log;
 import net.sourceforge.plantuml.UmlDiagram;
 import net.sourceforge.plantuml.UmlDiagramType;
-import net.sourceforge.plantuml.api.ImageData;
 import net.sourceforge.plantuml.api.ImageDataSimple;
+import net.sourceforge.plantuml.core.ImageData;
 import net.sourceforge.plantuml.cucadiagram.dot.CucaDiagramPngMaker3;
 import net.sourceforge.plantuml.cucadiagram.dot.CucaDiagramTxtMaker;
 import net.sourceforge.plantuml.cucadiagram.entity.EntityFactory;

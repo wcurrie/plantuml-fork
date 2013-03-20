@@ -33,9 +33,9 @@ package net.sourceforge.plantuml.version;
 
 import java.io.IOException;
 
-import net.sourceforge.plantuml.DiagramType;
 import net.sourceforge.plantuml.Log;
 import net.sourceforge.plantuml.PSystemBasicFactory;
+import net.sourceforge.plantuml.core.DiagramType;
 
 public class PSystemLicenseFactory extends PSystemBasicFactory {
 

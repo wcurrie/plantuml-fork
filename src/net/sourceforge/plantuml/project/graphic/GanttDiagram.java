@@ -44,6 +44,8 @@ import net.sourceforge.plantuml.project.Instant;
 import net.sourceforge.plantuml.project.Item;
 import net.sourceforge.plantuml.project.Jalon;
 import net.sourceforge.plantuml.project.Project;
+import net.sourceforge.plantuml.ugraphic.UChangeBackColor;
+import net.sourceforge.plantuml.ugraphic.UChangeColor;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
 import net.sourceforge.plantuml.ugraphic.ULine;
 import net.sourceforge.plantuml.ugraphic.UPolygon;
@@ -91,16 +93,16 @@ public class GanttDiagram {
 			} else {
 				rect = new URectangle(x2 - x1, 3);
 			}
-			ug.getParam().setColor(HtmlColorUtils.GREEN);
-			ug.getParam().setBackcolor(HtmlColorUtils.GRAY);
+			ug = ug.apply(new UChangeColor(HtmlColorUtils.GREEN));
+			ug = ug.apply(new UChangeBackColor(HtmlColorUtils.GRAY));
 			ug.drawNewWay(x0start + x1, yitem, rect);
 
 		}
 
 		drawGrid(ug, x + x0start, y + timeScaleHeight, pos);
 
-		ug.getParam().setColor(HtmlColorUtils.BLACK);
-		ug.getParam().setBackcolor(null);
+		ug = ug.apply(new UChangeColor(HtmlColorUtils.BLACK));
+		ug = ug.apply(new UChangeBackColor(null));
 		timeScale.draw(ug, x + x0start, y);
 		itemHeader.draw(ug, x, y + timeScaleHeight);
 
@@ -114,9 +116,9 @@ public class GanttDiagram {
 		for (Map.Entry<Instant, Double> ent : pos.entrySet()) {
 			final double xcur = ent.getValue();
 			if (last == null || last.next(null).equals(ent.getKey())) {
-				ug.getParam().setColor(lightGray);
+				ug = ug.apply(new UChangeColor(lightGray));
 			} else {
-				ug.getParam().setColor(HtmlColorUtils.BLACK);
+				ug = ug.apply(new UChangeColor(HtmlColorUtils.BLACK));
 			}
 			ug.drawNewWay(x + xcur, y, line);
 			last = ent.getKey();

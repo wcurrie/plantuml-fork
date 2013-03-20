@@ -27,13 +27,39 @@
  * in the United States and other countries.]
  *
  * Original Author:  Arnaud Roques
- * 
- * Revision $Revision: 6184 $
+ *
+ * Revision $Revision: 4762 $
  *
  */
-package net.sourceforge.plantuml.command.note;
+package net.sourceforge.plantuml.activitydiagram3.command;
 
-import net.sourceforge.plantuml.command.Command;
+import net.sourceforge.plantuml.activitydiagram3.ActivityDiagram3;
+import net.sourceforge.plantuml.command.CommandExecutionResult;
+import net.sourceforge.plantuml.command.SingleLineCommand2;
+import net.sourceforge.plantuml.command.regex.RegexConcat;
+import net.sourceforge.plantuml.command.regex.RegexLeaf;
+import net.sourceforge.plantuml.command.regex.RegexResult;
+import net.sourceforge.plantuml.cucadiagram.Display;
 
-public interface CommandNote extends Command {
+public class CommandNote3 extends SingleLineCommand2<ActivityDiagram3> {
+
+	public CommandNote3(ActivityDiagram3 diagram) {
+		super(diagram, getRegexConcat());
+	}
+
+	static RegexConcat getRegexConcat() {
+		return new RegexConcat(new RegexLeaf("^"), //
+				new RegexLeaf("note"), //
+				new RegexLeaf("POSITION", "\\s*(left|right)?"), //
+				new RegexLeaf("\\s*:\\s*"), //
+				new RegexLeaf("NOTE", "(.*)"), //
+				new RegexLeaf("$"));
+	}
+
+	@Override
+	protected CommandExecutionResult executeArg(RegexResult arg) {
+		final Display note = Display.getWithNewlines(arg.get("NOTE", 0));
+		return getSystem().addNote(note);
+	}
+
 }

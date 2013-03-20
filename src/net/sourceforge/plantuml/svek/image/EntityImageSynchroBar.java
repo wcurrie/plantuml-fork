@@ -44,6 +44,8 @@ import net.sourceforge.plantuml.graphic.StringBounder;
 import net.sourceforge.plantuml.svek.AbstractEntityImage;
 import net.sourceforge.plantuml.svek.ShapeType;
 import net.sourceforge.plantuml.ugraphic.Shadowable;
+import net.sourceforge.plantuml.ugraphic.UChangeBackColor;
+import net.sourceforge.plantuml.ugraphic.UChangeColor;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
 import net.sourceforge.plantuml.ugraphic.URectangle;
 
@@ -53,20 +55,19 @@ public class EntityImageSynchroBar extends AbstractEntityImage {
 		super(entity, skinParam);
 	}
 
-	@Override
-	public Dimension2D getDimension(StringBounder stringBounder) {
+	public Dimension2D calculateDimension(StringBounder stringBounder) {
 		return new Dimension2DDouble(80, 8);
 	}
 
-	public void drawU(UGraphic ug, double xTheoricalPosition, double yTheoricalPosition) {
-		final Dimension2D dim = getDimension(ug.getStringBounder());
+	final public void drawUNewWayINLINED(UGraphic ug) {
+		final Dimension2D dim = calculateDimension(ug.getStringBounder());
 		final Shadowable rect = new URectangle(dim.getWidth(), dim.getHeight());
 		if (getSkinParam().shadowing()) {
 			rect.setDeltaShadow(4);
 		}
-		ug.getParam().setColor(null);
-		ug.getParam().setBackcolor(SkinParamUtils.getColor(getSkinParam(), ColorParam.activityBar, getStereo()));
-		ug.drawNewWay(xTheoricalPosition, yTheoricalPosition, rect);
+		ug.apply(new UChangeColor(null))
+				.apply(new UChangeBackColor(SkinParamUtils
+						.getColor(getSkinParam(), ColorParam.activityBar, getStereo()))).drawOldWay(rect);
 	}
 
 	public ShapeType getShapeType() {

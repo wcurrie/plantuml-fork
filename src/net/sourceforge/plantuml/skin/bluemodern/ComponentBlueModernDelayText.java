@@ -45,10 +45,12 @@ import net.sourceforge.plantuml.skin.AbstractTextualComponent;
 import net.sourceforge.plantuml.skin.Area;
 import net.sourceforge.plantuml.ugraphic.UFont;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
+import net.sourceforge.plantuml.ugraphic.UTranslate;
 
 public class ComponentBlueModernDelayText extends AbstractTextualComponent {
 
-	public ComponentBlueModernDelayText(HtmlColor fontColor, UFont font, Display stringsToDisplay, SpriteContainer spriteContainer) {
+	public ComponentBlueModernDelayText(HtmlColor fontColor, UFont font, Display stringsToDisplay,
+			SpriteContainer spriteContainer) {
 		super(stringsToDisplay, fontColor, font, HorizontalAlignement.CENTER, 4, 4, 4, spriteContainer);
 	}
 
@@ -63,8 +65,7 @@ public class ComponentBlueModernDelayText extends AbstractTextualComponent {
 		final double xpos = (dimensionToUse.getWidth() - textWidth) / 2;
 		final double ypos = (dimensionToUse.getHeight() - textHeight) / 2;
 
-		ug.getParam().setColor(getFontColor());
-		textBlock.drawU(ug, xpos, ypos + getMarginY());
+		textBlock.drawUNewWayINLINED(ug.apply(new UTranslate(xpos, (ypos + getMarginY()))));
 	}
 
 	@Override

@@ -41,48 +41,74 @@ import net.sourceforge.plantuml.Url;
 import net.sourceforge.plantuml.graphic.StringBounder;
 
 public class TextLimitFinder extends UGraphic {
-	
+
+	static class MinMax {
+		private double maxX;
+		private double maxY;
+		private double minX;
+		private double minY;
+
+		MinMax(boolean initToZero) {
+			if (initToZero) {
+				minX = 0;
+				maxX = 0;
+				minY = 0;
+				maxY = 0;
+			} else {
+				minX = Double.MAX_VALUE;
+				maxX = -Double.MAX_VALUE;
+				minY = Double.MAX_VALUE;
+				maxY = -Double.MAX_VALUE;
+			}
+		}
+
+		private void addPoint(double x, double y) {
+			this.maxX = Math.max(x, maxX);
+			this.maxY = Math.max(y, maxY);
+			this.minX = Math.min(x, minX);
+			this.minY = Math.min(y, minY);
+		}
+
+	}
+
 	@Override
-	public UGraphic apply(UChange translate) {
-		if (translate instanceof UTranslate) {
-			this.translate = (UTranslate) translate;
-			return this;
+	public UGraphic apply(UChange change) {
+		if (change instanceof UTranslate) {
+			return new TextLimitFinder(stringBounder, minmax, translate.compose((UTranslate) change));
+		} else if (change instanceof UStroke) {
+			return new TextLimitFinder(this);
+		} else if (change instanceof UChangeBackColor) {
+			return new TextLimitFinder(this);
+		} else if (change instanceof UChangeColor) {
+			return new TextLimitFinder(this);
 		}
 		throw new UnsupportedOperationException();
 	}
 
-
 	private final StringBounder stringBounder;
-
-	private double maxX;
-	private double maxY;
-	private double minX;
-	private double minY;
-	private UTranslate translate = new UTranslate();
+	private final UTranslate translate;
+	private final MinMax minmax;
 
 	public TextLimitFinder(StringBounder stringBounder, boolean initToZero) {
-		this.stringBounder = stringBounder;
-		if (initToZero) {
-			this.minX = 0;
-			this.maxX = 0;
-			this.minY = 0;
-			this.maxY = 0;
-		} else {
-			this.minX = Double.MAX_VALUE;
-			this.maxX = -Double.MAX_VALUE;
-			this.minY = Double.MAX_VALUE;
-			this.maxY = -Double.MAX_VALUE;
-		}
+		this(stringBounder, new MinMax(initToZero), new UTranslate());
 	}
 
-	private final UParam param = new UParam();
+	private TextLimitFinder(StringBounder stringBounder, MinMax minmax, UTranslate translate) {
+		this.stringBounder = stringBounder;
+		this.minmax = minmax;
+		this.translate = translate;
+	}
+
+	private TextLimitFinder(TextLimitFinder other) {
+		this(other.stringBounder, other.minmax, other.translate);
+	}
 
 	public StringBounder getStringBounder() {
 		return stringBounder;
 	}
 
 	public UParam getParam() {
-		return param;
+		return new UParamNull();
 	}
 
 	public void drawOldWay(UShape shape) {
@@ -93,61 +119,43 @@ public class TextLimitFinder extends UGraphic {
 		}
 	}
 
-	public void centerChar(double x, double y, char c, UFont font) {
-		throw new UnsupportedOperationException();
-	}
-
 	public ColorMapper getColorMapper() {
 		throw new UnsupportedOperationException();
 	}
 
 	public void startUrl(Url url) {
-		throw new UnsupportedOperationException();
 	}
 
 	public void closeAction() {
-		throw new UnsupportedOperationException();
-	}
-
-	public UGroup createGroup() {
-		throw new UnsupportedOperationException();
 	}
 
 	public void writeImage(OutputStream os, String metadata, int dpi) throws IOException {
 		throw new UnsupportedOperationException();
 	}
 
-
-	private void addPoint(double x, double y) {
-		this.maxX = Math.max(x, maxX);
-		this.maxY = Math.max(y, maxY);
-		this.minX = Math.min(x, minX);
-		this.minY = Math.min(y, minY);
-	}
-
 	private void drawText(double x, double y, UText text) {
 		final Dimension2D dim = stringBounder.calculateDimension(text.getFontConfiguration().getFont(), text.getText());
 		y -= dim.getHeight() - 1.5;
-		addPoint(x, y);
-		addPoint(x, y + dim.getHeight());
-		addPoint(x + dim.getWidth(), y);
-		addPoint(x + dim.getWidth(), y + dim.getHeight());
+		minmax.addPoint(x, y);
+		minmax.addPoint(x, y + dim.getHeight());
+		minmax.addPoint(x + dim.getWidth(), y);
+		minmax.addPoint(x + dim.getWidth(), y + dim.getHeight());
 	}
 
 	public double getMaxX() {
-		return maxX;
+		return minmax.maxX;
 	}
 
 	public double getMaxY() {
-		return maxY;
+		return minmax.maxY;
 	}
 
 	public double getMinX() {
-		return minX;
+		return minmax.minX;
 	}
 
 	public double getMinY() {
-		return minY;
+		return minmax.minY;
 	}
 
 }

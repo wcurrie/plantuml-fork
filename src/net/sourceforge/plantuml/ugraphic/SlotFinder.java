@@ -42,30 +42,43 @@ import net.sourceforge.plantuml.graphic.StringBounder;
 public class SlotFinder extends UGraphic {
 
 	@Override
-	public UGraphic apply(UChange translate) {
-		if (translate instanceof UTranslate) {
-			this.translate = (UTranslate) translate;
-			return this;
+	public UGraphic apply(UChange change) {
+		if (change instanceof UTranslate) {
+			return new SlotFinder(stringBounder, yslot, translate.compose((UTranslate) change));
+		} else if (change instanceof UStroke) {
+			return new SlotFinder(this);
+		} else if (change instanceof UChangeBackColor) {
+			return new SlotFinder(this);
+		} else if (change instanceof UChangeColor) {
+			return new SlotFinder(this);
 		}
 		throw new UnsupportedOperationException();
 	}
 
-	private final SlotSet yslot = new SlotSet();
+	private final SlotSet yslot;
 	private final StringBounder stringBounder;
-	private UTranslate translate = new UTranslate();
+	private final UTranslate translate;
 
 	public SlotFinder(StringBounder stringBounder) {
+		this(stringBounder, new SlotSet(), new UTranslate());
+	}
+
+	private SlotFinder(StringBounder stringBounder, SlotSet yslot, UTranslate translate) {
 		this.stringBounder = stringBounder;
+		this.yslot = yslot;
+		this.translate = translate;
+	}
+
+	private SlotFinder(SlotFinder other) {
+		this(other.stringBounder, other.yslot, other.translate);
 	}
 
 	public StringBounder getStringBounder() {
 		return stringBounder;
 	}
 
-	private final UParam param = new UParam();
-
 	public UParam getParam() {
-		return param;
+		return new UParamNull();
 	}
 
 	public void drawOldWay(UShape shape) {
@@ -106,9 +119,6 @@ public class SlotFinder extends UGraphic {
 		yslot.addSlot(y, y + shape.getHeight());
 	}
 
-	public void centerChar(double x, double y, char c, UFont font) {
-	}
-
 	public void writeImage(OutputStream os, String metadata, int dpi) throws IOException {
 		throw new UnsupportedOperationException();
 	}
@@ -118,15 +128,9 @@ public class SlotFinder extends UGraphic {
 	}
 
 	public void startUrl(Url url) {
-		throw new UnsupportedOperationException();
 	}
 
 	public void closeAction() {
-		throw new UnsupportedOperationException();
-	}
-
-	public UGroup createGroup() {
-		throw new UnsupportedOperationException();
 	}
 
 	public SlotSet getYSlotSet() {

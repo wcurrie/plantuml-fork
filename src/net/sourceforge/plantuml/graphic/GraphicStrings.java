@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 10104 $
+ * Revision $Revision: 10459 $
  *
  */
 package net.sourceforge.plantuml.graphic;
@@ -40,6 +40,7 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.PrintStream;
+import java.util.Collections;
 import java.util.List;
 
 import net.sourceforge.plantuml.Dimension2DDouble;
@@ -48,8 +49,9 @@ import net.sourceforge.plantuml.FileFormat;
 import net.sourceforge.plantuml.FileFormatOption;
 import net.sourceforge.plantuml.SpriteContainerEmpty;
 import net.sourceforge.plantuml.StringUtils;
-import net.sourceforge.plantuml.api.ImageData;
+import net.sourceforge.plantuml.Url;
 import net.sourceforge.plantuml.api.ImageDataSimple;
+import net.sourceforge.plantuml.core.ImageData;
 import net.sourceforge.plantuml.cucadiagram.Display;
 import net.sourceforge.plantuml.eps.EpsStrategy;
 import net.sourceforge.plantuml.png.PngIO;
@@ -201,7 +203,7 @@ public class GraphicStrings implements IEntityImage {
 		final TextBlock textBlock = TextBlockUtils.create(new Display(strings), new FontConfiguration(font, green),
 				HorizontalAlignement.LEFT, new SpriteContainerEmpty());
 		Dimension2D size = getSizeWithMin(textBlock.calculateDimension(ug.getStringBounder()));
-		textBlock.drawU(ug, 0, 0);
+		textBlock.drawUNewWayINLINED(ug);
 
 		if (image != null) {
 			if (position == GraphicPosition.BOTTOM) {
@@ -215,11 +217,12 @@ public class GraphicStrings implements IEntityImage {
 		return size;
 	}
 
-	public void drawU(UGraphic ug, double theoricalPosition, double theoricalPosition2) {
+	public void drawUNewWayINLINED(UGraphic ug) {
 		drawU(ug);
 	}
 
-	public Dimension2D getDimension(StringBounder stringBounder) {
+
+	public Dimension2D calculateDimension(StringBounder stringBounder) {
 		final TextBlock textBlock = TextBlockUtils.create(new Display(strings), new FontConfiguration(font, green),
 				HorizontalAlignement.LEFT, new SpriteContainerEmpty());
 		return getSizeWithMin(textBlock.calculateDimension(stringBounder));
@@ -240,5 +243,10 @@ public class GraphicStrings implements IEntityImage {
 	public boolean isHidden() {
 		return false;
 	}
+	
+	final public List<Url> getUrls() {
+		return Collections.emptyList();
+	}
+
 
 }

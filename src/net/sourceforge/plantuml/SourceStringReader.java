@@ -43,7 +43,8 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-import net.sourceforge.plantuml.api.ImageData;
+import net.sourceforge.plantuml.core.Diagram;
+import net.sourceforge.plantuml.core.ImageData;
 import net.sourceforge.plantuml.graphic.GraphicStrings;
 import net.sourceforge.plantuml.preproc.Defines;
 
@@ -100,13 +101,13 @@ public class SourceStringReader {
 			return null;
 		}
 		for (BlockUml b : blocks) {
-			final PSystem system = b.getSystem();
+			final Diagram system = b.getSystem();
 			final int nbInSystem = system.getNbImages();
 			if (numImage < nbInSystem) {
 				//final CMapData cmap = new CMapData();
 				final ImageData imageData = system.exportDiagram(os, numImage, fileFormatOption);
-				if (imageData.containsData()) {
-					return system.getDescription() + "\n" + imageData.asString("plantuml");
+				if (imageData.containsCMapData()) {
+					return system.getDescription() + "\n" + imageData.getCMapData("plantuml");
 				}
 				return system.getDescription();
 			}

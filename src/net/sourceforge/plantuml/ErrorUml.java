@@ -43,7 +43,7 @@ public class ErrorUml {
 	private final ErrorUmlType type;
 	private SuggestEngineResult suggest;
 
-	ErrorUml(ErrorUmlType type, String error, int position) {
+	public ErrorUml(ErrorUmlType type, String error, int position) {
 		if (error == null || type == null || StringUtils.isEmpty(error)) {
 			throw new IllegalArgumentException();
 		}

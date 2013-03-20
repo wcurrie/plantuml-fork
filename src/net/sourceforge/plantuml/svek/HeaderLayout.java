@@ -41,6 +41,7 @@ import net.sourceforge.plantuml.graphic.StringBounder;
 import net.sourceforge.plantuml.graphic.TextBlock;
 import net.sourceforge.plantuml.graphic.TextBlockEmpty;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
+import net.sourceforge.plantuml.ugraphic.UTranslate;
 
 public class HeaderLayout {
 
@@ -68,7 +69,6 @@ public class HeaderLayout {
 		final Dimension2D genericDim = generic.calculateDimension(stringBounder);
 		final Dimension2D stereoDim = stereo.calculateDimension(stringBounder);
 		final Dimension2D circleDim = circledCharacter.calculateDimension(stringBounder);
-		// final Dimension2D circleDim = getCircleDimension(stringBounder);
 
 		final double width = circleDim.getWidth() + Math.max(stereoDim.getWidth(), nameDim.getWidth())
 				+ genericDim.getWidth();
@@ -77,10 +77,7 @@ public class HeaderLayout {
 		return new Dimension2DDouble(width, height);
 	}
 
-	// private final int xMarginCircle = 5;
-	// private final int yMarginCircle = 5;
-
-	public void drawU(UGraphic ug, final double x, final double y, double width, double height) {
+	public void drawU(UGraphic ug, double width, double height) {
 
 		final StringBounder stringBounder = ug.getStringBounder();
 		final Dimension2D nameDim = name.calculateDimension(stringBounder);
@@ -93,66 +90,29 @@ public class HeaderLayout {
 		assert suppWith >= 0;
 
 		final double h2 = Math.min(circleDim.getWidth() / 4, suppWith * 0.1);
-		// final double h2 = 0;
 		final double h1 = (suppWith - h2) / 2;
 		assert h1 >= 0;
 		assert h2 >= 0;
 
-		final double xCircle = x + h1;
-		final double yCircle = y + (height - circleDim.getHeight()) / 2;
-		circledCharacter.drawU(ug, xCircle, yCircle);
+		final double xCircle = h1;
+		final double yCircle = (height - circleDim.getHeight()) / 2;
+		circledCharacter.drawUNewWayINLINED(ug.apply(new UTranslate(xCircle, yCircle)));
 
 		final double diffHeight = height - stereoDim.getHeight() - nameDim.getHeight();
-		final double xStereo = x + circleDim.getWidth() + (widthStereoAndName - stereoDim.getWidth()) / 2 + h1 + h2;
-		final double yStereo = y + diffHeight / 2;
-		// final double yStereo = y;
-		stereo.drawU(ug, xStereo, yStereo);
+		final double xStereo = circleDim.getWidth() + (widthStereoAndName - stereoDim.getWidth()) / 2 + h1 + h2;
+		final double yStereo = diffHeight / 2;
+		stereo.drawUNewWayINLINED(ug.apply(new UTranslate(xStereo, yStereo)));
 
-		final double xName = x + circleDim.getWidth() + (widthStereoAndName - nameDim.getWidth()) / 2 + h1 + h2;
-		final double yName = y + diffHeight / 2 + stereoDim.getHeight();
-		// final double yName = y + stereoDim.getHeight();
-		name.drawU(ug, xName, yName);
+		final double xName = circleDim.getWidth() + (widthStereoAndName - nameDim.getWidth()) / 2 + h1 + h2;
+		final double yName = diffHeight / 2 + stereoDim.getHeight();
+		name.drawUNewWayINLINED(ug.apply(new UTranslate(xName, yName)));
 
 		if (genericDim.getWidth() > 0) {
 			final double delta = 4;
-			final double xGeneric = x + width - genericDim.getWidth() + delta;
-			final double yGeneric = y - delta;
-//			ug.getParam().setBackcolor(HtmlColorUtils.WHITE);
-//			ug.getParam().setColor(HtmlColorUtils.BLACK);
-//			ug.getParam().setStroke(new UStroke(2, 2, 1));
-//			ug.draw(xGeneric, yGeneric, new URectangle(genericDim.getWidth(), genericDim.getHeight()));
-//			ug.getParam().setStroke(new UStroke());
-			generic.drawU(ug, xGeneric, yGeneric);
+			final double xGeneric = width - genericDim.getWidth() + delta;
+			final double yGeneric = -delta;
+			generic.drawUNewWayINLINED(ug.apply(new UTranslate(xGeneric, yGeneric)));
 		}
-
-		// for (Map.Entry<TextBlock, Point2D> ent :
-		// placementStrategy.getPositions(width, height).entrySet()) {
-		// final TextBlock block = ent.getKey();
-		// final Point2D pos = ent.getValue();
-		// block.drawU(ug, x + pos.getX(), y + pos.getY());
-		// }
 	}
-
-	// public void drawU(UGraphic ug, double xTheoricalPosition, double
-	// yTheoricalPosition, double width, double height)
-	// {
-	// final UGroup header = createHeader(ug);
-	// header.drawU(ug, xTheoricalPosition, yTheoricalPosition, width, height);
-	// }
-
-	// private UGroup createHeader(UGraphic ug) {
-	// final UGroup header;
-	// if (circledCharacter == null) {
-	// header = new UGroup(new PlacementStrategyY1Y2(ug.getStringBounder()));
-	// } else {
-	// header = new UGroup(new PlacementStrategyX1Y2Y3(ug.getStringBounder()));
-	// header.add(circledCharacter);
-	// }
-	// if (stereo != null) {
-	// header.add(stereo);
-	// }
-	// header.add(name);
-	// return header;
-	// }
 
 }

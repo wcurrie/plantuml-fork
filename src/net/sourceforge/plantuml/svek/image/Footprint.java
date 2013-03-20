@@ -45,14 +45,14 @@ import net.sourceforge.plantuml.graphic.StringBounder;
 import net.sourceforge.plantuml.graphic.UDrawable;
 import net.sourceforge.plantuml.ugraphic.ColorMapper;
 import net.sourceforge.plantuml.ugraphic.UChange;
-import net.sourceforge.plantuml.ugraphic.UClip;
-import net.sourceforge.plantuml.ugraphic.UFont;
+import net.sourceforge.plantuml.ugraphic.UChangeColor;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
-import net.sourceforge.plantuml.ugraphic.UGroup;
 import net.sourceforge.plantuml.ugraphic.UHorizontalLine;
 import net.sourceforge.plantuml.ugraphic.ULine;
 import net.sourceforge.plantuml.ugraphic.UParam;
+import net.sourceforge.plantuml.ugraphic.UParamNull;
 import net.sourceforge.plantuml.ugraphic.UShape;
+import net.sourceforge.plantuml.ugraphic.UStroke;
 import net.sourceforge.plantuml.ugraphic.UText;
 import net.sourceforge.plantuml.ugraphic.UTranslate;
 
@@ -67,17 +67,24 @@ public class Footprint {
 
 	class MyUGraphic extends UGraphic {
 
-		private final UParam param = new UParam();
-		private UTranslate translate = new UTranslate();
-		/* final */private List<Point2D.Double> all = new ArrayList<Point2D.Double>();
+		private final UTranslate translate;
+		private final List<Point2D.Double> all;
+
+		private MyUGraphic(List<Point2D.Double> all, UTranslate translate) {
+			this.all = all;
+			this.translate = translate;
+		}
+
+		public MyUGraphic() {
+			this(new ArrayList<Point2D.Double>(), new UTranslate());
+		}
 
 		@Override
-		public UGraphic apply(UChange translate) {
-			if (translate instanceof UTranslate) {
-				final MyUGraphic result = new MyUGraphic();
-				result.translate = (UTranslate) translate;
-				result.all = this.all;
-				return result;
+		public UGraphic apply(UChange change) {
+			if (change instanceof UTranslate) {
+				return new MyUGraphic(all, translate.compose((UTranslate) change));
+			} else if (change instanceof UStroke || change instanceof UChangeColor) {
+				return new MyUGraphic(all, translate);
 			}
 			throw new UnsupportedOperationException();
 		}
@@ -87,7 +94,7 @@ public class Footprint {
 		}
 
 		public UParam getParam() {
-			return param;
+			return new UParamNull();
 		}
 
 		public void drawOldWay(UShape shape) {
@@ -104,10 +111,6 @@ public class Footprint {
 			}
 		}
 
-		public void centerChar(double x, double y, char c, UFont font) {
-			throw new UnsupportedOperationException();
-		}
-
 		public ColorMapper getColorMapper() {
 			throw new UnsupportedOperationException();
 		}
@@ -117,10 +120,6 @@ public class Footprint {
 		}
 
 		public void closeAction() {
-			throw new UnsupportedOperationException();
-		}
-
-		public UGroup createGroup() {
 			throw new UnsupportedOperationException();
 		}
 
@@ -146,7 +145,7 @@ public class Footprint {
 
 	public ContainingEllipse getEllipse(UDrawable drawable, double alpha) {
 		final MyUGraphic ug = new MyUGraphic();
-		drawable.drawU(ug, 0, 0);
+		drawable.drawUNewWayINLINED(ug);
 		final List<Point2D.Double> all = ug.all;
 		final ContainingEllipse circle = new ContainingEllipse(alpha);
 		for (Point2D pt : all) {

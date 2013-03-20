@@ -53,18 +53,23 @@ import net.sourceforge.plantuml.graphic.HtmlColorUtils;
 import net.sourceforge.plantuml.graphic.StringBounder;
 import net.sourceforge.plantuml.graphic.TextBlock;
 import net.sourceforge.plantuml.graphic.TextBlockUtils;
+import net.sourceforge.plantuml.ugraphic.UChangeBackColor;
+import net.sourceforge.plantuml.ugraphic.UChangeColor;
 import net.sourceforge.plantuml.ugraphic.UEmpty;
 import net.sourceforge.plantuml.ugraphic.UFont;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
 import net.sourceforge.plantuml.ugraphic.UStroke;
+import net.sourceforge.plantuml.ugraphic.UTranslate;
 
 class FtileWhile implements Ftile {
 
+	private final double margin = 10;
 	private final double smallArrow = 30;
 	final private double heightbottom = 45;
 
 	private final Ftile whileBlock;
 	private final TextBlock test;
+	private final TextBlock out;
 
 	private final HtmlColor borderColor;
 	private final HtmlColor arrowColor;
@@ -73,7 +78,7 @@ class FtileWhile implements Ftile {
 
 	public FtileWhile(Ftile whileBlock, Display test, VerticalFactory factory, HtmlColor borderColor,
 			HtmlColor backColor, HtmlColor arrowColor, UFont font, HtmlColor endInlinkColor,
-			HtmlColor afterEndwhileColor) {
+			HtmlColor afterEndwhileColor, Display yes, Display out) {
 		this.borderColor = borderColor;
 		this.arrowColor = arrowColor;
 		this.endInlinkColor = endInlinkColor;
@@ -84,61 +89,75 @@ class FtileWhile implements Ftile {
 		final Ftile tmp = new FtileAssemblySimple(new FtileDiamond(borderColor, backColor), new FtileAssemblySimple(
 				new FtileVerticalArrow(smallArrow, firstArrowColor), whileBlock));
 
-		this.whileBlock = new FtileMarged(tmp, 10);
-		// final UFont font = new UFont("Serif", Font.PLAIN, 14);
+		this.whileBlock = new FtileMarged(tmp, margin);
+
 		final FontConfiguration fc = new FontConfiguration(font, HtmlColorUtils.BLACK);
-		if (test == null) {
-			this.test = TextBlockUtils.empty(0, 0);
+		final TextBlock tmpb;
+		if (yes == null) {
+			tmpb = TextBlockUtils.empty(0, 0);
 		} else {
-			this.test = TextBlockUtils.create(test, fc, HorizontalAlignement.LEFT, new SpriteContainerEmpty());
+			tmpb = TextBlockUtils.create(yes, fc, HorizontalAlignement.LEFT, new SpriteContainerEmpty());
+		}
+		if (test == null) {
+			this.test = tmpb;
+		} else {
+			this.test = TextBlockUtils.mergeTB(
+					TextBlockUtils.create(test, fc, HorizontalAlignement.LEFT, new SpriteContainerEmpty()), tmpb,
+					HorizontalAlignement.CENTER);
+		}
+		if (out == null) {
+			this.out = TextBlockUtils.empty(0, 0);
+		} else {
+			this.out = TextBlockUtils.create(out, fc, HorizontalAlignement.LEFT, new SpriteContainerEmpty());
 		}
 	}
 
-	public void drawU(UGraphic ug, final double x, final double y) {
+	public void drawUNewWayINLINED(UGraphic ug) {
 		final StringBounder stringBounder = ug.getStringBounder();
 		final Dimension2D dimTotal = calculateDimension(stringBounder);
+		final Dimension2D dimOut = out.calculateDimension(stringBounder);
 
-		whileBlock.drawU(ug, x, y);
+		whileBlock.drawUNewWayINLINED(ug.apply(new UTranslate(dimOut.getWidth(), 0)));
 
 		final Dimension2D dimWhile = whileBlock.calculateDimension(stringBounder);
-		ug.getParam().setStroke(new UStroke(1.5));
 		final Snake s1 = new Snake();
-		ug.getParam().setColor(LinkRendering.getColor(afterEndwhileColor, arrowColor));
-		s1.addPoint(x + dimTotal.getWidth() / 2 - Diamond.diamondHalfSize, y + Diamond.diamondHalfSize);
-		s1.addPoint(x + 1, y + Diamond.diamondHalfSize);
-		s1.addPoint(x + 1, y + dimTotal.getHeight());
-		s1.addPoint(x + dimTotal.getWidth() / 2 - 1, y + dimTotal.getHeight());
-		s1.drawU(ug);
+		ug = ug.apply(new UChangeColor(LinkRendering.getColor(afterEndwhileColor, arrowColor)));
+		s1.addPoint(dimTotal.getWidth() / 2 - Diamond.diamondHalfSize, Diamond.diamondHalfSize);
+		s1.addPoint(1, Diamond.diamondHalfSize);
+		s1.addPoint(1, dimTotal.getHeight());
+		s1.addPoint(dimTotal.getWidth() / 2 - 1, dimTotal.getHeight());
+		s1.drawU(ug.apply(new UStroke(1.5)));
 
 		final Snake s2 = new Snake();
-		ug.getParam().setColor(LinkRendering.getColor(endInlinkColor, arrowColor));
-		s2.addPoint(x + dimTotal.getWidth() / 2 + Diamond.diamondHalfSize, y + Diamond.diamondHalfSize);
-		s2.addPoint(x + dimTotal.getWidth() - 2, y + Diamond.diamondHalfSize);
-		s2.addPoint(x + dimTotal.getWidth() - 2, y + 12 + dimWhile.getHeight());
-		s2.addPoint(x + dimTotal.getWidth() / 2, y + 12 + dimWhile.getHeight());
-		s2.addPoint(x + dimTotal.getWidth() / 2, y + dimWhile.getHeight());
-		s2.drawU(ug);
-		ug.getParam().setStroke(new UStroke());
-		ug.drawNewWay(x + dimTotal.getWidth() / 2, y + dimWhile.getHeight(), new UEmpty(20, 20));
+		ug = ug.apply(new UChangeColor(LinkRendering.getColor(endInlinkColor, arrowColor)));
+		s2.addPoint(dimTotal.getWidth() / 2 + Diamond.diamondHalfSize, Diamond.diamondHalfSize);
+		s2.addPoint(dimTotal.getWidth() - dimOut.getWidth(), Diamond.diamondHalfSize);
+		s2.addPoint(dimTotal.getWidth() - dimOut.getWidth(), 12 + dimWhile.getHeight());
+		s2.addPoint(dimTotal.getWidth() / 2, 12 + dimWhile.getHeight());
+		s2.addPoint(dimTotal.getWidth() / 2, dimWhile.getHeight());
+		s2.drawU(ug.apply(new UStroke(1.5)));
 
-		ug.getParam().setColor(LinkRendering.getColor(endInlinkColor, arrowColor));
-		ug.getParam().setBackcolor(LinkRendering.getColor(endInlinkColor, arrowColor));
-		ug.drawNewWay(x + dimTotal.getWidth() / 2 + Diamond.diamondHalfSize, y + Diamond.diamondHalfSize, Arrows.asToLeft());
-		ug.drawNewWay(x + dimTotal.getWidth() - 2, y + dimTotal.getHeight() / 2, Arrows.asToUp());
+		ug.drawNewWay(dimTotal.getWidth() / 2, dimWhile.getHeight(), new UEmpty(20, 20));
 
-		ug.getParam().setColor(LinkRendering.getColor(afterEndwhileColor, arrowColor));
-		ug.getParam().setBackcolor(LinkRendering.getColor(afterEndwhileColor, arrowColor));
-		ug.drawNewWay(x + 1, y + dimTotal.getHeight() / 2, Arrows.asToDown());
+		ug = ug.apply(new UChangeColor(LinkRendering.getColor(endInlinkColor, arrowColor)));
+		ug = ug.apply(new UChangeBackColor(LinkRendering.getColor(endInlinkColor, arrowColor)));
+		ug.drawNewWay(dimTotal.getWidth() / 2 + Diamond.diamondHalfSize, Diamond.diamondHalfSize, Arrows.asToLeft());
+		ug.drawNewWay(dimTotal.getWidth() - dimOut.getWidth(), dimTotal.getHeight() / 2, Arrows.asToUp());
+
+		ug = ug.apply(new UChangeColor(LinkRendering.getColor(afterEndwhileColor, arrowColor)));
+		ug = ug.apply(new UChangeBackColor(LinkRendering.getColor(afterEndwhileColor, arrowColor)));
+		ug.drawNewWay(1, dimTotal.getHeight() / 2, Arrows.asToDown());
 
 		final Dimension2D dimLabel = test.calculateDimension(stringBounder);
-		test.drawU(ug, x + dimTotal.getWidth() / 2 - dimLabel.getWidth() / 2, y + 2 * Diamond.diamondHalfSize - 5);
-
+		test.drawUNewWayINLINED(ug.apply(new UTranslate((dimTotal.getWidth() - dimLabel.getWidth()) / 2,
+				2 * Diamond.diamondHalfSize - 5)));
+		out.drawUNewWayINLINED(ug);
 	}
 
 	public Dimension2D calculateDimension(StringBounder stringBounder) {
-		Dimension2D dim = whileBlock.calculateDimension(stringBounder);
-		dim = Dimension2DDouble.delta(dim, 0, heightbottom);
-		return dim;
+		final Dimension2D dim = whileBlock.calculateDimension(stringBounder);
+		final Dimension2D dimOut = out.calculateDimension(stringBounder);
+		return Dimension2DDouble.delta(dim, dimOut.getWidth() * 2, heightbottom);
 	}
 
 	public List<Url> getUrls() {

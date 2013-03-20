@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 10057 $
+ * Revision $Revision: 10205 $
  *
  */
 package net.sourceforge.plantuml.skin.rose;
@@ -39,9 +39,9 @@ import net.sourceforge.plantuml.graphic.HtmlColor;
 import net.sourceforge.plantuml.graphic.StringBounder;
 import net.sourceforge.plantuml.skin.AbstractComponent;
 import net.sourceforge.plantuml.skin.Area;
+import net.sourceforge.plantuml.ugraphic.UChangeColor;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
 import net.sourceforge.plantuml.ugraphic.ULine;
-import net.sourceforge.plantuml.ugraphic.UStroke;
 
 public class ComponentRoseNewpage extends AbstractComponent {
 
@@ -54,10 +54,8 @@ public class ComponentRoseNewpage extends AbstractComponent {
 	@Override
 	protected void drawInternalU(UGraphic ug, Area area) {
 		final Dimension2D dimensionToUse = area.getDimensionToUse();
-		stroke(ug, 2, 2);
-		ug.getParam().setColor(foregroundColor);
+		ug = stroke(ug, 2, 2).apply(new UChangeColor(foregroundColor));
 		ug.drawOldWay(new ULine(dimensionToUse.getWidth(), 0));
-		ug.getParam().setStroke(new UStroke());
 	}
 
 	@Override

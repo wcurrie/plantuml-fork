@@ -59,11 +59,14 @@ import net.sourceforge.plantuml.svek.AbstractEntityImage;
 import net.sourceforge.plantuml.svek.ShapeType;
 import net.sourceforge.plantuml.ugraphic.PlacementStrategyY1Y2;
 import net.sourceforge.plantuml.ugraphic.Shadowable;
+import net.sourceforge.plantuml.ugraphic.UChangeBackColor;
+import net.sourceforge.plantuml.ugraphic.UChangeColor;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
 import net.sourceforge.plantuml.ugraphic.UGraphicHorizontalLine;
 import net.sourceforge.plantuml.ugraphic.ULayoutGroup;
 import net.sourceforge.plantuml.ugraphic.URectangle;
 import net.sourceforge.plantuml.ugraphic.UStroke;
+import net.sourceforge.plantuml.ugraphic.UTranslate;
 
 public class EntityImageObject extends AbstractEntityImage {
 
@@ -77,15 +80,18 @@ public class EntityImageObject extends AbstractEntityImage {
 		super(entity, skinParam);
 		final Stereotype stereotype = entity.getStereotype();
 		this.roundCorner = skinParam.getRoundCorner();
-		this.name = TextBlockUtils.withMargin(
-				TextBlockUtils.create(entity.getDisplay(), new FontConfiguration(SkinParamUtils.getFont(getSkinParam(), FontParam.OBJECT, stereotype),
-						SkinParamUtils.getFontColor(getSkinParam(), FontParam.OBJECT, stereotype)), HorizontalAlignement.CENTER, skinParam), 2, 2);
+		this.name = TextBlockUtils.withMargin(TextBlockUtils.create(entity.getDisplay(),
+				new FontConfiguration(SkinParamUtils.getFont(getSkinParam(), FontParam.OBJECT, stereotype),
+						SkinParamUtils.getFontColor(getSkinParam(), FontParam.OBJECT, stereotype)),
+				HorizontalAlignement.CENTER, skinParam), 2, 2);
 		if (stereotype == null || stereotype.getLabel() == null) {
 			this.stereo = null;
 		} else {
 			this.stereo = TextBlockUtils.create(
 					Display.getWithNewlines(stereotype.getLabel()),
-					new FontConfiguration(SkinParamUtils.getFont(getSkinParam(), FontParam.OBJECT_STEREOTYPE, stereotype), SkinParamUtils.getFontColor(getSkinParam(), FontParam.OBJECT_STEREOTYPE, stereotype)), HorizontalAlignement.CENTER, skinParam);
+					new FontConfiguration(SkinParamUtils.getFont(getSkinParam(), FontParam.OBJECT_STEREOTYPE,
+							stereotype), SkinParamUtils.getFontColor(getSkinParam(), FontParam.OBJECT_STEREOTYPE,
+							stereotype)), HorizontalAlignement.CENTER, skinParam);
 		}
 
 		if (entity.getFieldsToDisplay().size() == 0) {
@@ -107,14 +113,53 @@ public class EntityImageObject extends AbstractEntityImage {
 
 	private int marginEmptyFieldsOrMethod = 13;
 
-	@Override
-	public Dimension2D getDimension(StringBounder stringBounder) {
+	public Dimension2D calculateDimension(StringBounder stringBounder) {
 		final Dimension2D dimTitle = getTitleDimension(stringBounder);
 		final Dimension2D dimFields = fields.calculateDimension(stringBounder);
 		final double width = Math.max(dimFields.getWidth(), dimTitle.getWidth() + 2 * xMarginCircle);
 
 		final double height = getMethodOrFieldHeight(dimFields) + dimTitle.getHeight();
 		return new Dimension2DDouble(width, height);
+	}
+
+	final public void drawUNewWayINLINED(UGraphic ug) {
+		final StringBounder stringBounder = ug.getStringBounder();
+		final Dimension2D dimTotal = calculateDimension(stringBounder);
+		final Dimension2D dimTitle = getTitleDimension(stringBounder);
+
+		final double widthTotal = dimTotal.getWidth();
+		final double heightTotal = dimTotal.getHeight();
+		final Shadowable rect = new URectangle(widthTotal, heightTotal, roundCorner, roundCorner);
+		if (getSkinParam().shadowing()) {
+			rect.setDeltaShadow(4);
+		}
+
+		ug = ug.apply(new UChangeColor(SkinParamUtils.getColor(getSkinParam(), ColorParam.objectBorder, getStereo())));
+		HtmlColor backcolor = getEntity().getSpecificBackColor();
+		if (backcolor == null) {
+			backcolor = SkinParamUtils.getColor(getSkinParam(), ColorParam.objectBackground, getStereo());
+		}
+		ug = ug.apply(new UChangeBackColor(backcolor));
+		if (url.size() > 0) {
+			ug.startUrl(url.get(0));
+		}
+
+		final UStroke stroke = new UStroke(1.5);
+		ug.apply(stroke).drawOldWay(rect);
+
+		final ULayoutGroup header = new ULayoutGroup(new PlacementStrategyY1Y2(ug.getStringBounder()));
+		if (stereo != null) {
+			header.add(stereo);
+		}
+		header.add(name);
+		header.drawU(ug, 0, 0, dimTotal.getWidth(), dimTitle.getHeight());
+
+		final UGraphic ug2 = new UGraphicHorizontalLine(ug, 0, widthTotal, stroke);
+		fields.drawUNewWayINLINED(ug2.apply(new UTranslate(0, dimTitle.getHeight())));
+
+		if (url.size() > 0) {
+			ug.closeAction();
+		}
 	}
 
 	private double getMethodOrFieldHeight(final Dimension2D dim) {
@@ -138,55 +183,6 @@ public class EntityImageObject extends AbstractEntityImage {
 		final Dimension2D nameAndStereo = new Dimension2DDouble(Math.max(nameDim.getWidth(), stereoDim.getWidth()),
 				nameDim.getHeight() + stereoDim.getHeight());
 		return nameAndStereo;
-	}
-
-	public void drawU(UGraphic ug, double xTheoricalPosition, double yTheoricalPosition) {
-		final StringBounder stringBounder = ug.getStringBounder();
-		final Dimension2D dimTotal = getDimension(stringBounder);
-		final Dimension2D dimTitle = getTitleDimension(stringBounder);
-
-		final double widthTotal = dimTotal.getWidth();
-		final double heightTotal = dimTotal.getHeight();
-		final Shadowable rect = new URectangle(widthTotal, heightTotal, roundCorner, roundCorner);
-		if (getSkinParam().shadowing()) {
-			rect.setDeltaShadow(4);
-		}
-
-		ug.getParam().setColor(SkinParamUtils.getColor(getSkinParam(), ColorParam.objectBorder, getStereo()));
-		HtmlColor backcolor = getEntity().getSpecificBackColor();
-		if (backcolor == null) {
-			backcolor = SkinParamUtils.getColor(getSkinParam(), ColorParam.objectBackground, getStereo());
-		}
-		ug.getParam().setBackcolor(backcolor);
-		if (url.size() > 0) {
-			ug.startUrl(url.get(0));
-		}
-
-		double x = xTheoricalPosition;
-		double y = yTheoricalPosition;
-		ug.getParam().setStroke(new UStroke(1.5));
-		ug.drawNewWay(x, y, rect);
-		ug.getParam().setStroke(new UStroke());
-
-		final ULayoutGroup header = new ULayoutGroup(new PlacementStrategyY1Y2(ug.getStringBounder()));
-		if (stereo != null) {
-			header.add(stereo);
-		}
-		header.add(name);
-		header.drawU(ug, x, y, dimTotal.getWidth(), dimTitle.getHeight());
-
-		y += dimTitle.getHeight();
-
-		x = xTheoricalPosition;
-		ug.getParam().setColor(SkinParamUtils.getColor(getSkinParam(), ColorParam.objectBorder, getStereo()));
-
-		final UGraphic ug2 = new UGraphicHorizontalLine(ug, x, x + widthTotal);
-		fields.drawU(ug2, x, y);
-		
-		if (url.size() > 0) {
-			ug.closeAction();
-		}
-
 	}
 
 	public ShapeType getShapeType() {

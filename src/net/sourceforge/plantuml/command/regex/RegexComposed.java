@@ -49,9 +49,6 @@ public abstract class RegexComposed implements IRegex {
 
 	public RegexComposed(IRegex... partial) {
 		this.partials = Arrays.asList(partial);
-		if (partials.size() < 2) {
-			throw new IllegalArgumentException();
-		}
 	}
 
 	public Map<String, RegexPartialMatch> createPartialMatch(Iterator<String> it) {

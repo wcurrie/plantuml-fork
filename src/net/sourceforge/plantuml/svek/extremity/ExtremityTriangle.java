@@ -35,11 +35,11 @@ package net.sourceforge.plantuml.svek.extremity;
 
 import java.awt.geom.Point2D;
 
-import net.sourceforge.plantuml.graphic.UDrawable;
+import net.sourceforge.plantuml.ugraphic.UChangeBackColor;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
 import net.sourceforge.plantuml.ugraphic.UPolygon;
 
-class ExtremityTriangle extends Extremity implements UDrawable {
+class ExtremityTriangle extends Extremity {
 
 	private UPolygon polygon = new UPolygon();
 	private final boolean fill;
@@ -57,14 +57,11 @@ class ExtremityTriangle extends Extremity implements UDrawable {
 		polygon = polygon.translate(p1.getX(), p1.getY());
 	}
 
-
-	public void drawU(UGraphic ug, double x, double y) {
+	public void drawUNewWayINLINED(UGraphic ug) {
 		if (fill) {
-			ug.getParam().setBackcolor(ug.getParam().getColor());
+			ug = ug.apply(new UChangeBackColor(ug.getParam().getColor()));
 		}
-		ug.drawNewWay(x, y, polygon);
-		ug.getParam().setBackcolor(null);
-
+		ug.drawOldWay(polygon);
 	}
 
 }

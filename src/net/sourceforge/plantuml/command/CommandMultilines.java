@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 9786 $
+ * Revision $Revision: 10298 $
  *
  */
 package net.sourceforge.plantuml.command;
@@ -37,9 +37,9 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import net.sourceforge.plantuml.PSystem;
+import net.sourceforge.plantuml.core.Diagram;
 
-public abstract class CommandMultilines<S extends PSystem> implements Command {
+public abstract class CommandMultilines<S extends Diagram> implements Command {
 
 	private final S system;
 

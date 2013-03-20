@@ -33,8 +33,8 @@
  */
 package net.sourceforge.plantuml.logo;
 
-import net.sourceforge.plantuml.DiagramType;
 import net.sourceforge.plantuml.PSystemBasicFactory;
+import net.sourceforge.plantuml.core.DiagramType;
 
 public class PSystemLogoFactory extends PSystemBasicFactory {
 

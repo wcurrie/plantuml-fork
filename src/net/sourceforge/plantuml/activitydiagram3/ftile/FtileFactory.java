@@ -45,18 +45,21 @@ public interface FtileFactory {
 
 	public Ftile stop();
 
-	public Ftile activity(Display label, HtmlColor color, LinkRendering linkRendering);
+	public Ftile activity(Display label, HtmlColor color, LinkRendering linkRendering, Display note);
 
 	public Ftile assembly(Ftile tile1, Ftile tile2, LinkRendering linkRendering);
 
 	public Ftile repeat(Ftile repeat, Display test, LinkRendering endRepeatLinkRendering);
 
-	public Ftile createWhile(Ftile whileBlock, Display test, LinkRendering endInlinkRendering, LinkRendering afterEndwhile);
+	public Ftile createWhile(Ftile whileBlock, Display test, LinkRendering endInlinkRendering,
+			LinkRendering afterEndwhile, Display yes, Display out);
 
 	public Ftile createIf(Ftile tile1, Ftile tile2, Display labelTest, Display label1, Display label2,
 			LinkRendering endThenInlinkRendering, LinkRendering endElseInlinkRendering);
 
 	public Ftile createFork(List<Ftile> all);
+
+	public Ftile createSplit(List<Ftile> all);
 
 	public Ftile createGroup(Ftile list, Display name);
 

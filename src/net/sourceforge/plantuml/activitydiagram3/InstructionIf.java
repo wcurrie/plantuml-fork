@@ -94,4 +94,8 @@ public class InstructionIf implements Instruction {
 		return inlinkRendering;
 	}
 
+	public void addNote(Display note) {
+		throw new UnsupportedOperationException();
+	}
+
 }

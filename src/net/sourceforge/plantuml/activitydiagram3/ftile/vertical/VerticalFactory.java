@@ -39,10 +39,12 @@ import net.sourceforge.plantuml.ColorParam;
 import net.sourceforge.plantuml.FontParam;
 import net.sourceforge.plantuml.ISkinParam;
 import net.sourceforge.plantuml.activitydiagram3.LinkRendering;
+import net.sourceforge.plantuml.activitydiagram3.ftile.EntityImageNote2;
 import net.sourceforge.plantuml.activitydiagram3.ftile.Ftile;
 import net.sourceforge.plantuml.activitydiagram3.ftile.FtileFactory;
 import net.sourceforge.plantuml.cucadiagram.Display;
 import net.sourceforge.plantuml.graphic.HtmlColor;
+import net.sourceforge.plantuml.graphic.TextBlock;
 import net.sourceforge.plantuml.skin.rose.Rose;
 import net.sourceforge.plantuml.ugraphic.UFont;
 
@@ -65,11 +67,22 @@ public class VerticalFactory implements FtileFactory {
 		return new FtileCircleStop(color);
 	}
 
-	public Ftile activity(Display label, HtmlColor color, LinkRendering inlinkRendering) {
+	public Ftile activity(Display label, final HtmlColor color, LinkRendering inlinkRendering, Display note) {
 		final HtmlColor borderColor = rose.getHtmlColor(skinParam, ColorParam.activityBorder);
 		final HtmlColor backColor = color == null ? rose.getHtmlColor(skinParam, ColorParam.activityBackground) : color;
 		final UFont font = skinParam.getFont(FontParam.ACTIVITY2, null);
-		return new FtileBox(label, borderColor, backColor, font, inlinkRendering);
+		final FtileBox result = new FtileBox(label, borderColor, backColor, font, inlinkRendering);
+		if (note == null) {
+			return result;
+		}
+		final HtmlColor colorlink;
+		if (inlinkRendering == null || inlinkRendering.getColor() == null) {
+			colorlink = rose.getHtmlColor(skinParam, ColorParam.activityArrow);
+		} else {
+			colorlink = inlinkRendering.getColor();
+		}
+		final TextBlock n = new EntityImageNote2(note);
+		return new FtileWithNote(result, n, colorlink);
 	}
 
 	public Ftile assembly(Ftile tile1, Ftile tile2, LinkRendering linkRendering) {
@@ -100,7 +113,7 @@ public class VerticalFactory implements FtileFactory {
 	}
 
 	public Ftile createWhile(Ftile whileBlock, Display test, LinkRendering endInlinkRendering,
-			LinkRendering afterEndwhile) {
+			LinkRendering afterEndwhile, Display yes, Display out) {
 		final HtmlColor borderColor = rose.getHtmlColor(skinParam, ColorParam.activityBorder);
 		final HtmlColor backColor = rose.getHtmlColor(skinParam, ColorParam.activityBackground);
 		final HtmlColor arrowColor = rose.getHtmlColor(skinParam, ColorParam.activityArrow);
@@ -108,7 +121,7 @@ public class VerticalFactory implements FtileFactory {
 		final HtmlColor endInlinkColor = endInlinkRendering == null ? null : endInlinkRendering.getColor();
 		final HtmlColor afterEndwhileColor = afterEndwhile == null ? null : afterEndwhile.getColor();
 		return new FtileWhile(whileBlock, test, this, borderColor, backColor, arrowColor, font, endInlinkColor,
-				afterEndwhileColor);
+				afterEndwhileColor, yes, out);
 	}
 
 	public Ftile createIf(Ftile tile1, Ftile tile2, Display labelTest, Display label1, Display label2,
@@ -127,6 +140,11 @@ public class VerticalFactory implements FtileFactory {
 		final HtmlColor colorBar = rose.getHtmlColor(skinParam, ColorParam.activityBar);
 		final HtmlColor arrowColor = rose.getHtmlColor(skinParam, ColorParam.activityArrow);
 		return new FtileFork(new FtileForkInner(all, this, arrowColor), colorBar);
+	}
+
+	public Ftile createSplit(List<Ftile> all) {
+		final HtmlColor arrowColor = rose.getHtmlColor(skinParam, ColorParam.activityArrow);
+		return new FtileSplit(new FtileSplitInner(all, this, arrowColor), arrowColor);
 	}
 
 	Ftile createVerticalArrow(double size) {

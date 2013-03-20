@@ -47,6 +47,7 @@ import net.sourceforge.plantuml.graphic.TextBlock;
 import net.sourceforge.plantuml.graphic.TextBlockUtils;
 import net.sourceforge.plantuml.ugraphic.UFont;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
+import net.sourceforge.plantuml.ugraphic.UTranslate;
 
 public class GanttDiagram2 {
 
@@ -69,11 +70,11 @@ public class GanttDiagram2 {
 		final double deltaX = headers.calculateDimension(ug.getStringBounder()).getWidth();
 		final double deltaY = timeHeader.calculateDimension(ug.getStringBounder()).getHeight();
 
-		headers.drawU(ug, x, y + deltaY);
+		headers.drawUNewWayINLINED(ug.apply(new UTranslate(x, (y + deltaY))));
 		final TextBlock tbRow = row.asTextBloc(project.getTimeConverter(dayWith));
-		tbRow.drawU(ug, x + deltaX, y + deltaY);
+		tbRow.drawUNewWayINLINED(ug.apply(new UTranslate((x + deltaX), (y + deltaY))));
 
-		timeHeader.drawU(ug, x + deltaX, y);
+		timeHeader.drawUNewWayINLINED(ug.apply(new UTranslate((x + deltaX), y)));
 	}
 
 	private Row getMainRow() {

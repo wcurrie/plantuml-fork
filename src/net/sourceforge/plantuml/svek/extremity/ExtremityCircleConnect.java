@@ -36,12 +36,12 @@ package net.sourceforge.plantuml.svek.extremity;
 import java.awt.geom.Point2D;
 
 import net.sourceforge.plantuml.graphic.HtmlColorUtils;
-import net.sourceforge.plantuml.graphic.UDrawable;
+import net.sourceforge.plantuml.ugraphic.UChangeBackColor;
 import net.sourceforge.plantuml.ugraphic.UEllipse;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
 import net.sourceforge.plantuml.ugraphic.UStroke;
 
-class ExtremityCircleConnect extends Extremity implements UDrawable {
+class ExtremityCircleConnect extends Extremity {
 
 	private final double px;
 	private final double py;
@@ -57,20 +57,13 @@ class ExtremityCircleConnect extends Extremity implements UDrawable {
 		this.ortho = ortho;
 	}
 
-	public void drawU(UGraphic ug, double x, double y) {
-		ug.getParam().setBackcolor(HtmlColorUtils.WHITE);
-		ug.getParam().setStroke(new UStroke(1.5));
-		ug.drawNewWay(x + dest.getX() - radius, y + dest.getY() - radius, new UEllipse(radius * 2, radius * 2));
-		// Point2D pp1 = getPointOnCircle(ortho - Math.PI / 4);
-		// Point2D pp2 = getPointOnCircle(ortho + Math.PI / 4);
-
+	public void drawUNewWayINLINED(UGraphic ug) {
+		ug = ug.apply(new UStroke(1.5)).apply(new UChangeBackColor(HtmlColorUtils.WHITE));
+		ug.drawNewWay(dest.getX() - radius, dest.getY() - radius, new UEllipse(radius * 2, radius * 2));
+		
 		final double deg = -ortho * 180 / Math.PI + 90 - 45;
 		final UEllipse arc1 = new UEllipse(2 * radius2, 2 * radius2, deg, 90);
-		ug.drawNewWay(x + dest.getX() - radius2, y + dest.getY() - radius2, arc1);
-
-		// drawLine(ug, x, y, pp1, pp2);
-		ug.getParam().setBackcolor(null);
-		ug.getParam().setStroke(new UStroke());
+		ug.drawNewWay(dest.getX() - radius2, dest.getY() - radius2, arc1);
 	}
 
 	// private Point2D getPointOnCircle(double angle) {

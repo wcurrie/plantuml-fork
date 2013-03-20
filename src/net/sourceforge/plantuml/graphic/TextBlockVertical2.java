@@ -41,6 +41,7 @@ import java.util.List;
 import net.sourceforge.plantuml.Dimension2DDouble;
 import net.sourceforge.plantuml.Url;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
+import net.sourceforge.plantuml.ugraphic.UTranslate;
 
 public class TextBlockVertical2 implements TextBlock {
 
@@ -69,18 +70,16 @@ public class TextBlockVertical2 implements TextBlock {
 		return dim;
 	}
 
-	public void drawU(UGraphic ug, double x, double y) {
-		final HtmlColor color = ug.getParam().getColor();
+	public void drawUNewWayINLINED(UGraphic ug) {
+		double y = 0;
 		final Dimension2D dimtotal = calculateDimension(ug.getStringBounder());
 		for (TextBlock b : blocks) {
 			final Dimension2D dimb = b.calculateDimension(ug.getStringBounder());
 			if (horizontalAlignement == HorizontalAlignement.LEFT) {
-				b.drawU(ug, x, y);
-				ug.getParam().setColor(color);
+				b.drawUNewWayINLINED(ug.apply(new UTranslate(0, y)));
 			} else if (horizontalAlignement == HorizontalAlignement.CENTER) {
 				final double dx = (dimtotal.getWidth() - dimb.getWidth()) / 2;
-				b.drawU(ug, x + dx, y);
-				ug.getParam().setColor(color);
+				b.drawUNewWayINLINED(ug.apply(new UTranslate(dx, y)));
 			} else {
 				throw new UnsupportedOperationException();
 			}

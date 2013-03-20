@@ -36,6 +36,7 @@ package net.sourceforge.plantuml.api;
 import java.awt.geom.Dimension2D;
 
 import net.sourceforge.plantuml.CMapData;
+import net.sourceforge.plantuml.core.ImageData;
 
 public class ImageDataComplex implements ImageData {
 
@@ -64,11 +65,11 @@ public class ImageDataComplex implements ImageData {
 		return (int) info.getHeight();
 	}
 
-	public boolean containsData() {
+	public boolean containsCMapData() {
 		return cmap != null && cmap.containsData();
 	}
 
-	public String asString(String nameId) {
+	public String getCMapData(String nameId) {
 		return cmap.asString(nameId);
 	}
 

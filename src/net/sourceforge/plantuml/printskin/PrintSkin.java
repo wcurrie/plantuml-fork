@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 10078 $
+ * Revision $Revision: 10459 $
  *
  */
 package net.sourceforge.plantuml.printskin;
@@ -42,14 +42,13 @@ import java.io.OutputStream;
 import java.util.List;
 
 import net.sourceforge.plantuml.AbstractPSystem;
-import net.sourceforge.plantuml.CMapData;
 import net.sourceforge.plantuml.Dimension2DDouble;
 import net.sourceforge.plantuml.EmptyImageBuilder;
 import net.sourceforge.plantuml.FileFormatOption;
 import net.sourceforge.plantuml.SkinParam;
 import net.sourceforge.plantuml.SpriteContainerEmpty;
-import net.sourceforge.plantuml.api.ImageData;
 import net.sourceforge.plantuml.api.ImageDataSimple;
+import net.sourceforge.plantuml.core.ImageData;
 import net.sourceforge.plantuml.cucadiagram.Display;
 import net.sourceforge.plantuml.graphic.FontConfiguration;
 import net.sourceforge.plantuml.graphic.HorizontalAlignement;
@@ -65,6 +64,8 @@ import net.sourceforge.plantuml.skin.SimpleContext2D;
 import net.sourceforge.plantuml.skin.Skin;
 import net.sourceforge.plantuml.skin.SkinUtils;
 import net.sourceforge.plantuml.ugraphic.ColorMapperIdentity;
+import net.sourceforge.plantuml.ugraphic.UChangeBackColor;
+import net.sourceforge.plantuml.ugraphic.UChangeColor;
 import net.sourceforge.plantuml.ugraphic.UFont;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
 import net.sourceforge.plantuml.ugraphic.URectangle;
@@ -92,8 +93,7 @@ class PrintSkin extends AbstractPSystem {
 	//
 	// }
 
-	public ImageData exportDiagram(OutputStream os, int num, FileFormatOption fileFormatOption)
-			throws IOException {
+	public ImageData exportDiagram(OutputStream os, int num, FileFormatOption fileFormatOption) throws IOException {
 		final BufferedImage im = createImage();
 		final ImageData imageData = new ImageDataSimple(im.getWidth(), (int) maxYpos);
 		PngIO.write(im.getSubimage(0, 0, imageData.getWidth(), imageData.getHeight()), os, 96);
@@ -140,13 +140,11 @@ class PrintSkin extends AbstractPSystem {
 		if (width == 0) {
 			width = 42;
 		}
-		ug.getParam().setColor(HtmlColorUtils.LIGHT_GRAY);
-		ug.getParam().setBackcolor(HtmlColorUtils.LIGHT_GRAY);
-		ug.drawNewWay(xpos - 1, ypos - 1, new URectangle(width + 2, height + 2));
-		// g2d.drawRect((int) xpos - 1, (int) ypos - 1, (int) width + 2, (int) height + 2);
+		ug.apply(new UChangeBackColor(HtmlColorUtils.LIGHT_GRAY)).apply(new UChangeColor(HtmlColorUtils.LIGHT_GRAY))
+				.drawNewWay(xpos - 1, ypos - 1, new URectangle(width + 2, height + 2));
 
-		ug.getParam().reset();
-		comp.drawU(ug.apply(new UTranslate(xpos, ypos)), new Area(new Dimension2DDouble(width, height)), new SimpleContext2D(false));
+		comp.drawU(ug.apply(new UTranslate(xpos, ypos)), new Area(new Dimension2DDouble(width, height)),
+				new SimpleContext2D(false));
 
 		ypos += height;
 	}
@@ -154,7 +152,7 @@ class PrintSkin extends AbstractPSystem {
 	private void println(String s) {
 		final TextBlock textBlock = TextBlockUtils.create(Display.asList(s), new FontConfiguration(FONT1,
 				HtmlColorUtils.BLACK), HorizontalAlignement.LEFT, new SpriteContainerEmpty());
-		textBlock.drawU(ug, xpos, ypos);
+		textBlock.drawUNewWayINLINED(ug.apply(new UTranslate(xpos, ypos)));
 		ypos += textBlock.calculateDimension(ug.getStringBounder()).getHeight();
 	}
 

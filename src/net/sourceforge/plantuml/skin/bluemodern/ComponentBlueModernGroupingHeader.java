@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 10057 $
+ * Revision $Revision: 10265 $
  *
  */
 package net.sourceforge.plantuml.skin.bluemodern;
@@ -45,12 +45,15 @@ import net.sourceforge.plantuml.graphic.TextBlock;
 import net.sourceforge.plantuml.graphic.TextBlockUtils;
 import net.sourceforge.plantuml.skin.AbstractTextualComponent;
 import net.sourceforge.plantuml.skin.Area;
+import net.sourceforge.plantuml.ugraphic.UChangeBackColor;
+import net.sourceforge.plantuml.ugraphic.UChangeColor;
 import net.sourceforge.plantuml.ugraphic.UFont;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
 import net.sourceforge.plantuml.ugraphic.ULine;
 import net.sourceforge.plantuml.ugraphic.UPolygon;
 import net.sourceforge.plantuml.ugraphic.URectangle;
 import net.sourceforge.plantuml.ugraphic.UStroke;
+import net.sourceforge.plantuml.ugraphic.UTranslate;
 
 public class ComponentBlueModernGroupingHeader extends AbstractTextualComponent {
 
@@ -78,10 +81,10 @@ public class ComponentBlueModernGroupingHeader extends AbstractTextualComponent 
 		}
 	}
 
-//	@Override
-//	public double getPaddingY() {
-//		return 6;
-//	}
+	// @Override
+	// public double getPaddingY() {
+	// return 6;
+	// }
 
 	@Override
 	final public double getPreferredWidth(StringBounder stringBounder) {
@@ -104,22 +107,17 @@ public class ComponentBlueModernGroupingHeader extends AbstractTextualComponent 
 	@Override
 	protected void drawBackgroundInternalU(UGraphic ug, Area area) {
 		final Dimension2D dimensionToUse = area.getDimensionToUse();
-		ug.getParam().setColor(borderColor);
-		ug.getParam().setBackcolor(generalBackgroundColor);
-		ug.getParam().setStroke(new UStroke(2));
-		ug.drawOldWay(new URectangle(dimensionToUse.getWidth(), dimensionToUse.getHeight()));
-		ug.getParam().setStroke(new UStroke());
+		ug.apply(new UChangeColor(borderColor)).apply(new UStroke(2))
+				.apply(new UChangeBackColor(generalBackgroundColor))
+				.drawOldWay(new URectangle(dimensionToUse.getWidth(), dimensionToUse.getHeight()));
 	}
 
 	@Override
 	protected void drawInternalU(UGraphic ug, Area area) {
 		final Dimension2D dimensionToUse = area.getDimensionToUse();
-		ug.getParam().setColor(borderColor);
-		ug.getParam().setBackcolor(null);
-		ug.getParam().setStroke(new UStroke(2));
-		ug.drawOldWay(new URectangle(dimensionToUse.getWidth(), dimensionToUse.getHeight()));
-		ug.getParam().setStroke(new UStroke());
-		
+		ug = ug.apply(new UChangeColor(borderColor));
+		ug.apply(new UStroke(2)).drawOldWay(new URectangle(dimensionToUse.getWidth(), dimensionToUse.getHeight()));
+
 		final StringBounder stringBounder = ug.getStringBounder();
 		final int textWidth = (int) getTextWidth(stringBounder);
 		final int textHeight = (int) getTextHeight(stringBounder);
@@ -134,9 +132,8 @@ public class ComponentBlueModernGroupingHeader extends AbstractTextualComponent 
 		polygon.addPoint(0, textHeight);
 		polygon.addPoint(0, 0);
 
-		ug.getParam().setStroke(new UStroke(2));
-		ug.getParam().setBackcolor(headerBackgroundColor);
-		ug.getParam().setColor(borderColor);
+		ug = ug.apply(new UStroke(2));
+		ug = ug.apply(new UChangeBackColor(headerBackgroundColor));
 		ug.drawOldWay(polygon);
 		ug.drawOldWay(new ULine(dimensionToUse.getWidth(), 0));
 
@@ -144,16 +141,15 @@ public class ComponentBlueModernGroupingHeader extends AbstractTextualComponent 
 
 		ug.drawNewWay(dimensionToUse.getWidth(), 0, new ULine(0, heightWithoutPadding));
 		ug.drawNewWay(0, textHeight, new ULine(0, heightWithoutPadding - textHeight));
-		ug.getParam().setStroke(new UStroke());
+		ug = ug.apply(new UStroke());
 
-		getTextBlock().drawU(ug, getMarginX1(), getMarginY());
+		getTextBlock().drawUNewWayINLINED(ug.apply(new UTranslate(getMarginX1(), getMarginY())));
 
 		if (commentTextBlock != null) {
-			ug.getParam().setColor(generalBackgroundColor);
 			final int x1 = getMarginX1() + textWidth;
 			final int y2 = getMarginY() + 1;
 
-			commentTextBlock.drawU(ug, x1 + commentMargin, y2);
+			commentTextBlock.drawUNewWayINLINED(ug.apply(new UChangeColor(generalBackgroundColor)).apply(new UTranslate((x1 + commentMargin), y2)));
 		}
 	}
 

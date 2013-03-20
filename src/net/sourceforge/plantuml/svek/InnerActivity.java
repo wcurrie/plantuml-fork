@@ -34,12 +34,18 @@
 package net.sourceforge.plantuml.svek;
 
 import java.awt.geom.Dimension2D;
+import java.util.Collections;
+import java.util.List;
 
+import net.sourceforge.plantuml.Url;
 import net.sourceforge.plantuml.graphic.HtmlColor;
 import net.sourceforge.plantuml.graphic.StringBounder;
+import net.sourceforge.plantuml.ugraphic.UChangeBackColor;
+import net.sourceforge.plantuml.ugraphic.UChangeColor;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
 import net.sourceforge.plantuml.ugraphic.URectangle;
 import net.sourceforge.plantuml.ugraphic.UStroke;
+import net.sourceforge.plantuml.ugraphic.UTranslate;
 
 public final class InnerActivity implements IEntityImage {
 
@@ -57,28 +63,27 @@ public final class InnerActivity implements IEntityImage {
 
 	public final static double THICKNESS_BORDER = 1.5;
 
-	public void drawU(UGraphic ug, double x, double y) {
-		final Dimension2D total = getDimension(ug.getStringBounder());
+	public void drawUNewWayINLINED(UGraphic ug) {
+		final Dimension2D total = calculateDimension(ug.getStringBounder());
 
-		ug.getParam().setColor(borderColor);
-		ug.getParam().setBackcolor(backColor);
-		ug.getParam().setStroke(new UStroke(THICKNESS_BORDER));
+		ug = ug.apply(new UChangeBackColor(backColor)).apply(new UChangeColor(borderColor))
+				.apply(new UStroke(THICKNESS_BORDER));
 		final URectangle rect = new URectangle(total.getWidth(), total.getHeight(), IEntityImage.CORNER,
 				IEntityImage.CORNER);
 		if (shadowing) {
 			rect.setDeltaShadow(4);
 		}
-		ug.drawNewWay(x, y, rect);
-		ug.getParam().setStroke(new UStroke());
-		im.drawU(ug, x, y);
+		ug.drawOldWay(rect);
+		ug = ug.apply(new UStroke());
+		im.drawUNewWayINLINED(ug);
 	}
 
 	public HtmlColor getBackcolor() {
 		return im.getBackcolor();
 	}
 
-	public Dimension2D getDimension(StringBounder stringBounder) {
-		final Dimension2D img = im.getDimension(stringBounder);
+	public Dimension2D calculateDimension(StringBounder stringBounder) {
+		final Dimension2D img = im.calculateDimension(stringBounder);
 		return img;
 	}
 
@@ -92,6 +97,10 @@ public final class InnerActivity implements IEntityImage {
 
 	public boolean isHidden() {
 		return im.isHidden();
+	}
+
+	final public List<Url> getUrls() {
+		return Collections.emptyList();
 	}
 
 }

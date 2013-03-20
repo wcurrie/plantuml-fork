@@ -39,15 +39,16 @@ import java.util.List;
 
 import net.sourceforge.plantuml.Dimension2DDouble;
 import net.sourceforge.plantuml.Url;
-import net.sourceforge.plantuml.ugraphic.AbstractUGraphicHorizontalLine;
+import net.sourceforge.plantuml.ugraphic.AbstractUGraphicHorizontalLine2;
+import net.sourceforge.plantuml.ugraphic.UChangeBackColor;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
 import net.sourceforge.plantuml.ugraphic.UHorizontalLine;
 import net.sourceforge.plantuml.ugraphic.UPath;
+import net.sourceforge.plantuml.ugraphic.UTranslate;
 
 class USymbolDatabase extends USymbol {
 
-	private void drawDatabase(UGraphic ug, double xTheoricalPosition, double yTheoricalPosition, double width,
-			double height, boolean shadowing) {
+	private void drawDatabase(UGraphic ug, double width, double height, boolean shadowing) {
 		final UPath shape = new UPath();
 		if (shadowing) {
 			shape.setDeltaShadow(3.0);
@@ -60,10 +61,10 @@ class USymbolDatabase extends USymbol {
 		shape.cubicTo(width / 2 + 10, height, 10, height, 0, height - 10);
 		shape.lineTo(0, 10);
 
-		ug.drawNewWay(xTheoricalPosition, yTheoricalPosition, shape);
+		ug.drawOldWay(shape);
 
 		final UPath closing = getClosingPath(width);
-		ug.drawNewWay(xTheoricalPosition, yTheoricalPosition, closing);
+		ug.drawOldWay(closing);
 
 	}
 
@@ -75,30 +76,26 @@ class USymbolDatabase extends USymbol {
 		return closing;
 	}
 
-	class MyUGraphic extends AbstractUGraphicHorizontalLine {
+	class MyUGraphicDatabase extends AbstractUGraphicHorizontalLine2 {
 
-		private final double startingX;
 		private final double endingX;
 
 		@Override
-		protected AbstractUGraphicHorizontalLine copy() {
-			return this;
+		protected AbstractUGraphicHorizontalLine2 copy(UGraphic ug) {
+			return new MyUGraphicDatabase(ug, endingX);
 		}
 
-		public MyUGraphic(UGraphic ug, double startingX, double endingX) {
+		public MyUGraphicDatabase(UGraphic ug, double endingX) {
 			super(ug);
-			this.startingX = startingX;
 			this.endingX = endingX;
 		}
 
 		@Override
-		protected void drawHline(UGraphic ug, double x, double y, UHorizontalLine line) {
-			final UPath closing = getClosingPath(endingX - startingX);
-			final HtmlColor backcolor = ug.getParam().getBackcolor();
-			ug.getParam().setBackcolor(null);
-			ug.drawNewWay(startingX, y - 15, closing);
-			ug.getParam().setBackcolor(backcolor);
-			line.drawTitle(ug, startingX, endingX, y, true);
+		protected void drawHline(UGraphic ug, UHorizontalLine line, UTranslate translate) {
+			final UPath closing = getClosingPath(endingX);
+			ug = ug.apply(translate);
+			ug.apply(line.getStroke()).apply(new UChangeBackColor(null)).drawNewWay(0, -15, closing);
+			line.drawTitle(ug, 0, endingX, 0, true);
 		}
 
 	}
@@ -110,15 +107,14 @@ class USymbolDatabase extends USymbol {
 	public TextBlock asSmall(final TextBlock label, final TextBlock stereotype, final SymbolContext symbolContext) {
 		return new TextBlock() {
 
-			public void drawU(UGraphic ug, double x, double y) {
+			public void drawUNewWayINLINED(UGraphic ug) {
 				final Dimension2D dim = calculateDimension(ug.getStringBounder());
-				symbolContext.apply(ug);
-				drawDatabase(ug, x, y, dim.getWidth(), dim.getHeight(), symbolContext.isShadowing());
+				ug = symbolContext.apply(ug).apply(new UTranslate(0, 0));
+				drawDatabase(ug, dim.getWidth(), dim.getHeight(), symbolContext.isShadowing());
 				final Margin margin = getMargin();
 				final TextBlock tb = TextBlockUtils.mergeTB(stereotype, label, HorizontalAlignement.CENTER);
-				final UGraphic ug2 = new MyUGraphic(ug, x, x + dim.getWidth());
-				tb.drawU(ug2, x + margin.getX1(), y + margin.getY1());
-
+				final UGraphic ug2 = new MyUGraphicDatabase(ug, dim.getWidth());
+				tb.drawUNewWayINLINED(ug2.apply(new UTranslate(margin.getX1(), margin.getY1())));
 			}
 
 			public Dimension2D calculateDimension(StringBounder stringBounder) {
@@ -137,18 +133,17 @@ class USymbolDatabase extends USymbol {
 			final SymbolContext symbolContext) {
 		return new TextBlock() {
 
-			public void drawU(UGraphic ug, double x, double y) {
+			public void drawUNewWayINLINED(UGraphic ug) {
 				final Dimension2D dim = calculateDimension(ug.getStringBounder());
-				symbolContext.apply(ug);
-				drawDatabase(ug, x, y, dim.getWidth(), dim.getHeight(), symbolContext.isShadowing());
+				ug = symbolContext.apply(ug);
+				drawDatabase(ug, dim.getWidth(), dim.getHeight(), symbolContext.isShadowing());
 				final Dimension2D dimStereo = stereotype.calculateDimension(ug.getStringBounder());
 				final double posStereo = (width - dimStereo.getWidth()) / 2;
-				stereotype.drawU(ug, x + posStereo, y);
+				stereotype.drawUNewWayINLINED(ug.apply(new UTranslate(posStereo, 0)));
 
 				final Dimension2D dimTitle = title.calculateDimension(ug.getStringBounder());
 				final double posTitle = (width - dimTitle.getWidth()) / 2;
-				title.drawU(ug, x + posTitle, y + 21);
-
+				title.drawUNewWayINLINED(ug.apply(new UTranslate(posTitle, 21)));
 			}
 
 			public Dimension2D calculateDimension(StringBounder stringBounder) {
@@ -160,10 +155,9 @@ class USymbolDatabase extends USymbol {
 			}
 		};
 	}
-	
+
 	public boolean manageHorizontalLine() {
 		return true;
 	}
-
 
 }

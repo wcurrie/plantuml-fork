@@ -46,6 +46,7 @@ import net.sourceforge.plantuml.command.CommandMultilines2;
 import net.sourceforge.plantuml.command.MultilinesStrategy;
 import net.sourceforge.plantuml.command.regex.RegexConcat;
 import net.sourceforge.plantuml.command.regex.RegexLeaf;
+import net.sourceforge.plantuml.command.regex.RegexOptional;
 import net.sourceforge.plantuml.command.regex.RegexOr;
 import net.sourceforge.plantuml.command.regex.RegexResult;
 import net.sourceforge.plantuml.cucadiagram.Code;
@@ -72,11 +73,12 @@ public class CommandLinkLongActivity extends CommandMultilines2<ActivityDiagram>
 
 	static RegexConcat getRegexConcat() {
 		return new RegexConcat(new RegexLeaf("^"), //
-				new RegexOr("FIRST", true, //
-						new RegexLeaf("STAR", "(\\(\\*(top)?\\))"), //
-						new RegexLeaf("CODE", "([\\p{L}0-9][\\p{L}0-9_.]*)"), //
-						new RegexLeaf("BAR", "(?:==+)\\s*([\\p{L}0-9_.]+)\\s*(?:==+)"), //
-						new RegexLeaf("QUOTED", "\"([^\"]+)\"(?:\\s+as\\s+([\\p{L}0-9_.]+))?")), //
+				new RegexOptional(//
+						new RegexOr("FIRST", //
+								new RegexLeaf("STAR", "(\\(\\*(top)?\\))"), //
+								new RegexLeaf("CODE", "([\\p{L}0-9][\\p{L}0-9_.]*)"), //
+								new RegexLeaf("BAR", "(?:==+)\\s*([\\p{L}0-9_.]+)\\s*(?:==+)"), //
+								new RegexLeaf("QUOTED", "\"([^\"]+)\"(?:\\s+as\\s+([\\p{L}0-9_.]+))?"))), //
 				new RegexLeaf("\\s*"), //
 				new RegexLeaf("STEREOTYPE", "(\\<\\<.*\\>\\>)?"), //
 				new RegexLeaf("\\s*"), //
@@ -148,8 +150,8 @@ public class CommandLinkLongActivity extends CommandMultilines2<ActivityDiagram>
 			partition = StringUtils.eventuallyRemoveStartingAndEndingDoubleQuote(partition);
 		}
 		if (partition != null) {
-			getSystem().getOrCreateGroup(Code.of(partition), Display.getWithNewlines(partition), null, GroupType.PACKAGE,
-					null);
+			getSystem().getOrCreateGroup(Code.of(partition), Display.getWithNewlines(partition), null,
+					GroupType.PACKAGE, null);
 		}
 		final IEntity entity2 = getSystem().createLeaf(code, Display.getWithNewlines(display), LeafType.ACTIVITY);
 		if (partition != null) {

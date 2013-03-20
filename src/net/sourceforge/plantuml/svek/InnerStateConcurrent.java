@@ -34,14 +34,19 @@
 package net.sourceforge.plantuml.svek;
 
 import java.awt.geom.Dimension2D;
+import java.util.Collections;
+import java.util.List;
 
+import net.sourceforge.plantuml.Url;
 import net.sourceforge.plantuml.graphic.HtmlColor;
 import net.sourceforge.plantuml.graphic.HtmlColorUtils;
 import net.sourceforge.plantuml.graphic.StringBounder;
+import net.sourceforge.plantuml.ugraphic.UChangeColor;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
 import net.sourceforge.plantuml.ugraphic.URectangle;
 import net.sourceforge.plantuml.ugraphic.UShape;
 import net.sourceforge.plantuml.ugraphic.UStroke;
+import net.sourceforge.plantuml.ugraphic.UTranslate;
 
 public final class InnerStateConcurrent implements IEntityImage {
 
@@ -54,25 +59,21 @@ public final class InnerStateConcurrent implements IEntityImage {
 	public final static double THICKNESS_BORDER = 1.5;
 	private static final int DASH = 8;
 
-	public void drawU(UGraphic ug, double x, double y) {
-
-		final Dimension2D dim = getDimension(ug.getStringBounder());
+	public void drawUNewWayINLINED(UGraphic ug) {
+		final Dimension2D dim = calculateDimension(ug.getStringBounder());
 		final UShape rect = new URectangle(dim.getWidth(), dim.getHeight());
-		ug.getParam().setBackcolor(null);
-		ug.getParam().setColor(HtmlColorUtils.BLACK);
-		ug.getParam().setStroke(new UStroke(DASH, 10, THICKNESS_BORDER));
-		ug.drawNewWay(x, y, rect);
-		ug.getParam().setStroke(new UStroke());
+		ug = ug.apply(new UChangeColor(HtmlColorUtils.BLACK));
+		ug.apply(new UStroke(DASH, 10, THICKNESS_BORDER)).drawOldWay(rect);
 
-		im.drawU(ug, x, y);
+		im.drawUNewWayINLINED(ug);
 	}
 
 	public HtmlColor getBackcolor() {
 		return null;
 	}
 
-	public Dimension2D getDimension(StringBounder stringBounder) {
-		final Dimension2D img = im.getDimension(stringBounder);
+	public Dimension2D calculateDimension(StringBounder stringBounder) {
+		final Dimension2D img = im.calculateDimension(stringBounder);
 
 		return img;
 	}
@@ -80,13 +81,17 @@ public final class InnerStateConcurrent implements IEntityImage {
 	public ShapeType getShapeType() {
 		return ShapeType.RECTANGLE;
 	}
-	
+
 	public int getShield() {
 		return 0;
 	}
-	
+
 	public boolean isHidden() {
 		return im.isHidden();
+	}
+
+	final public List<Url> getUrls() {
+		return Collections.emptyList();
 	}
 
 }

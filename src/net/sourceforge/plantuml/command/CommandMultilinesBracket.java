@@ -37,9 +37,9 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import net.sourceforge.plantuml.PSystem;
+import net.sourceforge.plantuml.core.Diagram;
 
-public abstract class CommandMultilinesBracket<S extends PSystem> implements Command {
+public abstract class CommandMultilinesBracket<S extends Diagram> implements Command {
 
 	private final S system;
 

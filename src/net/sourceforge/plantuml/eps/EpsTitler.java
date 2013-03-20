@@ -49,6 +49,7 @@ import net.sourceforge.plantuml.graphic.TextBlockUtils;
 import net.sourceforge.plantuml.graphic.VerticalPosition;
 import net.sourceforge.plantuml.ugraphic.ColorMapper;
 import net.sourceforge.plantuml.ugraphic.UFont;
+import net.sourceforge.plantuml.ugraphic.UTranslate;
 import net.sourceforge.plantuml.ugraphic.eps.UGraphicEps;
 
 public final class EpsTitler {
@@ -130,7 +131,7 @@ public final class EpsTitler {
 			yText = height + margin;
 		}
 
-		textBloc.drawU(uGraphicEps, xpos, yText);
+		textBloc.drawUNewWayINLINED(uGraphicEps.apply(new UTranslate(xpos, yText)));
 
 		final double yImage;
 		if (verticalPosition == VerticalPosition.TOP) {

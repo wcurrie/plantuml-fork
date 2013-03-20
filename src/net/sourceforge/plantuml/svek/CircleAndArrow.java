@@ -80,11 +80,11 @@ class CircleAndArrow implements UDrawable {
 		return at2.transform(p, null);
 	}
 
-	public void drawU(UGraphic ug, double x, double y) {
+	public void drawUNewWayINLINED(UGraphic ug) {
 		final UShape circle = new UEllipse(radius * 2, radius * 2);
-		ug.drawNewWay(x + center.getX() - radius, y + center.getY() - radius, circle);
-//		drawLine(ug, x, y, p1, p2);
-//		drawLine(ug, x, y, p3, p4);
+		ug.drawNewWay(center.getX() - radius, center.getY() - radius, circle);
+		// drawLine(ug, x, y, p1, p2);
+		// drawLine(ug, x, y, p3, p4);
 	}
 
 	static private void drawLine(UGraphic ug, double x, double y, Point2D p1, Point2D p2) {

@@ -42,6 +42,8 @@ import net.sourceforge.plantuml.Url;
 import net.sourceforge.plantuml.graphic.HtmlColor;
 import net.sourceforge.plantuml.graphic.StringBounder;
 import net.sourceforge.plantuml.graphic.TextBlock;
+import net.sourceforge.plantuml.ugraphic.UChangeBackColor;
+import net.sourceforge.plantuml.ugraphic.UChangeColor;
 import net.sourceforge.plantuml.ugraphic.UEllipse;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
 import net.sourceforge.plantuml.ugraphic.ULine;
@@ -66,18 +68,17 @@ public class EntityDomain implements TextBlock {
 		this.thickness = thickness;
 	}
 
-	public void drawU(UGraphic ug, double x, double y) {
+	public void drawUNewWayINLINED(UGraphic ug) {
+		double x = 0;
+		double y = 0;
 		x += margin;
 		y += margin;
-		ug.getParam().setStroke(new UStroke(thickness));
-		ug.getParam().setBackcolor(backgroundColor);
-		ug.getParam().setColor(foregroundColor);
+		ug = ug.apply(new UStroke(thickness)).apply(new UChangeBackColor(backgroundColor))
+				.apply(new UChangeColor(foregroundColor));
 		final UEllipse circle = new UEllipse(radius * 2, radius * 2);
 		circle.setDeltaShadow(deltaShadow);
 		ug.drawNewWay(x, y, circle);
 		ug.drawNewWay(x, y + 2 * radius + suppY, new ULine(2 * radius, 0));
-		ug.getParam().setStroke(new UStroke());
-
 	}
 
 	public Dimension2D calculateDimension(StringBounder stringBounder) {

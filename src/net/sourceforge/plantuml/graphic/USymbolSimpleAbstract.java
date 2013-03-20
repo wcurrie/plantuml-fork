@@ -40,6 +40,7 @@ import java.util.List;
 import net.sourceforge.plantuml.Dimension2DDouble;
 import net.sourceforge.plantuml.Url;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
+import net.sourceforge.plantuml.ugraphic.UTranslate;
 
 abstract class USymbolSimpleAbstract extends USymbol {
 
@@ -50,7 +51,7 @@ abstract class USymbolSimpleAbstract extends USymbol {
 		final TextBlock stickman = getDrawing(symbolContext);
 		return new TextBlock() {
 
-			public void drawU(UGraphic ug, double x, double y) {
+			public void drawUNewWayINLINED(UGraphic ug) {
 				final StringBounder stringBounder = ug.getStringBounder();
 				final Dimension2D dimName = label.calculateDimension(stringBounder);
 				final Dimension2D dimStereo = stereotype.calculateDimension(stringBounder);
@@ -58,15 +59,14 @@ abstract class USymbolSimpleAbstract extends USymbol {
 				final Dimension2D dimTotal = calculateDimension(stringBounder);
 				final double stickmanX = (dimTotal.getWidth() - dimStickMan.getWidth()) / 2;
 				final double stickmanY = dimStereo.getHeight();
-				symbolContext.apply(ug);
-				stickman.drawU(ug, x + stickmanX, y + stickmanY);
+				ug = symbolContext.apply(ug);
+				stickman.drawUNewWayINLINED(ug.apply(new UTranslate(stickmanX, stickmanY)));
 				final double labelX = (dimTotal.getWidth() - dimName.getWidth()) / 2;
 				final double labelY = dimStickMan.getHeight() + dimStereo.getHeight();
-				label.drawU(ug, x + labelX, y + labelY);
-
+				label.drawUNewWayINLINED(ug.apply(new UTranslate(labelX, labelY)));
+				
 				final double stereoX = (dimTotal.getWidth() - dimStereo.getWidth()) / 2;
-				stereotype.drawU(ug, x + stereoX, y);
-
+				stereotype.drawUNewWayINLINED(ug.apply(new UTranslate(stereoX, 0)));
 			}
 
 			public Dimension2D calculateDimension(StringBounder stringBounder) {
@@ -83,7 +83,6 @@ abstract class USymbolSimpleAbstract extends USymbol {
 	}
 
 	abstract protected TextBlock getDrawing(final SymbolContext symbolContext);
-
 
 	public TextBlock asBig(final TextBlock title, TextBlock stereotype, final double width, final double height,
 			final SymbolContext symbolContext) {

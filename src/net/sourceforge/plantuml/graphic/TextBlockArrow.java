@@ -40,6 +40,8 @@ import java.util.List;
 import net.sourceforge.plantuml.Dimension2DDouble;
 import net.sourceforge.plantuml.Direction;
 import net.sourceforge.plantuml.Url;
+import net.sourceforge.plantuml.ugraphic.UChangeBackColor;
+import net.sourceforge.plantuml.ugraphic.UChangeColor;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
 import net.sourceforge.plantuml.ugraphic.UPolygon;
 
@@ -60,19 +62,18 @@ public class TextBlockArrow implements TextBlock {
 
 	}
 
-	public void drawU(UGraphic ug, double x, double y) {
-		// ug.draw(x, y, new URectangle(size, size));
-		ug.getParam().setBackcolor(color);
-		ug.getParam().setColor(color);
+	public void drawUNewWayINLINED(UGraphic ug) {
+		ug = ug.apply(new UChangeBackColor(color));
+		ug = ug.apply(new UChangeColor(color));
 		int triSize = (int) (size * .8 - 3);
 		if (triSize % 2 == 1) {
 			triSize--;
 		}
 		final UPolygon triangle = getTriangle(triSize);
 		if (arrow == Direction.RIGHT || arrow == Direction.LEFT) {
-			ug.drawNewWay(x + 2, y + (size - triSize) - 2, triangle);
+			ug.drawNewWay(2, (size - triSize) - 2, triangle);
 		} else {
-			ug.drawNewWay(x + 2, y + (size - triSize) - 2, triangle);
+			ug.drawNewWay(2, (size - triSize) - 2, triangle);
 		}
 	}
 

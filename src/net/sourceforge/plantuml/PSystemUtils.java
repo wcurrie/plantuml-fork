@@ -42,7 +42,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import net.sourceforge.plantuml.api.ImageData;
+import net.sourceforge.plantuml.core.Diagram;
+import net.sourceforge.plantuml.core.ImageData;
 import net.sourceforge.plantuml.cucadiagram.CucaDiagram;
 import net.sourceforge.plantuml.html.CucaDiagramHtmlMaker;
 import net.sourceforge.plantuml.png.PngSplitter;
@@ -50,7 +51,7 @@ import net.sourceforge.plantuml.sequencediagram.SequenceDiagram;
 
 public class PSystemUtils {
 
-	public static List<File> exportDiagrams(PSystem system, File suggestedFile, FileFormatOption fileFormatOption)
+	public static List<File> exportDiagrams(Diagram system, File suggestedFile, FileFormatOption fileFormatOption)
 			throws IOException {
 		if (system instanceof SequenceDiagram) {
 			return exportDiagramsSequence((SequenceDiagram) system, suggestedFile, fileFormatOption);
@@ -61,7 +62,7 @@ public class PSystemUtils {
 		return exportDiagramsDefault(system, suggestedFile, fileFormatOption);
 	}
 
-	static private List<File> exportDiagramsDefault(PSystem system, File suggestedFile, FileFormatOption fileFormat)
+	static private List<File> exportDiagramsDefault(Diagram system, File suggestedFile, FileFormatOption fileFormat)
 			throws IOException {
 		if (suggestedFile.exists() && suggestedFile.isDirectory()) {
 			throw new IllegalArgumentException("File is a directory " + suggestedFile);
@@ -94,7 +95,7 @@ public class PSystemUtils {
 			} finally {
 				fos.close();
 			}
-			if (system.hasUrl() && cmap != null && cmap.containsData()) {
+			if (system.hasUrl() && cmap != null && cmap.containsCMapData()) {
 				system.exportCmap(suggestedFile, cmap);
 			}
 			Log.info("File size : " + f.length());
@@ -125,7 +126,7 @@ public class PSystemUtils {
 		}
 		List<File> result = Arrays.asList(suggestedFile);
 
-		if (system.hasUrl() && cmap != null && cmap.containsData()) {
+		if (system.hasUrl() && cmap != null && cmap.containsCMapData()) {
 			system.exportCmap(suggestedFile, cmap);
 		}
 

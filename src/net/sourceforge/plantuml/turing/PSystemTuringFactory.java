@@ -31,8 +31,8 @@
  */
 package net.sourceforge.plantuml.turing;
 
-import net.sourceforge.plantuml.DiagramType;
 import net.sourceforge.plantuml.PSystemBasicFactory;
+import net.sourceforge.plantuml.core.DiagramType;
 
 public class PSystemTuringFactory extends PSystemBasicFactory {
 

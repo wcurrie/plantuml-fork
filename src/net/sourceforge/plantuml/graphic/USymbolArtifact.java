@@ -43,18 +43,18 @@ import net.sourceforge.plantuml.ugraphic.UGraphic;
 import net.sourceforge.plantuml.ugraphic.ULine;
 import net.sourceforge.plantuml.ugraphic.UPolygon;
 import net.sourceforge.plantuml.ugraphic.URectangle;
+import net.sourceforge.plantuml.ugraphic.UTranslate;
 
 class USymbolArtifact extends USymbol {
 
-	private void drawArtifact(UGraphic ug, double xTheoricalPosition, double yTheoricalPosition, double widthTotal,
-			double heightTotal, boolean shadowing) {
+	private void drawArtifact(UGraphic ug, double widthTotal, double heightTotal, boolean shadowing) {
 
 		final URectangle form = new URectangle(widthTotal, heightTotal);
 		if (shadowing) {
 			form.setDeltaShadow(4);
 		}
 
-		ug.drawNewWay(xTheoricalPosition, yTheoricalPosition, form);
+		ug.drawOldWay(form);
 
 		final UPolygon polygon = new UPolygon();
 		polygon.addPoint(0, 0);
@@ -70,8 +70,8 @@ class USymbolArtifact extends USymbol {
 		// polygon.setDeltaShadow(3.0);
 		// }
 
-		final double xSymbol = xTheoricalPosition + widthTotal - widthSymbol - 5;
-		final double ySymbol = yTheoricalPosition + 5;
+		final double xSymbol = widthTotal - widthSymbol - 5;
+		final double ySymbol = 5;
 
 		ug.drawNewWay(xSymbol, ySymbol, polygon);
 		ug.drawNewWay(xSymbol + widthSymbol - cornersize, ySymbol, new ULine(0, cornersize));
@@ -86,14 +86,13 @@ class USymbolArtifact extends USymbol {
 	public TextBlock asSmall(final TextBlock label, final TextBlock stereotype, final SymbolContext symbolContext) {
 		return new TextBlock() {
 
-			public void drawU(UGraphic ug, double x, double y) {
+			public void drawUNewWayINLINED(UGraphic ug) {
 				final Dimension2D dim = calculateDimension(ug.getStringBounder());
-				symbolContext.apply(ug);
-				drawArtifact(ug, x, y, dim.getWidth(), dim.getHeight(), symbolContext.isShadowing());
+				ug = symbolContext.apply(ug);
+				drawArtifact(ug, dim.getWidth(), dim.getHeight(), symbolContext.isShadowing());
 				final Margin margin = getMargin();
 				final TextBlock tb = TextBlockUtils.mergeTB(stereotype, label, HorizontalAlignement.CENTER);
-				tb.drawU(ug, x + margin.getX1(), y + margin.getY1());
-
+				tb.drawUNewWayINLINED(ug.apply(new UTranslate(margin.getX1(), margin.getY1())));
 			}
 
 			public Dimension2D calculateDimension(StringBounder stringBounder) {
@@ -108,21 +107,20 @@ class USymbolArtifact extends USymbol {
 		};
 	}
 
-	public TextBlock asBig(final TextBlock title, final TextBlock stereotype, final double width,
-			final double height, final SymbolContext symbolContext) {
+	public TextBlock asBig(final TextBlock title, final TextBlock stereotype, final double width, final double height,
+			final SymbolContext symbolContext) {
 		return new TextBlock() {
 
-			public void drawU(UGraphic ug, double x, double y) {
+			public void drawUNewWayINLINED(UGraphic ug) {
 				final Dimension2D dim = calculateDimension(ug.getStringBounder());
-				symbolContext.apply(ug);
-				drawArtifact(ug, x, y, dim.getWidth(), dim.getHeight(), symbolContext.isShadowing());
+				ug = symbolContext.apply(ug);
+				drawArtifact(ug, dim.getWidth(), dim.getHeight(), symbolContext.isShadowing());
 				final Dimension2D dimStereo = stereotype.calculateDimension(ug.getStringBounder());
 				final double posStereo = (width - dimStereo.getWidth()) / 2;
-				stereotype.drawU(ug, x + posStereo, y + 2);
+				stereotype.drawUNewWayINLINED(ug.apply(new UTranslate(posStereo, 2)));
 				final Dimension2D dimTitle = title.calculateDimension(ug.getStringBounder());
 				final double posTitle = (width - dimTitle.getWidth()) / 2;
-				title.drawU(ug, x + posTitle, y + 2 + dimStereo.getHeight());
-
+				title.drawUNewWayINLINED(ug.apply(new UTranslate(posTitle, 2 + dimStereo.getHeight())));
 			}
 
 			public Dimension2D calculateDimension(StringBounder stringBounder) {

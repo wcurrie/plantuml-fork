@@ -38,6 +38,11 @@ public class UTranslate implements UChange {
 	private final double dx;
 	private final double dy;
 
+	@Override
+	public String toString() {
+		return "translate dx=" + dx + " dy=" + dy;
+	}
+
 	public UTranslate(double dx, double dy) {
 		this.dx = dx;
 		this.dy = dy;
@@ -53,6 +58,14 @@ public class UTranslate implements UChange {
 
 	public double getDy() {
 		return dy;
+	}
+
+	public UTranslate compose(UTranslate other) {
+		return new UTranslate(dx + other.dx, dy + other.dy);
+	}
+
+	public UTranslate reverse() {
+		return new UTranslate(-dx, -dy);
 	}
 
 }

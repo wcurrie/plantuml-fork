@@ -28,28 +28,42 @@
  *
  * Original Author:  Arnaud Roques
  *
- * Revision $Revision: 10018 $
+ * Revision $Revision: 4768 $
  *
  */
-package net.sourceforge.plantuml;
+package net.sourceforge.plantuml.core;
 
-import java.io.IOException;
-import java.io.OutputStream;
+public enum DiagramType {
+	UML, DITAA, DOT, PROJECT, JCCKIT, SALT, TURING, FLOW, UNKNOWN;
 
-import net.sourceforge.plantuml.api.ImageData;
-
-public interface PSystem {
-
-	ImageData exportDiagram(OutputStream os, int num, FileFormatOption fileFormat) throws IOException;
-
-	int getNbImages();
-
-	String getDescription();
-
-	String getMetadata();
-	
-	String getWarningOrError();
-
-	UmlSource getSource();
-
+	static public DiagramType getTypeFromArobaseStart(String s) {
+//		if (s.startsWith("@startuml2")) {
+//			return UML2;
+//		}
+		if (s.startsWith("@startuml")) {
+			return UML;
+		}
+		if (s.startsWith("@startdot")) {
+			return DOT;
+		}
+		if (s.startsWith("@startjcckit")) {
+			return JCCKIT;
+		}
+		if (s.startsWith("@startditaa")) {
+			return DITAA;
+		}
+		if (s.startsWith("@startproject")) {
+			return PROJECT;
+		}
+		if (s.startsWith("@startsalt")) {
+			return SALT;
+		}
+		if (s.startsWith("@startturing")) {
+			return TURING;
+		}
+		if (s.startsWith("@startflow")) {
+			return FLOW;
+		}
+		return UNKNOWN;
+	}
 }

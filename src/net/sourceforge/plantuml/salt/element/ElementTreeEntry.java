@@ -46,6 +46,7 @@ import net.sourceforge.plantuml.graphic.TextBlock;
 import net.sourceforge.plantuml.graphic.TextBlockUtils;
 import net.sourceforge.plantuml.ugraphic.UFont;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
+import net.sourceforge.plantuml.ugraphic.UTranslate;
 
 public class ElementTreeEntry implements Element {
 
@@ -69,7 +70,7 @@ public class ElementTreeEntry implements Element {
 	}
 
 	public void drawU(UGraphic ug, double x, double y, int zIndex, Dimension2D dimToUse) {
-		block.drawU(ug, x + getXDelta(), y);
+		block.drawUNewWayINLINED(ug.apply(new UTranslate((x + getXDelta()), y)));
 	}
 
 	public String getText() {

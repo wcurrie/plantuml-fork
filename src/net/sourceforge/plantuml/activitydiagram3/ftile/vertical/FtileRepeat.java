@@ -53,9 +53,12 @@ import net.sourceforge.plantuml.graphic.HtmlColorUtils;
 import net.sourceforge.plantuml.graphic.StringBounder;
 import net.sourceforge.plantuml.graphic.TextBlock;
 import net.sourceforge.plantuml.graphic.TextBlockUtils;
+import net.sourceforge.plantuml.ugraphic.UChangeBackColor;
+import net.sourceforge.plantuml.ugraphic.UChangeColor;
 import net.sourceforge.plantuml.ugraphic.UFont;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
 import net.sourceforge.plantuml.ugraphic.UStroke;
+import net.sourceforge.plantuml.ugraphic.UTranslate;
 
 class FtileRepeat implements Ftile {
 
@@ -91,38 +94,31 @@ class FtileRepeat implements Ftile {
 		}
 	}
 
-	public void drawU(UGraphic ug, final double x, final double y) {
+	public void drawUNewWayINLINED(UGraphic ug) {
 		final StringBounder stringBounder = ug.getStringBounder();
 		final Dimension2D dimTotal = calculateDimension(stringBounder);
 		final Dimension2D dimRepeat = repeat.calculateDimension(stringBounder);
 		final double diffx = dimTotal.getWidth() - dimRepeat.getWidth();
 
-		repeat.drawU(ug, x + diffx / 2, y + heighttop);
+		repeat.drawUNewWayINLINED(ug.apply(new UTranslate((diffx / 2), heighttop)));
 
-		ug.getParam().setStroke(new UStroke(1.5));
-		ug.getParam().setColor(arrowColor);
 		final Snake s1 = new Snake();
-		s1.addPoint(x + dimTotal.getWidth() / 2 + Diamond.diamondHalfSize, y + Diamond.diamondHalfSize);
-		s1.addPoint(x + dimTotal.getWidth() / 2 + Diamond.diamondHalfSize + dimRepeat.getWidth() / 2, y
-				+ Diamond.diamondHalfSize);
-		s1.addPoint(x + dimTotal.getWidth() / 2 + Diamond.diamondHalfSize + dimRepeat.getWidth() / 2,
-				y + dimTotal.getHeight() - Diamond.diamondHalfSize);
-		s1.addPoint(x + dimTotal.getWidth() / 2 + Diamond.diamondHalfSize, y + dimTotal.getHeight()
+		s1.addPoint(dimTotal.getWidth() / 2 + Diamond.diamondHalfSize, Diamond.diamondHalfSize);
+		s1.addPoint(dimTotal.getWidth() / 2 + Diamond.diamondHalfSize + dimRepeat.getWidth() / 2,
+				Diamond.diamondHalfSize);
+		s1.addPoint(dimTotal.getWidth() / 2 + Diamond.diamondHalfSize + dimRepeat.getWidth() / 2, dimTotal.getHeight()
 				- Diamond.diamondHalfSize);
-		s1.drawU(ug);
+		s1.addPoint(dimTotal.getWidth() / 2 + Diamond.diamondHalfSize, dimTotal.getHeight() - Diamond.diamondHalfSize);
+		s1.drawU(ug.apply(new UStroke(1.5)).apply(new UChangeColor(arrowColor)));
 
-		ug.getParam().setStroke(new UStroke());
-
-		ug.getParam().setColor(arrowColor);
-		ug.getParam().setBackcolor(arrowColor);
-		ug.drawNewWay(x + dimTotal.getWidth() / 2 + Diamond.diamondHalfSize, y + Diamond.diamondHalfSize, Arrows.asToLeft());
-		ug.drawNewWay(x + dimTotal.getWidth() / 2 + Diamond.diamondHalfSize + dimRepeat.getWidth() / 2,
-				y + dimTotal.getHeight() / 2, Arrows.asToUp());
+		ug = ug.apply(new UChangeBackColor(arrowColor)).apply(new UChangeColor(arrowColor));
+		ug.drawNewWay(dimTotal.getWidth() / 2 + Diamond.diamondHalfSize, Diamond.diamondHalfSize, Arrows.asToLeft());
+		ug.drawNewWay(dimTotal.getWidth() / 2 + Diamond.diamondHalfSize + dimRepeat.getWidth() / 2,
+				dimTotal.getHeight() / 2, Arrows.asToUp());
 
 		final Dimension2D dimTest = test.calculateDimension(stringBounder);
-		test.drawU(ug, x + dimTotal.getWidth() / 2 + Diamond.diamondHalfSize, y + dimTotal.getHeight()
-				- Diamond.diamondHalfSize - dimTest.getHeight());
-
+		test.drawUNewWayINLINED(ug.apply(new UTranslate((dimTotal.getWidth() / 2 + Diamond.diamondHalfSize), (dimTotal.getHeight()
+		- Diamond.diamondHalfSize - dimTest.getHeight()))));
 	}
 
 	public Dimension2D calculateDimension(StringBounder stringBounder) {

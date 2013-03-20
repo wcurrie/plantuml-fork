@@ -35,15 +35,15 @@ package net.sourceforge.plantuml.ugraphic;
 
 import net.sourceforge.plantuml.graphic.HtmlColor;
 
-public class UParamColor implements UParamNew {
-
+public class UChangeBackColor implements UChange {
+	
 	private final HtmlColor color;
-
-	public UParamColor(HtmlColor color) {
+	
+	public UChangeBackColor(HtmlColor color) {
 		this.color = color;
 	}
 
-	public HtmlColor getColor() {
+	public HtmlColor getBackColor() {
 		return color;
 	}
 

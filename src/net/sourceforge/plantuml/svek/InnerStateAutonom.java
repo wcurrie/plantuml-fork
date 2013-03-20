@@ -34,6 +34,7 @@
 package net.sourceforge.plantuml.svek;
 
 import java.awt.geom.Dimension2D;
+import java.util.Collections;
 import java.util.List;
 
 import net.sourceforge.plantuml.Dimension2DDouble;
@@ -43,7 +44,9 @@ import net.sourceforge.plantuml.graphic.StringBounder;
 import net.sourceforge.plantuml.graphic.TextBlock;
 import net.sourceforge.plantuml.graphic.TextBlockWidth;
 import net.sourceforge.plantuml.svek.image.EntityImageState;
+import net.sourceforge.plantuml.ugraphic.UChangeColor;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
+import net.sourceforge.plantuml.ugraphic.UTranslate;
 
 public final class InnerStateAutonom implements IEntityImage {
 
@@ -73,10 +76,10 @@ public final class InnerStateAutonom implements IEntityImage {
 
 	public final static double THICKNESS_BORDER = 1.5;
 
-	public void drawU(UGraphic ug, double x, double y) {
+	public void drawUNewWayINLINED(UGraphic ug) {
 		final Dimension2D text = title.calculateDimension(ug.getStringBounder());
 		final Dimension2D attr = attribute.calculateDimension(ug.getStringBounder());
-		final Dimension2D total = getDimension(ug.getStringBounder());
+		final Dimension2D total = calculateDimension(ug.getStringBounder());
 		final double marginForFields = attr.getHeight() > 0 ? IEntityImage.MARGIN : 0;
 
 		final double titreHeight = IEntityImage.MARGIN + text.getHeight() + IEntityImage.MARGIN_LINE;
@@ -87,17 +90,17 @@ public final class InnerStateAutonom implements IEntityImage {
 			ug.startUrl(url.get(0));
 		}
 
-		r.drawU(ug, x, y, shadowing);
-		title.drawU(ug, x + (total.getWidth() - text.getWidth()) / 2, y + IEntityImage.MARGIN);
-		attribute.asTextBlock(total.getWidth()).drawU(ug, x + IEntityImage.MARGIN,
-				y + IEntityImage.MARGIN + text.getHeight() + IEntityImage.MARGIN);
+		r.drawU(ug, shadowing);
+		title.drawUNewWayINLINED(ug.apply(new UTranslate((total.getWidth() - text.getWidth()) / 2, IEntityImage.MARGIN)));
+		attribute.asTextBlock(total.getWidth()).drawUNewWayINLINED(
+				ug.apply(new UTranslate(0 + IEntityImage.MARGIN, IEntityImage.MARGIN + text.getHeight()
+						+ IEntityImage.MARGIN)));
 
 		final double spaceYforURL = getSpaceYforURL(ug.getStringBounder());
-		im.drawU(ug, x + IEntityImage.MARGIN, y + spaceYforURL);
+		im.drawUNewWayINLINED(ug.apply(new UTranslate(IEntityImage.MARGIN, spaceYforURL)));
 
 		if (withSymbol) {
-			ug.getParam().setColor(borderColor);
-			EntityImageState.drawSymbol(ug, x + total.getWidth(), y + total.getHeight());
+			EntityImageState.drawSymbol(ug.apply(new UChangeColor(borderColor)), total.getWidth(), total.getHeight());
 
 		}
 
@@ -119,8 +122,8 @@ public final class InnerStateAutonom implements IEntityImage {
 		return null;
 	}
 
-	public Dimension2D getDimension(StringBounder stringBounder) {
-		final Dimension2D img = im.getDimension(stringBounder);
+	public Dimension2D calculateDimension(StringBounder stringBounder) {
+		final Dimension2D img = im.calculateDimension(stringBounder);
 		final Dimension2D text = title.calculateDimension(stringBounder);
 		final Dimension2D attr = attribute.calculateDimension(stringBounder);
 
@@ -143,6 +146,10 @@ public final class InnerStateAutonom implements IEntityImage {
 
 	public boolean isHidden() {
 		return im.isHidden();
+	}
+
+	final public List<Url> getUrls() {
+		return Collections.emptyList();
 	}
 
 }

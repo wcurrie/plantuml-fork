@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 10104 $
+ * Revision $Revision: 10226 $
  *
  */
 package net.sourceforge.plantuml.ugraphic.g2d;
@@ -47,17 +47,16 @@ import net.sourceforge.plantuml.EnsureVisible;
 import net.sourceforge.plantuml.Url;
 import net.sourceforge.plantuml.graphic.StringBounder;
 import net.sourceforge.plantuml.graphic.StringBounderUtils;
-import net.sourceforge.plantuml.graphic.UnusedSpace;
 import net.sourceforge.plantuml.png.PngIO;
 import net.sourceforge.plantuml.posimo.DotPath;
 import net.sourceforge.plantuml.ugraphic.AbstractCommonUGraphic;
 import net.sourceforge.plantuml.ugraphic.AbstractUGraphic;
 import net.sourceforge.plantuml.ugraphic.ColorMapper;
 import net.sourceforge.plantuml.ugraphic.UAntiAliasing;
+import net.sourceforge.plantuml.ugraphic.UCenteredCharacter;
 import net.sourceforge.plantuml.ugraphic.UChange;
 import net.sourceforge.plantuml.ugraphic.UClip;
 import net.sourceforge.plantuml.ugraphic.UEllipse;
-import net.sourceforge.plantuml.ugraphic.UFont;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
 import net.sourceforge.plantuml.ugraphic.UImage;
 import net.sourceforge.plantuml.ugraphic.ULine;
@@ -127,6 +126,7 @@ public class UGraphicG2d extends AbstractUGraphic<Graphics2D> implements EnsureV
 		registerDriver(UImage.class, new DriverImageG2d());
 		registerDriver(DotPath.class, new DriverDotPathG2d(this));
 		registerDriver(UPath.class, new DriverPathG2d(dpiFactor));
+		registerDriver(UCenteredCharacter.class, new DriverCenteredCharacterG2d());
 	}
 
 	public StringBounder getStringBounder() {
@@ -149,26 +149,6 @@ public class UGraphicG2d extends AbstractUGraphic<Graphics2D> implements EnsureV
 			getGraphicObject().setClip(clip);
 		}
 	}
-
-	public void centerChar(double x, double y, char c, UFont font) {
-		final UnusedSpace unusedSpace = UnusedSpace.getUnusedSpace(font, c);
-
-		getGraphicObject().setColor(getColorMapper().getMappedColor(getParam().getColor()));
-		final double xpos = x - unusedSpace.getCenterX();
-		final double ypos = y - unusedSpace.getCenterY() - 0.5;
-
-		getGraphicObject().setFont(font.getFont());
-		getGraphicObject().drawString("" + c, (float) (xpos + getTranslateXTOBEREMOVED()),
-				(float) (ypos + getTranslateYTOBEREMOVED()));
-		// getGraphicObject().drawString("" + c, Math.round(xpos +
-		// getTranslateX()), Math.round(ypos + getTranslateY()));
-	}
-
-	// static public String getSvgString(ColorMapper colorMapper, UDrawable udrawable) throws IOException {
-	// final UGraphicSvg ug = new UGraphicSvg(colorMapper, false);
-	// udrawable.drawU(ug);
-	// return CucaDiagramFileMaker.getSvg(ug);
-	// }
 
 	protected final double getDpiFactor() {
 		return dpiFactor;

@@ -45,9 +45,11 @@ import net.sourceforge.plantuml.graphic.HtmlColorUtils;
 import net.sourceforge.plantuml.graphic.StringBounder;
 import net.sourceforge.plantuml.graphic.TextBlock;
 import net.sourceforge.plantuml.graphic.TextBlockUtils;
+import net.sourceforge.plantuml.ugraphic.UChangeBackColor;
 import net.sourceforge.plantuml.ugraphic.UFont;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
 import net.sourceforge.plantuml.ugraphic.URectangle;
+import net.sourceforge.plantuml.ugraphic.UTranslate;
 
 public class ElementMenuEntry implements Element {
 
@@ -55,7 +57,7 @@ public class ElementMenuEntry implements Element {
 	private final String text;
 	private HtmlColor background;
 	private double x;
-	
+
 	public ElementMenuEntry(String text, UFont font, SpriteContainer spriteContainer) {
 		final FontConfiguration config = new FontConfiguration(font, HtmlColorUtils.BLACK);
 		this.block = TextBlockUtils.create(Display.asList(text), config, HorizontalAlignement.LEFT, spriteContainer);
@@ -70,13 +72,12 @@ public class ElementMenuEntry implements Element {
 	}
 
 	public void drawU(UGraphic ug, double x, double y, int zIndex, Dimension2D dimToUse) {
-		if (background!=null) {
+		if (background != null) {
 			final Dimension2D dim = getPreferredDimension(ug.getStringBounder(), x, y);
-			ug.getParam().setBackcolor(background);
-			ug.drawNewWay(x, y, new URectangle(dim.getWidth(), dim.getHeight()));
-			ug.getParam().setBackcolor(null);
+			ug.apply(new UChangeBackColor(background))
+					.drawNewWay(x, y, new URectangle(dim.getWidth(), dim.getHeight()));
 		}
-		block.drawU(ug, x, y);
+		block.drawUNewWayINLINED(ug.apply(new UTranslate(x, y)));
 	}
 
 	public double getX() {

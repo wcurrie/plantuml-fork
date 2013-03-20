@@ -69,5 +69,9 @@ public class InstructionGroup implements Instruction {
 		return null;
 	}
 
+	public void addNote(Display note) {
+		throw new UnsupportedOperationException();
+	}
+
 
 }

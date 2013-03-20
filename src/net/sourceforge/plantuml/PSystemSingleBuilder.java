@@ -43,6 +43,8 @@ import net.sourceforge.plantuml.command.Command;
 import net.sourceforge.plantuml.command.CommandControl;
 import net.sourceforge.plantuml.command.CommandExecutionResult;
 import net.sourceforge.plantuml.command.ProtectedCommand;
+import net.sourceforge.plantuml.core.Diagram;
+import net.sourceforge.plantuml.core.UmlSource;
 import net.sourceforge.plantuml.suggest.SuggestEngine;
 import net.sourceforge.plantuml.suggest.SuggestEngineResult;
 import net.sourceforge.plantuml.suggest.SuggestEngineStatus;
@@ -65,19 +67,19 @@ final public class PSystemSingleBuilder {
 		return it.next();
 	}
 
-	public PSystem getPSystem() {
+	public Diagram getPSystem() {
 		return sys;
 	}
 
-	public PSystemSingleBuilder(UmlSource s, PSystemFactory systemFactory) {
-		this.source = s;
-		it = s.iterator();
+	public PSystemSingleBuilder(UmlSource source, PSystemFactory systemFactory) {
+		this.source = source;
+		it = source.iterator();
 		startLine = next();
 		if (StartUtils.isArobaseStartDiagram(startLine) == false) {
 			throw new UnsupportedOperationException();
 		}
 
-		if (s.isEmpty()) {
+		if (source.isEmpty()) {
 			sys = buildEmptyError();
 		} else if (systemFactory instanceof PSystemCommandFactory) {
 			executeUmlCommand((PSystemCommandFactory) systemFactory);
@@ -91,7 +93,7 @@ final public class PSystemSingleBuilder {
 		while (hasNext()) {
 			final String s = next();
 			if (StartUtils.isArobaseEndDiagram(s)) {
-				if (source.getSize() == 2) {
+				if (source.getTotalLineCount() == 2) {
 					assert false;
 					sys = buildEmptyError();
 				} else {
@@ -135,7 +137,7 @@ final public class PSystemSingleBuilder {
 				if (err != null) {
 					sys = buildEmptyError(err);
 				}
-				if (source.getSize() == 2) {
+				if (source.getTotalLineCount() == 2) {
 					assert false;
 					sys = buildEmptyError();
 				} else {

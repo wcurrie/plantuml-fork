@@ -36,8 +36,8 @@ package net.sourceforge.plantuml.salt;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.sourceforge.plantuml.DiagramType;
 import net.sourceforge.plantuml.PSystemBasicFactory;
+import net.sourceforge.plantuml.core.DiagramType;
 
 public class PSystemSaltFactory extends PSystemBasicFactory {
 

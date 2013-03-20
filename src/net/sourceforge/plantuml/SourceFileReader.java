@@ -49,6 +49,7 @@ import java.util.Set;
 
 import net.sourceforge.plantuml.code.Transcoder;
 import net.sourceforge.plantuml.code.TranscoderUtil;
+import net.sourceforge.plantuml.core.Diagram;
 import net.sourceforge.plantuml.preproc.Defines;
 
 public class SourceFileReader implements ISourceFileReader {
@@ -84,7 +85,7 @@ public class SourceFileReader implements ISourceFileReader {
 		if (outputDirectory == null) {
 			outputDirectory = file.getAbsoluteFile().getParentFile();
 		} else if (outputDirectory.isAbsolute() == false) {
-			outputDirectory = FileSystem.getInstance().getFile(outputDirectory.getName());
+			outputDirectory = FileSystem.getInstance().getFile(outputDirectory.getPath());
 		}
 		if (outputDirectory.exists() == false) {
 			outputDirectory.mkdirs();
@@ -119,7 +120,7 @@ public class SourceFileReader implements ISourceFileReader {
 			final File suggested = new File(outputDirectory, newName);
 			suggested.getParentFile().mkdirs();
 
-			final PSystem system = blockUml.getSystem();
+			final Diagram system = blockUml.getSystem();
 			final List<File> exportDiagrams = PSystemUtils.exportDiagrams(system, suggested, fileFormatOption);
 			OptionFlags.getInstance().logData(file, system);
 

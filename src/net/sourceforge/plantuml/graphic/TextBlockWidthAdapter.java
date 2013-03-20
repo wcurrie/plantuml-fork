@@ -45,26 +45,25 @@ public class TextBlockWidthAdapter implements TextBlock {
 	private final TextBlockWidth textBlockWidth;
 	private final double width;
 
-//	public final void setWidth(double width) {
-//		this.width = width;
-//	}
+	// public final void setWidth(double width) {
+	// this.width = width;
+	// }
 
 	public TextBlockWidthAdapter(TextBlockWidth textBlockWidth, double widthToUse) {
 		this.textBlockWidth = textBlockWidth;
 		this.width = widthToUse;
 	}
 
-	public void drawU(UGraphic ug, double x, double y) {
-		textBlockWidth.asTextBlock(width).drawU(ug, x, y);
+	public void drawUNewWayINLINED(UGraphic ug) {
+		textBlockWidth.asTextBlock(width).drawUNewWayINLINED(ug);
 	}
 
 	public Dimension2D calculateDimension(StringBounder stringBounder) {
 		return textBlockWidth.calculateDimension(stringBounder);
 	}
-	
+
 	public List<Url> getUrls() {
 		return Collections.emptyList();
 	}
-
 
 }

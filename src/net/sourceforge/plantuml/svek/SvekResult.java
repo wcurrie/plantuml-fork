@@ -36,6 +36,7 @@ package net.sourceforge.plantuml.svek;
 import java.awt.geom.Dimension2D;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
@@ -43,14 +44,18 @@ import java.util.TreeSet;
 
 import net.sourceforge.plantuml.ColorParam;
 import net.sourceforge.plantuml.UmlDiagramType;
+import net.sourceforge.plantuml.Url;
 import net.sourceforge.plantuml.cucadiagram.dot.DotData;
 import net.sourceforge.plantuml.graphic.HtmlColor;
 import net.sourceforge.plantuml.graphic.StringBounder;
 import net.sourceforge.plantuml.posimo.Moveable;
 import net.sourceforge.plantuml.skin.rose.Rose;
+import net.sourceforge.plantuml.ugraphic.UChangeColor;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
+import net.sourceforge.plantuml.ugraphic.UHidden;
 import net.sourceforge.plantuml.ugraphic.ULine;
 import net.sourceforge.plantuml.ugraphic.UStroke;
+import net.sourceforge.plantuml.ugraphic.UTranslate;
 
 public final class SvekResult implements IEntityImage, Moveable {
 
@@ -71,55 +76,40 @@ public final class SvekResult implements IEntityImage, Moveable {
 		this.hasVerticalLine = hasVerticalLine;
 	}
 
-	public void drawU(UGraphic ug, double x, double y) {
-		// final Map<Group, Cluster> groups = new HashMap<Group, Cluster>();
-
+	public void drawUNewWayINLINED(UGraphic ug) {
 		for (Cluster cluster : dotStringFactory.getBibliotekon().allCluster()) {
-			cluster.drawU(ug, x, y, clusterBorder, dotData);
-			// groups.put(cluster.getGroup(), cluster);
+			cluster.drawU(ug, clusterBorder, dotData);
 		}
-		// assert groups.size() == dotStringFactory.getAllSubCluster().size();
 
 		final Set<Double> xdots = new TreeSet<Double>();
 
 		for (Shape shape : dotStringFactory.getBibliotekon().allShapes()) {
 			final double minX = shape.getMinX();
 			final double minY = shape.getMinY();
-			if (shape.isHidden()) {
-				ug.getParam().setHidden(true);
-			}
-			shape.getImage().drawU(ug, x + minX, y + minY);
-			ug.getParam().setHidden(false);
+			final UGraphic ug2 = shape.isHidden() ? ug.apply(UHidden.HIDDEN) : ug;
+			shape.getImage().drawUNewWayINLINED(ug2.apply(new UTranslate(minX, minY)));
 			if (hasVerticalLine) {
-				final double xv = x + minX;
-				xdots.add(xv);
-				xdots.add(xv + shape.getWidth());
+				xdots.add(minX);
+				xdots.add(minX + shape.getWidth());
 			}
 		}
 
 		for (Line line : dotStringFactory.getBibliotekon().allLines()) {
-			if (line.isHidden()) {
-				ug.getParam().setHidden(true);
-			}
-			// line.patchLineForCluster(dotStringFactory.getAllSubCluster());
+			final UGraphic ug2 = line.isHidden() ? ug.apply(UHidden.HIDDEN) : ug;
 			final HtmlColor color = rose.getHtmlColor(dotData.getSkinParam(), getArrowColorParam(), null);
-			line.drawU(ug, x, y, color);
-			ug.getParam().setHidden(false);
+			line.drawU(ug2, 0, 0, color);
 		}
 
 		final double THICKNESS_BORDER = 1.5;
 		final int DASH = 8;
 
 		if (xdots.size() > 0) {
-			final double height = getDimension(ug.getStringBounder()).getHeight();
-			ug.getParam().setColor(clusterBorder);
-			ug.getParam().setStroke(new UStroke(DASH, 10, THICKNESS_BORDER));
+			final double height = calculateDimension(ug.getStringBounder()).getHeight();
+			ug = ug.apply(new UStroke(DASH, 10, THICKNESS_BORDER)).apply(new UChangeColor(clusterBorder));
 			for (Double xv : middeling(xdots)) {
-				ug.drawNewWay(xv, y, new ULine(0, height));
+				ug.drawNewWay(xv, 0, new ULine(0, height));
 			}
-			ug.getParam().setStroke(new UStroke());
 		}
-
 	}
 
 	private Collection<Double> middeling(Set<Double> xdots) {
@@ -158,7 +148,7 @@ public final class SvekResult implements IEntityImage, Moveable {
 		return dotData.getSkinParam().getBackgroundColor();
 	}
 
-	public Dimension2D getDimension(StringBounder stringBounder) {
+	public Dimension2D calculateDimension(StringBounder stringBounder) {
 		return dim.getDimension();
 	}
 
@@ -177,6 +167,10 @@ public final class SvekResult implements IEntityImage, Moveable {
 
 	public boolean isHidden() {
 		return false;
+	}
+
+	final public List<Url> getUrls() {
+		return Collections.emptyList();
 	}
 
 }

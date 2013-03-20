@@ -70,10 +70,13 @@ import net.sourceforge.plantuml.graphic.TextBlockWidth;
 import net.sourceforge.plantuml.posimo.Moveable;
 import net.sourceforge.plantuml.skin.rose.Rose;
 import net.sourceforge.plantuml.svek.image.EntityImageState;
+import net.sourceforge.plantuml.ugraphic.UChangeBackColor;
+import net.sourceforge.plantuml.ugraphic.UChangeColor;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
 import net.sourceforge.plantuml.ugraphic.ULine;
 import net.sourceforge.plantuml.ugraphic.URectangle;
 import net.sourceforge.plantuml.ugraphic.UStroke;
+import net.sourceforge.plantuml.ugraphic.UTranslate;
 
 public class Cluster implements Moveable {
 
@@ -279,17 +282,17 @@ public class Cluster implements Moveable {
 		this.yTitle = y;
 	}
 
-	public void drawU(UGraphic ug, double x, double y, HtmlColor borderColor, DotData dotData) {
+	public void drawU(UGraphic ug, HtmlColor borderColor, DotData dotData) {
 		if (hasEntryOrExitPoint()) {
 			manageEntryExitPoint(dotData, ug.getStringBounder());
 		}
 		if (skinParam.useSwimlanes()) {
-			drawSwinLinesState(ug, x, y, borderColor, dotData);
+			drawSwinLinesState(ug, borderColor, dotData);
 			return;
 		}
 		final boolean isState = dotData.getUmlDiagramType() == UmlDiagramType.STATE;
 		if (isState) {
-			drawUState(ug, x, y, borderColor, dotData);
+			drawUState(ug, borderColor, dotData);
 			return;
 		}
 		PackageStyle style = group.zgetPackageStyle();
@@ -301,7 +304,7 @@ public class Cluster implements Moveable {
 					group.getStereotype() == null ? null : group.getStereotype().getLabel());
 			final ClusterDecoration decoration = new ClusterDecoration(style, group.getUSymbol(), ztitle, zstereo,
 					stateBack, minX, minY, maxX, maxY);
-			decoration.drawU(ug, x, y, borderColor, dotData.getSkinParam().shadowing());
+			decoration.drawU(ug, borderColor, dotData.getSkinParam().shadowing());
 			return;
 		}
 		final URectangle rect = new URectangle(maxX - minX, maxY - minY);
@@ -310,11 +313,8 @@ public class Cluster implements Moveable {
 		}
 		final HtmlColor stateBack = getStateBackColor(getBackColor(), dotData.getSkinParam(),
 				group.getStereotype() == null ? null : group.getStereotype().getLabel());
-		ug.getParam().setBackcolor(stateBack);
-		ug.getParam().setColor(borderColor);
-		ug.getParam().setStroke(new UStroke(2));
-		ug.drawNewWay(x + minX, y + minY, rect);
-		ug.getParam().setStroke(new UStroke());
+		ug = ug.apply(new UChangeBackColor(stateBack)).apply(new UChangeColor(borderColor));
+		ug.apply(new UStroke(2)).drawNewWay(minX, minY, rect);
 	}
 
 	private void manageEntryExitPoint(DotData dotData, StringBounder stringBounder) {
@@ -345,14 +345,14 @@ public class Cluster implements Moveable {
 		xTitle = minX + ((maxX - minX - widthTitle) / 2);
 	}
 
-	private void drawSwinLinesState(UGraphic ug, double x, double y, HtmlColor borderColor, DotData dotData) {
+	private void drawSwinLinesState(UGraphic ug, HtmlColor borderColor, DotData dotData) {
 		if (ztitle != null) {
-			ztitle.drawU(ug, x + xTitle, y);
+			ztitle.drawUNewWayINLINED(ug.apply(new UTranslate(xTitle, 0)));
 		}
 		final ULine line = new ULine(0, maxY - minY);
-		ug.getParam().setColor(borderColor);
-		ug.drawNewWay(x + minX, y, line);
-		ug.drawNewWay(x + maxX, y, line);
+		ug = ug.apply(new UChangeColor(borderColor));
+		ug.drawNewWay(minX, 0, line);
+		ug.drawNewWay(maxX, 0, line);
 
 	}
 
@@ -360,7 +360,7 @@ public class Cluster implements Moveable {
 		return new Rose().getHtmlColor(dotData.getSkinParam(), colorParam, stereo);
 	}
 
-	private void drawUState(UGraphic ug, final double x, final double y, HtmlColor borderColor, DotData dotData) {
+	private void drawUState(UGraphic ug, HtmlColor borderColor, DotData dotData) {
 		final Dimension2D total = new Dimension2DDouble(maxX - minX, maxY - minY);
 		final double suppY;
 		if (ztitle == null) {
@@ -380,23 +380,20 @@ public class Cluster implements Moveable {
 		final double attributeHeight = attribute.calculateDimension(ug.getStringBounder()).getHeight();
 		final RoundedContainer r = new RoundedContainer(total, suppY, attributeHeight
 				+ (attributeHeight > 0 ? IEntityImage.MARGIN : 0), borderColor, stateBack, background);
-		r.drawU(ug, x + minX, y + minY, dotData.getSkinParam().shadowing());
+		r.drawU(ug.apply(new UTranslate(minX, minY)), dotData.getSkinParam().shadowing());
 
 		if (ztitle != null) {
-			ztitle.drawU(ug, x + xTitle, y + yTitle);
+			ztitle.drawUNewWayINLINED(ug.apply(new UTranslate(xTitle, yTitle)));
 		}
 
 		if (attributeHeight > 0) {
-			attribute.asTextBlock(total.getWidth()).drawU(ug, x + minX + IEntityImage.MARGIN,
-					y + minY + suppY + IEntityImage.MARGIN / 2.0);
+			attribute.asTextBlock(total.getWidth()).drawUNewWayINLINED(ug.apply(new UTranslate(minX + IEntityImage.MARGIN, minY + suppY + IEntityImage.MARGIN / 2.0)));
 		}
 
 		final Stereotype stereotype = group.getStereotype();
 		final boolean withSymbol = stereotype != null && stereotype.isWithOOSymbol();
 		if (withSymbol) {
-			ug.getParam().setColor(borderColor);
-			EntityImageState.drawSymbol(ug, x + maxX, y + maxY);
-
+			EntityImageState.drawSymbol(ug.apply(new UChangeColor(borderColor)), maxX, maxY);
 		}
 
 	}

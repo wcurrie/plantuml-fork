@@ -39,9 +39,9 @@ import java.util.Properties;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import net.sourceforge.plantuml.DiagramType;
 import net.sourceforge.plantuml.Log;
 import net.sourceforge.plantuml.PSystemBasicFactory;
+import net.sourceforge.plantuml.core.DiagramType;
 
 public class PSystemJcckitFactory extends PSystemBasicFactory {
 

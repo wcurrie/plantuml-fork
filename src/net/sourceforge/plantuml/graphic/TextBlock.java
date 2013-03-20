@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 9786 $
+ * Revision $Revision: 10266 $
  *
  */
 package net.sourceforge.plantuml.graphic;
@@ -40,8 +40,8 @@ import net.sourceforge.plantuml.Url;
 
 public interface TextBlock extends UDrawable {
 
-	Dimension2D calculateDimension(StringBounder stringBounder);
+	public abstract Dimension2D calculateDimension(StringBounder stringBounder);
 	
-	List<Url> getUrls();
+	public abstract List<Url> getUrls();
 
 }

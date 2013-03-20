@@ -37,10 +37,10 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import net.sourceforge.plantuml.PSystem;
 import net.sourceforge.plantuml.command.regex.RegexConcat;
+import net.sourceforge.plantuml.core.Diagram;
 
-public abstract class CommandMultilines2<S extends PSystem> implements Command {
+public abstract class CommandMultilines2<S extends Diagram> implements Command {
 
 	private final S system;
 

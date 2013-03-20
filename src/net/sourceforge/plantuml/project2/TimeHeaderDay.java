@@ -48,9 +48,12 @@ import net.sourceforge.plantuml.graphic.HtmlColorUtils;
 import net.sourceforge.plantuml.graphic.StringBounder;
 import net.sourceforge.plantuml.graphic.TextBlock;
 import net.sourceforge.plantuml.graphic.TextBlockUtils;
+import net.sourceforge.plantuml.ugraphic.UChangeBackColor;
+import net.sourceforge.plantuml.ugraphic.UChangeColor;
 import net.sourceforge.plantuml.ugraphic.UFont;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
 import net.sourceforge.plantuml.ugraphic.URectangle;
+import net.sourceforge.plantuml.ugraphic.UTranslate;
 
 public class TimeHeaderDay implements TextBlock {
 
@@ -69,7 +72,7 @@ public class TimeHeaderDay implements TextBlock {
 		this.dayWidth = dayWidth;
 	}
 
-	public void drawU(UGraphic ug, double x, double y) {
+	public void drawUNewWayINLINED(UGraphic ug) {
 		int n = 0;
 		for (Day d = start; d.compareTo(end) <= 0; d = (Day) timeline.next(d)) {
 			final String text = "" + d.getNumDay();
@@ -78,13 +81,12 @@ public class TimeHeaderDay implements TextBlock {
 			final Dimension2D dimText = b.calculateDimension(ug.getStringBounder());
 			final double diffX = dayWidth - dimText.getWidth();
 			final double diffY = getHeight() - dimText.getHeight();
-			ug.getParam().setColor(HtmlColorUtils.BLACK);
-			ug.getParam().setBackcolor(HtmlColorUtils.WHITE);
-			ug.drawNewWay(x + n * dayWidth, y, new URectangle(dayWidth, getHeight()));
-			b.drawU(ug, x + n * dayWidth + diffX / 2, y + diffY / 2);
+			ug = ug.apply(new UChangeColor(HtmlColorUtils.BLACK));
+			ug = ug.apply(new UChangeBackColor(HtmlColorUtils.WHITE));
+			ug.drawNewWay(n * dayWidth, 0, new URectangle(dayWidth, getHeight()));
+			b.drawUNewWayINLINED(ug.apply(new UTranslate((n * dayWidth + diffX / 2), (diffY / 2))));
 			n++;
 		}
-
 	}
 
 	private double getHeight() {

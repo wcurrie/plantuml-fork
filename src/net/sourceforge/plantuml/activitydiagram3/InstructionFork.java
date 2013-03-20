@@ -38,6 +38,7 @@ import java.util.List;
 
 import net.sourceforge.plantuml.activitydiagram3.ftile.Ftile;
 import net.sourceforge.plantuml.activitydiagram3.ftile.FtileFactory;
+import net.sourceforge.plantuml.cucadiagram.Display;
 
 public class InstructionFork implements Instruction {
 
@@ -79,6 +80,10 @@ public class InstructionFork implements Instruction {
 
 	public LinkRendering getInLinkRendering() {
 		return null;
+	}
+
+	public void addNote(Display note) {
+		throw new UnsupportedOperationException();
 	}
 
 }

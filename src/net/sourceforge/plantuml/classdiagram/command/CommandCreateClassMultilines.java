@@ -54,10 +54,12 @@ import net.sourceforge.plantuml.cucadiagram.ILeaf;
 import net.sourceforge.plantuml.cucadiagram.LeafType;
 import net.sourceforge.plantuml.cucadiagram.Link;
 import net.sourceforge.plantuml.cucadiagram.LinkDecor;
+import net.sourceforge.plantuml.cucadiagram.LinkStyle;
 import net.sourceforge.plantuml.cucadiagram.LinkType;
 import net.sourceforge.plantuml.cucadiagram.Stereotype;
 import net.sourceforge.plantuml.graphic.HtmlColorUtils;
 import net.sourceforge.plantuml.skin.VisibilityModifier;
+import net.sourceforge.plantuml.ugraphic.UStroke;
 
 public class CommandCreateClassMultilines extends CommandMultilines2<ClassDiagram> {
 
@@ -94,6 +96,8 @@ public class CommandCreateClassMultilines extends CommandMultilines2<ClassDiagra
 				new RegexLeaf("URL", "(" + UrlBuilder.getRegexp() + ")?"), //
 				new RegexLeaf("\\s*"), //
 				new RegexLeaf("COLOR", "(#\\w+[-\\\\|/]?\\w+)?"), //
+				new RegexLeaf("\\s*"), //
+				new RegexLeaf("LINECOLOR", "(?:##(?:\\[(dotted|dashed|bold)\\])?(\\w+)?)?"), //
 				new RegexLeaf("EXTENDS",
 						"(\\s+(extends|implements)\\s+((?:\\.|::)?[\\p{L}0-9_]+(?:(?:\\.|::)[\\p{L}0-9_]+)*))?"), //
 				new RegexLeaf("\\s*\\{\\s*$"));
@@ -184,11 +188,35 @@ public class CommandCreateClassMultilines extends CommandMultilines2<ClassDiagra
 		}
 
 		result.setSpecificBackcolor(HtmlColorUtils.getColorIfValid(arg.get("COLOR", 0)));
+		result.setSpecificLineColor(HtmlColorUtils.getColorIfValid(arg.get("LINECOLOR", 1)));
+		applyStroke(result, arg.get("LINECOLOR", 0));
 
 		if (generic != null) {
 			result.setGeneric(generic);
 		}
 		return result;
+	}
+
+	public UStroke getStroke(LinkStyle style) {
+		if (style == LinkStyle.DASHED) {
+			return new UStroke(6, 6, 1);
+		}
+		if (style == LinkStyle.DOTTED) {
+			return new UStroke(1, 3, 1);
+		}
+		if (style == LinkStyle.BOLD) {
+			return new UStroke(2.5);
+		}
+		return new UStroke();
+	}
+
+	private void applyStroke(ILeaf entity, String s) {
+		if (s == null) {
+			return;
+		}
+		final LinkStyle style = LinkStyle.valueOf(s.toUpperCase());
+		entity.setSpecificLineStroke(getStroke(style));
+
 	}
 
 }

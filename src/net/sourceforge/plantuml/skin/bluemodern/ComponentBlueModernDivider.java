@@ -44,6 +44,8 @@ import net.sourceforge.plantuml.graphic.StringBounder;
 import net.sourceforge.plantuml.graphic.TextBlock;
 import net.sourceforge.plantuml.skin.AbstractTextualComponent;
 import net.sourceforge.plantuml.skin.Area;
+import net.sourceforge.plantuml.ugraphic.UChangeBackColor;
+import net.sourceforge.plantuml.ugraphic.UChangeColor;
 import net.sourceforge.plantuml.ugraphic.UFont;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
 import net.sourceforge.plantuml.ugraphic.ULine;
@@ -77,10 +79,9 @@ public class ComponentBlueModernDivider extends AbstractTextualComponent {
 		final double xpos = (dimensionToUse.getWidth() - textWidth - deltaX) / 2;
 		final double ypos = (dimensionToUse.getHeight() - textHeight) / 2;
 
-		ug.getParam().setColor(HtmlColorUtils.BLACK);
-		ug.getParam().setBackcolor(HtmlColorUtils.BLACK);
-
-		ug.getParam().setStroke(new UStroke(2));
+		ug = ug.apply(new UChangeColor(HtmlColorUtils.BLACK));
+		ug = ug.apply(new UChangeBackColor(HtmlColorUtils.BLACK));
+		ug = ug.apply(new UStroke(2));
 
 		ug.drawNewWay(0, dimensionToUse.getHeight() / 2 - 1, new ULine(dimensionToUse.getWidth(), 0));
 		ug.drawNewWay(0, dimensionToUse.getHeight() / 2 + 2, new ULine(dimensionToUse.getWidth(), 0));
@@ -88,12 +89,12 @@ public class ComponentBlueModernDivider extends AbstractTextualComponent {
 		final FillRoundShape shape = new FillRoundShape(textWidth + deltaX, textHeight, background1, background2, 5);
 		shape.drawU(ug.apply(new UTranslate(xpos, ypos)));
 
-		ug.getParam().setColor(borderColor);
-		ug.getParam().setBackcolor(null);
+		ug = ug.apply(new UChangeColor(borderColor));
+		ug = ug.apply(new UChangeBackColor(null));
 		ug.drawNewWay(xpos, ypos, new URectangle(textWidth + deltaX, textHeight, 5, 5));
-		ug.getParam().setStroke(new UStroke());
+		ug = ug.apply(new UStroke());
 
-		textBlock.drawU(ug, xpos + deltaX, ypos + getMarginY());
+		textBlock.drawUNewWayINLINED(ug.apply(new UTranslate((xpos + deltaX), (ypos + getMarginY()))));
 	}
 
 	@Override

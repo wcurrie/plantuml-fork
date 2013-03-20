@@ -49,10 +49,13 @@ import net.sourceforge.plantuml.graphic.StringBounder;
 import net.sourceforge.plantuml.graphic.TextBlock;
 import net.sourceforge.plantuml.graphic.TextBlockUtils;
 import net.sourceforge.plantuml.ugraphic.Shadowable;
+import net.sourceforge.plantuml.ugraphic.UChangeBackColor;
+import net.sourceforge.plantuml.ugraphic.UChangeColor;
 import net.sourceforge.plantuml.ugraphic.UFont;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
 import net.sourceforge.plantuml.ugraphic.URectangle;
 import net.sourceforge.plantuml.ugraphic.UStroke;
+import net.sourceforge.plantuml.ugraphic.UTranslate;
 
 public class ActivityBox implements TextBlock {
 
@@ -85,21 +88,18 @@ public class ActivityBox implements TextBlock {
 		return label;
 	}
 
-	public void drawU(UGraphic ug, double x, double y) {
+	public void drawUNewWayINLINED(UGraphic ug) {
 		final Dimension2D dimTotal = calculateDimension(ug.getStringBounder());
 		// final Dimension2D dimDesc = tb.calculateDimension(ug.getStringBounder());
-
+		
 		final double widthTotal = dimTotal.getWidth();
 		final double heightTotal = dimTotal.getHeight();
 		final Shadowable rect = new URectangle(widthTotal, heightTotal, CORNER, CORNER);
-		ug.getParam().setColor(HtmlColorUtils.getColorIfValid("#A80036"));
-		ug.getParam().setBackcolor(HtmlColorUtils.getColorIfValid("#FEFECE"));
-		ug.getParam().setStroke(new UStroke(1.5));
-		ug.drawNewWay(x, y, rect);
-		ug.getParam().setStroke(new UStroke(1));
-
-		tb.drawU(ug, x + MARGIN, y + MARGIN);
-
+		ug = ug.apply(new UChangeColor(HtmlColorUtils.getColorIfValid("#A80036")));
+		ug = ug.apply(new UChangeBackColor(HtmlColorUtils.getColorIfValid("#FEFECE")));
+		ug.apply(new UStroke(1.5)).drawOldWay(rect);
+		
+		tb.drawUNewWayINLINED(ug.apply(new UTranslate(MARGIN, MARGIN)));
 	}
 
 	public Dimension2D calculateDimension(StringBounder stringBounder) {

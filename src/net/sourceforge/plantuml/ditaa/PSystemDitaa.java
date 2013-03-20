@@ -39,11 +39,10 @@ import java.io.UnsupportedEncodingException;
 import javax.imageio.ImageIO;
 
 import net.sourceforge.plantuml.AbstractPSystem;
-import net.sourceforge.plantuml.CMapData;
 import net.sourceforge.plantuml.FileFormat;
 import net.sourceforge.plantuml.FileFormatOption;
-import net.sourceforge.plantuml.api.ImageData;
 import net.sourceforge.plantuml.api.ImageDataSimple;
+import net.sourceforge.plantuml.core.ImageData;
 
 import org.stathissideris.ascii2image.core.ConversionOptions;
 import org.stathissideris.ascii2image.core.ProcessingOptions;

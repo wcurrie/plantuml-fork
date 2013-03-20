@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 10041 $
+ * Revision $Revision: 10205 $
  *
  */
 package net.sourceforge.plantuml.skin.rose;
@@ -39,6 +39,8 @@ import net.sourceforge.plantuml.graphic.HtmlColor;
 import net.sourceforge.plantuml.graphic.StringBounder;
 import net.sourceforge.plantuml.skin.AbstractComponent;
 import net.sourceforge.plantuml.skin.Area;
+import net.sourceforge.plantuml.ugraphic.UChangeBackColor;
+import net.sourceforge.plantuml.ugraphic.UChangeColor;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
 import net.sourceforge.plantuml.ugraphic.ULine;
 import net.sourceforge.plantuml.ugraphic.URectangle;
@@ -69,16 +71,13 @@ public class ComponentRoseActiveLine extends AbstractComponent {
 		if (withShadow) {
 			rect.setDeltaShadow(1);
 		}
+		ug = ug.apply(new UChangeColor(foregroundColor));
 		if (closeUp && closeDown) {
-			ug.getParam().setBackcolor(lifeLineBackground);
-			ug.getParam().setColor(foregroundColor);
-			ug.drawNewWay(x, 0, rect);
+			ug.apply(new UChangeBackColor(lifeLineBackground)).drawNewWay(x, 0, rect);
 			return;
 		}
-		ug.getParam().setBackcolor(lifeLineBackground);
-		ug.getParam().setColor(lifeLineBackground);
-		ug.drawNewWay(x, 0, rect);
-		ug.getParam().setColor(foregroundColor);
+		ug.apply(new UChangeBackColor(lifeLineBackground)).apply(new UChangeColor(lifeLineBackground))
+				.drawNewWay(x, 0, rect);
 
 		final ULine vline = new ULine(0, dimensionToUse.getHeight());
 		ug.drawNewWay(x, 0, vline);

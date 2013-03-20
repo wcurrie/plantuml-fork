@@ -42,16 +42,20 @@ import net.sourceforge.plantuml.graphic.HtmlColor;
 import net.sourceforge.plantuml.graphic.StringBounder;
 import net.sourceforge.plantuml.skin.AbstractTextualComponent;
 import net.sourceforge.plantuml.skin.Area;
+import net.sourceforge.plantuml.ugraphic.UChangeBackColor;
+import net.sourceforge.plantuml.ugraphic.UChangeColor;
 import net.sourceforge.plantuml.ugraphic.UFont;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
 import net.sourceforge.plantuml.ugraphic.URectangle;
+import net.sourceforge.plantuml.ugraphic.UTranslate;
 
 public class ComponentRoseEnglober extends AbstractTextualComponent {
-	
+
 	private final HtmlColor borderColor;
 	private final HtmlColor backColor;
 
-	public ComponentRoseEnglober(HtmlColor borderColor, HtmlColor backColor, Display strings, HtmlColor fontColor, UFont font, SpriteContainer spriteContainer) {
+	public ComponentRoseEnglober(HtmlColor borderColor, HtmlColor backColor, Display strings, HtmlColor fontColor,
+			UFont font, SpriteContainer spriteContainer) {
 		super(strings, fontColor, font, HorizontalAlignement.CENTER, 3, 3, 1, spriteContainer);
 		this.borderColor = borderColor;
 		this.backColor = backColor;
@@ -60,11 +64,10 @@ public class ComponentRoseEnglober extends AbstractTextualComponent {
 	@Override
 	protected void drawBackgroundInternalU(UGraphic ug, Area area) {
 		final Dimension2D dimensionToUse = area.getDimensionToUse();
-		ug.getParam().setColor(borderColor);
-		ug.getParam().setBackcolor(backColor);
+		ug = ug.apply(new UChangeBackColor(backColor)).apply(new UChangeColor(borderColor));
 		ug.drawOldWay(new URectangle(dimensionToUse.getWidth(), dimensionToUse.getHeight()));
 		final double xpos = (dimensionToUse.getWidth() - getPureTextWidth(ug.getStringBounder())) / 2;
-		getTextBlock().drawU(ug, xpos, 0);
+		getTextBlock().drawUNewWayINLINED(ug.apply(new UTranslate(xpos, 0)));
 	}
 
 	@Override

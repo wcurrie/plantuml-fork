@@ -47,6 +47,7 @@ import net.sourceforge.plantuml.graphic.TextBlock;
 import net.sourceforge.plantuml.graphic.TextBlockUtils;
 import net.sourceforge.plantuml.skin.rose.Rose;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
+import net.sourceforge.plantuml.ugraphic.UTranslate;
 
 public class LabelImage {
 
@@ -79,6 +80,6 @@ public class LabelImage {
 		// ug.getParam().setColor(rose.getHtmlColor(param,
 		// ColorParam.classBorder).getColor());
 		// ug.draw(x, y, new URectangle(dim.getWidth(), dim.getHeight()));
-		name.drawU(ug, x, y);
+		name.drawUNewWayINLINED(ug.apply(new UTranslate(x, y)));
 	}
 }

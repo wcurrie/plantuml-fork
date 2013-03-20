@@ -54,8 +54,8 @@ import net.sourceforge.plantuml.Scale;
 import net.sourceforge.plantuml.StringUtils;
 import net.sourceforge.plantuml.UmlDiagramType;
 import net.sourceforge.plantuml.Url;
-import net.sourceforge.plantuml.api.ImageData;
 import net.sourceforge.plantuml.api.ImageDataComplex;
+import net.sourceforge.plantuml.core.ImageData;
 import net.sourceforge.plantuml.cucadiagram.CucaDiagram;
 import net.sourceforge.plantuml.cucadiagram.Display;
 import net.sourceforge.plantuml.cucadiagram.IEntity;
@@ -74,6 +74,7 @@ import net.sourceforge.plantuml.graphic.StringBounderUtils;
 import net.sourceforge.plantuml.graphic.TextBlock;
 import net.sourceforge.plantuml.graphic.TextBlockUtils;
 import net.sourceforge.plantuml.png.PngIO;
+import net.sourceforge.plantuml.ugraphic.UChangeBackColor;
 import net.sourceforge.plantuml.ugraphic.UFont;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
 import net.sourceforge.plantuml.ugraphic.URectangle;
@@ -128,7 +129,7 @@ public final class CucaDiagramFileMakerSvek {
 
 		// final Dimension2D dim =
 		// Dimension2DDouble.delta(result.getDimension(stringBounder), 10);
-		final Dimension2D dim = result.getDimension(stringBounder);
+		final Dimension2D dim = result.calculateDimension(stringBounder);
 
 		final FileFormat fileFormat = fileFormatOption.getFileFormat();
 		if (fileFormat == FileFormat.PNG) {
@@ -257,7 +258,7 @@ public final class CucaDiagramFileMakerSvek {
 		}
 		final UGraphicG2d ug = (UGraphicG2d) fileFormatOption.createUGraphic(diagram.getSkinParam().getColorMapper(),
 				dpiFactor, dim, result.getBackcolor(), diagram.isRotation());
-		result.drawU(ug, 0, 0);
+		result.drawUNewWayINLINED(ug);
 
 		PngIO.write(ug.getBufferedImage(), os, diagram.getMetadata(), diagram.getDpi(fileFormatOption));
 
@@ -296,11 +297,10 @@ public final class CucaDiagramFileMakerSvek {
 		((UGraphicG2d) ug).setBufferedImage(builder.getBufferedImage());
 		final BufferedImage im = ((UGraphicG2d) ug).getBufferedImage();
 		if (result.getBackcolor() instanceof HtmlColorGradient) {
-			ug.getParam().setBackcolor(result.getBackcolor());
-			ug.drawOldWay(new URectangle(im.getWidth(), im.getHeight()));
-			ug.getParam().setBackcolor(null);
+			ug.apply(new UChangeBackColor(result.getBackcolor())).drawOldWay(
+					new URectangle(im.getWidth(), im.getHeight()));
 		}
-		result.drawU(ug, 0, 0);
+		result.drawUNewWayINLINED(ug);
 
 		PngIO.write(im, os, diagram.getMetadata(), diagram.getDpi(fileFormatOption));
 	}
@@ -323,7 +323,7 @@ public final class CucaDiagramFileMakerSvek {
 		}
 		// ug.getParam().setSprites(diagram.getSprites());
 
-		result.drawU(ug, 0, 0);
+		result.drawUNewWayINLINED(ug);
 
 		ug.createXml(os);
 
@@ -335,7 +335,7 @@ public final class CucaDiagramFileMakerSvek {
 		final UGraphicEps ug = new UGraphicEps(diagram.getSkinParam().getColorMapper(), EpsStrategy.getDefault2());
 		// ug.getParam().setSprites(diagram.getSprites());
 
-		result.drawU(ug, 0, 0);
+		result.drawUNewWayINLINED(ug);
 		os.write(ug.getEPSCode().getBytes());
 
 	}

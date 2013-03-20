@@ -32,7 +32,6 @@
 package net.sourceforge.plantuml.ugraphic.eps;
 
 import java.awt.Graphics2D;
-import java.awt.font.TextLayout;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -45,14 +44,13 @@ import net.sourceforge.plantuml.eps.EpsStrategy;
 import net.sourceforge.plantuml.graphic.StringBounder;
 import net.sourceforge.plantuml.graphic.StringBounderUtils;
 import net.sourceforge.plantuml.graphic.UDrawable;
-import net.sourceforge.plantuml.graphic.UnusedSpace;
 import net.sourceforge.plantuml.posimo.DotPath;
 import net.sourceforge.plantuml.ugraphic.AbstractCommonUGraphic;
 import net.sourceforge.plantuml.ugraphic.AbstractUGraphic;
 import net.sourceforge.plantuml.ugraphic.ClipContainer;
 import net.sourceforge.plantuml.ugraphic.ColorMapper;
+import net.sourceforge.plantuml.ugraphic.UCenteredCharacter;
 import net.sourceforge.plantuml.ugraphic.UEllipse;
-import net.sourceforge.plantuml.ugraphic.UFont;
 import net.sourceforge.plantuml.ugraphic.UImage;
 import net.sourceforge.plantuml.ugraphic.ULine;
 import net.sourceforge.plantuml.ugraphic.UPath;
@@ -65,7 +63,7 @@ public class UGraphicEps extends AbstractUGraphic<EpsGraphics> implements ClipCo
 	final static Graphics2D imDummy = new BufferedImage(10, 10, BufferedImage.TYPE_INT_RGB).createGraphics();
 
 	private final StringBounder stringBounder;
-	
+
 	private final EpsStrategy strategyTOBEREMOVED;
 
 	@Override
@@ -80,14 +78,13 @@ public class UGraphicEps extends AbstractUGraphic<EpsGraphics> implements ClipCo
 		register(strategyTOBEREMOVED);
 	}
 
-
 	public UGraphicEps(ColorMapper colorMapper, EpsStrategy strategy) {
 		this(colorMapper, strategy, strategy.creatEpsGraphics());
 	}
 
 	private UGraphicEps(ColorMapper colorMapper, EpsStrategy strategy, EpsGraphics eps) {
 		super(colorMapper, eps);
-		this.strategyTOBEREMOVED = strategy; 
+		this.strategyTOBEREMOVED = strategy;
 		this.stringBounder = StringBounderUtils.asStringBounder(imDummy);
 		register(strategy);
 	}
@@ -101,6 +98,7 @@ public class UGraphicEps extends AbstractUGraphic<EpsGraphics> implements ClipCo
 		registerDriver(UImage.class, new DriverImageEps());
 		registerDriver(UPath.class, new DriverPathEps());
 		registerDriver(DotPath.class, new DriverDotPathEps());
+		registerDriver(UCenteredCharacter.class, new DriverCenteredCharacterEps());
 	}
 
 	public void close() {
@@ -123,23 +121,10 @@ public class UGraphicEps extends AbstractUGraphic<EpsGraphics> implements ClipCo
 		this.getGraphicObject().drawEps(eps, x, y);
 	}
 
-	public void centerChar(double x, double y, char c, UFont font) {
-		final UnusedSpace unusedSpace = UnusedSpace.getUnusedSpace(font, c);
-
-		final double xpos = x - unusedSpace.getCenterX() - 0.5;
-		final double ypos = y - unusedSpace.getCenterY() - 0.5;
-
-		final TextLayout t = new TextLayout("" + c, font.getFont(), imDummy.getFontRenderContext());
-		getGraphicObject().setStrokeColor(getColorMapper().getMappedColor(getParam().getColor()));
-		DriverTextEps.drawPathIterator(getGraphicObject(), xpos + getTranslateXTOBEREMOVED(), ypos + getTranslateYTOBEREMOVED(), t
-				.getOutline(null).getPathIterator(null));
-
-	}
-
 	static public String getEpsString(ColorMapper colorMapper, EpsStrategy epsStrategy, UDrawable udrawable)
 			throws IOException {
 		final UGraphicEps ug = new UGraphicEps(colorMapper, epsStrategy);
-		udrawable.drawU(ug, 0, 0);
+		udrawable.drawUNewWayINLINED(ug);
 		return ug.getEPSCode();
 	}
 
@@ -162,5 +147,4 @@ public class UGraphicEps extends AbstractUGraphic<EpsGraphics> implements ClipCo
 		os.write(getEPSCode().getBytes());
 	}
 
-	
 }

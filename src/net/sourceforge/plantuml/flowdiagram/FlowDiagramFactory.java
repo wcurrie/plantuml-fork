@@ -33,8 +33,8 @@
  */
 package net.sourceforge.plantuml.flowdiagram;
 
-import net.sourceforge.plantuml.DiagramType;
 import net.sourceforge.plantuml.command.PSystemCommandFactory;
+import net.sourceforge.plantuml.core.DiagramType;
 
 public class FlowDiagramFactory extends PSystemCommandFactory {
 

@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 10041 $
+ * Revision $Revision: 10269 $
  *
  */
 package net.sourceforge.plantuml.graphic;
@@ -49,6 +49,9 @@ class TileImage implements TextBlock {
 	private final int vspace;
 
 	public TileImage(BufferedImage image, ImgValign valign, int vspace) {
+		if (image == null) {
+			throw new IllegalArgumentException();
+		}
 		this.image = image;
 		this.vspace = vspace;
 	}
@@ -57,8 +60,8 @@ class TileImage implements TextBlock {
 		return new Dimension2DDouble(image.getWidth(), image.getHeight() + 2 * vspace);
 	}
 
-	public void drawU(UGraphic ug, double x, double y) {
-		ug.drawNewWay(x, y + vspace, new UImage(image));
+	public void drawUNewWayINLINED(UGraphic ug) {
+		ug.drawNewWay(0, vspace, new UImage(image));
 	}
 
 	public List<Url> getUrls() {

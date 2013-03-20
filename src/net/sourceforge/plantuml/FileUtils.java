@@ -51,7 +51,7 @@ public class FileUtils {
 		counter = new AtomicInteger(0);
 	}
 
-	public static File getTmpDir() {
+	private static File getTmpDir() {
 		final File tmpDir = new File(System.getProperty("java.io.tmpdir"));
 		if (tmpDir.exists() == false || tmpDir.isDirectory() == false) {
 			throw new IllegalStateException();
@@ -59,7 +59,7 @@ public class FileUtils {
 		return tmpDir;
 	}
 
-	public static void delete(File f) {
+	private static void delete(File f) {
 		if (f == null) {
 			return;
 		}

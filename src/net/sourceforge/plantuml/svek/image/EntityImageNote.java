@@ -64,6 +64,8 @@ import net.sourceforge.plantuml.svek.AbstractEntityImage;
 import net.sourceforge.plantuml.svek.Line;
 import net.sourceforge.plantuml.svek.Shape;
 import net.sourceforge.plantuml.svek.ShapeType;
+import net.sourceforge.plantuml.ugraphic.UChangeBackColor;
+import net.sourceforge.plantuml.ugraphic.UChangeColor;
 import net.sourceforge.plantuml.ugraphic.UFont;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
 import net.sourceforge.plantuml.ugraphic.ULine;
@@ -142,14 +144,8 @@ public class EntityImageNote extends AbstractEntityImage {
 		return getTextHeight(stringBounder);
 	}
 
-	// For cache
-	private Dimension2D size;
-
 	private Dimension2D getSize(StringBounder stringBounder, final TextBlock textBlock) {
-		if (size == null) {
-			size = textBlock.calculateDimension(stringBounder);
-		}
-		return size;
+		return textBlock.calculateDimension(stringBounder);
 	}
 
 	final protected double getTextHeight(StringBounder stringBounder) {
@@ -172,15 +168,13 @@ public class EntityImageNote extends AbstractEntityImage {
 		return getPureTextWidth(stringBounder) + marginX1 + marginX2;
 	}
 
-	@Override
-	public Dimension2D getDimension(StringBounder stringBounder) {
+	public Dimension2D calculateDimension(StringBounder stringBounder) {
 		final double height = getPreferredHeight(stringBounder);
 		final double width = getPreferredWidth(stringBounder);
 		return new Dimension2DDouble(width, height);
 	}
 
-	public void drawU(UGraphic ug, double xTheoricalPosition, double yTheoricalPosition) {
-		ug = ug.apply(new UTranslate(xTheoricalPosition, yTheoricalPosition));
+	final public void drawUNewWayINLINED(UGraphic ug) {
 		if (url.size() > 0 && url.get(0).isMember() == false) {
 			ug.startUrl(url.get(0));
 		}
@@ -201,18 +195,12 @@ public class EntityImageNote extends AbstractEntityImage {
 				p2 = path.getEndPoint();
 			}
 			final Direction strategy = getOpaleStrategy(textWidth, textHeight, p1);
-			drawOpale(ug, xTheoricalPosition, yTheoricalPosition, path, strategy);
+			drawOpale(ug, 0, 0, path, strategy);
 		}
 		if (url.size() > 0 && url.get(0).isMember() == false) {
 			ug.closeAction();
 		}
-
 	}
-
-	// private Point2D translateShape(Point2D pt) {
-	// return new Point2D.Double(pt.getX() - shape.getMinX(), pt.getY() -
-	// shape.getMinY());
-	// }
 
 	private void drawOpale(UGraphic ug, double xTheoricalPosition, double yTheoricalPosition, DotPath path,
 			Direction strategy) {
@@ -222,8 +210,7 @@ public class EntityImageNote extends AbstractEntityImage {
 		if (withShadow) {
 			polygon.setDeltaShadow(4);
 		}
-		ug.getParam().setColor(borderColor);
-		ug.getParam().setBackcolor(noteBackgroundColor);
+		ug = ug.apply(new UChangeBackColor(noteBackgroundColor)).apply(new UChangeColor(borderColor));
 		ug.drawOldWay(polygon);
 
 		final Point2D pp1 = path.getStartPoint();
@@ -242,16 +229,14 @@ public class EntityImageNote extends AbstractEntityImage {
 			throw new IllegalArgumentException();
 		}
 
-//		if (withShadow && polygonOpale instanceof UPolygon) {
-//			((UPolygon) polygonOpale).setDeltaShadow(4);
-//		}
-		ug.getParam().setColor(borderColor);
-		ug.getParam().setBackcolor(noteBackgroundColor);
+		// if (withShadow && polygonOpale instanceof UPolygon) {
+		// ((UPolygon) polygonOpale).setDeltaShadow(4);
+		// }
 		ug.drawOldWay(polygonOpale);
 
 		ug.drawNewWay(getTextWidth(stringBounder) - cornersize, 0, new ULine(0, cornersize));
 		ug.drawNewWay(getTextWidth(stringBounder), cornersize, new ULine(-cornersize, 0));
-		getTextBlock().drawU(ug, marginX1, marginY);
+		getTextBlock().drawUNewWayINLINED(ug.apply(new UTranslate(marginX1, marginY)));
 	}
 
 	private void drawNormal(UGraphic ug) {
@@ -260,13 +245,12 @@ public class EntityImageNote extends AbstractEntityImage {
 		if (withShadow) {
 			polygon.setDeltaShadow(4);
 		}
-		ug.getParam().setColor(borderColor);
-		ug.getParam().setBackcolor(noteBackgroundColor);
+		ug = ug.apply(new UChangeBackColor(noteBackgroundColor)).apply(new UChangeColor(borderColor));
 		ug.drawOldWay(polygon);
 
 		ug.drawNewWay(getTextWidth(stringBounder) - cornersize, 0, new ULine(0, cornersize));
 		ug.drawNewWay(getTextWidth(stringBounder), cornersize, new ULine(-cornersize, 0));
-		getTextBlock().drawU(ug, marginX1, marginY);
+		getTextBlock().drawUNewWayINLINED(ug.apply(new UTranslate(marginX1, marginY)));
 
 	}
 
@@ -302,7 +286,8 @@ public class EntityImageNote extends AbstractEntityImage {
 		return polygon;
 	}
 
-	private UPolygon getPolygonRight(final StringBounder stringBounder, final Point2D pp1, final Point2D pp2, DotPath path) {
+	private UPolygon getPolygonRight(final StringBounder stringBounder, final Point2D pp1, final Point2D pp2,
+			DotPath path) {
 		final UPolygon polygon = new UPolygon();
 		polygon.addPoint(0, 0);
 		polygon.addPoint(0, getTextHeight(stringBounder));
@@ -338,7 +323,8 @@ public class EntityImageNote extends AbstractEntityImage {
 		return polygon;
 	}
 
-	private UPolygon getPolygonDown(final StringBounder stringBounder, final Point2D pp1, final Point2D pp2, DotPath path) {
+	private UPolygon getPolygonDown(final StringBounder stringBounder, final Point2D pp1, final Point2D pp2,
+			DotPath path) {
 		final UPolygon polygon = new UPolygon();
 		polygon.addPoint(0, 0);
 		polygon.addPoint(0, getTextHeight(stringBounder));

@@ -46,6 +46,7 @@ import net.sourceforge.plantuml.graphic.TextBlock;
 import net.sourceforge.plantuml.graphic.TextBlockUtils;
 import net.sourceforge.plantuml.ugraphic.UFont;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
+import net.sourceforge.plantuml.ugraphic.UTranslate;
 
 public class ElementText implements Element {
 
@@ -69,7 +70,7 @@ public class ElementText implements Element {
 			return;
 		}
 		if (show) {
-			block.drawU(ug, x, y);
+			block.drawUNewWayINLINED(ug.apply(new UTranslate(x, y)));
 		}
 	}
 

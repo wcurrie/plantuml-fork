@@ -44,11 +44,13 @@ import net.sourceforge.plantuml.activitydiagram3.ftile.Diamond;
 import net.sourceforge.plantuml.activitydiagram3.ftile.Ftile;
 import net.sourceforge.plantuml.graphic.HtmlColor;
 import net.sourceforge.plantuml.graphic.StringBounder;
+import net.sourceforge.plantuml.ugraphic.UChangeBackColor;
+import net.sourceforge.plantuml.ugraphic.UChangeColor;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
 import net.sourceforge.plantuml.ugraphic.UStroke;
 
 class FtileDiamond implements Ftile {
-	
+
 	private final HtmlColor color;
 	private final HtmlColor backColor;
 
@@ -57,12 +59,9 @@ class FtileDiamond implements Ftile {
 		this.backColor = backColor;
 	}
 
-	public void drawU(UGraphic ug, double x, double y) {
-		ug.getParam().setColor(color);
-		ug.getParam().setBackcolor(backColor);
-		ug.getParam().setStroke(new UStroke(1.5));
-		ug.drawNewWay(x, y, Diamond.asPolygon());
-		ug.getParam().setStroke(new UStroke());
+	public void drawUNewWayINLINED(UGraphic ug) {
+		ug.apply(new UChangeColor(color)).apply(new UChangeBackColor(backColor)).apply(new UStroke(1.5))
+				.drawOldWay(Diamond.asPolygon());
 	}
 
 	public Dimension2D calculateDimension(StringBounder stringBounder) {
@@ -72,7 +71,7 @@ class FtileDiamond implements Ftile {
 	public List<Url> getUrls() {
 		return Collections.emptyList();
 	}
-	
+
 	public boolean isKilled() {
 		return false;
 	}
@@ -80,6 +79,5 @@ class FtileDiamond implements Ftile {
 	public LinkRendering getInLinkRendering() {
 		return null;
 	}
-
 
 }

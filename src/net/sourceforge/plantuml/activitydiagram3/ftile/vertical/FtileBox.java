@@ -50,10 +50,13 @@ import net.sourceforge.plantuml.graphic.StringBounder;
 import net.sourceforge.plantuml.graphic.TextBlock;
 import net.sourceforge.plantuml.graphic.TextBlockUtils;
 import net.sourceforge.plantuml.ugraphic.Shadowable;
+import net.sourceforge.plantuml.ugraphic.UChangeBackColor;
+import net.sourceforge.plantuml.ugraphic.UChangeColor;
 import net.sourceforge.plantuml.ugraphic.UFont;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
 import net.sourceforge.plantuml.ugraphic.URectangle;
 import net.sourceforge.plantuml.ugraphic.UStroke;
+import net.sourceforge.plantuml.ugraphic.UTranslate;
 
 class FtileBox implements Ftile {
 
@@ -75,25 +78,21 @@ class FtileBox implements Ftile {
 		tb = TextBlockUtils.create(label, fc, HorizontalAlignement.LEFT, new SpriteContainerEmpty());
 	}
 
-	public void drawU(UGraphic ug, double x, double y) {
+	public void drawUNewWayINLINED(UGraphic ug) {
 		final Dimension2D dimTotal = calculateDimension(ug.getStringBounder());
 		// final Dimension2D dimDesc =
 		// tb.calculateDimension(ug.getStringBounder());
-
+		
 		final double widthTotal = dimTotal.getWidth();
 		final double heightTotal = dimTotal.getHeight();
 		final Shadowable rect = new URectangle(widthTotal, heightTotal, CORNER, CORNER);
 		if (SHADOWING) {
 			rect.setDeltaShadow(3);
 		}
-		ug.getParam().setColor(color);
-		ug.getParam().setBackcolor(backColor);
-		ug.getParam().setStroke(new UStroke(1.5));
-		ug.drawNewWay(x, y, rect);
-		ug.getParam().setStroke(new UStroke(1));
-
-		tb.drawU(ug, x + MARGIN, y + MARGIN);
-
+		ug.apply(new UChangeColor(color)).apply(new UChangeBackColor(backColor)).apply(new UStroke(1.5))
+				.drawOldWay(rect);
+		
+		tb.drawUNewWayINLINED(ug.apply(new UTranslate(MARGIN, MARGIN)));
 	}
 
 	public Dimension2D calculateDimension(StringBounder stringBounder) {

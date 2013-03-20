@@ -42,22 +42,27 @@ import net.sourceforge.plantuml.graphic.StringBounder;
 public class UGraphicCompress extends UGraphic {
 
 	@Override
-	public UGraphic apply(UChange translate) {
-		if (translate instanceof UTranslate) {
-			final UGraphicCompress result = new UGraphicCompress(ug, compressionTransform);
-			result.translate = (UTranslate) translate;
-			return result;
+	public UGraphic apply(UChange change) {
+		if (change instanceof UTranslate) {
+			return new UGraphicCompress(ug, compressionTransform, translate.compose((UTranslate) change));
+		} else if (change instanceof UStroke || change instanceof UChangeBackColor || change instanceof UChangeColor) {
+			return new UGraphicCompress(ug.apply(change), compressionTransform, translate);
 		}
 		throw new UnsupportedOperationException();
 	}
 
 	private final UGraphic ug;
 	private final CompressionTransform compressionTransform;
-	private UTranslate translate = new UTranslate();
+	private final UTranslate translate;
 
 	public UGraphicCompress(UGraphic ug, CompressionTransform compressionTransform) {
+		this(ug, compressionTransform, new UTranslate());
+	}
+
+	private UGraphicCompress(UGraphic ug, CompressionTransform compressionTransform, UTranslate translate) {
 		this.ug = ug;
 		this.compressionTransform = compressionTransform;
+		this.translate = translate;
 	}
 
 	public StringBounder getStringBounder() {
@@ -94,9 +99,6 @@ public class UGraphicCompress extends UGraphic {
 		ug.drawNewWay(xmin, ymin, new ULine(xmax - xmin, ymax - ymin));
 	}
 
-	public void centerChar(double x, double y, char c, UFont font) {
-	}
-
 	public void writeImage(OutputStream os, String metadata, int dpi) throws IOException {
 		ug.writeImage(os, metadata, dpi);
 	}
@@ -111,10 +113,6 @@ public class UGraphicCompress extends UGraphic {
 
 	public void closeAction() {
 		ug.closeAction();
-	}
-
-	public UGroup createGroup() {
-		return ug.createGroup();
 	}
 
 }

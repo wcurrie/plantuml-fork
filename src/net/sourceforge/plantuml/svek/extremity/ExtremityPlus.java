@@ -36,12 +36,12 @@ package net.sourceforge.plantuml.svek.extremity;
 import java.awt.geom.Point2D;
 
 import net.sourceforge.plantuml.graphic.HtmlColorUtils;
-import net.sourceforge.plantuml.graphic.UDrawable;
+import net.sourceforge.plantuml.ugraphic.UChangeBackColor;
 import net.sourceforge.plantuml.ugraphic.UEllipse;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
 import net.sourceforge.plantuml.ugraphic.ULine;
 
-class ExtremityPlus extends Extremity implements UDrawable {
+class ExtremityPlus extends Extremity {
 
 	private final UEllipse circle;
 	private final double px;
@@ -56,12 +56,10 @@ class ExtremityPlus extends Extremity implements UDrawable {
 		this.py = p1.getY() - radius - radius * Math.cos(angle);
 	}
 
-	public void drawU(UGraphic ug, double x, double y) {
-		ug.getParam().setBackcolor(HtmlColorUtils.WHITE);
-		ug.drawNewWay(px + x, py + y, circle);
-		ug.getParam().setBackcolor(null);
-		drawLine(ug, x, y, getPointOnCircle(angle - Math.PI / 2), getPointOnCircle(angle + Math.PI / 2));
-		drawLine(ug, x, y, getPointOnCircle(angle), getPointOnCircle(angle + Math.PI));
+	public void drawUNewWayINLINED(UGraphic ug) {
+		ug.apply(new UChangeBackColor(HtmlColorUtils.WHITE)).drawNewWay(px + 0, py + 0, circle);
+		drawLine(ug, 0, 0, getPointOnCircle(angle - Math.PI / 2), getPointOnCircle(angle + Math.PI / 2));
+		drawLine(ug, 0, 0, getPointOnCircle(angle), getPointOnCircle(angle + Math.PI));
 	}
 
 	private Point2D getPointOnCircle(double angle) {

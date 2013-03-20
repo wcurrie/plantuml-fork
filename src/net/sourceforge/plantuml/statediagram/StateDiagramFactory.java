@@ -28,14 +28,15 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 10006 $
+ * Revision $Revision: 10446 $
  *
  */
 package net.sourceforge.plantuml.statediagram;
 
 import net.sourceforge.plantuml.classdiagram.command.CommandUrl;
-import net.sourceforge.plantuml.command.PSystemCommandFactory;
 import net.sourceforge.plantuml.command.CommandRankDir;
+import net.sourceforge.plantuml.command.PSystemCommandFactory;
+import net.sourceforge.plantuml.command.note.FactoryNoteCommand;
 import net.sourceforge.plantuml.command.note.FactoryNoteOnEntityCommand;
 import net.sourceforge.plantuml.command.note.FactoryNoteOnLinkCommand;
 import net.sourceforge.plantuml.command.regex.RegexLeaf;
@@ -71,26 +72,31 @@ public class StateDiagramFactory extends PSystemCommandFactory {
 		addCommand(new CommandAddField(system));
 		addCommand(new CommandConcurrentState(system));
 
-		final FactoryNoteOnEntityCommand factoryNoteCommand = new FactoryNoteOnEntityCommand(new RegexOr("ENTITY",
-				new RegexLeaf("[\\p{L}0-9_.]+"), //
+		final FactoryNoteOnEntityCommand factoryNoteOnEntityCommand = new FactoryNoteOnEntityCommand(new RegexOr(
+				"ENTITY", new RegexLeaf("[\\p{L}0-9_.]+"), //
 				new RegexLeaf("\"[^\"]+\"") //
 				));
-		addCommand(factoryNoteCommand.createMultiLine(system));
+		addCommand(factoryNoteOnEntityCommand.createMultiLine(system));
 
 		addCommand(new CommandHideEmptyDescription(system));
 
-		addCommand(factoryNoteCommand.createSingleLine(system));
+		addCommand(factoryNoteOnEntityCommand.createSingleLine(system));
 		final FactoryNoteOnLinkCommand factoryNoteOnLinkCommand = new FactoryNoteOnLinkCommand();
 		addCommand(factoryNoteOnLinkCommand.createSingleLine(system));
 		addCommand(factoryNoteOnLinkCommand.createMultiLine(system));
 		addCommand(new CommandUrl(system));
+
+		final FactoryNoteCommand factoryNoteCommand = new FactoryNoteCommand();
+		addCommand(factoryNoteCommand.createSingleLine(system));
+		addCommand(factoryNoteCommand.createMultiLine(system));
+
 		addCommonCommands(system);
 	}
-	
-//	@Override
-//	public String checkFinalError() {
-//		system.manageExitAndEntryPoints();
-//		return super.checkFinalError();
-//	}
+
+	// @Override
+	// public String checkFinalError() {
+	// system.manageExitAndEntryPoints();
+	// return super.checkFinalError();
+	// }
 
 }

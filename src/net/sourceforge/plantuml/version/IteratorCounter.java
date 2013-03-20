@@ -27,18 +27,14 @@
  * in the United States and other countries.]
  *
  * Original Author:  Arnaud Roques
- * 
- * Revision $Revision: 7696 $
  *
  */
-package net.sourceforge.plantuml.ugraphic;
+package net.sourceforge.plantuml.version;
 
-public interface UGroup {
+import java.util.Iterator;
 
-	public void draw(double x, double y, UShape shape);
+public interface IteratorCounter extends Iterator<String> {
 	
-	public void close();
-
-	public void centerChar(double x, double y, char c, UFont font);
+	public int currentNum();
 
 }

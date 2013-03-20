@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 10069 $
+ * Revision $Revision: 10459 $
  *
  */
 package net.sourceforge.plantuml.sequencediagram.graphic;
@@ -74,6 +74,7 @@ import net.sourceforge.plantuml.skin.Component;
 import net.sourceforge.plantuml.skin.ComponentType;
 import net.sourceforge.plantuml.skin.SimpleContext2D;
 import net.sourceforge.plantuml.skin.Skin;
+import net.sourceforge.plantuml.ugraphic.UChangeBackColor;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
 import net.sourceforge.plantuml.ugraphic.URectangle;
 import net.sourceforge.plantuml.ugraphic.UTranslate;
@@ -281,9 +282,8 @@ public class SequenceDiagramFileMaker implements FileMaker {
 
 			if (diagram.getSkinParam().getBackgroundColor() instanceof HtmlColorGradient) {
 				final BufferedImage im = ((UGraphicG2d) ug).getBufferedImage();
-				ug.getParam().setBackcolor(diagram.getSkinParam().getBackgroundColor());
-				ug.drawOldWay(new URectangle(im.getWidth(), im.getHeight()));
-				ug.getParam().setBackcolor(null);
+				ug.apply(new UChangeBackColor(diagram.getSkinParam().getBackgroundColor())).drawOldWay(
+						new URectangle(im.getWidth(), im.getHeight()));
 			}
 		} else if (fileFormat == FileFormat.SVG) {
 			if (diagram.getSkinParam().getBackgroundColor() instanceof HtmlColorGradient) {
@@ -364,7 +364,7 @@ public class SequenceDiagramFileMaker implements FileMaker {
 		if (text == null) {
 			return;
 		}
-		text.drawU(ug, area.getFooterX(diagram.getFooterAlignement()), area.getFooterY());
+		text.drawUNewWayINLINED(ug.apply(new UTranslate(area.getFooterX(diagram.getFooterAlignement()), area.getFooterY())));
 	}
 
 	private void addHeader3(SequenceDiagramArea area, UGraphic ug) {
@@ -377,7 +377,7 @@ public class SequenceDiagramFileMaker implements FileMaker {
 		if (text == null) {
 			return;
 		}
-		text.drawU(ug, area.getHeaderX(diagram.getHeaderAlignement()), area.getHeaderY());
+		text.drawUNewWayINLINED(ug.apply(new UTranslate(area.getHeaderX(diagram.getHeaderAlignement()), area.getHeaderY())));
 	}
 
 	public static StringBounder getDummystringbounder() {

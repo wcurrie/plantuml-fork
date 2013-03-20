@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 10041 $
+ * Revision $Revision: 10204 $
  *
  */
 package net.sourceforge.plantuml.skin.bluemodern;
@@ -39,9 +39,10 @@ import net.sourceforge.plantuml.graphic.HtmlColor;
 import net.sourceforge.plantuml.graphic.StringBounder;
 import net.sourceforge.plantuml.skin.AbstractComponent;
 import net.sourceforge.plantuml.skin.Area;
+import net.sourceforge.plantuml.ugraphic.UChangeBackColor;
+import net.sourceforge.plantuml.ugraphic.UChangeColor;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
 import net.sourceforge.plantuml.ugraphic.URectangle;
-import net.sourceforge.plantuml.ugraphic.UStroke;
 
 public class ComponentBlueModernLine extends AbstractComponent {
 
@@ -54,12 +55,10 @@ public class ComponentBlueModernLine extends AbstractComponent {
 	@Override
 	protected void drawInternalU(UGraphic ug, Area area) {
 		final Dimension2D dimensionToUse = area.getDimensionToUse();
-		ug.getParam().setColor(color);
-		ug.getParam().setBackcolor(color);
 		final int x = (int) (dimensionToUse.getWidth() / 2);
 		final StringBounder stringBounder = ug.getStringBounder();
-		ug.drawNewWay(x, 0, new URectangle(getPreferredWidth(stringBounder), dimensionToUse.getHeight()));
-		ug.getParam().setStroke(new UStroke());
+		ug.apply(new UChangeColor(color)).apply(new UChangeBackColor(color))
+				.drawNewWay(x, 0, new URectangle(getPreferredWidth(stringBounder), dimensionToUse.getHeight()));
 	}
 
 	@Override

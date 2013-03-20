@@ -28,11 +28,12 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 9786 $
+ * Revision $Revision: 10276 $
  *
  */
 package net.sourceforge.plantuml.graphic;
 
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.regex.Matcher;
@@ -47,12 +48,12 @@ public class Img implements HtmlCommand {
 	final static private Pattern srcPattern = Pattern.compile("(?i)src\\s*=\\s*[\"']?([^ \">]+)[\"']?");
 	final static private Pattern vspacePattern = Pattern.compile("(?i)vspace\\s*=\\s*[\"']?(\\d+)[\"']?");
 	final static private Pattern valignPattern = Pattern.compile("(?i)valign\\s*=\\s*[\"']?(top|bottom|middle)[\"']?");
-	final static private Pattern srcPattern2 = Pattern.compile("(?i)" + Splitter.imgPattern2);
+	final static private Pattern noSrcColonPattern = Pattern.compile("(?i)" + Splitter.imgPatternNoSrcColon);
 
-	private final TileImage tileImage;
+	private final TextBlock tileImage;
 	private final String filePath;
 
-	private Img(TileImage image, String filePath) throws IOException {
+	private Img(TextBlock image, String filePath) throws IOException {
 		this.tileImage = image;
 		this.filePath = filePath;
 	}
@@ -73,8 +74,18 @@ public class Img implements HtmlCommand {
 		return ImgValign.valueOf(m.group(1).toUpperCase());
 	}
 
-	static HtmlCommand getInstance(String html) {
-		final Matcher m = srcPattern.matcher(html);
+	static HtmlCommand getInstance(String html, boolean withSrc) {
+		if (withSrc) {
+			final Matcher m = srcPattern.matcher(html);
+			final int vspace = getVspace(html);
+			final ImgValign valign = getValign(html);
+			return build(m, valign, vspace);
+		}
+		final Matcher m = noSrcColonPattern.matcher(html);
+		return build(m, ImgValign.TOP, 0);
+	}
+
+	private static HtmlCommand build(final Matcher m, final ImgValign valign, final int vspace) {
 		if (m.find() == false) {
 			return new Text("(SYNTAX ERROR)");
 		}
@@ -84,32 +95,20 @@ public class Img implements HtmlCommand {
 			if (f.exists() == false) {
 				return new Text("(File not found: " + f + ")");
 			}
-			final int vspace = getVspace(html);
-			final ImgValign valign = getValign(html);
+			if (f.getName().endsWith(".svg")) {
+				return new Img(new TileImageSvg(f), src);
+			}
+			final BufferedImage read = ImageIO.read(f);
+			if (read == null) {
+				return new Text("(Cannot decode: " + f + ")");
+			}
 			return new Img(new TileImage(ImageIO.read(f), valign, vspace), src);
 		} catch (IOException e) {
 			return new Text("ERROR " + e.toString());
 		}
 	}
 
-	static HtmlCommand getInstance2(String html) {
-		final Matcher m = srcPattern2.matcher(html);
-		if (m.find() == false) {
-			return new Text("(SYNTAX ERROR)");
-		}
-		final String src = m.group(1);
-		try {
-			final File f = FileSystem.getInstance().getFile(src);
-			if (f.exists() == false) {
-				return new Text("(File not found: " + f + ")");
-			}
-			return new Img(new TileImage(ImageIO.read(f), ImgValign.TOP, 0), src);
-		} catch (IOException e) {
-			return new Text("ERROR " + e.toString());
-		}
-	}
-
-	public TileImage createMonoImage() {
+	public TextBlock createMonoImage() {
 		return tileImage;
 	}
 

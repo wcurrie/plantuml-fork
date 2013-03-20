@@ -28,18 +28,22 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 10104 $
+ * Revision $Revision: 10220 $
  *
  */
 package net.sourceforge.plantuml.ugraphic;
 
+import net.sourceforge.plantuml.graphic.HtmlColor;
 import net.sourceforge.plantuml.ugraphic.txt.UGraphicTxt;
 
 public abstract class AbstractCommonUGraphic extends UGraphic {
 
-	private/* final */UParam param;
-	private double dx;
-	private double dy;
+	private UStroke stroke = new UStroke();
+	private boolean hidden = false;
+	private HtmlColor backColor = null;
+	private HtmlColor color = null;
+
+	private UTranslate translate = new UTranslate();
 
 	private final ColorMapper colorMapper;
 	private UClip clip;
@@ -48,13 +52,18 @@ public abstract class AbstractCommonUGraphic extends UGraphic {
 	public UGraphic apply(UChange change) {
 		final AbstractCommonUGraphic copy = copyUGraphic();
 		if (change instanceof UTranslate) {
-			final double x = ((UTranslate) change).getDx();
-			final double y = ((UTranslate) change).getDy();
-			copy.dx += x;
-			copy.dy += y;
+			copy.translate = ((UTranslate) change).compose(copy.translate);
 		} else if (change instanceof UClip) {
 			copy.clip = (UClip) change;
 			copy.clip = copy.clip.translate(getTranslateXTOBEREMOVED(), getTranslateYTOBEREMOVED());
+		} else if (change instanceof UStroke) {
+			copy.stroke = (UStroke) change;
+		} else if (change instanceof UHidden) {
+			copy.hidden = change == UHidden.HIDDEN;
+		} else if (change instanceof UChangeBackColor) {
+			copy.backColor = ((UChangeBackColor) change).getBackColor();
+		} else if (change instanceof UChangeColor) {
+			copy.color = ((UChangeColor) change).getColor();
 		}
 		return copy;
 	}
@@ -65,37 +74,55 @@ public abstract class AbstractCommonUGraphic extends UGraphic {
 
 	public AbstractCommonUGraphic(ColorMapper colorMapper) {
 		this.colorMapper = colorMapper;
-		this.param = new UParam();
 	}
 
 	protected AbstractCommonUGraphic(AbstractCommonUGraphic other) {
 		this.colorMapper = other.colorMapper;
-		this.dx = other.dx;
-		this.dy = other.dy;
-		this.param = other.param.copy();
+		this.translate = other.translate;
 		this.clip = other.clip;
+
+		this.stroke = other.stroke;
+		this.hidden = other.hidden;
+		this.color = other.color;
+		this.backColor = other.backColor;
 	}
 
 	protected abstract AbstractCommonUGraphic copyUGraphic();
 
 	final public UParam getParam() {
-		return param;
+		return new UParam() {
+
+			public boolean isHidden() {
+				return hidden;
+			}
+
+			public UStroke getStroke() {
+				return stroke;
+			}
+
+			public HtmlColor getColor() {
+				return color;
+			}
+
+			public HtmlColor getBackcolor() {
+				return backColor;
+			}
+		};
 	}
 
 	final public void setTranslateTOBEREMOVED(double dx, double dy) {
 		if (this instanceof UGraphicTxt == false) {
 			throw new UnsupportedOperationException();
 		}
-		this.dx = dx;
-		this.dy = dy;
+		this.translate = new UTranslate(dx, dy);
 	}
 
 	final protected double getTranslateXTOBEREMOVED() {
-		return dx;
+		return translate.getDx();
 	}
 
 	final protected double getTranslateYTOBEREMOVED() {
-		return dy;
+		return translate.getDy();
 	}
 
 	final public ColorMapper getColorMapper() {

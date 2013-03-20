@@ -39,6 +39,7 @@ import net.sourceforge.plantuml.command.SingleLineCommand2;
 import net.sourceforge.plantuml.command.regex.RegexConcat;
 import net.sourceforge.plantuml.command.regex.RegexLeaf;
 import net.sourceforge.plantuml.command.regex.RegexResult;
+import net.sourceforge.plantuml.cucadiagram.Display;
 
 public class CommandWhileEnd3 extends SingleLineCommand2<ActivityDiagram3> {
 
@@ -48,13 +49,14 @@ public class CommandWhileEnd3 extends SingleLineCommand2<ActivityDiagram3> {
 
 	static RegexConcat getRegexConcat() {
 		return new RegexConcat(new RegexLeaf("^"), //
-				new RegexLeaf("end ?while|while ?end"), //
+				new RegexLeaf("(end ?while|while ?end)"), //
+				new RegexLeaf("OUT", "\\s*(?:\\((.+?)\\))?"), //
 				new RegexLeaf(";?$"));
 	}
 
 	@Override
 	protected CommandExecutionResult executeArg(RegexResult arg) {
-		return getSystem().endwhile();
+		return getSystem().endwhile(Display.getWithNewlines(arg.get("OUT", 0)));
 	}
 
 }

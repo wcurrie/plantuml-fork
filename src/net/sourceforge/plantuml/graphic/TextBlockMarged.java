@@ -39,6 +39,7 @@ import java.util.List;
 import net.sourceforge.plantuml.Dimension2DDouble;
 import net.sourceforge.plantuml.Url;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
+import net.sourceforge.plantuml.ugraphic.UTranslate;
 
 class TextBlockMarged implements TextBlock {
 
@@ -61,8 +62,8 @@ class TextBlockMarged implements TextBlock {
 		return Dimension2DDouble.delta(dim, x1 + x2, y1 + y2);
 	}
 
-	public void drawU(UGraphic ug, double x, double y) {
-		textBlock.drawU(ug, x + x1, y + y1);
+	public void drawUNewWayINLINED(UGraphic ug) {
+		textBlock.drawUNewWayINLINED(ug.apply(new UTranslate(x1, y1)));
 	}
 
 	public List<Url> getUrls() {

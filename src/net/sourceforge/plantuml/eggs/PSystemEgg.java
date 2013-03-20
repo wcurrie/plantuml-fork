@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 10103 $
+ * Revision $Revision: 10459 $
  *
  */
 package net.sourceforge.plantuml.eggs;
@@ -42,7 +42,7 @@ import java.util.StringTokenizer;
 
 import net.sourceforge.plantuml.AbstractPSystem;
 import net.sourceforge.plantuml.FileFormatOption;
-import net.sourceforge.plantuml.api.ImageData;
+import net.sourceforge.plantuml.core.ImageData;
 import net.sourceforge.plantuml.graphic.GraphicStrings;
 import net.sourceforge.plantuml.graphic.HtmlColorUtils;
 import net.sourceforge.plantuml.ugraphic.UAntiAliasing;

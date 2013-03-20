@@ -33,7 +33,7 @@
  */
 package net.sourceforge.plantuml;
 
-enum ErrorUmlType {
+public enum ErrorUmlType {
 	SYNTAX_ERROR, EXECUTION_ERROR
 
 }

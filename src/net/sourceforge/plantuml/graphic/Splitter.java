@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 9786 $
+ * Revision $Revision: 10272 $
  *
  */
 package net.sourceforge.plantuml.graphic;
@@ -53,7 +53,7 @@ public class Splitter {
 	static final String fontSup = "\\<sup\\>";
 	static final String fontSub = "\\<sub\\>";
 	static final String imgPattern = "\\<img\\s+(src\\s*=\\s*['\"]?[^\\s\">]+['\"]?\\s*|vspace\\s*=\\s*['\"]?\\d+['\"]?\\s*|valign\\s*=\\s*['\"]?(top|middle|bottom)['\"]?\\s*)+\\>";
-	static final String imgPattern2 = "\\<img[\\s:]+([^>]+)/?\\>";
+	static final String imgPatternNoSrcColon = "\\<img[\\s:]+([^>]+)/?\\>";
 	static final String fontFamilyPattern = "\\<font[\\s:]+([^>]+)/?\\>";
 	static final String svgAttributePattern = "\\<text[\\s:]+([^>]+)/?\\>";
 	static final String spritePattern = "\\<\\$[\\p{L}0-9_]+\\>";
@@ -91,7 +91,7 @@ public class Splitter {
 		sb.append('|');
 		sb.append(imgPattern);
 		sb.append('|');
-		sb.append(imgPattern2);
+		sb.append(imgPatternNoSrcColon);
 		sb.append('|');
 		sb.append(fontFamilyPattern);
 		sb.append('|');

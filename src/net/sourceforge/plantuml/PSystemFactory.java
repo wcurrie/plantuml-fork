@@ -28,14 +28,17 @@
  *
  * Original Author:  Arnaud Roques
  *
- * Revision $Revision: 9786 $
+ * Revision $Revision: 10298 $
  *
  */
 package net.sourceforge.plantuml;
 
+import net.sourceforge.plantuml.core.Diagram;
+import net.sourceforge.plantuml.core.DiagramType;
+
 public interface PSystemFactory {
 
-	PSystem getSystem();
+	Diagram getSystem();
 
 	void init(String startLine);
 	

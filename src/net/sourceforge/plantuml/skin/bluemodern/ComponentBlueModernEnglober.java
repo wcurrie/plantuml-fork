@@ -42,10 +42,13 @@ import net.sourceforge.plantuml.graphic.HtmlColor;
 import net.sourceforge.plantuml.graphic.StringBounder;
 import net.sourceforge.plantuml.skin.AbstractTextualComponent;
 import net.sourceforge.plantuml.skin.Area;
+import net.sourceforge.plantuml.ugraphic.UChangeBackColor;
+import net.sourceforge.plantuml.ugraphic.UChangeColor;
 import net.sourceforge.plantuml.ugraphic.UFont;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
 import net.sourceforge.plantuml.ugraphic.URectangle;
 import net.sourceforge.plantuml.ugraphic.UStroke;
+import net.sourceforge.plantuml.ugraphic.UTranslate;
 
 public class ComponentBlueModernEnglober extends AbstractTextualComponent {
 
@@ -62,13 +65,13 @@ public class ComponentBlueModernEnglober extends AbstractTextualComponent {
 	@Override
 	protected void drawBackgroundInternalU(UGraphic ug, Area area) {
 		final Dimension2D dimensionToUse = area.getDimensionToUse();
-		ug.getParam().setColor(borderColor);
-		ug.getParam().setBackcolor(backColor);
-		ug.getParam().setStroke(new UStroke(2));
-		ug.drawOldWay(new URectangle(dimensionToUse.getWidth(), dimensionToUse.getHeight(), 9, 9));
+		ug = ug.apply(new UChangeColor(borderColor));
+		ug = ug.apply(new UChangeBackColor(backColor));
+		ug.apply(new UStroke(2))
+				.drawOldWay(new URectangle(dimensionToUse.getWidth(), dimensionToUse.getHeight(), 9, 9));
 		final double xpos = (dimensionToUse.getWidth() - getPureTextWidth(ug.getStringBounder())) / 2;
-		ug.getParam().setStroke(new UStroke());
-		getTextBlock().drawU(ug, xpos, 0);
+
+		getTextBlock().drawUNewWayINLINED(ug.apply(new UTranslate(xpos, 0)));
 	}
 
 	@Override

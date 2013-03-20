@@ -43,13 +43,20 @@ import net.sourceforge.plantuml.graphic.HtmlColor;
 import net.sourceforge.plantuml.graphic.HtmlColorGradient;
 import net.sourceforge.plantuml.graphic.HtmlColorSimple;
 import net.sourceforge.plantuml.graphic.HtmlColorTransparent;
-import net.sourceforge.plantuml.graphic.HtmlColorUtils;
 import net.sourceforge.plantuml.ugraphic.ColorMapper;
+import net.sourceforge.plantuml.ugraphic.UChangeBackColor;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
 import net.sourceforge.plantuml.ugraphic.URectangle;
 import net.sourceforge.plantuml.ugraphic.g2d.UGraphicG2d;
 import net.sourceforge.plantuml.ugraphic.svg.UGraphicSvg;
 
+/**
+ * A FileFormat with some parameters.
+ * 
+ * 
+ * @author Arnaud Roques
+ *
+ */
 public class FileFormatOption {
 
 	private final FileFormat fileFormat;
@@ -72,6 +79,16 @@ public class FileFormatOption {
 		return affineTransform;
 	}
 
+	/**
+	 * Create a UGraphic corresponding to this FileFormatOption
+	 * 
+	 * @param colorMapper
+	 * @param dpiFactor 1.0 for a standard dot per inch 
+	 * @param dim
+	 * @param mybackcolor
+	 * @param rotation
+	 * @return
+	 */
 	public UGraphic createUGraphic(ColorMapper colorMapper, double dpiFactor, final Dimension2D dim,
 			HtmlColor mybackcolor, boolean rotation) {
 		switch (fileFormat) {
@@ -130,9 +147,7 @@ public class FileFormatOption {
 		ug.setBufferedImage(builder.getBufferedImage());
 		final BufferedImage im = ((UGraphicG2d) ug).getBufferedImage();
 		if (mybackcolor instanceof HtmlColorGradient) {
-			ug.getParam().setBackcolor(mybackcolor);
-			ug.drawOldWay(new URectangle(im.getWidth(), im.getHeight()));
-			ug.getParam().setBackcolor(null);
+			ug.apply(new UChangeBackColor(mybackcolor)).drawOldWay(new URectangle(im.getWidth(), im.getHeight()));
 		}
 
 		return ug;

@@ -33,10 +33,10 @@
  */
 package net.sourceforge.plantuml.command.note;
 
-import net.sourceforge.plantuml.PSystem;
 import net.sourceforge.plantuml.command.Command;
+import net.sourceforge.plantuml.core.Diagram;
 
-public interface SingleMultiFactoryCommand<D extends PSystem> {
+public interface SingleMultiFactoryCommand<D extends Diagram> {
 
 	public Command createSingleLine(final D system);
 

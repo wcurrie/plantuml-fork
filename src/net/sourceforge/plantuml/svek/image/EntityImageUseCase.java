@@ -53,19 +53,24 @@ import net.sourceforge.plantuml.graphic.TextBlock;
 import net.sourceforge.plantuml.graphic.TextBlockUtils;
 import net.sourceforge.plantuml.svek.AbstractEntityImage;
 import net.sourceforge.plantuml.svek.ShapeType;
-import net.sourceforge.plantuml.ugraphic.AbstractCommonUGraphic;
-import net.sourceforge.plantuml.ugraphic.AbstractUGraphicHorizontalLine;
+import net.sourceforge.plantuml.svek.image.EntityImageUseCase.MyUGraphicEllipse;
+import net.sourceforge.plantuml.ugraphic.AbstractUGraphicHorizontalLine2;
 import net.sourceforge.plantuml.ugraphic.TextBlockInEllipse;
+import net.sourceforge.plantuml.ugraphic.UChangeBackColor;
+import net.sourceforge.plantuml.ugraphic.UChangeColor;
 import net.sourceforge.plantuml.ugraphic.UEllipse;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
 import net.sourceforge.plantuml.ugraphic.UHorizontalLine;
 import net.sourceforge.plantuml.ugraphic.UStroke;
+import net.sourceforge.plantuml.ugraphic.UTranslate;
 
 public class EntityImageUseCase extends AbstractEntityImage {
 
 	final private TextBlock desc;
 
 	final private List<Url> url;
+
+	static private final UStroke stroke = new UStroke(1.5);
 
 	public EntityImageUseCase(ILeaf entity, ISkinParam skinParam) {
 		super(entity, skinParam);
@@ -88,12 +93,11 @@ public class EntityImageUseCase extends AbstractEntityImage {
 
 	}
 
-	@Override
-	public Dimension2D getDimension(StringBounder stringBounder) {
+	public Dimension2D calculateDimension(StringBounder stringBounder) {
 		return new TextBlockInEllipse(desc, stringBounder).calculateDimension(stringBounder);
 	}
 
-	public void drawU(UGraphic ug, double xTheoricalPosition, double yTheoricalPosition) {
+	final public void drawUNewWayINLINED(UGraphic ug) {
 		final StringBounder stringBounder = ug.getStringBounder();
 		final TextBlockInEllipse ellipse = new TextBlockInEllipse(desc, stringBounder);
 		if (getSkinParam().shadowing()) {
@@ -104,25 +108,20 @@ public class EntityImageUseCase extends AbstractEntityImage {
 			ug.startUrl(url.get(0));
 		}
 
-		ug.getParam().setStroke(new UStroke(1.5));
-		ug.getParam().setColor(SkinParamUtils.getColor(getSkinParam(), ColorParam.usecaseBorder, getStereo()));
+		ug = ug.apply(stroke).apply(
+				new UChangeColor(SkinParamUtils.getColor(getSkinParam(), ColorParam.usecaseBorder, getStereo())));
 		HtmlColor backcolor = getEntity().getSpecificBackColor();
 		if (backcolor == null) {
 			backcolor = SkinParamUtils.getColor(getSkinParam(), ColorParam.usecaseBackground, getStereo());
 		}
-		ug.getParam().setBackcolor(backcolor);
-		// final double width = textBlock.calculateDimension(stringBounder).getWidth();
+		ug = ug.apply(new UChangeBackColor(backcolor));
+		final UGraphic ug2 = new MyUGraphicEllipse(ug, 0, 0, ellipse.getUEllipse());
 
-		final UGraphic ug2 = new MyUGraphic(ug, xTheoricalPosition, yTheoricalPosition, ellipse.getUEllipse());
-
-		ellipse.drawU(ug2, xTheoricalPosition, yTheoricalPosition);
-
-		ug.getParam().setStroke(new UStroke());
+		ellipse.drawUNewWayINLINED(ug2);
 
 		if (url.size() > 0) {
 			ug.closeAction();
 		}
-
 	}
 
 	public ShapeType getShapeType() {
@@ -133,18 +132,18 @@ public class EntityImageUseCase extends AbstractEntityImage {
 		return 0;
 	}
 
-	static class MyUGraphic extends AbstractUGraphicHorizontalLine {
+	static class MyUGraphicEllipse extends AbstractUGraphicHorizontalLine2 {
 
 		private final double startingX;
 		private final double yTheoricalPosition;
 		private final UEllipse ellipse;
 
 		@Override
-		protected AbstractUGraphicHorizontalLine copy() {
-			return new MyUGraphic(getUg(), startingX, yTheoricalPosition, ellipse);
+		protected AbstractUGraphicHorizontalLine2 copy(UGraphic ug) {
+			return new MyUGraphicEllipse(ug, startingX, yTheoricalPosition, ellipse);
 		}
 
-		MyUGraphic(UGraphic ug, double startingX, double yTheoricalPosition, UEllipse ellipse) {
+		MyUGraphicEllipse(UGraphic ug, double startingX, double yTheoricalPosition, UEllipse ellipse) {
 			super(ug);
 			this.startingX = startingX;
 			this.ellipse = ellipse;
@@ -171,10 +170,10 @@ public class EntityImageUseCase extends AbstractEntityImage {
 		}
 
 		@Override
-		protected void drawHline(UGraphic ug, double x, double y, UHorizontalLine line) {
-			line.drawLine(ug, getStartingX(y), getEndingX(y), y);
+		protected void drawHline(UGraphic ug, UHorizontalLine line, UTranslate translate) {
+			final double y = translate.getDy();
+			line.drawLine(ug.apply(translate), getStartingX(y), getEndingX(y), 0, stroke);
 		}
-
 
 	}
 

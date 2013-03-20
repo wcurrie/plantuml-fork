@@ -39,6 +39,7 @@ import java.util.List;
 import net.sourceforge.plantuml.Dimension2DDouble;
 import net.sourceforge.plantuml.Url;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
+import net.sourceforge.plantuml.ugraphic.UTranslate;
 
 class TextBlockMinWidth implements TextBlock {
 
@@ -57,13 +58,13 @@ class TextBlockMinWidth implements TextBlock {
 		return Dimension2DDouble.atLeast(dim, minWidth, 0);
 	}
 
-	public void drawU(UGraphic ug, double x, double y) {
+	public void drawUNewWayINLINED(UGraphic ug) {
 		if (horizontalAlignement == HorizontalAlignement.LEFT) {
-			textBlock.drawU(ug, x, y);
+			textBlock.drawUNewWayINLINED(ug);
 		} else if (horizontalAlignement == HorizontalAlignement.RIGHT) {
 			final Dimension2D dim = textBlock.calculateDimension(ug.getStringBounder());
 			final double diffx = minWidth - dim.getWidth();
-			textBlock.drawU(ug, x + diffx, y);
+			textBlock.drawUNewWayINLINED(ug.apply(new UTranslate(diffx, 0)));
 		} else {
 			throw new UnsupportedOperationException();
 		}

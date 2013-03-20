@@ -43,6 +43,7 @@ import net.sourceforge.plantuml.activitydiagram3.ftile.Ftile;
 import net.sourceforge.plantuml.graphic.HtmlColor;
 import net.sourceforge.plantuml.graphic.StringBounder;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
+import net.sourceforge.plantuml.ugraphic.UTranslate;
 
 class FtileFork implements Ftile {
 
@@ -55,16 +56,15 @@ class FtileFork implements Ftile {
 		this.colorBar = colorBar;
 	}
 
-	public void drawU(UGraphic ug, final double x, final double y) {
+	public void drawUNewWayINLINED(UGraphic ug) {
 		final StringBounder stringBounder = ug.getStringBounder();
 		final Dimension2D dimTotal = calculateDimension(stringBounder);
 		final Ftile black = new FtileBlackBlock(dimTotal.getWidth(), barHeight, colorBar);
 
-		inner.drawU(ug, x, y + barHeight);
+		inner.drawUNewWayINLINED(ug.apply(new UTranslate(0, barHeight)));
 
-		black.drawU(ug, x, y);
-		black.drawU(ug, x, y + dimTotal.getHeight() - barHeight);
-
+		black.drawUNewWayINLINED(ug);
+		black.drawUNewWayINLINED(ug.apply(new UTranslate(0, (dimTotal.getHeight() - barHeight))));
 	}
 
 	public Dimension2D calculateDimension(StringBounder stringBounder) {
@@ -75,7 +75,7 @@ class FtileFork implements Ftile {
 	public List<Url> getUrls() {
 		throw new UnsupportedOperationException();
 	}
-	
+
 	public boolean isKilled() {
 		return false;
 	}
@@ -83,6 +83,5 @@ class FtileFork implements Ftile {
 	public LinkRendering getInLinkRendering() {
 		return null;
 	}
-
 
 }

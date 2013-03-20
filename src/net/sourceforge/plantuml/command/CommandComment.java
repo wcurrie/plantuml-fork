@@ -35,11 +35,11 @@ package net.sourceforge.plantuml.command;
 
 import java.util.List;
 
-import net.sourceforge.plantuml.PSystem;
+import net.sourceforge.plantuml.core.Diagram;
 
-public class CommandComment extends SingleLineCommand<PSystem> {
+public class CommandComment extends SingleLineCommand<Diagram> {
 
-	public CommandComment(PSystem diagram) {
+	public CommandComment(Diagram diagram) {
 		super(diagram, "(?i)^\\s*('.*||/'.*'/\\s*)$");
 	}
 

@@ -34,22 +34,19 @@
 package net.sourceforge.plantuml.svek.extremity;
 
 import net.sourceforge.plantuml.graphic.HtmlColorUtils;
-import net.sourceforge.plantuml.graphic.UDrawable;
+import net.sourceforge.plantuml.ugraphic.UChangeBackColor;
 import net.sourceforge.plantuml.ugraphic.UEllipse;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
 import net.sourceforge.plantuml.ugraphic.UStroke;
 
-class MiddleCircle extends Extremity implements UDrawable {
+class MiddleCircle extends Extremity {
 
 	private final double radius = 6;
 	private final UEllipse circle = new UEllipse(2 * radius, 2 * radius);
 
-	public void drawU(UGraphic ug, double x, double y) {
-		ug.getParam().setBackcolor(HtmlColorUtils.WHITE);
-		ug.getParam().setStroke(new UStroke(1.5));
-		ug.drawNewWay(x - radius, y - radius, circle);
-		ug.getParam().setStroke(new UStroke());
-
+	public void drawUNewWayINLINED(UGraphic ug) {
+		ug.apply(new UChangeBackColor(HtmlColorUtils.WHITE)).apply(new UStroke(1.5))
+				.drawNewWay(-radius, -radius, circle);
 	}
 
 }

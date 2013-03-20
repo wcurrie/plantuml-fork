@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  *
- * Revision $Revision: 9794 $
+ * Revision $Revision: 10298 $
  *
  */
 package net.sourceforge.plantuml;
@@ -39,6 +39,7 @@ import java.io.FileOutputStream;
 import java.io.PrintStream;
 import java.util.concurrent.atomic.AtomicBoolean;
 
+import net.sourceforge.plantuml.core.Diagram;
 import net.sourceforge.plantuml.cucadiagram.dot.GraphvizUtils;
 
 public class OptionFlags {
@@ -52,6 +53,7 @@ public class OptionFlags {
 	static public boolean ALLOW_INCLUDE = true;
 	static public final boolean NEW_ARROW = true;
 	static public final boolean USE_PUMA = true;
+	static public final boolean USE_1317 = false;
 	
 
 	void reset() {
@@ -178,7 +180,7 @@ public class OptionFlags {
 
 	private final AtomicBoolean logDataInitized = new AtomicBoolean(false);
 
-	public void logData(File file, PSystem system) {
+	public void logData(File file, Diagram system) {
 		final String warnOrError = system.getWarningOrError();
 		if (warnOrError == null) {
 			return;

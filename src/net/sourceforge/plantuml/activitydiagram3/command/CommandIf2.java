@@ -53,7 +53,7 @@ public class CommandIf2 extends SingleLineCommand2<ActivityDiagram3> {
 				new RegexLeaf("\\s*"), //
 				new RegexLeaf("TEST", "\\((.+?)\\)"), //
 				new RegexLeaf("\\s*"), //
-				new RegexLeaf("WHEN", "(?:then\\s*(?:\\(([^()]*)\\))?)?"), //
+				new RegexLeaf("WHEN", "(?:then\\s*(?:\\((.+?)\\))?)?"), //
 				new RegexLeaf(";?$"));
 	}
 

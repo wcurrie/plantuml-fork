@@ -38,9 +38,9 @@ import java.util.List;
 
 import net.sourceforge.plantuml.Dimension2DDouble;
 import net.sourceforge.plantuml.Url;
+import net.sourceforge.plantuml.ugraphic.UChangeColor;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
 import net.sourceforge.plantuml.ugraphic.UHorizontalLine;
-import net.sourceforge.plantuml.ugraphic.ULine;
 import net.sourceforge.plantuml.ugraphic.UStroke;
 
 public class TextBlockLineBefore2 implements TextBlock {
@@ -60,7 +60,7 @@ public class TextBlockLineBefore2 implements TextBlock {
 	}
 
 	public TextBlockLineBefore2(TextBlock textBlock) {
-		this(textBlock, '_');
+		this(textBlock, '\0');
 	}
 
 	public Dimension2D calculateDimension(StringBounder stringBounder) {
@@ -72,50 +72,38 @@ public class TextBlockLineBefore2 implements TextBlock {
 		return dim;
 	}
 
-	public static void drawLine(UGraphic ug, double y, UHorizontalLine line, char separator) {
+	private void drawLine(UGraphic ug, double y, UHorizontalLine line) {
 		if (separator == '=') {
 			ug.drawNewWay(0, y, line);
 			ug.drawNewWay(0, y + 2, line.blankTitle());
-		} else if (separator == '.') {
-			ug.getParam().setStroke(new UStroke(1, 2, 1));
-			ug.drawNewWay(0, y, line);
-			ug.getParam().setStroke(new UStroke());
-		} else if (separator == '-') {
-			ug.drawNewWay(0, y, line);
 		} else {
-			ug.getParam().setStroke(new UStroke(1.5));
 			ug.drawNewWay(0, y, line);
-			ug.getParam().setStroke(new UStroke());
 		}
 	}
 
-	public static void drawLine(UGraphic ug, double x, double y, double widthToUse, char separator) {
-		if (separator == '=') {
-			ug.drawNewWay(x, y, new ULine(widthToUse, 0));
-			ug.drawNewWay(x, y + 2, new ULine(widthToUse, 0));
+	private UStroke getStroke() {
+		if (separator == '\0') {
+			return null;
+		} else if (separator == '=') {
+			return new UStroke();
 		} else if (separator == '.') {
-			ug.getParam().setStroke(new UStroke(1, 2, 1));
-			ug.drawNewWay(x, y, new ULine(widthToUse, 0));
-			ug.getParam().setStroke(new UStroke());
+			return new UStroke(1, 2, 1);
 		} else if (separator == '-') {
-			ug.drawNewWay(x, y, new ULine(widthToUse, 0));
+			return new UStroke();
 		} else {
-			ug.getParam().setStroke(new UStroke(1.5));
-			ug.drawNewWay(x, y, new ULine(widthToUse, 0));
-			ug.getParam().setStroke(new UStroke());
+			return new UStroke(1.5);
 		}
 	}
 
-	public void drawU(UGraphic ug, double x, double y) {
+	public void drawUNewWayINLINED(UGraphic ug) {
 		final HtmlColor color = ug.getParam().getColor();
 		if (title == null) {
-			drawLine(ug, y, UHorizontalLine.infinite(1, 1), separator);
+			drawLine(ug, 0, UHorizontalLine.infinite(1, 1, getStroke()));
 		}
-		textBlock.drawU(ug, x, y);
-		ug.getParam().setColor(color);
+		textBlock.drawUNewWayINLINED(ug);
+		ug = ug.apply(new UChangeColor(color));
 		if (title != null) {
-			drawLine(ug, y, UHorizontalLine.infinite(1, 1, title), separator);
-			ug.getParam().setColor(color);
+			drawLine(ug, 0, UHorizontalLine.infinite(1, 1, title, getStroke()));
 		}
 	}
 

@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 10085 $
+ * Revision $Revision: 10263 $
  *
  */
 package net.sourceforge.plantuml.graphic;
@@ -66,15 +66,15 @@ class TextBlockSpotted extends TextBlockSimple {
 	}
 
 	@Override
-	public void drawU(UGraphic ug, double x, double y) {
+	public void drawUNewWayINLINED(UGraphic ug) {
 		final StringBounder stringBounder = ug.getStringBounder();
 
-		circledCharacter.drawU(ug, x, y);
+		circledCharacter.drawUNewWayINLINED(ug);
 
 		final double widthCircledCharacter = getCircledCharacterWithAndMargin(stringBounder);
 
-		super.drawU(ug.apply(new UTranslate(widthCircledCharacter, 0)), x, y);
-
+		super.drawUNewWayINLINED(ug.apply(new UTranslate(widthCircledCharacter, 0)));
 	}
+
 
 }

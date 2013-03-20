@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 10041 $
+ * Revision $Revision: 10266 $
  *
  */
 package net.sourceforge.plantuml.skin;
@@ -42,6 +42,8 @@ import net.sourceforge.plantuml.Url;
 import net.sourceforge.plantuml.graphic.HtmlColor;
 import net.sourceforge.plantuml.graphic.StringBounder;
 import net.sourceforge.plantuml.graphic.TextBlock;
+import net.sourceforge.plantuml.ugraphic.UChangeBackColor;
+import net.sourceforge.plantuml.ugraphic.UChangeColor;
 import net.sourceforge.plantuml.ugraphic.UEllipse;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
 import net.sourceforge.plantuml.ugraphic.UPath;
@@ -67,7 +69,6 @@ public class StickMan implements TextBlock {
 		this.deltaShadow = deltaShadow;
 	}
 
-
 	public StickMan(HtmlColor backgroundColor, HtmlColor foregroundColor, double deltaShadow, double thickness) {
 		this.backgroundColor = backgroundColor;
 		this.foregroundColor = foregroundColor;
@@ -83,15 +84,14 @@ public class StickMan implements TextBlock {
 		this(backgroundColor, foregroundColor, 0, 2);
 	}
 
-	public void drawU(UGraphic ug, double x, double y) {
-
-		ug.getParam().setStroke(new UStroke(thickness));
-
+	public void drawUNewWayINLINED(UGraphic ug) {
+		ug = ug.apply(new UStroke(thickness));
+		
 		final double startX = Math.max(armsLenght, legsX) - headDiam / 2.0 + thickness;
-
+		
 		final UEllipse head = new UEllipse(headDiam, headDiam);
 		final double centerX = startX + headDiam / 2;
-
+		
 		final UPath path = new UPath();
 		path.moveTo(0, 0);
 		path.lineTo(0, bodyLenght);
@@ -105,13 +105,10 @@ public class StickMan implements TextBlock {
 			head.setDeltaShadow(deltaShadow);
 			path.setDeltaShadow(deltaShadow);
 		}
-
-		ug.getParam().setBackcolor(backgroundColor);
-		ug.getParam().setColor(foregroundColor);
-		ug.drawNewWay(x + startX, y + thickness, head);
-		ug.drawNewWay(x + centerX, y + headDiam + thickness, path);
-
-		ug.getParam().setStroke(new UStroke());
+		
+		ug = ug.apply(new UChangeBackColor(backgroundColor)).apply(new UChangeColor(foregroundColor));
+		ug.drawNewWay(startX, thickness, head);
+		ug.drawNewWay(centerX, headDiam + thickness, path);
 	}
 
 	public double getPreferredWidth() {

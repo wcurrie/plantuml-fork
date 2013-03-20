@@ -45,47 +45,26 @@ import net.sourceforge.plantuml.ugraphic.UGraphic;
 
 public class EntityImageGroup extends AbstractEntityImage {
 
-//	final private TextBlock desc;
-//	final private static int MARGIN = 10;
+	// final private TextBlock desc;
+	// final private static int MARGIN = 10;
 
 	public EntityImageGroup(ILeaf entity, ISkinParam skinParam) {
 		super(entity, skinParam);
-//		this.desc = TextBlockUtils.create(StringUtils.getWithNewlines(entity.getDisplay()), new FontConfiguration(
-//				getFont(FontParam.ACTIVITY), HtmlColorUtils.BLACK), HorizontalAlignement.CENTER);
+		// this.desc = TextBlockUtils.create(StringUtils.getWithNewlines(entity.getDisplay()), new FontConfiguration(
+		// getFont(FontParam.ACTIVITY), HtmlColorUtils.BLACK), HorizontalAlignement.CENTER);
 	}
 
-	@Override
-	public Dimension2D getDimension(StringBounder stringBounder) {
-//		final Dimension2D dim = desc.calculateDimension(stringBounder);
-//		return Dimension2DDouble.delta(dim, MARGIN * 2);
+	public Dimension2D calculateDimension(StringBounder stringBounder) {
 		return new Dimension2DDouble(30, 30);
 	}
 
-	public void drawU(UGraphic ug, double xTheoricalPosition, double yTheoricalPosition) {
-//		final StringBounder stringBounder = ug.getStringBounder();
-//		final Dimension2D dimTotal = getDimension(stringBounder);
-//
-//		final double widthTotal = dimTotal.getWidth();
-//		final double heightTotal = dimTotal.getHeight();
-//		final URectangle rect = new URectangle(widthTotal, heightTotal, 25, 25);
-//
-//		ug.getParam().setStroke(new UStroke(1.5));
-//		ug.getParam().setColor(getColor(ColorParam.activityBorder));
-//		ug.getParam().setBackcolor(getColor(ColorParam.activityBackground));
-//
-//		ug.draw(xTheoricalPosition, yTheoricalPosition, rect);
-//		ug.getParam().setStroke(new UStroke());
-//
-//		final double x = xTheoricalPosition + MARGIN;
-//		final double y = yTheoricalPosition + MARGIN;
-//		desc.drawU(ug, x, y);
-
+	final public void drawUNewWayINLINED(UGraphic ug) {
 	}
 
 	public ShapeType getShapeType() {
 		return ShapeType.RECTANGLE;
 	}
-	
+
 	public int getShield() {
 		return 0;
 	}

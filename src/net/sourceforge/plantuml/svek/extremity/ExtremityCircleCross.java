@@ -36,13 +36,13 @@ package net.sourceforge.plantuml.svek.extremity;
 import java.awt.geom.Point2D;
 
 import net.sourceforge.plantuml.graphic.HtmlColorUtils;
-import net.sourceforge.plantuml.graphic.UDrawable;
+import net.sourceforge.plantuml.ugraphic.UChangeBackColor;
 import net.sourceforge.plantuml.ugraphic.UEllipse;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
 import net.sourceforge.plantuml.ugraphic.ULine;
 import net.sourceforge.plantuml.ugraphic.UStroke;
 
-class ExtremityCircleCross extends Extremity implements UDrawable {
+class ExtremityCircleCross extends Extremity {
 
 	private final double px;
 	private final double py;
@@ -55,14 +55,12 @@ class ExtremityCircleCross extends Extremity implements UDrawable {
 		this.dest = new Point2D.Double(p1.getX(), p1.getY());
 	}
 
-	public void drawU(UGraphic ug, double x, double y) {
-		ug.getParam().setBackcolor(HtmlColorUtils.WHITE);
-		ug.getParam().setStroke(new UStroke(1.5));
-		ug.drawNewWay(x + dest.getX() - radius, y + dest.getY() - radius, new UEllipse(radius * 2, radius * 2));
-		ug.getParam().setStroke(new UStroke());
-		drawLine(ug, x, y, getPointOnCircle(Math.PI / 4), getPointOnCircle(Math.PI + Math.PI / 4));
-		drawLine(ug, x, y, getPointOnCircle(-Math.PI / 4), getPointOnCircle(Math.PI - Math.PI / 4));
-		ug.getParam().setBackcolor(null);
+	public void drawUNewWayINLINED(UGraphic ug) {
+		ug = ug.apply(new UChangeBackColor(HtmlColorUtils.WHITE));
+		ug.apply(new UStroke(1.5)).drawNewWay(dest.getX() - radius, dest.getY() - radius,
+				new UEllipse(radius * 2, radius * 2));
+		drawLine(ug, 0, 0, getPointOnCircle(Math.PI / 4), getPointOnCircle(Math.PI + Math.PI / 4));
+		drawLine(ug, 0, 0, getPointOnCircle(-Math.PI / 4), getPointOnCircle(Math.PI - Math.PI / 4));
 	}
 
 	private Point2D getPointOnCircle(double angle) {

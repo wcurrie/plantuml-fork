@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 10057 $
+ * Revision $Revision: 10265 $
  *
  */
 package net.sourceforge.plantuml.skin.rose;
@@ -45,11 +45,14 @@ import net.sourceforge.plantuml.graphic.TextBlock;
 import net.sourceforge.plantuml.graphic.TextBlockUtils;
 import net.sourceforge.plantuml.skin.AbstractTextualComponent;
 import net.sourceforge.plantuml.skin.Area;
+import net.sourceforge.plantuml.ugraphic.UChangeBackColor;
+import net.sourceforge.plantuml.ugraphic.UChangeColor;
 import net.sourceforge.plantuml.ugraphic.UFont;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
 import net.sourceforge.plantuml.ugraphic.UPolygon;
 import net.sourceforge.plantuml.ugraphic.URectangle;
 import net.sourceforge.plantuml.ugraphic.UStroke;
+import net.sourceforge.plantuml.ugraphic.UTranslate;
 
 public class ComponentRoseGroupingHeader extends AbstractTextualComponent {
 
@@ -65,8 +68,8 @@ public class ComponentRoseGroupingHeader extends AbstractTextualComponent {
 	private final UStroke stroke;
 
 	public ComponentRoseGroupingHeader(HtmlColor fontColor, HtmlColor background, HtmlColor groupBackground,
-			HtmlColor groupBorder, UFont bigFont, UFont smallFont, Display strings,
-			SpriteContainer spriteContainer, double deltaShadow, UStroke stroke) {
+			HtmlColor groupBorder, UFont bigFont, UFont smallFont, Display strings, SpriteContainer spriteContainer,
+			double deltaShadow, UStroke stroke) {
 		super(strings.get(0), fontColor, bigFont, HorizontalAlignement.LEFT, 15, 30, 1, spriteContainer);
 		this.groupBackground = groupBackground;
 		this.groupBorder = groupBorder;
@@ -85,10 +88,10 @@ public class ComponentRoseGroupingHeader extends AbstractTextualComponent {
 
 	}
 
-//	@Override
-//	public double getPaddingY() {
-//		return 6;
-//	}
+	// @Override
+	// public double getPaddingY() {
+	// return 6;
+	// }
 
 	@Override
 	final public double getPreferredWidth(StringBounder stringBounder) {
@@ -111,24 +114,18 @@ public class ComponentRoseGroupingHeader extends AbstractTextualComponent {
 	@Override
 	protected void drawBackgroundInternalU(UGraphic ug, Area area) {
 		final Dimension2D dimensionToUse = area.getDimensionToUse();
-		ug.getParam().setColor(groupBorder);
-		ug.getParam().setBackcolor(background);
-		ug.getParam().setStroke(stroke);
+		ug = ug.apply(stroke).apply(new UChangeColor(groupBorder));
 		final URectangle rect = new URectangle(dimensionToUse.getWidth(), dimensionToUse.getHeight());
 		rect.setDeltaShadow(deltaShadow);
-		ug.drawOldWay(rect);
-		ug.getParam().setStroke(new UStroke());
+		ug.apply(new UChangeBackColor(background)).drawOldWay(rect);
 	}
 
 	@Override
 	protected void drawInternalU(UGraphic ug, Area area) {
 		final Dimension2D dimensionToUse = area.getDimensionToUse();
-		ug.getParam().setColor(groupBorder);
-		ug.getParam().setBackcolor(null);
-		ug.getParam().setStroke(stroke);
+		ug = ug.apply(stroke).apply(new UChangeColor(groupBorder));
 		final URectangle rect = new URectangle(dimensionToUse.getWidth(), dimensionToUse.getHeight());
 		ug.drawOldWay(rect);
-		// ug.getParam().setStroke(new UStroke());
 
 		final StringBounder stringBounder = ug.getStringBounder();
 		final int textWidth = (int) getTextWidth(stringBounder);
@@ -144,20 +141,17 @@ public class ComponentRoseGroupingHeader extends AbstractTextualComponent {
 		polygon.addPoint(0, textHeight);
 		polygon.addPoint(0, 0);
 
-		// ug.getParam().setStroke(new UStroke(2));
-		ug.getParam().setColor(groupBorder);
-		ug.getParam().setBackcolor(groupBackground);
-		ug.drawOldWay(polygon);
+		ug.apply(new UChangeColor(groupBorder)).apply(new UChangeBackColor(groupBackground)).drawOldWay(polygon);
 
-		ug.getParam().setStroke(new UStroke());
+		ug = ug.apply(new UStroke());
 
-		getTextBlock().drawU(ug, getMarginX1(), getMarginY());
+		getTextBlock().drawUNewWayINLINED(ug.apply(new UTranslate(getMarginX1(), getMarginY())));
 
 		if (commentTextBlock != null) {
 			final int x1 = getMarginX1() + textWidth;
 			final int y2 = getMarginY() + 1;
 
-			commentTextBlock.drawU(ug, x1 + commentMargin, y2);
+			commentTextBlock.drawUNewWayINLINED(ug.apply(new UTranslate((x1 + commentMargin), y2)));
 		}
 	}
 

@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 10104 $
+ * Revision $Revision: 10113 $
  *
  */
 package net.sourceforge.plantuml.ugraphic;
@@ -38,6 +38,11 @@ public class UStroke implements UChange {
 	private final double dashVisible;
 	private final double dashSpace;
 	private final double thickness;
+
+	@Override
+	public String toString() {
+		return "" + dashVisible + "-" + dashSpace + "-" + thickness;
+	}
 
 	public UStroke(double dashVisible, double dashSpace, double thickness) {
 		this.dashVisible = dashVisible;

@@ -57,8 +57,11 @@ import net.sourceforge.plantuml.graphic.USymbol;
 import net.sourceforge.plantuml.svek.AbstractEntityImage;
 import net.sourceforge.plantuml.svek.PackageStyle;
 import net.sourceforge.plantuml.svek.ShapeType;
+import net.sourceforge.plantuml.ugraphic.UChangeBackColor;
+import net.sourceforge.plantuml.ugraphic.UChangeColor;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
 import net.sourceforge.plantuml.ugraphic.UStroke;
+import net.sourceforge.plantuml.ugraphic.UTranslate;
 
 public class EntityImageComponent extends AbstractEntityImage {
 
@@ -72,9 +75,10 @@ public class EntityImageComponent extends AbstractEntityImage {
 	public EntityImageComponent(ILeaf entity, ISkinParam skinParam) {
 		super(entity, skinParam);
 		final Stereotype stereotype = entity.getStereotype();
-		this.desc = TextBlockUtils.create(
-				entity.getDisplay(),
-				new FontConfiguration(SkinParamUtils.getFont(getSkinParam(), FontParam.COMPONENT, stereotype), SkinParamUtils.getFontColor(getSkinParam(), FontParam.COMPONENT, stereotype)), HorizontalAlignement.CENTER, skinParam);
+		this.desc = TextBlockUtils.create(entity.getDisplay(),
+				new FontConfiguration(SkinParamUtils.getFont(getSkinParam(), FontParam.COMPONENT, stereotype),
+						SkinParamUtils.getFontColor(getSkinParam(), FontParam.COMPONENT, stereotype)),
+				HorizontalAlignement.CENTER, skinParam);
 
 		this.style = stereotype == null ? null : stereotype.getPackageStyle();
 		if (this.style == null) {
@@ -82,7 +86,9 @@ public class EntityImageComponent extends AbstractEntityImage {
 			if (stereotype != null && stereotype.getLabel() != null) {
 				this.stereo = TextBlockUtils.create(
 						Display.getWithNewlines(stereotype.getLabel()),
-						new FontConfiguration(SkinParamUtils.getFont(getSkinParam(), FontParam.COMPONENT_STEREOTYPE, stereotype), SkinParamUtils.getFontColor(getSkinParam(), FontParam.COMPONENT_STEREOTYPE, null)), HorizontalAlignement.CENTER, skinParam);
+						new FontConfiguration(SkinParamUtils.getFont(getSkinParam(), FontParam.COMPONENT_STEREOTYPE,
+								stereotype), SkinParamUtils.getFontColor(getSkinParam(),
+								FontParam.COMPONENT_STEREOTYPE, null)), HorizontalAlignement.CENTER, skinParam);
 			}
 		}
 		this.symbol = getUSymbol();
@@ -146,43 +152,38 @@ public class EntityImageComponent extends AbstractEntityImage {
 		return new Margin(0, 0, 0, 0);
 	}
 
-	@Override
-	public Dimension2D getDimension(StringBounder stringBounder) {
+	public Dimension2D calculateDimension(StringBounder stringBounder) {
 		final Dimension2D dim = Dimension2DDouble.mergeTB(desc.calculateDimension(stringBounder),
 				stereo.calculateDimension(stringBounder));
 		final Margin margin = getSuppDimension();
 		return Dimension2DDouble.delta(dim, margin.getWidth(), margin.getHeight());
 	}
 
-	private void drawStyled(UGraphic ug, double xTheoricalPosition, double yTheoricalPosition) {
+	private void drawStyled(UGraphic ug) {
 		final StringBounder stringBounder = ug.getStringBounder();
 
-		final Dimension2D dim = getDimension(stringBounder);
+		final Dimension2D dim = calculateDimension(stringBounder);
 		final double width = dim.getWidth();
 		final double height = dim.getHeight();
-		style.drawU(ug, xTheoricalPosition, yTheoricalPosition, new Dimension2DDouble(width, height), null,
-				getSkinParam().shadowing());
+		style.drawU(ug, new Dimension2DDouble(width, height), null, getSkinParam().shadowing());
 
-		ug.getParam().setStroke(new UStroke());
+		// ug.getParam().resetStroke();
 
-		final Dimension2D dimTotal = getDimension(stringBounder);
+		final Dimension2D dimTotal = calculateDimension(stringBounder);
 		final Dimension2D dimDesc = desc.calculateDimension(stringBounder);
 		final Dimension2D dimStereo = stereo.calculateDimension(stringBounder);
 		final Dimension2D dimTwoText = Dimension2DDouble.mergeTB(dimStereo, dimDesc);
 		final Margin margin = getSuppDimension();
-		final double x = xTheoricalPosition + margin.x1
-				+ (dimTotal.getWidth() - margin.getWidth() - dimDesc.getWidth()) / 2;
-		final double y = yTheoricalPosition + margin.y1
-				+ (dimTotal.getHeight() - margin.getHeight() - dimTwoText.getHeight()) / 2;
-		desc.drawU(ug, x, y + dimStereo.getHeight());
+		final double x = margin.x1 + (dimTotal.getWidth() - margin.getWidth() - dimDesc.getWidth()) / 2;
+		final double y = margin.y1 + (dimTotal.getHeight() - margin.getHeight() - dimTwoText.getHeight()) / 2;
+		desc.drawUNewWayINLINED(ug.apply(new UTranslate(x, y + dimStereo.getHeight())));
 
-		final double stereoX = xTheoricalPosition + margin.x1
-				+ (dimTotal.getWidth() - margin.getWidth() - dimStereo.getWidth()) / 2;
-		stereo.drawU(ug, stereoX, y);
+		final double stereoX = margin.x1 + (dimTotal.getWidth() - margin.getWidth() - dimStereo.getWidth()) / 2;
+		stereo.drawUNewWayINLINED(ug.apply(new UTranslate(stereoX, y)));
 
 	}
 
-	public void drawU(UGraphic ug, final double xTheoricalPosition, final double yTheoricalPosition) {
+	final public void drawUNewWayINLINED(UGraphic ug) {
 		if (url.size() > 0) {
 			ug.startUrl(url.get(0));
 		}
@@ -190,21 +191,21 @@ public class EntityImageComponent extends AbstractEntityImage {
 		if (backcolor == null) {
 			backcolor = SkinParamUtils.getColor(getSkinParam(), ColorParam.componentBackground, getStereo());
 		}
-		ug.getParam().setBackcolor(backcolor);
+		ug = ug.apply(new UChangeBackColor(backcolor));
 		if (symbol == null) {
-			ug.getParam().setStroke(new UStroke(1.5));
-			ug.getParam().setColor(SkinParamUtils.getColor(getSkinParam(), ColorParam.componentBorder, getStereo()));
-			drawStyled(ug, xTheoricalPosition, yTheoricalPosition);
+			ug = ug.apply(new UStroke(1.5)).apply(
+					new UChangeColor(SkinParamUtils.getColor(getSkinParam(), ColorParam.componentBorder, getStereo())));
+			drawStyled(ug);
 		} else {
-			final SymbolContext ctx = new SymbolContext(backcolor, SkinParamUtils.getColor(getSkinParam(), ColorParam.componentBorder, getStereo()))
-					.withStroke(new UStroke(1.5)).withShadow(getSkinParam().shadowing());
-			symbol.asSmall(TextBlockUtils.mergeTB(desc, stereo, HorizontalAlignement.CENTER), null, ctx).drawU(ug,
-					xTheoricalPosition, yTheoricalPosition);
+			final SymbolContext ctx = new SymbolContext(backcolor, SkinParamUtils.getColor(getSkinParam(),
+					ColorParam.componentBorder, getStereo())).withStroke(new UStroke(1.5)).withShadow(
+					getSkinParam().shadowing());
+			symbol.asSmall(TextBlockUtils.mergeTB(desc, stereo, HorizontalAlignement.CENTER), null, ctx)
+					.drawUNewWayINLINED(ug);
 		}
 		if (url.size() > 0) {
 			ug.closeAction();
 		}
-
 	}
 
 	public ShapeType getShapeType() {

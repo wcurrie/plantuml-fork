@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  *
- * Revision $Revision: 10006 $
+ * Revision $Revision: 10298 $
  *
  */
 package net.sourceforge.plantuml;
@@ -55,6 +55,7 @@ import net.sourceforge.plantuml.classdiagram.ClassDiagramFactory;
 import net.sourceforge.plantuml.code.Transcoder;
 import net.sourceforge.plantuml.code.TranscoderUtil;
 import net.sourceforge.plantuml.command.PSystemCommandFactory;
+import net.sourceforge.plantuml.core.Diagram;
 import net.sourceforge.plantuml.descdiagram.DescriptionDiagramFactory;
 import net.sourceforge.plantuml.ftp.FtpServer;
 import net.sourceforge.plantuml.objectdiagram.ObjectDiagramFactory;
@@ -230,7 +231,7 @@ public class Run {
 		final SourceStringReader sourceStringReader = new SourceStringReader(new Defines(), source, option.getConfig());
 
 		if (option.isSyntax()) {
-			final PSystem system = sourceStringReader.getBlocks().get(0).getSystem();
+			final Diagram system = sourceStringReader.getBlocks().get(0).getSystem();
 			if (system instanceof UmlDiagram) {
 				ps.println(((UmlDiagram) system).getUmlDiagramType().name());
 				ps.println(system.getDescription());

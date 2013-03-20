@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 10057 $
+ * Revision $Revision: 10265 $
  *
  */
 package net.sourceforge.plantuml.skin.rose;
@@ -41,10 +41,13 @@ import net.sourceforge.plantuml.graphic.StringBounder;
 import net.sourceforge.plantuml.graphic.TextBlock;
 import net.sourceforge.plantuml.skin.AbstractTextualComponent;
 import net.sourceforge.plantuml.skin.Area;
+import net.sourceforge.plantuml.ugraphic.UChangeBackColor;
+import net.sourceforge.plantuml.ugraphic.UChangeColor;
 import net.sourceforge.plantuml.ugraphic.UFont;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
 import net.sourceforge.plantuml.ugraphic.URectangle;
 import net.sourceforge.plantuml.ugraphic.UStroke;
+import net.sourceforge.plantuml.ugraphic.UTranslate;
 
 public class ComponentRoseParticipant extends AbstractTextualComponent {
 
@@ -55,7 +58,8 @@ public class ComponentRoseParticipant extends AbstractTextualComponent {
 	private final UStroke stroke;
 
 	public ComponentRoseParticipant(HtmlColor back, HtmlColor foregroundColor, HtmlColor fontColor, UFont font,
-			Display stringsToDisplay, SpriteContainer spriteContainer, double deltaShadow, double roundCorner, UStroke stroke) {
+			Display stringsToDisplay, SpriteContainer spriteContainer, double deltaShadow, double roundCorner,
+			UStroke stroke) {
 		super(stringsToDisplay, fontColor, font, HorizontalAlignement.CENTER, 7, 7, 7, spriteContainer);
 		this.back = back;
 		this.roundCorner = roundCorner;
@@ -67,15 +71,15 @@ public class ComponentRoseParticipant extends AbstractTextualComponent {
 	@Override
 	protected void drawInternalU(UGraphic ug, Area area) {
 		final StringBounder stringBounder = ug.getStringBounder();
-		ug.getParam().setColor(foregroundColor);
-		ug.getParam().setBackcolor(back);
-		ug.getParam().setStroke(stroke);
-		final URectangle rect = new URectangle(getTextWidth(stringBounder), getTextHeight(stringBounder), roundCorner, roundCorner);
+		ug = ug.apply(new UChangeBackColor(back)).apply(new UChangeColor(foregroundColor));
+		ug = ug.apply(stroke);
+		final URectangle rect = new URectangle(getTextWidth(stringBounder), getTextHeight(stringBounder), roundCorner,
+				roundCorner);
 		rect.setDeltaShadow(deltaShadow);
 		ug.drawOldWay(rect);
-		ug.getParam().setStroke(new UStroke());
+		ug = ug.apply(new UStroke());
 		final TextBlock textBlock = getTextBlock();
-		textBlock.drawU(ug, getMarginX1(), getMarginY());
+		textBlock.drawUNewWayINLINED(ug.apply(new UTranslate(getMarginX1(), getMarginY())));
 	}
 
 	@Override

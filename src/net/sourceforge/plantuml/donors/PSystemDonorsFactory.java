@@ -33,8 +33,8 @@
  */
 package net.sourceforge.plantuml.donors;
 
-import net.sourceforge.plantuml.DiagramType;
 import net.sourceforge.plantuml.PSystemBasicFactory;
+import net.sourceforge.plantuml.core.DiagramType;
 
 public class PSystemDonorsFactory extends PSystemBasicFactory {
 

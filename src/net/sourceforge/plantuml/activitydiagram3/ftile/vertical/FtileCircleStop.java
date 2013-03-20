@@ -43,9 +43,10 @@ import net.sourceforge.plantuml.activitydiagram3.LinkRendering;
 import net.sourceforge.plantuml.activitydiagram3.ftile.Ftile;
 import net.sourceforge.plantuml.graphic.HtmlColor;
 import net.sourceforge.plantuml.graphic.StringBounder;
+import net.sourceforge.plantuml.ugraphic.UChangeBackColor;
+import net.sourceforge.plantuml.ugraphic.UChangeColor;
 import net.sourceforge.plantuml.ugraphic.UEllipse;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
-import net.sourceforge.plantuml.ugraphic.UStroke;
 
 public class FtileCircleStop implements Ftile {
 
@@ -57,30 +58,26 @@ public class FtileCircleStop implements Ftile {
 		this.backColor = backColor;
 	}
 
-	public void drawU(UGraphic ug, double xTheoricalPosition, double yTheoricalPosition) {
-
+	public void drawUNewWayINLINED(UGraphic ug) {
+		double xTheoricalPosition = 0;
+		double yTheoricalPosition = 0;
 		xTheoricalPosition = Math.round(xTheoricalPosition);
 		yTheoricalPosition = Math.round(yTheoricalPosition);
-
+		
 		final UEllipse circle = new UEllipse(SIZE, SIZE);
 		if (SHADOWING) {
 			circle.setDeltaShadow(3);
 		}
-		ug.getParam().setStroke(new UStroke());
-		ug.getParam().setBackcolor(null);
-		ug.getParam().setColor(backColor);
-		ug.drawNewWay(xTheoricalPosition, yTheoricalPosition, circle);
-		ug.getParam().setStroke(new UStroke());
-
+		ug.apply(new UChangeColor(backColor)).apply(new UChangeBackColor(null))
+				.drawNewWay(xTheoricalPosition, yTheoricalPosition, circle);
+		
 		final double delta = 4;
 		final UEllipse circleSmall = new UEllipse(SIZE - delta * 2, SIZE - delta * 2);
 		if (SHADOWING) {
 			circleSmall.setDeltaShadow(3);
 		}
-		ug.getParam().setColor(null);
-		ug.getParam().setBackcolor(backColor);
-		ug.drawNewWay(xTheoricalPosition + delta + .5, yTheoricalPosition + delta + .5, circleSmall);
-
+		ug.apply(new UChangeColor(null)).apply(new UChangeBackColor(backColor))
+				.drawNewWay(xTheoricalPosition + delta + .5, yTheoricalPosition + delta + .5, circleSmall);
 	}
 
 	public Dimension2D calculateDimension(StringBounder stringBounder) {

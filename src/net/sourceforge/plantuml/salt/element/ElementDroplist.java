@@ -46,11 +46,13 @@ import net.sourceforge.plantuml.graphic.HtmlColorUtils;
 import net.sourceforge.plantuml.graphic.StringBounder;
 import net.sourceforge.plantuml.graphic.TextBlock;
 import net.sourceforge.plantuml.graphic.TextBlockUtils;
+import net.sourceforge.plantuml.ugraphic.UChangeBackColor;
 import net.sourceforge.plantuml.ugraphic.UFont;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
 import net.sourceforge.plantuml.ugraphic.ULine;
 import net.sourceforge.plantuml.ugraphic.UPolygon;
 import net.sourceforge.plantuml.ugraphic.URectangle;
+import net.sourceforge.plantuml.ugraphic.UTranslate;
 
 public class ElementDroplist extends AbstractElementText implements Element {
 
@@ -70,7 +72,8 @@ public class ElementDroplist extends AbstractElementText implements Element {
 		if (drop.size() == 0) {
 			this.openDrop = null;
 		} else {
-			this.openDrop = TextBlockUtils.create(new Display(drop), getConfig(), HorizontalAlignement.LEFT, spriteContainer);
+			this.openDrop = TextBlockUtils.create(new Display(drop), getConfig(), HorizontalAlignement.LEFT,
+					spriteContainer);
 		}
 	}
 
@@ -90,9 +93,8 @@ public class ElementDroplist extends AbstractElementText implements Element {
 	public void drawU(UGraphic ug, double x, double y, int zIndex, Dimension2D dimToUse) {
 		final Dimension2D dim = getPreferredDimension(ug.getStringBounder(), 0, 0);
 		if (zIndex == 0) {
-			ug.getParam().setBackcolor(HtmlColorUtils.getColorIfValid("#EEEEEE"));
-			ug.drawNewWay(x, y, new URectangle(dim.getWidth() - 1, dim.getHeight() - 1));
-			ug.getParam().setBackcolor(null);
+			ug.apply(new UChangeBackColor(HtmlColorUtils.getColorIfValid("#EEEEEE"))).drawNewWay(x, y,
+					new URectangle(dim.getWidth() - 1, dim.getHeight() - 1));
 			drawText(ug, x + 2, y + 2);
 			final double xline = dim.getWidth() - box;
 			ug.drawNewWay(x + xline, y, new ULine(0, dim.getHeight() - 1));
@@ -102,18 +104,16 @@ public class ElementDroplist extends AbstractElementText implements Element {
 			poly.addPoint(box - 6, 0);
 			final Dimension2D dimText = getPureTextDimension(ug.getStringBounder());
 			poly.addPoint((box - 6) / 2, dimText.getHeight() - 8);
-			ug.getParam().setBackcolor(ug.getParam().getColor());
 
-			ug.drawNewWay(x + xline + 3, y + 6, poly);
+			ug.apply(new UChangeBackColor(ug.getParam().getColor())).drawNewWay(x + xline + 3, y + 6, poly);
 		}
 
 		if (openDrop != null) {
 			final Dimension2D dimOpen = Dimension2DDouble.atLeast(openDrop.calculateDimension(ug.getStringBounder()),
 					dim.getWidth() - 1, 0);
-			ug.getParam().setBackcolor(HtmlColorUtils.getColorIfValid("#EEEEEE"));
-			ug.drawNewWay(x, y + dim.getHeight() - 1, new URectangle(dimOpen.getWidth() - 1, dimOpen.getHeight() - 1));
-			ug.getParam().setBackcolor(null);
-			openDrop.drawU(ug, x, y + dim.getHeight() - 1);
+			ug.apply(new UChangeBackColor(HtmlColorUtils.getColorIfValid("#EEEEEE"))).drawNewWay(x,
+					y + dim.getHeight() - 1, new URectangle(dimOpen.getWidth() - 1, dimOpen.getHeight() - 1));
+			openDrop.drawUNewWayINLINED(ug.apply(new UTranslate(x, (y + dim.getHeight() - 1))));
 		}
 	}
 }

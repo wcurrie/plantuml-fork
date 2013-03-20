@@ -69,11 +69,9 @@ public class DecorInterfaceProvider implements Decor {
 		}
 
 		final UEllipse arc = new UEllipse(2 * radius2, 2 * radius2, direction + 15, 180 - 30);
-		final UStroke old = ug.getParam().getStroke();
-		ug.getParam().setStroke(new UStroke(1.5));
+		ug = ug.apply(new UStroke(1.5));
 		ug.drawNewWay(cornerX2, cornerY2, arc);
 		ug.drawNewWay(cornerX, cornerY, new UEllipse(2 * radius, 2 * radius));
-		ug.getParam().setStroke(old);
 	}
 
 }

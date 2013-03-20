@@ -32,29 +32,27 @@
 package net.sourceforge.plantuml.ugraphic.svg;
 
 import java.awt.Graphics2D;
-import java.awt.font.TextLayout;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.OutputStream;
 
 import javax.xml.transform.TransformerException;
 
-import net.sourceforge.plantuml.StringUtils;
 import net.sourceforge.plantuml.Url;
 import net.sourceforge.plantuml.graphic.HtmlColorGradient;
 import net.sourceforge.plantuml.graphic.StringBounder;
 import net.sourceforge.plantuml.graphic.StringBounderUtils;
-import net.sourceforge.plantuml.graphic.UnusedSpace;
 import net.sourceforge.plantuml.posimo.DotPath;
 import net.sourceforge.plantuml.svg.SvgGraphics;
 import net.sourceforge.plantuml.ugraphic.AbstractCommonUGraphic;
 import net.sourceforge.plantuml.ugraphic.AbstractUGraphic;
 import net.sourceforge.plantuml.ugraphic.ClipContainer;
 import net.sourceforge.plantuml.ugraphic.ColorMapper;
+import net.sourceforge.plantuml.ugraphic.UCenteredCharacter;
 import net.sourceforge.plantuml.ugraphic.UEllipse;
 import net.sourceforge.plantuml.ugraphic.UFont;
-import net.sourceforge.plantuml.ugraphic.UGroup;
 import net.sourceforge.plantuml.ugraphic.UImage;
+import net.sourceforge.plantuml.ugraphic.UImageSvg;
 import net.sourceforge.plantuml.ugraphic.ULine;
 import net.sourceforge.plantuml.ugraphic.UPath;
 import net.sourceforge.plantuml.ugraphic.UPolygon;
@@ -68,20 +66,18 @@ public class UGraphicSvg extends AbstractUGraphic<SvgGraphics> implements ClipCo
 
 	private final StringBounder stringBounder;
 	private final boolean textAsPath2;
-	
+
 	@Override
 	protected AbstractCommonUGraphic copyUGraphic() {
 		return new UGraphicSvg(this);
 	}
-	
+
 	private UGraphicSvg(UGraphicSvg other) {
 		super(other);
 		this.stringBounder = other.stringBounder;
 		this.textAsPath2 = other.textAsPath2;
 		register();
 	}
-
-
 
 	public UGraphicSvg(ColorMapper colorMapper, String backcolor, boolean textAsPath) {
 		this(colorMapper, new SvgGraphics(backcolor), textAsPath);
@@ -130,12 +126,12 @@ public class UGraphicSvg extends AbstractUGraphic<SvgGraphics> implements ClipCo
 		registerDriver(ULine.class, new DriverLineSvg(this));
 		registerDriver(UPolygon.class, new DriverPolygonSvg(this));
 		registerDriver(UEllipse.class, new DriverEllipseSvg());
-		registerDriver(UImage.class, new DriverImageSvg());
+		registerDriver(UImage.class, new DriverImagePng());
+		registerDriver(UImageSvg.class, new DriverImageSvgSvg());
 		registerDriver(UPath.class, new DriverPathSvg(this));
 		registerDriver(DotPath.class, new DriverDotPathSvg());
+		registerDriver(UCenteredCharacter.class, new DriverCenteredCharacterSvg());
 	}
-
-
 
 	public SvgGraphics getSvgGraphics() {
 		return this.getGraphicObject();
@@ -153,19 +149,6 @@ public class UGraphicSvg extends AbstractUGraphic<SvgGraphics> implements ClipCo
 		}
 	}
 
-	public void centerChar(double x, double y, char c, UFont font) {
-		final UnusedSpace unusedSpace = UnusedSpace.getUnusedSpace(font, c);
-
-		final double xpos = x - unusedSpace.getCenterX() - 0.5;
-		final double ypos = y - unusedSpace.getCenterY() - 0.5;
-
-		final TextLayout t = new TextLayout("" + c, font.getFont(), imDummy.getFontRenderContext());
-		getGraphicObject()
-				.setStrokeColor(StringUtils.getAsHtml(getColorMapper().getMappedColor(getParam().getColor())));
-		DriverTextAsPathSvg.drawPathIterator(getGraphicObject(), xpos + getTranslateXTOBEREMOVED(), ypos + getTranslateYTOBEREMOVED(), t
-				.getOutline(null).getPathIterator(null));
-	}
-
 	public void startUrl(Url url) {
 		getGraphicObject().openLink(url.getUrl(), url.getTooltip());
 	}
@@ -174,26 +157,9 @@ public class UGraphicSvg extends AbstractUGraphic<SvgGraphics> implements ClipCo
 		getGraphicObject().closeLink();
 	}
 
-	class SvgGroup implements UGroup {
-		public void draw(double x, double y, UShape shape) {
-		}
-
-		public void close() {
-		}
-
-		public void centerChar(double x, double y, char c, UFont font) {
-		}
-	}
-
-	@Override
-	public UGroup createGroup() {
-		return new SvgGroup();
-	}
-
 	public void writeImage(OutputStream os, String metadata, int dpi) throws IOException {
 		createXml(os);
 	}
-
 
 	// @Override
 	// public String startHiddenGroup() {

@@ -36,10 +36,9 @@ import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
 
 import net.sourceforge.plantuml.AbstractPSystem;
-import net.sourceforge.plantuml.CMapData;
 import net.sourceforge.plantuml.FileFormatOption;
-import net.sourceforge.plantuml.api.ImageData;
 import net.sourceforge.plantuml.api.ImageDataSimple;
+import net.sourceforge.plantuml.core.ImageData;
 import net.sourceforge.plantuml.cucadiagram.dot.Graphviz;
 import net.sourceforge.plantuml.cucadiagram.dot.GraphvizUtils;
 

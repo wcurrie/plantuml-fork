@@ -34,10 +34,13 @@
 package net.sourceforge.plantuml.svek.image;
 
 import java.awt.geom.Dimension2D;
+import java.util.Collections;
+import java.util.List;
 
 import net.sourceforge.plantuml.Dimension2DDouble;
 import net.sourceforge.plantuml.ISkinParam;
 import net.sourceforge.plantuml.SkinParamBackcolored;
+import net.sourceforge.plantuml.Url;
 import net.sourceforge.plantuml.cucadiagram.Display;
 import net.sourceforge.plantuml.graphic.HtmlColor;
 import net.sourceforge.plantuml.graphic.StringBounder;
@@ -49,7 +52,6 @@ import net.sourceforge.plantuml.skin.rose.Rose;
 import net.sourceforge.plantuml.svek.IEntityImage;
 import net.sourceforge.plantuml.svek.ShapeType;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
-import net.sourceforge.plantuml.ugraphic.UTranslate;
 
 public class EntityImageNoteLink implements IEntityImage {
 
@@ -60,17 +62,16 @@ public class EntityImageNoteLink implements IEntityImage {
 		comp = skin.createComponent(ComponentType.NOTE, null, new SkinParamBackcolored(skinParam, htmlColor), note);
 	}
 
-	public Dimension2D getDimension(StringBounder stringBounder) {
+	public Dimension2D calculateDimension(StringBounder stringBounder) {
 		final double height = comp.getPreferredHeight(stringBounder);
 		final double width = comp.getPreferredWidth(stringBounder);
 		return new Dimension2DDouble(width, height);
 	}
 
-	public void drawU(UGraphic ug, double xTheoricalPosition, double yTheoricalPosition) {
-		ug = ug.apply(new UTranslate(xTheoricalPosition, yTheoricalPosition));
-		comp.drawU(ug, new Area(getDimension(ug.getStringBounder())), new SimpleContext2D(false));
-
+	public void drawUNewWayINLINED(UGraphic ug) {
+		comp.drawU(ug, new Area(calculateDimension(ug.getStringBounder())), new SimpleContext2D(false));
 	}
+
 
 	public ShapeType getShapeType() {
 		return ShapeType.RECTANGLE;
@@ -86,6 +87,11 @@ public class EntityImageNoteLink implements IEntityImage {
 
 	public boolean isHidden() {
 		return false;
+	}
+
+	
+	final public List<Url> getUrls() {
+		return Collections.emptyList();
 	}
 
 }

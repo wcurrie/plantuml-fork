@@ -28,24 +28,58 @@
  *
  * Original Author:  Arnaud Roques
  *
- * Revision $Revision: 9885 $
+ * Revision $Revision: 10459 $
  *
  */
-package net.sourceforge.plantuml.api;
+package net.sourceforge.plantuml.core;
 
-// Remove CmapData and Dimension2D
-// Merge CucaDiagramFileMakerResult
-public interface ImageData {
+import java.io.IOException;
+import java.io.OutputStream;
 
-	public int getWidth();
+import net.sourceforge.plantuml.FileFormatOption;
 
-	public int getHeight();
 
-	public boolean containsData();
+/**
+ * Represents a single diagram.
+ * A Diagram could be a UML (sequence diagram, class diagram...) or an non-UML diagram.
+ * 
+ * @author Arnaud Roques
+ */
+public interface Diagram {
 
-	public String asString(String nameId);
+	/**
+	 * Export the diagram as an image to some format.
+	 * Note that a diagram could be drawn as several images (think about <code>new page</code>
+	 * for sequence diagram for example).
+	 * 
+	 * @param os	where to write the image
+	 * @param num	useually 0 (index of the image to be exported for this diagram).
+	 * @param fileFormat	file format to use
+	 * 
+	 * @return a description of the generated image
+	 * 
+	 * @throws IOException
+	 */
+	ImageData exportDiagram(OutputStream os, int num, FileFormatOption fileFormat) throws IOException;
+
+	/**
+	 * Number of images in this diagram (usually, 1)
+	 * 
+	 * @return usually 1
+	 */
+	int getNbImages();
+
+	String getDescription();
+
+	String getMetadata();
 	
-	public String getWarningOrError();
+	String getWarningOrError();
 
+	/**
+	 * The original source of the diagram
+	 * 
+	 * @return
+	 */
+	UmlSource getSource();
 
 }

@@ -31,27 +31,44 @@
  * Revision $Revision: 4768 $
  *
  */
-package net.sourceforge.plantuml.api;
+package net.sourceforge.plantuml.core;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Iterator;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import net.sourceforge.plantuml.DiagramType;
 import net.sourceforge.plantuml.StartUtils;
 import net.sourceforge.plantuml.cucadiagram.Display;
+import net.sourceforge.plantuml.version.IteratorCounter;
+import net.sourceforge.plantuml.version.IteratorCounterImpl;
 
-final public class UmlSource1317 {
+/**
+ * Represents the textual source of some diagram.
+ * The source should start with a <code>@startfoo</code> and end with <code>@endfoo</code>.
+ * <p>
+ * So the diagram does not have to be a UML one.
+ * 
+ * @author Arnaud Roques
+ *
+ */
+final public class UmlSource {
 
 	final private List<String> source;
 
-	public UmlSource1317(List<? extends CharSequence> source) {
+	/**
+	 * Build the source from a text.
+	 * 
+	 * @param source	the source of the diagram
+	 * @param checkEndingBackslash	<code>true</code> if an ending backslash means that a line has
+	 * to be collapsed with the following one.
+	 */
+	public UmlSource(List<? extends CharSequence> source, boolean checkEndingBackslash) {
 		final List<String> tmp = new ArrayList<String>();
-		final DiagramType type = null;
-		if (type == DiagramType.UML) {
+		// final DiagramType type =
+		// DiagramType.getTypeFromArobaseStart(source.get(0).toString());
+		if (checkEndingBackslash) {
 			final StringBuilder pending = new StringBuilder();
 			for (CharSequence cs : source) {
 				final String s = cs.toString();
@@ -71,10 +88,30 @@ final public class UmlSource1317 {
 		this.source = Collections.unmodifiableList(tmp);
 	}
 
-	public Iterator<String> iterator() {
-		return source.iterator();
+	/**
+	 * Retrieve the type of the diagram.
+	 * This is based on the first line <code>@startfoo</code>.
+	 * 
+	 * @return the type of the diagram.
+	 */
+	public DiagramType getDiagramType() {
+		return DiagramType.getTypeFromArobaseStart(source.get(0));
 	}
 
+	/**
+	 * Allows to iterator over the source.
+	 * 
+	 * @return a iterator that allow counting line number.
+	 */
+	public IteratorCounter iterator() {
+		return new IteratorCounterImpl(source.iterator());
+	}
+
+	/**
+	 * Return the source as a single String with <code>\n</code> as line separator.
+	 * 
+	 * @return the whole diagram source
+	 */
 	public String getPlainString() {
 		final StringBuilder sb = new StringBuilder();
 		for (String s : source) {
@@ -84,14 +121,31 @@ final public class UmlSource1317 {
 		return sb.toString();
 	}
 
+	/**
+	 * Return a specific line of the diagram description.
+	 * 
+	 * @param n		line number, starting at 0
+	 * @return
+	 */
 	public String getLine(int n) {
 		return source.get(n);
 	}
 
-	public int getSize() {
+	/**
+	 * Return the number of line in the diagram.
+	 * 
+	 * @return
+	 */
+	public int getTotalLineCount() {
 		return source.size();
 	}
 
+	/**
+	 * Check if a source diagram description is empty.
+	 * Does not take comment line into account.
+	 * 
+	 * @return <code>true<code> if the diagram does not contain information.
+	 */
 	public boolean isEmpty() {
 		for (String s : source) {
 			if (StartUtils.isArobaseStartDiagram(s)) {
@@ -110,6 +164,11 @@ final public class UmlSource1317 {
 		return true;
 	}
 
+	/**
+	 * Retrieve the title, if defined in the diagram source.
+	 * Never return <code>null</code>.
+	 * @return
+	 */
 	public Display getTitle() {
 		final Pattern p = Pattern.compile("(?i)^\\s*title\\s+(.+)$");
 		for (String s : source) {

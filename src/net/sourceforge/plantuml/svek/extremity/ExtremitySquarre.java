@@ -36,12 +36,12 @@ package net.sourceforge.plantuml.svek.extremity;
 import java.awt.geom.Point2D;
 
 import net.sourceforge.plantuml.graphic.HtmlColorUtils;
-import net.sourceforge.plantuml.graphic.UDrawable;
+import net.sourceforge.plantuml.ugraphic.UChangeBackColor;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
 import net.sourceforge.plantuml.ugraphic.URectangle;
 import net.sourceforge.plantuml.ugraphic.UStroke;
 
-class ExtremitySquarre extends Extremity implements UDrawable {
+class ExtremitySquarre extends Extremity {
 
 	private final Point2D dest;
 	private final double radius = 5;
@@ -50,12 +50,9 @@ class ExtremitySquarre extends Extremity implements UDrawable {
 		this.dest = new Point2D.Double(p1.getX(), p1.getY());
 	}
 
-	public void drawU(UGraphic ug, double x, double y) {
-		ug.getParam().setBackcolor(HtmlColorUtils.WHITE);
-		ug.getParam().setStroke(new UStroke(1.5));
-		ug.drawNewWay(x + dest.getX() - radius, y + dest.getY() - radius, new URectangle(radius * 2, radius * 2));
-		ug.getParam().setStroke(new UStroke());
-		ug.getParam().setBackcolor(null);
+	public void drawUNewWayINLINED(UGraphic ug) {
+		ug.apply(new UStroke(1.5)).apply(new UChangeBackColor(HtmlColorUtils.WHITE))
+		.drawNewWay(dest.getX() - radius, dest.getY() - radius, new URectangle(radius * 2, radius * 2));
 	}
 
 }

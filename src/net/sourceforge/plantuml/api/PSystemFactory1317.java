@@ -33,12 +33,13 @@
  */
 package net.sourceforge.plantuml.api;
 
-import net.sourceforge.plantuml.DiagramType;
-import net.sourceforge.plantuml.PSystem;
+import net.sourceforge.plantuml.core.Diagram;
+import net.sourceforge.plantuml.core.DiagramType;
+import net.sourceforge.plantuml.core.UmlSource;
 
 public interface PSystemFactory1317 {
 
-	PSystem createSystem(UmlSource1317 source);
+	Diagram createSystem(UmlSource source);
 
 	DiagramType getDiagramType();
 

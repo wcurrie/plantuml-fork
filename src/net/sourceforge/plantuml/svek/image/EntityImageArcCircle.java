@@ -50,6 +50,7 @@ import net.sourceforge.plantuml.graphic.TextBlockUtils;
 import net.sourceforge.plantuml.svek.AbstractEntityImage;
 import net.sourceforge.plantuml.svek.ShapeType;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
+import net.sourceforge.plantuml.ugraphic.UTranslate;
 
 public class EntityImageArcCircle extends AbstractEntityImage {
 
@@ -63,21 +64,24 @@ public class EntityImageArcCircle extends AbstractEntityImage {
 
 		final Stereotype stereotype = entity.getStereotype();
 
-		this.name = TextBlockUtils.create(entity.getDisplay(), new FontConfiguration(
-				SkinParamUtils.getFont(getSkinParam(), FontParam.COMPONENT, stereotype), SkinParamUtils.getFontColor(getSkinParam(), FontParam.COMPONENT, stereotype)),
+		this.name = TextBlockUtils.create(entity.getDisplay(),
+				new FontConfiguration(SkinParamUtils.getFont(getSkinParam(), FontParam.COMPONENT, stereotype),
+						SkinParamUtils.getFontColor(getSkinParam(), FontParam.COMPONENT, stereotype)),
 				HorizontalAlignement.CENTER, skinParam);
 
 		if (stereotype == null || stereotype.getLabel() == null) {
 			this.stereo = null;
 		} else {
-			this.stereo = TextBlockUtils.create(Display.getWithNewlines(stereotype.getLabel()),
-					new FontConfiguration(SkinParamUtils.getFont(getSkinParam(), FontParam.COMPONENT_STEREOTYPE, stereotype), SkinParamUtils.getFontColor(getSkinParam(), FontParam.COMPONENT_STEREOTYPE, null)), HorizontalAlignement.CENTER, skinParam);
+			this.stereo = TextBlockUtils.create(
+					Display.getWithNewlines(stereotype.getLabel()),
+					new FontConfiguration(SkinParamUtils.getFont(getSkinParam(), FontParam.COMPONENT_STEREOTYPE,
+							stereotype), SkinParamUtils.getFontColor(getSkinParam(), FontParam.COMPONENT_STEREOTYPE,
+							null)), HorizontalAlignement.CENTER, skinParam);
 		}
 
 	}
 
-	@Override
-	public Dimension2D getDimension(StringBounder stringBounder) {
+	public Dimension2D calculateDimension(StringBounder stringBounder) {
 		final Dimension2D dimName = name.calculateDimension(stringBounder);
 		final Dimension2D dimStereo = getStereoDimension(stringBounder);
 		// final Dimension2D circle = new Dimension2DDouble(SIZE, SIZE);
@@ -91,44 +95,28 @@ public class EntityImageArcCircle extends AbstractEntityImage {
 		return stereo.calculateDimension(stringBounder);
 	}
 
-	public void drawU(UGraphic ug, double xTheoricalPosition, double yTheoricalPosition) {
+	final public void drawUNewWayINLINED(UGraphic ug) {
 		final StringBounder stringBounder = ug.getStringBounder();
 		final Dimension2D dimStereo = getStereoDimension(stringBounder);
-		final Dimension2D dimTotal = getDimension(stringBounder);
+		final Dimension2D dimTotal = calculateDimension(stringBounder);
 		final Dimension2D dimName = name.calculateDimension(stringBounder);
 
-//		final double circleX = (dimTotal.getWidth() - SIZE) / 2;
-//		final double circleY = dimStereo.getHeight();
-//
-//		final UEllipse circle = new UEllipse(SIZE, SIZE);
-//		if (getSkinParam().shadowing()) {
-//			circle.setDeltaShadow(4);
-//		}
-//		ug.getParam().setStroke(new UStroke(2));
-//		ug.getParam().setColor(getColor(ColorParam.componentInterfaceBorder, getStereo()));
-//		ug.getParam().setBackcolor(getColor(ColorParam.componentInterfaceBackground, getStereo()));
-//		ug.draw(xTheoricalPosition + circleX, yTheoricalPosition + circleY, circle);
-//		ug.getParam().setStroke(new UStroke());
-
 		final double nameX = (dimTotal.getWidth() - dimName.getWidth()) / 2;
-		// final double nameY = SIZE + dimStereo.getHeight();
 		final double nameY = dimStereo.getHeight();
-		name.drawU(ug, xTheoricalPosition + nameX, yTheoricalPosition + nameY);
+		name.drawUNewWayINLINED(ug.apply(new UTranslate(nameX, nameY)));
 
 		if (stereo != null) {
 			final double stereoX = (dimTotal.getWidth() - dimStereo.getWidth()) / 2;
-			stereo.drawU(ug, xTheoricalPosition + stereoX, yTheoricalPosition);
+			stereo.drawUNewWayINLINED(ug.apply(new UTranslate(stereoX, 0)));
 		}
-
 	}
 
 	public ShapeType getShapeType() {
 		return ShapeType.RECTANGLE;
 	}
-	
+
 	public int getShield() {
 		return 0;
 	}
-
 
 }

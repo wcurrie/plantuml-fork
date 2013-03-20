@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 10041 $
+ * Revision $Revision: 10265 $
  *
  */
 package net.sourceforge.plantuml.skin.rose;
@@ -45,11 +45,14 @@ import net.sourceforge.plantuml.graphic.StringBounder;
 import net.sourceforge.plantuml.skin.Area;
 import net.sourceforge.plantuml.skin.ArrowConfiguration;
 import net.sourceforge.plantuml.skin.ArrowPart;
+import net.sourceforge.plantuml.ugraphic.UChangeBackColor;
+import net.sourceforge.plantuml.ugraphic.UChangeColor;
 import net.sourceforge.plantuml.ugraphic.UFont;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
 import net.sourceforge.plantuml.ugraphic.ULine;
 import net.sourceforge.plantuml.ugraphic.UPolygon;
 import net.sourceforge.plantuml.ugraphic.UStroke;
+import net.sourceforge.plantuml.ugraphic.UTranslate;
 
 public class ComponentRoseSelfArrow extends AbstractComponentRoseArrow {
 
@@ -66,11 +69,11 @@ public class ComponentRoseSelfArrow extends AbstractComponentRoseArrow {
 		final StringBounder stringBounder = ug.getStringBounder();
 		final double textHeight = getTextHeight(stringBounder);
 
-		ug.getParam().setColor(getForegroundColor());
+		ug = ug.apply(new UChangeColor(getForegroundColor()));
 		final double x2 = arrowWidth - 3;
 
 		if (getArrowConfiguration().isDotted()) {
-			stroke(ug, 2, 2);
+			ug = stroke(ug, 2, 2);
 		}
 
 		final double dx1 = area.getDeltaX1() < 0 ? area.getDeltaX1() : 0;
@@ -84,7 +87,7 @@ public class ComponentRoseSelfArrow extends AbstractComponentRoseArrow {
 		ug.drawNewWay(dx2, textAndArrowHeight, new ULine(x2 - dx2, 0));
 
 		if (getArrowConfiguration().isDotted()) {
-			ug.getParam().setStroke(new UStroke());
+			ug = ug.apply(new UStroke());
 		}
 
 		if (getArrowConfiguration().isAsync()) {
@@ -95,13 +98,11 @@ public class ComponentRoseSelfArrow extends AbstractComponentRoseArrow {
 				ug.drawNewWay(dx2, textAndArrowHeight, new ULine(getArrowDeltaX(), getArrowDeltaY()));
 			}
 		} else {
-			ug.getParam().setBackcolor(getForegroundColor());
 			final UPolygon polygon = getPolygon(textAndArrowHeight);
-			ug.drawNewWay(dx2, 0, polygon);
-			ug.getParam().setBackcolor(null);
+			ug.apply(new UChangeBackColor(getForegroundColor())).drawNewWay(dx2, 0, polygon);
 		}
 
-		getTextBlock().drawU(ug, getMarginX1(), 0);
+		getTextBlock().drawUNewWayINLINED(ug.apply(new UTranslate(getMarginX1(), 0)));
 	}
 
 	private UPolygon getPolygon(final double textAndArrowHeight) {

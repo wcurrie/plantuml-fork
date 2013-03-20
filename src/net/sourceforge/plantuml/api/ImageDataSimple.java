@@ -33,6 +33,8 @@
  */
 package net.sourceforge.plantuml.api;
 
+import net.sourceforge.plantuml.core.ImageData;
+
 public class ImageDataSimple implements ImageData {
 
 	private final int width;
@@ -55,11 +57,11 @@ public class ImageDataSimple implements ImageData {
 		return height;
 	}
 
-	public boolean containsData() {
+	public boolean containsCMapData() {
 		return false;
 	}
 
-	public String asString(String nameId) {
+	public String getCMapData(String nameId) {
 		throw new UnsupportedOperationException();
 	}
 	

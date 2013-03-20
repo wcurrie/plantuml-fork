@@ -48,8 +48,8 @@ import net.sourceforge.plantuml.FileFormatOption;
 import net.sourceforge.plantuml.UmlDiagram;
 import net.sourceforge.plantuml.UmlDiagramType;
 import net.sourceforge.plantuml.Url;
-import net.sourceforge.plantuml.api.ImageData;
 import net.sourceforge.plantuml.api.ImageDataSimple;
+import net.sourceforge.plantuml.core.ImageData;
 import net.sourceforge.plantuml.golem.MinMax;
 import net.sourceforge.plantuml.golem.Path;
 import net.sourceforge.plantuml.golem.Position;
@@ -61,11 +61,14 @@ import net.sourceforge.plantuml.graphic.HtmlColorUtils;
 import net.sourceforge.plantuml.graphic.StringBounder;
 import net.sourceforge.plantuml.graphic.TextBlock;
 import net.sourceforge.plantuml.ugraphic.ColorMapperIdentity;
+import net.sourceforge.plantuml.ugraphic.UChangeBackColor;
+import net.sourceforge.plantuml.ugraphic.UChangeColor;
 import net.sourceforge.plantuml.ugraphic.UEllipse;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
 import net.sourceforge.plantuml.ugraphic.UGraphicUtils;
 import net.sourceforge.plantuml.ugraphic.ULine;
 import net.sourceforge.plantuml.ugraphic.UShape;
+import net.sourceforge.plantuml.ugraphic.UTranslate;
 
 public class FlowDiagram extends UmlDiagram implements TextBlock {
 
@@ -121,7 +124,9 @@ public class FlowDiagram extends UmlDiagram implements TextBlock {
 		return new ImageDataSimple();
 	}
 
-	public void drawU(UGraphic ug, double x, double y) {
+	public void drawUNewWayINLINED(UGraphic ug) {
+		double x = 0;
+		double y = 0;
 		final MinMax minMax = getMinMax();
 		x -= minMax.getMinX() * SINGLE_SIZE_X;
 		y -= minMax.getMinY() * SINGLE_SIZE_Y;
@@ -135,10 +140,11 @@ public class FlowDiagram extends UmlDiagram implements TextBlock {
 			final Dimension2D dimBox = box.calculateDimension(stringBounder);
 			final double deltaX = SINGLE_SIZE_X * 2 - dimBox.getWidth();
 			final double deltaY = SINGLE_SIZE_Y * 2 - dimBox.getHeight();
-			box.drawU(ug, x + xmin * SINGLE_SIZE_X + deltaX / 2, y + ymin * SINGLE_SIZE_Y + deltaY / 2);
+			box.drawUNewWayINLINED(ug.apply(new UTranslate((x + xmin * SINGLE_SIZE_X + deltaX / 2), (y + ymin
+					* SINGLE_SIZE_Y + deltaY / 2))));
 		}
-		ug.getParam().setColor(HtmlColorUtils.getColorIfValid("#A80036"));
-		ug.getParam().setBackcolor(HtmlColorUtils.getColorIfValid("#A80036"));
+		ug = ug.apply(new UChangeColor(HtmlColorUtils.getColorIfValid("#A80036")));
+		ug = ug.apply(new UChangeBackColor(HtmlColorUtils.getColorIfValid("#A80036")));
 		final UShape arrow = new UEllipse(7, 7);
 		for (Path p : field.getPaths()) {
 			final TileArea start = p.getStart();

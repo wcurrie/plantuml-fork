@@ -40,6 +40,7 @@ import net.sourceforge.plantuml.ColorParam;
 import net.sourceforge.plantuml.Dimension2DDouble;
 import net.sourceforge.plantuml.FontParam;
 import net.sourceforge.plantuml.ISkinParam;
+import net.sourceforge.plantuml.LineConfigurable;
 import net.sourceforge.plantuml.SkinParamUtils;
 import net.sourceforge.plantuml.Url;
 import net.sourceforge.plantuml.cucadiagram.ILeaf;
@@ -50,11 +51,13 @@ import net.sourceforge.plantuml.graphic.TextBlock;
 import net.sourceforge.plantuml.svek.AbstractEntityImage;
 import net.sourceforge.plantuml.svek.ShapeType;
 import net.sourceforge.plantuml.ugraphic.Shadowable;
+import net.sourceforge.plantuml.ugraphic.UChangeBackColor;
+import net.sourceforge.plantuml.ugraphic.UChangeColor;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
 import net.sourceforge.plantuml.ugraphic.UGraphicHorizontalLine;
-import net.sourceforge.plantuml.ugraphic.UGroup;
 import net.sourceforge.plantuml.ugraphic.URectangle;
 import net.sourceforge.plantuml.ugraphic.UStroke;
+import net.sourceforge.plantuml.ugraphic.UTranslate;
 
 public class EntityImageClass extends AbstractEntityImage {
 
@@ -65,8 +68,11 @@ public class EntityImageClass extends AbstractEntityImage {
 	final private TextBlock mouseOver;
 	final private double roundCorner;
 
+	final private LineConfigurable lineConfig;
+
 	public EntityImageClass(ILeaf entity, ISkinParam skinParam, PortionShower portionShower) {
 		super(entity, skinParam);
+		this.lineConfig = entity;
 		this.roundCorner = skinParam.getRoundCorner();
 		this.shield = entity.hasNearDecoration() ? 16 : 0;
 		this.body = entity.getBody(portionShower).asTextBlock(FontParam.CLASS_ATTRIBUTE, skinParam);
@@ -83,41 +89,42 @@ public class EntityImageClass extends AbstractEntityImage {
 
 	// private int marginEmptyFieldsOrMethod = 13;
 
-	@Override
-	public Dimension2D getDimension(StringBounder stringBounder) {
-		final Dimension2D dimHeader = header.getDimension(stringBounder);
+	public Dimension2D calculateDimension(StringBounder stringBounder) {
+		final Dimension2D dimHeader = header.calculateDimension(stringBounder);
 		final Dimension2D dimBody = body == null ? new Dimension2DDouble(0, 0) : body.calculateDimension(stringBounder);
 		final double width = Math.max(dimBody.getWidth(), dimHeader.getWidth());
 		final double height = dimBody.getHeight() + dimHeader.getHeight();
 		return new Dimension2DDouble(width, height);
 	}
 
-	public void drawU(UGraphic ug, double xTheoricalPosition, double yTheoricalPosition) {
+	final public void drawUNewWayINLINED(UGraphic ug) {
 		if (url.size() > 0 && url.get(0).isMember() == false) {
 			ug.startUrl(url.get(0));
 		}
-		drawInternal(ug, xTheoricalPosition, yTheoricalPosition);
+		drawInternal(ug);
 		if (mouseOver != null) {
-			final UGroup g = ug.createGroup();
-			ug.getParam().setBackcolor(SkinParamUtils.getColor(getSkinParam(), ColorParam.classBackground, getStereo()));
-			final Dimension2D dim = mouseOver.calculateDimension(ug.getStringBounder());
-			final Shadowable rect = new URectangle(dim.getWidth(), dim.getHeight());
-			if (getSkinParam().shadowing()) {
-				rect.setDeltaShadow(4);
-			}
-
-			final HtmlColor classBorder = SkinParamUtils.getColor(getSkinParam(), ColorParam.classBorder, getStereo());
-			ug.getParam().setColor(classBorder);
-			ug.getParam().setBackcolor(SkinParamUtils.getColor(getSkinParam(), ColorParam.classBackground, getStereo()));
-
-			final double x = xTheoricalPosition + 30;
-			final double y = yTheoricalPosition + 30;
-			ug.getParam().setStroke(new UStroke(1.5));
-			g.draw(x, y, rect);
-			ug.getParam().setStroke(new UStroke());
-			final UGraphic ug2 = new UGraphicHorizontalLine(ug, x, x + dim.getWidth());
-			mouseOver.drawU(ug2, x, y);
-			g.close();
+//			final UGroup g = ug.createGroup();
+//			ug = ug.apply(new UChangeBackColor(SkinParamUtils.getColor(getSkinParam(), ColorParam.classBackground,
+//					getStereo())));
+//			final Dimension2D dim = mouseOver.calculateDimension(ug.getStringBounder());
+//			final Shadowable rect = new URectangle(dim.getWidth(), dim.getHeight());
+//			if (getSkinParam().shadowing()) {
+//				rect.setDeltaShadow(4);
+//			}
+//
+//			final HtmlColor classBorder = SkinParamUtils.getColor(getSkinParam(), ColorParam.classBorder, getStereo());
+//			ug = ug.apply(
+//					new UChangeBackColor(SkinParamUtils.getColor(getSkinParam(), ColorParam.classBackground,
+//							getStereo()))).apply(new UChangeColor(classBorder));
+//
+//			final double x = 30;
+//			final double y = 30;
+//			// ug.getParam().setStroke(new UStroke(1.5));
+//			// g.draw(x, y, rect);
+//			// ug.getParam().resetStroke();
+//			final UGraphic ug2 = new UGraphicHorizontalLine(ug, x, x + dim.getWidth(), getStroke());
+//			mouseOver.drawUNewWayINLINED(ug2.apply(new UTranslate(x, y)));
+//			g.close();
 		}
 
 		if (url.size() > 0 && url.get(0).isMember() == false) {
@@ -125,10 +132,10 @@ public class EntityImageClass extends AbstractEntityImage {
 		}
 	}
 
-	private void drawInternal(UGraphic ug, double xTheoricalPosition, double yTheoricalPosition) {
+	private void drawInternal(UGraphic ug) {
 		final StringBounder stringBounder = ug.getStringBounder();
-		final Dimension2D dimTotal = getDimension(stringBounder);
-		final Dimension2D dimHeader = header.getDimension(stringBounder);
+		final Dimension2D dimTotal = calculateDimension(stringBounder);
+		final Dimension2D dimHeader = header.calculateDimension(stringBounder);
 
 		final double widthTotal = dimTotal.getWidth();
 		final double heightTotal = dimTotal.getHeight();
@@ -137,32 +144,34 @@ public class EntityImageClass extends AbstractEntityImage {
 			rect.setDeltaShadow(4);
 		}
 
-		final HtmlColor classBorder = SkinParamUtils.getColor(getSkinParam(), ColorParam.classBorder, getStereo());
-		ug.getParam().setColor(classBorder);
+		HtmlColor classBorder = lineConfig.getSpecificLineColor();
+		if (classBorder == null) {
+			classBorder = SkinParamUtils.getColor(getSkinParam(), ColorParam.classBorder, getStereo());
+		}
+		ug = ug.apply(new UChangeColor(classBorder));
 		HtmlColor backcolor = getEntity().getSpecificBackColor();
 		if (backcolor == null) {
 			backcolor = SkinParamUtils.getColor(getSkinParam(), ColorParam.classBackground, getStereo());
 		}
-		ug.getParam().setBackcolor(backcolor);
+		ug = ug.apply(new UChangeBackColor(backcolor));
 
-		double x = xTheoricalPosition;
-		double y = yTheoricalPosition;
-		ug.getParam().setStroke(new UStroke(1.5));
-		ug.drawNewWay(x, y, rect);
-		ug.getParam().setStroke(new UStroke());
+		final UStroke stroke = getStroke();
+		ug.apply(stroke).drawNewWay(0, 0, rect);
 
-		ug.getParam().setBackcolor(backcolor);
-		header.drawU(ug, x, y, dimTotal.getWidth(), dimHeader.getHeight());
+		header.drawU(ug, dimTotal.getWidth(), dimHeader.getHeight());
 
-		y += dimHeader.getHeight();
-
-		x = xTheoricalPosition;
 		if (body != null) {
-			ug.getParam().setBackcolor(backcolor);
-			ug.getParam().setColor(classBorder);
-			final UGraphic ug2 = new UGraphicHorizontalLine(ug, x, x + widthTotal);
-			body.drawU(ug2, x, y);
+			final UGraphic ug2 = new UGraphicHorizontalLine(ug, 0, widthTotal, stroke);
+			body.drawUNewWayINLINED(ug2.apply(new UTranslate(0, dimHeader.getHeight())));
 		}
+	}
+
+	private UStroke getStroke() {
+		UStroke stroke = lineConfig.getSpecificLineStroke();
+		if (stroke == null) {
+			stroke = new UStroke(1.5);
+		}
+		return stroke;
 	}
 
 	public ShapeType getShapeType() {

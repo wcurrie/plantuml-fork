@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 10018 $
+ * Revision $Revision: 10459 $
  *
  */
 package net.sourceforge.plantuml.sudoku;
@@ -37,9 +37,8 @@ import java.io.IOException;
 import java.io.OutputStream;
 
 import net.sourceforge.plantuml.AbstractPSystem;
-import net.sourceforge.plantuml.CMapData;
 import net.sourceforge.plantuml.FileFormatOption;
-import net.sourceforge.plantuml.api.ImageData;
+import net.sourceforge.plantuml.core.ImageData;
 
 public class PSystemSudoku extends AbstractPSystem {
 

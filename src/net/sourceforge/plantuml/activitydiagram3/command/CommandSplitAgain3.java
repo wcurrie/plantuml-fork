@@ -28,42 +28,35 @@
  *
  * Original Author:  Arnaud Roques
  *
- * Revision $Revision: 4768 $
+ * Revision $Revision: 4762 $
  *
  */
-package net.sourceforge.plantuml;
+package net.sourceforge.plantuml.activitydiagram3.command;
 
-public enum DiagramType {
-	UML, DITAA, DOT, PROJECT, JCCKIT, SALT, TURING, FLOW, UNKNOWN;
+import net.sourceforge.plantuml.activitydiagram3.ActivityDiagram3;
+import net.sourceforge.plantuml.command.CommandExecutionResult;
+import net.sourceforge.plantuml.command.SingleLineCommand2;
+import net.sourceforge.plantuml.command.regex.RegexConcat;
+import net.sourceforge.plantuml.command.regex.RegexLeaf;
+import net.sourceforge.plantuml.command.regex.RegexResult;
 
-	static DiagramType getTypeFromArobaseStart(String s) {
-//		if (s.startsWith("@startuml2")) {
-//			return UML2;
-//		}
-		if (s.startsWith("@startuml")) {
-			return UML;
-		}
-		if (s.startsWith("@startdot")) {
-			return DOT;
-		}
-		if (s.startsWith("@startjcckit")) {
-			return JCCKIT;
-		}
-		if (s.startsWith("@startditaa")) {
-			return DITAA;
-		}
-		if (s.startsWith("@startproject")) {
-			return PROJECT;
-		}
-		if (s.startsWith("@startsalt")) {
-			return SALT;
-		}
-		if (s.startsWith("@startturing")) {
-			return TURING;
-		}
-		if (s.startsWith("@startflow")) {
-			return FLOW;
-		}
-		return UNKNOWN;
+public class CommandSplitAgain3 extends SingleLineCommand2<ActivityDiagram3> {
+
+	public CommandSplitAgain3(ActivityDiagram3 diagram) {
+		super(diagram, getRegexConcat());
 	}
+
+	static RegexConcat getRegexConcat() {
+		return new RegexConcat(//
+				new RegexLeaf("^"), //
+				new RegexLeaf("split ?again"), //
+				new RegexLeaf(";?$"));
+	}
+
+	@Override
+	protected CommandExecutionResult executeArg(RegexResult arg) {
+		return getSystem().splitAgain();
+
+	}
+
 }

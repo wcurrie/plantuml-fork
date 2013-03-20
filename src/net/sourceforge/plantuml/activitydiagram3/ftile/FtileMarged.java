@@ -41,6 +41,7 @@ import net.sourceforge.plantuml.Url;
 import net.sourceforge.plantuml.activitydiagram3.LinkRendering;
 import net.sourceforge.plantuml.graphic.StringBounder;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
+import net.sourceforge.plantuml.ugraphic.UTranslate;
 
 public class FtileMarged implements Ftile {
 
@@ -52,8 +53,8 @@ public class FtileMarged implements Ftile {
 		this.marge = marge;
 	}
 
-	public void drawU(UGraphic ug, double x, double y) {
-		tile.drawU(ug, x + marge, y);
+	public void drawUNewWayINLINED(UGraphic ug) {
+		tile.drawUNewWayINLINED(ug.apply(new UTranslate(marge, 0)));
 	}
 
 	public Dimension2D calculateDimension(StringBounder stringBounder) {

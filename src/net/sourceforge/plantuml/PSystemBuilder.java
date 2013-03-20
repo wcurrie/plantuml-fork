@@ -42,6 +42,9 @@ import net.sourceforge.plantuml.activitydiagram.ActivityDiagramFactory;
 import net.sourceforge.plantuml.activitydiagram3.ActivityDiagramFactory3;
 import net.sourceforge.plantuml.classdiagram.ClassDiagramFactory;
 import net.sourceforge.plantuml.compositediagram.CompositeDiagramFactory;
+import net.sourceforge.plantuml.core.Diagram;
+import net.sourceforge.plantuml.core.DiagramType;
+import net.sourceforge.plantuml.core.UmlSource;
 import net.sourceforge.plantuml.descdiagram.DescriptionDiagramFactory;
 import net.sourceforge.plantuml.directdot.PSystemDotFactory;
 import net.sourceforge.plantuml.ditaa.PSystemDitaaFactory;
@@ -71,18 +74,20 @@ import net.sourceforge.plantuml.version.PSystemVersionFactory;
 
 public class PSystemBuilder {
 
-	final public PSystem createPSystem(final List<? extends CharSequence> strings) {
+	final public Diagram createPSystem(final List<? extends CharSequence> strings) {
 
 		final List<PSystemFactory> factories = getAllFactories();
 
-		final UmlSource umlSource = new UmlSource(strings);
+		final DiagramType type = DiagramType.getTypeFromArobaseStart(strings.get(0).toString());
+
+		final UmlSource umlSource = new UmlSource(strings, type == DiagramType.UML);
 		final DiagramType diagramType = umlSource.getDiagramType();
 		final List<PSystemError> errors = new ArrayList<PSystemError>();
 		for (PSystemFactory systemFactory : factories) {
 			if (diagramType != systemFactory.getDiagramType()) {
 				continue;
 			}
-			final PSystem sys = new PSystemSingleBuilder(umlSource, systemFactory).getPSystem();
+			final Diagram sys = new PSystemSingleBuilder(umlSource, systemFactory).getPSystem();
 			if (isOk(sys)) {
 				return sys;
 			}
@@ -155,7 +160,7 @@ public class PSystemBuilder {
 		return new PSystemError(source, errors);
 	}
 
-	private boolean isOk(PSystem ps) {
+	private boolean isOk(Diagram ps) {
 		if (ps == null || ps instanceof PSystemError) {
 			return false;
 		}

@@ -206,7 +206,7 @@ public class SequenceDiagramFileMakerPuma implements FileMaker {
 			delta = page.getNewpage1() - page.getHeaderHeight();
 		}
 		if (delta < 0) {
-			throw new IllegalArgumentException();
+			delta = 0;
 		}
 
 		final SequenceDiagramArea area = new SequenceDiagramArea(diagramWidth, page.getHeight());
@@ -334,7 +334,7 @@ public class SequenceDiagramFileMakerPuma implements FileMaker {
 		if (text == null) {
 			return;
 		}
-		text.drawU(ug, area.getFooterX(diagram.getFooterAlignement()), area.getFooterY());
+		text.drawUNewWayINLINED(ug.apply(new UTranslate(area.getFooterX(diagram.getFooterAlignement()), area.getFooterY())));
 	}
 
 	private void addHeader3(SequenceDiagramArea area, UGraphic ug) {
@@ -347,7 +347,7 @@ public class SequenceDiagramFileMakerPuma implements FileMaker {
 		if (text == null) {
 			return;
 		}
-		text.drawU(ug, area.getHeaderX(diagram.getHeaderAlignement()), area.getHeaderY());
+		text.drawUNewWayINLINED(ug.apply(new UTranslate(area.getHeaderX(diagram.getHeaderAlignement()), area.getHeaderY())));
 	}
 
 	public static StringBounder getDummystringbounder() {

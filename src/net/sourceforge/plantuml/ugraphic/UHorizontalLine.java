@@ -35,7 +35,6 @@ package net.sourceforge.plantuml.ugraphic;
 
 import java.awt.geom.Dimension2D;
 
-import net.sourceforge.plantuml.graphic.HtmlColor;
 import net.sourceforge.plantuml.graphic.TextBlock;
 
 public class UHorizontalLine implements UShape {
@@ -44,41 +43,42 @@ public class UHorizontalLine implements UShape {
 	private final double skipAtEnd;
 	private final TextBlock title;
 	private final boolean blankTitle;
+	private final UStroke stroke;
 
-	private UHorizontalLine() {
-		this(0, 0, null, false);
-	}
-
-	public UHorizontalLine(double skipAtStart, double skipAtEnd, TextBlock title, boolean blankTitle) {
+	private UHorizontalLine(double skipAtStart, double skipAtEnd, TextBlock title, boolean blankTitle, UStroke stroke) {
 		this.skipAtEnd = skipAtEnd;
 		this.skipAtStart = skipAtStart;
 		this.title = title;
 		this.blankTitle = blankTitle;
+		this.stroke = stroke;
 	}
 
-	public static UHorizontalLine infinite(double skipAtStart, double skipAtEnd) {
-		return new UHorizontalLine(skipAtStart, skipAtEnd, null, false);
+	public static UHorizontalLine infinite(double skipAtStart, double skipAtEnd, UStroke stroke) {
+		return new UHorizontalLine(skipAtStart, skipAtEnd, null, false, stroke);
 	}
 
-	public static UHorizontalLine infinite(double skipAtStart, double skipAtEnd, TextBlock title) {
-		return new UHorizontalLine(skipAtStart, skipAtEnd, title, false);
+	public static UHorizontalLine infinite(double skipAtStart, double skipAtEnd, TextBlock title, UStroke stroke) {
+		return new UHorizontalLine(skipAtStart, skipAtEnd, title, false, stroke);
 	}
 
-	static public UHorizontalLine infinite() {
-		return new UHorizontalLine();
+	static public UHorizontalLine infinite(UStroke stroke) {
+		return new UHorizontalLine(0, 0, null, false, stroke);
 	}
 
-	public void drawLine(UGraphic ug, double startingX, double endingX, double y) {
+	public void drawLine(UGraphic ug, double startingX, double endingX, double y, UStroke defaultStroke) {
 		final double widthToUse = endingX - startingX;
+		final UStroke strokeToUse = stroke == null ? defaultStroke : stroke;
 		if (title == null) {
-			ug.drawNewWay(startingX + skipAtStart, y, new ULine(widthToUse - skipAtStart - skipAtEnd, 0));
+			ug.apply(strokeToUse).drawNewWay(startingX + skipAtStart, y,
+					new ULine(widthToUse - skipAtStart - skipAtEnd, 0));
 			return;
 		}
 		final Dimension2D dimTitle = title.calculateDimension(ug.getStringBounder());
 		final double space = (widthToUse - dimTitle.getWidth()) / 2;
-		ug.drawNewWay(startingX + skipAtStart - 1, y, new ULine(space - skipAtEnd - skipAtEnd, 0));
+		ug.apply(strokeToUse).drawNewWay(startingX + skipAtStart - 1, y, new ULine(space - skipAtEnd - skipAtEnd, 0));
 		drawTitle(ug, startingX, endingX, y, false);
-		ug.drawNewWay(startingX + skipAtStart + widthToUse - space, y, new ULine(space - skipAtStart - skipAtEnd, 0));
+		ug.apply(strokeToUse).drawNewWay(startingX + skipAtStart + widthToUse - space, y,
+				new ULine(space - skipAtStart - skipAtEnd, 0));
 	}
 
 	public void drawTitle(UGraphic ug, double startingX, double endingX, double y, boolean clearArea) {
@@ -86,20 +86,22 @@ public class UHorizontalLine implements UShape {
 			return;
 		}
 		final double widthToUse = endingX - startingX;
-		final HtmlColor color = ug.getParam().getColor();
 		final Dimension2D dimTitle = title.calculateDimension(ug.getStringBounder());
 		final double space = (widthToUse - dimTitle.getWidth()) / 2;
 		final double x1 = startingX + space;
 		final double y1 = y - dimTitle.getHeight() / 2 - 0.5;
 		if (clearArea) {
-			ug.drawNewWay(x1, y1, new URectangle(dimTitle.getWidth(), dimTitle.getHeight()));
+			ug.apply(stroke).drawNewWay(x1, y1, new URectangle(dimTitle.getWidth(), dimTitle.getHeight()));
 		}
-		title.drawU(ug, x1, y1);
-		ug.getParam().setColor(color);
+		title.drawUNewWayINLINED(ug.apply(new UTranslate(x1, y1)));
 	}
 
 	public UHorizontalLine blankTitle() {
-		return new UHorizontalLine(skipAtStart, skipAtEnd, title, true);
+		return new UHorizontalLine(skipAtStart, skipAtEnd, title, true, stroke);
+	}
+
+	public UStroke getStroke() {
+		return stroke;
 	}
 
 }

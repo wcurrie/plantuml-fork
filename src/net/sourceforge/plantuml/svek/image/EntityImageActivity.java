@@ -53,9 +53,12 @@ import net.sourceforge.plantuml.graphic.TextBlockUtils;
 import net.sourceforge.plantuml.svek.AbstractEntityImage;
 import net.sourceforge.plantuml.svek.ShapeType;
 import net.sourceforge.plantuml.ugraphic.Shadowable;
+import net.sourceforge.plantuml.ugraphic.UChangeBackColor;
+import net.sourceforge.plantuml.ugraphic.UChangeColor;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
 import net.sourceforge.plantuml.ugraphic.URectangle;
 import net.sourceforge.plantuml.ugraphic.UStroke;
+import net.sourceforge.plantuml.ugraphic.UTranslate;
 
 public class EntityImageActivity extends AbstractEntityImage {
 
@@ -68,22 +71,24 @@ public class EntityImageActivity extends AbstractEntityImage {
 		super(entity, skinParam);
 		final Stereotype stereotype = entity.getStereotype();
 
-		this.desc = TextBlockUtils.create(entity.getDisplay(), new FontConfiguration(SkinParamUtils.getFont(getSkinParam(), FontParam.ACTIVITY, stereotype), SkinParamUtils.getFontColor(getSkinParam(), FontParam.ACTIVITY, stereotype)), HorizontalAlignement.CENTER, skinParam);
+		this.desc = TextBlockUtils.create(entity.getDisplay(),
+				new FontConfiguration(SkinParamUtils.getFont(getSkinParam(), FontParam.ACTIVITY, stereotype),
+						SkinParamUtils.getFontColor(getSkinParam(), FontParam.ACTIVITY, stereotype)),
+				HorizontalAlignement.CENTER, skinParam);
 		this.url = entity.getUrls();
 	}
 
-	@Override
-	public Dimension2D getDimension(StringBounder stringBounder) {
+	public Dimension2D calculateDimension(StringBounder stringBounder) {
 		final Dimension2D dim = desc.calculateDimension(stringBounder);
 		return Dimension2DDouble.delta(dim, MARGIN * 2);
 	}
 
-	public void drawU(UGraphic ug, double xTheoricalPosition, double yTheoricalPosition) {
-		if (url.size()>0) {
+	final public void drawUNewWayINLINED(UGraphic ug) {
+		if (url.size() > 0) {
 			ug.startUrl(url.get(0));
 		}
 		final StringBounder stringBounder = ug.getStringBounder();
-		final Dimension2D dimTotal = getDimension(stringBounder);
+		final Dimension2D dimTotal = calculateDimension(stringBounder);
 
 		final double widthTotal = dimTotal.getWidth();
 		final double heightTotal = dimTotal.getHeight();
@@ -92,21 +97,17 @@ public class EntityImageActivity extends AbstractEntityImage {
 			rect.setDeltaShadow(4);
 		}
 
-		ug.getParam().setStroke(new UStroke(1.5));
-		ug.getParam().setColor(SkinParamUtils.getColor(getSkinParam(), ColorParam.activityBorder, getStereo()));
+		ug = ug.apply(new UChangeColor(SkinParamUtils.getColor(getSkinParam(), ColorParam.activityBorder, getStereo())));
 		HtmlColor backcolor = getEntity().getSpecificBackColor();
 		if (backcolor == null) {
 			backcolor = SkinParamUtils.getColor(getSkinParam(), ColorParam.activityBackground, getStereo());
 		}
-		ug.getParam().setBackcolor(backcolor);
+		ug = ug.apply(new UChangeBackColor(backcolor));
 
-		ug.drawNewWay(xTheoricalPosition, yTheoricalPosition, rect);
-		ug.getParam().setStroke(new UStroke());
+		ug.apply(new UStroke(1.5)).drawOldWay(rect);
 
-		final double x = xTheoricalPosition + MARGIN;
-		final double y = yTheoricalPosition + MARGIN;
-		desc.drawU(ug, x, y);
-		if (url.size()>0) {
+		desc.drawUNewWayINLINED(ug.apply(new UTranslate(MARGIN, MARGIN)));
+		if (url.size() > 0) {
 			ug.closeAction();
 		}
 	}

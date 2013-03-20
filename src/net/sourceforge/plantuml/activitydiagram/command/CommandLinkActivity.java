@@ -42,6 +42,7 @@ import net.sourceforge.plantuml.command.CommandExecutionResult;
 import net.sourceforge.plantuml.command.SingleLineCommand2;
 import net.sourceforge.plantuml.command.regex.RegexConcat;
 import net.sourceforge.plantuml.command.regex.RegexLeaf;
+import net.sourceforge.plantuml.command.regex.RegexOptional;
 import net.sourceforge.plantuml.command.regex.RegexOr;
 import net.sourceforge.plantuml.command.regex.RegexPartialMatch;
 import net.sourceforge.plantuml.command.regex.RegexResult;
@@ -64,11 +65,12 @@ public class CommandLinkActivity extends SingleLineCommand2<ActivityDiagram> {
 
 	static RegexConcat getRegexConcat() {
 		return new RegexConcat(new RegexLeaf("^"), //
-				new RegexOr("FIRST", true, //
-						new RegexLeaf("STAR", "(\\(\\*(top)?\\))"), //
-						new RegexLeaf("CODE", "([\\p{L}0-9][\\p{L}0-9_.]*)"), //
-						new RegexLeaf("BAR", "(?:==+)\\s*([\\p{L}0-9_.]+)\\s*(?:==+)"), //
-						new RegexLeaf("QUOTED", "\"([^\"]+)\"(?:\\s+as\\s+([\\p{L}0-9_.]+))?")), //
+				new RegexOptional(//
+						new RegexOr("FIRST", //
+								new RegexLeaf("STAR", "(\\(\\*(top)?\\))"), //
+								new RegexLeaf("CODE", "([\\p{L}0-9][\\p{L}0-9_.]*)"), //
+								new RegexLeaf("BAR", "(?:==+)\\s*([\\p{L}0-9_.]+)\\s*(?:==+)"), //
+								new RegexLeaf("QUOTED", "\"([^\"]+)\"(?:\\s+as\\s+([\\p{L}0-9_.]+))?"))), //
 				new RegexLeaf("\\s*"), //
 				new RegexLeaf("STEREOTYPE", "(\\<\\<.*\\>\\>)?"), //
 				new RegexLeaf("\\s*"), //
@@ -175,8 +177,8 @@ public class CommandLinkActivity extends SingleLineCommand2<ActivityDiagram> {
 		final Code code = Code.of(arg.get("CODE" + suf, 0));
 		if (code != null) {
 			if (partition != null) {
-				system.getOrCreateGroup(Code.of(partition), Display.getWithNewlines(partition), null, GroupType.PACKAGE,
-						system.getRootGroup());
+				system.getOrCreateGroup(Code.of(partition), Display.getWithNewlines(partition), null,
+						GroupType.PACKAGE, system.getRootGroup());
 			}
 			final IEntity result = system.getOrCreate(code, Display.getWithNewlines(code),
 					getTypeIfExisting(system, code));
@@ -193,8 +195,8 @@ public class CommandLinkActivity extends SingleLineCommand2<ActivityDiagram> {
 		if (quoted.get(0) != null) {
 			final Code quotedCode = Code.of(quoted.get(1) == null ? quoted.get(0) : quoted.get(1));
 			if (partition != null) {
-				system.getOrCreateGroup(Code.of(partition), Display.getWithNewlines(partition), null, GroupType.PACKAGE,
-						system.getRootGroup());
+				system.getOrCreateGroup(Code.of(partition), Display.getWithNewlines(partition), null,
+						GroupType.PACKAGE, system.getRootGroup());
 			}
 			final IEntity result = system.getOrCreate(quotedCode, Display.getWithNewlines(quoted.get(0)),
 					getTypeIfExisting(system, quotedCode));
@@ -204,12 +206,13 @@ public class CommandLinkActivity extends SingleLineCommand2<ActivityDiagram> {
 			return result;
 		}
 		final Code quotedInvisible = Code.of(arg.get("QUOTED_INVISIBLE" + suf, 0));
-		if (quotedInvisible !=  null) {
+		if (quotedInvisible != null) {
 			if (partition != null) {
-				system.getOrCreateGroup(Code.of(partition), Display.getWithNewlines(partition), null, GroupType.PACKAGE,
-						system.getRootGroup());
+				system.getOrCreateGroup(Code.of(partition), Display.getWithNewlines(partition), null,
+						GroupType.PACKAGE, system.getRootGroup());
 			}
-			final IEntity result = system.getOrCreate(quotedInvisible, Display.getWithNewlines(quotedInvisible), LeafType.ACTIVITY);
+			final IEntity result = system.getOrCreate(quotedInvisible, Display.getWithNewlines(quotedInvisible),
+					LeafType.ACTIVITY);
 			if (partition != null) {
 				system.endGroup();
 			}

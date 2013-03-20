@@ -28,20 +28,22 @@
  *
  * Original Author:  Arnaud Roques
  *
- * Revision $Revision: 9786 $
+ * Revision $Revision: 10298 $
  *
  */
 package net.sourceforge.plantuml;
 
 import java.io.File;
 
+import net.sourceforge.plantuml.core.Diagram;
+
 public class GeneratedImage implements Comparable<GeneratedImage> {
 
 	private final File pngFile;
 	private final String description;
-	private final PSystem system;
+	private final Diagram system;
 
-	public GeneratedImage(File pngFile, String description, PSystem system) {
+	public GeneratedImage(File pngFile, String description, Diagram system) {
 		this.system = system;
 		this.pngFile = pngFile;
 		this.description = description;

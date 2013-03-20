@@ -42,6 +42,7 @@ import net.sourceforge.plantuml.Url;
 import net.sourceforge.plantuml.graphic.StringBounder;
 import net.sourceforge.plantuml.graphic.TextBlock;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
+import net.sourceforge.plantuml.ugraphic.UTranslate;
 
 class RowOverwrite implements Row {
 
@@ -56,12 +57,12 @@ class RowOverwrite implements Row {
 	public TextBlock asTextBloc(final TimeConverter timeConverter) {
 		return new TextBlock() {
 
-			public void drawU(UGraphic ug, double x, double y) {
+			public void drawUNewWayINLINED(UGraphic ug) {
 				final double minX = getMinXwithoutHeader(timeConverter);
 				final double minXr1 = r1.getMinXwithoutHeader(timeConverter);
 				final double minXr2 = r2.getMinXwithoutHeader(timeConverter);
-				r1.asTextBloc(timeConverter).drawU(ug, x + (minXr1 - minX), y);
-				r2.asTextBloc(timeConverter).drawU(ug, x + (minXr2 - minX), y);
+				r1.asTextBloc(timeConverter).drawUNewWayINLINED(ug.apply(new UTranslate((minXr1 - minX), 0)));
+				r2.asTextBloc(timeConverter).drawUNewWayINLINED(ug.apply(new UTranslate((minXr2 - minX), 0)));
 			}
 
 			public Dimension2D calculateDimension(StringBounder stringBounder) {

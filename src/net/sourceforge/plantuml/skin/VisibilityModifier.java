@@ -44,6 +44,8 @@ import net.sourceforge.plantuml.graphic.HtmlColor;
 import net.sourceforge.plantuml.graphic.StringBounder;
 import net.sourceforge.plantuml.graphic.TextBlock;
 import net.sourceforge.plantuml.graphic.UDrawable;
+import net.sourceforge.plantuml.ugraphic.UChangeBackColor;
+import net.sourceforge.plantuml.ugraphic.UChangeColor;
 import net.sourceforge.plantuml.ugraphic.UEllipse;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
 import net.sourceforge.plantuml.ugraphic.UPolygon;
@@ -68,9 +70,10 @@ public enum VisibilityModifier {
 
 	public UDrawable getUDrawable(final int size, final HtmlColor foregroundColor, final HtmlColor backgoundColor) {
 		return new UDrawable() {
-			public void drawU(UGraphic ug, double x, double y) {
-				drawInternal(ug, size, foregroundColor, backgoundColor, x, y);
+			public void drawUNewWayINLINED(UGraphic ug) {
+				drawInternal(ug, size, foregroundColor, backgoundColor, 0, 0);
 			}
+
 		};
 	}
 
@@ -81,11 +84,11 @@ public enum VisibilityModifier {
 				return new Dimension2DDouble(size + 1, size + 1);
 			}
 
-			public void drawU(UGraphic ug, double x, double y) {
+			public void drawUNewWayINLINED(UGraphic ug) {
 				// final double tx = ug.getTranslateX();
 				// final double ty = ug.getTranslateY();
-				// ug.translate(x, y);
-				drawInternal(ug, size, foregroundColor, backgoundColor, x, y);
+				// ug.translate(x, y);F
+				drawInternal(ug, size, foregroundColor, backgoundColor, 0, 0);
 				// ug.setTranslate(tx, ty);
 			}
 
@@ -97,8 +100,7 @@ public enum VisibilityModifier {
 
 	private void drawInternal(UGraphic ug, int size, final HtmlColor foregroundColor, final HtmlColor backgoundColor,
 			double x, double y) {
-		ug.getParam().setBackcolor(backgoundColor);
-		ug.getParam().setColor(foregroundColor);
+		ug = ug.apply(new UChangeBackColor(backgoundColor)).apply(new UChangeColor(foregroundColor));
 		size = ensureEven(size);
 		switch (this) {
 		case PACKAGE_PRIVATE_FIELD:

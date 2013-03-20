@@ -51,13 +51,18 @@ import net.sourceforge.plantuml.graphic.StringBounder;
 import net.sourceforge.plantuml.graphic.TextBlock;
 import net.sourceforge.plantuml.graphic.TextBlockUtils;
 import net.sourceforge.plantuml.svek.AbstractEntityImage;
+import net.sourceforge.plantuml.svek.Bibliotekon;
 import net.sourceforge.plantuml.svek.Cluster;
+import net.sourceforge.plantuml.svek.Shape;
 import net.sourceforge.plantuml.svek.ShapeType;
 import net.sourceforge.plantuml.ugraphic.Shadowable;
+import net.sourceforge.plantuml.ugraphic.UChangeBackColor;
+import net.sourceforge.plantuml.ugraphic.UChangeColor;
 import net.sourceforge.plantuml.ugraphic.UEllipse;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
 import net.sourceforge.plantuml.ugraphic.ULine;
 import net.sourceforge.plantuml.ugraphic.UStroke;
+import net.sourceforge.plantuml.ugraphic.UTranslate;
 
 public class EntityImageStateBorder extends AbstractEntityImage {
 
@@ -65,9 +70,11 @@ public class EntityImageStateBorder extends AbstractEntityImage {
 	private final TextBlock desc;
 	private final Cluster stateParent;
 	private final EntityPosition entityPosition;
+	private final Bibliotekon bibliotekon;
 
-	public EntityImageStateBorder(ILeaf leaf, ISkinParam skinParam, Cluster stateParent) {
+	public EntityImageStateBorder(ILeaf leaf, ISkinParam skinParam, Cluster stateParent, final Bibliotekon bibliotekon) {
 		super(leaf, skinParam);
+		this.bibliotekon = bibliotekon;
 
 		this.entityPosition = leaf.getEntityPosition();
 		if (entityPosition == EntityPosition.NORMAL) {
@@ -76,18 +83,19 @@ public class EntityImageStateBorder extends AbstractEntityImage {
 		this.stateParent = stateParent;
 		final Stereotype stereotype = leaf.getStereotype();
 
-		this.desc = TextBlockUtils.create(leaf.getDisplay(), new FontConfiguration(
-				SkinParamUtils.getFont(getSkinParam(), FontParam.STATE, stereotype), SkinParamUtils.getFontColor(getSkinParam(), FontParam.STATE, stereotype)),
+		this.desc = TextBlockUtils.create(leaf.getDisplay(),
+				new FontConfiguration(SkinParamUtils.getFont(getSkinParam(), FontParam.STATE, stereotype),
+						SkinParamUtils.getFontColor(getSkinParam(), FontParam.STATE, stereotype)),
 				HorizontalAlignement.CENTER, skinParam);
 	}
 
-	private boolean upPosition(double yTheoricalPosition) {
+	private boolean upPosition() {
 		final Point2D clusterCenter = stateParent.getClusterPosition().getPointCenter();
-		return yTheoricalPosition < clusterCenter.getY();
+		final Shape sh = bibliotekon.getShape(getEntity());
+		return sh.getMinY() < clusterCenter.getY();
 	}
 
-	@Override
-	public Dimension2D getDimension(StringBounder stringBounder) {
+	public Dimension2D calculateDimension(StringBounder stringBounder) {
 		return new Dimension2DDouble(RADIUS * 2, RADIUS * 2);
 	}
 
@@ -96,42 +104,40 @@ public class EntityImageStateBorder extends AbstractEntityImage {
 		return dimDesc.getWidth();
 	}
 
-	public void drawU(UGraphic ug, final double xTheoricalPosition, final double yTheoricalPosition) {
+	final public void drawUNewWayINLINED(UGraphic ug) {
 		final Shadowable circle = new UEllipse(RADIUS * 2, RADIUS * 2);
 		// if (getSkinParam().shadowing()) {
 		// circle.setDeltaShadow(4);
 		// }
 
-		double y = yTheoricalPosition;
+		double y = 0;
 		final Dimension2D dimDesc = desc.calculateDimension(ug.getStringBounder());
-		final double x = xTheoricalPosition - (dimDesc.getWidth() - 2 * RADIUS) / 2;
-		if (upPosition(yTheoricalPosition)) {
+		final double x = 0 - (dimDesc.getWidth() - 2 * RADIUS) / 2;
+		if (upPosition()) {
 			y -= 2 * RADIUS + dimDesc.getHeight();
 		} else {
 			y += 2 * RADIUS;
 		}
-		desc.drawU(ug, x, y);
+		desc.drawUNewWayINLINED(ug.apply(new UTranslate(x, y)));
 
-		ug.getParam().setStroke(new UStroke(1.5));
-		ug.getParam().setColor(SkinParamUtils.getColor(getSkinParam(), ColorParam.stateBorder, getStereo()));
+		ug = ug.apply(new UStroke(1.5)).apply(
+				new UChangeColor(SkinParamUtils.getColor(getSkinParam(), ColorParam.stateBorder, getStereo())));
 		HtmlColor backcolor = getEntity().getSpecificBackColor();
 		if (backcolor == null) {
 			backcolor = SkinParamUtils.getColor(getSkinParam(), ColorParam.stateBackground, getStereo());
 		}
-		ug.getParam().setBackcolor(backcolor);
+		ug = ug.apply(new UChangeBackColor(backcolor));
 
-		ug.drawNewWay(xTheoricalPosition, yTheoricalPosition, circle);
+		ug.drawOldWay(circle);
 		if (entityPosition == EntityPosition.EXIT_POINT) {
-			final double xc = xTheoricalPosition + RADIUS + .5;
-			final double yc = yTheoricalPosition + RADIUS + .5;
+			final double xc = 0 + RADIUS + .5;
+			final double yc = 0 + RADIUS + .5;
 			final double radius = RADIUS - .5;
 			drawLine(ug, getPointOnCircle(xc, yc, Math.PI / 4, radius),
 					getPointOnCircle(xc, yc, Math.PI + Math.PI / 4, radius));
 			drawLine(ug, getPointOnCircle(xc, yc, -Math.PI / 4, radius),
 					getPointOnCircle(xc, yc, Math.PI - Math.PI / 4, radius));
-			ug.getParam().setStroke(new UStroke());
 		}
-
 	}
 
 	private Point2D getPointOnCircle(double xc, double yc, double angle, double radius) {

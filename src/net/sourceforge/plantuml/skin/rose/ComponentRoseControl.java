@@ -64,20 +64,19 @@ public class ComponentRoseControl extends AbstractTextualComponent {
 
 	@Override
 	protected void drawInternalU(UGraphic ug, Area area) {
-		ug.getParam().setColor(getFontColor());
 		final TextBlock textBlock = getTextBlock();
 		final StringBounder stringBounder = ug.getStringBounder();
 		final Dimension2D dimStickman = stickman.calculateDimension(stringBounder);
 		final double delta = (getPreferredWidth(stringBounder) - dimStickman.getWidth()) / 2;
 
 		if (head) {
-			textBlock.drawU(ug, getTextMiddlePostion(stringBounder), dimStickman.getHeight());
+			textBlock.drawUNewWayINLINED(ug.apply(new UTranslate(getTextMiddlePostion(stringBounder), dimStickman.getHeight())));
 			ug = ug.apply(new UTranslate(delta, 0));
 		} else {
-			textBlock.drawU(ug, getTextMiddlePostion(stringBounder), 0);
+			textBlock.drawUNewWayINLINED(ug.apply(new UTranslate(getTextMiddlePostion(stringBounder), 0)));
 			ug = ug.apply(new UTranslate(delta, getTextHeight(stringBounder)));
 		}
-		stickman.drawU(ug, 0, 0);
+		stickman.drawUNewWayINLINED(ug);
 	}
 
 	private double getTextMiddlePostion(StringBounder stringBounder) {

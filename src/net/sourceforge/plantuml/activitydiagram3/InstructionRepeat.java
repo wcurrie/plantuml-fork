@@ -76,5 +76,9 @@ public class InstructionRepeat implements Instruction {
 		return nextLinkRenderer;
 	}
 
+	public void addNote(Display note) {
+		throw new UnsupportedOperationException();
+	}
+
 
 }

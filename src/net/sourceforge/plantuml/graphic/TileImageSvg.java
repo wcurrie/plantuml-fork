@@ -28,20 +28,53 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 7696 $
+ * Revision $Revision: 10269 $
  *
  */
-package net.sourceforge.plantuml.ugraphic;
+package net.sourceforge.plantuml.graphic;
 
-public class UGroupNull implements UGroup {
+import java.awt.geom.Dimension2D;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.Collections;
+import java.util.List;
 
-	public void draw(double x, double y, UShape shape) {
+import net.sourceforge.plantuml.Dimension2DDouble;
+import net.sourceforge.plantuml.Url;
+import net.sourceforge.plantuml.ugraphic.UGraphic;
+import net.sourceforge.plantuml.ugraphic.UImageSvg;
+
+class TileImageSvg implements TextBlock {
+
+	private final UImageSvg svg;
+
+	public TileImageSvg(File svgFile) throws IOException {
+		this.svg = createSvg(svgFile);
 	}
 
-	public void close() {
+	private UImageSvg createSvg(File svgFile) throws IOException {
+		final BufferedReader br = new BufferedReader(new FileReader(svgFile));
+		final StringBuilder sb = new StringBuilder();
+		String s;
+		while ((s = br.readLine()) != null) {
+			sb.append(s);
+		}
+		br.close();
+		return new UImageSvg(sb.toString());
 	}
 
-	public void centerChar(double x, double y, char c, UFont font) {
+	public Dimension2D calculateDimension(StringBounder stringBounder) {
+		return new Dimension2DDouble(svg.getWidth(), svg.getHeight());
+	}
+
+	public void drawUNewWayINLINED(UGraphic ug) {
+		ug.drawOldWay(svg);
+	}
+
+	public List<Url> getUrls() {
+		return Collections.emptyList();
 	}
 
 }

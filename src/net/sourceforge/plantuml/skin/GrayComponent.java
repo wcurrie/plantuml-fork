@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 10057 $
+ * Revision $Revision: 10263 $
  *
  */
 package net.sourceforge.plantuml.skin;
@@ -45,6 +45,8 @@ import net.sourceforge.plantuml.graphic.HtmlColorUtils;
 import net.sourceforge.plantuml.graphic.StringBounder;
 import net.sourceforge.plantuml.graphic.TextBlock;
 import net.sourceforge.plantuml.graphic.TextBlockUtils;
+import net.sourceforge.plantuml.ugraphic.UChangeBackColor;
+import net.sourceforge.plantuml.ugraphic.UChangeColor;
 import net.sourceforge.plantuml.ugraphic.UFont;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
 import net.sourceforge.plantuml.ugraphic.URectangle;
@@ -62,8 +64,7 @@ class GrayComponent extends AbstractComponent {
 	@Override
 	protected void drawInternalU(UGraphic ug, Area area) {
 		final StringBounder stringBounder = ug.getStringBounder();
-		ug.getParam().setBackcolor(HtmlColorUtils.LIGHT_GRAY);
-		ug.getParam().setColor(HtmlColorUtils.BLACK);
+		ug = ug.apply(new UChangeBackColor(HtmlColorUtils.LIGHT_GRAY)).apply(new UChangeColor(HtmlColorUtils.BLACK));
 		ug.drawOldWay(new URectangle(getPreferredWidth(stringBounder), getPreferredHeight(stringBounder)));
 
 		final String n = type.name();
@@ -73,9 +74,9 @@ class GrayComponent extends AbstractComponent {
 			strings.add(n.substring(i, Math.min(i + split, n.length())));
 		}
 
-		final TextBlock textBlock = TextBlockUtils.create(new Display(strings), new FontConfiguration(NORMAL, HtmlColorUtils.BLACK),
-				HorizontalAlignement.LEFT, new SpriteContainerEmpty());
-		textBlock.drawU(ug, 0, 0);
+		final TextBlock textBlock = TextBlockUtils.create(new Display(strings), new FontConfiguration(NORMAL,
+				HtmlColorUtils.BLACK), HorizontalAlignement.LEFT, new SpriteContainerEmpty());
+		textBlock.drawUNewWayINLINED(ug);
 	}
 
 	@Override

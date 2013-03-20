@@ -72,7 +72,8 @@ public class EntityImageClassHeader2 extends AbstractEntityImage {
 		final HtmlColor color = SkinParamUtils.getFontColor(getSkinParam(), FontParam.CLASS, getStereo());
 		final Stereotype stereotype = entity.getStereotype();
 		final String generic = entity.getGeneric();
-		FontConfiguration fontConfigurationName = new FontConfiguration(SkinParamUtils.getFont(getSkinParam(), FontParam.CLASS, stereotype), color);
+		FontConfiguration fontConfigurationName = new FontConfiguration(SkinParamUtils.getFont(getSkinParam(),
+				FontParam.CLASS, stereotype), color);
 		if (italic) {
 			fontConfigurationName = fontConfigurationName.italic();
 		}
@@ -86,7 +87,10 @@ public class EntityImageClassHeader2 extends AbstractEntityImage {
 		} else {
 			stereo = TextBlockUtils.withMargin(TextBlockUtils.create(
 					new Display(stereotype.getLabels()),
-					new FontConfiguration(SkinParamUtils.getFont(getSkinParam(), FontParam.CLASS_STEREOTYPE, stereotype), SkinParamUtils.getFontColor(getSkinParam(), FontParam.CLASS_STEREOTYPE, stereotype)), HorizontalAlignement.CENTER, skinParam), 1, 0);
+					new FontConfiguration(SkinParamUtils
+							.getFont(getSkinParam(), FontParam.CLASS_STEREOTYPE, stereotype), SkinParamUtils
+							.getFontColor(getSkinParam(), FontParam.CLASS_STEREOTYPE, stereotype)),
+					HorizontalAlignement.CENTER, skinParam), 1, 0);
 		}
 
 		TextBlock genericBlock;
@@ -95,11 +99,16 @@ public class EntityImageClassHeader2 extends AbstractEntityImage {
 		} else {
 			genericBlock = TextBlockUtils.create(
 					Display.asList(generic),
-					new FontConfiguration(SkinParamUtils.getFont(getSkinParam(), FontParam.CLASS_STEREOTYPE, stereotype), SkinParamUtils.getFontColor(getSkinParam(), FontParam.CLASS_STEREOTYPE, stereotype)), HorizontalAlignement.CENTER, skinParam);
+					new FontConfiguration(SkinParamUtils
+							.getFont(getSkinParam(), FontParam.CLASS_STEREOTYPE, stereotype), SkinParamUtils
+							.getFontColor(getSkinParam(), FontParam.CLASS_STEREOTYPE, stereotype)),
+					HorizontalAlignement.CENTER, skinParam);
 			genericBlock = TextBlockUtils.withMargin(genericBlock, 1, 1);
-			final HtmlColor classBackground = SkinParamUtils.getColor(getSkinParam(), ColorParam.background, stereotype);
+			final HtmlColor classBackground = SkinParamUtils
+					.getColor(getSkinParam(), ColorParam.background, stereotype);
 			// final HtmlColor classBorder = getColor(ColorParam.classBorder, stereotype);
-			final HtmlColor classBorder = SkinParamUtils.getFontColor(getSkinParam(), FontParam.CLASS_STEREOTYPE, stereotype);
+			final HtmlColor classBorder = SkinParamUtils.getFontColor(getSkinParam(), FontParam.CLASS_STEREOTYPE,
+					stereotype);
 			genericBlock = new TextBlockGeneric(genericBlock, classBackground, classBorder);
 			genericBlock = TextBlockUtils.withMargin(genericBlock, 1, 1);
 		}
@@ -122,46 +131,51 @@ public class EntityImageClassHeader2 extends AbstractEntityImage {
 			final HtmlColor classBorder = SkinParamUtils.getColor(getSkinParam(), ColorParam.classBorder, stereotype);
 			final UFont font = SkinParamUtils.getFont(getSkinParam(), FontParam.CIRCLED_CHARACTER, null);
 			return new CircledCharacter(stereotype.getCharacter(), getSkinParam().getCircledCharacterRadius(), font,
-					stereotype.getHtmlColor(), classBorder, SkinParamUtils.getFontColor(getSkinParam(), FontParam.CIRCLED_CHARACTER, null));
+					stereotype.getHtmlColor(), classBorder, SkinParamUtils.getFontColor(getSkinParam(),
+							FontParam.CIRCLED_CHARACTER, null));
 		}
 		if (entity.getEntityType() == LeafType.ABSTRACT_CLASS) {
-			return new CircledCharacter('A', getSkinParam().getCircledCharacterRadius(), SkinParamUtils.getFont(getSkinParam(), FontParam.CIRCLED_CHARACTER, null), SkinParamUtils.getColor(getSkinParam(), ColorParam.stereotypeABackground, stereotype),
-					SkinParamUtils.getColor(getSkinParam(), ColorParam.classBorder, stereotype), SkinParamUtils.getFontColor(getSkinParam(), FontParam.CIRCLED_CHARACTER, null));
+			return new CircledCharacter('A', getSkinParam().getCircledCharacterRadius(), SkinParamUtils.getFont(
+					getSkinParam(), FontParam.CIRCLED_CHARACTER, null), SkinParamUtils.getColor(getSkinParam(),
+					ColorParam.stereotypeABackground, stereotype), SkinParamUtils.getColor(getSkinParam(),
+					ColorParam.classBorder, stereotype), SkinParamUtils.getFontColor(getSkinParam(),
+					FontParam.CIRCLED_CHARACTER, null));
 		}
 		if (entity.getEntityType() == LeafType.CLASS) {
-			return new CircledCharacter('C', getSkinParam().getCircledCharacterRadius(), SkinParamUtils.getFont(getSkinParam(), FontParam.CIRCLED_CHARACTER, null), SkinParamUtils.getColor(getSkinParam(), ColorParam.stereotypeCBackground, stereotype),
-					SkinParamUtils.getColor(getSkinParam(), ColorParam.classBorder, stereotype), SkinParamUtils.getFontColor(getSkinParam(), FontParam.CIRCLED_CHARACTER, null));
+			return new CircledCharacter('C', getSkinParam().getCircledCharacterRadius(), SkinParamUtils.getFont(
+					getSkinParam(), FontParam.CIRCLED_CHARACTER, null), SkinParamUtils.getColor(getSkinParam(),
+					ColorParam.stereotypeCBackground, stereotype), SkinParamUtils.getColor(getSkinParam(),
+					ColorParam.classBorder, stereotype), SkinParamUtils.getFontColor(getSkinParam(),
+					FontParam.CIRCLED_CHARACTER, null));
 		}
 		if (entity.getEntityType() == LeafType.INTERFACE) {
-			return new CircledCharacter('I', getSkinParam().getCircledCharacterRadius(), SkinParamUtils.getFont(getSkinParam(), FontParam.CIRCLED_CHARACTER, null), SkinParamUtils.getColor(getSkinParam(), ColorParam.stereotypeIBackground, stereotype),
-					SkinParamUtils.getColor(getSkinParam(), ColorParam.classBorder, stereotype), SkinParamUtils.getFontColor(getSkinParam(), FontParam.CIRCLED_CHARACTER, null));
+			return new CircledCharacter('I', getSkinParam().getCircledCharacterRadius(), SkinParamUtils.getFont(
+					getSkinParam(), FontParam.CIRCLED_CHARACTER, null), SkinParamUtils.getColor(getSkinParam(),
+					ColorParam.stereotypeIBackground, stereotype), SkinParamUtils.getColor(getSkinParam(),
+					ColorParam.classBorder, stereotype), SkinParamUtils.getFontColor(getSkinParam(),
+					FontParam.CIRCLED_CHARACTER, null));
 		}
 		if (entity.getEntityType() == LeafType.ENUM) {
-			return new CircledCharacter('E', getSkinParam().getCircledCharacterRadius(), SkinParamUtils.getFont(getSkinParam(), FontParam.CIRCLED_CHARACTER, null), SkinParamUtils.getColor(getSkinParam(), ColorParam.stereotypeEBackground, stereotype),
-					SkinParamUtils.getColor(getSkinParam(), ColorParam.classBorder, stereotype), SkinParamUtils.getFontColor(getSkinParam(), FontParam.CIRCLED_CHARACTER, null));
+			return new CircledCharacter('E', getSkinParam().getCircledCharacterRadius(), SkinParamUtils.getFont(
+					getSkinParam(), FontParam.CIRCLED_CHARACTER, null), SkinParamUtils.getColor(getSkinParam(),
+					ColorParam.stereotypeEBackground, stereotype), SkinParamUtils.getColor(getSkinParam(),
+					ColorParam.classBorder, stereotype), SkinParamUtils.getFontColor(getSkinParam(),
+					FontParam.CIRCLED_CHARACTER, null));
 		}
 		assert false;
 		return null;
 	}
 
-	@Override
-	public Dimension2D getDimension(StringBounder stringBounder) {
+	public Dimension2D calculateDimension(StringBounder stringBounder) {
 		return headerLayout.getDimension(stringBounder);
 	}
 
-	public void drawU(UGraphic ug, double xTheoricalPosition, double yTheoricalPosition) {
-		// final StringBounder stringBounder = ug.getStringBounder();
-		// final Dimension2D dimTotal = getDimension(stringBounder);
-		// final Dimension2D dimTitle = getTitleDimension(stringBounder);
-		//
-		// final UGroup header = createHeader(ug);
-		// header.drawU(ug, xTheoricalPosition, yTheoricalPosition,
-		// dimTotal.getWidth(), dimTitle.getHeight());
+	final public void drawUNewWayINLINED(UGraphic ug) {
 		throw new UnsupportedOperationException();
 	}
 
-	public void drawU(UGraphic ug, double xTheoricalPosition, double yTheoricalPosition, double width, double height) {
-		headerLayout.drawU(ug, xTheoricalPosition, yTheoricalPosition, width, height);
+	public void drawU(UGraphic ug, double width, double height) {
+		headerLayout.drawU(ug, width, height);
 	}
 
 	public ShapeType getShapeType() {

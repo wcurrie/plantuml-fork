@@ -45,7 +45,7 @@ import net.sourceforge.plantuml.ugraphic.UGraphic;
 
 public class FtileEmpty implements Ftile {
 
-	public void drawU(UGraphic ug, double x, double y) {
+	public void drawUNewWayINLINED(UGraphic ug) {
 	}
 
 	public Dimension2D calculateDimension(StringBounder stringBounder) {
@@ -55,7 +55,7 @@ public class FtileEmpty implements Ftile {
 	public List<Url> getUrls() {
 		return Collections.emptyList();
 	}
-	
+
 	public boolean isKilled() {
 		return false;
 	}
@@ -63,6 +63,5 @@ public class FtileEmpty implements Ftile {
 	public LinkRendering getInLinkRendering() {
 		return null;
 	}
-
 
 }

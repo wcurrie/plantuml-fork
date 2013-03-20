@@ -43,12 +43,16 @@ import net.sourceforge.plantuml.activitydiagram3.command.CommandForkEnd3;
 import net.sourceforge.plantuml.activitydiagram3.command.CommandGroup3;
 import net.sourceforge.plantuml.activitydiagram3.command.CommandGroupEnd3;
 import net.sourceforge.plantuml.activitydiagram3.command.CommandIf2;
-import net.sourceforge.plantuml.activitydiagram3.command.CommandIf3;
 import net.sourceforge.plantuml.activitydiagram3.command.CommandIf4;
 import net.sourceforge.plantuml.activitydiagram3.command.CommandKill3;
 import net.sourceforge.plantuml.activitydiagram3.command.CommandLink3;
+import net.sourceforge.plantuml.activitydiagram3.command.CommandNote3;
+import net.sourceforge.plantuml.activitydiagram3.command.CommandNoteLong3;
 import net.sourceforge.plantuml.activitydiagram3.command.CommandRepeat3;
 import net.sourceforge.plantuml.activitydiagram3.command.CommandRepeatWhile3;
+import net.sourceforge.plantuml.activitydiagram3.command.CommandSplit3;
+import net.sourceforge.plantuml.activitydiagram3.command.CommandSplitAgain3;
+import net.sourceforge.plantuml.activitydiagram3.command.CommandSplitEnd3;
 import net.sourceforge.plantuml.activitydiagram3.command.CommandStart3;
 import net.sourceforge.plantuml.activitydiagram3.command.CommandStop3;
 import net.sourceforge.plantuml.activitydiagram3.command.CommandWhile3;
@@ -70,7 +74,6 @@ public class ActivityDiagramFactory3 extends PSystemCommandFactory {
 		addCommonCommands(system);
 		addCommand(new CommandActivity3(system));
 		addCommand(new CommandIf4(system));
-		addCommand(new CommandIf3(system));
 		addCommand(new CommandIf2(system));
 		addCommand(new CommandElse3(system));
 		addCommand(new CommandEndif3(system));
@@ -81,12 +84,17 @@ public class ActivityDiagramFactory3 extends PSystemCommandFactory {
 		addCommand(new CommandFork3(system));
 		addCommand(new CommandForkAgain3(system));
 		addCommand(new CommandForkEnd3(system));
+		addCommand(new CommandSplit3(system));
+		addCommand(new CommandSplitAgain3(system));
+		addCommand(new CommandSplitEnd3(system));
 		addCommand(new CommandGroup3(system));
 		addCommand(new CommandGroupEnd3(system));
 		addCommand(new CommandStart3(system));
 		addCommand(new CommandStop3(system));
 		addCommand(new CommandKill3(system));
 		addCommand(new CommandLink3(system));
+		addCommand(new CommandNote3(system));
+		addCommand(new CommandNoteLong3(system));
 
 		addCommand(new CommandActivityLong3(system));
 

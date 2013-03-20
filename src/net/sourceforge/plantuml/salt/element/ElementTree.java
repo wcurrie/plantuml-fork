@@ -40,9 +40,9 @@ import java.util.List;
 
 import net.sourceforge.plantuml.Dimension2DDouble;
 import net.sourceforge.plantuml.SpriteContainer;
-import net.sourceforge.plantuml.graphic.HtmlColor;
 import net.sourceforge.plantuml.graphic.HtmlColorUtils;
 import net.sourceforge.plantuml.graphic.StringBounder;
+import net.sourceforge.plantuml.ugraphic.UChangeColor;
 import net.sourceforge.plantuml.ugraphic.UFont;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
 import net.sourceforge.plantuml.ugraphic.ULine;
@@ -94,10 +94,8 @@ public class ElementTree implements Element {
 			skeleton.add(x + entry.getXDelta() - 10, yvar + h / 2 - 1);
 			yvar += h;
 		}
-		final HtmlColor old = ug.getParam().getColor();
-		ug.getParam().setColor(HtmlColorUtils.getColorIfValid("#888888"));
+		ug = ug.apply(new UChangeColor(HtmlColorUtils.getColorIfValid("#888888")));
 		skeleton.draw(ug, x, y);
-		ug.getParam().setColor(old);
 	}
 
 	static class Skeleton {

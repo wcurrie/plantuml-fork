@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 10041 $
+ * Revision $Revision: 10266 $
  *
  */
 package net.sourceforge.plantuml.graphic;
@@ -41,6 +41,7 @@ import java.util.StringTokenizer;
 import net.sourceforge.plantuml.Dimension2DDouble;
 import net.sourceforge.plantuml.Log;
 import net.sourceforge.plantuml.Url;
+import net.sourceforge.plantuml.ugraphic.UChangeColor;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
 import net.sourceforge.plantuml.ugraphic.UText;
 
@@ -77,11 +78,12 @@ class TileText implements TextBlock {
 		return stringBounder.calculateDimension(fontConfiguration.getFont(), "        ").getWidth();
 	}
 
-	public void drawU(UGraphic ug, double x, final double y) {
+	public void drawUNewWayINLINED(UGraphic ug) {
+		double x = 0;
 		if (url != null) {
 			ug.startUrl(url);
 		}
-		ug.getParam().setColor(fontConfiguration.getColor());
+		ug = ug.apply(new UChangeColor(fontConfiguration.getColor()));
 
 		final StringTokenizer tokenizer = new StringTokenizer(text, "\t", true);
 
@@ -98,9 +100,9 @@ class TileText implements TextBlock {
 					final int space = fontConfiguration.getSpace();
 					final double ypos;
 					if (space < 0) {
-						ypos = y +space /*- getFontSize2D() - space*/;
+						ypos = space /*- getFontSize2D() - space*/;
 					} else {
-						ypos = y + space;
+						ypos = space;
 					}
 					ug.drawNewWay(x, ypos, utext);
 					x += dim.getWidth();

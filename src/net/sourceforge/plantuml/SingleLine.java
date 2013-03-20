@@ -28,12 +28,14 @@
  *
  * Original Author:  Arnaud Roques
  *
- * Revision $Revision: 9786 $
+ * Revision $Revision: 10298 $
  *
  */
 package net.sourceforge.plantuml;
 
+import net.sourceforge.plantuml.core.Diagram;
+
 public interface SingleLine {
 
-	PSystem getSystemFromSingleLine(String singleLine);
+	Diagram getSystemFromSingleLine(String singleLine);
 }

@@ -43,7 +43,6 @@ import net.sourceforge.plantuml.ugraphic.AbstractCommonUGraphic;
 import net.sourceforge.plantuml.ugraphic.AbstractUGraphic;
 import net.sourceforge.plantuml.ugraphic.ClipContainer;
 import net.sourceforge.plantuml.ugraphic.ColorMapper;
-import net.sourceforge.plantuml.ugraphic.UFont;
 import net.sourceforge.plantuml.ugraphic.ULine;
 import net.sourceforge.plantuml.ugraphic.UPolygon;
 import net.sourceforge.plantuml.ugraphic.URectangle;
@@ -60,45 +59,38 @@ public class UGraphicHtml5 extends AbstractUGraphic<Html5Drawer> implements Clip
 		return this;
 	}
 
-
 	public UGraphicHtml5(ColorMapper colorMapper) {
 		super(colorMapper, new Html5Drawer());
 		stringBounder = StringBounderUtils.asStringBounder(imDummy);
 		registerDriver(URectangle.class, new DriverRectangleHtml5(this));
-//		registerDriver(UText.class, new DriverTextEps(imDummy, this, strategy));
+		// registerDriver(UText.class, new DriverTextEps(imDummy, this, strategy));
 		registerDriver(UText.class, new DriverNopHtml5());
 		registerDriver(ULine.class, new DriverLineHtml5(this));
-//		registerDriver(UPolygon.class, new DriverPolygonEps(this));
+		// registerDriver(UPolygon.class, new DriverPolygonEps(this));
 		registerDriver(UPolygon.class, new DriverNopHtml5());
-//		registerDriver(UEllipse.class, new DriverEllipseEps());
-//		registerDriver(UImage.class, new DriverImageEps());
-//		registerDriver(UPath.class, new DriverPathEps());
-//		registerDriver(DotPath.class, new DriverDotPathEps());
+		// registerDriver(UEllipse.class, new DriverEllipseEps());
+		// registerDriver(UImage.class, new DriverImageEps());
+		// registerDriver(UPath.class, new DriverPathEps());
+		// registerDriver(DotPath.class, new DriverDotPathEps());
 	}
 
 	public StringBounder getStringBounder() {
 		return stringBounder;
 	}
 
-	public void centerChar(double x, double y, char c, UFont font) {
-		throw new UnsupportedOperationException();
-		
-	}
-
 	public void startUrl(Url url) {
-//		throw new UnsupportedOperationException();
-		
+		// throw new UnsupportedOperationException();
+
 	}
 
 	public void closeAction() {
-//		throw new UnsupportedOperationException();
-		
+		// throw new UnsupportedOperationException();
+
 	}
 
-//	public void close() {
-//		getEpsGraphics().close();
-//	}
-
+	// public void close() {
+	// getEpsGraphics().close();
+	// }
 
 	public String generateHtmlCode() {
 		return getGraphicObject().generateHtmlCode();
@@ -108,42 +100,42 @@ public class UGraphicHtml5 extends AbstractUGraphic<Html5Drawer> implements Clip
 		os.write(generateHtmlCode().getBytes());
 	}
 
-//	public void centerChar(double x, double y, char c, UFont font) {
-//		final UnusedSpace unusedSpace = UnusedSpace.getUnusedSpace(font, c);
-//
-//		final double xpos = x - unusedSpace.getCenterX() - 0.5;
-//		final double ypos = y - unusedSpace.getCenterY() - 0.5;
-//
-//		final TextLayout t = new TextLayout("" + c, font.getFont(), imDummy.getFontRenderContext());
-//		getGraphicObject().setStrokeColor(getColorMapper().getMappedColor(getParam().getColor()));
-//		DriverTextEps.drawPathIterator(getGraphicObject(), xpos + getTranslateX(), ypos + getTranslateY(), t
-//				.getOutline(null).getPathIterator(null));
-//
-//	}
-//
-//	static public String getEpsString(ColorMapper colorMapper, EpsStrategy epsStrategy, UDrawable udrawable)
-//			throws IOException {
-//		final UGraphicHtml5 ug = new UGraphicHtml5(colorMapper, epsStrategy);
-//		udrawable.drawU(ug);
-//		return ug.getEPSCode();
-//	}
-//
-//	static public void copyEpsToFile(ColorMapper colorMapper, UDrawable udrawable, File f) throws IOException {
-//		final PrintWriter pw = new PrintWriter(f);
-//		final EpsStrategy epsStrategy = EpsStrategy.getDefault2();
-//		pw.print(UGraphicHtml5.getEpsString(colorMapper, epsStrategy, udrawable));
-//		pw.close();
-//	}
-//
-//	public void setAntiAliasing(boolean trueForOn) {
-//	}
-//
-//	public void startUrl(String url, String tooltip) {
-//		getGraphicObject().openLink(url);
-//	}
-//
-//	public void closeAction() {
-//		getGraphicObject().closeLink();
-//	}
+	// public void centerChar(double x, double y, char c, UFont font) {
+	// final UnusedSpace unusedSpace = UnusedSpace.getUnusedSpace(font, c);
+	//
+	// final double xpos = x - unusedSpace.getCenterX() - 0.5;
+	// final double ypos = y - unusedSpace.getCenterY() - 0.5;
+	//
+	// final TextLayout t = new TextLayout("" + c, font.getFont(), imDummy.getFontRenderContext());
+	// getGraphicObject().setStrokeColor(getColorMapper().getMappedColor(getParam().getColor()));
+	// DriverTextEps.drawPathIterator(getGraphicObject(), xpos + getTranslateX(), ypos + getTranslateY(), t
+	// .getOutline(null).getPathIterator(null));
+	//
+	// }
+	//
+	// static public String getEpsString(ColorMapper colorMapper, EpsStrategy epsStrategy, UDrawable udrawable)
+	// throws IOException {
+	// final UGraphicHtml5 ug = new UGraphicHtml5(colorMapper, epsStrategy);
+	// udrawable.drawU(ug);
+	// return ug.getEPSCode();
+	// }
+	//
+	// static public void copyEpsToFile(ColorMapper colorMapper, UDrawable udrawable, File f) throws IOException {
+	// final PrintWriter pw = new PrintWriter(f);
+	// final EpsStrategy epsStrategy = EpsStrategy.getDefault2();
+	// pw.print(UGraphicHtml5.getEpsString(colorMapper, epsStrategy, udrawable));
+	// pw.close();
+	// }
+	//
+	// public void setAntiAliasing(boolean trueForOn) {
+	// }
+	//
+	// public void startUrl(String url, String tooltip) {
+	// getGraphicObject().openLink(url);
+	// }
+	//
+	// public void closeAction() {
+	// getGraphicObject().closeLink();
+	// }
 
 }

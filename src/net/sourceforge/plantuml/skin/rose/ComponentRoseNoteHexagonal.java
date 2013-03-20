@@ -40,10 +40,13 @@ import net.sourceforge.plantuml.graphic.HtmlColor;
 import net.sourceforge.plantuml.graphic.StringBounder;
 import net.sourceforge.plantuml.skin.AbstractTextualComponent;
 import net.sourceforge.plantuml.skin.Area;
+import net.sourceforge.plantuml.ugraphic.UChangeBackColor;
+import net.sourceforge.plantuml.ugraphic.UChangeColor;
 import net.sourceforge.plantuml.ugraphic.UFont;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
 import net.sourceforge.plantuml.ugraphic.UPolygon;
 import net.sourceforge.plantuml.ugraphic.UStroke;
+import net.sourceforge.plantuml.ugraphic.UTranslate;
 
 final public class ComponentRoseNoteHexagonal extends AbstractTextualComponent {
 
@@ -99,14 +102,13 @@ final public class ComponentRoseNoteHexagonal extends AbstractTextualComponent {
 		polygon.addPoint(0, textHeight / 2);
 		polygon.addPoint(cornersize, 0);
 
-		ug.getParam().setColor(foregroundColor);
-		ug.getParam().setBackcolor(back);
+		ug = ug.apply(new UChangeBackColor(back)).apply(new UChangeColor(foregroundColor));
 		polygon.setDeltaShadow(deltaShadow);
-		ug.getParam().setStroke(stroke);
+		ug = ug.apply(stroke);
 		ug.drawOldWay(polygon);
-		ug.getParam().setStroke(new UStroke());
+		ug = ug.apply(new UStroke());
 
-		getTextBlock().drawU(ug, getMarginX1(), getMarginY());
+		getTextBlock().drawUNewWayINLINED(ug.apply(new UTranslate(getMarginX1(), getMarginY())));
 
 	}
 

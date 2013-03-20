@@ -27,17 +27,12 @@
  * in the United States and other countries.]
  *
  * Original Author:  Arnaud Roques
- * 
- * Revision $Revision: 10054 $
  *
  */
 package net.sourceforge.plantuml.ugraphic;
 
-public interface UParamNew {
+public enum UHidden implements UChange {
 
-	// private HtmlColor color = null;
-	// private HtmlColor backcolor = null;
-	// private UStroke stroke = new UStroke(1);
-	// private boolean hidden = false;
+	NORMAL_SHOWN, HIDDEN;
 
 }

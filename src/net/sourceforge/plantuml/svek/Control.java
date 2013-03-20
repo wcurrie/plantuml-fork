@@ -42,6 +42,8 @@ import net.sourceforge.plantuml.Url;
 import net.sourceforge.plantuml.graphic.HtmlColor;
 import net.sourceforge.plantuml.graphic.StringBounder;
 import net.sourceforge.plantuml.graphic.TextBlock;
+import net.sourceforge.plantuml.ugraphic.UChangeBackColor;
+import net.sourceforge.plantuml.ugraphic.UChangeColor;
 import net.sourceforge.plantuml.ugraphic.UEllipse;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
 import net.sourceforge.plantuml.ugraphic.UPolygon;
@@ -62,21 +64,22 @@ public class Control implements TextBlock {
 		this.backgroundColor = backgroundColor;
 		this.foregroundColor = foregroundColor;
 		this.deltaShadow = deltaShadow;
-		this.thickness = thickness; 
+		this.thickness = thickness;
 	}
 
-	public void drawU(UGraphic ug, double x, double y) {
+	public void drawUNewWayINLINED(UGraphic ug) {
+		double x = 0;
+		double y = 0;
 		x += margin;
 		y += margin;
-		ug.getParam().setStroke(new UStroke(thickness));
-		ug.getParam().setBackcolor(backgroundColor);
-		ug.getParam().setColor(foregroundColor);
+		ug = ug.apply(new UStroke(thickness));
+		ug = ug.apply(new UChangeBackColor(backgroundColor)).apply(new UChangeColor(foregroundColor));
 		final UEllipse circle = new UEllipse(radius * 2, radius * 2);
 		circle.setDeltaShadow(deltaShadow);
 		ug.drawNewWay(x, y, circle);
-		ug.getParam().setStroke(new UStroke());
-
-		ug.getParam().setBackcolor(foregroundColor);
+		ug = ug.apply(new UStroke());
+		
+		ug = ug.apply(new UChangeBackColor(foregroundColor));
 		final UPolygon polygon = new UPolygon();
 		polygon.addPoint(0, 0);
 		final int xAile = 6;
@@ -86,9 +89,8 @@ public class Control implements TextBlock {
 		polygon.addPoint(xContact, 0);
 		polygon.addPoint(xAile, yOuverture);
 		polygon.addPoint(0, 0);
-
+		
 		ug.drawNewWay(x + radius - xContact, y, polygon);
-
 	}
 
 	public Dimension2D calculateDimension(StringBounder stringBounder) {

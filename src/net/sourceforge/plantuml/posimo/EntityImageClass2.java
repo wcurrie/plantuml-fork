@@ -55,11 +55,14 @@ import net.sourceforge.plantuml.graphic.TextBlock;
 import net.sourceforge.plantuml.graphic.TextBlockUtils;
 import net.sourceforge.plantuml.ugraphic.PlacementStrategyX1Y2Y3;
 import net.sourceforge.plantuml.ugraphic.PlacementStrategyY1Y2;
+import net.sourceforge.plantuml.ugraphic.UChangeBackColor;
+import net.sourceforge.plantuml.ugraphic.UChangeColor;
 import net.sourceforge.plantuml.ugraphic.UFont;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
 import net.sourceforge.plantuml.ugraphic.ULayoutGroup;
 import net.sourceforge.plantuml.ugraphic.ULine;
 import net.sourceforge.plantuml.ugraphic.URectangle;
+import net.sourceforge.plantuml.ugraphic.UTranslate;
 
 public class EntityImageClass2 extends AbstractEntityImage2 {
 
@@ -77,13 +80,12 @@ public class EntityImageClass2 extends AbstractEntityImage2 {
 		if (stereotype == null || stereotype.getLabel() == null) {
 			this.stereo = null;
 		} else {
-			this.stereo = TextBlockUtils
-					.create(Display.getWithNewlines(stereotype.getLabel()), new FontConfiguration(
-							getFont(FontParam.CLASS_STEREOTYPE), getFontColor(FontParam.CLASS_STEREOTYPE)),
-							HorizontalAlignement.CENTER, skinParam);
+			this.stereo = TextBlockUtils.create(Display.getWithNewlines(stereotype.getLabel()), new FontConfiguration(
+					getFont(FontParam.CLASS_STEREOTYPE), getFontColor(FontParam.CLASS_STEREOTYPE)),
+					HorizontalAlignement.CENTER, skinParam);
 		}
-//		this.methods = entity.getMethodsToDisplay().asTextBlock(FontParam.CLASS_ATTRIBUTE, skinParam);
-//		this.fields = entity.getFieldsToDisplay().asTextBlock(FontParam.CLASS_ATTRIBUTE, skinParam);
+		// this.methods = entity.getMethodsToDisplay().asTextBlock(FontParam.CLASS_ATTRIBUTE, skinParam);
+		// this.fields = entity.getFieldsToDisplay().asTextBlock(FontParam.CLASS_ATTRIBUTE, skinParam);
 
 		circledCharacter = getCircledCharacter(entity);
 		throw new UnsupportedOperationException();
@@ -183,8 +185,8 @@ public class EntityImageClass2 extends AbstractEntityImage2 {
 		final double heightTotal = dimTotal.getHeight();
 		final URectangle rect = new URectangle(widthTotal, heightTotal);
 
-		ug.getParam().setColor(getColor(ColorParam.classBorder));
-		ug.getParam().setBackcolor(getColor(ColorParam.classBackground));
+		ug = ug.apply(new UChangeColor(getColor(ColorParam.classBorder)));
+		ug = ug.apply(new UChangeBackColor(getColor(ColorParam.classBackground)));
 
 		double x = xTheoricalPosition;
 		double y = yTheoricalPosition;
@@ -206,14 +208,14 @@ public class EntityImageClass2 extends AbstractEntityImage2 {
 		y += dimTitle.getHeight();
 
 		x = xTheoricalPosition;
-		ug.getParam().setColor(getColor(ColorParam.classBorder));
+		ug = ug.apply(new UChangeColor(getColor(ColorParam.classBorder)));
 		ug.drawNewWay(x, y, new ULine(widthTotal, 0));
-		fields.drawU(ug, x + xMarginFieldsOrMethod, y);
+		fields.drawUNewWayINLINED(ug.apply(new UTranslate((x + xMarginFieldsOrMethod), y)));
 
 		y += getMethodOrFieldHeight(fields.calculateDimension(stringBounder));
-		ug.getParam().setColor(getColor(ColorParam.classBorder));
+		ug = ug.apply(new UChangeColor(getColor(ColorParam.classBorder)));
 		ug.drawNewWay(x, y, new ULine(widthTotal, 0));
 
-		methods.drawU(ug, x + xMarginFieldsOrMethod, y);
+		methods.drawUNewWayINLINED(ug.apply(new UTranslate((x + xMarginFieldsOrMethod), y)));
 	}
 }

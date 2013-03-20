@@ -40,12 +40,12 @@ import java.util.Iterator;
 import java.util.List;
 
 import net.sourceforge.plantuml.StartUtils;
-import net.sourceforge.plantuml.UmlSource;
 import net.sourceforge.plantuml.command.PSystemCommandFactory;
 import net.sourceforge.plantuml.command.Command;
 import net.sourceforge.plantuml.command.CommandControl;
 import net.sourceforge.plantuml.command.CommandExecutionResult;
 import net.sourceforge.plantuml.command.ProtectedCommand;
+import net.sourceforge.plantuml.core.UmlSource;
 
 final public class SuggestEngine {
 

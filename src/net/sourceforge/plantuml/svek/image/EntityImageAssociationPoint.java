@@ -42,6 +42,8 @@ import net.sourceforge.plantuml.graphic.HtmlColorUtils;
 import net.sourceforge.plantuml.graphic.StringBounder;
 import net.sourceforge.plantuml.svek.AbstractEntityImage;
 import net.sourceforge.plantuml.svek.ShapeType;
+import net.sourceforge.plantuml.ugraphic.UChangeBackColor;
+import net.sourceforge.plantuml.ugraphic.UChangeColor;
 import net.sourceforge.plantuml.ugraphic.UEllipse;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
 import net.sourceforge.plantuml.ugraphic.UShape;
@@ -54,25 +56,21 @@ public class EntityImageAssociationPoint extends AbstractEntityImage {
 		super(entity, skinParam);
 	}
 
-	@Override
-	public Dimension2D getDimension(StringBounder stringBounder) {
+	public Dimension2D calculateDimension(StringBounder stringBounder) {
 		return new Dimension2DDouble(SIZE, SIZE);
 	}
 
-	public void drawU(UGraphic ug, double xTheoricalPosition, double yTheoricalPosition) {
+	final public void drawUNewWayINLINED(UGraphic ug) {
 		final UShape circle = new UEllipse(SIZE, SIZE);
-		ug.getParam().setColor(null);
-		ug.getParam().setBackcolor(HtmlColorUtils.BLACK);
-		ug.drawNewWay(xTheoricalPosition, yTheoricalPosition, circle);
+		ug.apply(new UChangeColor(null)).apply(new UChangeBackColor(HtmlColorUtils.BLACK)).drawOldWay(circle);
 	}
 
 	public ShapeType getShapeType() {
 		return ShapeType.CIRCLE;
 	}
-	
+
 	public int getShield() {
 		return 0;
 	}
-
 
 }

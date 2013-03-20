@@ -28,70 +28,20 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 10054 $
+ * Revision $Revision: 10218 $
  *
  */
 package net.sourceforge.plantuml.ugraphic;
 
 import net.sourceforge.plantuml.graphic.HtmlColor;
-import net.sourceforge.plantuml.graphic.HtmlColorTransparent;
 
-public class UParam {
+public interface UParam {
 
-	private HtmlColor color = null;
-	private HtmlColor backcolor = null;
-	private UStroke stroke = new UStroke(1);
-	private boolean hidden = false;
-	
-	public UParam copy() {
-		final UParam result = new UParam();
-		result.color = this.color;
-		result.backcolor = this.backcolor;
-		result.stroke = this.stroke;
-		result.hidden = this.hidden;
-		return result;
-	}
+	public HtmlColor getColor();
 
-	public void reset() {
-		color = null;
-		backcolor = null;
-		stroke = new UStroke(1);
-		hidden = false;
-	}
+	public HtmlColor getBackcolor();
 
-	public void setColor(HtmlColor color) {
-		this.color = color;
-	}
+	public UStroke getStroke();
 
-	public HtmlColor getColor() {
-		return color;
-	}
-
-	public void setBackcolor(HtmlColor color) {
-		if (color instanceof HtmlColorTransparent) {
-			throw new UnsupportedOperationException();
-		}
-		this.backcolor = color;
-	}
-
-	public HtmlColor getBackcolor() {
-		return backcolor;
-	}
-
-	public void setStroke(UStroke stroke) {
-		this.stroke = stroke;
-	}
-
-	public UStroke getStroke() {
-		return stroke;
-	}
-
-	public boolean isHidden() {
-		return hidden;
-	}
-
-	public void setHidden(boolean hidden) {
-		this.hidden = hidden;
-	}
-	
+	public boolean isHidden();
 }

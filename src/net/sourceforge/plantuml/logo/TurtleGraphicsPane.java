@@ -47,10 +47,13 @@ import net.sourceforge.plantuml.graphic.HtmlColor;
 import net.sourceforge.plantuml.graphic.HtmlColorUtils;
 import net.sourceforge.plantuml.graphic.TextBlock;
 import net.sourceforge.plantuml.graphic.TextBlockUtils;
+import net.sourceforge.plantuml.ugraphic.UChangeBackColor;
+import net.sourceforge.plantuml.ugraphic.UChangeColor;
 import net.sourceforge.plantuml.ugraphic.UFont;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
 import net.sourceforge.plantuml.ugraphic.ULine;
 import net.sourceforge.plantuml.ugraphic.UPolygon;
+import net.sourceforge.plantuml.ugraphic.UTranslate;
 
 class TurtleGraphicsPane {
 	final private double width;
@@ -118,9 +121,7 @@ class TurtleGraphicsPane {
 		final HtmlColor turtleColor1 = HtmlColorUtils.getColorIfValid("OliveDrab");
 		final HtmlColor turtleColor2 = HtmlColorUtils.getColorIfValid("MediumSpringGreen");
 
-		ug.getParam().setColor(turtleColor1);
-		ug.getParam().setBackcolor(turtleColor2);
-		ug.drawNewWay(x, -y, poly);
+		ug.apply(new UChangeColor(turtleColor1)).apply(new UChangeBackColor(turtleColor2)).drawNewWay(x, -y, poly);
 		// ug.setAntiAliasing(true);
 	}
 
@@ -187,18 +188,18 @@ class TurtleGraphicsPane {
 		for (int i = 0; i < n; i++) {
 			final HtmlColor color = colors.get(i);
 			final Rectangle2D.Double r = lines.get(i);
-			ug.getParam().setColor(color);
 			final ULine line = new ULine(r.width - r.x, -r.height + r.y);
-			ug.drawNewWay(r.x, -r.y, line);
+			ug.apply(new UChangeColor(color)).drawNewWay(r.x, -r.y, line);
 
 		}
 		drawTurtle(ug);
 		if (message != null) {
 			final FontConfiguration font = new FontConfiguration(new UFont("", Font.PLAIN, 14), HtmlColorUtils.BLACK);
-			final TextBlock text = TextBlockUtils.create(Display.asList(message), font, HorizontalAlignement.LEFT, new SpriteContainerEmpty());
+			final TextBlock text = TextBlockUtils.create(Display.asList(message), font, HorizontalAlignement.LEFT,
+					new SpriteContainerEmpty());
 			final Dimension2D dim = text.calculateDimension(ug.getStringBounder());
 			final double textHeight = dim.getHeight();
-			text.drawU(ug, 0, height - textHeight);
+			text.drawUNewWayINLINED(ug.apply(new UTranslate(0, (height - textHeight))));
 		}
 	}
 

@@ -42,6 +42,7 @@ import net.sourceforge.plantuml.activitydiagram3.LinkRendering;
 import net.sourceforge.plantuml.activitydiagram3.ftile.Ftile;
 import net.sourceforge.plantuml.graphic.StringBounder;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
+import net.sourceforge.plantuml.ugraphic.UTranslate;
 
 class FtileAssemblySimple implements Ftile {
 
@@ -53,16 +54,15 @@ class FtileAssemblySimple implements Ftile {
 		this.tile2 = tile2;
 	}
 
-	public void drawU(UGraphic ug, double x, double y) {
+	public void drawUNewWayINLINED(UGraphic ug) {
 		final StringBounder stringBounder = ug.getStringBounder();
 		final Dimension2D dimTotal = calculateDimension(stringBounder);
 		final Dimension2D dim1 = tile1.calculateDimension(stringBounder);
 		final Dimension2D dim2 = tile2.calculateDimension(stringBounder);
 		final double dx1 = dimTotal.getWidth() - dim1.getWidth();
 		final double dx2 = dimTotal.getWidth() - dim2.getWidth();
-		tile1.drawU(ug, x + dx1 / 2, y);
-		tile2.drawU(ug, x + dx2 / 2, y + dim1.getHeight());
-
+		tile1.drawUNewWayINLINED(ug.apply(new UTranslate((dx1 / 2), 0)));
+		tile2.drawUNewWayINLINED(ug.apply(new UTranslate((dx2 / 2), dim1.getHeight())));
 	}
 
 	public Dimension2D calculateDimension(StringBounder stringBounder) {

@@ -307,7 +307,7 @@ public final class CucaDiagramFileMakerSvek2 {
 			throw new IllegalStateException();
 		}
 		final IEntityImage image = printEntity(ent, dotData);
-		final Dimension2D dim = image.getDimension(stringBounder);
+		final Dimension2D dim = image.calculateDimension(stringBounder);
 		final Shape shape = new Shape(image, image.getShapeType(), dim.getWidth(), dim.getHeight(), colorSequence,
 				ent.isTop(), image.getShield(), ent.getUrls(), ent.getEntityPosition());
 		dotStringFactory.addShape(shape);
@@ -341,7 +341,7 @@ public final class CucaDiagramFileMakerSvek2 {
 		if (leaf.getEntityType() == LeafType.STATE) {
 			if (leaf.getEntityPosition() != EntityPosition.NORMAL) {
 				final Cluster stateParent = getBibliotekon().getCluster(leaf.getParentContainer());
-				return new EntityImageStateBorder(leaf, dotData.getSkinParam(), stateParent);
+				return new EntityImageStateBorder(leaf, dotData.getSkinParam(), stateParent, getBibliotekon());
 			}
 			return new EntityImageState(leaf, dotData.getSkinParam());
 		}

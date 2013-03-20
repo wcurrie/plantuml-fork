@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 10104 $
+ * Revision $Revision: 10325 $
  *
  */
 package net.sourceforge.plantuml.ugraphic;
@@ -40,6 +40,16 @@ import net.sourceforge.plantuml.Url;
 import net.sourceforge.plantuml.graphic.StringBounder;
 
 public abstract class UGraphic {
+	/*
+public*draw*x*y
+void*draw*x*y
+draw*(*0*0
+Line
+UGroup
+UMotif
+
+	 * 
+	 */
 
 	abstract public StringBounder getStringBounder();
 
@@ -53,30 +63,23 @@ public abstract class UGraphic {
 
 	abstract public UGraphic apply(UChange change);
 
-	abstract public void centerChar(double x, double y, char c, UFont font);
-
 	abstract public ColorMapper getColorMapper();
 
 	abstract public void startUrl(Url url);
 
 	abstract public void closeAction();
 
-	abstract public UGroup createGroup();
-
 	abstract public void writeImage(OutputStream os, String metadata, int dpi) throws IOException;
-	
+
 	// bugnewway
 	// abstract public void translateTOBEREMOVED(double dx, double dy);
 
-//	public void setTranslateTOBEREMOVED(double dx, double dy) {
-//	}
+	// public void setTranslateTOBEREMOVED(double dx, double dy) {
+	// }
 
-//	abstract public double getTranslateXTOBEREMOVED();
-//
-//	abstract public double getTranslateYTOBEREMOVED();
+	// abstract public double getTranslateXTOBEREMOVED();
+	//
+	// abstract public double getTranslateYTOBEREMOVED();
 	// abstract public void setClipTOBEREMOVED(UClip clip);
-
-
-
 
 }

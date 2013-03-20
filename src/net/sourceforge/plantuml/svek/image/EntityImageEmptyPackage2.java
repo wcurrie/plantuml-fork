@@ -67,20 +67,20 @@ public class EntityImageEmptyPackage2 extends AbstractEntityImage {
 		this.skinParam = skinParam;
 		this.specificBackColor = entity.getSpecificBackColor();
 		this.stereotype = entity.getStereotype();
-		this.desc = TextBlockUtils.create(
-				entity.getDisplay(),
-				new FontConfiguration(SkinParamUtils.getFont(getSkinParam(), FontParam.PACKAGE, stereotype), SkinParamUtils.getFontColor(getSkinParam(), FontParam.PACKAGE, stereotype)), HorizontalAlignement.CENTER, skinParam);
+		this.desc = TextBlockUtils.create(entity.getDisplay(),
+				new FontConfiguration(SkinParamUtils.getFont(getSkinParam(), FontParam.PACKAGE, stereotype),
+						SkinParamUtils.getFontColor(getSkinParam(), FontParam.PACKAGE, stereotype)),
+				HorizontalAlignement.CENTER, skinParam);
 	}
 
-	@Override
-	public Dimension2D getDimension(StringBounder stringBounder) {
+	public Dimension2D calculateDimension(StringBounder stringBounder) {
 		final Dimension2D dim = desc.calculateDimension(stringBounder);
 		return Dimension2DDouble.delta(dim, MARGIN * 2, MARGIN * 2 + dim.getHeight() * 2);
 	}
 
-	public void drawU(UGraphic ug, double xTheoricalPosition, double yTheoricalPosition) {
+	final public void drawUNewWayINLINED(UGraphic ug) {
 		final StringBounder stringBounder = ug.getStringBounder();
-		final Dimension2D dimTotal = getDimension(stringBounder);
+		final Dimension2D dimTotal = calculateDimension(stringBounder);
 
 		final double widthTotal = dimTotal.getWidth();
 		final double heightTotal = dimTotal.getHeight();
@@ -91,9 +91,8 @@ public class EntityImageEmptyPackage2 extends AbstractEntityImage {
 		final ClusterDecoration decoration = new ClusterDecoration(getSkinParam().getPackageStyle(), null, desc,
 				TextBlockUtils.empty(0, 0), stateBack, 0, 0, widthTotal, heightTotal);
 
-		decoration.drawU(ug, xTheoricalPosition, yTheoricalPosition, SkinParamUtils.getColor(getSkinParam(), ColorParam.packageBorder, getStereo()),
+		decoration.drawU(ug, SkinParamUtils.getColor(getSkinParam(), ColorParam.packageBorder, getStereo()),
 				getSkinParam().shadowing());
-
 	}
 
 	public ShapeType getShapeType() {

@@ -44,13 +44,16 @@ public class InstructionWhile implements Instruction {
 	private final LinkRendering nextLinkRenderer;
 
 	private final Display test;
+	private final Display yes;
+	private Display out;
 	private LinkRendering endInlinkRendering;
 	private LinkRendering afterEndwhile;
 
-	public InstructionWhile(Instruction parent, Display test, LinkRendering nextLinkRenderer) {
+	public InstructionWhile(Instruction parent, Display test, LinkRendering nextLinkRenderer, Display yes) {
 		this.parent = parent;
 		this.test = test;
 		this.nextLinkRenderer = nextLinkRenderer;
+		this.yes = yes;
 	}
 
 	public void add(Instruction ins) {
@@ -58,7 +61,7 @@ public class InstructionWhile implements Instruction {
 	}
 
 	public Ftile createFtile(FtileFactory factory) {
-		return factory.createWhile(repeatList.createFtile(factory), test, endInlinkRendering, afterEndwhile);
+		return factory.createWhile(repeatList.createFtile(factory), test, endInlinkRendering, afterEndwhile, yes, out);
 	}
 
 	public Instruction getParent() {
@@ -73,12 +76,17 @@ public class InstructionWhile implements Instruction {
 		return nextLinkRenderer;
 	}
 
-	public void endwhile(LinkRendering nextLinkRenderer) {
+	public void endwhile(LinkRendering nextLinkRenderer, Display out) {
 		this.endInlinkRendering = nextLinkRenderer;
+		this.out = out;
 	}
 
 	public void afterEndwhile(LinkRendering linkRenderer) {
 		this.afterEndwhile = linkRenderer;
+	}
+
+	public void addNote(Display note) {
+		throw new UnsupportedOperationException();
 	}
 
 }

@@ -134,11 +134,11 @@ public class MethodsOrFieldsArea implements TextBlockWidth, TextBlock {
 			this.url = m.getUrl();
 		}
 
-		public void drawU(UGraphic ug, double x, double y) {
+		public void drawUNewWayINLINED(UGraphic ug) {
 			if (url != null) {
 				ug.startUrl(url);
 			}
-			bloc.drawU(ug, x, y);
+			bloc.drawUNewWayINLINED(ug);
 			if (url != null) {
 				ug.closeAction();
 			}
@@ -162,7 +162,7 @@ public class MethodsOrFieldsArea implements TextBlockWidth, TextBlock {
 		if (modifier == null) {
 			return new TextBlock() {
 
-				public void drawU(UGraphic ug, double x, double y) {
+				public void drawUNewWayINLINED(UGraphic ug) {
 				}
 
 				public Dimension2D calculateDimension(StringBounder stringBounder) {
@@ -185,8 +185,8 @@ public class MethodsOrFieldsArea implements TextBlockWidth, TextBlock {
 	public TextBlock asTextBlock(final double widthToUse) {
 		return new TextBlock() {
 
-			public void drawU(UGraphic ug, double x, double y) {
-				MethodsOrFieldsArea.this.drawU(ug, x, y);
+			public void drawUNewWayINLINED(UGraphic ug) {
+				MethodsOrFieldsArea.this.drawUNewWayINLINED(ug);
 			}
 
 			public Dimension2D calculateDimension(StringBounder stringBounder) {
@@ -199,7 +199,7 @@ public class MethodsOrFieldsArea implements TextBlockWidth, TextBlock {
 		};
 	}
 
-	public void drawU(UGraphic ug, double x, double y) {
+	public void drawUNewWayINLINED(UGraphic ug) {
 		final Dimension2D dim = calculateDimension(ug.getStringBounder());
 		final ULayoutGroup group;
 		if (hasSmallIcon()) {
@@ -226,8 +226,9 @@ public class MethodsOrFieldsArea implements TextBlockWidth, TextBlock {
 				group.add(bloc);
 			}
 		}
-		group.drawU(ug, x, y, dim.getWidth(), dim.getHeight());
+		group.drawU(ug, 0, 0, dim.getWidth(), dim.getHeight());
 	}
+
 
 	public List<Url> getUrls() {
 		return Collections.emptyList();
