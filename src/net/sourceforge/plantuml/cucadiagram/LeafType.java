@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 9786 $
+ * Revision $Revision: 10523 $
  *
  */
 package net.sourceforge.plantuml.cucadiagram;
@@ -49,7 +49,7 @@ public enum LeafType {
 
 	ACTIVITY, BRANCH, SYNCHRO_BAR, CIRCLE_START, CIRCLE_END, POINT_FOR_ASSOCIATION, ACTIVITY_CONCURRENT,
 
-	STATE, STATE_CONCURRENT, PSEUDO_STATE,
+	STATE, STATE_CONCURRENT, PSEUDO_STATE, STATE_CHOICE, STATE_FORK_JOIN,
 
 	BLOCK,
 

@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 9786 $
+ * Revision $Revision: 10523 $
  *
  */
 package net.sourceforge.plantuml.statediagram.command;
@@ -43,6 +43,7 @@ import net.sourceforge.plantuml.command.regex.RegexResult;
 import net.sourceforge.plantuml.cucadiagram.Code;
 import net.sourceforge.plantuml.cucadiagram.Display;
 import net.sourceforge.plantuml.cucadiagram.IEntity;
+import net.sourceforge.plantuml.cucadiagram.LeafType;
 import net.sourceforge.plantuml.cucadiagram.Stereotype;
 import net.sourceforge.plantuml.graphic.HtmlColorUtils;
 import net.sourceforge.plantuml.statediagram.StateDiagram;
@@ -50,9 +51,9 @@ import net.sourceforge.plantuml.statediagram.StateDiagram;
 public class CommandCreateState extends SingleLineCommand2<StateDiagram> {
 
 	public CommandCreateState(StateDiagram diagram) {
-		super(diagram, getRegexConcat()); 
+		super(diagram, getRegexConcat());
 	}
-	
+
 	private static RegexConcat getRegexConcat() {
 		return new RegexConcat(new RegexLeaf("^"), //
 				new RegexLeaf("(?:state\\s+)"), //
@@ -74,10 +75,11 @@ public class CommandCreateState extends SingleLineCommand2<StateDiagram> {
 		if (display == null) {
 			display = code.getCode();
 		}
-		final IEntity ent = getSystem().getOrCreateLeaf1(code, null);
+		final String stereotype = arg2.get("STEREOTYPE", 0);
+		final LeafType type = getTypeFromStereotype(stereotype);
+		final IEntity ent = getSystem().getOrCreateLeaf1(code, type);
 		ent.setDisplay(Display.getWithNewlines(display));
 
-		final String stereotype = arg2.get("STEREOTYPE", 0);
 		if (stereotype != null) {
 			ent.setStereotype(new Stereotype(stereotype));
 		}
@@ -88,10 +90,26 @@ public class CommandCreateState extends SingleLineCommand2<StateDiagram> {
 			ent.addUrl(url);
 		}
 		final String color = arg2.get("COLOR", 0);
-		if (color!=null) {
+		if (color != null) {
 			ent.setSpecificBackcolor(HtmlColorUtils.getColorIfValid(color));
 		}
 		return CommandExecutionResult.ok();
+	}
+
+	private LeafType getTypeFromStereotype(String stereotype) {
+		if ("<<choice>>".equalsIgnoreCase(stereotype)) {
+			return LeafType.STATE_CHOICE;
+		}
+		if ("<<fork>>".equalsIgnoreCase(stereotype)) {
+			return LeafType.STATE_FORK_JOIN;
+		}
+		if ("<<join>>".equalsIgnoreCase(stereotype)) {
+			return LeafType.STATE_FORK_JOIN;
+		}
+		if ("<<end>>".equalsIgnoreCase(stereotype)) {
+			return LeafType.CIRCLE_END;
+		}
+		return null;
 	}
 
 }

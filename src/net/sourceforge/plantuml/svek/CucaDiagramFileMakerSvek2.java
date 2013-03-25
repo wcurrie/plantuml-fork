@@ -354,7 +354,7 @@ public final class CucaDiagramFileMakerSvek2 {
 		if (leaf.getEntityType() == LeafType.USECASE) {
 			return new EntityImageUseCase(leaf, dotData.getSkinParam());
 		}
-		if (leaf.getEntityType() == LeafType.BRANCH) {
+		if (leaf.getEntityType() == LeafType.BRANCH || leaf.getEntityType() == LeafType.STATE_CHOICE) {
 			return new EntityImageBranch(leaf, dotData.getSkinParam());
 		}
 		if (leaf.getEntityType() == LeafType.LOLLIPOP) {
@@ -400,7 +400,7 @@ public final class CucaDiagramFileMakerSvek2 {
 		if (leaf.getEntityType() == LeafType.OBJECT) {
 			return new EntityImageObject(leaf, dotData.getSkinParam());
 		}
-		if (leaf.getEntityType() == LeafType.SYNCHRO_BAR) {
+		if (leaf.getEntityType() == LeafType.SYNCHRO_BAR || leaf.getEntityType() == LeafType.STATE_FORK_JOIN) {
 			return new EntityImageSynchroBar(leaf, dotData.getSkinParam());
 		}
 		if (leaf.getEntityType() == LeafType.CIRCLE_INTERFACE) {

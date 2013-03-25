@@ -86,15 +86,15 @@ public class GraphvizCached implements Graphviz {
 		final List<String> types = graphviz.getType();
 		final String sign = SignatureUtils.getSignature(dot + types);
 
-		final File source = new File("__graphviz", sign + ".txt");
-		source.getParentFile().mkdirs();
-		final PrintWriter pw = new PrintWriter(source);
-		pw.println(types.toString());
-		pw.println(dot);
-		pw.close();
-
 		final File result = new File("__graphviz", sign);
-		result.getParentFile().mkdirs();
+		if (result.exists() == false) {
+			final File source = new File("__graphviz", sign + ".txt");
+			source.getParentFile().mkdirs();
+			final PrintWriter pw = new PrintWriter(source);
+			pw.println(types.toString());
+			pw.println(dot);
+			pw.close();
+		}
 		return result;
 	}
 

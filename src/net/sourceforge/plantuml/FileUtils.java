@@ -51,26 +51,6 @@ public class FileUtils {
 		counter = new AtomicInteger(0);
 	}
 
-	private static File getTmpDir() {
-		final File tmpDir = new File(System.getProperty("java.io.tmpdir"));
-		if (tmpDir.exists() == false || tmpDir.isDirectory() == false) {
-			throw new IllegalStateException();
-		}
-		return tmpDir;
-	}
-
-	private static void delete(File f) {
-		if (f == null) {
-			return;
-		}
-		Thread.yield();
-		Log.info("Deleting temporary file " + f);
-		final boolean ok = f.delete();
-		if (ok == false) {
-			Log.error("Cannot delete: " + f);
-		}
-	}
-
 	static public File createTempFile(String prefix, String suffix) throws IOException {
 		if (suffix.startsWith(".") == false) {
 			throw new IllegalArgumentException();
@@ -92,46 +72,41 @@ public class FileUtils {
 		return f;
 	}
 
+	private static void copyInternal(final InputStream fis, final OutputStream fos) throws IOException {
+		final byte[] buf = new byte[10240];
+		int len;
+		while ((len = fis.read(buf)) > 0) {
+			fos.write(buf, 0, len);
+		}
+		fos.close();
+		fis.close();
+	}
+
 	static public void copyToFile(File src, File dest) throws IOException {
 		if (dest.isDirectory()) {
 			dest = new File(dest, src.getName());
 		}
 		final InputStream fis = new BufferedInputStream(new FileInputStream(src));
 		final OutputStream fos = new BufferedOutputStream(new FileOutputStream(dest));
-		int lu;
-		while ((lu = fis.read()) != -1) {
-			fos.write(lu);
-		}
-		fos.close();
-		fis.close();
+		copyInternal(fis, fos);
+	}
+
+	static public void copyToStream(File src, OutputStream os) throws IOException {
+		final InputStream fis = new BufferedInputStream(new FileInputStream(src));
+		final OutputStream fos = new BufferedOutputStream(os);
+		copyInternal(fis, fos);
+	}
+
+	static public void copyToStream(InputStream is, OutputStream os) throws IOException {
+		final InputStream fis = new BufferedInputStream(is);
+		final OutputStream fos = new BufferedOutputStream(os);
+		copyInternal(fis, fos);
 	}
 
 	static public void copyToFile(byte[] src, File dest) throws IOException {
 		final OutputStream fos = new BufferedOutputStream(new FileOutputStream(dest));
 		fos.write(src);
 		fos.close();
-	}
-
-	static public void copyToStream(File src, OutputStream os) throws IOException {
-		final InputStream fis = new BufferedInputStream(new FileInputStream(src));
-		final OutputStream fos = new BufferedOutputStream(os);
-		int lu;
-		while ((lu = fis.read()) != -1) {
-			fos.write(lu);
-		}
-		fos.close();
-		fis.close();
-	}
-
-	static public void copyToStream(InputStream is, OutputStream os) throws IOException {
-		final InputStream fis = new BufferedInputStream(is);
-		final OutputStream fos = new BufferedOutputStream(os);
-		int lu;
-		while ((lu = fis.read()) != -1) {
-			fos.write(lu);
-		}
-		fos.close();
-		fis.close();
 	}
 
 }

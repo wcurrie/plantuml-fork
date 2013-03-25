@@ -110,8 +110,15 @@ public class LanguageDescriptor {
 		keyword.add("rotate");
 		keyword.add("ref");
 		keyword.add("return");
+		keyword.add("is");
+		keyword.add("repeat");
+		keyword.add("start");
+		keyword.add("stop");
+		keyword.add("while");
+		keyword.add("endwhile");
+		keyword.add("fork");
+		keyword.add("again");
 
-		
 		preproc.add("!include");
 		preproc.add("!define");
 		preproc.add("!undef");
