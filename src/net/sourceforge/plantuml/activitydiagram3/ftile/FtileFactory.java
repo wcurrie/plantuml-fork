@@ -38,6 +38,7 @@ import java.util.List;
 import net.sourceforge.plantuml.activitydiagram3.LinkRendering;
 import net.sourceforge.plantuml.cucadiagram.Display;
 import net.sourceforge.plantuml.graphic.HtmlColor;
+import net.sourceforge.plantuml.sequencediagram.NotePosition;
 
 public interface FtileFactory {
 
@@ -45,17 +46,21 @@ public interface FtileFactory {
 
 	public Ftile stop();
 
-	public Ftile activity(Display label, HtmlColor color, LinkRendering linkRendering, Display note);
+	public Ftile activity(Display label, HtmlColor color);
 
-	public Ftile assembly(Ftile tile1, Ftile tile2, LinkRendering linkRendering);
+	public Ftile addNote(Ftile ftile, Display note, NotePosition notePosition);
 
-	public Ftile repeat(Ftile repeat, Display test, LinkRendering endRepeatLinkRendering);
+	public Ftile decorateIn(Ftile ftile, LinkRendering linkRendering);
 
-	public Ftile createWhile(Ftile whileBlock, Display test, LinkRendering endInlinkRendering,
-			LinkRendering afterEndwhile, Display yes, Display out);
+	public Ftile decorateOut(Ftile ftile, LinkRendering linkRendering);
 
-	public Ftile createIf(Ftile tile1, Ftile tile2, Display labelTest, Display label1, Display label2,
-			LinkRendering endThenInlinkRendering, LinkRendering endElseInlinkRendering);
+	public Ftile assembly(Ftile tile1, Ftile tile2);
+
+	public Ftile repeat(Ftile repeat, Display test);
+
+	public Ftile createWhile(Ftile whileBlock, Display test, Display yes, Display out);
+
+	public Ftile createIf(Ftile tile1, Ftile tile2, Display labelTest, Display label1, Display label2);
 
 	public Ftile createFork(List<Ftile> all);
 

@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 10265 $
+ * Revision $Revision: 10577 $
  *
  */
 package net.sourceforge.plantuml.skin.bluemodern;
@@ -69,7 +69,7 @@ public class ComponentBlueModernGroupingHeader extends AbstractTextualComponent 
 	public ComponentBlueModernGroupingHeader(HtmlColor headerBackgroundColor, HtmlColor generalBackgroundColor,
 			HtmlColor borderColor, HtmlColor fontColor1, HtmlColor fontColor2, UFont bigFont, UFont smallFont,
 			Display strings, SpriteContainer spriteContainer) {
-		super(strings.get(0), fontColor1, bigFont, HorizontalAlignement.LEFT, 15, 30, 1, spriteContainer);
+		super(strings.get(0), fontColor1, bigFont, HorizontalAlignement.LEFT, 15, 30, 1, spriteContainer, 0);
 		this.headerBackgroundColor = headerBackgroundColor;
 		this.generalBackgroundColor = generalBackgroundColor;
 		this.borderColor = borderColor;
@@ -149,7 +149,7 @@ public class ComponentBlueModernGroupingHeader extends AbstractTextualComponent 
 			final int x1 = getMarginX1() + textWidth;
 			final int y2 = getMarginY() + 1;
 
-			commentTextBlock.drawUNewWayINLINED(ug.apply(new UChangeColor(generalBackgroundColor)).apply(new UTranslate((x1 + commentMargin), y2)));
+			commentTextBlock.drawUNewWayINLINED(ug.apply(new UChangeColor(generalBackgroundColor)).apply(new UTranslate(x1 + commentMargin, y2)));
 		}
 	}
 

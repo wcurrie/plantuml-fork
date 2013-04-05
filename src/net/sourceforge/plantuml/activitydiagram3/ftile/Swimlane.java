@@ -31,62 +31,39 @@
  * Revision $Revision: 8475 $
  *
  */
-package net.sourceforge.plantuml.activitydiagram3.ftile.vertical;
+package net.sourceforge.plantuml.activitydiagram3.ftile;
 
 import java.awt.geom.Dimension2D;
 import java.util.List;
 
 import net.sourceforge.plantuml.Url;
-import net.sourceforge.plantuml.graphic.HtmlColor;
+import net.sourceforge.plantuml.cucadiagram.Display;
 import net.sourceforge.plantuml.graphic.StringBounder;
 import net.sourceforge.plantuml.graphic.TextBlock;
-import net.sourceforge.plantuml.ugraphic.UChangeColor;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
-import net.sourceforge.plantuml.ugraphic.ULine;
-import net.sourceforge.plantuml.ugraphic.UStroke;
 
-class FtileSplit extends AbstractFtile {
+public class Swimlane implements TextBlock {
 
-	private final FtileSplitInner inner;
-	private final HtmlColor colorBar;
-
-	public FtileSplit(FtileSplitInner inner, HtmlColor colorBar) {
-		this.inner = inner;
-		this.colorBar = colorBar;
+	public Dimension2D calculateDimension(StringBounder stringBounder) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
-	public TextBlock asTextBlock() {
-		return new TextBlock() {
-
-			public void drawUNewWayINLINED(UGraphic ug) {
-				final StringBounder stringBounder = ug.getStringBounder();
-				final Dimension2D dimTotal = calculateDimension(stringBounder);
-
-				inner.asTextBlock().drawUNewWayINLINED(ug);
-
-				final double x1 = inner.getX1(stringBounder);
-				final double x2 = inner.getX2(stringBounder);
-				final ULine hline = new ULine(x2 - x1 - .5, 0);
-				ug = ug.apply(new UStroke(1.5)).apply(new UChangeColor(colorBar));
-				// ug = ug.apply(new UTranslate(x, y));
-
-				ug.drawNewWay(x1, 0, hline);
-				ug.drawNewWay(x1, dimTotal.getHeight(), hline);
-			}
-
-			public Dimension2D calculateDimension(StringBounder stringBounder) {
-				final Dimension2D dim = inner.asTextBlock().calculateDimension(stringBounder);
-				return dim;
-			}
-
-			public List<Url> getUrls() {
-				throw new UnsupportedOperationException();
-			}
-		};
+	public List<Url> getUrls() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
-	public boolean isKilled() {
-		return false;
+	public void drawUNewWayINLINED(UGraphic ug) {
+		// TODO Auto-generated method stub
+	}
+	
+	public String getId() {
+		return null;
+	}
+	
+	public Display getDescription() {
+		return null;
 	}
 
 }

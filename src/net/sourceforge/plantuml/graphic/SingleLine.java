@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 10265 $
+ * Revision $Revision: 10571 $
  *
  */
 package net.sourceforge.plantuml.graphic;
@@ -65,7 +65,7 @@ class SingleLine implements Line {
 			} else if (cmd instanceof TextLink) {
 				final String s = ((TextLink) cmd).getText();
 				final Url url = ((TextLink) cmd).getUrl();
-//				blocs.add(new TileText(s, fontConfiguration.add(FontStyle.UNDERLINE), url));
+				// blocs.add(new TileText(s, fontConfiguration.add(FontStyle.UNDERLINE), url));
 				blocs.add(new TileText(s, fontConfiguration, url));
 			} else if (cmd instanceof Img) {
 				blocs.add(((Img) cmd).createMonoImage());
@@ -91,19 +91,19 @@ class SingleLine implements Line {
 		return new Dimension2DDouble(width, height);
 	}
 
-//	private double maxDeltaY(Graphics2D g2d) {
-//		double result = 0;
-//		final Dimension2D dim = calculateDimension(StringBounderUtils.asStringBounder(g2d));
-//		for (TextBlock b : blocs) {
-//			if (b instanceof TileText == false) {
-//				continue;
-//			}
-//			final Dimension2D dimBloc = b.calculateDimension(StringBounderUtils.asStringBounder(g2d));
-//			final double deltaY = dim.getHeight() - dimBloc.getHeight() + ((TileText) b).getFontSize2D();
-//			result = Math.max(result, deltaY);
-//		}
-//		return result;
-//	}
+	// private double maxDeltaY(Graphics2D g2d) {
+	// double result = 0;
+	// final Dimension2D dim = calculateDimension(StringBounderUtils.asStringBounder(g2d));
+	// for (TextBlock b : blocs) {
+	// if (b instanceof TileText == false) {
+	// continue;
+	// }
+	// final Dimension2D dimBloc = b.calculateDimension(StringBounderUtils.asStringBounder(g2d));
+	// final double deltaY = dim.getHeight() - dimBloc.getHeight() + ((TileText) b).getFontSize2D();
+	// result = Math.max(result, deltaY);
+	// }
+	// return result;
+	// }
 
 	private double maxDeltaY(UGraphic ug) {
 		double result = 0;
@@ -119,16 +119,17 @@ class SingleLine implements Line {
 		return result;
 	}
 
-	public void drawU(UGraphic ug, double x, double y) {
+	public void drawUNewWayINLINED(UGraphic ug) {
 		final double deltaY = maxDeltaY(ug);
 		final StringBounder stringBounder = ug.getStringBounder();
 		final Dimension2D dim = calculateDimension(stringBounder);
+		double x = 0;
 		for (TextBlock b : blocs) {
 			if (b instanceof TileText) {
-				b.drawUNewWayINLINED(ug.apply(new UTranslate(x, (y + deltaY))));
+				b.drawUNewWayINLINED(ug.apply(new UTranslate(x, deltaY)));
 			} else {
 				final double dy = dim.getHeight() - b.calculateDimension(stringBounder).getHeight();
-				b.drawUNewWayINLINED(ug.apply(new UTranslate(x, (y + dy))));
+				b.drawUNewWayINLINED(ug.apply(new UTranslate(x, dy)));
 			}
 			x += b.calculateDimension(stringBounder).getWidth();
 		}

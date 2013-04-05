@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 9786 $
+ * Revision $Revision: 10577 $
  *
  */
 package net.sourceforge.plantuml.skin.bluemodern;
@@ -54,7 +54,7 @@ public abstract class AbstractComponentBlueModernArrow extends AbstractTextualCo
 
 	public AbstractComponentBlueModernArrow(HtmlColor foregroundColor, HtmlColor fontColor, UFont font,
 			Display stringsToDisplay, ArrowConfiguration arrowConfiguration, SpriteContainer spriteContainer) {
-		super(stringsToDisplay, fontColor, font, HorizontalAlignement.LEFT, 17, 17, 2, spriteContainer);
+		super(stringsToDisplay, fontColor, font, HorizontalAlignement.LEFT, 17, 17, 2, spriteContainer, 0);
 		this.arrowConfiguration = arrowConfiguration;
 		this.foregroundColor = foregroundColor;
 	}

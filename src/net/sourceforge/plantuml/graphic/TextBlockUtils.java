@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 10307 $
+ * Revision $Revision: 10578 $
  *
  */
 package net.sourceforge.plantuml.graphic;
@@ -52,6 +52,11 @@ public class TextBlockUtils {
 
 	public static TextBlock create(Display texts, FontConfiguration fontConfiguration,
 			HorizontalAlignement horizontalAlignement, SpriteContainer spriteContainer) {
+		return create(texts, fontConfiguration, horizontalAlignement, spriteContainer, 0);
+	}
+
+	public static TextBlock create(Display texts, FontConfiguration fontConfiguration,
+			HorizontalAlignement horizontalAlignement, SpriteContainer spriteContainer, double maxMessageSize) {
 		if (texts.size() > 0) {
 			if (texts.get(0) instanceof Stereotype) {
 				return createStereotype(texts, fontConfiguration, horizontalAlignement, spriteContainer, 0);
@@ -61,17 +66,18 @@ public class TextBlockUtils {
 						texts.size() - 1);
 			}
 			if (texts.get(0) instanceof MessageNumber) {
-				return createMessageNumber(texts, fontConfiguration, horizontalAlignement, spriteContainer);
+				return createMessageNumber(texts, fontConfiguration, horizontalAlignement, spriteContainer,
+						maxMessageSize);
 			}
 		}
-		return new TextBlockSimple(texts, fontConfiguration, horizontalAlignement, spriteContainer);
+		return new TextBlockSimple(texts, fontConfiguration, horizontalAlignement, spriteContainer, maxMessageSize);
 	}
 
 	private static TextBlock createMessageNumber(Display texts, FontConfiguration fontConfiguration,
-			HorizontalAlignement horizontalAlignement, SpriteContainer spriteContainer) {
+			HorizontalAlignement horizontalAlignement, SpriteContainer spriteContainer, double maxMessageSize) {
 		final MessageNumber number = (MessageNumber) texts.get(0);
 		return new TextBlockWithNumber(number.getNumber(), texts.subList(1, texts.size()), fontConfiguration,
-				horizontalAlignement, spriteContainer);
+				horizontalAlignement, spriteContainer, maxMessageSize);
 
 	}
 
@@ -89,7 +95,7 @@ public class TextBlockUtils {
 			return new TextBlockSpotted(circledCharacter, texts, fontConfiguration, horizontalAlignement,
 					spriteContainer);
 		}
-		return new TextBlockSimple(texts, fontConfiguration, horizontalAlignement, spriteContainer);
+		return new TextBlockSimple(texts, fontConfiguration, horizontalAlignement, spriteContainer, 0);
 	}
 
 	public static TextBlock withMargin(TextBlock textBlock, double marginX, double marginY) {

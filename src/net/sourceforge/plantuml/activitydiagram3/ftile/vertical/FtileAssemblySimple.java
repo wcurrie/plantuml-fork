@@ -41,6 +41,7 @@ import net.sourceforge.plantuml.Url;
 import net.sourceforge.plantuml.activitydiagram3.LinkRendering;
 import net.sourceforge.plantuml.activitydiagram3.ftile.Ftile;
 import net.sourceforge.plantuml.graphic.StringBounder;
+import net.sourceforge.plantuml.graphic.TextBlock;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
 import net.sourceforge.plantuml.ugraphic.UTranslate;
 
@@ -54,24 +55,32 @@ class FtileAssemblySimple implements Ftile {
 		this.tile2 = tile2;
 	}
 
-	public void drawUNewWayINLINED(UGraphic ug) {
-		final StringBounder stringBounder = ug.getStringBounder();
-		final Dimension2D dimTotal = calculateDimension(stringBounder);
-		final Dimension2D dim1 = tile1.calculateDimension(stringBounder);
-		final Dimension2D dim2 = tile2.calculateDimension(stringBounder);
-		final double dx1 = dimTotal.getWidth() - dim1.getWidth();
-		final double dx2 = dimTotal.getWidth() - dim2.getWidth();
-		tile1.drawUNewWayINLINED(ug.apply(new UTranslate((dx1 / 2), 0)));
-		tile2.drawUNewWayINLINED(ug.apply(new UTranslate((dx2 / 2), dim1.getHeight())));
-	}
+	public TextBlock asTextBlock() {
+		return new TextBlock() {
 
-	public Dimension2D calculateDimension(StringBounder stringBounder) {
-		return Dimension2DDouble.mergeTB(tile1.calculateDimension(stringBounder),
-				tile2.calculateDimension(stringBounder));
-	}
+			public void drawUNewWayINLINED(UGraphic ug) {
+				final StringBounder stringBounder = ug.getStringBounder();
+				final Dimension2D dimTotal = calculateDimension(stringBounder);
+				final TextBlock textBlock1 = tile1.asTextBlock();
+				final TextBlock textBlock2 = tile2.asTextBlock();
+				final Dimension2D dim1 = textBlock1.calculateDimension(stringBounder);
+				final Dimension2D dim2 = textBlock2.calculateDimension(stringBounder);
+				final double dx1 = dimTotal.getWidth() - dim1.getWidth();
+				final double dx2 = dimTotal.getWidth() - dim2.getWidth();
+				textBlock1.drawUNewWayINLINED(ug.apply(new UTranslate(dx1 / 2, 0)));
+				textBlock2.drawUNewWayINLINED(ug.apply(new UTranslate(dx2 / 2, dim1.getHeight())));
+			}
 
-	public List<Url> getUrls() {
-		throw new UnsupportedOperationException();
+			public Dimension2D calculateDimension(StringBounder stringBounder) {
+				return Dimension2DDouble.mergeTB(tile1.asTextBlock().calculateDimension(stringBounder), tile2
+						.asTextBlock().calculateDimension(stringBounder));
+			}
+
+			public List<Url> getUrls() {
+				throw new UnsupportedOperationException();
+			}
+
+		};
 	}
 
 	public boolean isKilled() {
@@ -81,5 +90,10 @@ class FtileAssemblySimple implements Ftile {
 	public LinkRendering getInLinkRendering() {
 		return tile1.getInLinkRendering();
 	}
+	
+	public LinkRendering getOutLinkRendering() {
+		return null;
+	}
+
 
 }

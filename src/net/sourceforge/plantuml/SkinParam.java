@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  *
- * Revision $Revision: 9786 $
+ * Revision $Revision: 10583 $
  *
  */
 package net.sourceforge.plantuml;
@@ -463,6 +463,14 @@ public class SkinParam implements ISkinParam {
 			return new UStroke(Double.parseDouble(value));
 		}
 		return null;
+	}
+
+	public double maxMessageSize() {
+		final String value = getValue("maxmessagesize");
+		if (value != null && value.matches("-?\\d+")) {
+			return Double.parseDouble(value);
+		}
+		return 0;
 	}
 
 }

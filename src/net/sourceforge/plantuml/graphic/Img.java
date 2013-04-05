@@ -28,14 +28,19 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 10276 $
+ * Revision $Revision: 10611 $
  *
  */
 package net.sourceforge.plantuml.graphic;
 
 import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
+import java.net.URLConnection;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -51,11 +56,9 @@ public class Img implements HtmlCommand {
 	final static private Pattern noSrcColonPattern = Pattern.compile("(?i)" + Splitter.imgPatternNoSrcColon);
 
 	private final TextBlock tileImage;
-	private final String filePath;
 
-	private Img(TextBlock image, String filePath) throws IOException {
+	private Img(TextBlock image) throws IOException {
 		this.tileImage = image;
-		this.filePath = filePath;
 	}
 
 	static int getVspace(String html) {
@@ -93,16 +96,25 @@ public class Img implements HtmlCommand {
 		try {
 			final File f = FileSystem.getInstance().getFile(src);
 			if (f.exists() == false) {
+				// Check if valid URL
+				if (src.startsWith("http:") || src.startsWith("https:")) {
+					final byte image[] = getFile(src);
+					final BufferedImage read = ImageIO.read(new ByteArrayInputStream(image));
+					if (read == null) {
+						return new Text("(Cannot decode: " + src + ")");
+					}
+					return new Img(new TileImage(read, valign, vspace));
+				}
 				return new Text("(File not found: " + f + ")");
 			}
 			if (f.getName().endsWith(".svg")) {
-				return new Img(new TileImageSvg(f), src);
+				return new Img(new TileImageSvg(f));
 			}
 			final BufferedImage read = ImageIO.read(f);
 			if (read == null) {
 				return new Text("(Cannot decode: " + f + ")");
 			}
-			return new Img(new TileImage(ImageIO.read(f), valign, vspace), src);
+			return new Img(new TileImage(ImageIO.read(f), valign, vspace));
 		} catch (IOException e) {
 			return new Text("ERROR " + e.toString());
 		}
@@ -112,7 +124,27 @@ public class Img implements HtmlCommand {
 		return tileImage;
 	}
 
-	public final String getFilePath() {
-		return filePath;
+	// Added by Alain Corbiere
+	static byte[] getFile(String host) throws IOException {
+		final ByteArrayOutputStream image = new ByteArrayOutputStream();
+		InputStream input = null;
+		try {
+			final URL url = new URL(host);
+			final URLConnection connection = url.openConnection();
+			input = connection.getInputStream();
+			final byte[] buffer = new byte[1024];
+			int read;
+			while ((read = input.read(buffer)) > 0) {
+				image.write(buffer, 0, read);
+			}
+			image.close();
+			return image.toByteArray();
+		} finally {
+			if (input != null) {
+				input.close();
+			}
+		}
 	}
+	// End
+
 }

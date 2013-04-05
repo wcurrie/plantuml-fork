@@ -53,7 +53,7 @@ import net.sourceforge.plantuml.graphic.TextBlockVertical2;
 import net.sourceforge.plantuml.skin.rose.Rose;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
 
-public class BodyEnhanced2 implements TextBlock {
+public class BodyEnhanced implements TextBlock {
 
 	private TextBlock area2;
 	private final FontConfiguration titleConfig;
@@ -66,7 +66,7 @@ public class BodyEnhanced2 implements TextBlock {
 	private final boolean manageModifier;
 	private final List<Url> urls = new ArrayList<Url>();
 
-	public BodyEnhanced2(List<String> rawBody, FontParam fontParam, ISkinParam skinParam, boolean manageModifier) {
+	public BodyEnhanced(List<String> rawBody, FontParam fontParam, ISkinParam skinParam, boolean manageModifier) {
 		this.rawBody = new ArrayList<String>(rawBody);
 		this.fontParam = fontParam;
 		this.skinParam = skinParam;
@@ -79,7 +79,7 @@ public class BodyEnhanced2 implements TextBlock {
 		this.manageModifier = manageModifier;
 	}
 
-	public BodyEnhanced2(Display display, FontParam fontParam, ISkinParam skinParam, HorizontalAlignement align,
+	public BodyEnhanced(Display display, FontParam fontParam, ISkinParam skinParam, HorizontalAlignement align,
 			Stereotype stereotype, boolean manageHorizontalLine, boolean manageModifier) {
 		this.rawBody = new ArrayList<String>();
 		for (CharSequence s : display) {

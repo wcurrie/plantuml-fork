@@ -39,29 +39,33 @@ import java.util.List;
 
 import net.sourceforge.plantuml.Dimension2DDouble;
 import net.sourceforge.plantuml.Url;
-import net.sourceforge.plantuml.activitydiagram3.LinkRendering;
+import net.sourceforge.plantuml.activitydiagram3.ftile.vertical.AbstractFtile;
 import net.sourceforge.plantuml.graphic.StringBounder;
+import net.sourceforge.plantuml.graphic.TextBlock;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
 
-public class FtileEmpty implements Ftile {
+public class FtileEmpty extends AbstractFtile {
 
-	public void drawUNewWayINLINED(UGraphic ug) {
-	}
+	public TextBlock asTextBlock() {
+		return new TextBlock() {
 
-	public Dimension2D calculateDimension(StringBounder stringBounder) {
-		return new Dimension2DDouble(0, 0);
-	}
+			public void drawUNewWayINLINED(UGraphic ug) {
+			}
 
-	public List<Url> getUrls() {
-		return Collections.emptyList();
+			public Dimension2D calculateDimension(StringBounder stringBounder) {
+				return new Dimension2DDouble(0, 0);
+			}
+
+			public List<Url> getUrls() {
+				return Collections.emptyList();
+			}
+		};
 	}
 
 	public boolean isKilled() {
 		return false;
 	}
 
-	public LinkRendering getInLinkRendering() {
-		return null;
-	}
+
 
 }

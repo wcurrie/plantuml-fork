@@ -61,7 +61,7 @@ public class ComponentBlueModernDivider extends AbstractTextualComponent {
 
 	public ComponentBlueModernDivider(HtmlColor fontColor, UFont font, HtmlColor background1, HtmlColor background2,
 			HtmlColor borderColor, Display stringsToDisplay, SpriteContainer spriteContainer) {
-		super(stringsToDisplay, fontColor, font, HorizontalAlignement.CENTER, 4, 4, 4, spriteContainer);
+		super(stringsToDisplay, fontColor, font, HorizontalAlignement.CENTER, 4, 4, 4, spriteContainer, 0);
 		this.background1 = background1;
 		this.background2 = background2;
 		this.borderColor = borderColor;
@@ -94,7 +94,7 @@ public class ComponentBlueModernDivider extends AbstractTextualComponent {
 		ug.drawNewWay(xpos, ypos, new URectangle(textWidth + deltaX, textHeight, 5, 5));
 		ug = ug.apply(new UStroke());
 
-		textBlock.drawUNewWayINLINED(ug.apply(new UTranslate((xpos + deltaX), (ypos + getMarginY()))));
+		textBlock.drawUNewWayINLINED(ug.apply(new UTranslate(xpos + deltaX, ypos + getMarginY())));
 	}
 
 	@Override

@@ -41,7 +41,7 @@ import net.sourceforge.plantuml.FontParam;
 import net.sourceforge.plantuml.ISkinParam;
 import net.sourceforge.plantuml.SkinParamUtils;
 import net.sourceforge.plantuml.Url;
-import net.sourceforge.plantuml.cucadiagram.BodyEnhanced2;
+import net.sourceforge.plantuml.cucadiagram.BodyEnhanced;
 import net.sourceforge.plantuml.cucadiagram.Display;
 import net.sourceforge.plantuml.cucadiagram.ILeaf;
 import net.sourceforge.plantuml.cucadiagram.Stereotype;
@@ -76,7 +76,7 @@ public class EntityImageUseCase extends AbstractEntityImage {
 		super(entity, skinParam);
 		final Stereotype stereotype = entity.getStereotype();
 
-		final TextBlock tmp = new BodyEnhanced2(entity.getDisplay(), FontParam.USECASE, skinParam,
+		final TextBlock tmp = new BodyEnhanced(entity.getDisplay(), FontParam.USECASE, skinParam,
 				HorizontalAlignement.CENTER, stereotype, true, false);
 
 		if (stereotype == null || stereotype.getLabel() == null) {

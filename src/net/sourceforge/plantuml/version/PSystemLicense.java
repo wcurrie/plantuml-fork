@@ -51,7 +51,7 @@ public class PSystemLicense extends AbstractPSystem {
 	private final List<String> strings = new ArrayList<String>();
 
 	PSystemLicense() throws IOException {
-		strings.addAll(License.getText());
+		strings.addAll(License.getCurrent().getText());
 	}
 
 	public ImageData exportDiagram(OutputStream os, int num, FileFormatOption fileFormat) throws IOException {

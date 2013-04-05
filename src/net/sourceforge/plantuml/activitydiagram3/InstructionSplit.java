@@ -39,6 +39,7 @@ import java.util.List;
 import net.sourceforge.plantuml.activitydiagram3.ftile.Ftile;
 import net.sourceforge.plantuml.activitydiagram3.ftile.FtileFactory;
 import net.sourceforge.plantuml.cucadiagram.Display;
+import net.sourceforge.plantuml.sequencediagram.NotePosition;
 
 public class InstructionSplit implements Instruction {
 
@@ -82,8 +83,8 @@ public class InstructionSplit implements Instruction {
 		return null;
 	}
 
-	public void addNote(Display note) {
-		throw new UnsupportedOperationException();
+	public void addNote(Display note, NotePosition position) {
+		getLast().addNote(note, position);
 	}
 
 }

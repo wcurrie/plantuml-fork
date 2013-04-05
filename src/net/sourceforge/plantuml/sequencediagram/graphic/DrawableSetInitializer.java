@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 9786 $
+ * Revision $Revision: 10624 $
  *
  */
 package net.sourceforge.plantuml.sequencediagram.graphic;
@@ -428,7 +428,7 @@ class DrawableSetInitializer {
 		inGroupableStack.addList(inGroupableList);
 
 		final GraphicalElement element = new GroupingGraphicalElementHeader(freeY2.getFreeY(range), header,
-				inGroupableList);
+				inGroupableList, m.isParallel());
 		inGroupableList.setMinWidth(element.getPreferredWidth(stringBounder));
 		freeY2 = freeY2.add(element.getPreferredHeight(stringBounder), range);
 		drawableSet.addEvent(m, element);

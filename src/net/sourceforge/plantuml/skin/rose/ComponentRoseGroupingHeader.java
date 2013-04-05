@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 10265 $
+ * Revision $Revision: 10577 $
  *
  */
 package net.sourceforge.plantuml.skin.rose;
@@ -70,7 +70,7 @@ public class ComponentRoseGroupingHeader extends AbstractTextualComponent {
 	public ComponentRoseGroupingHeader(HtmlColor fontColor, HtmlColor background, HtmlColor groupBackground,
 			HtmlColor groupBorder, UFont bigFont, UFont smallFont, Display strings, SpriteContainer spriteContainer,
 			double deltaShadow, UStroke stroke) {
-		super(strings.get(0), fontColor, bigFont, HorizontalAlignement.LEFT, 15, 30, 1, spriteContainer);
+		super(strings.get(0), fontColor, bigFont, HorizontalAlignement.LEFT, 15, 30, 1, spriteContainer, 0);
 		this.groupBackground = groupBackground;
 		this.groupBorder = groupBorder;
 		this.background = background;
@@ -151,7 +151,7 @@ public class ComponentRoseGroupingHeader extends AbstractTextualComponent {
 			final int x1 = getMarginX1() + textWidth;
 			final int y2 = getMarginY() + 1;
 
-			commentTextBlock.drawUNewWayINLINED(ug.apply(new UTranslate((x1 + commentMargin), y2)));
+			commentTextBlock.drawUNewWayINLINED(ug.apply(new UTranslate(x1 + commentMargin, y2)));
 		}
 	}
 

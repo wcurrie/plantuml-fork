@@ -36,6 +36,7 @@ package net.sourceforge.plantuml.activitydiagram3;
 import net.sourceforge.plantuml.activitydiagram3.ftile.Ftile;
 import net.sourceforge.plantuml.activitydiagram3.ftile.FtileFactory;
 import net.sourceforge.plantuml.cucadiagram.Display;
+import net.sourceforge.plantuml.sequencediagram.NotePosition;
 
 public interface Instruction {
 
@@ -47,6 +48,6 @@ public interface Instruction {
 	
 	public LinkRendering getInLinkRendering();
 
-	public void addNote(Display note);
+	public void addNote(Display note, NotePosition position);
 
 }

@@ -38,14 +38,14 @@ import java.util.List;
 
 import net.sourceforge.plantuml.Dimension2DDouble;
 import net.sourceforge.plantuml.Url;
-import net.sourceforge.plantuml.activitydiagram3.LinkRendering;
 import net.sourceforge.plantuml.activitydiagram3.ftile.Ftile;
 import net.sourceforge.plantuml.graphic.HtmlColor;
 import net.sourceforge.plantuml.graphic.StringBounder;
+import net.sourceforge.plantuml.graphic.TextBlock;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
 import net.sourceforge.plantuml.ugraphic.UTranslate;
 
-class FtileFork implements Ftile {
+class FtileFork extends AbstractFtile {
 
 	private final double barHeight = 6;
 	private final Ftile inner;
@@ -56,32 +56,33 @@ class FtileFork implements Ftile {
 		this.colorBar = colorBar;
 	}
 
-	public void drawUNewWayINLINED(UGraphic ug) {
-		final StringBounder stringBounder = ug.getStringBounder();
-		final Dimension2D dimTotal = calculateDimension(stringBounder);
-		final Ftile black = new FtileBlackBlock(dimTotal.getWidth(), barHeight, colorBar);
+	public TextBlock asTextBlock() {
+		return new TextBlock() {
 
-		inner.drawUNewWayINLINED(ug.apply(new UTranslate(0, barHeight)));
+			public void drawUNewWayINLINED(UGraphic ug) {
+				final StringBounder stringBounder = ug.getStringBounder();
+				final Dimension2D dimTotal = calculateDimension(stringBounder);
+				final Ftile black = new FtileBlackBlock(dimTotal.getWidth(), barHeight, colorBar);
 
-		black.drawUNewWayINLINED(ug);
-		black.drawUNewWayINLINED(ug.apply(new UTranslate(0, (dimTotal.getHeight() - barHeight))));
-	}
+				inner.asTextBlock().drawUNewWayINLINED(ug.apply(new UTranslate(0, barHeight)));
 
-	public Dimension2D calculateDimension(StringBounder stringBounder) {
-		final Dimension2D dim = inner.calculateDimension(stringBounder);
-		return Dimension2DDouble.delta(dim, 0, 2 * barHeight);
-	}
+				black.asTextBlock().drawUNewWayINLINED(ug);
+				black.asTextBlock().drawUNewWayINLINED(ug.apply(new UTranslate(0, dimTotal.getHeight() - barHeight)));
+			}
 
-	public List<Url> getUrls() {
-		throw new UnsupportedOperationException();
+			public Dimension2D calculateDimension(StringBounder stringBounder) {
+				final Dimension2D dim = inner.asTextBlock().calculateDimension(stringBounder);
+				return Dimension2DDouble.delta(dim, 0, 2 * barHeight);
+			}
+
+			public List<Url> getUrls() {
+				throw new UnsupportedOperationException();
+			}
+		};
 	}
 
 	public boolean isKilled() {
 		return false;
-	}
-
-	public LinkRendering getInLinkRendering() {
-		return null;
 	}
 
 }

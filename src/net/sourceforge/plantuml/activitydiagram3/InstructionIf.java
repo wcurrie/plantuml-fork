@@ -36,6 +36,7 @@ package net.sourceforge.plantuml.activitydiagram3;
 import net.sourceforge.plantuml.activitydiagram3.ftile.Ftile;
 import net.sourceforge.plantuml.activitydiagram3.ftile.FtileFactory;
 import net.sourceforge.plantuml.cucadiagram.Display;
+import net.sourceforge.plantuml.sequencediagram.NotePosition;
 
 public class InstructionIf implements Instruction {
 
@@ -63,8 +64,9 @@ public class InstructionIf implements Instruction {
 	}
 
 	public Ftile createFtile(FtileFactory factory) {
-		return factory.createIf(thenList.createFtile(factory), elseList.createFtile(factory), labelTest, whenThen,
-				whenElse, endThenInlinkRendering, elseThenInlinkRendering);
+		return factory.createIf(factory.decorateOut(thenList.createFtile(factory), endThenInlinkRendering),
+				factory.decorateOut(elseList.createFtile(factory), elseThenInlinkRendering), labelTest, whenThen,
+				whenElse);
 	}
 
 	public Instruction getParent() {
@@ -94,8 +96,8 @@ public class InstructionIf implements Instruction {
 		return inlinkRendering;
 	}
 
-	public void addNote(Display note) {
-		throw new UnsupportedOperationException();
+	public void addNote(Display note, NotePosition position) {
+		current.addNote(note, position);
 	}
 
 }

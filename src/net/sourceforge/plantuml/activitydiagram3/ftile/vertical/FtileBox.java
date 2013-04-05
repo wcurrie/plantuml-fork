@@ -39,8 +39,6 @@ import java.util.List;
 import net.sourceforge.plantuml.Dimension2DDouble;
 import net.sourceforge.plantuml.SpriteContainerEmpty;
 import net.sourceforge.plantuml.Url;
-import net.sourceforge.plantuml.activitydiagram3.LinkRendering;
-import net.sourceforge.plantuml.activitydiagram3.ftile.Ftile;
 import net.sourceforge.plantuml.cucadiagram.Display;
 import net.sourceforge.plantuml.graphic.FontConfiguration;
 import net.sourceforge.plantuml.graphic.HorizontalAlignement;
@@ -58,7 +56,7 @@ import net.sourceforge.plantuml.ugraphic.URectangle;
 import net.sourceforge.plantuml.ugraphic.UStroke;
 import net.sourceforge.plantuml.ugraphic.UTranslate;
 
-class FtileBox implements Ftile {
+class FtileBox extends AbstractFtile {
 
 	private static final int CORNER = 25;
 	private static final int MARGIN = 10;
@@ -67,49 +65,47 @@ class FtileBox implements Ftile {
 
 	private final HtmlColor color;
 	private final HtmlColor backColor;
-	private final LinkRendering inLinkRendering;
 
-	public FtileBox(Display label, HtmlColor color, HtmlColor backColor, UFont font, LinkRendering inLinkRendering) {
+	public FtileBox(Display label, HtmlColor color, HtmlColor backColor, UFont font) {
 		this.color = color;
 		this.backColor = backColor;
-		this.inLinkRendering = inLinkRendering;
-		// final UFont font = new UFont("Serif", Font.PLAIN, 14);
 		final FontConfiguration fc = new FontConfiguration(font, HtmlColorUtils.BLACK);
 		tb = TextBlockUtils.create(label, fc, HorizontalAlignement.LEFT, new SpriteContainerEmpty());
 	}
 
-	public void drawUNewWayINLINED(UGraphic ug) {
-		final Dimension2D dimTotal = calculateDimension(ug.getStringBounder());
-		// final Dimension2D dimDesc =
-		// tb.calculateDimension(ug.getStringBounder());
-		
-		final double widthTotal = dimTotal.getWidth();
-		final double heightTotal = dimTotal.getHeight();
-		final Shadowable rect = new URectangle(widthTotal, heightTotal, CORNER, CORNER);
-		if (SHADOWING) {
-			rect.setDeltaShadow(3);
-		}
-		ug.apply(new UChangeColor(color)).apply(new UChangeBackColor(backColor)).apply(new UStroke(1.5))
-				.drawOldWay(rect);
-		
-		tb.drawUNewWayINLINED(ug.apply(new UTranslate(MARGIN, MARGIN)));
-	}
+	public TextBlock asTextBlock() {
+		return new TextBlock() {
 
-	public Dimension2D calculateDimension(StringBounder stringBounder) {
-		final Dimension2D dim = tb.calculateDimension(stringBounder);
-		return Dimension2DDouble.delta(dim, 2 * MARGIN, 2 * MARGIN);
-	}
+			public void drawUNewWayINLINED(UGraphic ug) {
+				final Dimension2D dimTotal = calculateDimension(ug.getStringBounder());
+				// final Dimension2D dimDesc =
+				// tb.calculateDimension(ug.getStringBounder());
 
-	public List<Url> getUrls() {
-		return tb.getUrls();
+				final double widthTotal = dimTotal.getWidth();
+				final double heightTotal = dimTotal.getHeight();
+				final Shadowable rect = new URectangle(widthTotal, heightTotal, CORNER, CORNER);
+				if (SHADOWING) {
+					rect.setDeltaShadow(3);
+				}
+				ug.apply(new UChangeColor(color)).apply(new UChangeBackColor(backColor)).apply(new UStroke(1.5))
+						.drawOldWay(rect);
+
+				tb.drawUNewWayINLINED(ug.apply(new UTranslate(MARGIN, MARGIN)));
+			}
+
+			public Dimension2D calculateDimension(StringBounder stringBounder) {
+				final Dimension2D dim = tb.calculateDimension(stringBounder);
+				return Dimension2DDouble.delta(dim, 2 * MARGIN, 2 * MARGIN);
+			}
+
+			public List<Url> getUrls() {
+				return tb.getUrls();
+			}
+		};
 	}
 
 	public boolean isKilled() {
 		return false;
-	}
-
-	public LinkRendering getInLinkRendering() {
-		return inLinkRendering;
 	}
 
 }

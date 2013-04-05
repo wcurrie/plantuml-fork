@@ -89,5 +89,7 @@ public interface ISkinParam extends SpriteContainer {
 	public double getRanksep();
 	
 	public double getRoundCorner();
+	
+	public double maxMessageSize();
 
 }

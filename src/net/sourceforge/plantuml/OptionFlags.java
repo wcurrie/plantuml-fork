@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  *
- * Revision $Revision: 10298 $
+ * Revision $Revision: 10531 $
  *
  */
 package net.sourceforge.plantuml;
@@ -45,7 +45,7 @@ import net.sourceforge.plantuml.cucadiagram.dot.GraphvizUtils;
 public class OptionFlags {
 
 	// static public final boolean PBBACK = false;
-	static public final boolean GRAPHVIZCACHE = false;
+	static public boolean GRAPHVIZCACHE = false;
 	static public final boolean TRACE_DOT = false;
 	static public final boolean NICE_ARROW = true;
 	// static public final boolean DESCRIPTION_DIAGRAM = false;

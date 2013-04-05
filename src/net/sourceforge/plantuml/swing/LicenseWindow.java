@@ -69,7 +69,7 @@ class LicenseWindow extends JFrame {
 		this.setTitle("Licence PlantUML (" + Version.versionString() + ")");
 
 		getContentPane().add(getNorthLabel(), BorderLayout.NORTH);
-		final List<String> list = new ArrayList<String>(License.getText());
+		final List<String> list = new ArrayList<String>(License.getCurrent().getText());
 		getContentPane().add(getJComponent(list), BorderLayout.CENTER);
 		getContentPane().add(getSouthLabel(), BorderLayout.SOUTH);
 

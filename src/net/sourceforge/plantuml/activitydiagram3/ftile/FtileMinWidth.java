@@ -40,6 +40,7 @@ import net.sourceforge.plantuml.Dimension2DDouble;
 import net.sourceforge.plantuml.Url;
 import net.sourceforge.plantuml.activitydiagram3.LinkRendering;
 import net.sourceforge.plantuml.graphic.StringBounder;
+import net.sourceforge.plantuml.graphic.TextBlock;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
 import net.sourceforge.plantuml.ugraphic.UTranslate;
 
@@ -53,23 +54,29 @@ public class FtileMinWidth implements Ftile {
 		this.minWidth = minWidth;
 	}
 
-	public void drawUNewWayINLINED(UGraphic ug) {
-		final StringBounder stringBounder = ug.getStringBounder();
-		final Dimension2D dimTile = tile.calculateDimension(stringBounder);
-		final Dimension2D dimTotal = calculateDimension(stringBounder);
-		tile.drawUNewWayINLINED(ug.apply(new UTranslate(((dimTotal.getWidth() - dimTile.getWidth()) / 2), 0)));
-	}
+	public TextBlock asTextBlock() {
+		return new TextBlock() {
 
-	public Dimension2D calculateDimension(StringBounder stringBounder) {
-		final Dimension2D dim = tile.calculateDimension(stringBounder);
-		if (dim.getWidth() < minWidth) {
-			return new Dimension2DDouble(minWidth, dim.getHeight());
-		}
-		return dim;
-	}
+			public void drawUNewWayINLINED(UGraphic ug) {
+				final StringBounder stringBounder = ug.getStringBounder();
+				final Dimension2D dimTile = tile.asTextBlock().calculateDimension(stringBounder);
+				final Dimension2D dimTotal = calculateDimension(stringBounder);
+				tile.asTextBlock().drawUNewWayINLINED(
+						ug.apply(new UTranslate((dimTotal.getWidth() - dimTile.getWidth()) / 2, 0)));
+			}
 
-	public List<Url> getUrls() {
-		throw new UnsupportedOperationException();
+			public Dimension2D calculateDimension(StringBounder stringBounder) {
+				final Dimension2D dim = tile.asTextBlock().calculateDimension(stringBounder);
+				if (dim.getWidth() < minWidth) {
+					return new Dimension2DDouble(minWidth, dim.getHeight());
+				}
+				return dim;
+			}
+
+			public List<Url> getUrls() {
+				throw new UnsupportedOperationException();
+			}
+		};
 	}
 
 	public boolean isKilled() {
@@ -79,5 +86,10 @@ public class FtileMinWidth implements Ftile {
 	public LinkRendering getInLinkRendering() {
 		return tile.getInLinkRendering();
 	}
+	
+	public LinkRendering getOutLinkRendering() {
+		return null;
+	}
+
 
 }

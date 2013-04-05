@@ -36,6 +36,7 @@ package net.sourceforge.plantuml.activitydiagram3;
 import net.sourceforge.plantuml.activitydiagram3.ftile.Ftile;
 import net.sourceforge.plantuml.activitydiagram3.ftile.FtileFactory;
 import net.sourceforge.plantuml.cucadiagram.Display;
+import net.sourceforge.plantuml.sequencediagram.NotePosition;
 
 public class InstructionWhile implements Instruction {
 
@@ -61,7 +62,10 @@ public class InstructionWhile implements Instruction {
 	}
 
 	public Ftile createFtile(FtileFactory factory) {
-		return factory.createWhile(repeatList.createFtile(factory), test, endInlinkRendering, afterEndwhile, yes, out);
+		Ftile tmp = factory.decorateOut(repeatList.createFtile(factory), endInlinkRendering);
+		tmp = factory.createWhile(tmp, test, yes, out);
+		tmp = factory.decorateOut(tmp, afterEndwhile);
+		return tmp;
 	}
 
 	public Instruction getParent() {
@@ -85,8 +89,8 @@ public class InstructionWhile implements Instruction {
 		this.afterEndwhile = linkRenderer;
 	}
 
-	public void addNote(Display note) {
-		throw new UnsupportedOperationException();
+	public void addNote(Display note, NotePosition position) {
+		repeatList.addNote(note, position);
 	}
 
 }

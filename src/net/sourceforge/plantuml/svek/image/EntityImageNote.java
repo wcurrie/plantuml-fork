@@ -43,7 +43,6 @@ import net.sourceforge.plantuml.Dimension2DDouble;
 import net.sourceforge.plantuml.Direction;
 import net.sourceforge.plantuml.FontParam;
 import net.sourceforge.plantuml.ISkinParam;
-import net.sourceforge.plantuml.MathUtils;
 import net.sourceforge.plantuml.SkinParamBackcolored;
 import net.sourceforge.plantuml.Url;
 import net.sourceforge.plantuml.cucadiagram.Display;
@@ -70,7 +69,6 @@ import net.sourceforge.plantuml.ugraphic.UFont;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
 import net.sourceforge.plantuml.ugraphic.ULine;
 import net.sourceforge.plantuml.ugraphic.UPolygon;
-import net.sourceforge.plantuml.ugraphic.UShape;
 import net.sourceforge.plantuml.ugraphic.UTranslate;
 
 public class EntityImageNote extends AbstractEntityImage {
@@ -82,12 +80,14 @@ public class EntityImageNote extends AbstractEntityImage {
 	private final int marginX2 = 15;
 	private final int marginY = 5;
 	private final boolean withShadow;
-	final private List<Url> url;
+	// final private List<Url> url;
+	private final ISkinParam skinParam;
 
 	private final TextBlock textBlock;
 
 	public EntityImageNote(ILeaf entity, ISkinParam skinParam) {
 		super(entity, getSkin(skinParam, entity));
+		this.skinParam = skinParam;
 
 		this.withShadow = skinParam.shadowing();
 		final Display strings = entity.getDisplay();
@@ -109,11 +109,21 @@ public class EntityImageNote extends AbstractEntityImage {
 			textBlock = TextBlockUtils.create(strings, new FontConfiguration(fontNote, fontColor),
 					HorizontalAlignement.LEFT, skinParam);
 		}
-		for (Url u : textBlock.getUrls()) {
-			entity.addUrl(u);
-		}
-		this.url = entity.getUrls();
+		// for (Url u : textBlock.getUrls()) {
+		// entity.addUrl(u);
+		// }
+	}
 
+	private boolean urlAdded;
+
+	public List<Url> getUrls() {
+		if (urlAdded == false) {
+			urlAdded = true;
+			for (Url u : textBlock.getUrls()) {
+				getEntity().addUrl(u);
+			}
+		}
+		return getEntity().getUrls();
 	}
 
 	private static ISkinParam getSkin(ISkinParam skinParam, IEntity entity) {
@@ -175,8 +185,9 @@ public class EntityImageNote extends AbstractEntityImage {
 	}
 
 	final public void drawUNewWayINLINED(UGraphic ug) {
-		if (url.size() > 0 && url.get(0).isMember() == false) {
-			ug.startUrl(url.get(0));
+		final List<Url> urls = getUrls();
+		if (urls.size() > 0 && urls.get(0).isMember() == false) {
+			ug.startUrl(urls.get(0));
 		}
 		if (opaleLine == null || opaleLine.isOpale() == false) {
 			drawNormal(ug);
@@ -195,48 +206,15 @@ public class EntityImageNote extends AbstractEntityImage {
 				p2 = path.getEndPoint();
 			}
 			final Direction strategy = getOpaleStrategy(textWidth, textHeight, p1);
-			drawOpale(ug, 0, 0, path, strategy);
+			final Point2D pp1 = path.getStartPoint();
+			final Point2D pp2 = path.getEndPoint();
+			final Opale opale = new Opale(borderColor, noteBackgroundColor, textBlock, skinParam.shadowing());
+			opale.setOpale(strategy, pp1, pp2);
+			opale.drawUNewWayINLINED(ug);
 		}
-		if (url.size() > 0 && url.get(0).isMember() == false) {
+		if (urls.size() > 0 && urls.get(0).isMember() == false) {
 			ug.closeAction();
 		}
-	}
-
-	private void drawOpale(UGraphic ug, double xTheoricalPosition, double yTheoricalPosition, DotPath path,
-			Direction strategy) {
-		final StringBounder stringBounder = ug.getStringBounder();
-
-		final UPolygon polygon = getPolygonNormal(stringBounder);
-		if (withShadow) {
-			polygon.setDeltaShadow(4);
-		}
-		ug = ug.apply(new UChangeBackColor(noteBackgroundColor)).apply(new UChangeColor(borderColor));
-		ug.drawOldWay(polygon);
-
-		final Point2D pp1 = path.getStartPoint();
-		final Point2D pp2 = path.getEndPoint();
-
-		final UShape polygonOpale;
-		if (strategy == Direction.LEFT) {
-			polygonOpale = getPolygonLeft(stringBounder, pp1, pp2, path);
-		} else if (strategy == Direction.RIGHT) {
-			polygonOpale = getPolygonRight(stringBounder, pp1, pp2, path);
-		} else if (strategy == Direction.UP) {
-			polygonOpale = getPolygonUp(stringBounder, pp1, pp2, path);
-		} else if (strategy == Direction.DOWN) {
-			polygonOpale = getPolygonDown(stringBounder, pp1, pp2, path);
-		} else {
-			throw new IllegalArgumentException();
-		}
-
-		// if (withShadow && polygonOpale instanceof UPolygon) {
-		// ((UPolygon) polygonOpale).setDeltaShadow(4);
-		// }
-		ug.drawOldWay(polygonOpale);
-
-		ug.drawNewWay(getTextWidth(stringBounder) - cornersize, 0, new ULine(0, cornersize));
-		ug.drawNewWay(getTextWidth(stringBounder), cornersize, new ULine(-cornersize, 0));
-		getTextBlock().drawUNewWayINLINED(ug.apply(new UTranslate(marginX1, marginY)));
 	}
 
 	private void drawNormal(UGraphic ug) {
@@ -258,83 +236,6 @@ public class EntityImageNote extends AbstractEntityImage {
 		final UPolygon polygon = new UPolygon();
 		polygon.addPoint(0, 0);
 		polygon.addPoint(0, getTextHeight(stringBounder));
-		polygon.addPoint(getTextWidth(stringBounder), getTextHeight(stringBounder));
-		polygon.addPoint(getTextWidth(stringBounder), cornersize);
-		polygon.addPoint(getTextWidth(stringBounder) - cornersize, 0);
-		polygon.addPoint(0, 0);
-		return polygon;
-	}
-
-	private final double delta = 4;
-
-	private UPolygon getPolygonLeft(final StringBounder stringBounder, final Point2D pp1, final Point2D pp2,
-			DotPath path) {
-		final UPolygon polygon = new UPolygon();
-		polygon.addPoint(0, 0);
-
-		double y1 = pp1.getY() - delta;
-		y1 = MathUtils.limitation(y1, 0, getTextHeight(stringBounder) - 2 * delta);
-		polygon.addPoint(0, y1);
-		polygon.addPoint(pp2.getX(), pp2.getY());
-		polygon.addPoint(0, y1 + 2 * delta);
-
-		polygon.addPoint(0, getTextHeight(stringBounder));
-		polygon.addPoint(getTextWidth(stringBounder), getTextHeight(stringBounder));
-		polygon.addPoint(getTextWidth(stringBounder), cornersize);
-		polygon.addPoint(getTextWidth(stringBounder) - cornersize, 0);
-		polygon.addPoint(0, 0);
-		return polygon;
-	}
-
-	private UPolygon getPolygonRight(final StringBounder stringBounder, final Point2D pp1, final Point2D pp2,
-			DotPath path) {
-		final UPolygon polygon = new UPolygon();
-		polygon.addPoint(0, 0);
-		polygon.addPoint(0, getTextHeight(stringBounder));
-		polygon.addPoint(getTextWidth(stringBounder), getTextHeight(stringBounder));
-
-		double y1 = pp1.getY() - delta;
-		y1 = MathUtils.limitation(y1, cornersize, getTextHeight(stringBounder) - 2 * delta);
-		polygon.addPoint(getTextWidth(stringBounder), y1 + 2 * delta);
-		polygon.addPoint(pp2.getX(), pp2.getY());
-		polygon.addPoint(getTextWidth(stringBounder), y1);
-
-		polygon.addPoint(getTextWidth(stringBounder), cornersize);
-		polygon.addPoint(getTextWidth(stringBounder) - cornersize, 0);
-		polygon.addPoint(0, 0);
-		return polygon;
-	}
-
-	private UPolygon getPolygonUp(final StringBounder stringBounder, final Point2D pp1, final Point2D pp2, DotPath path) {
-		final UPolygon polygon = new UPolygon();
-		polygon.addPoint(0, 0);
-		polygon.addPoint(0, getTextHeight(stringBounder));
-		polygon.addPoint(getTextWidth(stringBounder), getTextHeight(stringBounder));
-		polygon.addPoint(getTextWidth(stringBounder), cornersize);
-		polygon.addPoint(getTextWidth(stringBounder) - cornersize, 0);
-
-		double x1 = pp1.getX() - delta;
-		x1 = MathUtils.limitation(x1, 0, getTextWidth(stringBounder) - cornersize);
-		polygon.addPoint(x1 + 2 * delta, 0);
-		polygon.addPoint(pp2.getX(), pp2.getY());
-
-		polygon.addPoint(x1, 0);
-		polygon.addPoint(0, 0);
-		return polygon;
-	}
-
-	private UPolygon getPolygonDown(final StringBounder stringBounder, final Point2D pp1, final Point2D pp2,
-			DotPath path) {
-		final UPolygon polygon = new UPolygon();
-		polygon.addPoint(0, 0);
-		polygon.addPoint(0, getTextHeight(stringBounder));
-
-		double x1 = pp1.getX() - delta;
-		x1 = MathUtils.limitation(x1, 0, getTextWidth(stringBounder));
-		polygon.addPoint(x1, getTextHeight(stringBounder));
-		polygon.addPoint(pp2.getX(), pp2.getY());
-		polygon.addPoint(x1 + 2 * delta, getTextHeight(stringBounder));
-
 		polygon.addPoint(getTextWidth(stringBounder), getTextHeight(stringBounder));
 		polygon.addPoint(getTextWidth(stringBounder), cornersize);
 		polygon.addPoint(getTextWidth(stringBounder) - cornersize, 0);

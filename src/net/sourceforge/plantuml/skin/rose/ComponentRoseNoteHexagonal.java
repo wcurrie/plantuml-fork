@@ -58,7 +58,7 @@ final public class ComponentRoseNoteHexagonal extends AbstractTextualComponent {
 
 	public ComponentRoseNoteHexagonal(HtmlColor back, HtmlColor foregroundColor, HtmlColor fontColor, UFont font,
 			Display strings, SpriteContainer spriteContainer, double deltaShadow, UStroke stroke) {
-		super(strings, fontColor, font, HorizontalAlignement.LEFT, 12, 12, 4, spriteContainer);
+		super(strings, fontColor, font, HorizontalAlignement.LEFT, 12, 12, 4, spriteContainer, 0);
 		this.back = back;
 		this.foregroundColor = foregroundColor;
 		this.deltaShadow = deltaShadow;

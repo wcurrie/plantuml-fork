@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 10265 $
+ * Revision $Revision: 10577 $
  *
  */
 package net.sourceforge.plantuml.skin.rose;
@@ -59,9 +59,9 @@ public class ComponentRoseSelfArrow extends AbstractComponentRoseArrow {
 	private final double arrowWidth = 45;
 
 	public ComponentRoseSelfArrow(HtmlColor foregroundColor, HtmlColor colorFont, UFont font, Display stringsToDisplay,
-			ArrowConfiguration arrowConfiguration, SpriteContainer spriteContainer) {
+			ArrowConfiguration arrowConfiguration, SpriteContainer spriteContainer, double maxMessageSize) {
 		super(foregroundColor, colorFont, font, stringsToDisplay, arrowConfiguration, spriteContainer,
-				HorizontalAlignement.LEFT);
+				HorizontalAlignement.LEFT, maxMessageSize);
 	}
 
 	@Override

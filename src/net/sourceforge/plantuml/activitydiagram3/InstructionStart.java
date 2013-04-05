@@ -36,6 +36,7 @@ package net.sourceforge.plantuml.activitydiagram3;
 import net.sourceforge.plantuml.activitydiagram3.ftile.Ftile;
 import net.sourceforge.plantuml.activitydiagram3.ftile.FtileFactory;
 import net.sourceforge.plantuml.cucadiagram.Display;
+import net.sourceforge.plantuml.sequencediagram.NotePosition;
 
 public class InstructionStart implements Instruction {
 
@@ -55,7 +56,7 @@ public class InstructionStart implements Instruction {
 		return null;
 	}
 
-	public void addNote(Display note) {
+	public void addNote(Display note, NotePosition position) {
 		throw new UnsupportedOperationException();
 	}
 

@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 10064 $
+ * Revision $Revision: 10624 $
  *
  */
 package net.sourceforge.plantuml.sequencediagram.graphic;
@@ -48,10 +48,12 @@ class GroupingGraphicalElementHeader extends GroupingGraphicalElement {
 
 	private final Component comp;
 	private double endY;
+	private final boolean isParallel;
 
-	public GroupingGraphicalElementHeader(double currentY, Component comp, InGroupableList inGroupableList) {
+	public GroupingGraphicalElementHeader(double currentY, Component comp, InGroupableList inGroupableList, boolean isParallel) {
 		super(currentY, inGroupableList);
 		this.comp = comp;
+		this.isParallel = isParallel;
 	}
 
 	@Override
@@ -71,6 +73,9 @@ class GroupingGraphicalElementHeader extends GroupingGraphicalElement {
 
 	@Override
 	protected void drawInternalU(UGraphic ug, double maxX, Context2D context) {
+		if (isParallel) {
+			return;
+		}
 		final StringBounder stringBounder = ug.getStringBounder();
 		final double x1 = getInGroupableList().getMinX(stringBounder);
 		final double x2 = getInGroupableList().getMaxX(stringBounder);

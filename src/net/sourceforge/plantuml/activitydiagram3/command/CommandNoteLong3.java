@@ -42,7 +42,9 @@ import net.sourceforge.plantuml.command.CommandMultilines2;
 import net.sourceforge.plantuml.command.MultilinesStrategy;
 import net.sourceforge.plantuml.command.regex.RegexConcat;
 import net.sourceforge.plantuml.command.regex.RegexLeaf;
+import net.sourceforge.plantuml.command.regex.RegexResult;
 import net.sourceforge.plantuml.cucadiagram.Display;
+import net.sourceforge.plantuml.sequencediagram.NotePosition;
 
 public class CommandNoteLong3 extends CommandMultilines2<ActivityDiagram3> {
 
@@ -57,9 +59,17 @@ public class CommandNoteLong3 extends CommandMultilines2<ActivityDiagram3> {
 	public CommandExecutionResult executeNow(List<String> lines) {
 		// final RegexResult line0 = getStartingPattern().matcher(lines.get(0).trim());
 		final List<String> in = StringUtils.removeEmptyColumns(lines.subList(1, lines.size() - 1));
-
+		final RegexResult line0 = getStartingPattern().matcher(lines.get(0).trim());
+		final NotePosition position = getPosition(line0.get("POSITION", 0));
 		final Display note = new Display(in);
-		return getSystem().addNote(note);
+		return getSystem().addNote(note, position);
+	}
+
+	private NotePosition getPosition(String s) {
+		if (s == null) {
+			return NotePosition.LEFT;
+		}
+		return NotePosition.valueOf(s.toUpperCase());
 	}
 
 	static RegexConcat getRegexConcat() {

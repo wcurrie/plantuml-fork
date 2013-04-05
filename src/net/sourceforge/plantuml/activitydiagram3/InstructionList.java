@@ -41,6 +41,7 @@ import net.sourceforge.plantuml.activitydiagram3.ftile.FtileEmpty;
 import net.sourceforge.plantuml.activitydiagram3.ftile.FtileFactory;
 import net.sourceforge.plantuml.activitydiagram3.ftile.FtileKilled;
 import net.sourceforge.plantuml.cucadiagram.Display;
+import net.sourceforge.plantuml.sequencediagram.NotePosition;
 
 public class InstructionList implements Instruction {
 
@@ -59,11 +60,14 @@ public class InstructionList implements Instruction {
 		}
 		Ftile result = null;
 		for (Instruction ins : all) {
-			final Ftile cur = ins.createFtile(factory);
+			Ftile cur = ins.createFtile(factory);
+			if (ins.getInLinkRendering() != null) {
+				cur = factory.decorateIn(cur, ins.getInLinkRendering());
+			}
 			if (result == null) {
 				result = cur;
 			} else {
-				result = factory.assembly(result, cur, ins.getInLinkRendering());
+				result = factory.assembly(result, cur);
 			}
 
 		}
@@ -89,8 +93,8 @@ public class InstructionList implements Instruction {
 		return all.get(all.size() - 1);
 	}
 
-	public void addNote(Display note) {
-		getLast().addNote(note);
+	public void addNote(Display note, NotePosition position) {
+		getLast().addNote(note, position);
 	}
 
 }

@@ -39,15 +39,15 @@ import java.util.List;
 
 import net.sourceforge.plantuml.Dimension2DDouble;
 import net.sourceforge.plantuml.Url;
-import net.sourceforge.plantuml.activitydiagram3.LinkRendering;
 import net.sourceforge.plantuml.activitydiagram3.ftile.Ftile;
 import net.sourceforge.plantuml.activitydiagram3.ftile.FtileMarged;
 import net.sourceforge.plantuml.graphic.HtmlColor;
 import net.sourceforge.plantuml.graphic.StringBounder;
+import net.sourceforge.plantuml.graphic.TextBlock;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
 import net.sourceforge.plantuml.ugraphic.UTranslate;
 
-class FtileForkInner implements Ftile {
+class FtileForkInner extends AbstractFtile {
 
 	private final double smallArrow = 20;
 
@@ -68,46 +68,50 @@ class FtileForkInner implements Ftile {
 		}
 	}
 
-	public void drawUNewWayINLINED(UGraphic ug) {
-		final StringBounder stringBounder = ug.getStringBounder();
-		final Dimension2D dimTotal = calculateDimension(stringBounder);
-		
-		double xpos = 0;
-		for (Ftile ftile : forks) {
-			ftile.drawUNewWayINLINED(ug.apply(new UTranslate(xpos, 0)));
-			final Dimension2D dim = ftile.calculateDimension(stringBounder);
-			if (ftile.isKilled() == false) {
-				final Ftile arrow = factory.createVerticalArrow(dimTotal.getHeight() - dim.getHeight());
-				final double diffx = dim.getWidth() - arrow.calculateDimension(stringBounder).getWidth();
-				arrow.drawUNewWayINLINED(ug.apply(new UTranslate((xpos + diffx / 2), dim.getHeight())));
-			}
-			xpos += dim.getWidth();
-		}
-	}
+	public TextBlock asTextBlock() {
+		return new TextBlock() {
 
-	public Dimension2D calculateDimension(StringBounder stringBounder) {
-		double height = 0;
-		double width = 0;
-		for (Ftile ftile : forks) {
-			final Dimension2D dim = ftile.calculateDimension(stringBounder);
-			width += dim.getWidth();
-			if (dim.getHeight() > height) {
-				height = dim.getHeight();
-			}
-		}
-		return new Dimension2DDouble(width, height + smallArrow);
-	}
+			public void drawUNewWayINLINED(UGraphic ug) {
+				final StringBounder stringBounder = ug.getStringBounder();
+				final Dimension2D dimTotal = calculateDimension(stringBounder);
 
-	public List<Url> getUrls() {
-		throw new UnsupportedOperationException();
+				double xpos = 0;
+				for (Ftile ftile : forks) {
+					ftile.asTextBlock().drawUNewWayINLINED(ug.apply(new UTranslate(xpos, 0)));
+					final Dimension2D dim = ftile.asTextBlock().calculateDimension(stringBounder);
+					if (ftile.isKilled() == false) {
+						final Ftile arrow = factory.createVerticalArrow(dimTotal.getHeight() - dim.getHeight());
+						final double diffx = dim.getWidth()
+								- arrow.asTextBlock().calculateDimension(stringBounder).getWidth();
+						arrow.asTextBlock().drawUNewWayINLINED(
+								ug.apply(new UTranslate(xpos + diffx / 2, dim.getHeight())));
+					}
+					xpos += dim.getWidth();
+				}
+			}
+
+			public Dimension2D calculateDimension(StringBounder stringBounder) {
+				double height = 0;
+				double width = 0;
+				for (Ftile ftile : forks) {
+					final Dimension2D dim = ftile.asTextBlock().calculateDimension(stringBounder);
+					width += dim.getWidth();
+					if (dim.getHeight() > height) {
+						height = dim.getHeight();
+					}
+				}
+				return new Dimension2DDouble(width, height + smallArrow);
+			}
+
+			public List<Url> getUrls() {
+				throw new UnsupportedOperationException();
+			}
+		};
 	}
 
 	public boolean isKilled() {
 		return false;
 	}
 
-	public LinkRendering getInLinkRendering() {
-		return null;
-	}
 
 }

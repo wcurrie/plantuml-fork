@@ -39,15 +39,15 @@ import java.util.List;
 
 import net.sourceforge.plantuml.Dimension2DDouble;
 import net.sourceforge.plantuml.Url;
-import net.sourceforge.plantuml.activitydiagram3.LinkRendering;
 import net.sourceforge.plantuml.activitydiagram3.ftile.Ftile;
 import net.sourceforge.plantuml.activitydiagram3.ftile.FtileMarged;
 import net.sourceforge.plantuml.graphic.HtmlColor;
 import net.sourceforge.plantuml.graphic.StringBounder;
+import net.sourceforge.plantuml.graphic.TextBlock;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
 import net.sourceforge.plantuml.ugraphic.UTranslate;
 
-class FtileSplitInner implements Ftile {
+class FtileSplitInner extends AbstractFtile {
 
 	private final double margin = 7;
 
@@ -70,59 +70,62 @@ class FtileSplitInner implements Ftile {
 		}
 	}
 
-	public void drawUNewWayINLINED(UGraphic ug) {
-		final StringBounder stringBounder = ug.getStringBounder();
-		final Dimension2D dimTotal = calculateDimension(stringBounder);
-		
-		double xpos = 0;
-		for (Ftile ftile : splits) {
-			ftile.drawUNewWayINLINED(ug.apply(new UTranslate(xpos, 0)));
-			final Dimension2D dim = ftile.calculateDimension(stringBounder);
-			if (ftile.isKilled() == false) {
-				final Ftile arrow = factory.createVerticalArrow(dimTotal.getHeight() - dim.getHeight());
-				final double diffx = dim.getWidth() - arrow.calculateDimension(stringBounder).getWidth();
-				arrow.drawUNewWayINLINED(ug.apply(new UTranslate((xpos + diffx / 2), dim.getHeight())));
+	public TextBlock asTextBlock() {
+		return new TextBlock() {
+
+			public void drawUNewWayINLINED(UGraphic ug) {
+				final StringBounder stringBounder = ug.getStringBounder();
+				final Dimension2D dimTotal = calculateDimension(stringBounder);
+
+				double xpos = 0;
+				for (Ftile ftile : splits) {
+					ftile.asTextBlock().drawUNewWayINLINED(ug.apply(new UTranslate(xpos, 0)));
+					final Dimension2D dim = ftile.asTextBlock().calculateDimension(stringBounder);
+					if (ftile.isKilled() == false) {
+						final Ftile arrow = factory.createVerticalArrow(dimTotal.getHeight() - dim.getHeight());
+						final double diffx = dim.getWidth()
+								- arrow.asTextBlock().calculateDimension(stringBounder).getWidth();
+						arrow.asTextBlock().drawUNewWayINLINED(
+								ug.apply(new UTranslate(xpos + diffx / 2, dim.getHeight())));
+					}
+					xpos += dim.getWidth();
+				}
 			}
-			xpos += dim.getWidth();
-		}
+
+			public Dimension2D calculateDimension(StringBounder stringBounder) {
+				double height = 0;
+				double width = 0;
+				for (Ftile ftile : splits) {
+					final Dimension2D dim = ftile.asTextBlock().calculateDimension(stringBounder);
+					width += dim.getWidth();
+					if (dim.getHeight() > height) {
+						height = dim.getHeight();
+					}
+				}
+				return new Dimension2DDouble(width, height + smallArrow);
+			}
+
+			public List<Url> getUrls() {
+				throw new UnsupportedOperationException();
+			}
+		};
 	}
 
 	double getX1(StringBounder stringBounder) {
 		final Ftile first = splits.get(0);
-		final Dimension2D dim = first.calculateDimension(stringBounder);
+		final Dimension2D dim = first.asTextBlock().calculateDimension(stringBounder);
 		return dim.getWidth() / 2;
 	}
 
 	double getX2(StringBounder stringBounder) {
 		final Ftile last = splits.get(splits.size() - 1);
-		final Dimension2D dimTotal = calculateDimension(stringBounder);
-		final Dimension2D dim = last.calculateDimension(stringBounder);
+		final Dimension2D dimTotal = asTextBlock().calculateDimension(stringBounder);
+		final Dimension2D dim = last.asTextBlock().calculateDimension(stringBounder);
 		return dimTotal.getWidth() - dim.getWidth() / 2;
-	}
-
-	public Dimension2D calculateDimension(StringBounder stringBounder) {
-		double height = 0;
-		double width = 0;
-		for (Ftile ftile : splits) {
-			final Dimension2D dim = ftile.calculateDimension(stringBounder);
-			width += dim.getWidth();
-			if (dim.getHeight() > height) {
-				height = dim.getHeight();
-			}
-		}
-		return new Dimension2DDouble(width, height + smallArrow);
-	}
-
-	public List<Url> getUrls() {
-		throw new UnsupportedOperationException();
 	}
 
 	public boolean isKilled() {
 		return false;
-	}
-
-	public LinkRendering getInLinkRendering() {
-		return null;
 	}
 
 }

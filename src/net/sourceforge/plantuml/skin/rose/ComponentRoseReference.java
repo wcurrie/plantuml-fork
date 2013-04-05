@@ -71,7 +71,7 @@ public class ComponentRoseReference extends AbstractTextualComponent {
 			HtmlColor backgroundHeader, HtmlColor background, UFont header, Display stringsToDisplay,
 			HorizontalAlignement position, SpriteContainer spriteContainer, double deltaShadow, UStroke stroke) {
 		super(stringsToDisplay.subList(1, stringsToDisplay.size()), fontColor, font, HorizontalAlignement.LEFT, 4, 4,
-				4, spriteContainer);
+				4, spriteContainer, 0);
 		this.position = position;
 		this.backgroundHeader = backgroundHeader;
 		this.background = background;

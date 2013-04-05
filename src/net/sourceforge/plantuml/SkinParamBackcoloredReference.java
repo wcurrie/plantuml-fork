@@ -158,5 +158,9 @@ public class SkinParamBackcoloredReference implements ISkinParam {
 		return skinParam.getThickness(param);
 	}
 
+	public double maxMessageSize() {
+		return skinParam.maxMessageSize();
+	}
+
 
 }

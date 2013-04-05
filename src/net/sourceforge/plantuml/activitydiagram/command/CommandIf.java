@@ -78,6 +78,9 @@ public class CommandIf extends SingleLineCommand2<ActivityDiagram> {
 	@Override
 	protected CommandExecutionResult executeArg(RegexResult arg) {
 		final IEntity entity1 = CommandLinkActivity.getEntity(getSystem(), arg, true);
+		if (entity1 == null) {
+			return CommandExecutionResult.error("No if possible at this point");
+		}
 
 		final String ifCode;
 		final String ifLabel;

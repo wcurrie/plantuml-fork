@@ -37,6 +37,7 @@ import java.awt.geom.Dimension2D;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.util.ArrayList;
 import java.util.List;
 
 import net.sourceforge.plantuml.CMapData;
@@ -47,6 +48,7 @@ import net.sourceforge.plantuml.ISkinParam;
 import net.sourceforge.plantuml.UmlDiagram;
 import net.sourceforge.plantuml.UmlDiagramType;
 import net.sourceforge.plantuml.activitydiagram3.ftile.Ftile;
+import net.sourceforge.plantuml.activitydiagram3.ftile.Swimlane;
 import net.sourceforge.plantuml.activitydiagram3.ftile.vertical.VerticalFactory;
 import net.sourceforge.plantuml.api.ImageDataSimple;
 import net.sourceforge.plantuml.command.CommandExecutionResult;
@@ -59,6 +61,7 @@ import net.sourceforge.plantuml.graphic.StringBounder;
 import net.sourceforge.plantuml.graphic.StringBounderUtils;
 import net.sourceforge.plantuml.graphic.TextBlock;
 import net.sourceforge.plantuml.graphic.TextBlockUtils;
+import net.sourceforge.plantuml.sequencediagram.NotePosition;
 import net.sourceforge.plantuml.svek.DecorateEntityImage2;
 import net.sourceforge.plantuml.ugraphic.CompressionTransform;
 import net.sourceforge.plantuml.ugraphic.SlotFinder;
@@ -72,6 +75,9 @@ import net.sourceforge.plantuml.ugraphic.UTranslate;
 public class ActivityDiagram3 extends UmlDiagram {
 
 	private static final StringBounder dummyStringBounder;
+
+	private Instruction current = new InstructionList();
+	private final List<Swimlane> swinlanes = new ArrayList<Swimlane>();
 
 	static {
 		final BufferedImage imDummy = new BufferedImage(10, 10, BufferedImage.TYPE_INT_RGB);
@@ -157,7 +163,6 @@ public class ActivityDiagram3 extends UmlDiagram {
 		return new ImageDataSimple((int) dim.getWidth(), (int) dim.getHeight());
 	}
 
-	private Instruction current = new InstructionList();
 
 	public void addActivity(Display activity, HtmlColor color) {
 		current.add(new InstructionSimple(activity, color, nextLinkRenderer));
@@ -169,7 +174,7 @@ public class ActivityDiagram3 extends UmlDiagram {
 	}
 
 	private TextBlock getResult() {
-		TextBlock result = getFtile();
+		TextBlock result = getFtile().asTextBlock();
 		result = addTitle(result);
 		result = addHeaderAndFooter(result);
 		return result;
@@ -357,8 +362,8 @@ public class ActivityDiagram3 extends UmlDiagram {
 		this.nextLinkRenderer = linkRenderer;
 	}
 
-	public CommandExecutionResult addNote(Display note) {
-		current.addNote(note);
+	public CommandExecutionResult addNote(Display note, NotePosition position) {
+		current.addNote(note, position);
 		return CommandExecutionResult.ok();
 	}
 

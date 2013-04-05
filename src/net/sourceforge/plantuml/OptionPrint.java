@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  *
- * Revision $Revision: 9786 $
+ * Revision $Revision: 10607 $
  *
  */
 package net.sourceforge.plantuml;
@@ -87,8 +87,8 @@ public class OptionPrint {
 		System.out.println("    -checkversion\tTo check if a newer version is available for download");
 		System.out.println("    -v[erbose]\t\tTo have log information");
 		System.out.println("    -quiet\t\tTo NOT print error message into the console");
-// Log.println("    -forcegd\t\tTo force dot to use GD PNG library");
-// Log.println("    -forcecairo\t\tTo force dot to use Cairo PNG library");
+		// Log.println("    -forcegd\t\tTo force dot to use GD PNG library");
+		// Log.println("    -forcecairo\t\tTo force dot to use Cairo PNG library");
 		System.out.println("    -keepfiles\t\tTo NOT delete temporary files after process");
 		System.out.println("    -h[elp]\t\tTo display this help message");
 		System.out.println("    -testdot\t\tTo test the installation of graphviz");
@@ -119,17 +119,16 @@ public class OptionPrint {
 	}
 
 	public static void printLicense() throws InterruptedException {
-		for (String s : License.getText()) {
+		for (String s : License.getCurrent().getText()) {
 			System.out.println(s);
 		}
 		exit();
 	}
 
 	public static void printVersion() throws InterruptedException {
-		System.out.println("PlantUML version " + Version.versionString() + " (" + new Date(Version.compileTime()) + ")");
-		if (License.isCloseSource()) {
-			System.out.println("(Close source distribution)");
-		}
+		System.out
+				.println("PlantUML version " + Version.versionString() + " (" + new Date(Version.compileTime()) + ")");
+		System.out.println("(" + License.getCurrent() + " source distribution)");
 		final Properties p = System.getProperties();
 		System.out.println(p.getProperty("java.runtime.name"));
 		System.out.println(p.getProperty("java.vm.name"));
@@ -143,7 +142,8 @@ public class OptionPrint {
 	}
 
 	public static void checkVersion() throws InterruptedException {
-		System.out.println("PlantUML version " + Version.versionString() + " (" + new Date(Version.compileTime()) + ")");
+		System.out
+				.println("PlantUML version " + Version.versionString() + " (" + new Date(Version.compileTime()) + ")");
 		System.out.println();
 		final int lastversion = PSystemVersion.extractDownloadableVersion(null, null);
 		if (lastversion == -1) {
@@ -168,7 +168,8 @@ public class OptionPrint {
 
 	public static void printAbout() throws InterruptedException {
 		// Duplicate in PSystemVersion
-		System.out.println("PlantUML version " + Version.versionString() + " (" + new Date(Version.compileTime()) + ")");
+		System.out
+				.println("PlantUML version " + Version.versionString() + " (" + new Date(Version.compileTime()) + ")");
 		System.out.println();
 		System.out.println("Original idea: Arnaud Roques");
 		System.out.println("Word Macro: Alain Bertucat & Matthieu Sabatier");

@@ -40,7 +40,6 @@ import java.util.List;
 import net.sourceforge.plantuml.Dimension2DDouble;
 import net.sourceforge.plantuml.SpriteContainerEmpty;
 import net.sourceforge.plantuml.Url;
-import net.sourceforge.plantuml.activitydiagram3.LinkRendering;
 import net.sourceforge.plantuml.activitydiagram3.ftile.Ftile;
 import net.sourceforge.plantuml.activitydiagram3.ftile.FtileMarged;
 import net.sourceforge.plantuml.cucadiagram.Display;
@@ -58,7 +57,7 @@ import net.sourceforge.plantuml.ugraphic.UGraphic;
 import net.sourceforge.plantuml.ugraphic.UStroke;
 import net.sourceforge.plantuml.ugraphic.UTranslate;
 
-class FtileGroup implements Ftile {
+class FtileGroup extends AbstractFtile {
 
 	private final Ftile inner;
 	private final TextBlock name;
@@ -76,44 +75,49 @@ class FtileGroup implements Ftile {
 		}
 	}
 
-	public void drawUNewWayINLINED(UGraphic ug) {
-		final StringBounder stringBounder = ug.getStringBounder();
-		final Dimension2D dimTotal = calculateDimension(stringBounder);
-		final Dimension2D dimInner = inner.calculateDimension(stringBounder);
-		
-		final SymbolContext symbolContext = new SymbolContext(HtmlColorUtils.WHITE, HtmlColorUtils.BLACK).withShadow(
-				SHADOWING).withStroke(new UStroke(2));
-		USymbol.FRAME.asBig(name, TextBlockUtils.empty(0, 0), dimTotal.getWidth(), dimTotal.getHeight(), symbolContext)
-				.drawUNewWayINLINED(ug);
-		// ug.getParam().resetStroke();
-		
-		final double diffY = dimTotal.getHeight() - dimInner.getHeight();
-		inner.drawUNewWayINLINED(ug.apply(new UTranslate(0, (diffY / 2))));
-		
-		Ftile line1 = new FtileVerticalArrow(diffY / 2, color);
-		line1.drawUNewWayINLINED(ug.apply(new UTranslate((dimTotal.getWidth() / 2 - line1.calculateDimension(stringBounder).getWidth() / 2), 0)));
-		
-		Ftile line2 = new FtileVerticalLine(diffY / 2, color);
-		line2.drawUNewWayINLINED(ug.apply(new UTranslate((dimTotal.getWidth() / 2 - line2.calculateDimension(stringBounder).getWidth() / 2), (0
-		+ dimInner.getHeight() + diffY / 2))));
-	}
+	public TextBlock asTextBlock() {
+		return new TextBlock() {
 
-	public Dimension2D calculateDimension(StringBounder stringBounder) {
-		Dimension2D dim = inner.calculateDimension(stringBounder);
-		dim = Dimension2DDouble.delta(dim, 0, 50);
-		return dim;
-	}
+			public void drawUNewWayINLINED(UGraphic ug) {
+				final StringBounder stringBounder = ug.getStringBounder();
+				final Dimension2D dimTotal = calculateDimension(stringBounder);
+				final Dimension2D dimInner = inner.asTextBlock().calculateDimension(stringBounder);
 
-	public List<Url> getUrls() {
-		throw new UnsupportedOperationException();
+				final SymbolContext symbolContext = new SymbolContext(HtmlColorUtils.WHITE, HtmlColorUtils.BLACK)
+						.withShadow(SHADOWING).withStroke(new UStroke(2));
+				USymbol.FRAME.asBig(name, TextBlockUtils.empty(0, 0), dimTotal.getWidth(), dimTotal.getHeight(),
+						symbolContext).drawUNewWayINLINED(ug);
+				// ug.getParam().resetStroke();
+
+				final double diffY = dimTotal.getHeight() - dimInner.getHeight();
+				inner.asTextBlock().drawUNewWayINLINED(ug.apply(new UTranslate(0, diffY / 2)));
+
+				final Ftile line1 = new FtileVerticalArrow(diffY / 2, color);
+				final TextBlock textBlock1 = line1.asTextBlock();
+				textBlock1.drawUNewWayINLINED(ug.apply(new UTranslate(dimTotal.getWidth() / 2
+						- textBlock1.calculateDimension(stringBounder).getWidth() / 2, 0)));
+
+				final Ftile line2 = new FtileVerticalLine(diffY / 2, color);
+				final TextBlock textBlock2 = line2.asTextBlock();
+				textBlock2
+						.drawUNewWayINLINED(ug.apply(new UTranslate(dimTotal.getWidth() / 2
+								- textBlock2.calculateDimension(stringBounder).getWidth() / 2, dimInner.getHeight()
+								+ diffY / 2)));
+			}
+
+			public Dimension2D calculateDimension(StringBounder stringBounder) {
+				Dimension2D dim = inner.asTextBlock().calculateDimension(stringBounder);
+				dim = Dimension2DDouble.delta(dim, 0, 50);
+				return dim;
+			}
+
+			public List<Url> getUrls() {
+				throw new UnsupportedOperationException();
+			}
+		};
 	}
 
 	public boolean isKilled() {
 		return false;
 	}
-
-	public LinkRendering getInLinkRendering() {
-		return null;
-	}
-
 }

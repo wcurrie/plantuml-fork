@@ -149,4 +149,8 @@ public class SkinParamForecolored implements ISkinParam {
 		return skinParam.getThickness(param);
 	}
 
+	public double maxMessageSize() {
+		return skinParam.maxMessageSize();
+	}
+
 }

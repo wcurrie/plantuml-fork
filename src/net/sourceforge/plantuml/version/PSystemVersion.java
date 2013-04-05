@@ -123,13 +123,10 @@ public class PSystemVersion extends AbstractPSystem {
 		return getGraphicStrings().exportDiagram1317(os, fileFormat);
 	}
 
-
 	public static PSystemVersion createShowVersion() {
 		final List<String> strings = new ArrayList<String>();
 		strings.add("<b>PlantUML version " + Version.versionString() + "</b> (" + new Date(Version.compileTime()) + ")");
-		if (License.isCloseSource()) {
-			strings.add("(LGPL source distribution)");
-		}
+		strings.add("(" + License.getCurrent() + " source distribution)");
 		strings.add(" ");
 
 		strings.addAll(GraphvizUtils.getTestDotStrings(true));
@@ -147,9 +144,7 @@ public class PSystemVersion extends AbstractPSystem {
 		// Duplicate in OptionPrint
 		final List<String> strings = new ArrayList<String>();
 		strings.add("<b>PlantUML version " + Version.versionString() + "</b> (" + new Date(Version.compileTime()) + ")");
-		if (License.isCloseSource()) {
-			strings.add("(LGPL source distribution)");
-		}
+		strings.add("(" + License.getCurrent() + " source distribution)");
 		strings.add(" ");
 		strings.add("<u>Original idea</u>: Arnaud Roques");
 		strings.add("<u>Word Macro</u>: Alain Bertucat & Matthieu Sabatier");
@@ -255,6 +250,5 @@ public class PSystemVersion extends AbstractPSystem {
 	public List<String> getLines() {
 		return Collections.unmodifiableList(strings);
 	}
-
 
 }

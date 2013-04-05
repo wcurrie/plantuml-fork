@@ -60,7 +60,7 @@ import net.sourceforge.plantuml.ugraphic.UGraphic;
 import net.sourceforge.plantuml.ugraphic.UStroke;
 import net.sourceforge.plantuml.ugraphic.UTranslate;
 
-class FtileRepeat implements Ftile {
+class FtileRepeat extends AbstractFtile {
 
 	private final double smallArrow = 20;
 	final private double heighttop = 0;
@@ -94,49 +94,52 @@ class FtileRepeat implements Ftile {
 		}
 	}
 
-	public void drawUNewWayINLINED(UGraphic ug) {
-		final StringBounder stringBounder = ug.getStringBounder();
-		final Dimension2D dimTotal = calculateDimension(stringBounder);
-		final Dimension2D dimRepeat = repeat.calculateDimension(stringBounder);
-		final double diffx = dimTotal.getWidth() - dimRepeat.getWidth();
+	public TextBlock asTextBlock() {
+		return new TextBlock() {
 
-		repeat.drawUNewWayINLINED(ug.apply(new UTranslate((diffx / 2), heighttop)));
+			public void drawUNewWayINLINED(UGraphic ug) {
+				final StringBounder stringBounder = ug.getStringBounder();
+				final Dimension2D dimTotal = calculateDimension(stringBounder);
+				final Dimension2D dimRepeat = repeat.asTextBlock().calculateDimension(stringBounder);
+				final double diffx = dimTotal.getWidth() - dimRepeat.getWidth();
 
-		final Snake s1 = new Snake();
-		s1.addPoint(dimTotal.getWidth() / 2 + Diamond.diamondHalfSize, Diamond.diamondHalfSize);
-		s1.addPoint(dimTotal.getWidth() / 2 + Diamond.diamondHalfSize + dimRepeat.getWidth() / 2,
-				Diamond.diamondHalfSize);
-		s1.addPoint(dimTotal.getWidth() / 2 + Diamond.diamondHalfSize + dimRepeat.getWidth() / 2, dimTotal.getHeight()
-				- Diamond.diamondHalfSize);
-		s1.addPoint(dimTotal.getWidth() / 2 + Diamond.diamondHalfSize, dimTotal.getHeight() - Diamond.diamondHalfSize);
-		s1.drawU(ug.apply(new UStroke(1.5)).apply(new UChangeColor(arrowColor)));
+				repeat.asTextBlock().drawUNewWayINLINED(ug.apply(new UTranslate(diffx / 2, heighttop)));
 
-		ug = ug.apply(new UChangeBackColor(arrowColor)).apply(new UChangeColor(arrowColor));
-		ug.drawNewWay(dimTotal.getWidth() / 2 + Diamond.diamondHalfSize, Diamond.diamondHalfSize, Arrows.asToLeft());
-		ug.drawNewWay(dimTotal.getWidth() / 2 + Diamond.diamondHalfSize + dimRepeat.getWidth() / 2,
-				dimTotal.getHeight() / 2, Arrows.asToUp());
+				final Snake s1 = new Snake();
+				s1.addPoint(dimTotal.getWidth() / 2 + Diamond.diamondHalfSize, Diamond.diamondHalfSize);
+				s1.addPoint(dimTotal.getWidth() / 2 + Diamond.diamondHalfSize + dimRepeat.getWidth() / 2,
+						Diamond.diamondHalfSize);
+				s1.addPoint(dimTotal.getWidth() / 2 + Diamond.diamondHalfSize + dimRepeat.getWidth() / 2,
+						dimTotal.getHeight() - Diamond.diamondHalfSize);
+				s1.addPoint(dimTotal.getWidth() / 2 + Diamond.diamondHalfSize, dimTotal.getHeight()
+						- Diamond.diamondHalfSize);
+				s1.drawU(ug.apply(new UStroke(1.5)).apply(new UChangeColor(arrowColor)));
 
-		final Dimension2D dimTest = test.calculateDimension(stringBounder);
-		test.drawUNewWayINLINED(ug.apply(new UTranslate((dimTotal.getWidth() / 2 + Diamond.diamondHalfSize), (dimTotal.getHeight()
-		- Diamond.diamondHalfSize - dimTest.getHeight()))));
-	}
+				ug = ug.apply(new UChangeBackColor(arrowColor)).apply(new UChangeColor(arrowColor));
+				ug.drawNewWay(dimTotal.getWidth() / 2 + Diamond.diamondHalfSize, Diamond.diamondHalfSize,
+						Arrows.asToLeft());
+				ug.drawNewWay(dimTotal.getWidth() / 2 + Diamond.diamondHalfSize + dimRepeat.getWidth() / 2,
+						dimTotal.getHeight() / 2, Arrows.asToUp());
 
-	public Dimension2D calculateDimension(StringBounder stringBounder) {
-		Dimension2D dim = repeat.calculateDimension(stringBounder);
-		dim = Dimension2DDouble.delta(dim, 20, heighttop + heightbottom);
-		return dim;
-	}
+				final Dimension2D dimTest = test.calculateDimension(stringBounder);
+				test.drawUNewWayINLINED(ug.apply(new UTranslate(dimTotal.getWidth() / 2 + Diamond.diamondHalfSize,
+						dimTotal.getHeight() - Diamond.diamondHalfSize - dimTest.getHeight())));
+			}
 
-	public List<Url> getUrls() {
-		throw new UnsupportedOperationException();
+			public Dimension2D calculateDimension(StringBounder stringBounder) {
+				Dimension2D dim = repeat.asTextBlock().calculateDimension(stringBounder);
+				dim = Dimension2DDouble.delta(dim, 20, heighttop + heightbottom);
+				return dim;
+			}
+
+			public List<Url> getUrls() {
+				throw new UnsupportedOperationException();
+			}
+		};
 	}
 
 	public boolean isKilled() {
 		return false;
-	}
-
-	public LinkRendering getInLinkRendering() {
-		return null;
 	}
 
 }

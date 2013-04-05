@@ -40,6 +40,7 @@ import net.sourceforge.plantuml.command.regex.RegexConcat;
 import net.sourceforge.plantuml.command.regex.RegexLeaf;
 import net.sourceforge.plantuml.command.regex.RegexResult;
 import net.sourceforge.plantuml.cucadiagram.Display;
+import net.sourceforge.plantuml.sequencediagram.NotePosition;
 
 public class CommandNote3 extends SingleLineCommand2<ActivityDiagram3> {
 
@@ -59,7 +60,15 @@ public class CommandNote3 extends SingleLineCommand2<ActivityDiagram3> {
 	@Override
 	protected CommandExecutionResult executeArg(RegexResult arg) {
 		final Display note = Display.getWithNewlines(arg.get("NOTE", 0));
-		return getSystem().addNote(note);
+		final NotePosition position = getPosition(arg.get("POSITION", 0));
+		return getSystem().addNote(note, position);
+	}
+
+	private NotePosition getPosition(String s) {
+		if (s == null) {
+			return NotePosition.LEFT;
+		}
+		return NotePosition.valueOf(s.toUpperCase());
 	}
 
 }

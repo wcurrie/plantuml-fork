@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 10263 $
+ * Revision $Revision: 10578 $
  *
  */
 package net.sourceforge.plantuml.graphic;
@@ -47,7 +47,7 @@ class TextBlockSpotted extends TextBlockSimple {
 
 	public TextBlockSpotted(CircledCharacter circledCharacter, Display texts, FontConfiguration fontConfiguration,
 			HorizontalAlignement horizontalAlignement, SpriteContainer spriteContainer) {
-		super(texts, fontConfiguration, horizontalAlignement, spriteContainer);
+		super(texts, fontConfiguration, horizontalAlignement, spriteContainer, 0);
 		this.circledCharacter = circledCharacter;
 	}
 

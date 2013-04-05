@@ -46,7 +46,7 @@ import net.sourceforge.plantuml.Url;
 import net.sourceforge.plantuml.cucadiagram.BlockMember;
 import net.sourceforge.plantuml.cucadiagram.BlockMemberImpl;
 import net.sourceforge.plantuml.cucadiagram.Bodier;
-import net.sourceforge.plantuml.cucadiagram.BodyEnhanced2;
+import net.sourceforge.plantuml.cucadiagram.BodyEnhanced;
 import net.sourceforge.plantuml.cucadiagram.Code;
 import net.sourceforge.plantuml.cucadiagram.Display;
 import net.sourceforge.plantuml.cucadiagram.EntityPortion;
@@ -63,7 +63,6 @@ import net.sourceforge.plantuml.cucadiagram.Rankdir;
 import net.sourceforge.plantuml.cucadiagram.Stereotype;
 import net.sourceforge.plantuml.graphic.HorizontalAlignement;
 import net.sourceforge.plantuml.graphic.HtmlColor;
-import net.sourceforge.plantuml.graphic.HtmlColorUtils;
 import net.sourceforge.plantuml.graphic.TextBlock;
 import net.sourceforge.plantuml.graphic.TextBlockVertical2;
 import net.sourceforge.plantuml.graphic.USymbol;
@@ -111,7 +110,6 @@ class EntityImpl implements ILeaf, IGroup {
 	private boolean removed = false;
 	private HtmlColor specificLineColor;
 	private UStroke specificStroke;
-
 
 	// Back to Entity
 	public final boolean isTop() {
@@ -290,14 +288,21 @@ class EntityImpl implements ILeaf, IGroup {
 
 	public BlockMember getBody(final PortionShower portionShower) {
 		checkNotGroup();
+		final boolean showMethods = portionShower.showPortion(EntityPortion.METHOD, EntityImpl.this);
+		final boolean showFields = portionShower.showPortion(EntityPortion.FIELD, EntityImpl.this);
 		if (getEntityType().isLikeClass() && bodier.isBodyEnhanced()) {
-			return bodier.getBodyEnhanced();
+			if (showMethods && showFields) {
+				return bodier.getBodyEnhanced();
+			}
+			return new BlockMember() {
+				public TextBlock asTextBlock(FontParam fontParam, ISkinParam skinParam) {
+					return null;
+				}
+			};
 		}
 		return new BlockMember() {
 			public TextBlock asTextBlock(FontParam fontParam, ISkinParam skinParam) {
 				if (getEntityType().isLikeClass()) {
-					final boolean showMethods = portionShower.showPortion(EntityPortion.METHOD, EntityImpl.this);
-					final boolean showFields = portionShower.showPortion(EntityPortion.FIELD, EntityImpl.this);
 
 					if (showFields && showMethods) {
 						return new TextBlockVertical2(new BlockMemberImpl(getFieldsToDisplay()).asTextBlock(fontParam,
@@ -325,7 +330,7 @@ class EntityImpl implements ILeaf, IGroup {
 		}
 		return new BlockMember() {
 			public TextBlock asTextBlock(FontParam fontParam, ISkinParam skinParam) {
-				return new BodyEnhanced2(mouseOver, fontParam, skinParam, leafType.manageModifier());
+				return new BodyEnhanced(mouseOver, fontParam, skinParam, leafType.manageModifier());
 			}
 		};
 	}
@@ -587,8 +592,6 @@ class EntityImpl implements ILeaf, IGroup {
 	public void setRemoved(boolean removed) {
 		this.removed = removed;
 	}
-	
-	
 
 	public HtmlColor getSpecificLineColor() {
 		return specificLineColor;

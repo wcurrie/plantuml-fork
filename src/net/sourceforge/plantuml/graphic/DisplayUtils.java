@@ -27,49 +27,28 @@
  * in the United States and other countries.]
  *
  * Original Author:  Arnaud Roques
- *
- * Revision $Revision: 8475 $
+ * 
+ * Revision $Revision: 10307 $
  *
  */
-package net.sourceforge.plantuml.activitydiagram3.ftile;
+package net.sourceforge.plantuml.graphic;
 
-import java.awt.geom.Dimension2D;
-import java.util.List;
+import net.sourceforge.plantuml.SpriteContainer;
+import net.sourceforge.plantuml.cucadiagram.Display;
 
-import net.sourceforge.plantuml.Url;
-import net.sourceforge.plantuml.activitydiagram3.LinkRendering;
-import net.sourceforge.plantuml.activitydiagram3.ftile.vertical.AbstractFtile;
-import net.sourceforge.plantuml.graphic.StringBounder;
-import net.sourceforge.plantuml.graphic.TextBlock;
-import net.sourceforge.plantuml.ugraphic.UGraphic;
+public class DisplayUtils {
 
-public class FtileKilled extends AbstractFtile {
-
-	private final Ftile tile;
-
-	public FtileKilled(Ftile tileToKill) {
-		this.tile = tileToKill;
-	}
-
-	public TextBlock asTextBlock() {
-		return new TextBlock() {
-
-			public Dimension2D calculateDimension(StringBounder stringBounder) {
-				return tile.asTextBlock().calculateDimension(stringBounder);
-			}
-
-			public List<Url> getUrls() {
-				return tile.asTextBlock().getUrls();
-			}
-
-			public void drawUNewWayINLINED(UGraphic ug) {
-				tile.asTextBlock().drawUNewWayINLINED(ug);
-			}
-		};
-	}
-
-	public boolean isKilled() {
-		return true;
+	private static Display breakLines(Display texts, FontConfiguration fontConfiguration,
+			SpriteContainer spriteContainer, double maxWidth) {
+		if (texts.size() != 1) {
+			return texts;
+		}
+		final CharSequence s = texts.get(0);
+		Display result = new Display();
+		final int nb = s.length() / 2;
+		result = result.add(s.subSequence(0, nb));
+		result = result.add(s.subSequence(nb + 1, s.length()));
+		return result;
 	}
 
 }

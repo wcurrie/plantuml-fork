@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 9786 $
+ * Revision $Revision: 10591 $
  *
  */
 package net.sourceforge.plantuml.skin.rose;
@@ -58,13 +58,8 @@ public class Rose implements Skin {
 
 	private final Map<ColorParam, HtmlColor> defaultsColor = new EnumMap<ColorParam, HtmlColor>(ColorParam.class);
 
-	private double paddingX = 5;
-	private double paddingY = 5;
-
-	public void setPaddingNote(double paddingX, double paddingY) {
-		this.paddingX = paddingX;
-		this.paddingY = paddingY;
-	}
+	final private double paddingX = 5;
+	final private double paddingY = 5;
 
 	public Rose() {
 		defaultsColor.put(ColorParam.background, HtmlColorUtils.getColorIfValid("white"));
@@ -180,11 +175,15 @@ public class Rose implements Skin {
 		final double deltaShadow = param.shadowing() ? 4.0 : 0;
 
 		if (type.isArrow()) {
+			// if (param.maxMessageSize() > 0) {
+			// final FontConfiguration fc = new FontConfiguration(fontArrow, HtmlColorUtils.BLACK);
+			// stringsToDisplay = DisplayUtils.breakLines(stringsToDisplay, fc, param, param.maxMessageSize());
+			// }
 			final HtmlColor sequenceArrow = config.getColor() == null ? getHtmlColor(param, ColorParam.sequenceArrow)
 					: config.getColor();
 			if (config.getArrowDirection() == ArrowDirection.SELF) {
 				return new ComponentRoseSelfArrow(sequenceArrow, getFontColor(param, FontParam.SEQUENCE_ARROW),
-						fontArrow, stringsToDisplay, config, param);
+						fontArrow, stringsToDisplay, config, param, param.maxMessageSize());
 			}
 			final HorizontalAlignement messageHorizontalAlignement = param
 					.getHorizontalAlignement(AlignParam.SEQUENCE_MESSAGE_ALIGN);
@@ -192,10 +191,12 @@ public class Rose implements Skin {
 					.getHorizontalAlignement(AlignParam.SEQUENCE_MESSAGETEXT_ALIGN);
 			if (OptionFlags.NEW_ARROW) {
 				return new ComponentRoseArrow2(sequenceArrow, getFontColor(param, FontParam.SEQUENCE_ARROW), fontArrow,
-						stringsToDisplay, config, messageHorizontalAlignement, param, textHorizontalAlignement);
+						stringsToDisplay, config, messageHorizontalAlignement, param, textHorizontalAlignement,
+						param.maxMessageSize());
 			}
 			return new ComponentRoseArrow(sequenceArrow, getFontColor(param, FontParam.SEQUENCE_ARROW), fontArrow,
-					stringsToDisplay, config, messageHorizontalAlignement, param, textHorizontalAlignement);
+					stringsToDisplay, config, messageHorizontalAlignement, param, textHorizontalAlignement,
+					param.maxMessageSize());
 		}
 		if (type == ComponentType.PARTICIPANT_HEAD) {
 			final HtmlColor borderColor = getHtmlColor(param, ColorParam.sequenceParticipantBorder);

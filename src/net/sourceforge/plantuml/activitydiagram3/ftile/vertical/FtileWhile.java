@@ -61,7 +61,7 @@ import net.sourceforge.plantuml.ugraphic.UGraphic;
 import net.sourceforge.plantuml.ugraphic.UStroke;
 import net.sourceforge.plantuml.ugraphic.UTranslate;
 
-class FtileWhile implements Ftile {
+class FtileWhile extends AbstractFtile {
 
 	private final double margin = 10;
 	private final double smallArrow = 30;
@@ -71,18 +71,20 @@ class FtileWhile implements Ftile {
 	private final TextBlock test;
 	private final TextBlock out;
 
-	private final HtmlColor borderColor;
+	// private final HtmlColor borderColor;
 	private final HtmlColor arrowColor;
 	private final HtmlColor endInlinkColor;
-	private final HtmlColor afterEndwhileColor;
+	private HtmlColor afterEndwhileColor;
+
+	public void changeAfterEndwhileColor(HtmlColor afterEndwhileColor) {
+		this.afterEndwhileColor = afterEndwhileColor;
+	}
 
 	public FtileWhile(Ftile whileBlock, Display test, VerticalFactory factory, HtmlColor borderColor,
-			HtmlColor backColor, HtmlColor arrowColor, UFont font, HtmlColor endInlinkColor,
-			HtmlColor afterEndwhileColor, Display yes, Display out) {
-		this.borderColor = borderColor;
+			HtmlColor backColor, HtmlColor arrowColor, UFont font, HtmlColor endInlinkColor, Display yes, Display out) {
+		// this.borderColor = borderColor;
 		this.arrowColor = arrowColor;
 		this.endInlinkColor = endInlinkColor;
-		this.afterEndwhileColor = afterEndwhileColor;
 
 		final HtmlColor firstArrowColor = LinkRendering.getColor(whileBlock.getInLinkRendering(), arrowColor);
 
@@ -112,68 +114,66 @@ class FtileWhile implements Ftile {
 		}
 	}
 
-	public void drawUNewWayINLINED(UGraphic ug) {
-		final StringBounder stringBounder = ug.getStringBounder();
-		final Dimension2D dimTotal = calculateDimension(stringBounder);
-		final Dimension2D dimOut = out.calculateDimension(stringBounder);
+	public TextBlock asTextBlock() {
+		return new TextBlock() {
 
-		whileBlock.drawUNewWayINLINED(ug.apply(new UTranslate(dimOut.getWidth(), 0)));
+			public void drawUNewWayINLINED(UGraphic ug) {
+				final StringBounder stringBounder = ug.getStringBounder();
+				final Dimension2D dimTotal = calculateDimension(stringBounder);
+				final Dimension2D dimOut = out.calculateDimension(stringBounder);
 
-		final Dimension2D dimWhile = whileBlock.calculateDimension(stringBounder);
-		final Snake s1 = new Snake();
-		ug = ug.apply(new UChangeColor(LinkRendering.getColor(afterEndwhileColor, arrowColor)));
-		s1.addPoint(dimTotal.getWidth() / 2 - Diamond.diamondHalfSize, Diamond.diamondHalfSize);
-		s1.addPoint(1, Diamond.diamondHalfSize);
-		s1.addPoint(1, dimTotal.getHeight());
-		s1.addPoint(dimTotal.getWidth() / 2 - 1, dimTotal.getHeight());
-		s1.drawU(ug.apply(new UStroke(1.5)));
+				whileBlock.asTextBlock().drawUNewWayINLINED(ug.apply(new UTranslate(dimOut.getWidth(), 0)));
 
-		final Snake s2 = new Snake();
-		ug = ug.apply(new UChangeColor(LinkRendering.getColor(endInlinkColor, arrowColor)));
-		s2.addPoint(dimTotal.getWidth() / 2 + Diamond.diamondHalfSize, Diamond.diamondHalfSize);
-		s2.addPoint(dimTotal.getWidth() - dimOut.getWidth(), Diamond.diamondHalfSize);
-		s2.addPoint(dimTotal.getWidth() - dimOut.getWidth(), 12 + dimWhile.getHeight());
-		s2.addPoint(dimTotal.getWidth() / 2, 12 + dimWhile.getHeight());
-		s2.addPoint(dimTotal.getWidth() / 2, dimWhile.getHeight());
-		s2.drawU(ug.apply(new UStroke(1.5)));
+				final Dimension2D dimWhile = whileBlock.asTextBlock().calculateDimension(stringBounder);
+				final Snake s1 = new Snake();
+				ug = ug.apply(new UChangeColor(LinkRendering.getColor(afterEndwhileColor, arrowColor)));
+				s1.addPoint(dimTotal.getWidth() / 2 - Diamond.diamondHalfSize, Diamond.diamondHalfSize);
+				s1.addPoint(1, Diamond.diamondHalfSize);
+				s1.addPoint(1, dimTotal.getHeight());
+				s1.addPoint(dimTotal.getWidth() / 2 - 1, dimTotal.getHeight());
+				s1.drawU(ug.apply(new UStroke(1.5)));
 
-		ug.drawNewWay(dimTotal.getWidth() / 2, dimWhile.getHeight(), new UEmpty(20, 20));
+				final Snake s2 = new Snake();
+				ug = ug.apply(new UChangeColor(LinkRendering.getColor(endInlinkColor, arrowColor)));
+				s2.addPoint(dimTotal.getWidth() / 2 + Diamond.diamondHalfSize, Diamond.diamondHalfSize);
+				s2.addPoint(dimTotal.getWidth() - dimOut.getWidth(), Diamond.diamondHalfSize);
+				s2.addPoint(dimTotal.getWidth() - dimOut.getWidth(), 12 + dimWhile.getHeight());
+				s2.addPoint(dimTotal.getWidth() / 2, 12 + dimWhile.getHeight());
+				s2.addPoint(dimTotal.getWidth() / 2, dimWhile.getHeight());
+				s2.drawU(ug.apply(new UStroke(1.5)));
 
-		ug = ug.apply(new UChangeColor(LinkRendering.getColor(endInlinkColor, arrowColor)));
-		ug = ug.apply(new UChangeBackColor(LinkRendering.getColor(endInlinkColor, arrowColor)));
-		ug.drawNewWay(dimTotal.getWidth() / 2 + Diamond.diamondHalfSize, Diamond.diamondHalfSize, Arrows.asToLeft());
-		ug.drawNewWay(dimTotal.getWidth() - dimOut.getWidth(), dimTotal.getHeight() / 2, Arrows.asToUp());
+				ug.drawNewWay(dimTotal.getWidth() / 2, dimWhile.getHeight(), new UEmpty(20, 20));
 
-		ug = ug.apply(new UChangeColor(LinkRendering.getColor(afterEndwhileColor, arrowColor)));
-		ug = ug.apply(new UChangeBackColor(LinkRendering.getColor(afterEndwhileColor, arrowColor)));
-		ug.drawNewWay(1, dimTotal.getHeight() / 2, Arrows.asToDown());
+				ug = ug.apply(new UChangeColor(LinkRendering.getColor(endInlinkColor, arrowColor)));
+				ug = ug.apply(new UChangeBackColor(LinkRendering.getColor(endInlinkColor, arrowColor)));
+				ug.drawNewWay(dimTotal.getWidth() / 2 + Diamond.diamondHalfSize, Diamond.diamondHalfSize,
+						Arrows.asToLeft());
+				ug.drawNewWay(dimTotal.getWidth() - dimOut.getWidth(), dimTotal.getHeight() / 2, Arrows.asToUp());
 
-		final Dimension2D dimLabel = test.calculateDimension(stringBounder);
-		test.drawUNewWayINLINED(ug.apply(new UTranslate((dimTotal.getWidth() - dimLabel.getWidth()) / 2,
-				2 * Diamond.diamondHalfSize - 5)));
-		out.drawUNewWayINLINED(ug);
-	}
+				ug = ug.apply(new UChangeColor(LinkRendering.getColor(afterEndwhileColor, arrowColor)));
+				ug = ug.apply(new UChangeBackColor(LinkRendering.getColor(afterEndwhileColor, arrowColor)));
+				ug.drawNewWay(1, dimTotal.getHeight() / 2, Arrows.asToDown());
 
-	public Dimension2D calculateDimension(StringBounder stringBounder) {
-		final Dimension2D dim = whileBlock.calculateDimension(stringBounder);
-		final Dimension2D dimOut = out.calculateDimension(stringBounder);
-		return Dimension2DDouble.delta(dim, dimOut.getWidth() * 2, heightbottom);
-	}
+				final Dimension2D dimLabel = test.calculateDimension(stringBounder);
+				test.drawUNewWayINLINED(ug.apply(new UTranslate((dimTotal.getWidth() - dimLabel.getWidth()) / 2,
+						2 * Diamond.diamondHalfSize - 5)));
+				out.drawUNewWayINLINED(ug);
+			}
 
-	public List<Url> getUrls() {
-		throw new UnsupportedOperationException();
+			public Dimension2D calculateDimension(StringBounder stringBounder) {
+				final Dimension2D dim = whileBlock.asTextBlock().calculateDimension(stringBounder);
+				final Dimension2D dimOut = out.calculateDimension(stringBounder);
+				return Dimension2DDouble.delta(dim, dimOut.getWidth() * 2, heightbottom);
+			}
+
+			public List<Url> getUrls() {
+				throw new UnsupportedOperationException();
+			}
+		};
 	}
 
 	public boolean isKilled() {
 		return false;
-	}
-
-	public LinkRendering getInLinkRendering() {
-		// if (endInlinkColor == null) {
-		// return null;
-		// }
-		// return new LinkRendering(endInlinkColor);
-		return null;
 	}
 
 }

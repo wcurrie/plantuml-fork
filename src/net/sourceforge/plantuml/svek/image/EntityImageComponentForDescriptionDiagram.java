@@ -42,7 +42,7 @@ import net.sourceforge.plantuml.FontParam;
 import net.sourceforge.plantuml.ISkinParam;
 import net.sourceforge.plantuml.SkinParamUtils;
 import net.sourceforge.plantuml.Url;
-import net.sourceforge.plantuml.cucadiagram.BodyEnhanced2;
+import net.sourceforge.plantuml.cucadiagram.BodyEnhanced;
 import net.sourceforge.plantuml.cucadiagram.Display;
 import net.sourceforge.plantuml.cucadiagram.ILeaf;
 import net.sourceforge.plantuml.cucadiagram.Stereotype;
@@ -74,7 +74,7 @@ public class EntityImageComponentForDescriptionDiagram extends AbstractEntityIma
 			throw new IllegalArgumentException();
 		}
 
-		final TextBlock desc = new BodyEnhanced2(entity.getDisplay(), getFontParam(symbol), skinParam,
+		final TextBlock desc = new BodyEnhanced(entity.getDisplay(), getFontParam(symbol), skinParam,
 				HorizontalAlignement.CENTER, stereotype, symbol.manageHorizontalLine(), false);
 
 		// final TextBlock desc = TextBlockUtils.create(

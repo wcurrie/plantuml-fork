@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 10254 $
+ * Revision $Revision: 10578 $
  *
  */
 package net.sourceforge.plantuml.graphic;
@@ -46,8 +46,8 @@ class TextBlockWithNumber extends TextBlockSimple {
 	private final TextBlock numText;
 
 	public TextBlockWithNumber(String number, Display texts, FontConfiguration fontConfiguration,
-			HorizontalAlignement horizontalAlignement, SpriteContainer spriteContainer) {
-		super(texts, fontConfiguration, horizontalAlignement, spriteContainer);
+			HorizontalAlignement horizontalAlignement, SpriteContainer spriteContainer, double maxMessageSize) {
+		super(texts, fontConfiguration, horizontalAlignement, spriteContainer, maxMessageSize);
 		this.numText = TextBlockUtils.create(Display.asList(number), fontConfiguration, HorizontalAlignement.LEFT,
 				spriteContainer);
 	}

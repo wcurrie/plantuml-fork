@@ -39,16 +39,16 @@ import java.util.List;
 
 import net.sourceforge.plantuml.Dimension2DDouble;
 import net.sourceforge.plantuml.Url;
-import net.sourceforge.plantuml.activitydiagram3.LinkRendering;
 import net.sourceforge.plantuml.activitydiagram3.ftile.Ftile;
 import net.sourceforge.plantuml.graphic.HtmlColor;
 import net.sourceforge.plantuml.graphic.StringBounder;
+import net.sourceforge.plantuml.graphic.TextBlock;
 import net.sourceforge.plantuml.ugraphic.UChangeBackColor;
 import net.sourceforge.plantuml.ugraphic.UChangeColor;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
 import net.sourceforge.plantuml.ugraphic.URectangle;
 
-class FtileBlackBlock implements Ftile {
+class FtileBlackBlock extends AbstractFtile {
 
 	private final double width;
 	private final double height;
@@ -60,28 +60,30 @@ class FtileBlackBlock implements Ftile {
 		this.colorBar = colorBar;
 	}
 
-	public void drawUNewWayINLINED(UGraphic ug) {
-		final URectangle rect = new URectangle(width, height, 5, 5);
-		if (Ftile.SHADOWING) {
-			rect.setDeltaShadow(3);
-		}
-		ug.apply(new UChangeColor(colorBar)).apply(new UChangeBackColor(colorBar)).drawOldWay(rect);
-	}
+	public TextBlock asTextBlock() {
+		return new TextBlock() {
 
-	public Dimension2D calculateDimension(StringBounder stringBounder) {
-		return new Dimension2DDouble(width, height);
-	}
+			public void drawUNewWayINLINED(UGraphic ug) {
+				final URectangle rect = new URectangle(width, height, 5, 5);
+				if (Ftile.SHADOWING) {
+					rect.setDeltaShadow(3);
+				}
+				ug.apply(new UChangeColor(colorBar)).apply(new UChangeBackColor(colorBar)).drawOldWay(rect);
+			}
 
-	public List<Url> getUrls() {
-		return Collections.emptyList();
+			public Dimension2D calculateDimension(StringBounder stringBounder) {
+				return new Dimension2DDouble(width, height);
+			}
+
+			public List<Url> getUrls() {
+				return Collections.emptyList();
+			}
+		};
 	}
 
 	public boolean isKilled() {
 		return false;
 	}
 
-	public LinkRendering getInLinkRendering() {
-		return null;
-	}
 
 }

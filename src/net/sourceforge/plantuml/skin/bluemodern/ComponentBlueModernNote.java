@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 10265 $
+ * Revision $Revision: 10577 $
  *
  */
 package net.sourceforge.plantuml.skin.bluemodern;
@@ -57,7 +57,7 @@ final public class ComponentBlueModernNote extends AbstractTextualComponent {
 
 	public ComponentBlueModernNote(HtmlColor back, HtmlColor foregroundColor, HtmlColor fontColor, UFont font,
 			Display strings, SpriteContainer spriteContainer) {
-		super(strings, fontColor, font, HorizontalAlignement.LEFT, 6, 15, 5, spriteContainer);
+		super(strings, fontColor, font, HorizontalAlignement.LEFT, 6, 15, 5, spriteContainer, 0);
 		this.back = back;
 		this.foregroundColor = foregroundColor;
 	}

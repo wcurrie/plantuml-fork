@@ -60,7 +60,7 @@ import net.sourceforge.plantuml.ugraphic.UGraphic;
 import net.sourceforge.plantuml.ugraphic.UStroke;
 import net.sourceforge.plantuml.ugraphic.UTranslate;
 
-class FtileIf implements Ftile {
+class FtileIf extends AbstractFtile {
 
 	private final Ftile tile1;
 	private final Ftile tile2;
@@ -102,120 +102,124 @@ class FtileIf implements Ftile {
 		}
 	}
 
-	public void drawUNewWayINLINED(UGraphic ug) {
-		final StringBounder stringBounder = ug.getStringBounder();
-		final Dimension2D dimTotal = calculateDimension(stringBounder);
-		final Dimension2D dim1 = tile1.calculateDimension(stringBounder);
-		final Dimension2D dim2 = tile2.calculateDimension(stringBounder);
+	public TextBlock asTextBlock() {
+		return new TextBlock() {
 
-		final double y1 = (dimTotal.getHeight() - dim1.getHeight()) / 2;
-		final double x1 = 0;
-		tile1.drawUNewWayINLINED(ug.apply(new UTranslate(x1, y1)));
-		final double x2 = dimTotal.getWidth() - dim2.getWidth();
-		final double y2 = (dimTotal.getHeight() - dim2.getHeight()) / 2;
-		tile2.drawUNewWayINLINED(ug.apply(new UTranslate(x2, y2)));
+			public void drawUNewWayINLINED(UGraphic ug) {
+				final StringBounder stringBounder = ug.getStringBounder();
+				final Dimension2D dimTotal = calculateDimension(stringBounder);
+				final Dimension2D dim1 = tile1.asTextBlock().calculateDimension(stringBounder);
+				final Dimension2D dim2 = tile2.asTextBlock().calculateDimension(stringBounder);
 
-		final double xDiamond = (dimTotal.getWidth() - 2 * Diamond.diamondHalfSize) / 2;
-		drawDiamond(ug, xDiamond, 0);
+				final double y1 = (dimTotal.getHeight() - dim1.getHeight()) / 2;
+				final double x1 = 0;
+				tile1.asTextBlock().drawUNewWayINLINED(ug.apply(new UTranslate(x1, y1)));
+				final double x2 = dimTotal.getWidth() - dim2.getWidth();
+				final double y2 = (dimTotal.getHeight() - dim2.getHeight()) / 2;
+				tile2.asTextBlock().drawUNewWayINLINED(ug.apply(new UTranslate(x2, y2)));
 
-		ug = ug.apply(new UChangeColor(LinkRendering.getColor(tile1.getInLinkRendering(), arrowColor)));
-		ug = ug.apply(new UStroke(1.5));
-		final Snake s1 = new Snake();
-		s1.addPoint(xDiamond, Diamond.diamondHalfSize);
-		s1.addPoint(x1 + dim1.getWidth() / 2, Diamond.diamondHalfSize);
-		s1.addPoint(x1 + dim1.getWidth() / 2, y1);
-		s1.drawU(ug);
+				final double xDiamond = (dimTotal.getWidth() - 2 * Diamond.diamondHalfSize) / 2;
+				drawDiamond(ug, xDiamond, 0);
 
-		ug = ug.apply(new UChangeColor(LinkRendering.getColor(tile2.getInLinkRendering(), arrowColor)));
-		final Snake s2 = new Snake();
-		s2.addPoint(xDiamond + 2 * Diamond.diamondHalfSize, Diamond.diamondHalfSize);
-		s2.addPoint(x2 + dim2.getWidth() / 2, Diamond.diamondHalfSize);
-		s2.addPoint(x2 + dim2.getWidth() / 2, y2);
-		s2.drawU(ug);
+				ug = ug.apply(new UChangeColor(LinkRendering.getColor(tile1.getInLinkRendering(), arrowColor)));
+				ug = ug.apply(new UStroke(1.5));
+				final Snake s1 = new Snake();
+				s1.addPoint(xDiamond, Diamond.diamondHalfSize);
+				s1.addPoint(x1 + dim1.getWidth() / 2, Diamond.diamondHalfSize);
+				s1.addPoint(x1 + dim1.getWidth() / 2, y1);
+				s1.drawU(ug);
 
-		if (tile1.isKilled() == false) {
-			ug = ug.apply(new UChangeColor(LinkRendering.getColor(endThenInlinkColor, arrowColor)));
-			final Snake s3 = new Snake();
-			s3.addPoint(x1 + dim1.getWidth() / 2, y1 + dim1.getHeight());
-			s3.addPoint(x1 + dim1.getWidth() / 2, dimTotal.getHeight() - Diamond.diamondHalfSize);
-			if (tile2.isKilled()) {
-				s3.addPoint(dimTotal.getWidth() / 2 - 1, dimTotal.getHeight() - Diamond.diamondHalfSize);
-				s3.addPoint(dimTotal.getWidth() / 2 - 1, dimTotal.getHeight());
-			} else {
-				s3.addPoint(xDiamond, dimTotal.getHeight() - Diamond.diamondHalfSize);
+				ug = ug.apply(new UChangeColor(LinkRendering.getColor(tile2.getInLinkRendering(), arrowColor)));
+				final Snake s2 = new Snake();
+				s2.addPoint(xDiamond + 2 * Diamond.diamondHalfSize, Diamond.diamondHalfSize);
+				s2.addPoint(x2 + dim2.getWidth() / 2, Diamond.diamondHalfSize);
+				s2.addPoint(x2 + dim2.getWidth() / 2, y2);
+				s2.drawU(ug);
+
+				if (tile1.isKilled() == false) {
+					ug = ug.apply(new UChangeColor(LinkRendering.getColor(endThenInlinkColor, arrowColor)));
+					final Snake s3 = new Snake();
+					s3.addPoint(x1 + dim1.getWidth() / 2, y1 + dim1.getHeight());
+					s3.addPoint(x1 + dim1.getWidth() / 2, dimTotal.getHeight() - Diamond.diamondHalfSize);
+					if (tile2.isKilled()) {
+						s3.addPoint(dimTotal.getWidth() / 2 - 1, dimTotal.getHeight() - Diamond.diamondHalfSize);
+						s3.addPoint(dimTotal.getWidth() / 2 - 1, dimTotal.getHeight());
+					} else {
+						s3.addPoint(xDiamond, dimTotal.getHeight() - Diamond.diamondHalfSize);
+					}
+					s3.drawU(ug);
+				}
+
+				if (tile2.isKilled() == false) {
+					ug = ug.apply(new UChangeColor(LinkRendering.getColor(endElseInlinkColor, arrowColor)));
+					final Snake s4 = new Snake();
+					s4.addPoint(x2 + dim2.getWidth() / 2, y2 + dim2.getHeight());
+					s4.addPoint(x2 + dim2.getWidth() / 2, dimTotal.getHeight() - Diamond.diamondHalfSize);
+					if (tile1.isKilled()) {
+						s4.addPoint(dimTotal.getWidth() / 2 - 1, dimTotal.getHeight() - Diamond.diamondHalfSize);
+						s4.addPoint(dimTotal.getWidth() / 2 - 1, dimTotal.getHeight());
+					} else {
+						s4.addPoint(xDiamond + 2 * Diamond.diamondHalfSize, dimTotal.getHeight()
+								- Diamond.diamondHalfSize);
+
+					}
+					s4.drawU(ug);
+				}
+				ug = ug.apply(new UStroke());
+				ug = ug.apply(new UChangeColor(LinkRendering.getColor(tile1.getInLinkRendering(), arrowColor)));
+				ug = ug.apply(new UChangeBackColor(LinkRendering.getColor(tile1.getInLinkRendering(), arrowColor)));
+				ug.drawNewWay(x1 + dim1.getWidth() / 2, y1, Arrows.asToDown());
+				ug = ug.apply(new UChangeColor(LinkRendering.getColor(tile2.getInLinkRendering(), arrowColor)));
+				ug = ug.apply(new UChangeBackColor(LinkRendering.getColor(tile2.getInLinkRendering(), arrowColor)));
+				ug.drawNewWay(x2 + dim2.getWidth() / 2, y2, Arrows.asToDown());
+				if (tile1.isKilled() == false && tile2.isKilled() == false) {
+					drawDiamond(ug, xDiamond, dimTotal.getHeight() - 2 * Diamond.diamondHalfSize);
+
+					if (tile1.isKilled() == false) {
+						ug = ug.apply(new UChangeColor(LinkRendering.getColor(endThenInlinkColor, arrowColor)));
+						ug = ug.apply(new UChangeBackColor(LinkRendering.getColor(endThenInlinkColor, arrowColor)));
+						ug.drawNewWay(xDiamond, dimTotal.getHeight() - Diamond.diamondHalfSize, Arrows.asToRight());
+					}
+
+					if (tile2.isKilled() == false) {
+						ug = ug.apply(new UChangeColor(LinkRendering.getColor(endElseInlinkColor, arrowColor)));
+						ug = ug.apply(new UChangeBackColor(LinkRendering.getColor(endElseInlinkColor, arrowColor)));
+						ug.drawNewWay(xDiamond + 2 * Diamond.diamondHalfSize, dimTotal.getHeight()
+								- Diamond.diamondHalfSize, Arrows.asToLeft());
+					}
+				}
+				final Dimension2D dimLabel = label.calculateDimension(stringBounder);
+				label.drawUNewWayINLINED(ug.apply(new UTranslate(dimTotal.getWidth() / 2 + 5, -dimLabel.getHeight() - 7)));
+
+				final Dimension2D dimLabel1 = label1.calculateDimension(stringBounder);
+				label1.drawUNewWayINLINED(ug.apply(new UTranslate(xDiamond - dimLabel1.getWidth(), -dimLabel1
+						.getHeight() + Diamond.diamondHalfSize)));
+
+				final Dimension2D dimLabel2 = label2.calculateDimension(stringBounder);
+				label2.drawUNewWayINLINED(ug.apply(new UTranslate(xDiamond + 2 * Diamond.diamondHalfSize, -dimLabel2
+						.getHeight() + Diamond.diamondHalfSize)));
 			}
-			s3.drawU(ug);
-		}
 
-		if (tile2.isKilled() == false) {
-			ug = ug.apply(new UChangeColor(LinkRendering.getColor(endElseInlinkColor, arrowColor)));
-			final Snake s4 = new Snake();
-			s4.addPoint(x2 + dim2.getWidth() / 2, y2 + dim2.getHeight());
-			s4.addPoint(x2 + dim2.getWidth() / 2, dimTotal.getHeight() - Diamond.diamondHalfSize);
-			if (tile1.isKilled()) {
-				s4.addPoint(dimTotal.getWidth() / 2 - 1, dimTotal.getHeight() - Diamond.diamondHalfSize);
-				s4.addPoint(dimTotal.getWidth() / 2 - 1, dimTotal.getHeight());
-			} else {
-				s4.addPoint(xDiamond + 2 * Diamond.diamondHalfSize, dimTotal.getHeight() - Diamond.diamondHalfSize);
-
-			}
-			s4.drawU(ug);
-		}
-		ug = ug.apply(new UStroke());
-		ug = ug.apply(new UChangeColor(LinkRendering.getColor(tile1.getInLinkRendering(), arrowColor)));
-		ug = ug.apply(new UChangeBackColor(LinkRendering.getColor(tile1.getInLinkRendering(), arrowColor)));
-		ug.drawNewWay(x1 + dim1.getWidth() / 2, y1, Arrows.asToDown());
-		ug = ug.apply(new UChangeColor(LinkRendering.getColor(tile2.getInLinkRendering(), arrowColor)));
-		ug = ug.apply(new UChangeBackColor(LinkRendering.getColor(tile2.getInLinkRendering(), arrowColor)));
-		ug.drawNewWay(x2 + dim2.getWidth() / 2, y2, Arrows.asToDown());
-		if (tile1.isKilled() == false && tile2.isKilled() == false) {
-			drawDiamond(ug, xDiamond, dimTotal.getHeight() - 2 * Diamond.diamondHalfSize);
-
-			if (tile1.isKilled() == false) {
-				ug = ug.apply(new UChangeColor(LinkRendering.getColor(endThenInlinkColor, arrowColor)));
-				ug = ug.apply(new UChangeBackColor(LinkRendering.getColor(endThenInlinkColor, arrowColor)));
-				ug.drawNewWay(xDiamond, dimTotal.getHeight() - Diamond.diamondHalfSize, Arrows.asToRight());
+			private void drawDiamond(UGraphic ug, double xTheoricalPosition, double yTheoricalPosition) {
+				ug.apply(new UChangeColor(borderColor)).apply(new UStroke(1.5)).apply(new UChangeBackColor(backColor))
+						.drawNewWay(xTheoricalPosition, yTheoricalPosition, Diamond.asPolygon());
 			}
 
-			if (tile2.isKilled() == false) {
-				ug = ug.apply(new UChangeColor(LinkRendering.getColor(endElseInlinkColor, arrowColor)));
-				ug = ug.apply(new UChangeBackColor(LinkRendering.getColor(endElseInlinkColor, arrowColor)));
-				ug.drawNewWay(xDiamond + 2 * Diamond.diamondHalfSize, dimTotal.getHeight() - Diamond.diamondHalfSize,
-						Arrows.asToLeft());
+			public Dimension2D calculateDimension(StringBounder stringBounder) {
+				Dimension2D dim = Dimension2DDouble.mergeLR(tile1.asTextBlock().calculateDimension(stringBounder),
+						tile2.asTextBlock().calculateDimension(stringBounder));
+				dim = Dimension2DDouble.delta(dim, 25, 100);
+				return dim;
 			}
-		}
-		final Dimension2D dimLabel = label.calculateDimension(stringBounder);
-		label.drawUNewWayINLINED(ug.apply(new UTranslate((dimTotal.getWidth() / 2 + 5), (-dimLabel.getHeight() - 7))));
 
-		final Dimension2D dimLabel1 = label1.calculateDimension(stringBounder);
-		label1.drawUNewWayINLINED(ug.apply(new UTranslate((xDiamond - dimLabel1.getWidth()), (-dimLabel1.getHeight() + Diamond.diamondHalfSize))));
-
-		final Dimension2D dimLabel2 = label2.calculateDimension(stringBounder);
-		label2.drawUNewWayINLINED(ug.apply(new UTranslate((xDiamond + 2 * Diamond.diamondHalfSize), (-dimLabel2.getHeight() + Diamond.diamondHalfSize))));
-	}
-
-	private void drawDiamond(UGraphic ug, double xTheoricalPosition, double yTheoricalPosition) {
-		ug.apply(new UChangeColor(borderColor)).apply(new UStroke(1.5)).apply(new UChangeBackColor(backColor))
-				.drawNewWay(xTheoricalPosition, yTheoricalPosition, Diamond.asPolygon());
-	}
-
-	public Dimension2D calculateDimension(StringBounder stringBounder) {
-		Dimension2D dim = Dimension2DDouble.mergeLR(tile1.calculateDimension(stringBounder),
-				tile2.calculateDimension(stringBounder));
-		dim = Dimension2DDouble.delta(dim, 25, 100);
-		return dim;
-	}
-
-	public List<Url> getUrls() {
-		throw new UnsupportedOperationException();
+			public List<Url> getUrls() {
+				throw new UnsupportedOperationException();
+			}
+		};
 	}
 
 	public boolean isKilled() {
 		return false;
-	}
-
-	public LinkRendering getInLinkRendering() {
-		return null;
 	}
 
 }

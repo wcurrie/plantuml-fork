@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 9994 $
+ * Revision $Revision: 10534 $
  *
  */
 package net.sourceforge.plantuml.cucadiagram;
@@ -96,7 +96,10 @@ public class Link implements Hideable, Removeable {
 		if (length < 1) {
 			throw new IllegalArgumentException();
 		}
-		if (cl1 == null || cl2 == null) {
+		if (cl1 == null) {
+			throw new IllegalArgumentException();
+		}
+		if (cl2 == null) {
 			throw new IllegalArgumentException();
 		}
 

@@ -75,7 +75,7 @@ public abstract class AbstractEntityImage implements IEntityImage {
 		return entity.getStereotype();
 	}
 
-	final public List<Url> getUrls() {
+	public List<Url> getUrls() {
 		return Collections.emptyList();
 	}
 

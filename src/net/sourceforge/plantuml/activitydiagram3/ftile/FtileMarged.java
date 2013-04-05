@@ -38,12 +38,13 @@ import java.util.List;
 
 import net.sourceforge.plantuml.Dimension2DDouble;
 import net.sourceforge.plantuml.Url;
-import net.sourceforge.plantuml.activitydiagram3.LinkRendering;
+import net.sourceforge.plantuml.activitydiagram3.ftile.vertical.AbstractFtile;
 import net.sourceforge.plantuml.graphic.StringBounder;
+import net.sourceforge.plantuml.graphic.TextBlock;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
 import net.sourceforge.plantuml.ugraphic.UTranslate;
 
-public class FtileMarged implements Ftile {
+public class FtileMarged extends AbstractFtile {
 
 	private final Ftile tile;
 	private final double marge;
@@ -53,24 +54,26 @@ public class FtileMarged implements Ftile {
 		this.marge = marge;
 	}
 
-	public void drawUNewWayINLINED(UGraphic ug) {
-		tile.drawUNewWayINLINED(ug.apply(new UTranslate(marge, 0)));
-	}
+	public TextBlock asTextBlock() {
+		return new TextBlock() {
 
-	public Dimension2D calculateDimension(StringBounder stringBounder) {
-		return Dimension2DDouble.delta(tile.calculateDimension(stringBounder), 2 * marge, 0);
-	}
+			public void drawUNewWayINLINED(UGraphic ug) {
+				tile.asTextBlock().drawUNewWayINLINED(ug.apply(new UTranslate(marge, 0)));
+			}
 
-	public List<Url> getUrls() {
-		throw new UnsupportedOperationException();
+			public Dimension2D calculateDimension(StringBounder stringBounder) {
+				return Dimension2DDouble.delta(tile.asTextBlock().calculateDimension(stringBounder), 2 * marge, 0);
+			}
+
+			public List<Url> getUrls() {
+				throw new UnsupportedOperationException();
+			}
+		};
 	}
 
 	public boolean isKilled() {
 		return tile.isKilled();
 	}
 
-	public LinkRendering getInLinkRendering() {
-		return tile.getInLinkRendering();
-	}
 
 }

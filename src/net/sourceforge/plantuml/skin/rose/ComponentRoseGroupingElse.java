@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 10265 $
+ * Revision $Revision: 10577 $
  *
  */
 package net.sourceforge.plantuml.skin.rose;
@@ -59,7 +59,7 @@ public class ComponentRoseGroupingElse extends AbstractTextualComponent {
 	public ComponentRoseGroupingElse(HtmlColor fontColor, HtmlColor groupBorder, UFont smallFont, CharSequence comment,
 			SpriteContainer spriteContainer, HtmlColor backgroundColor, UStroke stroke) {
 		super(comment == null ? null : "[" + comment + "]", fontColor, smallFont, HorizontalAlignement.LEFT, 5, 5, 1,
-				spriteContainer);
+				spriteContainer, 0);
 		this.groupBorder = groupBorder;
 		this.backgroundColor = backgroundColor;
 		this.stroke = stroke;

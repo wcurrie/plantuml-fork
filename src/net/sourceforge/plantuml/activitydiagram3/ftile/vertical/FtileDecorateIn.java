@@ -31,45 +31,36 @@
  * Revision $Revision: 8475 $
  *
  */
-package net.sourceforge.plantuml.activitydiagram3.ftile;
+package net.sourceforge.plantuml.activitydiagram3.ftile.vertical;
 
-import java.awt.geom.Dimension2D;
-import java.util.List;
-
-import net.sourceforge.plantuml.Url;
 import net.sourceforge.plantuml.activitydiagram3.LinkRendering;
-import net.sourceforge.plantuml.activitydiagram3.ftile.vertical.AbstractFtile;
-import net.sourceforge.plantuml.graphic.StringBounder;
+import net.sourceforge.plantuml.activitydiagram3.ftile.Ftile;
 import net.sourceforge.plantuml.graphic.TextBlock;
-import net.sourceforge.plantuml.ugraphic.UGraphic;
 
-public class FtileKilled extends AbstractFtile {
+public class FtileDecorateIn implements Ftile {
 
-	private final Ftile tile;
+	final private Ftile ftile;
+	final private LinkRendering linkRendering;
 
-	public FtileKilled(Ftile tileToKill) {
-		this.tile = tileToKill;
-	}
-
-	public TextBlock asTextBlock() {
-		return new TextBlock() {
-
-			public Dimension2D calculateDimension(StringBounder stringBounder) {
-				return tile.asTextBlock().calculateDimension(stringBounder);
-			}
-
-			public List<Url> getUrls() {
-				return tile.asTextBlock().getUrls();
-			}
-
-			public void drawUNewWayINLINED(UGraphic ug) {
-				tile.asTextBlock().drawUNewWayINLINED(ug);
-			}
-		};
+	public FtileDecorateIn(final Ftile ftile, final LinkRendering linkRendering) {
+		this.ftile = ftile;
+		this.linkRendering = linkRendering;
 	}
 
 	public boolean isKilled() {
-		return true;
+		return ftile.isKilled();
+	}
+
+	public LinkRendering getInLinkRendering() {
+		return linkRendering;
+	}
+
+	public LinkRendering getOutLinkRendering() {
+		return ftile.getOutLinkRendering();
+	}
+
+	public TextBlock asTextBlock() {
+		return ftile.asTextBlock();
 	}
 
 }

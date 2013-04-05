@@ -51,7 +51,7 @@ public class ComponentRoseDelayText extends AbstractTextualComponent {
 
 	public ComponentRoseDelayText(HtmlColor fontColor, UFont font, Display stringsToDisplay,
 			SpriteContainer spriteContainer) {
-		super(stringsToDisplay, fontColor, font, HorizontalAlignement.CENTER, 0, 0, 4, spriteContainer);
+		super(stringsToDisplay, fontColor, font, HorizontalAlignement.CENTER, 0, 0, 4, spriteContainer, 0);
 	}
 
 	@Override

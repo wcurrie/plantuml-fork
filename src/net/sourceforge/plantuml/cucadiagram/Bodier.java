@@ -69,7 +69,7 @@ public class Bodier {
 
 	public boolean isBodyEnhanced() {
 		for (String s : rawBody) {
-			if (BodyEnhanced2.isBlockSeparator(s)) {
+			if (BodyEnhanced.isBlockSeparator(s)) {
 				return true;
 			}
 		}
@@ -81,7 +81,7 @@ public class Bodier {
 	public BlockMember getBodyEnhanced() {
 		return new BlockMember() {
 			public TextBlock asTextBlock(FontParam fontParam, ISkinParam skinParam) {
-				final BodyEnhanced2 result = new BodyEnhanced2(rawBody, fontParam, skinParam, manageModifier);
+				final BodyEnhanced result = new BodyEnhanced(rawBody, fontParam, skinParam, manageModifier);
 				urls = result.getUrls();
 				return result;
 			}

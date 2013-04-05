@@ -37,6 +37,7 @@ import net.sourceforge.plantuml.activitydiagram3.ftile.Ftile;
 import net.sourceforge.plantuml.activitydiagram3.ftile.FtileFactory;
 import net.sourceforge.plantuml.cucadiagram.Display;
 import net.sourceforge.plantuml.graphic.HtmlColor;
+import net.sourceforge.plantuml.sequencediagram.NotePosition;
 
 public class InstructionSimple implements Instruction {
 
@@ -44,6 +45,7 @@ public class InstructionSimple implements Instruction {
 	private final HtmlColor color;
 	private final LinkRendering inlinkRendering;
 	private Display note;
+	private NotePosition notePosition;
 
 	public InstructionSimple(Display label, HtmlColor color, LinkRendering inlinkRendering) {
 		this.label = label;
@@ -52,7 +54,11 @@ public class InstructionSimple implements Instruction {
 	}
 
 	public Ftile createFtile(FtileFactory factory) {
-		return factory.activity(label, color, inlinkRendering, note);
+		final Ftile result = factory.activity(label, color);
+		if (note == null) {
+			return result;
+		}
+		return factory.addNote(result, note, notePosition);
 	}
 
 	public void add(Instruction other) {
@@ -67,8 +73,9 @@ public class InstructionSimple implements Instruction {
 		return inlinkRendering;
 	}
 
-	public void addNote(Display note) {
+	public void addNote(Display note, NotePosition position) {
 		this.note = note;
+		this.notePosition = position;
 	}
 
 }

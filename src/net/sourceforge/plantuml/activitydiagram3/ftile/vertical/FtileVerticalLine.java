@@ -39,16 +39,15 @@ import java.util.List;
 
 import net.sourceforge.plantuml.Dimension2DDouble;
 import net.sourceforge.plantuml.Url;
-import net.sourceforge.plantuml.activitydiagram3.LinkRendering;
-import net.sourceforge.plantuml.activitydiagram3.ftile.Ftile;
 import net.sourceforge.plantuml.graphic.HtmlColor;
 import net.sourceforge.plantuml.graphic.StringBounder;
+import net.sourceforge.plantuml.graphic.TextBlock;
 import net.sourceforge.plantuml.ugraphic.UChangeColor;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
 import net.sourceforge.plantuml.ugraphic.ULine;
 import net.sourceforge.plantuml.ugraphic.UStroke;
 
-class FtileVerticalLine implements Ftile {
+class FtileVerticalLine extends AbstractFtile {
 
 	private final double height;
 	private final HtmlColor color;
@@ -58,24 +57,25 @@ class FtileVerticalLine implements Ftile {
 		this.color = color;
 	}
 
-	public void drawUNewWayINLINED(UGraphic ug) {
-		ug.apply(new UStroke(1.5)).apply(new UChangeColor(color)).drawOldWay(new ULine(0, height));
-	}
+	public TextBlock asTextBlock() {
+		return new TextBlock() {
 
-	public Dimension2D calculateDimension(StringBounder stringBounder) {
-		return new Dimension2DDouble(2, height);
-	}
+			public void drawUNewWayINLINED(UGraphic ug) {
+				ug.apply(new UStroke(1.5)).apply(new UChangeColor(color)).drawOldWay(new ULine(0, height));
+			}
 
-	public List<Url> getUrls() {
-		return Collections.emptyList();
+			public Dimension2D calculateDimension(StringBounder stringBounder) {
+				return new Dimension2DDouble(2, height);
+			}
+
+			public List<Url> getUrls() {
+				return Collections.emptyList();
+			}
+		};
 	}
 
 	public boolean isKilled() {
 		return false;
-	}
-
-	public LinkRendering getInLinkRendering() {
-		return null;
 	}
 
 }

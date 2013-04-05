@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 10298 $
+ * Revision $Revision: 10607 $
  *
  */
 package net.sourceforge.plantuml;
@@ -51,9 +51,7 @@ public abstract class AbstractPSystem implements Diagram {
 		toAppend.append("PlantUML version ");
 		toAppend.append(Version.versionString());
 		toAppend.append("(" + new Date(Version.compileTime()) + ")\n");
-		if (License.isCloseSource()) {
-			toAppend.append("(Close source distribution)\n");
-		}
+		toAppend.append("(" + License.getCurrent() + " source distribution)\n");
 		final Properties p = System.getProperties();
 		toAppend.append(p.getProperty("java.runtime.name"));
 		toAppend.append('\n');
@@ -95,7 +93,7 @@ public abstract class AbstractPSystem implements Diagram {
 	public String getWarningOrError() {
 		return null;
 	}
-	
+
 	public void makeDiagramReady() {
 	}
 

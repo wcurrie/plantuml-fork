@@ -31,45 +31,19 @@
  * Revision $Revision: 8475 $
  *
  */
-package net.sourceforge.plantuml.activitydiagram3.ftile;
+package net.sourceforge.plantuml.activitydiagram3.ftile.vertical;
 
-import java.awt.geom.Dimension2D;
-import java.util.List;
-
-import net.sourceforge.plantuml.Url;
 import net.sourceforge.plantuml.activitydiagram3.LinkRendering;
-import net.sourceforge.plantuml.activitydiagram3.ftile.vertical.AbstractFtile;
-import net.sourceforge.plantuml.graphic.StringBounder;
-import net.sourceforge.plantuml.graphic.TextBlock;
-import net.sourceforge.plantuml.ugraphic.UGraphic;
+import net.sourceforge.plantuml.activitydiagram3.ftile.Ftile;
 
-public class FtileKilled extends AbstractFtile {
+public abstract class AbstractFtile implements Ftile {
 
-	private final Ftile tile;
-
-	public FtileKilled(Ftile tileToKill) {
-		this.tile = tileToKill;
+	final public LinkRendering getInLinkRendering() {
+		return null;
 	}
 
-	public TextBlock asTextBlock() {
-		return new TextBlock() {
-
-			public Dimension2D calculateDimension(StringBounder stringBounder) {
-				return tile.asTextBlock().calculateDimension(stringBounder);
-			}
-
-			public List<Url> getUrls() {
-				return tile.asTextBlock().getUrls();
-			}
-
-			public void drawUNewWayINLINED(UGraphic ug) {
-				tile.asTextBlock().drawUNewWayINLINED(ug);
-			}
-		};
-	}
-
-	public boolean isKilled() {
-		return true;
+	final public LinkRendering getOutLinkRendering() {
+		return null;
 	}
 
 }

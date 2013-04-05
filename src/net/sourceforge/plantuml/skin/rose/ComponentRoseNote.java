@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 10265 $
+ * Revision $Revision: 10577 $
  *
  */
 package net.sourceforge.plantuml.skin.rose;
@@ -62,7 +62,7 @@ final public class ComponentRoseNote extends AbstractTextualComponent {
 	public ComponentRoseNote(HtmlColor back, HtmlColor foregroundColor, HtmlColor fontColor, UFont font,
 			Display strings, double paddingX, double paddingY, SpriteContainer spriteContainer, double deltaShadow,
 			UStroke stroke) {
-		super(strings, fontColor, font, HorizontalAlignement.LEFT, 6, 15, 5, spriteContainer);
+		super(strings, fontColor, font, HorizontalAlignement.LEFT, 6, 15, 5, spriteContainer, 0);
 		this.back = back;
 		this.foregroundColor = foregroundColor;
 		this.paddingX = paddingX;
