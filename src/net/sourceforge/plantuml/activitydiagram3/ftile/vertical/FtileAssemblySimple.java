@@ -34,6 +34,7 @@
 package net.sourceforge.plantuml.activitydiagram3.ftile.vertical;
 
 import java.awt.geom.Dimension2D;
+import java.awt.geom.Point2D;
 import java.util.List;
 
 import net.sourceforge.plantuml.Dimension2DDouble;
@@ -45,12 +46,12 @@ import net.sourceforge.plantuml.graphic.TextBlock;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
 import net.sourceforge.plantuml.ugraphic.UTranslate;
 
-class FtileAssemblySimple implements Ftile {
+public class FtileAssemblySimple implements Ftile {
 
 	private final Ftile tile1;
 	private final Ftile tile2;
 
-	FtileAssemblySimple(Ftile tile1, Ftile tile2) {
+	public FtileAssemblySimple(Ftile tile1, Ftile tile2) {
 		this.tile1 = tile1;
 		this.tile2 = tile2;
 	}
@@ -72,8 +73,9 @@ class FtileAssemblySimple implements Ftile {
 			}
 
 			public Dimension2D calculateDimension(StringBounder stringBounder) {
-				return Dimension2DDouble.mergeTB(tile1.asTextBlock().calculateDimension(stringBounder), tile2
-						.asTextBlock().calculateDimension(stringBounder));
+				final Dimension2D dim1 = tile1.asTextBlock().calculateDimension(stringBounder);
+				final Dimension2D dim2 = tile2.asTextBlock().calculateDimension(stringBounder);
+				return Dimension2DDouble.mergeTB(dim1, dim2);
 			}
 
 			public List<Url> getUrls() {
@@ -90,10 +92,30 @@ class FtileAssemblySimple implements Ftile {
 	public LinkRendering getInLinkRendering() {
 		return tile1.getInLinkRendering();
 	}
-	
+
 	public LinkRendering getOutLinkRendering() {
 		return null;
 	}
 
+	public Point2D getPointIn(StringBounder stringBounder) {
+		final Dimension2D dimTotal = asTextBlock().calculateDimension(stringBounder);
+		final TextBlock textBlock1 = tile1.asTextBlock();
+		final Dimension2D dim1 = textBlock1.calculateDimension(stringBounder);
+		final double dx1 = dimTotal.getWidth() - dim1.getWidth();
+		final Point2D pt = tile1.getPointIn(stringBounder);
+		return new Point2D.Double(pt.getX() + dx1 / 2, pt.getY());
+	}
+
+	public Point2D getPointOut(StringBounder stringBounder) {
+		final Dimension2D dimTotal = asTextBlock().calculateDimension(stringBounder);
+		final TextBlock textBlock1 = tile1.asTextBlock();
+		final TextBlock textBlock2 = tile2.asTextBlock();
+		final Dimension2D dim1 = textBlock1.calculateDimension(stringBounder);
+		final Dimension2D dim2 = textBlock2.calculateDimension(stringBounder);
+		final double dx2 = dimTotal.getWidth() - dim2.getWidth();
+
+		final Point2D pt = tile2.getPointOut(stringBounder);
+		return new Point2D.Double(pt.getX() + dx2 / 2, pt.getY() + dim1.getHeight());
+	}
 
 }

@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 10325 $
+ * Revision $Revision: 10643 $
  *
  */
 package net.sourceforge.plantuml.ugraphic;
@@ -70,16 +70,4 @@ UMotif
 	abstract public void closeAction();
 
 	abstract public void writeImage(OutputStream os, String metadata, int dpi) throws IOException;
-
-	// bugnewway
-	// abstract public void translateTOBEREMOVED(double dx, double dy);
-
-	// public void setTranslateTOBEREMOVED(double dx, double dy) {
-	// }
-
-	// abstract public double getTranslateXTOBEREMOVED();
-	//
-	// abstract public double getTranslateYTOBEREMOVED();
-	// abstract public void setClipTOBEREMOVED(UClip clip);
-
 }

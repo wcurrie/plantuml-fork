@@ -33,8 +33,11 @@
  */
 package net.sourceforge.plantuml.activitydiagram3.ftile.vertical;
 
+import java.awt.geom.Point2D;
+
 import net.sourceforge.plantuml.activitydiagram3.LinkRendering;
 import net.sourceforge.plantuml.activitydiagram3.ftile.Ftile;
+import net.sourceforge.plantuml.graphic.StringBounder;
 import net.sourceforge.plantuml.graphic.TextBlock;
 
 public class FtileDecorateIn implements Ftile {
@@ -61,6 +64,14 @@ public class FtileDecorateIn implements Ftile {
 
 	public TextBlock asTextBlock() {
 		return ftile.asTextBlock();
+	}
+
+	public Point2D getPointIn(StringBounder stringBounder) {
+		return ftile.getPointIn(stringBounder);
+	}
+
+	public Point2D getPointOut(StringBounder stringBounder) {
+		return ftile.getPointOut(stringBounder);
 	}
 
 }

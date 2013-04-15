@@ -56,13 +56,14 @@ import net.sourceforge.plantuml.posimo.Block;
 import net.sourceforge.plantuml.posimo.Cluster;
 import net.sourceforge.plantuml.posimo.GraphvizSolverB;
 import net.sourceforge.plantuml.posimo.Path;
+import net.sourceforge.plantuml.ugraphic.UTranslate;
 import net.sourceforge.plantuml.ugraphic.txt.UGraphicTxt;
 
 public final class CucaDiagramTxtMaker {
 
-	private final CucaDiagram diagram;
+	// private final CucaDiagram diagram;
 	private final FileFormat fileFormat;
-	private final UGraphicTxt ug = new UGraphicTxt();
+	private final UGraphicTxt globalUg = new UGraphicTxt();
 
 	private static double getXPixelPerChar() {
 		return 5;
@@ -73,7 +74,7 @@ public final class CucaDiagramTxtMaker {
 	}
 
 	public CucaDiagramTxtMaker(CucaDiagram diagram, FileFormat fileFormat) throws IOException {
-		this.diagram = diagram;
+		// this.diagram = diagram;
 		this.fileFormat = fileFormat;
 
 		final Cluster root = new Cluster(null, 0, 0);
@@ -101,14 +102,12 @@ public final class CucaDiagramTxtMaker {
 			}
 			solver.solve(root, paths);
 			for (Path p : paths) {
-				ug.setTranslateTOBEREMOVED(0, 0);
-				p.getDotPath().draw(ug.getCharArea(), getXPixelPerChar(), getYPixelPerChar());
+				p.getDotPath().draw(globalUg.getCharArea(), getXPixelPerChar(), getYPixelPerChar());
 			}
 			for (IEntity ent : diagram.getLeafs().values()) {
 				final Block b = blocks.get(ent);
 				final Point2D p = b.getPosition();
-				ug.setTranslateTOBEREMOVED(p.getX() / getXPixelPerChar(), p.getY() / getYPixelPerChar());
-				printClass(ent);
+				printClass(ent, (UGraphicTxt) globalUg.apply(new UTranslate(p.getX() / getXPixelPerChar(), p.getY() / getYPixelPerChar())));
 			}
 
 		} catch (InterruptedException e) {
@@ -118,7 +117,7 @@ public final class CucaDiagramTxtMaker {
 
 	}
 
-	private void printClass(final IEntity ent) {
+	private void printClass(final IEntity ent, UGraphicTxt ug) {
 		final int w = getWidth(ent);
 		final int h = getHeight(ent);
 		ug.getCharArea().drawBoxSimple(0, 0, w, h);
@@ -142,9 +141,9 @@ public final class CucaDiagramTxtMaker {
 
 	public List<File> createFiles(File suggestedFile) throws IOException {
 		if (fileFormat == FileFormat.UTXT) {
-			ug.getCharArea().print(new PrintStream(suggestedFile, "UTF-8"));
+			globalUg.getCharArea().print(new PrintStream(suggestedFile, "UTF-8"));
 		} else {
-			ug.getCharArea().print(new PrintStream(suggestedFile));
+			globalUg.getCharArea().print(new PrintStream(suggestedFile));
 		}
 		return Collections.singletonList(suggestedFile);
 	}
@@ -178,7 +177,7 @@ public final class CucaDiagramTxtMaker {
 	}
 
 	public void createFiles(OutputStream os, int index) {
-		ug.getCharArea().print(new PrintStream(os));
+		globalUg.getCharArea().print(new PrintStream(os));
 	}
 
 }

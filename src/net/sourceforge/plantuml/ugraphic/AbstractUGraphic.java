@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 10325 $
+ * Revision $Revision: 10643 $
  *
  */
 package net.sourceforge.plantuml.ugraphic;
@@ -77,7 +77,7 @@ public abstract class AbstractUGraphic<O> extends AbstractCommonUGraphic {
 			return;
 		}
 		beforeDraw();
-		driver.draw(shape, getTranslateXTOBEREMOVED(), getTranslateYTOBEREMOVED(), getColorMapper(), getParam(), g2d);
+		driver.draw(shape, getTranslateX(), getTranslateY(), getColorMapper(), getParam(), g2d);
 		afterDraw();
 	}
 

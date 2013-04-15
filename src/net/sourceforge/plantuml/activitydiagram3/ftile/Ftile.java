@@ -33,7 +33,10 @@
  */
 package net.sourceforge.plantuml.activitydiagram3.ftile;
 
+import java.awt.geom.Point2D;
+
 import net.sourceforge.plantuml.activitydiagram3.LinkRendering;
+import net.sourceforge.plantuml.graphic.StringBounder;
 import net.sourceforge.plantuml.graphic.TextBlock;
 
 public interface Ftile {
@@ -43,8 +46,12 @@ public interface Ftile {
 	public boolean isKilled();
 
 	public LinkRendering getInLinkRendering();
-	
+
 	public LinkRendering getOutLinkRendering();
+
+	public Point2D getPointIn(StringBounder stringBounder);
+
+	public Point2D getPointOut(StringBounder stringBounder);
 
 	public TextBlock asTextBlock();
 }

@@ -91,11 +91,11 @@ public class UGraphicTxt extends AbstractCommonUGraphic {
 	}
 
 	private int getDy() {
-		return (int) getTranslateYTOBEREMOVED();
+		return (int) getTranslateY();
 	}
 
 	private int getDx() {
-		return (int) getTranslateXTOBEREMOVED();
+		return (int) getTranslateX();
 	}
 
 	public void startUrl(Url url) {

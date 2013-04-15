@@ -38,12 +38,11 @@ import java.util.List;
 
 import net.sourceforge.plantuml.Url;
 import net.sourceforge.plantuml.activitydiagram3.LinkRendering;
-import net.sourceforge.plantuml.activitydiagram3.ftile.vertical.AbstractFtile;
 import net.sourceforge.plantuml.graphic.StringBounder;
 import net.sourceforge.plantuml.graphic.TextBlock;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
 
-public class FtileKilled extends AbstractFtile {
+public class FtileKilled extends AbstractFtileOld {
 
 	private final Ftile tile;
 

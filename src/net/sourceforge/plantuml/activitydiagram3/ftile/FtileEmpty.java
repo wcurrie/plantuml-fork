@@ -39,12 +39,11 @@ import java.util.List;
 
 import net.sourceforge.plantuml.Dimension2DDouble;
 import net.sourceforge.plantuml.Url;
-import net.sourceforge.plantuml.activitydiagram3.ftile.vertical.AbstractFtile;
 import net.sourceforge.plantuml.graphic.StringBounder;
 import net.sourceforge.plantuml.graphic.TextBlock;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
 
-public class FtileEmpty extends AbstractFtile {
+public class FtileEmpty extends AbstractFtileOld {
 
 	public TextBlock asTextBlock() {
 		return new TextBlock() {

@@ -34,6 +34,7 @@
 package net.sourceforge.plantuml.activitydiagram3.ftile;
 
 import java.awt.geom.Dimension2D;
+import java.awt.geom.Point2D;
 import java.util.List;
 
 import net.sourceforge.plantuml.Dimension2DDouble;
@@ -59,14 +60,14 @@ public class FtileMinWidth implements Ftile {
 
 			public void drawUNewWayINLINED(UGraphic ug) {
 				final StringBounder stringBounder = ug.getStringBounder();
-				final Dimension2D dimTile = tile.asTextBlock().calculateDimension(stringBounder);
+				final Dimension2D dimTile = getDimension(stringBounder);
 				final Dimension2D dimTotal = calculateDimension(stringBounder);
 				tile.asTextBlock().drawUNewWayINLINED(
 						ug.apply(new UTranslate((dimTotal.getWidth() - dimTile.getWidth()) / 2, 0)));
 			}
 
 			public Dimension2D calculateDimension(StringBounder stringBounder) {
-				final Dimension2D dim = tile.asTextBlock().calculateDimension(stringBounder);
+				final Dimension2D dim = getDimension(stringBounder);
 				if (dim.getWidth() < minWidth) {
 					return new Dimension2DDouble(minWidth, dim.getHeight());
 				}
@@ -86,10 +87,30 @@ public class FtileMinWidth implements Ftile {
 	public LinkRendering getInLinkRendering() {
 		return tile.getInLinkRendering();
 	}
-	
+
 	public LinkRendering getOutLinkRendering() {
 		return null;
 	}
 
+	private Dimension2D getDimension(StringBounder stringBounder) {
+		return tile.asTextBlock().calculateDimension(stringBounder);
+	}
+
+	private Point2D getPoint(Point2D pt, StringBounder stringBounder) {
+		final Dimension2D dim = getDimension(stringBounder);
+		if (dim.getWidth() < minWidth) {
+			final double diff = minWidth - dim.getWidth();
+			return new Point2D.Double(pt.getX() + diff / 2, pt.getY());
+		}
+		return pt;
+	}
+
+	public Point2D getPointIn(StringBounder stringBounder) {
+		return getPoint(tile.getPointIn(stringBounder), stringBounder);
+	}
+
+	public Point2D getPointOut(StringBounder stringBounder) {
+		return getPoint(tile.getPointOut(stringBounder), stringBounder);
+	}
 
 }

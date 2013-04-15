@@ -48,6 +48,7 @@ import net.sourceforge.plantuml.ISkinParam;
 import net.sourceforge.plantuml.UmlDiagram;
 import net.sourceforge.plantuml.UmlDiagramType;
 import net.sourceforge.plantuml.activitydiagram3.ftile.Ftile;
+import net.sourceforge.plantuml.activitydiagram3.ftile.FtileFactory;
 import net.sourceforge.plantuml.activitydiagram3.ftile.Swimlane;
 import net.sourceforge.plantuml.activitydiagram3.ftile.vertical.VerticalFactory;
 import net.sourceforge.plantuml.api.ImageDataSimple;
@@ -163,14 +164,15 @@ public class ActivityDiagram3 extends UmlDiagram {
 		return new ImageDataSimple((int) dim.getWidth(), (int) dim.getHeight());
 	}
 
-
 	public void addActivity(Display activity, HtmlColor color) {
 		current.add(new InstructionSimple(activity, color, nextLinkRenderer));
 		nextLinkRenderer = null;
 	}
 
 	private Ftile getFtile() {
-		return current.createFtile(new VerticalFactory(getSkinParam()));
+		final FtileFactory factory = new VerticalFactory(getSkinParam());
+		// final FtileFactory factory = new VCompactFactory(getSkinParam());
+		return current.createFtile(factory);
 	}
 
 	private TextBlock getResult() {

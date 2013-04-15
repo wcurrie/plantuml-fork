@@ -34,11 +34,13 @@
 package net.sourceforge.plantuml.activitydiagram3.ftile.vertical;
 
 import java.awt.geom.Dimension2D;
+import java.awt.geom.Point2D;
 import java.util.Collections;
 import java.util.List;
 
 import net.sourceforge.plantuml.Dimension2DDouble;
 import net.sourceforge.plantuml.Url;
+import net.sourceforge.plantuml.activitydiagram3.ftile.AbstractFtile2;
 import net.sourceforge.plantuml.graphic.HtmlColor;
 import net.sourceforge.plantuml.graphic.StringBounder;
 import net.sourceforge.plantuml.graphic.TextBlock;
@@ -47,13 +49,13 @@ import net.sourceforge.plantuml.ugraphic.UChangeColor;
 import net.sourceforge.plantuml.ugraphic.UEllipse;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
 
-public class FtileCircleStop extends AbstractFtile {
+public class FtileCircleStop extends AbstractFtile2 {
 
 	private static final int SIZE = 20;
 
 	private final HtmlColor backColor;
 
-	FtileCircleStop(HtmlColor backColor) {
+	public FtileCircleStop(HtmlColor backColor) {
 		this.backColor = backColor;
 	}
 
@@ -96,6 +98,12 @@ public class FtileCircleStop extends AbstractFtile {
 		return true;
 	}
 
+	public Point2D getPointIn(StringBounder stringBounder) {
+		return new Point2D.Double(SIZE / 2, 0);
+	}
 
+	public Point2D getPointOut(StringBounder stringBounder) {
+		return null;
+	}
 
 }

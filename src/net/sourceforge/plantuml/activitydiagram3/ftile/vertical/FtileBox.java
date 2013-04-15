@@ -34,11 +34,13 @@
 package net.sourceforge.plantuml.activitydiagram3.ftile.vertical;
 
 import java.awt.geom.Dimension2D;
+import java.awt.geom.Point2D;
 import java.util.List;
 
 import net.sourceforge.plantuml.Dimension2DDouble;
 import net.sourceforge.plantuml.SpriteContainerEmpty;
 import net.sourceforge.plantuml.Url;
+import net.sourceforge.plantuml.activitydiagram3.ftile.AbstractFtile2;
 import net.sourceforge.plantuml.cucadiagram.Display;
 import net.sourceforge.plantuml.graphic.FontConfiguration;
 import net.sourceforge.plantuml.graphic.HorizontalAlignement;
@@ -56,7 +58,7 @@ import net.sourceforge.plantuml.ugraphic.URectangle;
 import net.sourceforge.plantuml.ugraphic.UStroke;
 import net.sourceforge.plantuml.ugraphic.UTranslate;
 
-class FtileBox extends AbstractFtile {
+public class FtileBox extends AbstractFtile2 {
 
 	private static final int CORNER = 25;
 	private static final int MARGIN = 10;
@@ -106,6 +108,16 @@ class FtileBox extends AbstractFtile {
 
 	public boolean isKilled() {
 		return false;
+	}
+
+	public Point2D getPointIn(StringBounder stringBounder) {
+		final Dimension2D dim = tb.calculateDimension(stringBounder);
+		return new Point2D.Double(dim.getWidth() / 2 + MARGIN, 0);
+	}
+
+	public Point2D getPointOut(StringBounder stringBounder) {
+		final Dimension2D dim = tb.calculateDimension(stringBounder);
+		return new Point2D.Double(dim.getWidth() / 2 + MARGIN, dim.getHeight() + 2 * MARGIN);
 	}
 
 }

@@ -27,31 +27,21 @@
  * in the United States and other countries.]
  *
  * Original Author:  Arnaud Roques
- * 
- * Revision $Revision: 10659 $
+ *
+ * Revision $Revision: 8475 $
  *
  */
-package net.sourceforge.plantuml.version;
+package net.sourceforge.plantuml.activitydiagram3.ftile;
 
-public class Version {
+import net.sourceforge.plantuml.activitydiagram3.LinkRendering;
 
-	public static int version() {
-		return 7963;
+public abstract class AbstractFtile2 implements Ftile {
+
+	final public LinkRendering getInLinkRendering() {
+		return null;
 	}
 
-	public static String versionString() {
-		if (beta()) {
-			return "" + (version() + 1) + "beta";
-		}
-		return "" + version();
+	final public LinkRendering getOutLinkRendering() {
+		return null;
 	}
-
-	public static boolean beta() {
-		return false;
-	}
-
-	public static long compileTime() {
-		return 1366047464325L;
-	}
-
 }

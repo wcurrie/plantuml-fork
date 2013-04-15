@@ -45,6 +45,7 @@ import net.sourceforge.plantuml.ISkinParam;
 import net.sourceforge.plantuml.SkinParam;
 import net.sourceforge.plantuml.UmlDiagramType;
 import net.sourceforge.plantuml.Url;
+import net.sourceforge.plantuml.activitydiagram3.ftile.AbstractFtileOld;
 import net.sourceforge.plantuml.activitydiagram3.ftile.Ftile;
 import net.sourceforge.plantuml.cucadiagram.Display;
 import net.sourceforge.plantuml.graphic.FontConfiguration;
@@ -60,7 +61,7 @@ import net.sourceforge.plantuml.ugraphic.UFont;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
 import net.sourceforge.plantuml.ugraphic.UTranslate;
 
-public class FtileWithNoteOpale extends AbstractFtile {
+public class FtileWithNoteOpale extends AbstractFtileOld {
 
 	private final Ftile tile;
 	private final Opale opale;
@@ -100,10 +101,6 @@ public class FtileWithNoteOpale extends AbstractFtile {
 				final double yForNote = (dimTotal.getHeight() - dimNote.getHeight()) / 2;
 				final double yForFtile = (dimTotal.getHeight() - dimTile.getHeight()) / 2;
 
-				if (yForFtile > 0) {
-					drawMissingLink(ug, dimTotal, yForFtile);
-				}
-
 				final double marge = dimNote.getWidth() + halfSuppSpace;
 				if (notePosition == NotePosition.LEFT) {
 					final Direction strategy = Direction.RIGHT;
@@ -122,6 +119,10 @@ public class FtileWithNoteOpale extends AbstractFtile {
 					// note.drawUNewWayINLINED(ug.apply(new UTranslate(dx, yForNote)));
 				}
 				tile.asTextBlock().drawUNewWayINLINED(ug.apply(new UTranslate(marge, yForFtile)));
+
+				if (yForFtile > 0) {
+					drawMissingLink(ug, dimTotal, yForFtile);
+				}
 			}
 
 			private void drawMissingLink(UGraphic ug, Dimension2D dimTotal, double yForFtile) {

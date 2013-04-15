@@ -28,13 +28,12 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 10220 $
+ * Revision $Revision: 10643 $
  *
  */
 package net.sourceforge.plantuml.ugraphic;
 
 import net.sourceforge.plantuml.graphic.HtmlColor;
-import net.sourceforge.plantuml.ugraphic.txt.UGraphicTxt;
 
 public abstract class AbstractCommonUGraphic extends UGraphic {
 
@@ -55,7 +54,7 @@ public abstract class AbstractCommonUGraphic extends UGraphic {
 			copy.translate = ((UTranslate) change).compose(copy.translate);
 		} else if (change instanceof UClip) {
 			copy.clip = (UClip) change;
-			copy.clip = copy.clip.translate(getTranslateXTOBEREMOVED(), getTranslateYTOBEREMOVED());
+			copy.clip = copy.clip.translate(getTranslateX(), getTranslateY());
 		} else if (change instanceof UStroke) {
 			copy.stroke = (UStroke) change;
 		} else if (change instanceof UHidden) {
@@ -110,18 +109,11 @@ public abstract class AbstractCommonUGraphic extends UGraphic {
 		};
 	}
 
-	final public void setTranslateTOBEREMOVED(double dx, double dy) {
-		if (this instanceof UGraphicTxt == false) {
-			throw new UnsupportedOperationException();
-		}
-		this.translate = new UTranslate(dx, dy);
-	}
-
-	final protected double getTranslateXTOBEREMOVED() {
+	final protected double getTranslateX() {
 		return translate.getDx();
 	}
 
-	final protected double getTranslateYTOBEREMOVED() {
+	final protected double getTranslateY() {
 		return translate.getDy();
 	}
 

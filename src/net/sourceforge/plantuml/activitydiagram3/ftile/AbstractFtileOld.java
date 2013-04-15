@@ -31,19 +31,20 @@
  * Revision $Revision: 8475 $
  *
  */
-package net.sourceforge.plantuml.activitydiagram3.ftile.vertical;
+package net.sourceforge.plantuml.activitydiagram3.ftile;
 
-import net.sourceforge.plantuml.activitydiagram3.LinkRendering;
-import net.sourceforge.plantuml.activitydiagram3.ftile.Ftile;
+import java.awt.geom.Point2D;
 
-public abstract class AbstractFtile implements Ftile {
+import net.sourceforge.plantuml.graphic.StringBounder;
 
-	final public LinkRendering getInLinkRendering() {
-		return null;
+public abstract class AbstractFtileOld extends AbstractFtile2 {
+
+	public Point2D getPointIn(StringBounder stringBounder) {
+		throw new UnsupportedOperationException();
 	}
 
-	final public LinkRendering getOutLinkRendering() {
-		return null;
+	public Point2D getPointOut(StringBounder stringBounder) {
+		throw new UnsupportedOperationException();
 	}
 
 }
