@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 9786 $
+ * Revision $Revision: 10778 $
  *
  */
 package net.sourceforge.plantuml.statediagram.command;
@@ -43,13 +43,13 @@ import net.sourceforge.plantuml.statediagram.StateDiagram;
 
 public class CommandAddField extends SingleLineCommand<StateDiagram> {
 
-	public CommandAddField(StateDiagram diagram) {
-		super(diagram, "(?i)^([\\p{L}0-9_.]+)\\s*:\\s*(.*)$");
+	public CommandAddField() {
+		super("(?i)^([\\p{L}0-9_.]+)\\s*:\\s*(.*)$");
 	}
 
 	@Override
-	protected CommandExecutionResult executeArg(List<String> arg) {
-		final IEntity entity = getSystem().getOrCreateLeaf1(Code.of(arg.get(0)), null);
+	protected CommandExecutionResult executeArg(StateDiagram diagram, List<String> arg) {
+		final IEntity entity = diagram.getOrCreateLeaf1(Code.of(arg.get(0)), null);
 
 		entity.addFieldOrMethod(arg.get(1));
 		return CommandExecutionResult.ok();

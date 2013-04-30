@@ -43,8 +43,8 @@ import net.sourceforge.plantuml.cucadiagram.Display;
 
 public class CommandElse3 extends SingleLineCommand2<ActivityDiagram3> {
 
-	public CommandElse3(ActivityDiagram3 diagram) {
-		super(diagram, getRegexConcat());
+	public CommandElse3() {
+		super(getRegexConcat());
 	}
 
 	static RegexConcat getRegexConcat() {
@@ -56,11 +56,11 @@ public class CommandElse3 extends SingleLineCommand2<ActivityDiagram3> {
 	}
 
 	@Override
-	protected CommandExecutionResult executeArg(RegexResult arg) {
+	protected CommandExecutionResult executeArg(ActivityDiagram3 diagram, RegexResult arg) {
 		// if (getSystem().getLastEntityConsulted() == null) {
 		// return CommandExecutionResult.error("No if for this endif");
 		// }
-		return getSystem().else2(Display.getWithNewlines(arg.get("WHEN", 0)));
+		return diagram.else2(Display.getWithNewlines(arg.get("WHEN", 0)));
 	}
 
 }

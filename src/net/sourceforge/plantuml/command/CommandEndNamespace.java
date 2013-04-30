@@ -40,17 +40,17 @@ import net.sourceforge.plantuml.cucadiagram.IEntity;
 
 public class CommandEndNamespace extends SingleLineCommand<AbstractEntityDiagram> {
 
-	public CommandEndNamespace(AbstractEntityDiagram diagram) {
-		super(diagram, "(?i)^end ?namespace$");
+	public CommandEndNamespace() {
+		super("(?i)^end ?namespace$");
 	}
 
 	@Override
-	protected CommandExecutionResult executeArg(List<String> arg) {
-		final IEntity currentPackage = getSystem().getCurrentGroup();
+	protected CommandExecutionResult executeArg(AbstractEntityDiagram diagram, List<String> arg) {
+		final IEntity currentPackage = diagram.getCurrentGroup();
 		if (currentPackage == null) {
 			return CommandExecutionResult.error("No namesspace defined");
 		}
-		getSystem().endGroup();
+		diagram.endGroup();
 		return CommandExecutionResult.ok();
 	}
 

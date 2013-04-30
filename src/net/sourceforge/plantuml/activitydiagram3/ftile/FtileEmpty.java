@@ -45,6 +45,18 @@ import net.sourceforge.plantuml.ugraphic.UGraphic;
 
 public class FtileEmpty extends AbstractFtileOld {
 
+	private final double width;
+	private final double height;
+
+	public FtileEmpty(double width, double height) {
+		this.width = width;
+		this.height = height;
+	}
+
+	public FtileEmpty() {
+		this(0, 0);
+	}
+
 	public TextBlock asTextBlock() {
 		return new TextBlock() {
 
@@ -52,7 +64,7 @@ public class FtileEmpty extends AbstractFtileOld {
 			}
 
 			public Dimension2D calculateDimension(StringBounder stringBounder) {
-				return new Dimension2DDouble(0, 0);
+				return new Dimension2DDouble(width, height);
 			}
 
 			public List<Url> getUrls() {
@@ -64,7 +76,5 @@ public class FtileEmpty extends AbstractFtileOld {
 	public boolean isKilled() {
 		return false;
 	}
-
-
 
 }

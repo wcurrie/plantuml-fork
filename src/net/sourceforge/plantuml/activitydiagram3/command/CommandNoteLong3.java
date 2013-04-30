@@ -48,21 +48,21 @@ import net.sourceforge.plantuml.sequencediagram.NotePosition;
 
 public class CommandNoteLong3 extends CommandMultilines2<ActivityDiagram3> {
 
-	public CommandNoteLong3(final ActivityDiagram3 diagram) {
-		super(diagram, getRegexConcat(), MultilinesStrategy.REMOVE_STARTING_QUOTE);
+	public CommandNoteLong3() {
+		super(getRegexConcat(), MultilinesStrategy.REMOVE_STARTING_QUOTE);
 	}
 
 	public String getPatternEnd() {
 		return "(?i)^end ?note$";
 	}
 
-	public CommandExecutionResult executeNow(List<String> lines) {
+	public CommandExecutionResult executeNow(final ActivityDiagram3 diagram, List<String> lines) {
 		// final RegexResult line0 = getStartingPattern().matcher(lines.get(0).trim());
 		final List<String> in = StringUtils.removeEmptyColumns(lines.subList(1, lines.size() - 1));
 		final RegexResult line0 = getStartingPattern().matcher(lines.get(0).trim());
 		final NotePosition position = getPosition(line0.get("POSITION", 0));
 		final Display note = new Display(in);
-		return getSystem().addNote(note, position);
+		return diagram.addNote(note, position);
 	}
 
 	private NotePosition getPosition(String s) {

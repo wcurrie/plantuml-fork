@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 10445 $
+ * Revision $Revision: 10766 $
  *
  */
 package net.sourceforge.plantuml.cucadiagram.dot;
@@ -83,10 +83,10 @@ abstract class AbstractGraphviz implements Graphviz {
 		}
 
 		if (illegalDotExe()) {
-//			createPngNoGraphviz(os, new FileFormatOption(FileFormat.valueOf(type[0].toUpperCase())));
+			// createPngNoGraphviz(os, new FileFormatOption(FileFormat.valueOf(type[0].toUpperCase())));
 			throw new IllegalStateException();
 		}
-		final String cmd = getCommandLine();
+		final String cmd[] = getCommandLine();
 		ProcessRunner p = null;
 		try {
 			Log.info("Starting Graphviz process " + cmd);
@@ -126,11 +126,11 @@ abstract class AbstractGraphviz implements Graphviz {
 	}
 
 	final public String dotVersion() throws IOException, InterruptedException {
-		final String cmd = getCommandLineVersion();
+		final String cmd[] = getCommandLineVersion();
 		return executeCmd(cmd);
 	}
 
-	private String executeCmd(final String cmd) throws IOException, InterruptedException {
+	private String executeCmd(final String cmd[]) throws IOException, InterruptedException {
 		final ProcessRunner p = new ProcessRunner(cmd);
 		p.run(null, null);
 		final StringBuilder sb = new StringBuilder();
@@ -146,45 +146,21 @@ abstract class AbstractGraphviz implements Graphviz {
 		return sb.toString().replace('\n', ' ').trim();
 	}
 
-//	final private void createPngNoGraphviz(OutputStream os, FileFormatOption format) throws IOException {
-//		final List<String> msg = new ArrayList<String>();
-//		msg.add("Dot Executable: " + dotExe);
-//		if (dotExe != null) {
-//			if (dotExe.exists() == false) {
-//				msg.add("File does not exist");
-//			} else if (dotExe.isDirectory()) {
-//				msg.add("It should be an executable, not a directory");
-//			} else if (dotExe.isFile() == false) {
-//				msg.add("Not a valid file");
-//			} else if (dotExe.canRead() == false) {
-//				msg.add("File cannot be read");
-//			}
-//		}
-//		msg.add("Cannot find Graphviz. You should try");
-//		msg.add(" ");
-//		msg.add("@startuml");
-//		msg.add("testdot");
-//		msg.add("@enduml");
-//		msg.add(" ");
-//		msg.add(" or ");
-//		msg.add(" ");
-//		msg.add("java -jar plantuml.jar -testdot");
-//		final GraphicStrings errorResult = new GraphicStrings(msg);
-//		errorResult.writeImage(os, format);
-//	}
+	final String[] getCommandLine() {
+		final String[] result = new String[type.length + 1];
+		result[0] = getDotExe().getAbsolutePath();
+		for (int i = 0; i < type.length; i++) {
+			result[i + 1] = "-T" + type[i];
+		}
+		return result;
+	}
 
-	abstract String getCommandLine();
-
-	abstract String getCommandLineVersion();
+	final String[] getCommandLineVersion() {
+		return new String[] { getDotExe().getAbsolutePath(), "-V" };
+	}
 
 	public final File getDotExe() {
 		return dotExe;
-	}
-
-	protected final void appendImageType(final StringBuilder sb) {
-		for (String t : type) {
-			sb.append(" -T" + t + " ");
-		}
 	}
 
 	public final String getDotString() {

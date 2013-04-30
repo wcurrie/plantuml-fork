@@ -40,9 +40,11 @@ import net.sourceforge.plantuml.FontParam;
 import net.sourceforge.plantuml.ISkinParam;
 import net.sourceforge.plantuml.activitydiagram3.LinkRendering;
 import net.sourceforge.plantuml.activitydiagram3.ftile.Ftile;
+import net.sourceforge.plantuml.activitydiagram3.ftile.FtileAssemblySimple;
 import net.sourceforge.plantuml.activitydiagram3.ftile.FtileFactory;
 import net.sourceforge.plantuml.cucadiagram.Display;
 import net.sourceforge.plantuml.graphic.HtmlColor;
+import net.sourceforge.plantuml.graphic.StringBounder;
 import net.sourceforge.plantuml.sequencediagram.NotePosition;
 import net.sourceforge.plantuml.skin.rose.Rose;
 import net.sourceforge.plantuml.ugraphic.UFont;
@@ -51,9 +53,15 @@ public class VerticalFactory implements FtileFactory {
 
 	private final ISkinParam skinParam;
 	private final Rose rose = new Rose();
+	private final StringBounder stringBounder;
 
-	public VerticalFactory(ISkinParam skinParam) {
+	public StringBounder getStringBounder() {
+		return stringBounder;
+	}
+
+	public VerticalFactory(ISkinParam skinParam, StringBounder stringBounder) {
 		this.skinParam = skinParam;
+		this.stringBounder = stringBounder;
 	}
 
 	public Ftile start() {

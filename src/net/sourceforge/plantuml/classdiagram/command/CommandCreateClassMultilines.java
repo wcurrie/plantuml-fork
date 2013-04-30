@@ -67,8 +67,8 @@ public class CommandCreateClassMultilines extends CommandMultilines2<ClassDiagra
 		EXTENDS, IMPLEMENTS
 	};
 
-	public CommandCreateClassMultilines(ClassDiagram diagram) {
-		super(diagram, getRegexConcat(), MultilinesStrategy.REMOVE_STARTING_QUOTE);
+	public CommandCreateClassMultilines() {
+		super(getRegexConcat(), MultilinesStrategy.REMOVE_STARTING_QUOTE);
 	}
 
 	@Override
@@ -103,17 +103,17 @@ public class CommandCreateClassMultilines extends CommandMultilines2<ClassDiagra
 				new RegexLeaf("\\s*\\{\\s*$"));
 	}
 
-	public CommandExecutionResult executeNow(List<String> lines) {
+	public CommandExecutionResult executeNow(ClassDiagram diagram, List<String> lines) {
 		StringUtils.trim(lines, false);
 		final RegexResult line0 = getStartingPattern().matcher(lines.get(0).trim());
-		final IEntity entity = executeArg0(line0);
+		final IEntity entity = executeArg0(diagram, line0);
 		if (entity == null) {
 			return CommandExecutionResult.error("No such entity");
 		}
 		lines = lines.subList(1, lines.size() - 1);
 		final Url url;
 		if (lines.size() > 0) {
-			final UrlBuilder urlBuilder = new UrlBuilder(getSystem().getSkinParam().getValue("topurl"), true);
+			final UrlBuilder urlBuilder = new UrlBuilder(diagram.getSkinParam().getValue("topurl"), true);
 			url = urlBuilder.getUrl(lines.get(0).toString());
 		} else {
 			url = null;
@@ -123,7 +123,7 @@ public class CommandCreateClassMultilines extends CommandMultilines2<ClassDiagra
 		}
 		for (String s : lines) {
 			if (s.length() > 0 && VisibilityModifier.isVisibilityCharacter(s.charAt(0))) {
-				getSystem().setVisibilityModifierPresent(true);
+				diagram.setVisibilityModifierPresent(true);
 			}
 			entity.addFieldOrMethod(s);
 		}
@@ -131,7 +131,7 @@ public class CommandCreateClassMultilines extends CommandMultilines2<ClassDiagra
 			entity.addUrl(url);
 		}
 
-		manageExtends(getSystem(), line0, entity);
+		manageExtends(diagram, line0, entity);
 
 		return CommandExecutionResult.ok();
 	}
@@ -158,7 +158,7 @@ public class CommandCreateClassMultilines extends CommandMultilines2<ClassDiagra
 		}
 	}
 
-	private IEntity executeArg0(RegexResult arg) {
+	private IEntity executeArg0(ClassDiagram diagram, RegexResult arg) {
 
 		final LeafType type = LeafType.getLeafType(arg.get("TYPE", 0).toUpperCase());
 
@@ -169,20 +169,20 @@ public class CommandCreateClassMultilines extends CommandMultilines2<ClassDiagra
 		final String generic = arg.get("GENERIC", 0);
 
 		final ILeaf result;
-		if (getSystem().leafExist(code)) {
-			result = getSystem().getOrCreateLeaf1(code, null);
+		if (diagram.leafExist(code)) {
+			result = diagram.getOrCreateLeaf1(code, null);
 			result.muteToType(type);
 		} else {
-			result = getSystem().createLeaf(code, Display.getWithNewlines(display), type);
+			result = diagram.createLeaf(code, Display.getWithNewlines(display), type);
 		}
 		if (stereotype != null) {
-			result.setStereotype(new Stereotype(stereotype, getSystem().getSkinParam().getCircledCharacterRadius(),
-					getSystem().getSkinParam().getFont(FontParam.CIRCLED_CHARACTER, null)));
+			result.setStereotype(new Stereotype(stereotype, diagram.getSkinParam().getCircledCharacterRadius(),
+					diagram.getSkinParam().getFont(FontParam.CIRCLED_CHARACTER, null)));
 		}
 
 		final String urlString = arg.get("URL", 0);
 		if (urlString != null) {
-			final UrlBuilder urlBuilder = new UrlBuilder(getSystem().getSkinParam().getValue("topurl"), true);
+			final UrlBuilder urlBuilder = new UrlBuilder(diagram.getSkinParam().getValue("topurl"), true);
 			final Url url = urlBuilder.getUrl(urlString);
 			result.addUrl(url);
 		}

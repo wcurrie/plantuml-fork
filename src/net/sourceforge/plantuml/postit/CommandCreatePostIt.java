@@ -42,8 +42,8 @@ import net.sourceforge.plantuml.cucadiagram.Display;
 
 public class CommandCreatePostIt extends SingleLineCommand2<PostItDiagram> {
 
-	public CommandCreatePostIt(PostItDiagram diagram) {
-		super(diagram, getRegexConcat());
+	public CommandCreatePostIt() {
+		super(getRegexConcat());
 	}
 
 	static RegexConcat getRegexConcat() {
@@ -55,10 +55,10 @@ public class CommandCreatePostIt extends SingleLineCommand2<PostItDiagram> {
 	}
 
 	@Override
-	protected CommandExecutionResult executeArg(RegexResult arg) {
+	protected CommandExecutionResult executeArg(PostItDiagram diagram, RegexResult arg) {
 		final String id = arg.get("ID", 0);
 		final String text = arg.get("TEXT", 0);
-		getSystem().createPostIt(id, Display.getWithNewlines(text));
+		diagram.createPostIt(id, Display.getWithNewlines(text));
 		return CommandExecutionResult.ok();
 	}
 

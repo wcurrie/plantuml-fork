@@ -52,8 +52,8 @@ import net.sourceforge.plantuml.statediagram.StateDiagram;
 
 public class CommandCreatePackageState extends SingleLineCommand2<StateDiagram> {
 
-	public CommandCreatePackageState(StateDiagram diagram) {
-		super(diagram, getRegexConcat());
+	public CommandCreatePackageState() {
+		super(getRegexConcat());
 		// super(diagram,
 		// "(?i)^state\\s+([\\p{L}0-9_.]+)\\s+as\\s+\"([^\"]+)\"\\s*(\\<\\<.*\\>\\>)?\\s*(#\\w+)?(?:\\s*\\{|\\s+begin)$");
 	}
@@ -86,21 +86,21 @@ public class CommandCreatePackageState extends SingleLineCommand2<StateDiagram> 
 	}
 
 	@Override
-	protected CommandExecutionResult executeArg(RegexResult arg) {
-		final IGroup currentPackage = getSystem().getCurrentGroup();
+	protected CommandExecutionResult executeArg(StateDiagram system, RegexResult arg) {
+		final IGroup currentPackage = system.getCurrentGroup();
 		final Code code = Code.of(getNotNull(arg, "CODE1", "CODE2"));
 		String display = getNotNull(arg, "DISPLAY1", "DISPLAY2");
 		if (display == null) {
 			display = code.getCode();
 		}
-		final IEntity p = getSystem().getOrCreateGroup(code, Display.getWithNewlines(display), null, GroupType.STATE, currentPackage);
+		final IEntity p = system.getOrCreateGroup(code, Display.getWithNewlines(display), null, GroupType.STATE, currentPackage);
 		final String stereotype = arg.get("STEREOTYPE", 0);
 		if (stereotype != null) {
 			p.setStereotype(new Stereotype(stereotype));
 		}
 		final String urlString = arg.get("URL", 0);
 		if (urlString != null) {
-			final UrlBuilder urlBuilder = new UrlBuilder(getSystem().getSkinParam().getValue("topurl"), true);
+			final UrlBuilder urlBuilder = new UrlBuilder(system.getSkinParam().getValue("topurl"), true);
 			final Url url = urlBuilder.getUrl(urlString);
 			p.addUrl(url);
 		}

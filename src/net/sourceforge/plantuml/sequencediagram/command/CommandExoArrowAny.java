@@ -52,16 +52,16 @@ abstract class CommandExoArrowAny extends SingleLineCommand<SequenceDiagram> {
 	private final int posArrow;
 	private final int posParticipant;
 
-	public CommandExoArrowAny(SequenceDiagram sequenceDiagram, String pattern, int posArrow, int posParticipant) {
-		super(sequenceDiagram, pattern);
+	public CommandExoArrowAny(String pattern, int posArrow, int posParticipant) {
+		super(pattern);
 		this.posArrow = posArrow;
 		this.posParticipant = posParticipant;
 	}
 
 	@Override
-	final protected CommandExecutionResult executeArg(List<String> arg) {
+	final protected CommandExecutionResult executeArg(SequenceDiagram sequenceDiagram, List<String> arg) {
 		final String arrow = StringUtils.manageArrowForSequence(arg.get(posArrow));
-		final Participant p = getSystem().getOrCreateParticipant(
+		final Participant p = sequenceDiagram.getOrCreateParticipant(
 				StringUtils.eventuallyRemoveStartingAndEndingDoubleQuote(arg.get(posParticipant)));
 
 		final boolean sync = arrow.contains(">>") || arrow.contains("<<") || arrow.contains("//")
@@ -84,8 +84,8 @@ abstract class CommandExoArrowAny extends SingleLineCommand<SequenceDiagram> {
 		}
 		config = config.withPart(getArrowPart(arrow));
 
-		final String error = getSystem().addMessage(
-				new MessageExo(p, getMessageExoType(arrow), labels, config, getSystem().getNextMessageNumber()));
+		final String error = sequenceDiagram.addMessage(
+				new MessageExo(p, getMessageExoType(arrow), labels, config, sequenceDiagram.getNextMessageNumber()));
 		if (error != null) {
 			return CommandExecutionResult.error(error);
 		}

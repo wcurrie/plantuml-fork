@@ -44,8 +44,8 @@ import net.sourceforge.plantuml.cucadiagram.ILeaf;
 
 public class CommandHideShow4 extends SingleLineCommand2<ClassDiagram> {
 
-	public CommandHideShow4(ClassDiagram classDiagram) {
-		super(classDiagram, getRegexConcat());
+	public CommandHideShow4() {
+		super(getRegexConcat());
 	}
 
 	static RegexConcat getRegexConcat() {
@@ -57,14 +57,14 @@ public class CommandHideShow4 extends SingleLineCommand2<ClassDiagram> {
 	}
 
 	@Override
-	protected CommandExecutionResult executeArg(RegexResult arg) {
+	protected CommandExecutionResult executeArg(ClassDiagram classDiagram, RegexResult arg) {
 
 		final Code code = Code.of(arg.get("CODE", 0));
-		final ILeaf leaf = getSystem().getEntityFactory().getLeafs().get(code);
+		final ILeaf leaf = classDiagram.getEntityFactory().getLeafs().get(code);
 		if (leaf == null) {
 			return CommandExecutionResult.error("Class does not exit : " + code);
 		}
-		getSystem().hideOrShow(leaf, arg.get("COMMAND", 0).equalsIgnoreCase("show"));
+		classDiagram.hideOrShow(leaf, arg.get("COMMAND", 0).equalsIgnoreCase("show"));
 
 		return CommandExecutionResult.ok();
 	}

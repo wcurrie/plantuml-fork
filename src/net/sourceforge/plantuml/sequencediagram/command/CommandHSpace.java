@@ -42,17 +42,17 @@ import net.sourceforge.plantuml.sequencediagram.SequenceDiagram;
 
 public class CommandHSpace extends SingleLineCommand<SequenceDiagram> {
 
-	public CommandHSpace(SequenceDiagram sequenceDiagram) {
-		super(sequenceDiagram, "(?i)^\\|\\|(\\d+)?\\|+$");
+	public CommandHSpace() {
+		super("(?i)^\\|\\|(\\d+)?\\|+$");
 	}
 
 	@Override
-	protected CommandExecutionResult executeArg(List<String> arg) {
+	protected CommandExecutionResult executeArg(SequenceDiagram sequenceDiagram, List<String> arg) {
 		final String size = arg.get(0);
 		if (StringUtils.isNotEmpty(size)) {
-			getSystem().hspace(Integer.parseInt(size));
+			sequenceDiagram.hspace(Integer.parseInt(size));
 		} else {
-			getSystem().hspace();
+			sequenceDiagram.hspace();
 		}
 		return CommandExecutionResult.ok();
 	}

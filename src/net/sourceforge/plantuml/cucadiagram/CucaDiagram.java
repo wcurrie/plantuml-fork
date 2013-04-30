@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 10459 $
+ * Revision $Revision: 10685 $
  *
  */
 package net.sourceforge.plantuml.cucadiagram;
@@ -42,7 +42,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -78,6 +77,11 @@ public abstract class CucaDiagram extends UmlDiagram implements GroupHierarchy, 
 	public abstract IEntity getOrCreateLeaf1(Code code, LeafType type);
 
 	public boolean hasUrl() {
+		for (IEntity entity : getGroups(true)) {
+			if (entity.getUrls().size() > 0) {
+				return true;
+			}
+		}
 		for (IEntity entity : getLeafs().values()) {
 			if (entity.getUrls().size() > 0) {
 				return true;
@@ -103,6 +107,7 @@ public abstract class CucaDiagram extends UmlDiagram implements GroupHierarchy, 
 		if (result == null) {
 			result = createLeafInternal(code, Display.getWithNewlines(code), type, getCurrentGroup());
 		}
+		this.lastEntity = result;
 		return result;
 	}
 
@@ -119,6 +124,7 @@ public abstract class CucaDiagram extends UmlDiagram implements GroupHierarchy, 
 		}
 		final ILeaf leaf = entityFactory.createLeaf(code, display, type, group, getHides());
 		entityFactory.addLeaf(leaf);
+		this.lastEntity = leaf;
 		return leaf;
 	}
 
@@ -485,15 +491,18 @@ public abstract class CucaDiagram extends UmlDiagram implements GroupHierarchy, 
 		}
 		return null;
 	}
+	
+	private ILeaf lastEntity = null;
 
 	final public ILeaf getLastEntity() {
-		for (final Iterator<ILeaf> it = getLeafs().values().iterator(); it.hasNext();) {
-			final ILeaf ent = it.next();
-			if (it.hasNext() == false) {
-				return ent;
-			}
-		}
-		return null;
+//		for (final Iterator<ILeaf> it = getLeafs().values().iterator(); it.hasNext();) {
+//			final ILeaf ent = it.next();
+//			if (it.hasNext() == false) {
+//				return ent;
+//			}
+//		}
+//		return null;
+		return lastEntity;
 	}
 
 	final public EntityFactory getEntityFactory() {

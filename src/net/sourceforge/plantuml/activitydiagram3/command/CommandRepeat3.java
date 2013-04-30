@@ -42,8 +42,8 @@ import net.sourceforge.plantuml.command.regex.RegexResult;
 
 public class CommandRepeat3 extends SingleLineCommand2<ActivityDiagram3> {
 
-	public CommandRepeat3(ActivityDiagram3 diagram) {
-		super(diagram, getRegexConcat());
+	public CommandRepeat3() {
+		super(getRegexConcat());
 	}
 
 	static RegexConcat getRegexConcat() {
@@ -53,9 +53,9 @@ public class CommandRepeat3 extends SingleLineCommand2<ActivityDiagram3> {
 	}
 
 	@Override
-	protected CommandExecutionResult executeArg(RegexResult arg) {
+	protected CommandExecutionResult executeArg(ActivityDiagram3 diagram, RegexResult arg) {
 
-		getSystem().startRepeat();
+		diagram.startRepeat();
 
 		return CommandExecutionResult.ok();
 	}

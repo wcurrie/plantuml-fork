@@ -52,6 +52,7 @@ import net.sourceforge.plantuml.ISkinParam;
 import net.sourceforge.plantuml.StringUtils;
 import net.sourceforge.plantuml.UmlDiagramType;
 import net.sourceforge.plantuml.UniqueSequence;
+import net.sourceforge.plantuml.Url;
 import net.sourceforge.plantuml.cucadiagram.EntityPosition;
 import net.sourceforge.plantuml.cucadiagram.EntityUtils;
 import net.sourceforge.plantuml.cucadiagram.IEntity;
@@ -283,38 +284,50 @@ public class Cluster implements Moveable {
 	}
 
 	public void drawU(UGraphic ug, HtmlColor borderColor, DotData dotData) {
-		if (hasEntryOrExitPoint()) {
-			manageEntryExitPoint(dotData, ug.getStringBounder());
+		final List<Url> url = group.getUrls();
+		if (url.size() > 0 && url.get(0).isMember() == false) {
+			ug.startUrl(url.get(0));
 		}
-		if (skinParam.useSwimlanes()) {
-			drawSwinLinesState(ug, borderColor, dotData);
-			return;
-		}
-		final boolean isState = dotData.getUmlDiagramType() == UmlDiagramType.STATE;
-		if (isState) {
-			drawUState(ug, borderColor, dotData);
-			return;
-		}
-		PackageStyle style = group.zgetPackageStyle();
-		if (style == null) {
-			style = dotData.getSkinParam().getPackageStyle();
-		}
-		if (ztitle != null || zstereo != null) {
+		try {
+			if (hasEntryOrExitPoint()) {
+				manageEntryExitPoint(dotData, ug.getStringBounder());
+			}
+			if (skinParam.useSwimlanes()) {
+				drawSwinLinesState(ug, borderColor, dotData);
+				return;
+			}
+			final boolean isState = dotData.getUmlDiagramType() == UmlDiagramType.STATE;
+			if (isState) {
+				drawUState(ug, borderColor, dotData);
+				return;
+			}
+			PackageStyle style = group.zgetPackageStyle();
+			if (style == null) {
+				style = dotData.getSkinParam().getPackageStyle();
+			}
+			if (ztitle != null || zstereo != null) {
+				final HtmlColor stateBack = getStateBackColor(getBackColor(), dotData.getSkinParam(),
+						group.getStereotype() == null ? null : group.getStereotype().getLabel());
+				final ClusterDecoration decoration = new ClusterDecoration(style, group.getUSymbol(), ztitle, zstereo,
+						stateBack, minX, minY, maxX, maxY);
+				decoration.drawU(ug, borderColor, dotData.getSkinParam().shadowing());
+				return;
+			}
+			final URectangle rect = new URectangle(maxX - minX, maxY - minY);
+			if (dotData.getSkinParam().shadowing()) {
+				rect.setDeltaShadow(3.0);
+			}
 			final HtmlColor stateBack = getStateBackColor(getBackColor(), dotData.getSkinParam(),
 					group.getStereotype() == null ? null : group.getStereotype().getLabel());
-			final ClusterDecoration decoration = new ClusterDecoration(style, group.getUSymbol(), ztitle, zstereo,
-					stateBack, minX, minY, maxX, maxY);
-			decoration.drawU(ug, borderColor, dotData.getSkinParam().shadowing());
-			return;
+			ug = ug.apply(new UChangeBackColor(stateBack)).apply(new UChangeColor(borderColor));
+			ug.apply(new UStroke(2)).drawNewWay(minX, minY, rect);
+
+		} finally {
+			if (url.size() > 0 && url.get(0).isMember() == false) {
+				ug.closeAction();
+			}
 		}
-		final URectangle rect = new URectangle(maxX - minX, maxY - minY);
-		if (dotData.getSkinParam().shadowing()) {
-			rect.setDeltaShadow(3.0);
-		}
-		final HtmlColor stateBack = getStateBackColor(getBackColor(), dotData.getSkinParam(),
-				group.getStereotype() == null ? null : group.getStereotype().getLabel());
-		ug = ug.apply(new UChangeBackColor(stateBack)).apply(new UChangeColor(borderColor));
-		ug.apply(new UStroke(2)).drawNewWay(minX, minY, rect);
+
 	}
 
 	private void manageEntryExitPoint(DotData dotData, StringBounder stringBounder) {
@@ -387,7 +400,8 @@ public class Cluster implements Moveable {
 		}
 
 		if (attributeHeight > 0) {
-			attribute.asTextBlock(total.getWidth()).drawUNewWayINLINED(ug.apply(new UTranslate(minX + IEntityImage.MARGIN, minY + suppY + IEntityImage.MARGIN / 2.0)));
+			attribute.asTextBlock(total.getWidth()).drawUNewWayINLINED(
+					ug.apply(new UTranslate(minX + IEntityImage.MARGIN, minY + suppY + IEntityImage.MARGIN / 2.0)));
 		}
 
 		final Stereotype stereotype = group.getStereotype();
@@ -741,8 +755,8 @@ public class Cluster implements Moveable {
 		if (stateBack == null) {
 			stateBack = skinParam.getHtmlColor(ColorParam.background, stereotype, false);
 		}
-		if (stateBack == null || stateBack instanceof HtmlColorTransparent) {
-			stateBack = HtmlColorUtils.WHITE;
+		if (stateBack == null /*|| stateBack instanceof HtmlColorTransparent*/) {
+			stateBack = new HtmlColorTransparent();
 		}
 		return stateBack;
 	}

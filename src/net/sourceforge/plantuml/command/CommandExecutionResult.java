@@ -33,21 +33,28 @@
  */
 package net.sourceforge.plantuml.command;
 
+import net.sourceforge.plantuml.AbstractPSystem;
 
 public class CommandExecutionResult {
 
 	private final String error;
+	private final AbstractPSystem newDiagram;
 
-	private CommandExecutionResult(String error) {
-			this.error = error;
+	private CommandExecutionResult(String error, AbstractPSystem newDiagram) {
+		this.error = error;
+		this.newDiagram = newDiagram;
+	}
+
+	public static CommandExecutionResult newDiagram(AbstractPSystem result) {
+		return new CommandExecutionResult(null, result);
 	}
 
 	public static CommandExecutionResult ok() {
-		return new CommandExecutionResult(null);
+		return new CommandExecutionResult(null, null);
 	}
 
 	public static CommandExecutionResult error(String error) {
-		return new CommandExecutionResult(error);
+		return new CommandExecutionResult(error, null);
 	}
 
 	public boolean isOk() {
@@ -59,6 +66,10 @@ public class CommandExecutionResult {
 			throw new IllegalStateException();
 		}
 		return error;
+	}
+
+	public AbstractPSystem getNewDiagram() {
+		return newDiagram;
 	}
 
 }

@@ -42,14 +42,14 @@ import net.sourceforge.plantuml.project2.Value;
 
 public class CommandAffectation extends SingleLineCommand<PSystemProject2> {
 
-	public CommandAffectation(PSystemProject2 diagram) {
-		super(diagram, "(?i)^\\s*([~\\^]?[\\w$/]+)\\s*:=\\s*(.+)$");
+	public CommandAffectation() {
+		super("(?i)^\\s*([~\\^]?[\\w$/]+)\\s*:=\\s*(.+)$");
 	}
 
 	@Override
-	protected CommandExecutionResult executeArg(List<String> arg) {
-		final Value exp = getSystem().getProject().getExpression(arg.get(1).trim());
-		final boolean ok = getSystem().getProject().affectation(arg.get(0).trim(), exp);
+	protected CommandExecutionResult executeArg(PSystemProject2 diagram, List<String> arg) {
+		final Value exp = diagram.getProject().getExpression(arg.get(1).trim());
+		final boolean ok = diagram.getProject().affectation(arg.get(0).trim(), exp);
 		if (ok) {
 			return CommandExecutionResult.ok();
 		}

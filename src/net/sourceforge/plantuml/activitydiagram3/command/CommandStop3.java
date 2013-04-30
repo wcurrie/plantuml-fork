@@ -42,8 +42,8 @@ import net.sourceforge.plantuml.command.regex.RegexResult;
 
 public class CommandStop3 extends SingleLineCommand2<ActivityDiagram3> {
 
-	public CommandStop3(ActivityDiagram3 diagram) {
-		super(diagram, getRegexConcat());
+	public CommandStop3() {
+		super(getRegexConcat());
 	}
 
 	static RegexConcat getRegexConcat() {
@@ -54,11 +54,11 @@ public class CommandStop3 extends SingleLineCommand2<ActivityDiagram3> {
 	}
 
 	@Override
-	protected CommandExecutionResult executeArg(RegexResult arg) {
+	protected CommandExecutionResult executeArg(ActivityDiagram3 diagram, RegexResult arg) {
 		// if (getSystem().getLastEntityConsulted() == null) {
 		// return CommandExecutionResult.error("No if for this endif");
 		// }
-		getSystem().stop();
+		diagram.stop();
 
 		return CommandExecutionResult.ok();
 	}

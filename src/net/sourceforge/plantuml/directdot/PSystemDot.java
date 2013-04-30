@@ -33,7 +33,6 @@ package net.sourceforge.plantuml.directdot;
 
 import java.io.IOException;
 import java.io.OutputStream;
-import java.io.UnsupportedEncodingException;
 
 import net.sourceforge.plantuml.AbstractPSystem;
 import net.sourceforge.plantuml.FileFormatOption;
@@ -46,7 +45,7 @@ public class PSystemDot extends AbstractPSystem {
 
 	private final String data;
 
-	public PSystemDot(String data) throws UnsupportedEncodingException {
+	public PSystemDot(String data) {
 		this.data = data;
 	}
 

@@ -55,8 +55,8 @@ import net.sourceforge.plantuml.ugraphic.UFont;
 
 public abstract class CommandParticipant extends SingleLineCommand2<SequenceDiagram> {
 
-	public CommandParticipant(SequenceDiagram sequenceDiagram, RegexConcat pattern) {
-		super(sequenceDiagram, pattern);
+	public CommandParticipant(RegexConcat pattern) {
+		super(pattern);
 	}
 
 	static IRegex getRegexType() {
@@ -65,10 +65,10 @@ public abstract class CommandParticipant extends SingleLineCommand2<SequenceDiag
 	}
 
 	@Override
-	final protected CommandExecutionResult executeArg(RegexResult arg2) {
+	final protected CommandExecutionResult executeArg(SequenceDiagram system, RegexResult arg2) {
 		final String code = arg2.get("CODE", 0);
-		if (getSystem().participants().containsKey(code)) {
-			getSystem().putParticipantInLast(code);
+		if (system.participants().containsKey(code)) {
+			system.putParticipantInLast(code);
 			return CommandExecutionResult.ok();
 		}
 
@@ -91,12 +91,12 @@ public abstract class CommandParticipant extends SingleLineCommand2<SequenceDiag
 			type = ParticipantType.valueOf(typeString1.toUpperCase());
 			create = false;
 		}
-		final Participant participant = getSystem().createNewParticipant(type, code, strings);
+		final Participant participant = system.createNewParticipant(type, code, strings);
 
 		final String stereotype = arg2.get("STEREO", 0);
 
 		if (stereotype != null) {
-			final ISkinParam skinParam = getSystem().getSkinParam();
+			final ISkinParam skinParam = system.getSkinParam();
 			final boolean stereotypePositionTop = skinParam.stereotypePositionTop();
 			final UFont font = skinParam.getFont(FontParam.CIRCLED_CHARACTER, null);
 			participant.setStereotype(new Stereotype(stereotype, skinParam.getCircledCharacterRadius(), font),
@@ -106,13 +106,13 @@ public abstract class CommandParticipant extends SingleLineCommand2<SequenceDiag
 
 		final String urlString = arg2.get("URL", 0);
 		if (urlString != null) {
-			final UrlBuilder urlBuilder = new UrlBuilder(getSystem().getSkinParam().getValue("topurl"), true);
+			final UrlBuilder urlBuilder = new UrlBuilder(system.getSkinParam().getValue("topurl"), true);
 			final Url url = urlBuilder.getUrl(urlString);
 			participant.setUrl(url);
 		}
 
 		if (create) {
-			final String error = getSystem().activate(participant, LifeEventType.CREATE, null);
+			final String error = system.activate(participant, LifeEventType.CREATE, null);
 			if (error != null) {
 				return CommandExecutionResult.error(error);
 			}

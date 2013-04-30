@@ -39,6 +39,7 @@ import java.awt.geom.Dimension2D;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.imageio.ImageIO;
@@ -61,8 +62,17 @@ public class PSystemSalt extends AbstractPSystem {
 
 	private final List<String> data;
 
+	@Deprecated
 	public PSystemSalt(List<String> data) {
 		this.data = data;
+	}
+
+	public PSystemSalt() {
+		this(new ArrayList<String>());
+	}
+
+	public void add(String s) {
+		data.add(s);
 	}
 
 	public ImageData exportDiagram(OutputStream os, int num, FileFormatOption fileFormat) throws IOException {

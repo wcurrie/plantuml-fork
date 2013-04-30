@@ -37,12 +37,41 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import net.sourceforge.plantuml.acearth.PSystemXearthFactory1317;
+import net.sourceforge.plantuml.activitydiagram.ActivityDiagramFactory1317;
+import net.sourceforge.plantuml.activitydiagram3.ActivityDiagramFactory3_1317;
 import net.sourceforge.plantuml.api.PSystemFactory1317;
+import net.sourceforge.plantuml.classdiagram.ClassDiagramFactory1317;
+import net.sourceforge.plantuml.compositediagram.CompositeDiagramFactory1317;
 import net.sourceforge.plantuml.core.Diagram;
 import net.sourceforge.plantuml.core.DiagramType;
 import net.sourceforge.plantuml.core.UmlSource;
+import net.sourceforge.plantuml.descdiagram.DescriptionDiagramFactory1317;
+import net.sourceforge.plantuml.directdot.PSystemDotFactory1317;
+import net.sourceforge.plantuml.ditaa.PSystemDitaaFactory1317;
+import net.sourceforge.plantuml.donors.PSystemDonorsFactory1317;
+import net.sourceforge.plantuml.eggs.PSystemAppleTwoFactory1317;
+import net.sourceforge.plantuml.eggs.PSystemEggFactory1317;
+import net.sourceforge.plantuml.eggs.PSystemLostFactory1317;
+import net.sourceforge.plantuml.eggs.PSystemPathFactory1317;
+import net.sourceforge.plantuml.eggs.PSystemRIPFactory1317;
+import net.sourceforge.plantuml.flowdiagram.FlowDiagramFactory1317;
+import net.sourceforge.plantuml.font.PSystemListFontsFactory1317;
+import net.sourceforge.plantuml.jcckit.PSystemJcckitFactory1317;
+import net.sourceforge.plantuml.logo.PSystemLogoFactory1317;
+import net.sourceforge.plantuml.objectdiagram.ObjectDiagramFactory1317;
+import net.sourceforge.plantuml.oregon.PSystemOregonFactory1317;
+import net.sourceforge.plantuml.postit.PostIdDiagramFactory1317;
+import net.sourceforge.plantuml.printskin.PrintSkinFactory1317;
+import net.sourceforge.plantuml.project2.PSystemProjectFactory2_1317;
+import net.sourceforge.plantuml.salt.PSystemSaltFactory1317;
 import net.sourceforge.plantuml.sequencediagram.SequenceDiagramFactory1317;
+import net.sourceforge.plantuml.statediagram.StateDiagramFactory1317;
+import net.sourceforge.plantuml.sudoku.PSystemSudokuFactory1317;
+import net.sourceforge.plantuml.turing.PSystemTuringFactory1317;
+import net.sourceforge.plantuml.version.License;
 import net.sourceforge.plantuml.version.PSystemLicenseFactory1317;
+import net.sourceforge.plantuml.version.PSystemVersionFactory1317;
 
 public class PSystemBuilder1317 {
 
@@ -77,43 +106,43 @@ public class PSystemBuilder1317 {
 	private List<PSystemFactory1317> getAllFactories() {
 		final List<PSystemFactory1317> factories = new ArrayList<PSystemFactory1317>();
 		factories.add(new SequenceDiagramFactory1317());
-		// factories.add(new ClassDiagramFactory());
-		// factories.add(new ActivityDiagramFactory());
-		// factories.add(new DescriptionDiagramFactory());
-		// factories.add(new StateDiagramFactory());
-		// factories.add(new ActivityDiagramFactory3());
-		// factories.add(new CompositeDiagramFactory());
-		// factories.add(new ObjectDiagramFactory());
-		// factories.add(new PostIdDiagramFactory());
-		// factories.add(new PrintSkinFactory());
+		factories.add(new ClassDiagramFactory1317());
+		factories.add(new ActivityDiagramFactory1317());
+		factories.add(new DescriptionDiagramFactory1317());
+		factories.add(new StateDiagramFactory1317());
+		factories.add(new ActivityDiagramFactory3_1317());
+		factories.add(new CompositeDiagramFactory1317());
+		factories.add(new ObjectDiagramFactory1317());
+		factories.add(new PostIdDiagramFactory1317());
+		factories.add(new PrintSkinFactory1317());
 		factories.add(new PSystemLicenseFactory1317());
-		// factories.add(new PSystemVersionFactory());
-		// factories.add(new PSystemDonorsFactory());
-		// factories.add(new PSystemListFontsFactory());
-		// factories.add(new PSystemSaltFactory(DiagramType.SALT));
-		// factories.add(new PSystemSaltFactory(DiagramType.UML));
-		// factories.add(new PSystemDotFactory(DiagramType.DOT));
-		// factories.add(new PSystemDotFactory(DiagramType.UML));
-		// if (License.isCloseSource() == false) {
-		// factories.add(new PSystemDitaaFactory(DiagramType.DITAA));
-		// factories.add(new PSystemDitaaFactory(DiagramType.UML));
-		// factories.add(new PSystemJcckitFactory(DiagramType.JCCKIT));
-		// factories.add(new PSystemJcckitFactory(DiagramType.UML));
-		// factories.add(new PSystemLogoFactory());
-		// factories.add(new PSystemSudokuFactory());
-		// factories.add(new PSystemTuringFactory());
-		// }
-		// factories.add(new PSystemEggFactory());
-		// factories.add(new PSystemAppleTwoFactory());
-		// factories.add(new PSystemRIPFactory());
-		// factories.add(new PSystemLostFactory());
-		// factories.add(new PSystemPathFactory());
-		// factories.add(new PSystemOregonFactory());
-		// if (License.isCloseSource() == false) {
-		// factories.add(new PSystemXearthFactory());
-		// }
-		// factories.add(new PSystemProjectFactory2());
-		// factories.add(new FlowDiagramFactory());
+		factories.add(new PSystemVersionFactory1317());
+		factories.add(new PSystemDonorsFactory1317());
+		factories.add(new PSystemListFontsFactory1317());
+		factories.add(new PSystemSaltFactory1317(DiagramType.SALT));
+		factories.add(new PSystemSaltFactory1317(DiagramType.UML));
+		factories.add(new PSystemDotFactory1317(DiagramType.DOT));
+		factories.add(new PSystemDotFactory1317(DiagramType.UML));
+		if (License.getCurrent() == License.GPL) {
+			factories.add(new PSystemDitaaFactory1317(DiagramType.DITAA));
+			factories.add(new PSystemDitaaFactory1317(DiagramType.UML));
+			factories.add(new PSystemJcckitFactory1317(DiagramType.JCCKIT));
+			factories.add(new PSystemJcckitFactory1317(DiagramType.UML));
+			factories.add(new PSystemLogoFactory1317());
+			factories.add(new PSystemSudokuFactory1317());
+			factories.add(new PSystemTuringFactory1317());
+		}
+		factories.add(new PSystemEggFactory1317());
+		factories.add(new PSystemAppleTwoFactory1317());
+		factories.add(new PSystemRIPFactory1317());
+		factories.add(new PSystemLostFactory1317());
+		factories.add(new PSystemPathFactory1317());
+		factories.add(new PSystemOregonFactory1317());
+		if (License.getCurrent() == License.GPL) {
+			factories.add(new PSystemXearthFactory1317());
+		}
+		factories.add(new PSystemProjectFactory2_1317());
+		factories.add(new FlowDiagramFactory1317());
 		return factories;
 	}
 

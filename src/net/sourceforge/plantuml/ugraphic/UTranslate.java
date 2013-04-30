@@ -33,6 +33,8 @@
  */
 package net.sourceforge.plantuml.ugraphic;
 
+import java.awt.geom.Point2D;
+
 public class UTranslate implements UChange {
 
 	private final double dx;
@@ -58,6 +60,10 @@ public class UTranslate implements UChange {
 
 	public double getDy() {
 		return dy;
+	}
+
+	public Point2D getTranslated(Point2D p) {
+		return new Point2D.Double(p.getX() + dx, p.getY() + dy);
 	}
 
 	public UTranslate compose(UTranslate other) {

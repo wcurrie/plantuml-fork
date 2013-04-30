@@ -49,8 +49,8 @@ import net.sourceforge.plantuml.statediagram.StateDiagram;
 
 public class CommandCreateState2 extends SingleLineCommand2<StateDiagram> {
 
-	public CommandCreateState2(StateDiagram diagram) {
-		super(diagram, getRegexConcat());
+	public CommandCreateState2() {
+		super(getRegexConcat());
 //				"(?i)^(?:state\\s+)([\\p{L}0-9_.]+)\\s+as\\s+\"([^\"]+)\"\\s*(\\<\\<.*\\>\\>)?\\s*(#\\w+)?$");
 	}
 	
@@ -70,10 +70,10 @@ public class CommandCreateState2 extends SingleLineCommand2<StateDiagram> {
 	}
 
 	@Override
-	protected CommandExecutionResult executeArg(RegexResult arg2) {
+	protected CommandExecutionResult executeArg(StateDiagram system, RegexResult arg2) {
 		final Code code = Code.of(arg2.get("CODE", 0));
 		final String display = arg2.get("DISPLAY", 0);
-		final IEntity ent = getSystem().getOrCreateLeaf1(code, null);
+		final IEntity ent = system.getOrCreateLeaf1(code, null);
 		ent.setDisplay(Display.getWithNewlines(display));
 
 		final String stereotype = arg2.get("STEREOTYPE", 0);
@@ -82,7 +82,7 @@ public class CommandCreateState2 extends SingleLineCommand2<StateDiagram> {
 		}
 		final String urlString = arg2.get("URL", 0);
 		if (urlString != null) {
-			final UrlBuilder urlBuilder = new UrlBuilder(getSystem().getSkinParam().getValue("topurl"), true);
+			final UrlBuilder urlBuilder = new UrlBuilder(system.getSkinParam().getValue("topurl"), true);
 			final Url url = urlBuilder.getUrl(urlString);
 			ent.addUrl(url);
 		}

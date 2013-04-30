@@ -40,6 +40,7 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
@@ -81,6 +82,7 @@ import net.sourceforge.plantuml.ugraphic.URectangle;
 import net.sourceforge.plantuml.ugraphic.eps.UGraphicEps;
 import net.sourceforge.plantuml.ugraphic.g2d.UGraphicG2d;
 import net.sourceforge.plantuml.ugraphic.svg.UGraphicSvg;
+import net.sourceforge.plantuml.ugraphic.visio.UGraphicVdx;
 
 public final class CucaDiagramFileMakerSvek {
 
@@ -136,6 +138,8 @@ public final class CucaDiagramFileMakerSvek {
 			createPng(os, fileFormatOption, result, dim);
 		} else if (fileFormat == FileFormat.SVG) {
 			createSvg(os, fileFormatOption, result, dim);
+		} else if (fileFormat == FileFormat.VDX) {
+			createVdx(os, fileFormatOption, result, dim);
 		} else if (fileFormat == FileFormat.EPS) {
 			createEps(os, fileFormatOption, result, dim);
 		} else {
@@ -175,7 +179,9 @@ public final class CucaDiagramFileMakerSvek {
 	private CMapData cmapString(CucaDiagramFileMakerSvek2 svek2) {
 		final CMapData cmapdata = new CMapData();
 		int seq = 1;
-		for (IEntity ent : diagram.getLeafs().values()) {
+		final Collection<IEntity> all = new ArrayList<IEntity>(diagram.getLeafs().values());
+		all.addAll(diagram.getGroups(false));
+		for (IEntity ent : all) {
 			final List<Url> rev = new ArrayList<Url>(ent.getUrls());
 			// For zlevel order
 			Collections.reverse(rev);
@@ -326,6 +332,17 @@ public final class CucaDiagramFileMakerSvek {
 		result.drawUNewWayINLINED(ug);
 
 		ug.createXml(os);
+
+	}
+
+	private void createVdx(OutputStream os, FileFormatOption fileFormatOption, final IEntityImage result,
+			final Dimension2D dim) throws IOException {
+
+		final UGraphicVdx ug = new UGraphicVdx(diagram.getSkinParam().getColorMapper());
+
+		result.drawUNewWayINLINED(ug);
+
+		ug.createVsd(os);
 
 	}
 

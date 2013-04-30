@@ -77,6 +77,7 @@ import net.sourceforge.plantuml.ugraphic.eps.UGraphicEps;
 import net.sourceforge.plantuml.ugraphic.g2d.UGraphicG2d;
 import net.sourceforge.plantuml.ugraphic.html5.UGraphicHtml5;
 import net.sourceforge.plantuml.ugraphic.svg.UGraphicSvg;
+import net.sourceforge.plantuml.ugraphic.visio.UGraphicVdx;
 
 public class SequenceDiagramFileMakerPuma implements FileMaker {
 
@@ -276,6 +277,8 @@ public class SequenceDiagramFileMakerPuma implements FileMaker {
 			ug = new UGraphicEps(diagram.getSkinParam().getColorMapper(), EpsStrategy.WITH_MACRO_AND_TEXT);
 		} else if (fileFormat == FileFormat.HTML5) {
 			ug = new UGraphicHtml5(diagram.getSkinParam().getColorMapper());
+		} else if (fileFormat == FileFormat.VDX) {
+			ug = new UGraphicVdx(diagram.getSkinParam().getColorMapper());
 		} else {
 			throw new UnsupportedOperationException();
 		}

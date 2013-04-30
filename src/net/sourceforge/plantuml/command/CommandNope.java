@@ -39,12 +39,12 @@ import net.sourceforge.plantuml.core.Diagram;
 
 public class CommandNope extends SingleLineCommand<Diagram> {
 
-	public CommandNope(Diagram diagram) {
-		super(diagram, "(?i)^\\s*$");
+	public CommandNope() {
+		super("(?i)^\\s*$");
 	}
 
 	@Override
-	protected CommandExecutionResult executeArg(List<String> arg) {
+	protected CommandExecutionResult executeArg(Diagram diagram, List<String> arg) {
 		return CommandExecutionResult.ok();
 	}
 

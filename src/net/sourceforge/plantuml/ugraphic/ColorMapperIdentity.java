@@ -46,7 +46,7 @@ public class ColorMapperIdentity implements ColorMapper {
 			return null;
 		}
 		if (color instanceof HtmlColorTransparent) {
-			return null;
+			throw new UnsupportedOperationException();
 		}
 		return ((HtmlColorSimple) color).getColor999();
 	}

@@ -49,8 +49,8 @@ import net.sourceforge.plantuml.skin.ArrowDecoration;
 
 public class CommandArrowCrossX extends SingleLineCommand2<SequenceDiagram> {
 
-	public CommandArrowCrossX(SequenceDiagram sequenceDiagram) {
-		super(sequenceDiagram, getRegexConcat());
+	public CommandArrowCrossX() {
+		super(getRegexConcat());
 	}
 
 	static RegexConcat getRegexConcat() {
@@ -73,7 +73,7 @@ public class CommandArrowCrossX extends SingleLineCommand2<SequenceDiagram> {
 				new RegexLeaf("MESSAGE", "(?::\\s*(.*))?$"));
 	}
 
-	private Participant getOrCreateParticipant(RegexResult arg2, String n) {
+	private Participant getOrCreateParticipant(SequenceDiagram system, RegexResult arg2, String n) {
 		final String code;
 		final Display display;
 		if (arg2.get(n + "CODE", 0) != null) {
@@ -88,15 +88,15 @@ public class CommandArrowCrossX extends SingleLineCommand2<SequenceDiagram> {
 		} else if (arg2.get(n + "CODELONG", 0) != null) {
 			code = arg2.get(n + "CODELONG", 0);
 			display = Display.getWithNewlines(arg2.get(n + "CODELONG", 1));
-			return getSystem().getOrCreateParticipant(code, display);
+			return system.getOrCreateParticipant(code, display);
 		} else {
 			throw new IllegalStateException();
 		}
-		return getSystem().getOrCreateParticipant(code, display);
+		return system.getOrCreateParticipant(code, display);
 	}
 
 	@Override
-	protected CommandExecutionResult executeArg(RegexResult arg2) {
+	protected CommandExecutionResult executeArg(SequenceDiagram system, RegexResult arg2) {
 
 		final String arrow = StringUtils.manageArrowForSequence(arg2.get("ARROW", 0));
 
@@ -104,11 +104,11 @@ public class CommandArrowCrossX extends SingleLineCommand2<SequenceDiagram> {
 		Participant p2;
 
 		if (arrow.endsWith("x")) {
-			p1 = getOrCreateParticipant(arg2, "PART1");
-			p2 = getOrCreateParticipant(arg2, "PART2");
+			p1 = getOrCreateParticipant(system, arg2, "PART1");
+			p2 = getOrCreateParticipant(system, arg2, "PART2");
 		} else if (arrow.startsWith("x")) {
-			p2 = getOrCreateParticipant(arg2, "PART1");
-			p1 = getOrCreateParticipant(arg2, "PART2");
+			p2 = getOrCreateParticipant(system, arg2, "PART1");
+			p1 = getOrCreateParticipant(system, arg2, "PART2");
 		} else {
 			throw new IllegalStateException(arg2.toString());
 		}
@@ -141,26 +141,26 @@ public class CommandArrowCrossX extends SingleLineCommand2<SequenceDiagram> {
 		// config = config.withPart(ArrowPart.BOTTOM_PART);
 		// }
 
-		final String error = getSystem().addMessage(
-				new Message(p1, p2, labels, config, getSystem().getNextMessageNumber()));
+		final String error = system.addMessage(
+				new Message(p1, p2, labels, config, system.getNextMessageNumber()));
 		if (error != null) {
 			return CommandExecutionResult.error(error);
 		}
 
-		// if (getSystem().isAutoactivate()) {
+		// if (system.isAutoactivate()) {
 		// if (p1 != p2 && config.isASync() == false) {
 		// if (config.isDotted()) {
-		// getSystem().activate(p1, LifeEventType.DEACTIVATE, null);
+		// system.activate(p1, LifeEventType.DEACTIVATE, null);
 		// } else {
-		// getSystem().activate(p2, LifeEventType.ACTIVATE, null);
+		// system.activate(p2, LifeEventType.ACTIVATE, null);
 		// }
 		// }
 		// } else {
 		// if (deactivatep1) {
-		// getSystem().activate(p1, LifeEventType.DEACTIVATE, null);
+		// system.activate(p1, LifeEventType.DEACTIVATE, null);
 		// }
 		// if (activatep2) {
-		// getSystem().activate(p2, LifeEventType.ACTIVATE, null);
+		// system.activate(p2, LifeEventType.ACTIVATE, null);
 		// }
 		// }
 		return CommandExecutionResult.ok();

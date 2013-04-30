@@ -57,8 +57,8 @@ public class CommandHideShow extends SingleLineCommand2<ClassDiagram> {
 			EntityPortion.METHOD);
 	private static final EnumSet<EntityPortion> PORTION_FIELD = EnumSet.<EntityPortion> of(EntityPortion.FIELD);
 
-	public CommandHideShow(ClassDiagram classDiagram) {
-		super(classDiagram, getRegexConcat());
+	public CommandHideShow() {
+		super(getRegexConcat());
 	}
 
 	static RegexConcat getRegexConcat() {
@@ -86,7 +86,7 @@ public class CommandHideShow extends SingleLineCommand2<ClassDiagram> {
 	}
 
 	@Override
-	protected CommandExecutionResult executeArg(RegexResult arg) {
+	protected CommandExecutionResult executeArg(ClassDiagram classDiagram, RegexResult arg) {
 
 		final Set<EntityPortion> portion = getEntityPortion(arg.get("PORTION", 0));
 		EntityGender gender = null;
@@ -106,7 +106,7 @@ public class CommandHideShow extends SingleLineCommand2<ClassDiagram> {
 		} else if (arg1.startsWith("<<")) {
 			gender = EntityGenderUtils.byStereotype(arg1);
 		} else {
-			final IEntity entity = getSystem().getOrCreateLeaf1(Code.of(arg1), null);
+			final IEntity entity = classDiagram.getOrCreateLeaf1(Code.of(arg1), null);
 			gender = EntityGenderUtils.byEntityAlone(entity);
 		}
 		if (gender != null) {
@@ -114,10 +114,10 @@ public class CommandHideShow extends SingleLineCommand2<ClassDiagram> {
 			if (empty == true) {
 				gender = EntityGenderUtils.and(gender, emptyByGender(portion));
 			}
-			if (EntityUtils.groupRoot(getSystem().getCurrentGroup())==false) {
-				gender = EntityGenderUtils.and(gender, EntityGenderUtils.byPackage(getSystem().getCurrentGroup()));
+			if (EntityUtils.groupRoot(classDiagram.getCurrentGroup())==false) {
+				gender = EntityGenderUtils.and(gender, EntityGenderUtils.byPackage(classDiagram.getCurrentGroup()));
 			}
-			getSystem().hideOrShow(gender, portion, arg.get("COMMAND", 0).equalsIgnoreCase("show"));
+			classDiagram.hideOrShow(gender, portion, arg.get("COMMAND", 0).equalsIgnoreCase("show"));
 		}
 		return CommandExecutionResult.ok();
 	}

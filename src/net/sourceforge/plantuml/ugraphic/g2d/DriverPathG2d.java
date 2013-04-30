@@ -33,11 +33,13 @@
  */
 package net.sourceforge.plantuml.ugraphic.g2d;
 
+import java.awt.GradientPaint;
 import java.awt.Graphics2D;
 import java.awt.Shape;
 import java.awt.geom.GeneralPath;
 import java.awt.geom.Line2D;
 
+import net.sourceforge.plantuml.golem.MinMaxDouble;
 import net.sourceforge.plantuml.graphic.HtmlColor;
 import net.sourceforge.plantuml.graphic.HtmlColorGradient;
 import net.sourceforge.plantuml.ugraphic.ColorMapper;
@@ -62,17 +64,22 @@ public class DriverPathG2d extends DriverShadowedG2d implements UDriver<Graphics
 
 		final GeneralPath p = new GeneralPath();
 		boolean hasBezier = false;
+		final MinMaxDouble minMax = new MinMaxDouble();
+		minMax.manage(x, y);
 		for (USegment seg : shape) {
 			final USegmentType type = seg.getSegmentType();
 			final double coord[] = seg.getCoord();
 			// Cast float for Java 1.5
 			if (type == USegmentType.SEG_MOVETO) {
 				p.moveTo((float) (x + coord[0]), (float) (y + coord[1]));
+				minMax.manage(x + coord[0], y + coord[1]);
 			} else if (type == USegmentType.SEG_LINETO) {
 				p.lineTo((float) (x + coord[0]), (float) (y + coord[1]));
+				minMax.manage(x + coord[0], y + coord[1]);
 			} else if (type == USegmentType.SEG_CUBICTO) {
 				p.curveTo((float) (x + coord[0]), (float) (y + coord[1]), (float) (x + coord[2]),
 						(float) (y + coord[3]), (float) (x + coord[4]), (float) (y + coord[5]));
+				minMax.manage(x + coord[4], y + coord[5]);
 				hasBezier = true;
 			} else {
 				throw new UnsupportedOperationException();
@@ -112,27 +119,29 @@ public class DriverPathG2d extends DriverShadowedG2d implements UDriver<Graphics
 
 		final HtmlColor back = param.getBackcolor();
 		if (back instanceof HtmlColorGradient) {
-//			final HtmlColorGradient gr = (HtmlColorGradient) back;
-//			final char policy = gr.getPolicy();
-//			final GradientPaint paint;
-//			if (policy == '|') {
-//				paint = new GradientPaint((float) x, (float) (y + shape.getHeight()) / 2, mapper.getMappedColor(gr
-//						.getColor1()), (float) (x + shape.getWidth()), (float) (y + shape.getHeight()) / 2,
-//						mapper.getMappedColor(gr.getColor2()));
-//			} else if (policy == '\\') {
-//				paint = new GradientPaint((float) x, (float) (y + shape.getHeight()), mapper.getMappedColor(gr
-//						.getColor1()), (float) (x + shape.getWidth()), (float) y, mapper.getMappedColor(gr.getColor2()));
-//			} else if (policy == '-') {
-//				paint = new GradientPaint((float) (x + shape.getWidth()) / 2, (float) y, mapper.getMappedColor(gr
-//						.getColor1()), (float) (x + shape.getWidth()) / 2, (float) (y + shape.getHeight()),
-//						mapper.getMappedColor(gr.getColor2()));
-//			} else {
-//				// for /
-//				paint = new GradientPaint((float) x, (float) y, mapper.getMappedColor(gr.getColor1()),
-//						(float) (x + shape.getWidth()), (float) (y + shape.getHeight()), mapper.getMappedColor(gr
-//								.getColor2()));
-//			}
-		} else if (back!=null) {
+			final HtmlColorGradient gr = (HtmlColorGradient) back;
+			final char policy = gr.getPolicy();
+			final GradientPaint paint;
+			if (policy == '|') {
+				paint = new GradientPaint((float) minMax.getMinX(), (float) minMax.getMaxY() / 2,
+						mapper.getMappedColor(gr.getColor1()), (float) minMax.getMaxX(), (float) minMax.getMaxY() / 2,
+						mapper.getMappedColor(gr.getColor2()));
+			} else if (policy == '\\') {
+				paint = new GradientPaint((float) minMax.getMinX(), (float) minMax.getMaxY(), mapper.getMappedColor(gr
+						.getColor1()), (float) minMax.getMaxX(), (float) minMax.getMinY(), mapper.getMappedColor(gr
+						.getColor2()));
+			} else if (policy == '-') {
+				paint = new GradientPaint((float) minMax.getMaxX() / 2, (float) minMax.getMinY(),
+						mapper.getMappedColor(gr.getColor1()), (float) minMax.getMaxX() / 2, (float) minMax.getMaxY(),
+						mapper.getMappedColor(gr.getColor2()));
+			} else {
+				// for /
+				paint = new GradientPaint((float) x, (float) y, mapper.getMappedColor(gr.getColor1()),
+						(float) minMax.getMaxX(), (float) minMax.getMaxY(), mapper.getMappedColor(gr.getColor2()));
+			}
+			g2d.setPaint(paint);
+			g2d.fill(p);
+		} else if (back != null) {
 			g2d.setColor(mapper.getMappedColor(back));
 			g2d.fill(p);
 		}

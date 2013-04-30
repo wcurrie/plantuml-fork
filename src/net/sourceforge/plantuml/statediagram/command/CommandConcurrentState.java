@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 9786 $
+ * Revision $Revision: 10778 $
  *
  */
 package net.sourceforge.plantuml.statediagram.command;
@@ -41,13 +41,13 @@ import net.sourceforge.plantuml.statediagram.StateDiagram;
 
 public class CommandConcurrentState extends SingleLineCommand<StateDiagram> {
 
-	public CommandConcurrentState(StateDiagram classDiagram) {
-		super(classDiagram, "(?i)^--+$");
+	public CommandConcurrentState() {
+		super("(?i)^--+$");
 	}
 
 	@Override
-	protected CommandExecutionResult executeArg(List<String> arg) {
-		if (getSystem().concurrentState()) {
+	protected CommandExecutionResult executeArg(StateDiagram diagram, List<String> arg) {
+		if (diagram.concurrentState()) {
 			return CommandExecutionResult.ok();
 		}
 		return CommandExecutionResult.error("Error 42");

@@ -45,19 +45,19 @@ import net.sourceforge.plantuml.cucadiagram.IGroup;
 
 public class CommandCreatePackageBlock extends SingleLineCommand<CompositeDiagram> {
 
-	public CommandCreatePackageBlock(CompositeDiagram diagram) {
-		super(diagram, "(?i)^block\\s+(?:\"([^\"]+)\"\\s+as\\s+)?([\\p{L}0-9_.]+)(?:\\s*\\{|\\s+begin)$");
+	public CommandCreatePackageBlock() {
+		super("(?i)^block\\s+(?:\"([^\"]+)\"\\s+as\\s+)?([\\p{L}0-9_.]+)(?:\\s*\\{|\\s+begin)$");
 	}
 
 	@Override
-	protected CommandExecutionResult executeArg(List<String> arg) {
-		final IGroup currentPackage = getSystem().getCurrentGroup();
+	protected CommandExecutionResult executeArg(CompositeDiagram diagram, List<String> arg) {
+		final IGroup currentPackage = diagram.getCurrentGroup();
 		String display = arg.get(0);
 		final Code code = Code.of(arg.get(1));
 		if (display == null) {
 			display = code.getCode();
 		}
-		getSystem().getOrCreateGroup(code, Display.getWithNewlines(display), null, GroupType.PACKAGE, currentPackage);
+		diagram.getOrCreateGroup(code, Display.getWithNewlines(display), null, GroupType.PACKAGE, currentPackage);
 		return CommandExecutionResult.ok();
 	}
 

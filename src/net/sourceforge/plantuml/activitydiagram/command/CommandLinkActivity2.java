@@ -60,8 +60,8 @@ import net.sourceforge.plantuml.graphic.HtmlColorUtils;
 
 public class CommandLinkActivity2 extends SingleLineCommand2<ActivityDiagram> {
 
-	public CommandLinkActivity2(ActivityDiagram diagram) {
-		super(diagram, getRegexConcat());
+	public CommandLinkActivity2() {
+		super(getRegexConcat());
 	}
 
 	static RegexConcat getRegexConcat() {
@@ -108,8 +108,8 @@ public class CommandLinkActivity2 extends SingleLineCommand2<ActivityDiagram> {
 	}
 
 	@Override
-	protected CommandExecutionResult executeArg(RegexResult arg2) {
-		final IEntity entity1 = getEntity(getSystem(), arg2, true);
+	protected CommandExecutionResult executeArg(ActivityDiagram diagram, RegexResult arg2) {
+		final IEntity entity1 = getEntity(diagram, arg2, true);
 		if (entity1 == null) {
 			return CommandExecutionResult.error("No such activity");
 		}
@@ -120,7 +120,7 @@ public class CommandLinkActivity2 extends SingleLineCommand2<ActivityDiagram> {
 			entity1.setSpecificBackcolor(HtmlColorUtils.getColorIfValid(arg2.get("BACKCOLOR", 0)));
 		}
 
-		final IEntity entity2 = getEntity(getSystem(), arg2, false);
+		final IEntity entity2 = getEntity(diagram, arg2, false);
 		if (entity2 == null) {
 			return CommandExecutionResult.error("No such activity");
 		}
@@ -157,13 +157,13 @@ public class CommandLinkActivity2 extends SingleLineCommand2<ActivityDiagram> {
 			link = link.getInv();
 		}
 		if (arg2.get("URL", 0) != null) {
-			final UrlBuilder urlBuilder = new UrlBuilder(getSystem().getSkinParam().getValue("topurl"), true);
+			final UrlBuilder urlBuilder = new UrlBuilder(diagram.getSkinParam().getValue("topurl"), true);
 			final Url urlLink = urlBuilder.getUrl(arg2.get("URL", 0));
 			link.setUrl(urlLink);
 		}
 
 		CommandLinkClass.applyStyle(arg2.getLazzy("ARROW_STYLE", 0), link);
-		getSystem().addLink(link);
+		diagram.addLink(link);
 
 		return CommandExecutionResult.ok();
 

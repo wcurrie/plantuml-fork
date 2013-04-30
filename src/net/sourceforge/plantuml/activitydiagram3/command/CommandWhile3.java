@@ -44,8 +44,8 @@ import net.sourceforge.plantuml.cucadiagram.Display;
 
 public class CommandWhile3 extends SingleLineCommand2<ActivityDiagram3> {
 
-	public CommandWhile3(ActivityDiagram3 diagram) {
-		super(diagram, getRegexConcat());
+	public CommandWhile3() {
+		super(getRegexConcat());
 	}
 
 	static RegexConcat getRegexConcat() {
@@ -60,8 +60,8 @@ public class CommandWhile3 extends SingleLineCommand2<ActivityDiagram3> {
 	}
 
 	@Override
-	protected CommandExecutionResult executeArg(RegexResult arg) {
-		getSystem().doWhile(Display.getWithNewlines(arg.get("TEST", 0)), Display.getWithNewlines(arg.get("YES", 0)));
+	protected CommandExecutionResult executeArg(ActivityDiagram3 diagram, RegexResult arg) {
+		diagram.doWhile(Display.getWithNewlines(arg.get("TEST", 0)), Display.getWithNewlines(arg.get("YES", 0)));
 
 		return CommandExecutionResult.ok();
 	}

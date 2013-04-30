@@ -34,19 +34,13 @@ package net.sourceforge.plantuml.version;
 import java.io.IOException;
 
 import net.sourceforge.plantuml.AbstractPSystem;
-import net.sourceforge.plantuml.ErrorUml;
-import net.sourceforge.plantuml.ErrorUmlType;
 import net.sourceforge.plantuml.Log;
-import net.sourceforge.plantuml.PSystemError;
-import net.sourceforge.plantuml.StartUtils;
-import net.sourceforge.plantuml.api.PSystemFactory1317;
-import net.sourceforge.plantuml.core.Diagram;
-import net.sourceforge.plantuml.core.DiagramType;
-import net.sourceforge.plantuml.core.UmlSource;
+import net.sourceforge.plantuml.command.PSystemSingleLineFactory1317;
 
-public class PSystemLicenseFactory1317 implements PSystemFactory1317 {
+public class PSystemLicenseFactory1317 extends PSystemSingleLineFactory1317 {
 
-	private AbstractPSystem executeLine(String line) {
+	@Override
+	protected AbstractPSystem executeLine(String line) {
 		try {
 			if (line.matches("(?i)^li[sc][ea]n[sc]e\\s*$")) {
 				return PSystemLicense.create();
@@ -55,46 +49,6 @@ public class PSystemLicenseFactory1317 implements PSystemFactory1317 {
 			Log.error("Error " + e);
 		}
 		return null;
-	}
-
-	public DiagramType getDiagramType() {
-		return DiagramType.UML;
-	}
-
-	public Diagram createSystem(UmlSource source) {
-
-		if (source.isEmpty()) {
-			return buildEmptyError(source);
-		}
-
-		final IteratorCounter it = source.iterator();
-		final String startLine = it.next();
-		if (StartUtils.isArobaseStartDiagram(startLine) == false) {
-			throw new UnsupportedOperationException();
-		}
-
-		if (it.hasNext() == false) {
-			return buildEmptyError(source);
-		}
-		final String s = it.next();
-		if (StartUtils.isArobaseEndDiagram(s)) {
-			return buildEmptyError(source);
-		}
-		final AbstractPSystem sys = executeLine(s);
-		if (sys == null) {
-			return new PSystemError(source, new ErrorUml(ErrorUmlType.SYNTAX_ERROR, "Syntax Error?",
-					it.currentNum() - 1));
-		}
-		sys.setSource(source);
-		return sys;
-
-	}
-
-	private AbstractPSystem buildEmptyError(UmlSource source) {
-		final PSystemError result = new PSystemError(source, new ErrorUml(ErrorUmlType.SYNTAX_ERROR,
-				"Empty description", 1));
-		result.setSource(source);
-		return result;
 	}
 
 }

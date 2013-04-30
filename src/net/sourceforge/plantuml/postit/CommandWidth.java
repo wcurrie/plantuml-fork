@@ -40,15 +40,15 @@ import net.sourceforge.plantuml.command.SingleLineCommand;
 
 public class CommandWidth extends SingleLineCommand<PostItDiagram> {
 
-	public CommandWidth(PostItDiagram system) {
-		super(system, "(?i)^width\\s+(\\d+)$");
+	public CommandWidth() {
+		super("(?i)^width\\s+(\\d+)$");
 	}
 
 	@Override
-	protected CommandExecutionResult executeArg(List<String> arg) {
+	protected CommandExecutionResult executeArg(PostItDiagram system, List<String> arg) {
 
 		final int width = Integer.parseInt(arg.get(0));
-		getSystem().setWidth(width);
+		system.setWidth(width);
 		return CommandExecutionResult.ok();
 	}
 

@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  *
- * Revision $Revision: 9786 $
+ * Revision $Revision: 10778 $
  *
  */
 package net.sourceforge.plantuml.activitydiagram.command;
@@ -48,15 +48,16 @@ import net.sourceforge.plantuml.graphic.HtmlColorUtils;
 
 public class CommandPartition extends SingleLineCommand<ActivityDiagram> {
 
-	public CommandPartition(ActivityDiagram diagram) {
-		super(diagram, "(?i)^partition\\s+(\"[^\"]+\"|\\S+)\\s*(#[0-9a-fA-F]{6}|#?\\w+)?\\s*\\{?$");
+	public CommandPartition() {
+		super("(?i)^partition\\s+(\"[^\"]+\"|\\S+)\\s*(#[0-9a-fA-F]{6}|#?\\w+)?\\s*\\{?$");
 	}
 
 	@Override
-	protected CommandExecutionResult executeArg(List<String> arg) {
+	protected CommandExecutionResult executeArg(ActivityDiagram diagram, List<String> arg) {
 		final Code code = Code.of(StringUtils.eventuallyRemoveStartingAndEndingDoubleQuote(arg.get(0)));
-		final IGroup currentPackage = getSystem().getCurrentGroup();
-		final IEntity p = getSystem().getOrCreateGroup(code, Display.getWithNewlines(code), null, GroupType.PACKAGE, currentPackage);
+		final IGroup currentPackage = diagram.getCurrentGroup();
+		final IEntity p = diagram.getOrCreateGroup(code, Display.getWithNewlines(code), null, GroupType.PACKAGE,
+				currentPackage);
 		final String color = arg.get(1);
 		if (color != null) {
 			p.setSpecificBackcolor(HtmlColorUtils.getColorIfValid(color));

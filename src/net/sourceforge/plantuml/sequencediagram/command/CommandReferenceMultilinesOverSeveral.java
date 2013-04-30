@@ -50,19 +50,17 @@ import net.sourceforge.plantuml.sequencediagram.SequenceDiagram;
 
 public class CommandReferenceMultilinesOverSeveral extends CommandMultilines<SequenceDiagram> {
 
-	public CommandReferenceMultilinesOverSeveral(final SequenceDiagram sequenceDiagram) {
+	public CommandReferenceMultilinesOverSeveral() {
 		super(
-				sequenceDiagram,
 				"(?i)^ref(#\\w+)?\\s+over\\s+((?:[\\p{L}0-9_.@]+|\"[^\"]+\")(?:\\s*,\\s*(?:[\\p{L}0-9_.@]+|\"[^\"]+\"))*)\\s*(#\\w+)?$");
 	}
-	
+
 	@Override
 	public String getPatternEnd() {
 		return "(?i)^end ?(ref)?$";
 	}
 
-
-	public CommandExecutionResult execute(List<String> lines) {
+	public CommandExecutionResult execute(final SequenceDiagram system, List<String> lines) {
 		final List<String> line0 = StringUtils.getSplit(getStartingPattern(), lines.get(0).trim());
 		final HtmlColor backColorElement = HtmlColorUtils.getColorIfValid(line0.get(0));
 		// final HtmlColor backColorGeneral = HtmlColorUtils.getColorIfValid(line0.get(1));
@@ -70,14 +68,14 @@ public class CommandReferenceMultilinesOverSeveral extends CommandMultilines<Seq
 		final List<String> participants = StringUtils.splitComma(line0.get(1));
 		final List<Participant> p = new ArrayList<Participant>();
 		for (String s : participants) {
-			p.add(getSystem().getOrCreateParticipant(StringUtils.eventuallyRemoveStartingAndEndingDoubleQuote(s)));
+			p.add(system.getOrCreateParticipant(StringUtils.eventuallyRemoveStartingAndEndingDoubleQuote(s)));
 		}
 
 		Display strings = new Display(lines.subList(1, lines.size() - 1)).removeEmptyColumns();
 
 		Url u = null;
 		if (strings.size() > 0) {
-			final UrlBuilder urlBuilder = new UrlBuilder(getSystem().getSkinParam().getValue("topurl"), true);
+			final UrlBuilder urlBuilder = new UrlBuilder(system.getSkinParam().getValue("topurl"), true);
 			u = urlBuilder.getUrl(strings.get(0).toString());
 		}
 		if (u != null) {
@@ -86,7 +84,7 @@ public class CommandReferenceMultilinesOverSeveral extends CommandMultilines<Seq
 
 		final HtmlColor backColorGeneral = null;
 		final Reference ref = new Reference(p, u, strings, backColorGeneral, backColorElement);
-		getSystem().addReference(ref);
+		system.addReference(ref);
 		return CommandExecutionResult.ok();
 	}
 

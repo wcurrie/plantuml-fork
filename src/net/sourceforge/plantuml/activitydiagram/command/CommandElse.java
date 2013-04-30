@@ -42,21 +42,21 @@ import net.sourceforge.plantuml.cucadiagram.IEntity;
 
 public class CommandElse extends SingleLineCommand<ActivityDiagram> {
 
-	public CommandElse(ActivityDiagram diagram) {
-		super(diagram, "(?i)^else$");
+	public CommandElse() {
+		super("(?i)^else$");
 	}
 
 	@Override
-	protected CommandExecutionResult executeArg(List<String> arg) {
-		if (getSystem().getLastEntityConsulted() == null) {
+	protected CommandExecutionResult executeArg(ActivityDiagram system, List<String> arg) {
+		if (system.getLastEntityConsulted() == null) {
 			return CommandExecutionResult.error("No if for this else");
 		}
-		if (getSystem().getCurrentContext() == null) {
+		if (system.getCurrentContext() == null) {
 			return CommandExecutionResult.error("No if for this else");
 		}
-		final IEntity branch = getSystem().getCurrentContext().getBranch();
+		final IEntity branch = system.getCurrentContext().getBranch();
 
-		getSystem().setLastEntityConsulted(branch);
+		system.setLastEntityConsulted(branch);
 
 		return CommandExecutionResult.ok();
 	}

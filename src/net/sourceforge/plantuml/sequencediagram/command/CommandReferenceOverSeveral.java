@@ -52,8 +52,8 @@ import net.sourceforge.plantuml.sequencediagram.SequenceDiagram;
 
 public class CommandReferenceOverSeveral extends SingleLineCommand2<SequenceDiagram> {
 
-	public CommandReferenceOverSeveral(SequenceDiagram sequenceDiagram) {
-		super(sequenceDiagram, getConcat());
+	public CommandReferenceOverSeveral() {
+		super(getConcat());
 	}
 
 	private static RegexConcat getConcat() {
@@ -67,7 +67,7 @@ public class CommandReferenceOverSeveral extends SingleLineCommand2<SequenceDiag
 	}
 
 	@Override
-	protected CommandExecutionResult executeArg(RegexResult arg) {
+	protected CommandExecutionResult executeArg(SequenceDiagram system, RegexResult arg) {
 		final HtmlColor backColorElement = HtmlColorUtils.getColorIfValid(arg.get("REF", 0));
 		// final HtmlColor backColorGeneral = HtmlColorUtils.getColorIfValid(arg.get("REF").get(1));
 		
@@ -78,7 +78,7 @@ public class CommandReferenceOverSeveral extends SingleLineCommand2<SequenceDiag
 
 		final List<Participant> p = new ArrayList<Participant>();
 		for (String s : participants) {
-			p.add(getSystem().getOrCreateParticipant(StringUtils.eventuallyRemoveStartingAndEndingDoubleQuote(s)));
+			p.add(system.getOrCreateParticipant(StringUtils.eventuallyRemoveStartingAndEndingDoubleQuote(s)));
 		}
 
 		final Display strings = Display.getWithNewlines(text);
@@ -90,7 +90,7 @@ public class CommandReferenceOverSeveral extends SingleLineCommand2<SequenceDiag
 
 		final HtmlColor backColorGeneral = null;
 		final Reference ref = new Reference(p, u, strings, backColorGeneral, backColorElement);
-		getSystem().addReference(ref);
+		system.addReference(ref);
 		return CommandExecutionResult.ok();
 	}
 

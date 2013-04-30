@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  *
- * Revision $Revision: 10531 $
+ * Revision $Revision: 10766 $
  *
  */
 package net.sourceforge.plantuml;
@@ -53,7 +53,7 @@ public class OptionFlags {
 	static public boolean ALLOW_INCLUDE = true;
 	static public final boolean NEW_ARROW = true;
 	static public final boolean USE_PUMA = true;
-	static public final boolean USE_1317 = false;
+	static public final boolean USE_1317 = true;
 	
 
 	void reset() {

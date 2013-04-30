@@ -46,10 +46,8 @@ public class DriverEllipseSvg implements UDriver<SvgGraphics> {
 		final double width = shape.getWidth();
 		final double height = shape.getHeight();
 
-		final String color = param.getColor() == null ? "none" : StringUtils.getAsHtml(mapper.getMappedColor(param
-				.getColor()));
-		final String backcolor = param.getBackcolor() == null ? "none" : StringUtils.getAsHtml(mapper
-				.getMappedColor(param.getBackcolor()));
+		final String color = StringUtils.getAsSvg(mapper, param.getColor()); 
+		final String backcolor = StringUtils.getAsSvg(mapper, param.getBackcolor()); 
 
 		svg.setFillColor(backcolor);
 		svg.setStrokeColor(color);

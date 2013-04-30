@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  *
- * Revision $Revision: 9786 $
+ * Revision $Revision: 10778 $
  *
  */
 package net.sourceforge.plantuml.classdiagram.command;
@@ -45,17 +45,17 @@ import net.sourceforge.plantuml.cucadiagram.Stereotype;
 
 public class CommandStereotype extends SingleLineCommand<ClassDiagram> {
 
-	public CommandStereotype(ClassDiagram classDiagram) {
-		super(classDiagram, "(?i)^([\\p{L}0-9_.]+|\"[^\"]+\")\\s*(\\<\\<.*\\>\\>)$");
+	public CommandStereotype() {
+		super("(?i)^([\\p{L}0-9_.]+|\"[^\"]+\")\\s*(\\<\\<.*\\>\\>)$");
 	}
 
 	@Override
-	protected CommandExecutionResult executeArg(List<String> arg) {
+	protected CommandExecutionResult executeArg(ClassDiagram classDiagram, List<String> arg) {
 		final Code code = Code.of(arg.get(0));
 		final String stereotype = arg.get(1);
-		final IEntity entity = getSystem().getOrCreateLeaf1(code, null);
-		entity.setStereotype(new Stereotype(stereotype, getSystem().getSkinParam().getCircledCharacterRadius(),
-				getSystem().getSkinParam().getFont(FontParam.CIRCLED_CHARACTER, null)));
+		final IEntity entity = classDiagram.getOrCreateLeaf1(code, null);
+		entity.setStereotype(new Stereotype(stereotype, classDiagram.getSkinParam().getCircledCharacterRadius(),
+				classDiagram.getSkinParam().getFont(FontParam.CIRCLED_CHARACTER, null)));
 		return CommandExecutionResult.ok();
 	}
 

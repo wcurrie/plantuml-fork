@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 9786 $
+ * Revision $Revision: 10778 $
  *
  */
 package net.sourceforge.plantuml.command;
@@ -39,14 +39,14 @@ import net.sourceforge.plantuml.UmlDiagram;
 
 public class CommandRotate extends SingleLineCommand<UmlDiagram> {
 
-	public CommandRotate(UmlDiagram diagram) {
-		super(diagram, "(?i)^rotate$");
+	public CommandRotate() {
+		super("(?i)^rotate$");
 	}
 
 	@Override
-	protected CommandExecutionResult executeArg(List<String> arg) {
+	protected CommandExecutionResult executeArg(UmlDiagram diagram, List<String> arg) {
 
-		getSystem().setRotation(true);
+		diagram.setRotation(true);
 		return CommandExecutionResult.ok();
 	}
 

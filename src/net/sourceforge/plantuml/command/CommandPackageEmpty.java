@@ -47,13 +47,13 @@ import net.sourceforge.plantuml.graphic.HtmlColorUtils;
 
 public class CommandPackageEmpty extends SingleLineCommand<AbstractEntityDiagram> {
 
-	public CommandPackageEmpty(AbstractEntityDiagram diagram) {
-		super(diagram,
+	public CommandPackageEmpty() {
+		super(
 				"(?i)^package\\s+(\"[^\"]+\"|[^#\\s{}]*)(?:\\s+as\\s+([\\p{L}0-9_.]+))?\\s*(#[0-9a-fA-F]{6}|#?\\w+)?\\s*\\{\\s*\\}$");
 	}
 
 	@Override
-	protected CommandExecutionResult executeArg(List<String> arg) {
+	protected CommandExecutionResult executeArg(AbstractEntityDiagram diagram, List<String> arg) {
 		final Code code;
 		final String display;
 		if (arg.get(1) == null) {
@@ -68,13 +68,14 @@ public class CommandPackageEmpty extends SingleLineCommand<AbstractEntityDiagram
 			display = StringUtils.eventuallyRemoveStartingAndEndingDoubleQuote(arg.get(0));
 			code = Code.of(arg.get(1));
 		}
-		final IGroup currentPackage = getSystem().getCurrentGroup();
-		final IEntity p = getSystem().getOrCreateGroup(code, Display.getWithNewlines(display), null, GroupType.PACKAGE, currentPackage);
+		final IGroup currentPackage = diagram.getCurrentGroup();
+		final IEntity p = diagram.getOrCreateGroup(code, Display.getWithNewlines(display), null, GroupType.PACKAGE,
+				currentPackage);
 		final String color = arg.get(2);
 		if (color != null) {
 			p.setSpecificBackcolor(HtmlColorUtils.getColorIfValid(color));
 		}
-		getSystem().endGroup();
+		diagram.endGroup();
 		return CommandExecutionResult.ok();
 	}
 

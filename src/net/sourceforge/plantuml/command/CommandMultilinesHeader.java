@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 9786 $
+ * Revision $Revision: 10779 $
  *
  */
 package net.sourceforge.plantuml.command;
@@ -43,8 +43,8 @@ import net.sourceforge.plantuml.graphic.HorizontalAlignement;
 
 public class CommandMultilinesHeader extends CommandMultilines<UmlDiagram> {
 
-	public CommandMultilinesHeader(final UmlDiagram diagram) {
-		super(diagram, "(?i)^(?:(left|right|center)?\\s*)header$");
+	public CommandMultilinesHeader() {
+		super("(?i)^(?:(left|right|center)?\\s*)header$");
 	}
 	
 	@Override
@@ -53,7 +53,7 @@ public class CommandMultilinesHeader extends CommandMultilines<UmlDiagram> {
 	}
 
 
-	public CommandExecutionResult execute(List<String> lines) {
+	public CommandExecutionResult execute(final UmlDiagram diagram, List<String> lines) {
 		StringUtils.trim(lines, false);
 		final Matcher m = getStartingPattern().matcher(lines.get(0).trim());
 		if (m.find() == false) {
@@ -61,11 +61,11 @@ public class CommandMultilinesHeader extends CommandMultilines<UmlDiagram> {
 		}
 		final String align = m.group(1);
 		if (align != null) {
-			getSystem().setHeaderAlignement(HorizontalAlignement.valueOf(align.toUpperCase()));
+			diagram.setHeaderAlignement(HorizontalAlignement.valueOf(align.toUpperCase()));
 		}
 		final Display strings = new Display(lines.subList(1, lines.size() - 1));
 		if (strings.size() > 0) {
-			getSystem().setHeader(strings);
+			diagram.setHeader(strings);
 			return CommandExecutionResult.ok();
 		}
 		return CommandExecutionResult.error("Empty header");

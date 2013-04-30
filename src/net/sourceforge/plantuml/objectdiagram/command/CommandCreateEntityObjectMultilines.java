@@ -55,8 +55,8 @@ import net.sourceforge.plantuml.skin.VisibilityModifier;
 
 public class CommandCreateEntityObjectMultilines extends CommandMultilines2<ObjectDiagram> {
 
-	public CommandCreateEntityObjectMultilines(ObjectDiagram diagram) {
-		super(diagram, getRegexConcat(), MultilinesStrategy.REMOVE_STARTING_QUOTE);
+	public CommandCreateEntityObjectMultilines() {
+		super(getRegexConcat(), MultilinesStrategy.REMOVE_STARTING_QUOTE);
 	}
 
 	private static RegexConcat getRegexConcat() {
@@ -76,34 +76,34 @@ public class CommandCreateEntityObjectMultilines extends CommandMultilines2<Obje
 		return "(?i)^\\s*\\}\\s*$";
 	}
 
-	public CommandExecutionResult executeNow(List<String> lines) {
+	public CommandExecutionResult executeNow(ObjectDiagram diagram, List<String> lines) {
 		StringUtils.trim(lines, true);
 		final RegexResult line0 = getStartingPattern().matcher(lines.get(0).trim());
-		final IEntity entity = executeArg0(line0);
+		final IEntity entity = executeArg0(diagram, line0);
 		if (entity == null) {
 			return CommandExecutionResult.error("No such entity");
 		}
 		for (String s : lines.subList(1, lines.size() - 1)) {
 			assert s.length() > 0;
 			if (VisibilityModifier.isVisibilityCharacter(s.charAt(0))) {
-				getSystem().setVisibilityModifierPresent(true);
+				diagram.setVisibilityModifierPresent(true);
 			}
 			entity.addFieldOrMethod(s);
 		}
 		return CommandExecutionResult.ok();
 	}
 
-	private IEntity executeArg0(RegexResult line0) {
+	private IEntity executeArg0(ObjectDiagram diagram, RegexResult line0) {
 		final Code code = Code.of(line0.get("NAME", 1));
 		final String display = line0.get("NAME", 0);
 		final String stereotype = line0.get("STEREO", 0);
-		if (getSystem().leafExist(code)) {
-			return getSystem().getOrCreateLeaf1(code, null);
+		if (diagram.leafExist(code)) {
+			return diagram.getOrCreateLeaf1(code, null);
 		}
-		final IEntity entity = getSystem().createLeaf(code, Display.getWithNewlines(display), LeafType.OBJECT);
+		final IEntity entity = diagram.createLeaf(code, Display.getWithNewlines(display), LeafType.OBJECT);
 		if (stereotype != null) {
-			entity.setStereotype(new Stereotype(stereotype, getSystem().getSkinParam().getCircledCharacterRadius(),
-					getSystem().getSkinParam().getFont(FontParam.CIRCLED_CHARACTER, null)));
+			entity.setStereotype(new Stereotype(stereotype, diagram.getSkinParam().getCircledCharacterRadius(),
+					diagram.getSkinParam().getFont(FontParam.CIRCLED_CHARACTER, null)));
 		}
 		entity.setSpecificBackcolor(HtmlColorUtils.getColorIfValid(line0.get("COLOR", 0)));
 		return entity;

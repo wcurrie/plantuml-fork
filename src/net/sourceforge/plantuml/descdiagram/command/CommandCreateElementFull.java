@@ -54,8 +54,8 @@ import net.sourceforge.plantuml.graphic.USymbol;
 
 public class CommandCreateElementFull extends SingleLineCommand2<DescriptionDiagram> {
 
-	public CommandCreateElementFull(DescriptionDiagram system) {
-		super(system, getRegexConcat());
+	public CommandCreateElementFull() {
+		super(getRegexConcat());
 	}
 
 	private static RegexConcat getRegexConcat() {
@@ -106,7 +106,7 @@ public class CommandCreateElementFull extends SingleLineCommand2<DescriptionDiag
 	}
 
 	@Override
-	protected CommandExecutionResult executeArg(RegexResult arg) {
+	protected CommandExecutionResult executeArg(DescriptionDiagram system, RegexResult arg) {
 		String codeRaw = arg.getLazzy("CODE", 0);
 		final String displayRaw = arg.getLazzy("DISPLAY", 0);
 		final char codeChar = getCharEncoding(codeRaw);
@@ -163,7 +163,7 @@ public class CommandCreateElementFull extends SingleLineCommand2<DescriptionDiag
 			usymbol = USymbol.ACTOR;
 		} else if (symbol.equalsIgnoreCase("component")) {
 			type = LeafType.COMPONENT2;
-			usymbol = getSystem().getSkinParam().useUml2ForComponent() ? USymbol.COMPONENT2 : USymbol.COMPONENT1;
+			usymbol = system.getSkinParam().useUml2ForComponent() ? USymbol.COMPONENT2 : USymbol.COMPONENT1;
 		} else if (symbol.equalsIgnoreCase("boundary")) {
 			type = LeafType.COMPONENT2;
 			usymbol = USymbol.BOUNDARY;
@@ -193,17 +193,17 @@ public class CommandCreateElementFull extends SingleLineCommand2<DescriptionDiag
 		}
 		display = StringUtils.eventuallyRemoveStartingAndEndingDoubleQuote(display);
 		final String stereotype = arg.getLazzy("STEREOTYPE", 0);
-		final IEntity entity = getSystem().getOrCreateLeaf1(code, type);
+		final IEntity entity = system.getOrCreateLeaf1(code, type);
 		entity.setDisplay(Display.getWithNewlines(display));
 		entity.setUSymbol(usymbol);
 		if (stereotype != null) {
-			entity.setStereotype(new Stereotype(stereotype, getSystem().getSkinParam().getCircledCharacterRadius(),
-					getSystem().getSkinParam().getFont(FontParam.CIRCLED_CHARACTER, null)));
+			entity.setStereotype(new Stereotype(stereotype, system.getSkinParam().getCircledCharacterRadius(),
+					system.getSkinParam().getFont(FontParam.CIRCLED_CHARACTER, null)));
 		}
 
 		final String urlString = arg.get("URL", 0);
 		if (urlString != null) {
-			final UrlBuilder urlBuilder = new UrlBuilder(getSystem().getSkinParam().getValue("topurl"), true);
+			final UrlBuilder urlBuilder = new UrlBuilder(system.getSkinParam().getValue("topurl"), true);
 			final Url url = urlBuilder.getUrl(urlString);
 			entity.addUrl(url);
 		}

@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 9786 $
+ * Revision $Revision: 10778 $
  *
  */
 package net.sourceforge.plantuml.sequencediagram.command;
@@ -41,14 +41,14 @@ import net.sourceforge.plantuml.sequencediagram.SequenceDiagram;
 
 public class CommandFootbox extends SingleLineCommand<SequenceDiagram> {
 
-	public CommandFootbox(SequenceDiagram sequenceDiagram) {
-		super(sequenceDiagram, "(?i)^(hide|show)?\\s*footbox?$");
+	public CommandFootbox() {
+		super("(?i)^(hide|show)?\\s*footbox?$");
 	}
 
 	@Override
-	protected CommandExecutionResult executeArg(List<String> arg) {
+	protected CommandExecutionResult executeArg(SequenceDiagram sequenceDiagram, List<String> arg) {
 		final boolean footbox = arg.get(0).equalsIgnoreCase("show");
-		getSystem().setShowFootbox(footbox);
+		sequenceDiagram.setShowFootbox(footbox);
 		return CommandExecutionResult.ok();
 	}
 }

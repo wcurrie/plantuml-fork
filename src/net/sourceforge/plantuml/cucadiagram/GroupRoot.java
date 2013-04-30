@@ -70,7 +70,6 @@ public class GroupRoot implements IGroup {
 		return true;
 	}
 
-
 	public Display getDisplay() {
 		throw new UnsupportedOperationException();
 
@@ -92,7 +91,7 @@ public class GroupRoot implements IGroup {
 	}
 
 	public List<Url> getUrls() {
-		throw new UnsupportedOperationException();
+		return Collections.emptyList();
 
 	}
 
@@ -124,7 +123,6 @@ public class GroupRoot implements IGroup {
 	public Code getCode() {
 		return Code.of("__ROOT__");
 	}
-
 
 	public BlockMember getMouseOver() {
 		throw new UnsupportedOperationException();

@@ -42,8 +42,8 @@ import net.sourceforge.plantuml.command.regex.RegexResult;
 
 public class CommandSplitEnd3 extends SingleLineCommand2<ActivityDiagram3> {
 
-	public CommandSplitEnd3(ActivityDiagram3 diagram) {
-		super(diagram, getRegexConcat());
+	public CommandSplitEnd3() {
+		super(getRegexConcat());
 	}
 
 	static RegexConcat getRegexConcat() {
@@ -54,8 +54,8 @@ public class CommandSplitEnd3 extends SingleLineCommand2<ActivityDiagram3> {
 	}
 
 	@Override
-	protected CommandExecutionResult executeArg(RegexResult arg) {
-		return getSystem().endSplit();
+	protected CommandExecutionResult executeArg(ActivityDiagram3 diagram, RegexResult arg) {
+		return diagram.endSplit();
 	}
 
 }

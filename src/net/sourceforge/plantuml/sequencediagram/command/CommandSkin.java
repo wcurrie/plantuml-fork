@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 9786 $
+ * Revision $Revision: 10778 $
  *
  */
 package net.sourceforge.plantuml.sequencediagram.command;
@@ -41,13 +41,13 @@ import net.sourceforge.plantuml.sequencediagram.SequenceDiagram;
 
 public class CommandSkin extends SingleLineCommand<SequenceDiagram> {
 
-	public CommandSkin(SequenceDiagram system) {
-		super(system, "(?i)^skin\\s+([\\w.]+)$");
+	public CommandSkin() {
+		super("(?i)^skin\\s+([\\w.]+)$");
 	}
 
 	@Override
-	protected CommandExecutionResult executeArg(List<String> arg) {
-		if (getSystem().changeSkin(arg.get(0))) {
+	protected CommandExecutionResult executeArg(SequenceDiagram system, List<String> arg) {
+		if (system.changeSkin(arg.get(0))) {
 			return CommandExecutionResult.ok();
 		}
 		return CommandExecutionResult.error("Cannot change skin");

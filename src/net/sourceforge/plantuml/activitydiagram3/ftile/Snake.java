@@ -48,6 +48,10 @@ public class Snake {
 		this.points.add(new Point2D.Double(x, y));
 	}
 
+	public void addPoint(Point2D p) {
+		addPoint(p.getX(), p.getY());
+	}
+
 	public void drawU(UGraphic ug) {
 		for (int i = 0; i < points.size() - 1; i++) {
 			drawLine(ug, points.get(i), points.get(i + 1));

@@ -40,11 +40,11 @@ import net.sourceforge.plantuml.graphic.StringBounder;
 public abstract class AbstractFtileOld extends AbstractFtile2 {
 
 	public Point2D getPointIn(StringBounder stringBounder) {
-		throw new UnsupportedOperationException();
+		throw new UnsupportedOperationException("" + getClass());
 	}
 
 	public Point2D getPointOut(StringBounder stringBounder) {
-		throw new UnsupportedOperationException();
+		throw new UnsupportedOperationException("" + getClass());
 	}
 
 }

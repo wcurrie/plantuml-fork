@@ -41,13 +41,13 @@ import net.sourceforge.plantuml.statediagram.StateDiagram;
 
 public class CommandHideEmptyDescription extends SingleLineCommand<StateDiagram> {
 
-	public CommandHideEmptyDescription(StateDiagram diagram) {
-		super(diagram, "(?i)^(hide|show)\\s+empty\\s+description$");
+	public CommandHideEmptyDescription() {
+		super("(?i)^(hide|show)\\s+empty\\s+description$");
 	}
 
 	@Override
-	protected CommandExecutionResult executeArg(List<String> arg) {
-		getSystem().setHideEmptyDescription(arg.get(0).equalsIgnoreCase("hide"));
+	protected CommandExecutionResult executeArg(StateDiagram diagram, List<String> arg) {
+		diagram.setHideEmptyDescription(arg.get(0).equalsIgnoreCase("hide"));
 		return CommandExecutionResult.ok();
 	}
 

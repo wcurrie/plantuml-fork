@@ -35,6 +35,7 @@ package net.sourceforge.plantuml.descdiagram.command;
 
 import net.sourceforge.plantuml.StringUtils;
 import net.sourceforge.plantuml.UniqueSequence;
+import net.sourceforge.plantuml.UrlBuilder;
 import net.sourceforge.plantuml.classdiagram.AbstractEntityDiagram;
 import net.sourceforge.plantuml.command.CommandExecutionResult;
 import net.sourceforge.plantuml.command.SingleLineCommand2;
@@ -52,25 +53,27 @@ import net.sourceforge.plantuml.graphic.USymbol;
 
 public class CommandPackageWithUSymbol extends SingleLineCommand2<AbstractEntityDiagram> {
 
-	public CommandPackageWithUSymbol(AbstractEntityDiagram diagram) {
-		super(diagram, getRegexConcat());
+	public CommandPackageWithUSymbol() {
+		super(getRegexConcat());
 	}
 
 	private static RegexConcat getRegexConcat() {
 		return new RegexConcat(new RegexLeaf("^"), //
-				new RegexLeaf("SYMBOL", "(package|rectangle|node|artifact|folder|frame|cloud|database|storage)"), //
+				new RegexLeaf("SYMBOL", "(package|rectangle|node|artifact|folder|frame|cloud|database|storage|component)"), //
 				new RegexLeaf("\\s+"), //
 				new RegexLeaf("NAME", "(\"[^\"]+\"|[^#\\s{}]*)"), //
 				new RegexLeaf("AS", "(?:\\s+as\\s+([\\p{L}0-9_.]+))?"), //
 				new RegexLeaf("\\s*"), //
 				new RegexLeaf("STEREOTYPE", "(\\<\\<.*\\>\\>)?"), //
 				new RegexLeaf("\\s*"), //
-				new RegexLeaf("COLOR", "(#[0-9a-fA-F]{6}|#?\\w+)?"), //
+				new RegexLeaf("URL", "(" + UrlBuilder.getRegexp() + ")?"), //
+				new RegexLeaf("\\s*"), //
+				new RegexLeaf("COLOR", "(#\\w+[-\\\\|/]?\\w+)?"), //
 				new RegexLeaf("\\s*\\{$"));
 	}
 
 	@Override
-	protected CommandExecutionResult executeArg(RegexResult arg) {
+	protected CommandExecutionResult executeArg(AbstractEntityDiagram diagram, RegexResult arg) {
 		final Code code;
 		final String display;
 		final String name = StringUtils.eventuallyRemoveStartingAndEndingDoubleQuote(arg.get("NAME", 0));
@@ -86,8 +89,8 @@ public class CommandPackageWithUSymbol extends SingleLineCommand2<AbstractEntity
 			display = name;
 			code = Code.of(arg.get("AS", 0));
 		}
-		final IGroup currentPackage = getSystem().getCurrentGroup();
-		final IEntity p = getSystem().getOrCreateGroup(code, Display.getWithNewlines(display), null,
+		final IGroup currentPackage = diagram.getCurrentGroup();
+		final IEntity p = diagram.getOrCreateGroup(code, Display.getWithNewlines(display), null,
 				GroupType.PACKAGE, currentPackage);
 		p.setUSymbol(USymbol.getFromString(arg.get("SYMBOL", 0)));
 		final String stereotype = arg.get("STEREOTYPE", 0);

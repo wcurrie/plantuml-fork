@@ -42,14 +42,14 @@ import net.sourceforge.plantuml.sequencediagram.SequenceDiagram;
 
 public class CommandDivider extends SingleLineCommand<SequenceDiagram> {
 
-	public CommandDivider(SequenceDiagram sequenceDiagram) {
-		super(sequenceDiagram, "(?i)^==\\s*(.*)\\s*==$");
+	public CommandDivider() {
+		super("(?i)^==\\s*(.*)\\s*==$");
 	}
 
 	@Override
-	protected CommandExecutionResult executeArg(List<String> arg) {
+	protected CommandExecutionResult executeArg(SequenceDiagram sequenceDiagram, List<String> arg) {
 		final Display strings = Display.getWithNewlines(arg.get(0));
-		getSystem().divider(strings);
+		sequenceDiagram.divider(strings);
 		return CommandExecutionResult.ok();
 	}
 }

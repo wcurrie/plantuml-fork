@@ -64,6 +64,9 @@ public abstract class USymbol {
 	public static USymbol getFromString(String s) {
 		final USymbol result = all.get(s.toUpperCase());
 		if (result == null) {
+			if (s.equalsIgnoreCase("component")) {
+				return COMPONENT2;
+			}
 			throw new IllegalArgumentException("s=" + s);
 		}
 		return result;

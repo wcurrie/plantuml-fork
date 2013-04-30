@@ -45,25 +45,23 @@ import net.sourceforge.plantuml.ugraphic.UGraphic;
 public class Swimlane implements TextBlock {
 
 	public Dimension2D calculateDimension(StringBounder stringBounder) {
-		// TODO Auto-generated method stub
-		return null;
+		throw new UnsupportedOperationException();
 	}
 
 	public List<Url> getUrls() {
-		// TODO Auto-generated method stub
-		return null;
+		throw new UnsupportedOperationException();
 	}
 
 	public void drawUNewWayINLINED(UGraphic ug) {
-		// TODO Auto-generated method stub
+		throw new UnsupportedOperationException();
 	}
 	
 	public String getId() {
-		return null;
+		throw new UnsupportedOperationException();
 	}
 	
 	public Display getDescription() {
-		return null;
+		throw new UnsupportedOperationException();
 	}
 
 }

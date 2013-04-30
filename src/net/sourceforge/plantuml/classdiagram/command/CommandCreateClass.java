@@ -62,8 +62,8 @@ public class CommandCreateClass extends SingleLineCommand2<ClassDiagram> {
 		EXTENDS, IMPLEMENTS
 	};
 
-	public CommandCreateClass(ClassDiagram diagram) {
-		super(diagram, getRegexConcat());
+	public CommandCreateClass() {
+		super(getRegexConcat());
 	}
 
 	private static RegexConcat getRegexConcat() {
@@ -92,7 +92,7 @@ public class CommandCreateClass extends SingleLineCommand2<ClassDiagram> {
 	}
 
 	@Override
-	protected CommandExecutionResult executeArg(RegexResult arg) {
+	protected CommandExecutionResult executeArg(ClassDiagram diagram, RegexResult arg) {
 		final LeafType type = LeafType.getLeafType(arg.get("TYPE", 0).toUpperCase());
 		final Code code = Code.of(arg.getLazzy("CODE", 0)).eventuallyRemoveStartingAndEndingDoubleQuote();
 		final String display = arg.getLazzy("DISPLAY", 0);
@@ -100,15 +100,15 @@ public class CommandCreateClass extends SingleLineCommand2<ClassDiagram> {
 		final String stereotype = arg.get("STEREO", 0);
 		final String generic = arg.get("GENERIC", 0);
 		final ILeaf entity;
-		if (getSystem().leafExist(code)) {
-			entity = getSystem().getOrCreateLeaf1(code, type);
+		if (diagram.leafExist(code)) {
+			entity = diagram.getOrCreateLeaf1(code, type);
 			entity.muteToType(type);
 		} else {
-			entity = getSystem().createLeaf(code, Display.getWithNewlines(display), type);
+			entity = diagram.createLeaf(code, Display.getWithNewlines(display), type);
 		}
 		if (stereotype != null) {
-			entity.setStereotype(new Stereotype(stereotype, getSystem().getSkinParam().getCircledCharacterRadius(),
-					getSystem().getSkinParam().getFont(FontParam.CIRCLED_CHARACTER, null)));
+			entity.setStereotype(new Stereotype(stereotype, diagram.getSkinParam().getCircledCharacterRadius(),
+					diagram.getSkinParam().getFont(FontParam.CIRCLED_CHARACTER, null)));
 		}
 		if (generic != null) {
 			entity.setGeneric(generic);
@@ -116,13 +116,13 @@ public class CommandCreateClass extends SingleLineCommand2<ClassDiagram> {
 
 		final String urlString = arg.get("URL", 0);
 		if (urlString != null) {
-			final UrlBuilder urlBuilder = new UrlBuilder(getSystem().getSkinParam().getValue("topurl"), true);
+			final UrlBuilder urlBuilder = new UrlBuilder(diagram.getSkinParam().getValue("topurl"), true);
 			final Url url = urlBuilder.getUrl(urlString);
 			entity.addUrl(url);
 		}
 
 		entity.setSpecificBackcolor(HtmlColorUtils.getColorIfValid(arg.get("COLOR", 0)));
-		manageExtends(getSystem(), arg, entity);
+		manageExtends(diagram, arg, entity);
 
 		return CommandExecutionResult.ok();
 	}

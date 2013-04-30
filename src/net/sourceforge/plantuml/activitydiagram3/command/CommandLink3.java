@@ -45,8 +45,8 @@ import net.sourceforge.plantuml.graphic.HtmlColorUtils;
 
 public class CommandLink3 extends SingleLineCommand2<ActivityDiagram3> {
 
-	public CommandLink3(ActivityDiagram3 diagram) {
-		super(diagram, getRegexConcat());
+	public CommandLink3() {
+		super(getRegexConcat());
 	}
 
 	static RegexConcat getRegexConcat() {
@@ -58,11 +58,11 @@ public class CommandLink3 extends SingleLineCommand2<ActivityDiagram3> {
 	}
 
 	@Override
-	protected CommandExecutionResult executeArg(RegexResult arg) {
+	protected CommandExecutionResult executeArg(ActivityDiagram3 diagram, RegexResult arg) {
 		final HtmlColor color = HtmlColorUtils.getColorIfValid(arg.get("COLOR", 0));
 		if (color != null) {
 			final LinkRendering link = new LinkRendering(color);
-			getSystem().setNextLinkRenderer(link);
+			diagram.setNextLink(link);
 		}
 		return CommandExecutionResult.ok();
 	}

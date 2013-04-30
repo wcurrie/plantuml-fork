@@ -40,15 +40,15 @@ import net.sourceforge.plantuml.UmlDiagram;
 
 public class CommandScaleWidthAndHeight extends SingleLineCommand<UmlDiagram> {
 
-	public CommandScaleWidthAndHeight(UmlDiagram diagram) {
-		super(diagram, "(?i)^scale\\s+([0-9.]+)\\s*[*x]\\s*([0-9.]+)$");
+	public CommandScaleWidthAndHeight() {
+		super("(?i)^scale\\s+([0-9.]+)\\s*[*x]\\s*([0-9.]+)$");
 	}
 
 	@Override
-	protected CommandExecutionResult executeArg(List<String> arg) {
+	protected CommandExecutionResult executeArg(UmlDiagram diagram, List<String> arg) {
 		final double width = Double.parseDouble(arg.get(0));
 		final double height = Double.parseDouble(arg.get(1));
-		getSystem().setScale(new ScaleWidthAndHeight(width, height));
+		diagram.setScale(new ScaleWidthAndHeight(width, height));
 		return CommandExecutionResult.ok();
 	}
 

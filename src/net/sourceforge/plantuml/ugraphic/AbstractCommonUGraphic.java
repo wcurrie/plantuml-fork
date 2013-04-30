@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 10643 $
+ * Revision $Revision: 10672 $
  *
  */
 package net.sourceforge.plantuml.ugraphic;
@@ -118,6 +118,6 @@ public abstract class AbstractCommonUGraphic extends UGraphic {
 	}
 
 	final public ColorMapper getColorMapper() {
-		return colorMapper;
+		return new ColorMapperTransparentWrapper(colorMapper);
 	}
 }

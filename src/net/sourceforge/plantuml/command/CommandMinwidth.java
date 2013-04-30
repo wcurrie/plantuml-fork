@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 9786 $
+ * Revision $Revision: 10778 $
  *
  */
 package net.sourceforge.plantuml.command;
@@ -39,15 +39,15 @@ import net.sourceforge.plantuml.UmlDiagram;
 
 public class CommandMinwidth extends SingleLineCommand<UmlDiagram> {
 
-	public CommandMinwidth(UmlDiagram system) {
-		super(system, "(?i)^minwidth\\s+(\\d+)$");
+	public CommandMinwidth() {
+		super("(?i)^minwidth\\s+(\\d+)$");
 	}
 
 	@Override
-	protected CommandExecutionResult executeArg(List<String> arg) {
+	protected CommandExecutionResult executeArg(UmlDiagram system, List<String> arg) {
 
 		final int minwidth = Integer.parseInt(arg.get(0));
-		((UmlDiagram) getSystem()).setMinwidth(minwidth);
+		system.setMinwidth(minwidth);
 		return CommandExecutionResult.ok();
 	}
 

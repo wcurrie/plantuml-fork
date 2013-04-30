@@ -67,26 +67,26 @@ public final class FactorySpriteCommand implements SingleMultiFactoryCommand<Uml
 				new RegexLeaf("$"));
 	}
 
-	public Command createSingleLine(final UmlDiagram system) {
-		return new SingleLineCommand2<UmlDiagram>(system, getRegexConcatSingleLine()) {
+	public Command<UmlDiagram> createSingleLine() {
+		return new SingleLineCommand2<UmlDiagram>(getRegexConcatSingleLine()) {
 
 			@Override
-			protected CommandExecutionResult executeArg(RegexResult arg) {
-				return executeInternal(getSystem(), arg, Arrays.asList(arg.get("DATA", 0)));
+			protected CommandExecutionResult executeArg(final UmlDiagram system, RegexResult arg) {
+				return executeInternal(system, arg, Arrays.asList(arg.get("DATA", 0)));
 			}
 
 		};
 	}
 
-	public Command createMultiLine(final UmlDiagram system) {
-		return new CommandMultilines2<UmlDiagram>(system, getRegexConcatMultiLine(), MultilinesStrategy.REMOVE_STARTING_QUOTE) {
+	public Command<UmlDiagram> createMultiLine() {
+		return new CommandMultilines2<UmlDiagram>(getRegexConcatMultiLine(), MultilinesStrategy.REMOVE_STARTING_QUOTE) {
 
 			@Override
 			public String getPatternEnd() {
 				return "(?i)^end ?sprite|\\}$";
 			}
 
-			public CommandExecutionResult executeNow(List<String> lines) {
+			public CommandExecutionResult executeNow(final UmlDiagram system, List<String> lines) {
 				StringUtils.trim(lines, true);
 				final RegexResult line0 = getStartingPattern().matcher(lines.get(0).trim());
 
@@ -94,7 +94,7 @@ public final class FactorySpriteCommand implements SingleMultiFactoryCommand<Uml
 				if (strings.size() == 0) {
 					return CommandExecutionResult.error("No sprite defined.");
 				}
-				return executeInternal(getSystem(), line0, strings);
+				return executeInternal(system, line0, strings);
 			}
 
 		};

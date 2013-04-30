@@ -39,17 +39,14 @@ import java.util.regex.Pattern;
 
 import net.sourceforge.plantuml.core.Diagram;
 
-public abstract class CommandMultilinesBracket<S extends Diagram> implements Command {
-
-	private final S system;
+public abstract class CommandMultilinesBracket<S extends Diagram> implements Command<S> {
 
 	private final Pattern starting;
 
-	public CommandMultilinesBracket(final S system, String patternStart) {
+	public CommandMultilinesBracket(String patternStart) {
 		if (patternStart.startsWith("(?i)^") == false || patternStart.endsWith("$") == false) {
 			throw new IllegalArgumentException("Bad pattern " + patternStart);
 		}
-		this.system = system;
 		this.starting = Pattern.compile(patternStart);
 	}
 
@@ -64,20 +61,8 @@ public abstract class CommandMultilinesBracket<S extends Diagram> implements Com
 	protected void actionIfCommandValid() {
 	}
 
-	protected S getSystem() {
-		return system;
-	}
-
 	protected final Pattern getStartingPattern() {
 		return starting;
-	}
-
-	public boolean isDeprecated(List<String> line) {
-		return false;
-	}
-
-	public String getHelpMessageForDeprecated(List<String> lines) {
-		return null;
 	}
 
 	final public CommandControl isValid(List<String> lines) {

@@ -54,8 +54,8 @@ import net.sourceforge.plantuml.statediagram.StateDiagram;
 
 public class CommandLinkState extends SingleLineCommand2<StateDiagram> {
 
-	public CommandLinkState(StateDiagram diagram) {
-		super(diagram, getRegex());
+	public CommandLinkState() {
+		super(getRegex());
 	}
 
 	static RegexConcat getRegex() {
@@ -87,12 +87,12 @@ public class CommandLinkState extends SingleLineCommand2<StateDiagram> {
 	}
 
 	@Override
-	protected CommandExecutionResult executeArg(RegexResult arg) {
+	protected CommandExecutionResult executeArg(StateDiagram system, RegexResult arg) {
 		final String ent1 = arg.get("ENT1", 0);
 		final String ent2 = arg.get("ENT2", 0);
 
-		final IEntity cl1 = getEntityStart(ent1);
-		final IEntity cl2 = getEntityEnd(ent2);
+		final IEntity cl1 = getEntityStart(system, ent1);
+		final IEntity cl2 = getEntityEnd(system, ent2);
 
 		if (arg.get("ENT1", 1) != null) {
 			cl1.setStereotype(new Stereotype(arg.get("ENT1", 1)));
@@ -126,7 +126,7 @@ public class CommandLinkState extends SingleLineCommand2<StateDiagram> {
 			link = link.getInv();
 		}
 		CommandLinkClass.applyStyle(arg.getLazzy("ARROW_STYLE", 0), link);
-		getSystem().addLink(link);
+		system.addLink(link);
 
 		return CommandExecutionResult.ok();
 	}
@@ -160,21 +160,21 @@ public class CommandLinkState extends SingleLineCommand2<StateDiagram> {
 		return null;
 	}
 
-	private IEntity getEntityStart(String code) {
+	private IEntity getEntityStart(StateDiagram system, String code) {
 		if (code.startsWith("[*]")) {
-			return getSystem().getStart();
+			return system.getStart();
 		}
 		if (code.equalsIgnoreCase("[H]")) {
-			return getSystem().getHistorical();
+			return system.getHistorical();
 		}
 		if (code.endsWith("[H]")) {
-			return getSystem().getHistorical(Code.of(code.substring(0, code.length() - 3)));
+			return system.getHistorical(Code.of(code.substring(0, code.length() - 3)));
 		}
 		if (code.startsWith("=") && code.endsWith("=")) {
 			code = removeEquals(code);
-			return getSystem().getOrCreateLeaf1(Code.of(code), LeafType.SYNCHRO_BAR);
+			return system.getOrCreateLeaf1(Code.of(code), LeafType.SYNCHRO_BAR);
 		}
-		return getSystem().getOrCreateLeaf1(Code.of(code), null);
+		return system.getOrCreateLeaf1(Code.of(code), null);
 	}
 
 	private String removeEquals(String code) {
@@ -187,18 +187,18 @@ public class CommandLinkState extends SingleLineCommand2<StateDiagram> {
 		return code;
 	}
 
-	private IEntity getEntityEnd(String code) {
+	private IEntity getEntityEnd(StateDiagram system, String code) {
 		if (code.startsWith("[*]")) {
-			return getSystem().getEnd();
+			return system.getEnd();
 		}
 		if (code.endsWith("[H]")) {
-			return getSystem().getHistorical(Code.of(code.substring(0, code.length() - 3)));
+			return system.getHistorical(Code.of(code.substring(0, code.length() - 3)));
 		}
 		if (code.startsWith("=") && code.endsWith("=")) {
 			code = removeEquals(code);
-			return getSystem().getOrCreateLeaf1(Code.of(code), LeafType.SYNCHRO_BAR);
+			return system.getOrCreateLeaf1(Code.of(code), LeafType.SYNCHRO_BAR);
 		}
-		return getSystem().getOrCreateLeaf1(Code.of(code), null);
+		return system.getOrCreateLeaf1(Code.of(code), null);
 	}
 
 }

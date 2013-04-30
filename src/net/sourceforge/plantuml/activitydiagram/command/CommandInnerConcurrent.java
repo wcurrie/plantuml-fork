@@ -42,16 +42,16 @@ import net.sourceforge.plantuml.cucadiagram.EntityUtils;
 
 public class CommandInnerConcurrent extends SingleLineCommand<ActivityDiagram> {
 
-	public CommandInnerConcurrent(ActivityDiagram diagram) {
-		super(diagram, "(?i)^--\\s*(.*)$");
+	public CommandInnerConcurrent() {
+		super("(?i)^--\\s*(.*)$");
 	}
 
 	@Override
-	protected CommandExecutionResult executeArg(List<String> arg) {
-		if (EntityUtils.groupRoot(getSystem().getCurrentGroup())) {
+	protected CommandExecutionResult executeArg(ActivityDiagram diagram, List<String> arg) {
+		if (EntityUtils.groupRoot(diagram.getCurrentGroup())) {
 			return CommandExecutionResult.error("No inner activity");
 		}
-		getSystem().concurrentActivity(arg.get(0));
+		diagram.concurrentActivity(arg.get(0));
 
 		return CommandExecutionResult.ok();
 	}

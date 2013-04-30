@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  *
- * Revision $Revision: 9786 $
+ * Revision $Revision: 10683 $
  *
  */
 package net.sourceforge.plantuml.classdiagram;
@@ -75,7 +75,7 @@ public class ClassDiagram extends AbstractClassOrObjectDiagram {
 	@Override
 	public ILeaf createLeaf(Code code, Display display, LeafType type) {
 		if (type != LeafType.ABSTRACT_CLASS && type != LeafType.CLASS && type != LeafType.INTERFACE
-				&& type != LeafType.ENUM && type != LeafType.LOLLIPOP) {
+				&& type != LeafType.ENUM && type != LeafType.LOLLIPOP && type != LeafType.NOTE) {
 			return super.createLeaf(code, display, type);
 		}
 		if (getNamespaceSeparator() == null) {

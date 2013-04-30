@@ -38,38 +38,37 @@ import java.io.PrintWriter;
 import java.util.List;
 
 import net.sourceforge.plantuml.Log;
+import net.sourceforge.plantuml.core.Diagram;
 import net.sourceforge.plantuml.version.Version;
 
-public class ProtectedCommand implements Command {
+public class ProtectedCommand<S extends Diagram> implements Command<S> {
 
-	private final Command cmd;
+	private final Command<S> cmd;
 
-	public ProtectedCommand(Command cmd) {
+	public ProtectedCommand(Command<S> cmd) {
 		this.cmd = cmd;
 	}
 
-	public CommandExecutionResult execute(List<String> lines) {
+	public CommandExecutionResult execute(S system, List<String> lines) {
 		try {
-			return cmd.execute(lines);
+			final CommandExecutionResult result = cmd.execute(system, lines);
+//			if (result.isOk()) {
+//				// TRACECOMMAND
+//				System.err.println("CMD = " + cmd.getClass());
+//			}
+			return result;
 		} catch (Throwable t) {
 			t.printStackTrace();
 			final ByteArrayOutputStream baos = new ByteArrayOutputStream();
 			final PrintWriter pw = new PrintWriter(baos);
 			t.printStackTrace(pw);
 			Log.error("Error " + t);
-			String msg = "You should send a mail to plantuml@gmail.com with this log (V" + Version.versionString() + ")";
+			String msg = "You should send a mail to plantuml@gmail.com with this log (V" + Version.versionString()
+					+ ")";
 			Log.error(msg);
 			msg += " " + new String(baos.toByteArray());
 			return CommandExecutionResult.error(msg);
 		}
-	}
-
-	public String getHelpMessageForDeprecated(List<String> lines) {
-		return cmd.getHelpMessageForDeprecated(lines);
-	}
-
-	public boolean isDeprecated(List<String> lines) {
-		return cmd.isDeprecated(lines);
 	}
 
 	public CommandControl isValid(List<String> lines) {

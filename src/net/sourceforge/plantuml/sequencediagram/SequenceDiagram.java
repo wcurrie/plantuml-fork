@@ -450,6 +450,7 @@ public class SequenceDiagram extends UmlDiagram {
 		events.add(ref);
 	}
 
+	@Override
 	public boolean isOk() {
 		if (participants.size() == 0) {
 			return false;

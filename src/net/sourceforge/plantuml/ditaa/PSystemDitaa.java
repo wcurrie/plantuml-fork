@@ -34,7 +34,6 @@ package net.sourceforge.plantuml.ditaa;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.io.UnsupportedEncodingException;
 
 import javax.imageio.ImageIO;
 
@@ -52,15 +51,18 @@ import org.stathissideris.ascii2image.text.TextGrid;
 
 public class PSystemDitaa extends AbstractPSystem {
 
-	private final TextGrid grid = new TextGrid();
 	private final ProcessingOptions processingOptions = new ProcessingOptions();
 	private final boolean dropShadows;
+	private final String data;
 
-	public PSystemDitaa(String data, boolean performSeparationOfCommonEdges, boolean dropShadows)
-			throws UnsupportedEncodingException {
+	public PSystemDitaa(String data, boolean performSeparationOfCommonEdges, boolean dropShadows) {
+		this.data = data;
 		this.dropShadows = dropShadows;
-		grid.initialiseWithText(data, null);
-		processingOptions.setPerformSeparationOfCommonEdges(performSeparationOfCommonEdges);
+		this.processingOptions.setPerformSeparationOfCommonEdges(performSeparationOfCommonEdges);
+	}
+
+	PSystemDitaa add(String line) {
+		return new PSystemDitaa(data + line + "\n", processingOptions.performSeparationOfCommonEdges(), dropShadows);
 	}
 
 	public String getDescription() {
@@ -75,6 +77,8 @@ public class PSystemDitaa extends AbstractPSystem {
 		// ditaa can only export png so file format is mostly ignored
 		final ConversionOptions options = new ConversionOptions();
 		options.setDropShadows(dropShadows);
+		final TextGrid grid = new TextGrid();
+		grid.initialiseWithText(data, null);
 		final Diagram diagram = new Diagram(grid, options, processingOptions);
 		final BufferedImage image = (BufferedImage) new BitmapRenderer().renderToImage(diagram,
 				options.renderingOptions);
@@ -82,4 +86,5 @@ public class PSystemDitaa extends AbstractPSystem {
 		return new ImageDataSimple(image.getWidth(), image.getHeight());
 
 	}
+
 }

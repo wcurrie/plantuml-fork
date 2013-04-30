@@ -54,8 +54,8 @@ import net.sourceforge.plantuml.descdiagram.DescriptionDiagram;
 
 public class CommandLinkElement extends SingleLineCommand2<DescriptionDiagram> {
 
-	public CommandLinkElement(DescriptionDiagram diagram) {
-		super(diagram, getRegexConcat());
+	public CommandLinkElement() {
+		super(getRegexConcat());
 	}
 
 	static RegexConcat getRegexConcat() {
@@ -245,19 +245,19 @@ public class CommandLinkElement extends SingleLineCommand2<DescriptionDiagram> {
 	}
 
 	@Override
-	protected CommandExecutionResult executeArg(RegexResult arg) {
+	protected CommandExecutionResult executeArg(DescriptionDiagram diagram, RegexResult arg) {
 		final Code ent1 = Code.of(arg.get("ENT1", 0));
 		final Code ent2 = Code.of(arg.get("ENT2", 0));
 
-		if (getSystem().isGroup(ent1) && getSystem().isGroup(ent2)) {
-			return executePackageLink(arg);
+		if (diagram.isGroup(ent1) && diagram.isGroup(ent2)) {
+			return executePackageLink(diagram, arg);
 		}
-		if (getSystem().isGroup(ent1) || getSystem().isGroup(ent2)) {
+		if (diagram.isGroup(ent1) || diagram.isGroup(ent2)) {
 			return CommandExecutionResult.error("Package can be only linked to other package");
 		}
 
-		final IEntity cl1 = getOrCreateLeaf(ent1);
-		final IEntity cl2 = getOrCreateLeaf(ent2);
+		final IEntity cl1 = getOrCreateLeaf(diagram, ent1);
+		final IEntity cl2 = getOrCreateLeaf(diagram, ent2);
 
 		if (arg.get("ENT1", 1) != null) {
 			cl1.setStereotype(new Stereotype(arg.get("ENT1", 1)));
@@ -281,41 +281,41 @@ public class CommandLinkElement extends SingleLineCommand2<DescriptionDiagram> {
 		final Labels labels = new Labels(arg);
 
 		Link link = new Link(cl1, cl2, linkType, Display.getWithNewlines(labels.labelLink), queue.length(), labels.firstLabel,
-				labels.secondLabel, getSystem().getLabeldistance(), getSystem().getLabelangle());
+				labels.secondLabel, diagram.getLabeldistance(), diagram.getLabelangle());
 
 		if (dir == Direction.LEFT || dir == Direction.UP) {
 			link = link.getInv();
 		}
 
-		getSystem().addLink(link);
+		diagram.addLink(link);
 		return CommandExecutionResult.ok();
 	}
 
-	private ILeaf getOrCreateLeaf(final Code code2) {
+	private ILeaf getOrCreateLeaf(DescriptionDiagram diagram, final Code code2) {
 		final String code = code2.getCode();
 		if (code.startsWith("()")) {
-			return getSystem().getOrCreateLeaf1(
+			return diagram.getOrCreateLeaf1(
 					Code.of(StringUtils.eventuallyRemoveStartingAndEndingDoubleQuote(code.substring(2).trim())),
 					LeafType.CIRCLE_INTERFACE);
 		}
 		final char codeChar = code.length() > 2 ? code.charAt(0) : 0;
 		if (codeChar == '(') {
-			return getSystem().getOrCreateLeaf1(code2.eventuallyRemoveStartingAndEndingDoubleQuote(), LeafType.USECASE);
+			return diagram.getOrCreateLeaf1(code2.eventuallyRemoveStartingAndEndingDoubleQuote(), LeafType.USECASE);
 		} else if (codeChar == ':') {
-			return getSystem().getOrCreateLeaf1(code2.eventuallyRemoveStartingAndEndingDoubleQuote(), LeafType.ACTOR);
+			return diagram.getOrCreateLeaf1(code2.eventuallyRemoveStartingAndEndingDoubleQuote(), LeafType.ACTOR);
 		} else if (codeChar == '[') {
-			return getSystem().getOrCreateLeaf1(code2.eventuallyRemoveStartingAndEndingDoubleQuote(),
+			return diagram.getOrCreateLeaf1(code2.eventuallyRemoveStartingAndEndingDoubleQuote(),
 					LeafType.COMPONENT);
 		}
 
-		return getSystem().getOrCreateLeaf1(code2, null);
+		return diagram.getOrCreateLeaf1(code2, null);
 	}
 
-	private CommandExecutionResult executePackageLink(RegexResult arg) {
+	private CommandExecutionResult executePackageLink(DescriptionDiagram diagram, RegexResult arg) {
 		final Code ent1 = Code.of(arg.get("ENT1", 0));
 		final Code ent2 = Code.of(arg.get("ENT2", 0));
-		final IEntity cl1 = getSystem().getGroup(ent1);
-		final IEntity cl2 = getSystem().getGroup(ent2);
+		final IEntity cl1 = diagram.getGroup(ent1);
+		final IEntity cl2 = diagram.getGroup(ent2);
 
 		final LinkType linkType = getLinkType(arg);
 		final Direction dir = getDirection(arg);
@@ -333,7 +333,7 @@ public class CommandLinkElement extends SingleLineCommand2<DescriptionDiagram> {
 		if (dir == Direction.LEFT || dir == Direction.UP) {
 			link = link.getInv();
 		}
-		getSystem().addLink(link);
+		diagram.addLink(link);
 		return CommandExecutionResult.ok();
 	}
 

@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 9786 $
+ * Revision $Revision: 10778 $
  *
  */
 package net.sourceforge.plantuml.sequencediagram.command;
@@ -44,15 +44,15 @@ import net.sourceforge.plantuml.sequencediagram.SequenceDiagram;
 
 public class CommandActivate2 extends SingleLineCommand<SequenceDiagram> {
 
-	public CommandActivate2(SequenceDiagram sequenceDiagram) {
-		super(sequenceDiagram, "(?i)^([\\p{L}0-9_.@]+)\\s*(\\+\\+|--)\\s*(#\\w+)?$");
+	public CommandActivate2() {
+		super("(?i)^([\\p{L}0-9_.@]+)\\s*(\\+\\+|--)\\s*(#\\w+)?$");
 	}
 
 	@Override
-	protected CommandExecutionResult executeArg(List<String> arg) {
+	protected CommandExecutionResult executeArg(SequenceDiagram sequenceDiagram, List<String> arg) {
 		final LifeEventType type = arg.get(1).equals("++") ? LifeEventType.ACTIVATE : LifeEventType.DEACTIVATE;
-		final Participant p = getSystem().getOrCreateParticipant(arg.get(0));
-		final String error = getSystem().activate(p, type, HtmlColorUtils.getColorIfValid(arg.get(2)));
+		final Participant p = sequenceDiagram.getOrCreateParticipant(arg.get(0));
+		final String error = sequenceDiagram.activate(p, type, HtmlColorUtils.getColorIfValid(arg.get(2)));
 		if (error == null) {
 			return CommandExecutionResult.ok();
 		}

@@ -39,13 +39,13 @@ import net.sourceforge.plantuml.UmlDiagram;
 
 public class CommandHideUnlinked extends SingleLineCommand<UmlDiagram> {
 
-	public CommandHideUnlinked(UmlDiagram diagram) {
-		super(diagram, "(?i)^(hide|show)\\s+unlinked$");
+	public CommandHideUnlinked() {
+		super("(?i)^(hide|show)\\s+unlinked$");
 	}
 
 	@Override
-	protected CommandExecutionResult executeArg(List<String> arg) {
-		getSystem().setHideUnlinkedData(arg.get(0).equalsIgnoreCase("hide"));
+	protected CommandExecutionResult executeArg(UmlDiagram diagram, List<String> arg) {
+		diagram.setHideUnlinkedData(arg.get(0).equalsIgnoreCase("hide"));
 		return CommandExecutionResult.ok();
 	}
 

@@ -45,14 +45,14 @@ import net.sourceforge.plantuml.cucadiagram.LinkType;
 
 public class CommandLinkBlock extends SingleLineCommand<CompositeDiagram> {
 
-	public CommandLinkBlock(CompositeDiagram diagram) {
-		super(diagram, "(?i)^([\\p{L}0-9_.]+)\\s*(\\[\\]|\\*\\))?([=-]+|\\.+)(\\[\\]|\\(\\*)?\\s*([\\p{L}0-9_.]+)\\s*(?::\\s*(\\S*+))?$");
+	public CommandLinkBlock() {
+		super("(?i)^([\\p{L}0-9_.]+)\\s*(\\[\\]|\\*\\))?([=-]+|\\.+)(\\[\\]|\\(\\*)?\\s*([\\p{L}0-9_.]+)\\s*(?::\\s*(\\S*+))?$");
 	}
 
 	@Override
-	protected CommandExecutionResult executeArg(List<String> arg) {
-		final IEntity cl1 = getSystem().getOrCreateLeaf1(Code.of(arg.get(0)), null);
-		final IEntity cl2 = getSystem().getOrCreateLeaf1(Code.of(arg.get(4)), null);
+	protected CommandExecutionResult executeArg(CompositeDiagram diagram, List<String> arg) {
+		final IEntity cl1 = diagram.getOrCreateLeaf1(Code.of(arg.get(0)), null);
+		final IEntity cl2 = diagram.getOrCreateLeaf1(Code.of(arg.get(4)), null);
 
 		final String deco1 = arg.get(1);
 		final String deco2 = arg.get(3);
@@ -67,7 +67,7 @@ public class CommandLinkBlock extends SingleLineCommand<CompositeDiagram> {
 		final String queue = arg.get(2);
 
 		final Link link = new Link(cl1, cl2, linkType, Display.getWithNewlines(arg.get(5)), queue.length());
-		getSystem().addLink(link);
+		diagram.addLink(link);
 		return CommandExecutionResult.ok();
 	}
 

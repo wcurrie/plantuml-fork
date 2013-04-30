@@ -49,8 +49,8 @@ import net.sourceforge.plantuml.ugraphic.SpriteImage;
 
 public class CommandSpriteFile extends SingleLineCommand2<UmlDiagram> {
 
-	public CommandSpriteFile(UmlDiagram system) {
-		super(system, getRegexConcat());
+	public CommandSpriteFile() {
+		super(getRegexConcat());
 	}
 
 	private static RegexConcat getRegexConcat() {
@@ -63,7 +63,7 @@ public class CommandSpriteFile extends SingleLineCommand2<UmlDiagram> {
 	}
 
 	@Override
-	protected CommandExecutionResult executeArg(RegexResult arg) {
+	protected CommandExecutionResult executeArg(UmlDiagram system, RegexResult arg) {
 		final String src = arg.get("FILE", 0);
 		final BufferedImage im;
 		try {
@@ -76,7 +76,7 @@ public class CommandSpriteFile extends SingleLineCommand2<UmlDiagram> {
 			Log.error("Error reading " + src + " " + e);
 			return CommandExecutionResult.error("Cannot read: " + src);
 		}
-		getSystem().addSprite(arg.get("NAME", 0), new SpriteImage(im));
+		system.addSprite(arg.get("NAME", 0), new SpriteImage(im));
 		return CommandExecutionResult.ok();
 	}
 

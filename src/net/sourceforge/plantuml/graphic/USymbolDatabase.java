@@ -64,7 +64,7 @@ class USymbolDatabase extends USymbol {
 		ug.drawOldWay(shape);
 
 		final UPath closing = getClosingPath(width);
-		ug.drawOldWay(closing);
+		ug.apply(new UChangeBackColor(null)).drawOldWay(closing);
 
 	}
 

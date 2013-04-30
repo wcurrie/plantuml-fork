@@ -28,23 +28,21 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 9786 $
+ * Revision $Revision: 10778 $
  *
  */
 package net.sourceforge.plantuml.command;
 
 import java.util.List;
 
-public interface Command {
+import net.sourceforge.plantuml.core.Diagram;
 
-	CommandExecutionResult execute(List<String> lines);
+public interface Command<D extends Diagram> {
+
+	CommandExecutionResult execute(D diagram, List<String> lines);
 
 	CommandControl isValid(List<String> lines);
 
-	boolean isDeprecated(List<String> lines);
-
-	String getHelpMessageForDeprecated(List<String> lines);
-	
 	String[] getDescription();
 
 }

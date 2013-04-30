@@ -51,8 +51,8 @@ import net.sourceforge.plantuml.objectdiagram.ObjectDiagram;
 
 public class CommandCreateEntityObject extends SingleLineCommand2<ObjectDiagram> {
 
-	public CommandCreateEntityObject(ObjectDiagram diagram) {
-		super(diagram, getRegexConcat());
+	public CommandCreateEntityObject() {
+		super(getRegexConcat());
 	}
 
 	private static RegexConcat getRegexConcat() {
@@ -68,21 +68,21 @@ public class CommandCreateEntityObject extends SingleLineCommand2<ObjectDiagram>
 	}
 
 	@Override
-	protected CommandExecutionResult executeArg(RegexResult arg) {
+	protected CommandExecutionResult executeArg(ObjectDiagram diagram, RegexResult arg) {
 		final Code code = Code.of(arg.get("NAME", 1));
 		final String display = arg.get("NAME", 0);
 		final String stereotype = arg.get("STEREO", 0);
-		if (getSystem().leafExist(code)) {
+		if (diagram.leafExist(code)) {
 			return CommandExecutionResult.error("Object already exists : " + code);
 		}
-		final IEntity entity = getSystem().createLeaf(code, Display.getWithNewlines(display), LeafType.OBJECT);
+		final IEntity entity = diagram.createLeaf(code, Display.getWithNewlines(display), LeafType.OBJECT);
 		if (stereotype != null) {
-			entity.setStereotype(new Stereotype(stereotype, getSystem().getSkinParam().getCircledCharacterRadius(),
-					getSystem().getSkinParam().getFont(FontParam.CIRCLED_CHARACTER, null)));
+			entity.setStereotype(new Stereotype(stereotype, diagram.getSkinParam().getCircledCharacterRadius(),
+					diagram.getSkinParam().getFont(FontParam.CIRCLED_CHARACTER, null)));
 		}
 		final String urlString = arg.get("URL", 0);
 		if (urlString != null) {
-			final UrlBuilder urlBuilder = new UrlBuilder(getSystem().getSkinParam().getValue("topurl"), true);
+			final UrlBuilder urlBuilder = new UrlBuilder(diagram.getSkinParam().getValue("topurl"), true);
 			final Url url = urlBuilder.getUrl(urlString);
 			entity.addUrl(url);
 		}

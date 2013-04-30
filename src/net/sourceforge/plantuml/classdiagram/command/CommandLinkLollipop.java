@@ -56,8 +56,8 @@ import net.sourceforge.plantuml.objectdiagram.AbstractClassOrObjectDiagram;
 
 final public class CommandLinkLollipop extends SingleLineCommand2<AbstractClassOrObjectDiagram> {
 
-	public CommandLinkLollipop(AbstractClassOrObjectDiagram diagram) {
-		super(diagram, getRegexConcat(diagram.getUmlDiagramType()));
+	public CommandLinkLollipop(UmlDiagramType umlDiagramType) {
+		super(getRegexConcat(umlDiagramType));
 	}
 
 	static RegexConcat getRegexConcat(UmlDiagramType umlDiagramType) {
@@ -90,7 +90,7 @@ final public class CommandLinkLollipop extends SingleLineCommand2<AbstractClassO
 	}
 
 	@Override
-	protected CommandExecutionResult executeArg(RegexResult arg) {
+	protected CommandExecutionResult executeArg(AbstractClassOrObjectDiagram diagram, RegexResult arg) {
 
 		final Code ent1 = Code.of(arg.get("ENT1", 1));
 		final Code ent2 = Code.of(arg.get("ENT2", 1));
@@ -102,12 +102,12 @@ final public class CommandLinkLollipop extends SingleLineCommand2<AbstractClassO
 		final String suffix = "lol" + UniqueSequence.getValue();
 		if (arg.get("LOL_THEN_ENT", 0) == null) {
 			assert arg.get("ENT_THEN_LOL", 0) != null;
-			cl1 = getSystem().getOrCreateLeaf1(ent1, null);
-			cl2 = getSystem().createLeaf(cl1.getCode().addSuffix(suffix), Display.getWithNewlines(ent2), LeafType.LOLLIPOP);
+			cl1 = diagram.getOrCreateLeaf1(ent1, null);
+			cl2 = diagram.createLeaf(cl1.getCode().addSuffix(suffix), Display.getWithNewlines(ent2), LeafType.LOLLIPOP);
 			normalEntity = cl1;
 		} else {
-			cl2 = getSystem().getOrCreateLeaf1(ent2, null);
-			cl1 = getSystem().createLeaf(cl2.getCode().addSuffix(suffix), Display.getWithNewlines(ent1), LeafType.LOLLIPOP);
+			cl2 = diagram.getOrCreateLeaf1(ent2, null);
+			cl1 = diagram.createLeaf(cl2.getCode().addSuffix(suffix), Display.getWithNewlines(ent1), LeafType.LOLLIPOP);
 			normalEntity = cl2;
 		}
 
@@ -115,7 +115,7 @@ final public class CommandLinkLollipop extends SingleLineCommand2<AbstractClassO
 		final String queue = getQueue(arg);
 
 		int length = queue.length();
-		if (length == 1 && getSystem().getNbOfHozizontalLollipop(normalEntity) > 1) {
+		if (length == 1 && diagram.getNbOfHozizontalLollipop(normalEntity) > 1) {
 			length++;
 		}
 
@@ -154,18 +154,16 @@ final public class CommandLinkLollipop extends SingleLineCommand2<AbstractClassO
 			}
 			labelLink = StringUtils.eventuallyRemoveStartingAndEndingDoubleQuote(labelLink);
 		} /*
-			 * else if (arg.get("LABEL_LINK_XT").get(0) != null ||
-			 * arg.get("LABEL_LINK_XT").get(1) != null ||
-			 * arg.get("LABEL_LINK_XT").get(2) != null) { labelLink =
-			 * arg.get("LABEL_LINK_XT").get(1); firstLabel = merge(firstLabel,
-			 * arg.get("LABEL_LINK_XT").get(0)); secondLabel =
-			 * merge(arg.get("LABEL_LINK_XT").get(2), secondLabel); }
-			 */
+		 * else if (arg.get("LABEL_LINK_XT").get(0) != null || arg.get("LABEL_LINK_XT").get(1) != null ||
+		 * arg.get("LABEL_LINK_XT").get(2) != null) { labelLink = arg.get("LABEL_LINK_XT").get(1); firstLabel =
+		 * merge(firstLabel, arg.get("LABEL_LINK_XT").get(0)); secondLabel = merge(arg.get("LABEL_LINK_XT").get(2),
+		 * secondLabel); }
+		 */
 
-		final Link link = new Link(cl1, cl2, linkType, Display.getWithNewlines(labelLink), length, firstLabel, secondLabel, getSystem()
-				.getLabeldistance(), getSystem().getLabelangle());
-		getSystem().resetPragmaLabel();
-		addLink(link, arg.get("HEADER", 0));
+		final Link link = new Link(cl1, cl2, linkType, Display.getWithNewlines(labelLink), length, firstLabel,
+				secondLabel, diagram.getLabeldistance(), diagram.getLabelangle());
+		diagram.resetPragmaLabel();
+		addLink(diagram, link, arg.get("HEADER", 0));
 
 		return CommandExecutionResult.ok();
 	}
@@ -185,8 +183,8 @@ final public class CommandLinkLollipop extends SingleLineCommand2<AbstractClassO
 	// + StringUtils.eventuallyRemoveStartingAndEndingDoubleQuote(b);
 	// }
 
-	private void addLink(Link link, String weight) {
-		getSystem().addLink(link);
+	private void addLink(AbstractClassOrObjectDiagram diagram, Link link, String weight) {
+		diagram.addLink(link);
 		if (weight == null) {
 			// final LinkType type = link.getType();
 			// --|> highest

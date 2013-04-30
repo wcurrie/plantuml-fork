@@ -61,8 +61,7 @@ public class DriverRectangleSvg implements UDriver<SvgGraphics> {
 		double width = rect.getWidth();
 		double height = rect.getHeight();
 
-		final String color = param.getColor() == null ? "none" : StringUtils.getAsHtml(mapper.getMappedColor(param
-				.getColor()));
+		final String color = StringUtils.getAsSvg(mapper, param.getColor());
 		final HtmlColor back = param.getBackcolor();
 		if (back instanceof HtmlColorGradient) {
 			final HtmlColorGradient gr = (HtmlColorGradient) back;
@@ -71,8 +70,7 @@ public class DriverRectangleSvg implements UDriver<SvgGraphics> {
 			svg.setFillColor("url(#" + id + ")");
 			svg.setStrokeColor(color);
 		} else {
-			final String backcolor = back == null ? "none" : StringUtils.getAsHtml(mapper
-					.getMappedColor(back));
+			final String backcolor = StringUtils.getAsSvg(mapper, back);
 			svg.setFillColor(backcolor);
 			svg.setStrokeColor(color);
 		}

@@ -53,8 +53,8 @@ public class CommandHideShow3 extends SingleLineCommand2<ClassDiagram> {
 			EntityPortion.METHOD);
 	private static final EnumSet<EntityPortion> PORTION_FIELD = EnumSet.<EntityPortion> of(EntityPortion.FIELD);
 
-	public CommandHideShow3(ClassDiagram classDiagram) {
-		super(classDiagram, getRegexConcat());
+	public CommandHideShow3() {
+		super(getRegexConcat());
 	}
 
 	static RegexConcat getRegexConcat() {
@@ -69,7 +69,7 @@ public class CommandHideShow3 extends SingleLineCommand2<ClassDiagram> {
 	}
 
 	@Override
-	protected CommandExecutionResult executeArg(RegexResult arg) {
+	protected CommandExecutionResult executeArg(ClassDiagram classDiagram, RegexResult arg) {
 
 		final Set<EntityPortion> portion = getEntityPortion(arg.get("PORTION", 0));
 
@@ -79,7 +79,7 @@ public class CommandHideShow3 extends SingleLineCommand2<ClassDiagram> {
 			addVisibilities(st.nextToken(), portion, visibilities);
 		}
 
-		getSystem().hideOrShow(visibilities, arg.get("COMMAND", 0).equalsIgnoreCase("show"));
+		classDiagram.hideOrShow(visibilities, arg.get("COMMAND", 0).equalsIgnoreCase("show"));
 
 		return CommandExecutionResult.ok();
 	}

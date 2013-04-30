@@ -33,7 +33,12 @@
  */
 package net.sourceforge.plantuml.activitydiagram3.ftile;
 
+import java.util.Collection;
+import java.util.Collections;
+
 import net.sourceforge.plantuml.activitydiagram3.LinkRendering;
+import net.sourceforge.plantuml.graphic.StringBounder;
+import net.sourceforge.plantuml.ugraphic.UTranslate;
 
 public abstract class AbstractFtile2 implements Ftile {
 
@@ -44,4 +49,13 @@ public abstract class AbstractFtile2 implements Ftile {
 	final public LinkRendering getOutLinkRendering() {
 		return null;
 	}
+
+	public Collection<Connection> getInnerConnections() {
+		return Collections.emptyList();
+	}
+
+	public UTranslate getTranslateFor(Ftile child, StringBounder stringBounder) {
+		throw new UnsupportedOperationException();
+	}
+
 }

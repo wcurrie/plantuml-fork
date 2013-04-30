@@ -49,8 +49,8 @@ import net.sourceforge.plantuml.cucadiagram.IEntity;
 
 public class CommandMouseOver extends CommandMultilines2<ClassDiagram> {
 
-	public CommandMouseOver(ClassDiagram diagram) {
-		super(diagram, getRegexConcat(), MultilinesStrategy.REMOVE_STARTING_QUOTE);
+	public CommandMouseOver() {
+		super(getRegexConcat(), MultilinesStrategy.REMOVE_STARTING_QUOTE);
 	}
 
 	@Override
@@ -67,17 +67,17 @@ public class CommandMouseOver extends CommandMultilines2<ClassDiagram> {
 				new RegexLeaf("\\s*\\{\\s*$"));
 	}
 
-	public CommandExecutionResult executeNow(List<String> lines) {
+	public CommandExecutionResult executeNow(ClassDiagram system, List<String> lines) {
 		StringUtils.trim(lines, false);
 		final RegexResult line0 = getStartingPattern().matcher(lines.get(0).trim());
 		Code code = Code.of(line0.get("NAME1", 0));
 		if (code == null) {
 			code = Code.of(line0.get("NAME3", 0));
 		}
-		if (getSystem().leafExist(code) == false) {
+		if (system.leafExist(code) == false) {
 			return CommandExecutionResult.error("No such entity");
 		}
-		final IEntity entity = getSystem().getLeafs().get(code);
+		final IEntity entity = system.getLeafs().get(code);
 		for (String s : lines.subList(1, lines.size() - 1)) {
 			entity.mouseOver(s);
 		}
@@ -103,15 +103,15 @@ public class CommandMouseOver extends CommandMultilines2<ClassDiagram> {
 	// final String stereotype = arg.get("STEREO").get(0);
 	// final String generic = arg.get("GENERIC").get(0);
 	//
-	// if (getSystem().entityExist(code)) {
-	// final Entity result = (Entity) getSystem().getOrCreateClass(code);
+	// if (system.entityExist(code)) {
+	// final Entity result = (Entity) system.getOrCreateClass(code);
 	// result.muteToType(type);
 	// return result;
 	// }
-	// final Entity entity = getSystem().createEntity(code, display, type);
+	// final Entity entity = system.createEntity(code, display, type);
 	// if (stereotype != null) {
-	// entity.setStereotype(new Stereotype(stereotype, getSystem().getSkinParam().getCircledCharacterRadius(),
-	// getSystem().getSkinParam().getFont(FontParam.CIRCLED_CHARACTER, null)));
+	// entity.setStereotype(new Stereotype(stereotype, system.getSkinParam().getCircledCharacterRadius(),
+	// system.getSkinParam().getFont(FontParam.CIRCLED_CHARACTER, null)));
 	// }
 	// if (generic != null) {
 	// entity.setGeneric(generic);

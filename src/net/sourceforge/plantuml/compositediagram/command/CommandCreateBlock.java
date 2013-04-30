@@ -44,18 +44,18 @@ import net.sourceforge.plantuml.cucadiagram.IEntity;
 
 public class CommandCreateBlock extends SingleLineCommand<CompositeDiagram> {
 
-	public CommandCreateBlock(CompositeDiagram diagram) {
-		super(diagram, "(?i)^(?:block\\s+)(?:\"([^\"]+)\"\\s+as\\s+)?([\\p{L}0-9_.]+)$");
+	public CommandCreateBlock() {
+		super("(?i)^(?:block\\s+)(?:\"([^\"]+)\"\\s+as\\s+)?([\\p{L}0-9_.]+)$");
 	}
 
 	@Override
-	protected CommandExecutionResult executeArg(List<String> arg) {
+	protected CommandExecutionResult executeArg(CompositeDiagram diagram, List<String> arg) {
 		String display = arg.get(0);
 		final Code code = Code.of(arg.get(1));
 		if (display == null) {
 			display = code.getCode();
 		}
-		final IEntity ent = getSystem().getOrCreateLeaf1(code, null);
+		final IEntity ent = diagram.getOrCreateLeaf1(code, null);
 		ent.setDisplay(Display.getWithNewlines(display));
 		return CommandExecutionResult.ok();
 	}

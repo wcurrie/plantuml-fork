@@ -44,17 +44,17 @@ import net.sourceforge.plantuml.skin.VisibilityModifier;
 
 public class CommandAddData extends SingleLineCommand<ObjectDiagram> {
 
-	public CommandAddData(ObjectDiagram diagram) {
-		super(diagram, "(?i)^([\\p{L}0-9_.]+)\\s*:\\s*(.*)$");
+	public CommandAddData() {
+		super("(?i)^([\\p{L}0-9_.]+)\\s*:\\s*(.*)$");
 	}
 
 	@Override
-	protected CommandExecutionResult executeArg(List<String> arg) {
-		final IEntity entity = getSystem().getOrCreateLeaf1(Code.of(arg.get(0)), null);
+	protected CommandExecutionResult executeArg(ObjectDiagram diagram, List<String> arg) {
+		final IEntity entity = diagram.getOrCreateLeaf1(Code.of(arg.get(0)), null);
 
 		final String field = arg.get(1);
 		if (field.length() > 0 && VisibilityModifier.isVisibilityCharacter(field.charAt(0))) {
-			getSystem().setVisibilityModifierPresent(true);
+			diagram.setVisibilityModifierPresent(true);
 		}
 		entity.addFieldOrMethod(field);
 		return CommandExecutionResult.ok();

@@ -37,7 +37,6 @@ import java.awt.geom.Dimension2D;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.util.ArrayList;
 import java.util.List;
 
 import net.sourceforge.plantuml.CMapData;
@@ -49,7 +48,10 @@ import net.sourceforge.plantuml.UmlDiagram;
 import net.sourceforge.plantuml.UmlDiagramType;
 import net.sourceforge.plantuml.activitydiagram3.ftile.Ftile;
 import net.sourceforge.plantuml.activitydiagram3.ftile.FtileFactory;
-import net.sourceforge.plantuml.activitydiagram3.ftile.Swimlane;
+import net.sourceforge.plantuml.activitydiagram3.ftile.Swimlanes;
+import net.sourceforge.plantuml.activitydiagram3.ftile.vcompact.FtileFactoryDelegatorAssembly;
+import net.sourceforge.plantuml.activitydiagram3.ftile.vcompact.FtileFactoryDelegatorIf;
+import net.sourceforge.plantuml.activitydiagram3.ftile.vcompact.VCompactFactory;
 import net.sourceforge.plantuml.activitydiagram3.ftile.vertical.VerticalFactory;
 import net.sourceforge.plantuml.api.ImageDataSimple;
 import net.sourceforge.plantuml.command.CommandExecutionResult;
@@ -75,14 +77,36 @@ import net.sourceforge.plantuml.ugraphic.UTranslate;
 
 public class ActivityDiagram3 extends UmlDiagram {
 
-	private static final StringBounder dummyStringBounder;
-
-	private Instruction current = new InstructionList();
-	private final List<Swimlane> swinlanes = new ArrayList<Swimlane>();
-
 	static {
 		final BufferedImage imDummy = new BufferedImage(10, 10, BufferedImage.TYPE_INT_RGB);
 		dummyStringBounder = StringBounderUtils.asStringBounder(imDummy.createGraphics());
+	}
+
+	final private boolean USE_COMPACT = false;
+
+	private static final StringBounder dummyStringBounder;
+
+	private final Swimlanes swinlanes = new Swimlanes();
+
+	public CommandExecutionResult swimlane(String name) {
+		swinlanes.swimlane(name);
+		return CommandExecutionResult.ok();
+	}
+
+	private void setCurrent(Instruction ins) {
+		swinlanes.setCurrent(ins);
+	}
+
+	private Instruction current() {
+		return swinlanes.getCurrent();
+	}
+
+	private LinkRendering nextLinkRenderer() {
+		return swinlanes.nextLinkRenderer();
+	}
+
+	private void setNextLinkRenderer(LinkRendering link) {
+		swinlanes.setNextLinkRenderer(link);
 	}
 
 	public String getDescription() {
@@ -97,7 +121,7 @@ public class ActivityDiagram3 extends UmlDiagram {
 	// @Override
 	private Dimension2D exportDiagramInternalUnused(OutputStream os, CMapData cmap, int index,
 			FileFormatOption fileFormatOption, List<BufferedImage> flashcodes) throws IOException {
-		final TextBlock result = getResult();
+		final TextBlock result = getResult(dummyStringBounder);
 
 		final TextLimitFinder limitFinder = new TextLimitFinder(dummyStringBounder, true);
 		result.drawUNewWayINLINED(limitFinder);
@@ -126,7 +150,18 @@ public class ActivityDiagram3 extends UmlDiagram {
 
 	protected ImageData exportDiagramInternal(OutputStream os, int index, FileFormatOption fileFormatOption,
 			List<BufferedImage> flashcodes) throws IOException {
-		final TextBlock result = getResult();
+		final TextBlock result = getResult(dummyStringBounder);
+		final ISkinParam skinParam = getSkinParam();
+		final double dpiFactor = getDpiFactor(fileFormatOption);
+
+		if (USE_COMPACT) {
+			final Dimension2D dim = result.calculateDimension(dummyStringBounder);
+			final UGraphic ug = fileFormatOption.createUGraphic(skinParam.getColorMapper(), dpiFactor, dim,
+					getSkinParam().getBackgroundColor(), isRotation());
+			result.drawUNewWayINLINED(ug);
+			ug.writeImage(os, getMetadata(), getDpi(fileFormatOption));
+			return new ImageDataSimple((int) dim.getWidth(), (int) dim.getHeight());
+		}
 
 		final TextLimitFinder limitFinder = new TextLimitFinder(dummyStringBounder, true);
 		result.drawUNewWayINLINED(limitFinder);
@@ -139,14 +174,11 @@ public class ActivityDiagram3 extends UmlDiagram {
 		result.drawUNewWayINLINED(slotFinder);
 		final SlotSet ysSlotSet = slotFinder.getYSlotSet().reverse().smaller(5.0);
 
-		final ISkinParam skinParam = getSkinParam();
 		Dimension2D dim = result.calculateDimension(dummyStringBounder);
 		final CompressionTransform compressionTransform = new CompressionTransform(ysSlotSet);
 		dim = new Dimension2DDouble(Math.max(dim.getWidth(), limitFinder.getMaxX() - negX),
 				compressionTransform.transform(Math.max(dim.getHeight(), limitFinder.getMaxY() - negY)));
 		dim = Dimension2DDouble.delta(dim, 20);
-
-		final double dpiFactor = getDpiFactor(fileFormatOption);
 
 		UGraphic ug = fileFormatOption.createUGraphic(skinParam.getColorMapper(), dpiFactor, dim, getSkinParam()
 				.getBackgroundColor(), isRotation());
@@ -165,18 +197,22 @@ public class ActivityDiagram3 extends UmlDiagram {
 	}
 
 	public void addActivity(Display activity, HtmlColor color) {
-		current.add(new InstructionSimple(activity, color, nextLinkRenderer));
-		nextLinkRenderer = null;
+		current().add(new InstructionSimple(activity, color, nextLinkRenderer()));
+		setNextLinkRenderer(null);
 	}
 
-	private Ftile getFtile() {
-		final FtileFactory factory = new VerticalFactory(getSkinParam());
-		// final FtileFactory factory = new VCompactFactory(getSkinParam());
-		return current.createFtile(factory);
+	private Ftile getFtile(StringBounder stringBounder) {
+		FtileFactory factory = new VerticalFactory(getSkinParam(), stringBounder);
+		if (USE_COMPACT) {
+			factory = new VCompactFactory(getSkinParam(), stringBounder);
+			factory = new FtileFactoryDelegatorAssembly(factory);
+			factory = new FtileFactoryDelegatorIf(factory);
+		}
+		return current().createFtile(factory);
 	}
 
-	private TextBlock getResult() {
-		TextBlock result = getFtile().asTextBlock();
+	private TextBlock getResult(StringBounder stringBounder) {
+		TextBlock result = getFtile(stringBounder).asTextBlock();
 		result = addTitle(result);
 		result = addHeaderAndFooter(result);
 		return result;
@@ -220,87 +256,87 @@ public class ActivityDiagram3 extends UmlDiagram {
 	}
 
 	public void fork() {
-		final InstructionFork instructionFork = new InstructionFork(current);
-		current.add(instructionFork);
-		current = instructionFork;
+		final InstructionFork instructionFork = new InstructionFork(current());
+		current().add(instructionFork);
+		setCurrent(instructionFork);
 	}
 
 	public CommandExecutionResult forkAgain() {
-		if (current instanceof InstructionFork) {
-			((InstructionFork) current).forkAgain();
+		if (current() instanceof InstructionFork) {
+			((InstructionFork) current()).forkAgain();
 			return CommandExecutionResult.ok();
 		}
 		return CommandExecutionResult.error("Cannot find fork");
 	}
 
 	public CommandExecutionResult endFork() {
-		if (current instanceof InstructionFork) {
-			current = ((InstructionFork) current).getParent();
+		if (current() instanceof InstructionFork) {
+			setCurrent(((InstructionFork) current()).getParent());
 			return CommandExecutionResult.ok();
 		}
 		return CommandExecutionResult.error("Cannot find fork");
 	}
 
 	public void split() {
-		final InstructionSplit instructionSplit = new InstructionSplit(current);
-		current.add(instructionSplit);
-		current = instructionSplit;
+		final InstructionSplit instructionSplit = new InstructionSplit(current());
+		current().add(instructionSplit);
+		setCurrent(instructionSplit);
 	}
 
 	public CommandExecutionResult splitAgain() {
-		if (current instanceof InstructionSplit) {
-			((InstructionSplit) current).splitAgain();
+		if (current() instanceof InstructionSplit) {
+			((InstructionSplit) current()).splitAgain();
 			return CommandExecutionResult.ok();
 		}
 		return CommandExecutionResult.error("Cannot find split");
 	}
 
 	public CommandExecutionResult endSplit() {
-		if (current instanceof InstructionSplit) {
-			current = ((InstructionSplit) current).getParent();
+		if (current() instanceof InstructionSplit) {
+			setCurrent(((InstructionSplit) current()).getParent());
 			return CommandExecutionResult.ok();
 		}
 		return CommandExecutionResult.error("Cannot find split");
 	}
 
 	public void startIf(Display test, Display whenThen) {
-		final InstructionIf instructionIf = new InstructionIf(current, test, whenThen, nextLinkRenderer);
-		current.add(instructionIf);
-		current = instructionIf;
+		final InstructionIf instructionIf = new InstructionIf(current(), test, whenThen, nextLinkRenderer());
+		current().add(instructionIf);
+		setCurrent(instructionIf);
 	}
 
 	public CommandExecutionResult endif() {
-		if (current instanceof InstructionIf) {
-			((InstructionIf) current).endif(nextLinkRenderer);
-			nextLinkRenderer = null;
-			current = ((InstructionIf) current).getParent();
+		if (current() instanceof InstructionIf) {
+			((InstructionIf) current()).endif(nextLinkRenderer());
+			setNextLinkRenderer(null);
+			setCurrent(((InstructionIf) current()).getParent());
 			return CommandExecutionResult.ok();
 		}
 		return CommandExecutionResult.error("Cannot find if");
 	}
 
 	public CommandExecutionResult else2(Display whenElse) {
-		if (current instanceof InstructionIf) {
-			((InstructionIf) current).swithToElse(whenElse, nextLinkRenderer);
-			nextLinkRenderer = null;
+		if (current() instanceof InstructionIf) {
+			((InstructionIf) current()).swithToElse(whenElse, nextLinkRenderer());
+			setNextLinkRenderer(null);
 			return CommandExecutionResult.ok();
 		}
 		return CommandExecutionResult.error("Cannot find if");
 	}
 
 	public void startRepeat() {
-		final InstructionRepeat instructionRepeat = new InstructionRepeat(current, nextLinkRenderer);
-		current.add(instructionRepeat);
-		current = instructionRepeat;
+		final InstructionRepeat instructionRepeat = new InstructionRepeat(current(), nextLinkRenderer());
+		current().add(instructionRepeat);
+		setCurrent(instructionRepeat);
 
 	}
 
 	public CommandExecutionResult repeatWhile(Display label) {
-		if (current instanceof InstructionRepeat) {
-			final InstructionRepeat instructionRepeat = (InstructionRepeat) current;
-			instructionRepeat.setTest(label, nextLinkRenderer);
-			current = instructionRepeat.getParent();
-			this.nextLinkRenderer = null;
+		if (current() instanceof InstructionRepeat) {
+			final InstructionRepeat instructionRepeat = (InstructionRepeat) current();
+			instructionRepeat.setTest(label, nextLinkRenderer());
+			setCurrent(instructionRepeat.getParent());
+			this.setNextLinkRenderer(null);
 			return CommandExecutionResult.ok();
 		}
 		return CommandExecutionResult.error("Cannot find repeat");
@@ -308,64 +344,62 @@ public class ActivityDiagram3 extends UmlDiagram {
 	}
 
 	public void doWhile(Display test, Display yes) {
-		final InstructionWhile instructionWhile = new InstructionWhile(current, test, nextLinkRenderer, yes);
-		current.add(instructionWhile);
-		current = instructionWhile;
+		final InstructionWhile instructionWhile = new InstructionWhile(current(), test, nextLinkRenderer(), yes);
+		current().add(instructionWhile);
+		setCurrent(instructionWhile);
 	}
 
 	public CommandExecutionResult endwhile(Display out) {
-		if (current instanceof InstructionWhile) {
-			((InstructionWhile) current).endwhile(nextLinkRenderer, out);
-			nextLinkRenderer = null;
-			current = ((InstructionWhile) current).getParent();
+		if (current() instanceof InstructionWhile) {
+			((InstructionWhile) current()).endwhile(nextLinkRenderer(), out);
+			setNextLinkRenderer(null);
+			setCurrent(((InstructionWhile) current()).getParent());
 			return CommandExecutionResult.ok();
 		}
 		return CommandExecutionResult.error("Cannot find while");
 	}
 
 	public void start() {
-		current.add(new InstructionStart());
+		current().add(new InstructionStart());
 	}
 
 	public void stop() {
-		current.add(new InstructionStop());
+		current().add(new InstructionStop());
 	}
 
 	public CommandExecutionResult kill() {
-		if (current.kill() == false) {
+		if (current().kill() == false) {
 			return CommandExecutionResult.error("kill cannot be used here");
 		}
 		return CommandExecutionResult.ok();
 	}
 
 	public void startGroup(Display name) {
-		final InstructionGroup instructionGroup = new InstructionGroup(current, name);
-		current.add(instructionGroup);
-		current = instructionGroup;
+		final InstructionGroup instructionGroup = new InstructionGroup(current(), name);
+		current().add(instructionGroup);
+		setCurrent(instructionGroup);
 	}
 
 	public CommandExecutionResult endGroup() {
-		if (current instanceof InstructionGroup) {
-			current = ((InstructionGroup) current).getParent();
+		if (current() instanceof InstructionGroup) {
+			setCurrent(((InstructionGroup) current()).getParent());
 			return CommandExecutionResult.ok();
 		}
 		return CommandExecutionResult.error("Cannot find group");
 	}
 
-	private LinkRendering nextLinkRenderer;
-
-	public void setNextLinkRenderer(LinkRendering linkRenderer) {
-		if (current instanceof InstructionList) {
-			final Instruction last = ((InstructionList) current).getLast();
+	public void setNextLink(LinkRendering linkRenderer) {
+		if (current() instanceof InstructionList) {
+			final Instruction last = ((InstructionList) current()).getLast();
 			if (last instanceof InstructionWhile) {
 				((InstructionWhile) last).afterEndwhile(linkRenderer);
 			}
 		}
-		this.nextLinkRenderer = linkRenderer;
+		this.setNextLinkRenderer(linkRenderer);
 	}
 
 	public CommandExecutionResult addNote(Display note, NotePosition position) {
-		current.addNote(note, position);
+		current().addNote(note, position);
 		return CommandExecutionResult.ok();
 	}
 

@@ -116,11 +116,9 @@ public class Footprint {
 		}
 
 		public void startUrl(Url url) {
-			throw new UnsupportedOperationException();
 		}
 
 		public void closeAction() {
-			throw new UnsupportedOperationException();
 		}
 
 		public void writeImage(OutputStream os, String metadata, int dpi) throws IOException {

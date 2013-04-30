@@ -35,6 +35,8 @@ package net.sourceforge.plantuml.command;
 
 import net.sourceforge.plantuml.StringUtils;
 import net.sourceforge.plantuml.UniqueSequence;
+import net.sourceforge.plantuml.Url;
+import net.sourceforge.plantuml.UrlBuilder;
 import net.sourceforge.plantuml.classdiagram.AbstractEntityDiagram;
 import net.sourceforge.plantuml.command.regex.RegexConcat;
 import net.sourceforge.plantuml.command.regex.RegexLeaf;
@@ -49,8 +51,8 @@ import net.sourceforge.plantuml.graphic.HtmlColorUtils;
 
 public class CommandPackage extends SingleLineCommand2<AbstractEntityDiagram> {
 
-	public CommandPackage(AbstractEntityDiagram diagram) {
-		super(diagram, getRegexConcat());
+	public CommandPackage() {
+		super(getRegexConcat());
 	}
 	
 	private static RegexConcat getRegexConcat() {
@@ -60,13 +62,15 @@ public class CommandPackage extends SingleLineCommand2<AbstractEntityDiagram> {
 				new RegexLeaf("\\s*"), //
 				new RegexLeaf("STEREOTYPE", "(\\<\\<.*\\>\\>)?"), //
 				new RegexLeaf("\\s*"), //
+				new RegexLeaf("URL", "(" + UrlBuilder.getRegexp() + ")?"), //
+				new RegexLeaf("\\s*"), //
 				new RegexLeaf("COLOR", "(#\\w+[-\\\\|/]?\\w+)?"), //
 				// new RegexLeaf("COLOR", "(#[0-9a-fA-F]{6}|#?\\w+)?"), //
 				new RegexLeaf("\\s*\\{?$"));
 	}
 
 	@Override
-	protected CommandExecutionResult executeArg(RegexResult arg) {
+	protected CommandExecutionResult executeArg(AbstractEntityDiagram diagram, RegexResult arg) {
 		final Code code;
 		final String display;
 		final String name = StringUtils.eventuallyRemoveStartingAndEndingDoubleQuote(arg.get("NAME", 0));
@@ -82,12 +86,20 @@ public class CommandPackage extends SingleLineCommand2<AbstractEntityDiagram> {
 			display = name;
 			code = Code.of(arg.get("AS", 0));
 		}
-		final IGroup currentPackage = getSystem().getCurrentGroup();
-		final IEntity p = getSystem().getOrCreateGroup(code, Display.getWithNewlines(display), null, GroupType.PACKAGE, currentPackage);
+		final IGroup currentPackage = diagram.getCurrentGroup();
+		final IEntity p = diagram.getOrCreateGroup(code, Display.getWithNewlines(display), null, GroupType.PACKAGE, currentPackage);
 		final String stereotype = arg.get("STEREOTYPE", 0);
 		if (stereotype != null) {
 			p.setStereotype(new Stereotype(stereotype));
 		}
+		
+		final String urlString = arg.get("URL", 0);
+		if (urlString != null) {
+			final UrlBuilder urlBuilder = new UrlBuilder(diagram.getSkinParam().getValue("topurl"), true);
+			final Url url = urlBuilder.getUrl(urlString);
+			p.addUrl(url);
+		}
+
 		final String color = arg.get("COLOR", 0);
 		if (color != null) {
 			p.setSpecificBackcolor(HtmlColorUtils.getColorIfValid(color));

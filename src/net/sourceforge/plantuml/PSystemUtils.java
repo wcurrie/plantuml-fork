@@ -53,6 +53,9 @@ public class PSystemUtils {
 
 	public static List<File> exportDiagrams(Diagram system, File suggestedFile, FileFormatOption fileFormatOption)
 			throws IOException {
+		if (system instanceof NewpagedDiagram) {
+			return exportDiagramsNewpaged((NewpagedDiagram) system, suggestedFile, fileFormatOption);
+		}
 		if (system instanceof SequenceDiagram) {
 			return exportDiagramsSequence((SequenceDiagram) system, suggestedFile, fileFormatOption);
 		}
@@ -60,6 +63,30 @@ public class PSystemUtils {
 			return exportDiagramsCuca((CucaDiagram) system, suggestedFile, fileFormatOption);
 		}
 		return exportDiagramsDefault(system, suggestedFile, fileFormatOption);
+	}
+
+	private static List<File> exportDiagramsNewpaged(NewpagedDiagram system, File suggestedFile,
+			FileFormatOption fileFormat) throws IOException {
+		final List<File> result = new ArrayList<File>();
+		final int nbImages = system.getNbImages();
+		for (int i = 0; i < nbImages; i++) {
+
+			final File f = fileFormat.getFileFormat().computeFilename(suggestedFile, i);
+			Log.info("Creating file: " + f);
+			final OutputStream fos = new BufferedOutputStream(new FileOutputStream(f));
+			ImageData cmap = null;
+			try {
+				cmap = system.exportDiagram(fos, i, fileFormat);
+			} finally {
+				fos.close();
+			}
+			// if (system.hasUrl() && cmap != null && cmap.containsCMapData()) {
+			// system.exportCmap(suggestedFile, cmap);
+			// }
+			Log.info("File size : " + f.length());
+			result.add(f);
+		}
+		return result;
 	}
 
 	static private List<File> exportDiagramsDefault(Diagram system, File suggestedFile, FileFormatOption fileFormat)

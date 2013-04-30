@@ -44,8 +44,8 @@ import net.sourceforge.plantuml.sequencediagram.NotePosition;
 
 public class CommandNote3 extends SingleLineCommand2<ActivityDiagram3> {
 
-	public CommandNote3(ActivityDiagram3 diagram) {
-		super(diagram, getRegexConcat());
+	public CommandNote3() {
+		super(getRegexConcat());
 	}
 
 	static RegexConcat getRegexConcat() {
@@ -58,10 +58,10 @@ public class CommandNote3 extends SingleLineCommand2<ActivityDiagram3> {
 	}
 
 	@Override
-	protected CommandExecutionResult executeArg(RegexResult arg) {
+	protected CommandExecutionResult executeArg(ActivityDiagram3 diagram, RegexResult arg) {
 		final Display note = Display.getWithNewlines(arg.get("NOTE", 0));
 		final NotePosition position = getPosition(arg.get("POSITION", 0));
-		return getSystem().addNote(note, position);
+		return diagram.addNote(note, position);
 	}
 
 	private NotePosition getPosition(String s) {

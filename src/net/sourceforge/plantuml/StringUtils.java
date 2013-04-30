@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  *
- * Revision $Revision: 9786 $
+ * Revision $Revision: 10670 $
  *
  */
 package net.sourceforge.plantuml;
@@ -46,8 +46,11 @@ import java.util.regex.Pattern;
 
 import net.sourceforge.plantuml.cucadiagram.Code;
 import net.sourceforge.plantuml.cucadiagram.Display;
+import net.sourceforge.plantuml.graphic.HtmlColor;
+import net.sourceforge.plantuml.graphic.HtmlColorTransparent;
 import net.sourceforge.plantuml.preproc.ReadLineReader;
 import net.sourceforge.plantuml.preproc.UncommentReadLine;
+import net.sourceforge.plantuml.ugraphic.ColorMapper;
 
 public class StringUtils {
 
@@ -426,6 +429,16 @@ public class StringUtils {
 			throw new IllegalArgumentException();
 		}
 		return getAsHtml(color.getRGB());
+	}
+
+	public static String getAsSvg(ColorMapper mapper, HtmlColor color) {
+		if (color == null) {
+			return "none";
+		}
+		if (color instanceof HtmlColorTransparent) {
+			return "#FFFFFF";
+		}
+		return getAsHtml(mapper.getMappedColor(color));
 	}
 
 	public static String getAsHtml(int color) {

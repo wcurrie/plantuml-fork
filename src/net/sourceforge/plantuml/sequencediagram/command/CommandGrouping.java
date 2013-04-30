@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 9786 $
+ * Revision $Revision: 10778 $
  *
  */
 package net.sourceforge.plantuml.sequencediagram.command;
@@ -45,14 +45,14 @@ import net.sourceforge.plantuml.sequencediagram.SequenceDiagram;
 
 public class CommandGrouping extends SingleLineCommand<SequenceDiagram> {
 
-	public CommandGrouping(SequenceDiagram sequenceDiagram) {
+	public CommandGrouping() {
 		super(
-				sequenceDiagram,
+
 				"(?i)^(opt|alt|loop|par|par2|break|critical|else|end|also|group)((?<!else)(?<!also)(?<!end)#\\w+)?(?:\\s+(#\\w+))?(?:\\s+(.*?))?$");
 	}
 
 	@Override
-	protected CommandExecutionResult executeArg(List<String> arg) {
+	protected CommandExecutionResult executeArg(SequenceDiagram sequenceDiagram, List<String> arg) {
 		final String type = arg.get(0).toLowerCase();
 		final HtmlColor backColorElement = HtmlColorUtils.getColorIfValid(arg.get(1));
 		final HtmlColor backColorGeneral = HtmlColorUtils.getColorIfValid(arg.get(2));
@@ -60,8 +60,8 @@ public class CommandGrouping extends SingleLineCommand<SequenceDiagram> {
 		if ("group".equals(type) && StringUtils.isEmpty(comment)) {
 			comment = "group";
 		}
-		final boolean result = getSystem().grouping(type, comment,
-				GroupingType.getType(type), backColorGeneral, backColorElement);
+		final boolean result = sequenceDiagram.grouping(type, comment, GroupingType.getType(type), backColorGeneral,
+				backColorElement);
 		if (result == false) {
 			return CommandExecutionResult.error("Cannot create group");
 		}

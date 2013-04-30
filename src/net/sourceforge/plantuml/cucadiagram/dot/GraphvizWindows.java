@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 9786 $
+ * Revision $Revision: 10765 $
  *
  */
 package net.sourceforge.plantuml.cucadiagram.dot;
@@ -82,30 +82,6 @@ class GraphvizWindows extends AbstractGraphviz {
 
 	GraphvizWindows(String dotString, String... type) {
 		super(dotString, type);
-	}
-
-	@Override
-	String getCommandLine() {
-		final StringBuilder sb = new StringBuilder();
-		appendDoubleQuoteOnWindows(sb);
-		sb.append(getDotExe().getAbsolutePath());
-		appendDoubleQuoteOnWindows(sb);
-		appendImageType(sb);
-		return sb.toString();
-	}
-
-	private static void appendDoubleQuoteOnWindows(final StringBuilder sb) {
-		sb.append('\"');
-	}
-
-	@Override
-	String getCommandLineVersion() {
-		final StringBuilder sb = new StringBuilder();
-		appendDoubleQuoteOnWindows(sb);
-		sb.append(getDotExe().getAbsolutePath());
-		appendDoubleQuoteOnWindows(sb);
-		sb.append(" -V");
-		return sb.toString();
 	}
 
 }

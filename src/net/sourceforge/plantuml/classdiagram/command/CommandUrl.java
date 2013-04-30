@@ -45,17 +45,16 @@ import net.sourceforge.plantuml.cucadiagram.IEntity;
 
 public class CommandUrl extends SingleLineCommand<AbstractEntityDiagram> {
 
-	public CommandUrl(AbstractEntityDiagram diagram) {
-		super(diagram, "(?i)^url\\s*(?:of|for)?\\s+([\\p{L}0-9_.]+|\"[^\"]+\")\\s+(?:is)?\\s*("
-				+ UrlBuilder.getRegexp() + ")$");
+	public CommandUrl() {
+		super("(?i)^url\\s*(?:of|for)?\\s+([\\p{L}0-9_.]+|\"[^\"]+\")\\s+(?:is)?\\s*(" + UrlBuilder.getRegexp() + ")$");
 	}
 
 	@Override
-	protected CommandExecutionResult executeArg(List<String> arg) {
+	protected CommandExecutionResult executeArg(AbstractEntityDiagram diagram, List<String> arg) {
 		final Code code = Code.of(arg.get(0));
 		final String urlString = arg.get(1);
-		final IEntity entity = getSystem().getOrCreateLeaf1(code, null);
-		final UrlBuilder urlBuilder = new UrlBuilder(getSystem().getSkinParam().getValue("topurl"), true);
+		final IEntity entity = diagram.getOrCreateLeaf1(code, null);
+		final UrlBuilder urlBuilder = new UrlBuilder(diagram.getSkinParam().getValue("topurl"), true);
 		final Url url = urlBuilder.getUrl(urlString);
 		entity.addUrl(url);
 		return CommandExecutionResult.ok();

@@ -38,14 +38,14 @@ import net.sourceforge.plantuml.cucadiagram.Rankdir;
 
 public class CommandRankDir extends SingleLineCommand<CucaDiagram> {
 
-	public CommandRankDir(CucaDiagram diagram) {
-		super(diagram, "(?i)^(left to right|top to bottom)\\s+direction$");
+	public CommandRankDir() {
+		super("(?i)^(left to right|top to bottom)\\s+direction$");
 	}
 
 	@Override
-	protected CommandExecutionResult executeArg(List<String> arg) {
+	protected CommandExecutionResult executeArg(CucaDiagram diagram, List<String> arg) {
 		final String s = arg.get(0).toUpperCase().replace(' ', '_');
-		getSystem().setRankdir(Rankdir.valueOf(s));
+		diagram.setRankdir(Rankdir.valueOf(s));
 		return CommandExecutionResult.ok();
 	}
 

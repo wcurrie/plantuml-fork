@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 9786 $
+ * Revision $Revision: 10779 $
  *
  */
 package net.sourceforge.plantuml.command;
@@ -41,20 +41,19 @@ import net.sourceforge.plantuml.cucadiagram.Display;
 
 public class CommandMultilinesTitle extends CommandMultilines<UmlDiagram> {
 
-	public CommandMultilinesTitle(final UmlDiagram diagram) {
-		super(diagram, "(?i)^title$");
+	public CommandMultilinesTitle() {
+		super("(?i)^title$");
 	}
-	
+
 	@Override
 	public String getPatternEnd() {
 		return "(?i)^end ?title$";
 	}
 
-
-	public CommandExecutionResult execute(List<String> lines) {
+	public CommandExecutionResult execute(final UmlDiagram diagram, List<String> lines) {
 		final Display strings = new Display(lines.subList(1, lines.size() - 1)).removeEmptyColumns();
 		if (strings.size() > 0) {
-			getSystem().setTitle(StringUtils.manageEmbededDiagrams(strings));
+			diagram.setTitle(StringUtils.manageEmbededDiagrams(strings));
 			return CommandExecutionResult.ok();
 		}
 		return CommandExecutionResult.error("No title defined");

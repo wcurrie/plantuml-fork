@@ -36,12 +36,11 @@ package net.sourceforge.plantuml.sequencediagram.command;
 import net.sourceforge.plantuml.UrlBuilder;
 import net.sourceforge.plantuml.command.regex.RegexConcat;
 import net.sourceforge.plantuml.command.regex.RegexLeaf;
-import net.sourceforge.plantuml.sequencediagram.SequenceDiagram;
 
 public class CommandParticipantA4 extends CommandParticipant {
 
-	public CommandParticipantA4(SequenceDiagram sequenceDiagram) {
-		super(sequenceDiagram, getRegexConcat());
+	public CommandParticipantA4() {
+		super(getRegexConcat());
 	}
 
 	static RegexConcat getRegexConcat() {

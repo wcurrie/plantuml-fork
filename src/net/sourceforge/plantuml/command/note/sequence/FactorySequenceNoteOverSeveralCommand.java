@@ -73,32 +73,32 @@ public final class FactorySequenceNoteOverSeveralCommand implements SingleMultiF
 				new RegexLeaf("$"));
 	}
 
-	public Command createSingleLine(final SequenceDiagram system) {
-		return new SingleLineCommand2<SequenceDiagram>(system, getRegexConcatSingleLine()) {
+	public Command<SequenceDiagram> createSingleLine() {
+		return new SingleLineCommand2<SequenceDiagram>(getRegexConcatSingleLine()) {
 
 			@Override
-			protected CommandExecutionResult executeArg(RegexResult arg) {
+			protected CommandExecutionResult executeArg(final SequenceDiagram system, RegexResult arg) {
 				final List<String> strings = StringUtils.getWithNewlines2(arg.get("NOTE", 0));
 
-				return executeInternal(getSystem(), arg, strings);
+				return executeInternal(system, arg, strings);
 			}
 
 		};
 	}
 
-	public Command createMultiLine(final SequenceDiagram system) {
-		return new CommandMultilines2<SequenceDiagram>(system, getRegexConcatMultiLine(), MultilinesStrategy.KEEP_STARTING_QUOTE) {
+	public Command<SequenceDiagram> createMultiLine() {
+		return new CommandMultilines2<SequenceDiagram>(getRegexConcatMultiLine(), MultilinesStrategy.KEEP_STARTING_QUOTE) {
 
 			@Override
 			public String getPatternEnd() {
 				return "(?i)^end ?(note|hnote|rnote)$";
 			}
 
-			public CommandExecutionResult executeNow(List<String> lines) {
+			public CommandExecutionResult executeNow(final SequenceDiagram system, List<String> lines) {
 				final RegexResult line0 = getStartingPattern().matcher(lines.get(0).trim());
 				final List<String> strings = StringUtils.removeEmptyColumns(lines.subList(1, lines.size() - 1));
 
-				return executeInternal(getSystem(), line0, strings);
+				return executeInternal(system, line0, strings);
 			}
 
 		};

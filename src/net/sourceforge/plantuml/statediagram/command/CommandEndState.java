@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 9786 $
+ * Revision $Revision: 10778 $
  *
  */
 package net.sourceforge.plantuml.statediagram.command;
@@ -42,17 +42,17 @@ import net.sourceforge.plantuml.statediagram.StateDiagram;
 
 public class CommandEndState extends SingleLineCommand<StateDiagram> {
 
-	public CommandEndState(StateDiagram diagram) {
-		super(diagram, "(?i)^(end ?state|\\})$");
+	public CommandEndState() {
+		super("(?i)^(end ?state|\\})$");
 	}
 
 	@Override
-	protected CommandExecutionResult executeArg(List<String> arg) {
-		final IEntity currentPackage = getSystem().getCurrentGroup();
+	protected CommandExecutionResult executeArg(StateDiagram diagram, List<String> arg) {
+		final IEntity currentPackage = diagram.getCurrentGroup();
 		if (currentPackage == null) {
 			return CommandExecutionResult.error("No inner state defined");
 		}
-		getSystem().endGroup();
+		diagram.endGroup();
 		return CommandExecutionResult.ok();
 	}
 

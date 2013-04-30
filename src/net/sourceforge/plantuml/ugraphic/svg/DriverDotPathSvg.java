@@ -48,12 +48,11 @@ public class DriverDotPathSvg implements UDriver<SvgGraphics> {
 		// DriverLineG2d.manageStroke(param, g2d);
 
 		if (param.getColor() != null) {
-			final String color = param.getColor() == null ? "none" : StringUtils.getAsHtml(mapper.getMappedColor(param
-					.getColor()));
+			final String color = StringUtils.getAsSvg(mapper, param.getColor());
 			svg.setStrokeColor(color);
 			svg.setFillColor(null);
 			svg.setStrokeWidth("" + param.getStroke().getThickness(), param.getStroke().getDasharraySvg());
-			
+
 			svg.svgPath(x, y, shape.toUPath(), 0);
 		}
 	}

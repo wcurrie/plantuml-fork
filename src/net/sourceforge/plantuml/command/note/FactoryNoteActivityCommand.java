@@ -76,22 +76,22 @@ public final class FactoryNoteActivityCommand implements SingleMultiFactoryComma
 				new RegexLeaf("$"));
 	}
 
-	public Command createMultiLine(final ActivityDiagram system) {
-		return new CommandMultilines2<ActivityDiagram>(system, getRegexConcatMultiLine(), MultilinesStrategy.KEEP_STARTING_QUOTE) {
+	public Command<ActivityDiagram> createMultiLine() {
+		return new CommandMultilines2<ActivityDiagram>(getRegexConcatMultiLine(), MultilinesStrategy.KEEP_STARTING_QUOTE) {
 
 			@Override
 			public String getPatternEnd() {
 				return "(?i)^end ?note$";
 			}
 
-			public final CommandExecutionResult executeNow(List<String> lines) {
+			public final CommandExecutionResult executeNow(final ActivityDiagram system, List<String> lines) {
 				// StringUtils.trim(lines, true);
 				final RegexResult arg = getStartingPattern().matcher(lines.get(0).trim());
 				Display strings = new Display(StringUtils.removeEmptyColumns(lines.subList(1, lines.size() - 1)));
 
 				Url url = null;
 				if (strings.size() > 0) {
-					final UrlBuilder urlBuilder = new UrlBuilder(getSystem().getSkinParam().getValue("topurl"), true);
+					final UrlBuilder urlBuilder = new UrlBuilder(system.getSkinParam().getValue("topurl"), true);
 					url = urlBuilder.getUrl(strings.get(0).toString());
 				}
 				if (url != null) {
@@ -100,23 +100,23 @@ public final class FactoryNoteActivityCommand implements SingleMultiFactoryComma
 
 				// final String s = StringUtils.getMergedLines(strings);
 
-				final IEntity note = getSystem().createLeaf(UniqueSequence.getCode("GMN"), strings, LeafType.NOTE);
+				final IEntity note = system.createLeaf(UniqueSequence.getCode("GMN"), strings, LeafType.NOTE);
 				if (url != null) {
 					note.addUrl(url);
 				}
-				return executeInternal(getSystem(), arg, note);
+				return executeInternal(system, arg, note);
 			}
 		};
 	}
 
-	public Command createSingleLine(final ActivityDiagram system) {
-		return new SingleLineCommand2<ActivityDiagram>(system, getRegexConcatSingleLine()) {
+	public Command<ActivityDiagram> createSingleLine() {
+		return new SingleLineCommand2<ActivityDiagram>(getRegexConcatSingleLine()) {
 
 			@Override
-			protected CommandExecutionResult executeArg(RegexResult arg) {
-				final IEntity note = getSystem().createNote(UniqueSequence.getCode("GN"),
+			protected CommandExecutionResult executeArg(final ActivityDiagram system, RegexResult arg) {
+				final IEntity note = system.createNote(UniqueSequence.getCode("GN"),
 						Display.getWithNewlines(arg.get("NOTE", 0)));
-				return executeInternal(getSystem(), arg, note);
+				return executeInternal(system, arg, note);
 			}
 		};
 	}

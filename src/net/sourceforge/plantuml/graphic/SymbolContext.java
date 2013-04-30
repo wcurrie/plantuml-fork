@@ -50,9 +50,9 @@ public class SymbolContext {
 		this.foreColor = foreColor;
 		this.stroke = stroke;
 		this.shadowing = shadowing;
-		if (backColor instanceof HtmlColorTransparent) {
-			throw new UnsupportedOperationException();
-		}
+//		if (backColor instanceof HtmlColorTransparent) {
+//			throw new UnsupportedOperationException();
+//		}
 	}
 
 	final public UGraphic apply(UGraphic ug) {

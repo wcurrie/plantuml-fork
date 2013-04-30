@@ -40,17 +40,17 @@ import net.sourceforge.plantuml.UmlDiagram;
 
 public class CommandScale extends SingleLineCommand<UmlDiagram> {
 
-	public CommandScale(UmlDiagram diagram) {
-		super(diagram, "(?i)^scale\\s+([0-9.]+)(?:\\s*/\\s*([0-9.]+))?$");
+	public CommandScale() {
+		super("(?i)^scale\\s+([0-9.]+)(?:\\s*/\\s*([0-9.]+))?$");
 	}
 
 	@Override
-	protected CommandExecutionResult executeArg(List<String> arg) {
+	protected CommandExecutionResult executeArg(UmlDiagram diagram, List<String> arg) {
 		double scale = Double.parseDouble(arg.get(0));
 		if (arg.get(1) != null) {
 			scale /= Double.parseDouble(arg.get(1));
 		}
-		getSystem().setScale(new ScaleSimple(scale));
+		diagram.setScale(new ScaleSimple(scale));
 		return CommandExecutionResult.ok();
 	}
 

@@ -38,9 +38,12 @@ import java.util.List;
 import net.sourceforge.plantuml.activitydiagram3.LinkRendering;
 import net.sourceforge.plantuml.cucadiagram.Display;
 import net.sourceforge.plantuml.graphic.HtmlColor;
+import net.sourceforge.plantuml.graphic.StringBounder;
 import net.sourceforge.plantuml.sequencediagram.NotePosition;
 
 public interface FtileFactory {
+
+	public StringBounder getStringBounder();
 
 	public Ftile start();
 

@@ -42,17 +42,17 @@ import net.sourceforge.plantuml.cucadiagram.IEntity;
 
 public class CommandEndPackageBlock extends SingleLineCommand<CompositeDiagram> {
 
-	public CommandEndPackageBlock(CompositeDiagram diagram) {
-		super(diagram, "(?i)^(end ?block|\\})$");
+	public CommandEndPackageBlock() {
+		super("(?i)^(end ?block|\\})$");
 	}
 
 	@Override
-	protected CommandExecutionResult executeArg(List<String> arg) {
-		final IEntity currentPackage = getSystem().getCurrentGroup();
+	protected CommandExecutionResult executeArg(CompositeDiagram diagram, List<String> arg) {
+		final IEntity currentPackage = diagram.getCurrentGroup();
 		if (currentPackage == null) {
 			return CommandExecutionResult.error("No inner block defined");
 		}
-		getSystem().endGroup();
+		diagram.endGroup();
 		return CommandExecutionResult.ok();
 	}
 

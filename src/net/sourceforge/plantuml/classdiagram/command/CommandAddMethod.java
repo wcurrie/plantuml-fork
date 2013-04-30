@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  *
- * Revision $Revision: 9786 $
+ * Revision $Revision: 10778 $
  *
  */
 package net.sourceforge.plantuml.classdiagram.command;
@@ -44,17 +44,17 @@ import net.sourceforge.plantuml.skin.VisibilityModifier;
 
 public class CommandAddMethod extends SingleLineCommand<ClassDiagram> {
 
-	public CommandAddMethod(ClassDiagram diagram) {
-		super(diagram, "(?i)^([\\p{L}0-9_.]+|\"[^\"]+\")\\s*:\\s*(.*)$");
+	public CommandAddMethod() {
+		super("(?i)^([\\p{L}0-9_.]+|\"[^\"]+\")\\s*:\\s*(.*)$");
 	}
 
 	@Override
-	protected CommandExecutionResult executeArg(List<String> arg) {
-		final IEntity entity = getSystem().getOrCreateLeaf1(Code.of(arg.get(0)), null);
+	protected CommandExecutionResult executeArg(ClassDiagram system, List<String> arg) {
+		final IEntity entity = system.getOrCreateLeaf1(Code.of(arg.get(0)), null);
 
 		final String field = arg.get(1);
 		if (field.length() > 0 && VisibilityModifier.isVisibilityCharacter(field.charAt(0))) {
-			getSystem().setVisibilityModifierPresent(true);
+			system.setVisibilityModifierPresent(true);
 		}
 		entity.addFieldOrMethod(field);
 		return CommandExecutionResult.ok();

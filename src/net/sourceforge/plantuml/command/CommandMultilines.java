@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 10298 $
+ * Revision $Revision: 10778 $
  *
  */
 package net.sourceforge.plantuml.command;
@@ -39,24 +39,22 @@ import java.util.regex.Pattern;
 
 import net.sourceforge.plantuml.core.Diagram;
 
-public abstract class CommandMultilines<S extends Diagram> implements Command {
-
-	private final S system;
+public abstract class CommandMultilines<S extends Diagram> implements Command<S> {
 
 	private final Pattern starting;
+
 	// private final Pattern ending;
 
-	public CommandMultilines(final S system, String patternStart) {
+	public CommandMultilines(String patternStart) {
 		if (patternStart.startsWith("(?i)^") == false || patternStart.endsWith("$") == false) {
 			throw new IllegalArgumentException("Bad pattern " + patternStart);
 		}
-		this.system = system;
 		this.starting = Pattern.compile(patternStart);
 		// this.ending = Pattern.compile(getPatternEnd());
 	}
-	
+
 	public abstract String getPatternEnd();
-	
+
 	public String[] getDescription() {
 		return new String[] { "START: " + starting.pattern(), "END: " + getPatternEnd() };
 	}
@@ -89,24 +87,8 @@ public abstract class CommandMultilines<S extends Diagram> implements Command {
 	protected void actionIfCommandValid() {
 	}
 
-	protected S getSystem() {
-		return system;
-	}
-
 	protected final Pattern getStartingPattern() {
 		return starting;
-	}
-
-//	protected final Pattern getEnding() {
-//		return Pattern.compile(getPatternEnd());
-//	}
-
-	public boolean isDeprecated(List<String> line) {
-		return false;
-	}
-
-	public String getHelpMessageForDeprecated(List<String> lines) {
-		return null;
 	}
 
 }

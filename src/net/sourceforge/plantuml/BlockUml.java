@@ -90,12 +90,7 @@ public class BlockUml {
 	}
 
 	private void createSystem() {
-		if (OptionFlags.USE_1317) {
-			system = new PSystemBuilder1317().createPSystem(data);
-			return;
-		}
-		system = new PSystemBuilder().createPSystem(data);
-
+		system = new PSystemBuilder1317().createPSystem(data);
 	}
 
 }

@@ -41,13 +41,13 @@ import net.sourceforge.plantuml.sequencediagram.SequenceDiagram;
 
 public class CommandAutoactivate extends SingleLineCommand<SequenceDiagram> {
 
-	public CommandAutoactivate(SequenceDiagram sequenceDiagram) {
-		super(sequenceDiagram, "(?i)^autoactivate\\s+(off|on)*$");
+	public CommandAutoactivate() {
+		super("(?i)^autoactivate\\s+(off|on)*$");
 	}
 
 	@Override
-	protected CommandExecutionResult executeArg(List<String> arg) {
-		getSystem().setAutoactivate("on".equalsIgnoreCase(arg.get(0)));
+	protected CommandExecutionResult executeArg(SequenceDiagram sequenceDiagram, List<String> arg) {
+		sequenceDiagram.setAutoactivate("on".equalsIgnoreCase(arg.get(0)));
 		return CommandExecutionResult.ok();
 	}
 }

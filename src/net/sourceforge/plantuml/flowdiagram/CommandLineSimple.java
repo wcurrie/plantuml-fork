@@ -42,8 +42,8 @@ import net.sourceforge.plantuml.golem.TileGeometry;
 
 public class CommandLineSimple extends SingleLineCommand2<FlowDiagram> {
 
-	public CommandLineSimple(FlowDiagram diagram) {
-		super(diagram, getRegexConcat());
+	public CommandLineSimple() {
+		super(getRegexConcat());
 	}
 
 	private static RegexConcat getRegexConcat() {
@@ -56,7 +56,7 @@ public class CommandLineSimple extends SingleLineCommand2<FlowDiagram> {
 	}
 
 	@Override
-	protected CommandExecutionResult executeArg(RegexResult arg) {
+	protected CommandExecutionResult executeArg(FlowDiagram diagram, RegexResult arg) {
 		final String idDest = arg.get("ID_DEST", 0);
 		final String label = arg.get("LABEL", 0);
 		final String orientationString = arg.get("ORIENTATION", 0);
@@ -64,7 +64,7 @@ public class CommandLineSimple extends SingleLineCommand2<FlowDiagram> {
 		if (orientationString != null) {
 			orientation = TileGeometry.fromString(orientationString);
 		}
-		getSystem().lineSimple(orientation, idDest, label);
+		diagram.lineSimple(orientation, idDest, label);
 		return CommandExecutionResult.ok();
 	}
 

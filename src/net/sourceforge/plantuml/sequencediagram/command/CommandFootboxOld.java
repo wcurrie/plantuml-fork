@@ -41,14 +41,14 @@ import net.sourceforge.plantuml.sequencediagram.SequenceDiagram;
 
 public class CommandFootboxOld extends SingleLineCommand<SequenceDiagram> {
 
-	public CommandFootboxOld(SequenceDiagram sequenceDiagram) {
-		super(sequenceDiagram, "(?i)^footbox\\s*(on|off)?\\s*$");
+	public CommandFootboxOld() {
+		super("(?i)^footbox\\s*(on|off)?\\s*$");
 	}
 
 	@Override
-	protected CommandExecutionResult executeArg(List<String> arg) {
+	protected CommandExecutionResult executeArg(SequenceDiagram sequenceDiagram, List<String> arg) {
 		final boolean footbox = arg.get(0).equalsIgnoreCase("on");
-		getSystem().setShowFootbox(footbox);
+		sequenceDiagram.setShowFootbox(footbox);
 		return CommandExecutionResult.ok();
 	}
 }

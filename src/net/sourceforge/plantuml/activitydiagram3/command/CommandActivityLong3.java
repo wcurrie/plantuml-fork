@@ -48,8 +48,8 @@ import net.sourceforge.plantuml.graphic.HtmlColorUtils;
 
 public class CommandActivityLong3 extends CommandMultilines2<ActivityDiagram3> {
 
-	public CommandActivityLong3(final ActivityDiagram3 diagram) {
-		super(diagram, getRegexConcat(), MultilinesStrategy.REMOVE_STARTING_QUOTE);
+	public CommandActivityLong3() {
+		super(getRegexConcat(), MultilinesStrategy.REMOVE_STARTING_QUOTE);
 	}
 
 	@Override
@@ -65,12 +65,12 @@ public class CommandActivityLong3 extends CommandMultilines2<ActivityDiagram3> {
 				new RegexLeaf("$"));
 	}
 
-	public CommandExecutionResult executeNow(List<String> lines) {
+	public CommandExecutionResult executeNow(ActivityDiagram3 diagram, List<String> lines) {
 		final RegexResult line0 = getStartingPattern().matcher(lines.get(0).trim());
 		final HtmlColor color = HtmlColorUtils.getColorIfValid(line0.get("COLOR", 0));
 		removeStarting(lines, line0.get("DATA", 0));
 		removeEnding(lines);
-		getSystem().addActivity(new Display(lines), color);
+		diagram.addActivity(new Display(lines), color);
 		return CommandExecutionResult.ok();
 	}
 

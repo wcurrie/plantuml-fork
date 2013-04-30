@@ -34,11 +34,14 @@
 package net.sourceforge.plantuml.activitydiagram3.ftile.vertical;
 
 import java.awt.geom.Point2D;
+import java.util.Collection;
 
 import net.sourceforge.plantuml.activitydiagram3.LinkRendering;
+import net.sourceforge.plantuml.activitydiagram3.ftile.Connection;
 import net.sourceforge.plantuml.activitydiagram3.ftile.Ftile;
 import net.sourceforge.plantuml.graphic.StringBounder;
 import net.sourceforge.plantuml.graphic.TextBlock;
+import net.sourceforge.plantuml.ugraphic.UTranslate;
 
 public class FtileDecorateOut implements Ftile {
 
@@ -72,6 +75,14 @@ public class FtileDecorateOut implements Ftile {
 
 	public Point2D getPointOut(StringBounder stringBounder) {
 		return ftile.getPointOut(stringBounder);
+	}
+
+	public Collection<Connection> getInnerConnections() {
+		return ftile.getInnerConnections();
+	}
+
+	public UTranslate getTranslateFor(Ftile child, StringBounder stringBounder) {
+		return ftile.getTranslateFor(child, stringBounder);
 	}
 
 }

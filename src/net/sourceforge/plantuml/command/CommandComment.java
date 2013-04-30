@@ -39,12 +39,12 @@ import net.sourceforge.plantuml.core.Diagram;
 
 public class CommandComment extends SingleLineCommand<Diagram> {
 
-	public CommandComment(Diagram diagram) {
-		super(diagram, "(?i)^\\s*('.*||/'.*'/\\s*)$");
+	public CommandComment() {
+		super("(?i)^\\s*('.*||/'.*'/\\s*)$");
 	}
 
 	@Override
-	protected CommandExecutionResult executeArg(List<String> arg) {
+	protected CommandExecutionResult executeArg(Diagram diagram, List<String> arg) {
 		return CommandExecutionResult.ok();
 	}
 

@@ -41,13 +41,13 @@ import net.sourceforge.plantuml.sequencediagram.SequenceDiagram;
 
 public class CommandAutoNewpage extends SingleLineCommand<SequenceDiagram> {
 
-	public CommandAutoNewpage(SequenceDiagram sequenceDiagram) {
-		super(sequenceDiagram, "(?i)^autonewpage\\s+(\\d+)$");
+	public CommandAutoNewpage() {
+		super("(?i)^autonewpage\\s+(\\d+)$");
 	}
 
 	@Override
-	protected CommandExecutionResult executeArg(List<String> arg) {
-		getSystem().setAutonewpage(Integer.parseInt(arg.get(0)));
+	protected CommandExecutionResult executeArg(SequenceDiagram sequenceDiagram, List<String> arg) {
+		sequenceDiagram.setAutonewpage(Integer.parseInt(arg.get(0)));
 		return CommandExecutionResult.ok();
 	}
 }

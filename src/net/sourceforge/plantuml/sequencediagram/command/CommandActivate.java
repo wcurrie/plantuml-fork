@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 9786 $
+ * Revision $Revision: 10778 $
  *
  */
 package net.sourceforge.plantuml.sequencediagram.command;
@@ -45,16 +45,16 @@ import net.sourceforge.plantuml.sequencediagram.SequenceDiagram;
 
 public class CommandActivate extends SingleLineCommand<SequenceDiagram> {
 
-	public CommandActivate(SequenceDiagram sequenceDiagram) {
-		super(sequenceDiagram, "(?i)^(activate|deactivate|destroy|create)\\s+([\\p{L}0-9_.@]+|\"[^\"]+\")\\s*(#\\w+)?$");
+	public CommandActivate() {
+		super("(?i)^(activate|deactivate|destroy|create)\\s+([\\p{L}0-9_.@]+|\"[^\"]+\")\\s*(#\\w+)?$");
 	}
 
 	@Override
-	protected CommandExecutionResult executeArg(List<String> arg) {
+	protected CommandExecutionResult executeArg(SequenceDiagram sequenceDiagram, List<String> arg) {
 		final LifeEventType type = LifeEventType.valueOf(arg.get(0).toUpperCase());
-		final Participant p = getSystem().getOrCreateParticipant(
-				StringUtils.eventuallyRemoveStartingAndEndingDoubleQuote(arg.get(1)));
-		final String error = getSystem().activate(p, type, HtmlColorUtils.getColorIfValid(arg.get(2)));
+		final Participant p = sequenceDiagram.getOrCreateParticipant(StringUtils
+				.eventuallyRemoveStartingAndEndingDoubleQuote(arg.get(1)));
+		final String error = sequenceDiagram.activate(p, type, HtmlColorUtils.getColorIfValid(arg.get(2)));
 		if (error == null) {
 			return CommandExecutionResult.ok();
 		}

@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 9786 $
+ * Revision $Revision: 10765 $
  *
  */
 package net.sourceforge.plantuml.cucadiagram.dot;
@@ -42,12 +42,12 @@ import net.sourceforge.plantuml.Log;
 
 public class ProcessRunner {
 
-	private final String cmd;
+	private final String[] cmd;
 
 	private String error;
 	private String out;
 
-	public ProcessRunner(String cmd) {
+	public ProcessRunner(String[] cmd) {
 		this.cmd = cmd;
 	}
 

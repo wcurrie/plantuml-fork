@@ -43,17 +43,17 @@ import net.sourceforge.plantuml.cucadiagram.LeafType;
 
 public class CommandDiamondAssociation extends SingleLineCommand<ClassDiagram> {
 
-	public CommandDiamondAssociation(ClassDiagram diagram) {
-		super(diagram, "(?i)^\\<\\>\\s*([\\p{L}0-9_.]+)$");
+	public CommandDiamondAssociation() {
+		super("(?i)^\\<\\>\\s*([\\p{L}0-9_.]+)$");
 	}
 
 	@Override
-	protected CommandExecutionResult executeArg(List<String> arg) {
+	protected CommandExecutionResult executeArg(ClassDiagram diagram, List<String> arg) {
 		final Code code = Code.of(arg.get(0));
-		if (getSystem().leafExist(code)) {
+		if (diagram.leafExist(code)) {
 			return CommandExecutionResult.error("Already existing : "+code);
 		}
-		getSystem().createLeaf(code, null, LeafType.ASSOCIATION);
+		diagram.createLeaf(code, null, LeafType.ASSOCIATION);
 
 		return CommandExecutionResult.ok();
 	}

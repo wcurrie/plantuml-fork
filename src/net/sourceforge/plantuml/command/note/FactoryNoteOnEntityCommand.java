@@ -95,33 +95,33 @@ public final class FactoryNoteOnEntityCommand implements SingleMultiFactoryComma
 		);
 	}
 
-	public Command createSingleLine(final AbstractEntityDiagram system) {
-		return new SingleLineCommand2<AbstractEntityDiagram>(system, getRegexConcatSingleLine(partialPattern)) {
+	public Command<AbstractEntityDiagram> createSingleLine() {
+		return new SingleLineCommand2<AbstractEntityDiagram>(getRegexConcatSingleLine(partialPattern)) {
 
 			@Override
-			protected CommandExecutionResult executeArg(RegexResult arg) {
+			protected CommandExecutionResult executeArg(final AbstractEntityDiagram system, RegexResult arg) {
 				final String s = arg.get("NOTE", 0);
 				return executeInternal(arg, system, null, StringUtils.getWithNewlines2(s));
 			}
 		};
 	}
 
-	public Command createMultiLine(final AbstractEntityDiagram system) {
-		return new CommandMultilines2<AbstractEntityDiagram>(system, getRegexConcatMultiLine(partialPattern), MultilinesStrategy.KEEP_STARTING_QUOTE) {
+	public Command<AbstractEntityDiagram> createMultiLine() {
+		return new CommandMultilines2<AbstractEntityDiagram>(getRegexConcatMultiLine(partialPattern), MultilinesStrategy.KEEP_STARTING_QUOTE) {
 
 			@Override
 			public String getPatternEnd() {
 				return "(?i)^(end ?note|\\})$";
 			}
 
-			public CommandExecutionResult executeNow(List<String> lines) {
+			public CommandExecutionResult executeNow(final AbstractEntityDiagram system, List<String> lines) {
 				//StringUtils.trim(lines, false);
 				final RegexResult line0 = getStartingPattern().matcher(lines.get(0).trim());
 
 				List<String> strings = StringUtils.removeEmptyColumns(lines.subList(1, lines.size() - 1));
 				Url url = null;
 				if (strings.size() > 0) {
-					final UrlBuilder urlBuilder = new UrlBuilder(getSystem().getSkinParam().getValue("topurl"), true);
+					final UrlBuilder urlBuilder = new UrlBuilder(system.getSkinParam().getValue("topurl"), true);
 					url = urlBuilder.getUrl(strings.get(0));
 				}
 				if (url != null) {

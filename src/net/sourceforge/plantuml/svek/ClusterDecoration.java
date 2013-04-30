@@ -76,9 +76,9 @@ public class ClusterDecoration {
 		this.minY = minY;
 		this.maxX = maxX;
 		this.maxY = maxY;
-		if (stateBack instanceof HtmlColorTransparent) {
-			throw new UnsupportedOperationException();
-		}
+//		if (stateBack instanceof HtmlColorTransparent) {
+//			throw new UnsupportedOperationException();
+//		}
 	}
 
 	public void drawU(UGraphic ug, HtmlColor borderColor, boolean shadowing) {

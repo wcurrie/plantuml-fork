@@ -39,15 +39,11 @@ import net.sourceforge.plantuml.command.regex.RegexConcat;
 import net.sourceforge.plantuml.command.regex.RegexResult;
 import net.sourceforge.plantuml.core.Diagram;
 
-public abstract class SingleLineCommand2<S extends Diagram> implements Command {
+public abstract class SingleLineCommand2<S extends Diagram> implements Command<S> {
 
-	private final S system;
 	private final RegexConcat pattern;
 
-	public SingleLineCommand2(S system, RegexConcat pattern) {
-		if (system == null) {
-			throw new IllegalArgumentException();
-		}
+	public SingleLineCommand2(RegexConcat pattern) {
 		if (pattern == null) {
 			throw new IllegalArgumentException();
 		}
@@ -55,14 +51,9 @@ public abstract class SingleLineCommand2<S extends Diagram> implements Command {
 			throw new IllegalArgumentException("Bad pattern " + pattern.getPattern());
 		}
 
-		this.system = system;
 		this.pattern = pattern;
 	}
 
-	final protected S getSystem() {
-		return system;
-	}
-	
 	public String[] getDescription() {
 		return new String[] { pattern.getPattern() };
 	}
@@ -89,7 +80,7 @@ public abstract class SingleLineCommand2<S extends Diagram> implements Command {
 	protected void actionIfCommandValid() {
 	}
 
-	public final CommandExecutionResult execute(List<String> lines) {
+	public final CommandExecutionResult execute(S system, List<String> lines) {
 		if (lines.size() != 1) {
 			throw new IllegalArgumentException();
 		}
@@ -104,28 +95,13 @@ public abstract class SingleLineCommand2<S extends Diagram> implements Command {
 		}
 		// System.err.println("lines="+lines);
 		// System.err.println("pattern="+pattern.getPattern());
-		return executeArg(arg);
+		return executeArg(system, arg);
 	}
 
 	protected boolean isForbidden(String line) {
 		return false;
 	}
 
-	protected abstract CommandExecutionResult executeArg(RegexResult arg);
-
-	final public boolean isDeprecated(List<String> lines) {
-		if (lines.size() != 1) {
-			return false;
-		}
-		return isDeprecated(lines.get(0));
-	}
-
-	public String getHelpMessageForDeprecated(List<String> lines) {
-		return null;
-	}
-
-	protected boolean isDeprecated(String line) {
-		return false;
-	}
+	protected abstract CommandExecutionResult executeArg(S system, RegexResult arg);
 
 }

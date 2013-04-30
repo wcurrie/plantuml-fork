@@ -452,14 +452,18 @@ public class Line implements Moveable, Hideable {
 
 		if (this.startTailText != null) {
 			final Point2D pos = getXY(svg, this.startTailColor, fullHeight);
-			corner1.manage(pos);
-			this.startTailLabelXY = TextBlockUtils.asPositionable(startTailText, stringBounder, pos);
+			if (pos != null) {
+				corner1.manage(pos);
+				this.startTailLabelXY = TextBlockUtils.asPositionable(startTailText, stringBounder, pos);
+			}
 		}
 
 		if (this.endHeadText != null) {
 			final Point2D pos = getXY(svg, this.endHeadColor, fullHeight);
-			corner1.manage(pos);
-			this.endHeadLabelXY = TextBlockUtils.asPositionable(endHeadText, stringBounder, pos);
+			if (pos != null) {
+				corner1.manage(pos);
+				this.endHeadLabelXY = TextBlockUtils.asPositionable(endHeadText, stringBounder, pos);
+			}
 		}
 
 		if (isOpalisable() == false) {
@@ -669,10 +673,10 @@ public class Line implements Moveable, Hideable {
 
 		for (Shape sh : allShapes) {
 			final Positionable cl = PositionableUtils.addMargin(sh, 8, 8);
-			if (startTailText != null && PositionableUtils.intersect(cl, startTailLabelXY)) {
+			if (startTailText != null && startTailLabelXY != null && PositionableUtils.intersect(cl, startTailLabelXY)) {
 				startTailLabelXY = PositionableUtils.moveAwayFrom(cl, startTailLabelXY);
 			}
-			if (endHeadText != null && PositionableUtils.intersect(cl, endHeadLabelXY)) {
+			if (endHeadText != null && endHeadLabelXY != null && PositionableUtils.intersect(cl, endHeadLabelXY)) {
 				endHeadLabelXY = PositionableUtils.moveAwayFrom(cl, endHeadLabelXY);
 			}
 		}

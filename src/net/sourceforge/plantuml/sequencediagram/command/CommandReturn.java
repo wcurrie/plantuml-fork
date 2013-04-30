@@ -46,17 +46,17 @@ import net.sourceforge.plantuml.skin.ArrowConfiguration;
 
 public class CommandReturn extends SingleLineCommand<SequenceDiagram> {
 
-	public CommandReturn(SequenceDiagram sequenceDiagram) {
-		super(sequenceDiagram, "(?i)^return\\s*(.*)$");
+	public CommandReturn() {
+		super("(?i)^return\\s*(.*)$");
 	}
 
 	@Override
-	protected CommandExecutionResult executeArg(List<String> arg) {
+	protected CommandExecutionResult executeArg(SequenceDiagram sequenceDiagram, List<String> arg) {
 
-		Message message = getSystem().getActivatingMessage();
+		Message message = sequenceDiagram.getActivatingMessage();
 		boolean doDeactivation = true;
 		if (message == null) {
-			final AbstractMessage last = getSystem().getLastMessage();
+			final AbstractMessage last = sequenceDiagram.getLastMessage();
 			if (last instanceof Message == false) {
 				return CommandExecutionResult.error("Nowhere to return to.");
 			}
@@ -66,12 +66,12 @@ public class CommandReturn extends SingleLineCommand<SequenceDiagram> {
 
 		final ArrowConfiguration arrow = message.getArrowConfiguration().withDotted();
 
-		getSystem().addMessage(
+		sequenceDiagram.addMessage(
 				new Message(message.getParticipant2(), message.getParticipant1(), Display.getWithNewlines(arg
-				.get(0)), arrow, getSystem().getNextMessageNumber()));
+				.get(0)), arrow, sequenceDiagram.getNextMessageNumber()));
 
 		if (doDeactivation) {
-			final String error = getSystem().activate(message.getParticipant2(), LifeEventType.DEACTIVATE, null);
+			final String error = sequenceDiagram.activate(message.getParticipant2(), LifeEventType.DEACTIVATE, null);
 			if (error != null) {
 				return CommandExecutionResult.error(error);
 			}

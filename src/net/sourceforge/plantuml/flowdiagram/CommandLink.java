@@ -42,8 +42,8 @@ import net.sourceforge.plantuml.golem.TileGeometry;
 
 public class CommandLink extends SingleLineCommand2<FlowDiagram> {
 
-	public CommandLink(FlowDiagram diagram) {
-		super(diagram, getRegexConcat());
+	public CommandLink() {
+		super(getRegexConcat());
 	}
 
 	private static RegexConcat getRegexConcat() {
@@ -54,14 +54,14 @@ public class CommandLink extends SingleLineCommand2<FlowDiagram> {
 	}
 
 	@Override
-	protected CommandExecutionResult executeArg(RegexResult arg) {
+	protected CommandExecutionResult executeArg(FlowDiagram system, RegexResult arg) {
 		final String idDest = arg.get("ID_DEST", 0);
 		final String orientationString = arg.get("ORIENTATION", 0);
 		TileGeometry orientation = TileGeometry.SOUTH;
 		if (orientationString != null) {
 			orientation = TileGeometry.fromString(orientationString);
 		}
-		getSystem().linkSimple(orientation, idDest);
+		system.linkSimple(orientation, idDest);
 		return CommandExecutionResult.ok();
 	}
 

@@ -41,17 +41,17 @@ import net.sourceforge.plantuml.command.SingleLineCommand;
 
 public class CommandNamespaceSeparator extends SingleLineCommand<ClassDiagram> {
 
-	public CommandNamespaceSeparator(ClassDiagram diagram) {
-		super(diagram, "(?i)^set namespaceseparator (\\S+)$");
+	public CommandNamespaceSeparator() {
+		super("(?i)^set namespaceseparator (\\S+)$");
 	}
 
 	@Override
-	protected CommandExecutionResult executeArg(List<String> arg) {
+	protected CommandExecutionResult executeArg(ClassDiagram diagram, List<String> arg) {
 		final String s = arg.get(0);
 		if ("none".equalsIgnoreCase(s)) {
-			getSystem().setNamespaceSeparator(null);
+			diagram.setNamespaceSeparator(null);
 		} else {
-			getSystem().setNamespaceSeparator(s);
+			diagram.setNamespaceSeparator(s);
 		}
 		return CommandExecutionResult.ok();
 	}

@@ -34,24 +34,14 @@
 package net.sourceforge.plantuml.sequencediagram;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import net.sourceforge.plantuml.AbstractPSystem;
-import net.sourceforge.plantuml.ErrorUml;
-import net.sourceforge.plantuml.ErrorUmlType;
-import net.sourceforge.plantuml.PSystemError;
-import net.sourceforge.plantuml.StartUtils;
 import net.sourceforge.plantuml.command.Command;
-import net.sourceforge.plantuml.command.CommandControl;
-import net.sourceforge.plantuml.command.CommandExecutionResult;
-import net.sourceforge.plantuml.command.PSystemCommandFactory1317;
-import net.sourceforge.plantuml.command.ProtectedCommand;
+import net.sourceforge.plantuml.command.UmlDiagramFactory1317;
 import net.sourceforge.plantuml.command.note.sequence.FactorySequenceNoteCommand;
 import net.sourceforge.plantuml.command.note.sequence.FactorySequenceNoteOnArrowCommand;
 import net.sourceforge.plantuml.command.note.sequence.FactorySequenceNoteOverSeveralCommand;
-import net.sourceforge.plantuml.core.Diagram;
-import net.sourceforge.plantuml.core.UmlSource;
 import net.sourceforge.plantuml.sequencediagram.command.CommandActivate;
 import net.sourceforge.plantuml.sequencediagram.command.CommandActivate2;
 import net.sourceforge.plantuml.sequencediagram.command.CommandArrow;
@@ -79,173 +69,77 @@ import net.sourceforge.plantuml.sequencediagram.command.CommandReferenceOverSeve
 import net.sourceforge.plantuml.sequencediagram.command.CommandReturn;
 import net.sourceforge.plantuml.sequencediagram.command.CommandSkin;
 import net.sourceforge.plantuml.sequencediagram.command.CommandUrl;
-import net.sourceforge.plantuml.version.IteratorCounter;
 
-public class SequenceDiagramFactory1317 extends PSystemCommandFactory1317<SequenceDiagram> {
+public class SequenceDiagramFactory1317 extends UmlDiagramFactory1317 {
 
 	@Override
-	protected SequenceDiagram initCommands(List<Command> cmds) {
-		final SequenceDiagram system = new SequenceDiagram();
-
-		addCommonCommands(system, cmds);
-
-		addCommand(new CommandActivate(system), cmds);
-
-		addCommand(new CommandParticipantA(system), cmds);
-		addCommand(new CommandParticipantA2(system), cmds);
-		addCommand(new CommandParticipantA3(system), cmds);
-		addCommand(new CommandParticipantA4(system), cmds);
-		addCommand(new CommandArrow(system), cmds);
-		// addCommand(new CommandArrowCrossX(system));
-		addCommand(new CommandExoArrowLeft(system), cmds);
-		addCommand(new CommandExoArrowRight(system), cmds);
-
-		final FactorySequenceNoteCommand factorySequenceNoteCommand = new FactorySequenceNoteCommand();
-		addCommand(factorySequenceNoteCommand.createSingleLine(system), cmds);
-
-		final FactorySequenceNoteOverSeveralCommand factorySequenceNoteOverSeveralCommand = new FactorySequenceNoteOverSeveralCommand();
-		addCommand(factorySequenceNoteOverSeveralCommand.createSingleLine(system), cmds);
-
-		addCommand(new CommandBoxStart(system), cmds);
-		addCommand(new CommandBoxEnd(system), cmds);
-		addCommand(new CommandGrouping(system), cmds);
-
-		addCommand(new CommandActivate2(system), cmds);
-		addCommand(new CommandReturn(system), cmds);
-
-		final FactorySequenceNoteOnArrowCommand factorySequenceNoteOnArrowCommand = new FactorySequenceNoteOnArrowCommand();
-		addCommand(factorySequenceNoteOnArrowCommand.createSingleLine(system), cmds);
-
-		addCommand(factorySequenceNoteCommand.createMultiLine(system), cmds);
-		addCommand(factorySequenceNoteOverSeveralCommand.createMultiLine(system), cmds);
-		addCommand(factorySequenceNoteOnArrowCommand.createMultiLine(system), cmds);
-
-		addCommand(new CommandNewpage(system), cmds);
-		addCommand(new CommandIgnoreNewpage(system), cmds);
-		addCommand(new CommandAutoNewpage(system), cmds);
-		addCommand(new CommandDivider(system), cmds);
-		addCommand(new CommandHSpace(system), cmds);
-		addCommand(new CommandReferenceOverSeveral(system), cmds);
-		addCommand(new CommandReferenceMultilinesOverSeveral(system), cmds);
-		addCommand(new CommandSkin(system), cmds);
-		addCommand(new CommandAutonumber(system), cmds);
-		addCommand(new CommandAutoactivate(system), cmds);
-		addCommand(new CommandFootbox(system), cmds);
-		addCommand(new CommandDelay(system), cmds);
-		addCommand(new CommandFootboxOld(system), cmds);
-		addCommand(new CommandUrl(system), cmds);
-		
-		return system;
+	public SequenceDiagram createEmptyDiagram() {
+		return new SequenceDiagram();
 	}
 
 	@Override
-	public String checkFinalError(SequenceDiagram system) {
+	protected List<Command> createCommands() {
+
+		final List<Command> cmds = new ArrayList<Command>();
+
+		addCommonCommands(cmds);
+
+		cmds.add(new CommandActivate());
+
+		cmds.add(new CommandParticipantA());
+		cmds.add(new CommandParticipantA2());
+		cmds.add(new CommandParticipantA3());
+		cmds.add(new CommandParticipantA4());
+		cmds.add(new CommandArrow());
+		// addCommand(new CommandArrowCrossX());
+		cmds.add(new CommandExoArrowLeft());
+		cmds.add(new CommandExoArrowRight());
+
+		final FactorySequenceNoteCommand factorySequenceNoteCommand = new FactorySequenceNoteCommand();
+		cmds.add(factorySequenceNoteCommand.createSingleLine());
+
+		final FactorySequenceNoteOverSeveralCommand factorySequenceNoteOverSeveralCommand = new FactorySequenceNoteOverSeveralCommand();
+		cmds.add(factorySequenceNoteOverSeveralCommand.createSingleLine());
+
+		cmds.add(new CommandBoxStart());
+		cmds.add(new CommandBoxEnd());
+		cmds.add(new CommandGrouping());
+
+		cmds.add(new CommandActivate2());
+		cmds.add(new CommandReturn());
+
+		final FactorySequenceNoteOnArrowCommand factorySequenceNoteOnArrowCommand = new FactorySequenceNoteOnArrowCommand();
+		cmds.add(factorySequenceNoteOnArrowCommand.createSingleLine());
+
+		cmds.add(factorySequenceNoteCommand.createMultiLine());
+		cmds.add(factorySequenceNoteOverSeveralCommand.createMultiLine());
+		cmds.add(factorySequenceNoteOnArrowCommand.createMultiLine());
+
+		cmds.add(new CommandNewpage());
+		cmds.add(new CommandIgnoreNewpage());
+		cmds.add(new CommandAutoNewpage());
+		cmds.add(new CommandDivider());
+		cmds.add(new CommandHSpace());
+		cmds.add(new CommandReferenceOverSeveral());
+		cmds.add(new CommandReferenceMultilinesOverSeveral());
+		cmds.add(new CommandSkin());
+		cmds.add(new CommandAutonumber());
+		cmds.add(new CommandAutoactivate());
+		cmds.add(new CommandFootbox());
+		cmds.add(new CommandDelay());
+		cmds.add(new CommandFootboxOld());
+		cmds.add(new CommandUrl());
+
+		return cmds;
+	}
+
+	@Override
+	public String checkFinalError(AbstractPSystem sys) {
+		final SequenceDiagram system = (SequenceDiagram) sys;
 		if (system.isHideUnlinkedData()) {
 			system.removeHiddenParticipants();
 		}
 		return super.checkFinalError(system);
-	}
-
-	private AbstractPSystem buildEmptyError(UmlSource source) {
-		final PSystemError result = new PSystemError(source, new ErrorUml(ErrorUmlType.SYNTAX_ERROR,
-				"Empty description", 1));
-		result.setSource(source);
-		return result;
-	}
-
-	private PSystemError buildEmptyError(UmlSource source, String err) {
-		final PSystemError result = new PSystemError(source, new ErrorUml(ErrorUmlType.EXECUTION_ERROR, err, 1));
-		result.setSource(source);
-		return result;
-	}
-
-	public Diagram createSystem(UmlSource source) {
-		final IteratorCounter it = source.iterator();
-		final String startLine = it.next();
-		if (StartUtils.isArobaseStartDiagram(startLine) == false) {
-			throw new UnsupportedOperationException();
-		}
-
-		if (source.isEmpty()) {
-			return buildEmptyError(source);
-		}
-		List<Command> cmds = new ArrayList<Command>();
-		final SequenceDiagram sys = initCommands(cmds);
-		// systemFactory.init(startLine);
-		while (it.hasNext()) {
-			final String s = it.next();
-			if (StartUtils.isArobaseEndDiagram(s)) {
-				final String err = checkFinalError(sys);
-				if (err != null) {
-					return buildEmptyError(source, err);
-				}
-				if (source.getTotalLineCount() == 2) {
-					return buildEmptyError(source);
-				}
-				if (sys == null) {
-					return null;
-				}
-				sys.makeDiagramReady();
-				sys.setSource(source);
-				return sys;
-			}
-			final CommandControl commandControl = isValid(Arrays.asList(s), cmds);
-			if (commandControl == CommandControl.NOT_OK) {
-				final ErrorUml err = new ErrorUml(ErrorUmlType.SYNTAX_ERROR, "Syntax Error?", it.currentNum() - 1);
-				// if (OptionFlags.getInstance().isUseSuggestEngine()) {
-				// final SuggestEngine engine = new SuggestEngine(source,
-				// systemFactory);
-				// final SuggestEngineResult result = engine.tryToSuggest();
-				// if (result.getStatus() == SuggestEngineStatus.ONE_SUGGESTION)
-				// {
-				// err.setSuggest(result);
-				// }
-				// }
-				return new PSystemError(source, err);
-			} else if (commandControl == CommandControl.OK_PARTIAL) {
-				final boolean ok = manageMultiline(s, it, cmds);
-				if (ok == false) {
-					return new PSystemError(source, new ErrorUml(ErrorUmlType.EXECUTION_ERROR, "Syntax Error?", it
-							.currentNum() - 1));
-
-				}
-			} else if (commandControl == CommandControl.OK) {
-				final Command cmd = new ProtectedCommand(createCommand(Arrays.asList(s), cmds));
-				final CommandExecutionResult result = cmd.execute(Arrays.asList(s));
-				if (result.isOk() == false) {
-					return new PSystemError(source, new ErrorUml(ErrorUmlType.EXECUTION_ERROR, result.getError(), it
-							.currentNum() - 1));
-				}
-			} else {
-				assert false;
-			}
-		}
-		sys.setSource(source);
-		return sys;
-
-	}
-
-	private boolean manageMultiline(final String init, IteratorCounter it, List<Command> cmds) {
-		final List<String> lines = new ArrayList<String>();
-		lines.add(init);
-		while (it.hasNext()) {
-			final String s = it.next();
-			if (StartUtils.isArobaseEndDiagram(s)) {
-				return false;
-			}
-			lines.add(s);
-			final CommandControl commandControl = isValid(lines, cmds);
-			if (commandControl == CommandControl.NOT_OK) {
-				// throw new IllegalStateException();
-				return false;
-			}
-			if (commandControl == CommandControl.OK) {
-				final Command cmd = createCommand(lines, cmds);
-				return cmd.execute(lines).isOk();
-			}
-		}
-		return false;
-
 	}
 
 }

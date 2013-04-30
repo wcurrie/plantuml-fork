@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  *
- * Revision $Revision: 9786 $
+ * Revision $Revision: 10778 $
  *
  */
 package net.sourceforge.plantuml.classdiagram.command;
@@ -49,20 +49,20 @@ import net.sourceforge.plantuml.cucadiagram.LinkType;
 
 public class CommandImport extends SingleLineCommand<ClassDiagram> {
 
-	public CommandImport(ClassDiagram classDiagram) {
-		super(classDiagram, "(?i)^import\\s+\"?([^\"]+)\"?$");
+	public CommandImport() {
+		super("(?i)^import\\s+\"?([^\"]+)\"?$");
 	}
 
 	@Override
-	protected CommandExecutionResult executeArg(List<String> arg) {
+	protected CommandExecutionResult executeArg(ClassDiagram classDiagram, List<String> arg) {
 		final String arg0 = arg.get(0);
 		try {
 			final File f = FileSystem.getInstance().getFile(arg0);
 
 			if (f.isFile()) {
-				includeSimpleFile(f);
+				includeSimpleFile(classDiagram, f);
 			} else if (f.isDirectory()) {
-				includeDirectory(f);
+				includeDirectory(classDiagram, f);
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -71,35 +71,32 @@ public class CommandImport extends SingleLineCommand<ClassDiagram> {
 		return CommandExecutionResult.ok();
 	}
 
-	private void includeDirectory(File dir) throws IOException {
+	private void includeDirectory(ClassDiagram classDiagram, File dir) throws IOException {
 		for (File f : dir.listFiles()) {
-			includeSimpleFile(f);
+			includeSimpleFile(classDiagram, f);
 		}
 
 	}
 
-	private void includeSimpleFile(File f) throws IOException {
+	private void includeSimpleFile(ClassDiagram classDiagram, File f) throws IOException {
 		if (f.getName().toLowerCase().endsWith(".java")) {
-			includeFileJava(f);
+			includeFileJava(classDiagram, f);
 		}
 		// if (f.getName().toLowerCase().endsWith(".sql")) {
 		// includeFileSql(f);
 		// }
 	}
 
-	private void includeFileJava(final File f) throws IOException {
+	private void includeFileJava(ClassDiagram classDiagram, final File f) throws IOException {
 		final JavaFile javaFile = new JavaFile(f);
 		for (JavaClass cl : javaFile.getJavaClasses()) {
 			final Code name = Code.of(cl.getName());
-			final IEntity ent1 = getSystem()
-					.getOrCreateLeaf1(name, cl.getType());
+			final IEntity ent1 = classDiagram.getOrCreateLeaf1(name, cl.getType());
 
 			for (String p : cl.getParents()) {
-				final IEntity ent2 = getSystem().getOrCreateLeaf1(Code.of(p),
-						cl.getParentType());
-				final Link link = new Link(ent2, ent1, new LinkType(
-						LinkDecor.NONE, LinkDecor.EXTENDS), null, 2);
-				getSystem().addLink(link);
+				final IEntity ent2 = classDiagram.getOrCreateLeaf1(Code.of(p), cl.getParentType());
+				final Link link = new Link(ent2, ent1, new LinkType(LinkDecor.NONE, LinkDecor.EXTENDS), null, 2);
+				classDiagram.addLink(link);
 			}
 		}
 	}

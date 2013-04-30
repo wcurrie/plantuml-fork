@@ -72,20 +72,20 @@ public final class FactoryNoteOnLinkCommand implements SingleMultiFactoryCommand
 				new RegexLeaf("$"));
 	}
 
-	public Command createMultiLine(final CucaDiagram system) {
-		return new CommandMultilines2<CucaDiagram>(system, getRegexConcatMultiLine(), MultilinesStrategy.KEEP_STARTING_QUOTE) {
+	public Command<CucaDiagram> createMultiLine() {
+		return new CommandMultilines2<CucaDiagram>(getRegexConcatMultiLine(), MultilinesStrategy.KEEP_STARTING_QUOTE) {
 
 			@Override
 			public String getPatternEnd() {
 				return "(?i)^end ?note$";
 			}
 
-			public CommandExecutionResult executeNow(List<String> lines) {
+			public CommandExecutionResult executeNow(final CucaDiagram system, List<String> lines) {
 				final List<String> strings = StringUtils.removeEmptyColumns(lines.subList(1, lines.size() - 1));
 				if (strings.size() > 0) {
 					final List<CharSequence> note = StringUtils.manageEmbededDiagrams2(strings);
 					final RegexResult arg = getStartingPattern().matcher(lines.get(0));
-					return executeInternal(getSystem(), note, arg);
+					return executeInternal(system, note, arg);
 				}
 				return CommandExecutionResult.error("No note defined");
 			}
@@ -93,13 +93,13 @@ public final class FactoryNoteOnLinkCommand implements SingleMultiFactoryCommand
 		};
 	}
 
-	public Command createSingleLine(final CucaDiagram system) {
-		return new SingleLineCommand2<CucaDiagram>(system, getRegexConcatSingleLine()) {
+	public Command<CucaDiagram> createSingleLine() {
+		return new SingleLineCommand2<CucaDiagram>(getRegexConcatSingleLine()) {
 
 			@Override
-			protected CommandExecutionResult executeArg(RegexResult arg) {
+			protected CommandExecutionResult executeArg(final CucaDiagram system, RegexResult arg) {
 				final List<String> note = StringUtils.getWithNewlines2(arg.get("NOTE", 0));
-				return executeInternal(getSystem(), note, arg);
+				return executeInternal(system, note, arg);
 			}
 		};
 	}

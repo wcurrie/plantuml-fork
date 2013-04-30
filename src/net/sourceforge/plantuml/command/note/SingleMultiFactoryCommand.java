@@ -38,8 +38,8 @@ import net.sourceforge.plantuml.core.Diagram;
 
 public interface SingleMultiFactoryCommand<D extends Diagram> {
 
-	public Command createSingleLine(final D system);
+	public Command<D> createSingleLine();
 
-	public Command createMultiLine(final D system);
+	public Command<D> createMultiLine();
 
 }

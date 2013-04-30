@@ -52,8 +52,8 @@ import net.sourceforge.plantuml.cucadiagram.LinkType;
 
 public class CommandIf extends SingleLineCommand2<ActivityDiagram> {
 
-	public CommandIf(ActivityDiagram diagram) {
-		super(diagram, getRegexConcat());
+	public CommandIf() {
+		super(getRegexConcat());
 	}
 
 	static RegexConcat getRegexConcat() {
@@ -76,8 +76,8 @@ public class CommandIf extends SingleLineCommand2<ActivityDiagram> {
 	}
 
 	@Override
-	protected CommandExecutionResult executeArg(RegexResult arg) {
-		final IEntity entity1 = CommandLinkActivity.getEntity(getSystem(), arg, true);
+	protected CommandExecutionResult executeArg(ActivityDiagram system, RegexResult arg) {
+		final IEntity entity1 = CommandLinkActivity.getEntity(system, arg, true);
 		if (entity1 == null) {
 			return CommandExecutionResult.error("No if possible at this point");
 		}
@@ -91,7 +91,7 @@ public class CommandIf extends SingleLineCommand2<ActivityDiagram> {
 			ifCode = null;
 			ifLabel = arg.get("IF2", 0);
 		}
-		getSystem().startIf(Code.of(ifCode));
+		system.startIf(Code.of(ifCode));
 
 		int lenght = 2;
 
@@ -100,11 +100,11 @@ public class CommandIf extends SingleLineCommand2<ActivityDiagram> {
 			lenght = arrow.length() - 1;
 		}
 
-		final IEntity branch = getSystem().getCurrentContext().getBranch();
+		final IEntity branch = system.getCurrentContext().getBranch();
 
 		Link link = new Link(entity1, branch, new LinkType(LinkDecor.ARROW, LinkDecor.NONE),
-				Display.getWithNewlines(arg.get("BRACKET", 0)), lenght, null, ifLabel, getSystem().getLabeldistance(),
-				getSystem().getLabelangle());
+				Display.getWithNewlines(arg.get("BRACKET", 0)), lenght, null, ifLabel, system.getLabeldistance(),
+				system.getLabelangle());
 		if (arg.get("ARROW", 0) != null) {
 			final Direction direction = StringUtils.getArrowDirection(arg.get("ARROW", 0));
 			if (direction == Direction.LEFT || direction == Direction.UP) {
@@ -112,7 +112,7 @@ public class CommandIf extends SingleLineCommand2<ActivityDiagram> {
 			}
 		}
 
-		getSystem().addLink(link);
+		system.addLink(link);
 
 		return CommandExecutionResult.ok();
 	}

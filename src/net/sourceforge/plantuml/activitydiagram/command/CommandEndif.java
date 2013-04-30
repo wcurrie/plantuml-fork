@@ -41,19 +41,19 @@ import net.sourceforge.plantuml.command.SingleLineCommand;
 
 public class CommandEndif extends SingleLineCommand<ActivityDiagram> {
 
-	public CommandEndif(ActivityDiagram diagram) {
-		super(diagram, "(?i)^end ?if$");
+	public CommandEndif() {
+		super("(?i)^end ?if$");
 	}
 
 	@Override
-	protected CommandExecutionResult executeArg(List<String> arg) {
-		if (getSystem().getLastEntityConsulted() == null) {
+	protected CommandExecutionResult executeArg(ActivityDiagram diagram, List<String> arg) {
+		if (diagram.getLastEntityConsulted() == null) {
 			return CommandExecutionResult.error("No if for this endif");
 		}
-		if (getSystem().getCurrentContext() == null) {
+		if (diagram.getCurrentContext() == null) {
 			return CommandExecutionResult.error("No if for this endif");
 		}
-		getSystem().endif();
+		diagram.endif();
 
 		return CommandExecutionResult.ok();
 	}

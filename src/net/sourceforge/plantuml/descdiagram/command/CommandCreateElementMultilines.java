@@ -59,8 +59,8 @@ public class CommandCreateElementMultilines extends CommandMultilines2<Descripti
 		EXTENDS, IMPLEMENTS
 	};
 
-	public CommandCreateElementMultilines(DescriptionDiagram diagram) {
-		super(diagram, getRegexConcat(), MultilinesStrategy.REMOVE_STARTING_QUOTE);
+	public CommandCreateElementMultilines() {
+		super(getRegexConcat(), MultilinesStrategy.REMOVE_STARTING_QUOTE);
 	}
 
 	@Override
@@ -79,7 +79,7 @@ public class CommandCreateElementMultilines extends CommandMultilines2<Descripti
 				new RegexLeaf("DESC", "as\\s*\"(.*)$"));
 	}
 
-	public CommandExecutionResult executeNow(List<String> lines) {
+	public CommandExecutionResult executeNow(DescriptionDiagram system, List<String> lines) {
 		StringUtils.trim(lines, false);
 		final RegexResult line0 = getStartingPattern().matcher(lines.get(0).trim());
 		final String symbol = line0.get("TYPE", 0).toUpperCase();
@@ -111,11 +111,11 @@ public class CommandCreateElementMultilines extends CommandMultilines2<Descripti
 
 		final String stereotype = line0.get("STEREO", 0);
 
-		final ILeaf result = getSystem().createLeaf(code, display, type);
+		final ILeaf result = system.createLeaf(code, display, type);
 		result.setUSymbol(usymbol);
 		if (stereotype != null) {
-			result.setStereotype(new Stereotype(stereotype, getSystem().getSkinParam().getCircledCharacterRadius(),
-					getSystem().getSkinParam().getFont(FontParam.CIRCLED_CHARACTER, null)));
+			result.setStereotype(new Stereotype(stereotype, system.getSkinParam().getCircledCharacterRadius(),
+					system.getSkinParam().getFont(FontParam.CIRCLED_CHARACTER, null)));
 		}
 
 		result.setSpecificBackcolor(HtmlColorUtils.getColorIfValid(line0.get("COLOR", 0)));

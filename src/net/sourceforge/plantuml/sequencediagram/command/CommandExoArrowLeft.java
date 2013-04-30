@@ -34,13 +34,11 @@
 package net.sourceforge.plantuml.sequencediagram.command;
 
 import net.sourceforge.plantuml.sequencediagram.MessageExoType;
-import net.sourceforge.plantuml.sequencediagram.SequenceDiagram;
 
 public class CommandExoArrowLeft extends CommandExoArrowAny {
 
-	public CommandExoArrowLeft(SequenceDiagram sequenceDiagram) {
+	public CommandExoArrowLeft() {
 		super(
-				sequenceDiagram,
 				"(?i)^(\\[?[=-]+(?:>>?|//?|\\\\\\\\?)|\\[?(?:<<?|//?|\\\\\\\\?)[=-]+)\\s*([\\p{L}0-9_.@]+|\"[^\"]+\")\\s*(?::\\s*(.*))?$",
 				0, 1);
 	}

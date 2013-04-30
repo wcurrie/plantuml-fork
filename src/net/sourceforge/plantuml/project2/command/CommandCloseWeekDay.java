@@ -41,12 +41,12 @@ import net.sourceforge.plantuml.project2.PSystemProject2;
 
 public class CommandCloseWeekDay extends SingleLineCommand<PSystemProject2> {
 
-	public CommandCloseWeekDay(PSystemProject2 diagram) {
-		super(diagram, "(?i)^\\s*close\\s+(\\w{3,}day)\\s*$");
+	public CommandCloseWeekDay() {
+		super("(?i)^\\s*close\\s+(\\w{3,}day)\\s*$");
 	}
 
 	@Override
-	protected CommandExecutionResult executeArg(List<String> arg) {
+	protected CommandExecutionResult executeArg(PSystemProject2 diagram, List<String> arg) {
 		// final WeekDay weekDay = WeekDay.valueOf(arg.get(0).substring(0, 3).toUpperCase());
 //		getSystem().getProject().closeWeekDay(weekDay);
 		return CommandExecutionResult.ok();

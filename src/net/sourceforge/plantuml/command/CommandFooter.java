@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 9786 $
+ * Revision $Revision: 10778 $
  *
  */
 package net.sourceforge.plantuml.command;
@@ -41,17 +41,17 @@ import net.sourceforge.plantuml.graphic.HorizontalAlignement;
 
 public class CommandFooter extends SingleLineCommand<UmlDiagram> {
 
-	public CommandFooter(UmlDiagram diagram) {
-		super(diagram, "(?i)^(?:(left|right|center)?\\s*)footer(?:\\s*:\\s*|\\s+)(.*[\\p{L}0-9_.].*)$");
+	public CommandFooter() {
+		super("(?i)^(?:(left|right|center)?\\s*)footer(?:\\s*:\\s*|\\s+)(.*[\\p{L}0-9_.].*)$");
 	}
 
 	@Override
-	protected CommandExecutionResult executeArg(List<String> arg) {
+	protected CommandExecutionResult executeArg(UmlDiagram diagram, List<String> arg) {
 		final String align = arg.get(0);
 		if (align != null) {
-			getSystem().setFooterAlignement(HorizontalAlignement.valueOf(align.toUpperCase()));
+			diagram.setFooterAlignement(HorizontalAlignement.valueOf(align.toUpperCase()));
 		}
-		getSystem().setFooter(Display.getWithNewlines(arg.get(1)));
+		diagram.setFooter(Display.getWithNewlines(arg.get(1)));
 		return CommandExecutionResult.ok();
 	}
 

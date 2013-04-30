@@ -72,33 +72,33 @@ public final class FactoryNoteCommand implements SingleMultiFactoryCommand<Abstr
 
 	}
 
-	public Command createSingleLine(final AbstractEntityDiagram system) {
-		return new SingleLineCommand2<AbstractEntityDiagram>(system, getRegexConcatSingleLine()) {
+	public Command<AbstractEntityDiagram> createSingleLine() {
+		return new SingleLineCommand2<AbstractEntityDiagram>(getRegexConcatSingleLine()) {
 
 			@Override
-			protected CommandExecutionResult executeArg(RegexResult arg) {
+			protected CommandExecutionResult executeArg(final AbstractEntityDiagram system, RegexResult arg) {
 				final String display = arg.get("DISPLAY", 0);
-				return executeInternal(getSystem(), arg, StringUtils.getWithNewlines2(display));
+				return executeInternal(system, arg, StringUtils.getWithNewlines2(display));
 			}
 
 		};
 	}
 
-	public Command createMultiLine(final AbstractEntityDiagram system) {
-		return new CommandMultilines2<AbstractEntityDiagram>(system, getRegexConcatMultiLine(), MultilinesStrategy.KEEP_STARTING_QUOTE) {
+	public Command<AbstractEntityDiagram> createMultiLine() {
+		return new CommandMultilines2<AbstractEntityDiagram>(getRegexConcatMultiLine(), MultilinesStrategy.KEEP_STARTING_QUOTE) {
 
 			@Override
 			public String getPatternEnd() {
 				return "(?i)^end ?note$";
 			}
 
-			public CommandExecutionResult executeNow(List<String> lines) {
+			public CommandExecutionResult executeNow(final AbstractEntityDiagram system, List<String> lines) {
 				//StringUtils.trim(lines, false);
 				final RegexResult line0 = getStartingPattern().matcher(lines.get(0).trim());
 
 				final List<String> strings = StringUtils.removeEmptyColumns(lines.subList(1, lines.size() - 1));
 
-				return executeInternal(getSystem(), line0, strings);
+				return executeInternal(system, line0, strings);
 			}
 		};
 	}

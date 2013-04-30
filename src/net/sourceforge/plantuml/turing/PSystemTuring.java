@@ -48,15 +48,12 @@ import net.sourceforge.plantuml.ugraphic.UFont;
 
 public class PSystemTuring extends AbstractPSystem {
 
-	private final List<String> strings = new ArrayList<String>();
+	private final String program;
+	private final String input;
 
 	PSystemTuring(String program, String input) {
-		final BFMachine machine = new BFMachine(program, input);
-		/* final boolean ok = */machine.run();
-		final String output = machine.getOutput();
-		for (String s : output.split("\n")) {
-			strings.add(s);
-		}
+		this.program = program;
+		this.input = input;
 	}
 
 	public ImageData exportDiagram(OutputStream os, int num, FileFormatOption fileFormat) throws IOException {
@@ -64,6 +61,13 @@ public class PSystemTuring extends AbstractPSystem {
 	}
 
 	private GraphicStrings getGraphicStrings() throws IOException {
+		final List<String> strings = new ArrayList<String>();
+		final BFMachine machine = new BFMachine(program, input);
+		/* final boolean ok = */machine.run();
+		final String output = machine.getOutput();
+		for (String s : output.split("\n")) {
+			strings.add(s);
+		}
 		final UFont font = new UFont("Monospaced", Font.PLAIN, 14);
 		return new GraphicStrings(strings, font, HtmlColorUtils.BLACK, HtmlColorUtils.WHITE, null,
 				GraphicPosition.BACKGROUND_CORNER, UAntiAliasing.ANTI_ALIASING_ON);
@@ -72,6 +76,5 @@ public class PSystemTuring extends AbstractPSystem {
 	public String getDescription() {
 		return "(Turing)";
 	}
-
 
 }

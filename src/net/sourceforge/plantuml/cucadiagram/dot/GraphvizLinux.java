@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 9786 $
+ * Revision $Revision: 10765 $
  *
  */
 package net.sourceforge.plantuml.cucadiagram.dot;
@@ -50,22 +50,6 @@ class GraphvizLinux extends AbstractGraphviz {
 		}
 		final File usrBinDot = new File("/usr/bin/dot");
 		return usrBinDot;
-	}
-
-	@Override
-	String getCommandLine() {
-		final StringBuilder sb = new StringBuilder();
-		sb.append(getDotExe().getAbsolutePath());
-		appendImageType(sb);
-		return sb.toString();
-	}
-
-	@Override
-	String getCommandLineVersion() {
-		final StringBuilder sb = new StringBuilder();
-		sb.append(getDotExe().getAbsolutePath());
-		sb.append(" -V");
-		return sb.toString();
 	}
 
 }

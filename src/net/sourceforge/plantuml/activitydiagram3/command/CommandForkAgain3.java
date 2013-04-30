@@ -42,8 +42,8 @@ import net.sourceforge.plantuml.command.regex.RegexResult;
 
 public class CommandForkAgain3 extends SingleLineCommand2<ActivityDiagram3> {
 
-	public CommandForkAgain3(ActivityDiagram3 diagram) {
-		super(diagram, getRegexConcat());
+	public CommandForkAgain3() {
+		super(getRegexConcat());
 	}
 
 	static RegexConcat getRegexConcat() {
@@ -54,8 +54,8 @@ public class CommandForkAgain3 extends SingleLineCommand2<ActivityDiagram3> {
 	}
 
 	@Override
-	protected CommandExecutionResult executeArg(RegexResult arg) {
-		return getSystem().forkAgain();
+	protected CommandExecutionResult executeArg(ActivityDiagram3 diagram, RegexResult arg) {
+		return diagram.forkAgain();
 
 	}
 

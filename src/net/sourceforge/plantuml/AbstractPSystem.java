@@ -28,14 +28,18 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 10607 $
+ * Revision $Revision: 10794 $
  *
  */
 package net.sourceforge.plantuml;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Properties;
 
+import net.sourceforge.plantuml.command.Command;
+import net.sourceforge.plantuml.command.CommandExecutionResult;
+import net.sourceforge.plantuml.command.ProtectedCommand;
 import net.sourceforge.plantuml.core.Diagram;
 import net.sourceforge.plantuml.core.UmlSource;
 import net.sourceforge.plantuml.cucadiagram.Display;
@@ -95,6 +99,15 @@ public abstract class AbstractPSystem implements Diagram {
 	}
 
 	public void makeDiagramReady() {
+	}
+
+	public boolean isOk() {
+		return true;
+	}
+
+	public CommandExecutionResult executeCommand(Command cmd, List<String> lines) {
+		cmd = new ProtectedCommand(cmd);
+		return cmd.execute(this, lines);
 	}
 
 }

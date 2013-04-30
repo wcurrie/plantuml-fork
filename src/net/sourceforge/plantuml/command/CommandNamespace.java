@@ -47,8 +47,8 @@ import net.sourceforge.plantuml.graphic.HtmlColorUtils;
 
 public class CommandNamespace extends SingleLineCommand2<AbstractEntityDiagram> {
 
-	public CommandNamespace(AbstractEntityDiagram diagram) {
-		super(diagram, getRegexConcat());
+	public CommandNamespace() {
+		super(getRegexConcat());
 	}
 
 	private static RegexConcat getRegexConcat() {
@@ -63,10 +63,10 @@ public class CommandNamespace extends SingleLineCommand2<AbstractEntityDiagram> 
 
 
 	@Override
-	protected CommandExecutionResult executeArg(RegexResult arg) {
+	protected CommandExecutionResult executeArg(AbstractEntityDiagram diagram, RegexResult arg) {
 		final Code code = Code.of(arg.get("NAME", 0));
-		final IGroup currentPackage = getSystem().getCurrentGroup();
-		final IEntity p = getSystem().getOrCreateGroup(code, Display.getWithNewlines(code), code.getCode(),
+		final IGroup currentPackage = diagram.getCurrentGroup();
+		final IEntity p = diagram.getOrCreateGroup(code, Display.getWithNewlines(code), code.getCode(),
 				GroupType.PACKAGE, currentPackage);
 		final String stereotype = arg.get("STEREOTYPE", 0);
 		if (stereotype != null) {

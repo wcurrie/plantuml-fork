@@ -50,6 +50,9 @@ public class MinFinder {
 	}
 
 	public void manage(Point2D p) {
+		if (p == null) {
+			throw new IllegalArgumentException();
+		}
 		manage(p.getX(), p.getY());
 	}
 

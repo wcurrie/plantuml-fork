@@ -42,14 +42,14 @@ import net.sourceforge.plantuml.sequencediagram.SequenceDiagram;
 
 public class CommandDelay extends SingleLineCommand<SequenceDiagram> {
 
-	public CommandDelay(SequenceDiagram sequenceDiagram) {
-		super(sequenceDiagram, "(?i)^\\.{3}(?:(.*)\\.{3})?$$");
+	public CommandDelay() {
+		super("(?i)^\\.{3}(?:(.*)\\.{3})?$$");
 	}
 
 	@Override
-	protected CommandExecutionResult executeArg(List<String> arg) {
+	protected CommandExecutionResult executeArg(SequenceDiagram sequenceDiagram, List<String> arg) {
 		final Display strings = arg.get(0) == null ? Display.emptyList() : Display.getWithNewlines(arg.get(0));
-		getSystem().delay(strings);
+		sequenceDiagram.delay(strings);
 		return CommandExecutionResult.ok();
 	}
 }

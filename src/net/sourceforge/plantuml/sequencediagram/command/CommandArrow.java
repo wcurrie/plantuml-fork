@@ -57,8 +57,8 @@ import net.sourceforge.plantuml.skin.ArrowPart;
 
 public class CommandArrow extends SingleLineCommand2<SequenceDiagram> {
 
-	public CommandArrow(SequenceDiagram sequenceDiagram) {
-		super(sequenceDiagram, getRegexConcat());
+	public CommandArrow() {
+		super(getRegexConcat());
 	}
 
 	static RegexConcat getRegexConcat() {
@@ -96,7 +96,7 @@ public class CommandArrow extends SingleLineCommand2<SequenceDiagram> {
 				new RegexLeaf("MESSAGE", "(?::\\s*(.*))?$"));
 	}
 
-	private Participant getOrCreateParticipant(RegexResult arg2, String n) {
+	private Participant getOrCreateParticipant(SequenceDiagram system, RegexResult arg2, String n) {
 		final String code;
 		final Display display;
 		if (arg2.get(n + "CODE", 0) != null) {
@@ -111,11 +111,11 @@ public class CommandArrow extends SingleLineCommand2<SequenceDiagram> {
 		} else if (arg2.get(n + "CODELONG", 0) != null) {
 			code = arg2.get(n + "CODELONG", 0);
 			display = Display.getWithNewlines(arg2.get(n + "CODELONG", 1));
-			return getSystem().getOrCreateParticipant(code, display);
+			return system.getOrCreateParticipant(code, display);
 		} else {
 			throw new IllegalStateException();
 		}
-		return getSystem().getOrCreateParticipant(code, display);
+		return system.getOrCreateParticipant(code, display);
 	}
 
 	private boolean contains(String string, String... totest) {
@@ -128,7 +128,7 @@ public class CommandArrow extends SingleLineCommand2<SequenceDiagram> {
 	}
 
 	@Override
-	protected CommandExecutionResult executeArg(RegexResult arg2) {
+	protected CommandExecutionResult executeArg(SequenceDiagram system, RegexResult arg2) {
 
 		Participant p1;
 		Participant p2;
@@ -142,13 +142,13 @@ public class CommandArrow extends SingleLineCommand2<SequenceDiagram> {
 		final boolean hasDressing2 = contains(dressing2, ">", "\\", "/", "x");
 		final boolean hasDressing1 = contains(dressing1, "x", "<", "\\", "/");
 		if (hasDressing2) {
-			p1 = getOrCreateParticipant(arg2, "PART1");
-			p2 = getOrCreateParticipant(arg2, "PART2");
+			p1 = getOrCreateParticipant(system, arg2, "PART1");
+			p2 = getOrCreateParticipant(system, arg2, "PART2");
 			circleAtStart = dressing1.contains("o");
 			circleAtEnd = dressing2.contains("o");
 		} else if (hasDressing1) {
-			p2 = getOrCreateParticipant(arg2, "PART1");
-			p1 = getOrCreateParticipant(arg2, "PART2");
+			p2 = getOrCreateParticipant(system, arg2, "PART1");
+			p1 = getOrCreateParticipant(system, arg2, "PART2");
 			circleAtStart = dressing2.contains("o");
 			circleAtEnd = dressing1.contains("o");
 		} else {
@@ -209,11 +209,11 @@ public class CommandArrow extends SingleLineCommand2<SequenceDiagram> {
 		final String activationSpec = arg2.get("ACTIVATION", 0);
 
 		if (activationSpec != null && activationSpec.charAt(0) == '*') {
-			getSystem().activate(p2, LifeEventType.CREATE, null);
+			system.activate(p2, LifeEventType.CREATE, null);
 		}
 
-		final String error = getSystem().addMessage(
-				new Message(p1, p2, labels, config, getSystem().getNextMessageNumber()));
+		final String error = system.addMessage(
+				new Message(p1, p2, labels, config, system.getNextMessageNumber()));
 		if (error != null) {
 			return CommandExecutionResult.error(error);
 		}
@@ -223,22 +223,22 @@ public class CommandArrow extends SingleLineCommand2<SequenceDiagram> {
 		if (activationSpec != null) {
 			switch (activationSpec.charAt(0)) {
 			case '+':
-				getSystem().activate(p2, LifeEventType.ACTIVATE, activationColor);
+				system.activate(p2, LifeEventType.ACTIVATE, activationColor);
 				break;
 			case '-':
-				getSystem().activate(p1, LifeEventType.DEACTIVATE, null);
+				system.activate(p1, LifeEventType.DEACTIVATE, null);
 				break;
 			case '!':
-				getSystem().activate(p2, LifeEventType.DESTROY, null);
+				system.activate(p2, LifeEventType.DESTROY, null);
 				break;
 			default:
 				break;
 			}
-		} else if (getSystem().isAutoactivate() && config.getHead() == ArrowHead.NORMAL) {
+		} else if (system.isAutoactivate() && config.getHead() == ArrowHead.NORMAL) {
 			if (config.isDotted()) {
-				getSystem().activate(p1, LifeEventType.DEACTIVATE, null);
+				system.activate(p1, LifeEventType.DEACTIVATE, null);
 			} else {
-				getSystem().activate(p2, LifeEventType.ACTIVATE, activationColor);
+				system.activate(p2, LifeEventType.ACTIVATE, activationColor);
 			}
 
 		}

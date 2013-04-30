@@ -65,8 +65,8 @@ public class CommandSkinParamMultilines extends CommandMultilinesBracket<UmlDiag
 
 	private final static Pattern p1 = Pattern.compile("^([\\w.]*(?:\\<\\<.*\\>\\>)?[\\w.]*)\\s+(?:(\\{)|(.*))$|^\\}?$");
 
-	public CommandSkinParamMultilines(UmlDiagram diagram) {
-		super(diagram, "(?i)^skinparam\\s*(?:\\s+([\\w.]*(?:\\<\\<.*\\>\\>)?[\\w.]*))?\\s*\\{$");
+	public CommandSkinParamMultilines() {
+		super("(?i)^skinparam\\s*(?:\\s+([\\w.]*(?:\\<\\<.*\\>\\>)?[\\w.]*))?\\s*\\{$");
 	}
 
 	@Override
@@ -75,7 +75,7 @@ public class CommandSkinParamMultilines extends CommandMultilinesBracket<UmlDiag
 		return p1.matcher(line).matches();
 	}
 
-	public CommandExecutionResult execute(List<String> lines) {
+	public CommandExecutionResult execute(UmlDiagram diagram, List<String> lines) {
 		final Context context = new Context();
 		final Matcher mStart = getStartingPattern().matcher(lines.get(0).trim());
 		if (mStart.find() == false) {
@@ -102,7 +102,7 @@ public class CommandSkinParamMultilines extends CommandMultilinesBracket<UmlDiag
 				context.push(m.group(1));
 			} else if (m.group(3) != null) {
 				final String key = context.getFullParam() + m.group(1);
-				getSystem().setParam(key, m.group(3));
+				diagram.setParam(key, m.group(3));
 			} else {
 				throw new IllegalStateException();
 			}

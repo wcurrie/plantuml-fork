@@ -40,20 +40,17 @@ import java.util.regex.Pattern;
 import net.sourceforge.plantuml.command.regex.RegexConcat;
 import net.sourceforge.plantuml.core.Diagram;
 
-public abstract class CommandMultilines2<S extends Diagram> implements Command {
-
-	private final S system;
+public abstract class CommandMultilines2<S extends Diagram> implements Command<S> {
 
 	private final RegexConcat starting;
 
 	private final MultilinesStrategy strategy;
 
-	public CommandMultilines2(final S system, RegexConcat patternStart, MultilinesStrategy strategy) {
+	public CommandMultilines2(RegexConcat patternStart, MultilinesStrategy strategy) {
 		if (patternStart.getPattern().startsWith("^") == false || patternStart.getPattern().endsWith("$") == false) {
 			throw new IllegalArgumentException("Bad pattern " + patternStart.getPattern());
 		}
 		this.strategy = strategy;
-		this.system = system;
 		this.starting = patternStart;
 	}
 
@@ -85,11 +82,11 @@ public abstract class CommandMultilines2<S extends Diagram> implements Command {
 		return CommandControl.OK;
 	}
 
-	public final CommandExecutionResult execute(List<String> lines) {
-		return executeNow(strategy.filter(lines));
+	public final CommandExecutionResult execute(S system, List<String> lines) {
+		return executeNow(system, strategy.filter(lines));
 	}
 
-	public abstract CommandExecutionResult executeNow(List<String> lines);
+	public abstract CommandExecutionResult executeNow(S system, List<String> lines);
 
 	protected boolean isCommandForbidden() {
 		return false;
@@ -98,20 +95,8 @@ public abstract class CommandMultilines2<S extends Diagram> implements Command {
 	protected void actionIfCommandValid() {
 	}
 
-	protected S getSystem() {
-		return system;
-	}
-
 	protected final RegexConcat getStartingPattern() {
 		return starting;
-	}
-
-	public boolean isDeprecated(List<String> line) {
-		return false;
-	}
-
-	public String getHelpMessageForDeprecated(List<String> lines) {
-		return null;
 	}
 
 }

@@ -39,8 +39,8 @@ import net.sourceforge.plantuml.core.Diagram;
 
 public class CommandMultilinesComment extends CommandMultilines<Diagram> {
 
-	public CommandMultilinesComment(final Diagram diagram) {
-		super(diagram, "(?i)^\\s*/'.*$");
+	public CommandMultilinesComment() {
+		super("(?i)^\\s*/'.*$");
 	}
 
 	@Override
@@ -48,7 +48,7 @@ public class CommandMultilinesComment extends CommandMultilines<Diagram> {
 		return "(?i)^.*'/\\s*$";
 	}
 
-	public CommandExecutionResult execute(List<String> lines) {
+	public CommandExecutionResult execute(final Diagram diagram, List<String> lines) {
 		return CommandExecutionResult.ok();
 	}
 

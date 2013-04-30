@@ -33,6 +33,7 @@
  */
 package net.sourceforge.plantuml.activitydiagram3.ftile.vcompact;
 
+import java.util.Arrays;
 import java.util.List;
 
 import net.sourceforge.plantuml.ColorParam;
@@ -40,13 +41,14 @@ import net.sourceforge.plantuml.FontParam;
 import net.sourceforge.plantuml.ISkinParam;
 import net.sourceforge.plantuml.activitydiagram3.LinkRendering;
 import net.sourceforge.plantuml.activitydiagram3.ftile.Ftile;
+import net.sourceforge.plantuml.activitydiagram3.ftile.FtileAssemblySimple;
 import net.sourceforge.plantuml.activitydiagram3.ftile.FtileFactory;
-import net.sourceforge.plantuml.activitydiagram3.ftile.vertical.FtileAssemblySimple;
 import net.sourceforge.plantuml.activitydiagram3.ftile.vertical.FtileBox;
 import net.sourceforge.plantuml.activitydiagram3.ftile.vertical.FtileCircleStart;
 import net.sourceforge.plantuml.activitydiagram3.ftile.vertical.FtileCircleStop;
 import net.sourceforge.plantuml.cucadiagram.Display;
 import net.sourceforge.plantuml.graphic.HtmlColor;
+import net.sourceforge.plantuml.graphic.StringBounder;
 import net.sourceforge.plantuml.sequencediagram.NotePosition;
 import net.sourceforge.plantuml.skin.rose.Rose;
 import net.sourceforge.plantuml.ugraphic.UFont;
@@ -55,9 +57,15 @@ public class VCompactFactory implements FtileFactory {
 
 	private final ISkinParam skinParam;
 	private final Rose rose = new Rose();
+	private final StringBounder stringBounder;
 
-	public VCompactFactory(ISkinParam skinParam) {
+	public StringBounder getStringBounder() {
+		return stringBounder;
+	}
+
+	public VCompactFactory(ISkinParam skinParam, StringBounder stringBounder) {
 		this.skinParam = skinParam;
+		this.stringBounder = stringBounder;
 	}
 
 	public Ftile start() {
@@ -78,7 +86,7 @@ public class VCompactFactory implements FtileFactory {
 	}
 
 	public Ftile addNote(Ftile ftile, Display note, NotePosition notePosition) {
-		throw new UnsupportedOperationException();
+		return ftile;
 	}
 
 	public Ftile assembly(Ftile tile1, Ftile tile2) {
@@ -86,35 +94,57 @@ public class VCompactFactory implements FtileFactory {
 	}
 
 	public Ftile repeat(Ftile repeat, Display test) {
-		throw new UnsupportedOperationException();
+		final HtmlColor borderColor = rose.getHtmlColor(skinParam, ColorParam.activityBorder);
+		final HtmlColor backColor = rose.getHtmlColor(skinParam, ColorParam.activityBackground);
+		final HtmlColor arrowColor = rose.getHtmlColor(skinParam, ColorParam.activityArrow);
+		final UFont font = skinParam.getFont(FontParam.ACTIVITY_ARROW2, null);
+		final LinkRendering endRepeatLinkRendering = repeat.getOutLinkRendering();
+		final HtmlColor endRepeatLinkColor = endRepeatLinkRendering == null ? null : endRepeatLinkRendering.getColor();
+		return new FtileRepeat2(repeat, test, font);
 	}
 
 	public Ftile createWhile(Ftile whileBlock, Display test, Display yes, Display out) {
-		throw new UnsupportedOperationException();
+		final HtmlColor borderColor = rose.getHtmlColor(skinParam, ColorParam.activityBorder);
+		final HtmlColor backColor = rose.getHtmlColor(skinParam, ColorParam.activityBackground);
+		final HtmlColor arrowColor = rose.getHtmlColor(skinParam, ColorParam.activityArrow);
+		final UFont font = skinParam.getFont(FontParam.ACTIVITY_ARROW2, null);
+		final LinkRendering endInlinkRendering = whileBlock.getOutLinkRendering();
+		final HtmlColor endInlinkColor = endInlinkRendering == null ? null : endInlinkRendering.getColor();
+		return new FtileWhile2(whileBlock, test, borderColor, backColor, arrowColor, font, endInlinkColor, yes, out);
 	}
 
 	public Ftile createIf(Ftile tile1, Ftile tile2, Display labelTest, Display label1, Display label2) {
-		throw new UnsupportedOperationException();
+		final HtmlColor borderColor = rose.getHtmlColor(skinParam, ColorParam.activityBorder);
+		final HtmlColor backColor = rose.getHtmlColor(skinParam, ColorParam.activityBackground);
+		final HtmlColor arrowColor = rose.getHtmlColor(skinParam, ColorParam.activityArrow);
+		final UFont font = skinParam.getFont(FontParam.ACTIVITY_ARROW2, null);
+		final LinkRendering endThenInlinkRendering = tile1.getOutLinkRendering();
+		final LinkRendering endElseInlinkRendering = tile2.getOutLinkRendering();
+		final HtmlColor endThenInlinkColor = endThenInlinkRendering == null ? null : endThenInlinkRendering.getColor();
+		final HtmlColor endElseInlinkColor = endElseInlinkRendering == null ? null : endElseInlinkRendering.getColor();
+
+		// return new FtileIf2(tile1, tile2, borderColor, backColor);
+		return new FtileForkInner2(Arrays.asList(tile1, tile2));
 	}
 
 	public Ftile createFork(List<Ftile> all) {
-		throw new UnsupportedOperationException();
+		return new FtileForkInner2(all);
 	}
 
 	public Ftile createSplit(List<Ftile> all) {
-		throw new UnsupportedOperationException();
+		return new FtileForkInner2(all);
 	}
 
 	public Ftile createGroup(Ftile list, Display name) {
-		throw new UnsupportedOperationException();
+		return list;
 	}
 
 	public Ftile decorateIn(final Ftile ftile, final LinkRendering linkRendering) {
-		throw new UnsupportedOperationException();
+		return ftile;
 	}
 
 	public Ftile decorateOut(final Ftile ftile, final LinkRendering linkRendering) {
-		throw new UnsupportedOperationException();
+		return ftile;
 	}
 
 }

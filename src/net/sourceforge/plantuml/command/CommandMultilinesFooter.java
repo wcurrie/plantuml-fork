@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 9786 $
+ * Revision $Revision: 10779 $
  *
  */
 package net.sourceforge.plantuml.command;
@@ -43,17 +43,16 @@ import net.sourceforge.plantuml.graphic.HorizontalAlignement;
 
 public class CommandMultilinesFooter extends CommandMultilines<UmlDiagram> {
 
-	public CommandMultilinesFooter(final UmlDiagram diagram) {
-		super(diagram, "(?i)^(?:(left|right|center)?\\s*)footer$");
+	public CommandMultilinesFooter() {
+		super("(?i)^(?:(left|right|center)?\\s*)footer$");
 	}
-	
+
 	@Override
 	public String getPatternEnd() {
 		return "(?i)^end ?footer$";
 	}
 
-
-	public CommandExecutionResult execute(List<String> lines) {
+	public CommandExecutionResult execute(final UmlDiagram diagram, List<String> lines) {
 		StringUtils.trim(lines, false);
 		final Matcher m = getStartingPattern().matcher(lines.get(0).trim());
 		if (m.find() == false) {
@@ -61,11 +60,11 @@ public class CommandMultilinesFooter extends CommandMultilines<UmlDiagram> {
 		}
 		final String align = m.group(1);
 		if (align != null) {
-			getSystem().setFooterAlignement(HorizontalAlignement.valueOf(align.toUpperCase()));
+			diagram.setFooterAlignement(HorizontalAlignement.valueOf(align.toUpperCase()));
 		}
 		final Display strings = new Display(lines.subList(1, lines.size() - 1));
 		if (strings.size() > 0) {
-			getSystem().setFooter(strings);
+			diagram.setFooter(strings);
 			return CommandExecutionResult.ok();
 		}
 		return CommandExecutionResult.error("Empty footer");

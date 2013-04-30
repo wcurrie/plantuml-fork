@@ -62,8 +62,8 @@ import net.sourceforge.plantuml.graphic.HtmlColorUtils;
 
 public class CommandLinkLongActivity extends CommandMultilines2<ActivityDiagram> {
 
-	public CommandLinkLongActivity(final ActivityDiagram diagram) {
-		super(diagram, getRegexConcat(), MultilinesStrategy.REMOVE_STARTING_QUOTE);
+	public CommandLinkLongActivity() {
+		super(getRegexConcat(), MultilinesStrategy.REMOVE_STARTING_QUOTE);
 	}
 
 	@Override
@@ -94,11 +94,11 @@ public class CommandLinkLongActivity extends CommandMultilines2<ActivityDiagram>
 				new RegexLeaf("$"));
 	}
 
-	public CommandExecutionResult executeNow(List<String> lines) {
+	public CommandExecutionResult executeNow(final ActivityDiagram diagram, List<String> lines) {
 		StringUtils.trim(lines, false);
 		final RegexResult line0 = getStartingPattern().matcher(lines.get(0).trim());
 
-		final IEntity entity1 = CommandLinkActivity.getEntity(getSystem(), line0, true);
+		final IEntity entity1 = CommandLinkActivity.getEntity(diagram, line0, true);
 
 		if (line0.get("STEREOTYPE", 0) != null) {
 			entity1.setStereotype(new Stereotype(line0.get("STEREOTYPE", 0)));
@@ -111,7 +111,7 @@ public class CommandLinkLongActivity extends CommandMultilines2<ActivityDiagram>
 		final String desc0 = line0.get("DESC", 0);
 		Url urlActivity = null;
 		if (StringUtils.isNotEmpty(desc0)) {
-			final UrlBuilder urlBuilder = new UrlBuilder(getSystem().getSkinParam().getValue("topurl"), true);
+			final UrlBuilder urlBuilder = new UrlBuilder(diagram.getSkinParam().getValue("topurl"), true);
 			urlActivity = urlBuilder.getUrl(desc0);
 			if (urlActivity == null) {
 				sb.append(desc0);
@@ -120,7 +120,7 @@ public class CommandLinkLongActivity extends CommandMultilines2<ActivityDiagram>
 		}
 		for (int i = 1; i < lines.size() - 1; i++) {
 			if (i == 1 && urlActivity == null) {
-				final UrlBuilder urlBuilder = new UrlBuilder(getSystem().getSkinParam().getValue("topurl"), true);
+				final UrlBuilder urlBuilder = new UrlBuilder(diagram.getSkinParam().getValue("topurl"), true);
 				urlActivity = urlBuilder.getUrl(lines.get(i));
 				if (urlActivity != null) {
 					continue;
@@ -150,12 +150,12 @@ public class CommandLinkLongActivity extends CommandMultilines2<ActivityDiagram>
 			partition = StringUtils.eventuallyRemoveStartingAndEndingDoubleQuote(partition);
 		}
 		if (partition != null) {
-			getSystem().getOrCreateGroup(Code.of(partition), Display.getWithNewlines(partition), null,
+			diagram.getOrCreateGroup(Code.of(partition), Display.getWithNewlines(partition), null,
 					GroupType.PACKAGE, null);
 		}
-		final IEntity entity2 = getSystem().createLeaf(code, Display.getWithNewlines(display), LeafType.ACTIVITY);
+		final IEntity entity2 = diagram.createLeaf(code, Display.getWithNewlines(display), LeafType.ACTIVITY);
 		if (partition != null) {
-			getSystem().endGroup();
+			diagram.endGroup();
 		}
 		if (urlActivity != null) {
 			entity2.addUrl(urlActivity);
@@ -188,12 +188,12 @@ public class CommandLinkLongActivity extends CommandMultilines2<ActivityDiagram>
 		}
 
 		if (line0.get("URL", 0) != null) {
-			final UrlBuilder urlBuilder = new UrlBuilder(getSystem().getSkinParam().getValue("topurl"), true);
+			final UrlBuilder urlBuilder = new UrlBuilder(diagram.getSkinParam().getValue("topurl"), true);
 			final Url urlLink = urlBuilder.getUrl(line0.get("URL", 0));
 			link.setUrl(urlLink);
 		}
 
-		getSystem().addLink(link);
+		diagram.addLink(link);
 
 		return CommandExecutionResult.ok();
 	}
