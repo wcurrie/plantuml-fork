@@ -38,15 +38,15 @@ import net.sourceforge.plantuml.ugraphic.UChangeBackColor;
 import net.sourceforge.plantuml.ugraphic.UEllipse;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
 import net.sourceforge.plantuml.ugraphic.UStroke;
+import net.sourceforge.plantuml.ugraphic.UTranslate;
 
 class MiddleCircle extends Extremity {
 
 	private final double radius = 6;
 	private final UEllipse circle = new UEllipse(2 * radius, 2 * radius);
 
-	public void drawUNewWayINLINED(UGraphic ug) {
-		ug.apply(new UChangeBackColor(HtmlColorUtils.WHITE)).apply(new UStroke(1.5))
-				.drawNewWay(-radius, -radius, circle);
+	public void drawU(UGraphic ug) {
+		ug.apply(new UChangeBackColor(HtmlColorUtils.WHITE)).apply(new UStroke(1.5)).apply(new UTranslate(-radius, -radius)).draw(circle);
 	}
 
 }

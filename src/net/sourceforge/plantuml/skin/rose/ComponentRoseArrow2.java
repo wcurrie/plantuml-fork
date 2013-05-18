@@ -129,7 +129,7 @@ public class ComponentRoseArrow2 extends AbstractComponentRoseArrow {
 		if (getArrowConfiguration().isDotted()) {
 			ug = stroke(ug, 2, 2);
 		}
-		ug.drawNewWay(start, textHeight, new ULine(len, 0));
+		ug.apply(new UTranslate(start, textHeight)).draw(new ULine(len, 0));
 		if (getArrowConfiguration().isDotted()) {
 			ug = ug.apply(new UStroke());
 		}
@@ -148,7 +148,7 @@ public class ComponentRoseArrow2 extends AbstractComponentRoseArrow {
 					+ (direction2 == ArrowDirection.RIGHT_TO_LEFT_REVERSE
 							|| direction2 == ArrowDirection.BOTH_DIRECTION ? getArrowDeltaX() : 0);
 		}
-		getTextBlock().drawUNewWayINLINED(ug.apply(new UTranslate(textPos, 0)));
+		getTextBlock().drawU(ug.apply(new UTranslate(textPos, 0)));
 	}
 
 	private void drawDressing1(UGraphic ug, double x, ArrowDressing dressing) {
@@ -158,26 +158,25 @@ public class ComponentRoseArrow2 extends AbstractComponentRoseArrow {
 		if (dressing.getDecoration() == ArrowDecoration.CIRCLE) {
 			ug = ug.apply(new UStroke(thinCircle)).apply(new UChangeColor(getForegroundColor()));
 			final UEllipse circle = new UEllipse(diamCircle, diamCircle);
-			ug.drawNewWay(x - diamCircle / 2 - thinCircle, textHeight - diamCircle / 2 - thinCircle / 2, circle);
+			ug.apply(new UTranslate(x - diamCircle / 2 - thinCircle, textHeight - diamCircle / 2 - thinCircle / 2)).draw(circle);
 			ug = ug.apply(new UStroke());
 			x += diamCircle / 2 + thinCircle;
 		}
 
 		if (dressing.getHead() == ArrowHead.ASYNC) {
 			if (dressing.getPart() != ArrowPart.BOTTOM_PART) {
-				ug.drawNewWay(x - 1, textHeight, new ULine(getArrowDeltaX(), -getArrowDeltaY()));
+				ug.apply(new UTranslate(x - 1, textHeight)).draw(new ULine(getArrowDeltaX(), -getArrowDeltaY()));
 			}
 			if (dressing.getPart() != ArrowPart.TOP_PART) {
-				ug.drawNewWay(x - 1, textHeight, new ULine(getArrowDeltaX(), getArrowDeltaY()));
+				ug.apply(new UTranslate(x - 1, textHeight)).draw(new ULine(getArrowDeltaX(), getArrowDeltaY()));
 			}
 		} else if (dressing.getHead() == ArrowHead.CROSSX) {
 			ug = ug.apply(new UStroke(2));
-			ug.drawNewWay(spaceCrossX, textHeight - getArrowDeltaX() / 2, new ULine(getArrowDeltaX(), getArrowDeltaX()));
-			ug.drawNewWay(spaceCrossX, textHeight + getArrowDeltaX() / 2,
-					new ULine(getArrowDeltaX(), -getArrowDeltaX()));
+			ug.apply(new UTranslate(spaceCrossX, textHeight - getArrowDeltaX() / 2)).draw(new ULine(getArrowDeltaX(), getArrowDeltaX()));
+			ug.apply(new UTranslate(spaceCrossX, textHeight + getArrowDeltaX() / 2)).draw(new ULine(getArrowDeltaX(), -getArrowDeltaX()));
 		} else if (dressing.getHead() == ArrowHead.NORMAL) {
 			final UPolygon polygon = getPolygonReverse(dressing.getPart(), textHeight);
-			ug.apply(new UChangeBackColor(getForegroundColor())).drawNewWay(x, 0, polygon);
+			ug.apply(new UChangeBackColor(getForegroundColor())).apply(new UTranslate(x, 0)).draw(polygon);
 		}
 
 	}
@@ -189,28 +188,28 @@ public class ComponentRoseArrow2 extends AbstractComponentRoseArrow {
 		if (dressing.getDecoration() == ArrowDecoration.CIRCLE) {
 			ug = ug.apply(new UStroke(thinCircle)).apply(new UChangeColor(getForegroundColor()));
 			final UEllipse circle = new UEllipse(diamCircle, diamCircle);
-			ug.drawNewWay(x - diamCircle / 2 + thinCircle, textHeight - diamCircle / 2 - thinCircle / 2, circle);
+			ug.apply(new UTranslate(x - diamCircle / 2 + thinCircle, textHeight - diamCircle / 2 - thinCircle / 2)).draw(circle);
 			ug = ug.apply(new UStroke());
 			x -= diamCircle / 2 + thinCircle;
 		}
 
 		if (dressing.getHead() == ArrowHead.ASYNC) {
 			if (dressing.getPart() != ArrowPart.BOTTOM_PART) {
-				ug.drawNewWay(x, textHeight, new ULine(-getArrowDeltaX(), -getArrowDeltaY()));
+				ug.apply(new UTranslate(x, textHeight)).draw(new ULine(-getArrowDeltaX(), -getArrowDeltaY()));
 			}
 			if (dressing.getPart() != ArrowPart.TOP_PART) {
-				ug.drawNewWay(x, textHeight, new ULine(-getArrowDeltaX(), getArrowDeltaY()));
+				ug.apply(new UTranslate(x, textHeight)).draw(new ULine(-getArrowDeltaX(), getArrowDeltaY()));
 			}
 		} else if (dressing.getHead() == ArrowHead.CROSSX) {
 			ug = ug.apply(new UStroke(2));
-			ug.drawNewWay(x - spaceCrossX - getArrowDeltaX(), textHeight - getArrowDeltaX() / 2, new ULine(
-					getArrowDeltaX(), getArrowDeltaX()));
-			ug.drawNewWay(x - spaceCrossX - getArrowDeltaX(), textHeight + getArrowDeltaX() / 2, new ULine(
-					getArrowDeltaX(), -getArrowDeltaX()));
+			ug.apply(new UTranslate(x - spaceCrossX - getArrowDeltaX(), textHeight - getArrowDeltaX() / 2)).draw(new ULine(
+			getArrowDeltaX(), getArrowDeltaX()));
+			ug.apply(new UTranslate(x - spaceCrossX - getArrowDeltaX(), textHeight + getArrowDeltaX() / 2)).draw(new ULine(
+			getArrowDeltaX(), -getArrowDeltaX()));
 			ug = ug.apply(new UStroke());
 		} else if (dressing.getHead() == ArrowHead.NORMAL) {
 			final UPolygon polygon = getPolygonNormal(dressing.getPart(), textHeight, x);
-			ug.apply(new UChangeBackColor(getForegroundColor())).drawOldWay(polygon);
+			ug.apply(new UChangeBackColor(getForegroundColor())).draw(polygon);
 		}
 
 	}

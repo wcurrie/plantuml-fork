@@ -35,7 +35,6 @@ package net.sourceforge.plantuml.activitydiagram3.ftile.vertical;
 
 import java.awt.geom.Point2D;
 import java.util.Collection;
-import java.util.Collections;
 
 import net.sourceforge.plantuml.activitydiagram3.LinkRendering;
 import net.sourceforge.plantuml.activitydiagram3.ftile.Connection;

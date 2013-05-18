@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 10459 $
+ * Revision $Revision: 10930 $
  *
  */
 package net.sourceforge.plantuml.graphic;
@@ -63,6 +63,7 @@ import net.sourceforge.plantuml.ugraphic.UAntiAliasing;
 import net.sourceforge.plantuml.ugraphic.UFont;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
 import net.sourceforge.plantuml.ugraphic.UImage;
+import net.sourceforge.plantuml.ugraphic.UTranslate;
 import net.sourceforge.plantuml.ugraphic.eps.UGraphicEps;
 import net.sourceforge.plantuml.ugraphic.g2d.UGraphicG2d;
 import net.sourceforge.plantuml.ugraphic.svg.UGraphicSvg;
@@ -124,15 +125,15 @@ public class GraphicStrings implements IEntityImage {
 		} else if (fileFormat == FileFormat.SVG) {
 			final UGraphicSvg svg = new UGraphicSvg(colorMapper, StringUtils.getAsHtml(colorMapper
 					.getMappedColor(background)), false);
-			drawU(svg);
+			drawAndGetSize(svg);
 			svg.createXml(os);
 		} else if (fileFormat == FileFormat.ATXT || fileFormat == FileFormat.UTXT) {
 			final UGraphicTxt txt = new UGraphicTxt();
-			drawU(txt);
+			drawAndGetSize(txt);
 			txt.getCharArea().print(new PrintStream(os));
 		} else if (fileFormat == FileFormat.EPS) {
 			final UGraphicEps ug = new UGraphicEps(colorMapper, EpsStrategy.getDefault2());
-			drawU(ug);
+			drawAndGetSize(ug);
 			os.write(ug.getEPSCode().getBytes());
 		} else {
 			throw new UnsupportedOperationException();
@@ -152,15 +153,15 @@ public class GraphicStrings implements IEntityImage {
 		} else if (fileFormat == FileFormat.SVG) {
 			final UGraphicSvg svg = new UGraphicSvg(colorMapper, StringUtils.getAsHtml(colorMapper
 					.getMappedColor(background)), false);
-			drawU(svg);
+			drawAndGetSize(svg);
 			svg.createXml(os);
 		} else if (fileFormat == FileFormat.ATXT || fileFormat == FileFormat.UTXT) {
 			final UGraphicTxt txt = new UGraphicTxt();
-			drawU(txt);
+			drawAndGetSize(txt);
 			txt.getCharArea().print(new PrintStream(os));
 		} else if (fileFormat == FileFormat.EPS) {
 			final UGraphicEps ug = new UGraphicEps(colorMapper, EpsStrategy.getDefault2());
-			drawU(ug);
+			drawAndGetSize(ug);
 			os.write(ug.getEPSCode().getBytes());
 		} else {
 			throw new UnsupportedOperationException();
@@ -172,13 +173,13 @@ public class GraphicStrings implements IEntityImage {
 		EmptyImageBuilder builder = new EmptyImageBuilder(10, 10, colorMapper.getMappedColor(background));
 		Graphics2D g2d = builder.getGraphics2D();
 
-		final Dimension2D size = drawU(new UGraphicG2d(colorMapper, g2d, 1.0));
+		final Dimension2D size = drawAndGetSize(new UGraphicG2d(colorMapper, g2d, 1.0));
 		g2d.dispose();
 
 		builder = new EmptyImageBuilder(size.getWidth(), size.getHeight(), colorMapper.getMappedColor(background));
 		final BufferedImage im = builder.getBufferedImage();
 		g2d = builder.getGraphics2D();
-		drawU(new UGraphicG2d(colorMapper, g2d, 1.0).apply(antiAliasing));
+		drawAndGetSize(new UGraphicG2d(colorMapper, g2d, 1.0).apply(antiAliasing));
 		g2d.dispose();
 		return im;
 	}
@@ -199,26 +200,26 @@ public class GraphicStrings implements IEntityImage {
 		return dim;
 	}
 
-	public Dimension2D drawU(final UGraphic ug) {
+	Dimension2D drawAndGetSize(final UGraphic ug) {
 		final TextBlock textBlock = TextBlockUtils.create(new Display(strings), new FontConfiguration(font, green),
 				HorizontalAlignement.LEFT, new SpriteContainerEmpty());
 		Dimension2D size = getSizeWithMin(textBlock.calculateDimension(ug.getStringBounder()));
-		textBlock.drawUNewWayINLINED(ug);
+		textBlock.drawU(ug);
 
 		if (image != null) {
 			if (position == GraphicPosition.BOTTOM) {
-				ug.drawNewWay((size.getWidth() - image.getWidth()) / 2, size.getHeight(), new UImage(image));
+				ug.apply(new UTranslate((size.getWidth() - image.getWidth()) / 2, size.getHeight())).draw(new UImage(image));
 				size = new Dimension2DDouble(size.getWidth(), size.getHeight() + image.getHeight());
 			} else if (position == GraphicPosition.BACKGROUND_CORNER) {
-				ug.drawNewWay(size.getWidth() - image.getWidth(), size.getHeight() - image.getHeight(), new UImage(
-						image));
+				ug.apply(new UTranslate(size.getWidth() - image.getWidth(), size.getHeight() - image.getHeight())).draw(new UImage(
+				image));
 			}
 		}
 		return size;
 	}
 
-	public void drawUNewWayINLINED(UGraphic ug) {
-		drawU(ug);
+	public void drawU(UGraphic ug) {
+		drawAndGetSize(ug);
 	}
 
 

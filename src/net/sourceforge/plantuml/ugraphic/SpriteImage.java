@@ -55,8 +55,8 @@ public class SpriteImage implements Sprite {
 	public TextBlock asTextBlock(final HtmlColor color) {
 		return new TextBlock() {
 
-			public void drawUNewWayINLINED(UGraphic ug) {
-				ug.drawOldWay(img);
+			public void drawU(UGraphic ug) {
+				ug.draw(img);
 			}
 
 			public Dimension2D calculateDimension(StringBounder stringBounder) {

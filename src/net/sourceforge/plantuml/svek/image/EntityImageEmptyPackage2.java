@@ -78,7 +78,7 @@ public class EntityImageEmptyPackage2 extends AbstractEntityImage {
 		return Dimension2DDouble.delta(dim, MARGIN * 2, MARGIN * 2 + dim.getHeight() * 2);
 	}
 
-	final public void drawUNewWayINLINED(UGraphic ug) {
+	final public void drawU(UGraphic ug) {
 		final StringBounder stringBounder = ug.getStringBounder();
 		final Dimension2D dimTotal = calculateDimension(stringBounder);
 

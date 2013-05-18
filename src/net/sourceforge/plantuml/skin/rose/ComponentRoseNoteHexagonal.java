@@ -105,10 +105,10 @@ final public class ComponentRoseNoteHexagonal extends AbstractTextualComponent {
 		ug = ug.apply(new UChangeBackColor(back)).apply(new UChangeColor(foregroundColor));
 		polygon.setDeltaShadow(deltaShadow);
 		ug = ug.apply(stroke);
-		ug.drawOldWay(polygon);
+		ug.draw(polygon);
 		ug = ug.apply(new UStroke());
 
-		getTextBlock().drawUNewWayINLINED(ug.apply(new UTranslate(getMarginX1(), getMarginY())));
+		getTextBlock().drawU(ug.apply(new UTranslate(getMarginX1(), getMarginY())));
 
 	}
 

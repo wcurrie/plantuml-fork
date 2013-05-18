@@ -52,7 +52,7 @@ public class Swimlane implements TextBlock {
 		throw new UnsupportedOperationException();
 	}
 
-	public void drawUNewWayINLINED(UGraphic ug) {
+	public void drawU(UGraphic ug) {
 		throw new UnsupportedOperationException();
 	}
 	

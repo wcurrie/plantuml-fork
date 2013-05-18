@@ -69,16 +69,14 @@ public class UHorizontalLine implements UShape {
 		final double widthToUse = endingX - startingX;
 		final UStroke strokeToUse = stroke == null ? defaultStroke : stroke;
 		if (title == null) {
-			ug.apply(strokeToUse).drawNewWay(startingX + skipAtStart, y,
-					new ULine(widthToUse - skipAtStart - skipAtEnd, 0));
+			ug.apply(strokeToUse).apply(new UTranslate(startingX + skipAtStart, y)).draw(new ULine(widthToUse - skipAtStart - skipAtEnd, 0));
 			return;
 		}
 		final Dimension2D dimTitle = title.calculateDimension(ug.getStringBounder());
 		final double space = (widthToUse - dimTitle.getWidth()) / 2;
-		ug.apply(strokeToUse).drawNewWay(startingX + skipAtStart - 1, y, new ULine(space - skipAtEnd - skipAtEnd, 0));
+		ug.apply(strokeToUse).apply(new UTranslate(startingX + skipAtStart - 1, y)).draw(new ULine(space - skipAtEnd - skipAtEnd, 0));
 		drawTitle(ug, startingX, endingX, y, false);
-		ug.apply(strokeToUse).drawNewWay(startingX + skipAtStart + widthToUse - space, y,
-				new ULine(space - skipAtStart - skipAtEnd, 0));
+		ug.apply(strokeToUse).apply(new UTranslate(startingX + skipAtStart + widthToUse - space, y)).draw(new ULine(space - skipAtStart - skipAtEnd, 0));
 	}
 
 	public void drawTitle(UGraphic ug, double startingX, double endingX, double y, boolean clearArea) {
@@ -91,9 +89,9 @@ public class UHorizontalLine implements UShape {
 		final double x1 = startingX + space;
 		final double y1 = y - dimTitle.getHeight() / 2 - 0.5;
 		if (clearArea) {
-			ug.apply(stroke).drawNewWay(x1, y1, new URectangle(dimTitle.getWidth(), dimTitle.getHeight()));
+			ug.apply(stroke).apply(new UTranslate(x1, y1)).draw(new URectangle(dimTitle.getWidth(), dimTitle.getHeight()));
 		}
-		title.drawUNewWayINLINED(ug.apply(new UTranslate(x1, y1)));
+		title.drawU(ug.apply(new UTranslate(x1, y1)));
 	}
 
 	public UHorizontalLine blankTitle() {

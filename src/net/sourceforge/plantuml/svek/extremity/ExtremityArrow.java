@@ -39,6 +39,7 @@ import net.sourceforge.plantuml.ugraphic.UChangeBackColor;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
 import net.sourceforge.plantuml.ugraphic.ULine;
 import net.sourceforge.plantuml.ugraphic.UPolygon;
+import net.sourceforge.plantuml.ugraphic.UTranslate;
 
 class ExtremityArrow extends Extremity {
 
@@ -63,11 +64,11 @@ class ExtremityArrow extends Extremity {
 		this.line = new ULine(center.getX() - contact.getX(), center.getY() - contact.getY());
 	}
 
-	public void drawUNewWayINLINED(UGraphic ug) {
+	public void drawU(UGraphic ug) {
 		ug = ug.apply(new UChangeBackColor(ug.getParam().getColor()));
-		ug.drawOldWay(polygon);
+		ug.draw(polygon);
 		if (line.getLength() > 2) {
-			ug.drawNewWay(contact.getX(), contact.getY(), line);
+			ug.apply(new UTranslate(contact.getX(), contact.getY())).draw(line);
 		}
 	}
 

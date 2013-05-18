@@ -35,18 +35,35 @@ package net.sourceforge.plantuml.activitydiagram3.ftile;
 
 import java.util.List;
 
+import net.sourceforge.plantuml.ColorParam;
+import net.sourceforge.plantuml.ISkinParam;
 import net.sourceforge.plantuml.activitydiagram3.LinkRendering;
 import net.sourceforge.plantuml.cucadiagram.Display;
 import net.sourceforge.plantuml.graphic.HtmlColor;
 import net.sourceforge.plantuml.graphic.StringBounder;
 import net.sourceforge.plantuml.sequencediagram.NotePosition;
+import net.sourceforge.plantuml.skin.rose.Rose;
 
 public class FtileFactoryDelegator implements FtileFactory {
 
 	private final FtileFactory factory;
+	private final ISkinParam skinParam;
+	private final Rose rose = new Rose();
 
-	public FtileFactoryDelegator(FtileFactory factory) {
+	protected HtmlColor getInLinkRenderingColor(Ftile tile) {
+		final HtmlColor color;
+		final LinkRendering linkRendering = tile.getInLinkRendering();
+		if (linkRendering == null || linkRendering.getColor() == null) {
+			color = rose.getHtmlColor(getSkinParam(), ColorParam.activityArrow);
+		} else {
+			color = linkRendering.getColor();
+		}
+		return color;
+	}
+
+	public FtileFactoryDelegator(FtileFactory factory, ISkinParam skinParam) {
 		this.factory = factory;
+		this.skinParam = skinParam;
 	}
 
 	public Ftile start() {
@@ -81,8 +98,8 @@ public class FtileFactoryDelegator implements FtileFactory {
 		return factory.repeat(repeat, test);
 	}
 
-	public Ftile createWhile(Ftile whileBlock, Display test, Display yes, Display out) {
-		return factory.createWhile(whileBlock, test, yes, out);
+	public Ftile createWhile(Ftile whileBlock, Display test, Display yes, Display out, LinkRendering afterEndwhile) {
+		return factory.createWhile(whileBlock, test, yes, out, afterEndwhile);
 	}
 
 	public Ftile createIf(Ftile tile1, Ftile tile2, Display labelTest, Display label1, Display label2) {
@@ -103,6 +120,14 @@ public class FtileFactoryDelegator implements FtileFactory {
 
 	public StringBounder getStringBounder() {
 		return factory.getStringBounder();
+	}
+
+	protected final ISkinParam getSkinParam() {
+		return skinParam;
+	}
+
+	protected final Rose getRose() {
+		return rose;
 	}
 
 }

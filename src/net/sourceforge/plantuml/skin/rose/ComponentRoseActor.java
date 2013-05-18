@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 10577 $
+ * Revision $Revision: 10930 $
  *
  */
 package net.sourceforge.plantuml.skin.rose;
@@ -70,13 +70,13 @@ public class ComponentRoseActor extends AbstractTextualComponent {
 		final double delta = (getPreferredWidth(stringBounder) - dimStickman.getWidth()) / 2;
 
 		if (head) {
-			textBlock.drawUNewWayINLINED(ug.apply(new UTranslate(getTextMiddlePostion(stringBounder), dimStickman.getHeight())));
+			textBlock.drawU(ug.apply(new UTranslate(getTextMiddlePostion(stringBounder), dimStickman.getHeight())));
 			ug = ug.apply(new UTranslate(delta, 0));
 		} else {
-			textBlock.drawUNewWayINLINED(ug.apply(new UTranslate(getTextMiddlePostion(stringBounder), 0)));
+			textBlock.drawU(ug.apply(new UTranslate(getTextMiddlePostion(stringBounder), 0)));
 			ug = ug.apply(new UTranslate(delta, getTextHeight(stringBounder)));
 		}
-		stickman.drawUNewWayINLINED(ug);
+		stickman.drawU(ug);
 	}
 
 	private double getTextMiddlePostion(StringBounder stringBounder) {

@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 10577 $
+ * Revision $Revision: 10930 $
  *
  */
 package net.sourceforge.plantuml.skin.rose;
@@ -136,72 +136,72 @@ public class ComponentRoseArrow extends AbstractComponentRoseArrow {
 			}
 		}
 
-		ug.drawNewWay(start, textHeight, new ULine(len, 0));
+		ug.apply(new UTranslate(start, textHeight)).draw(new ULine(len, 0));
 		if (getArrowConfiguration().isDotted()) {
 			ug = ug.apply(new UStroke());
 		}
 		if (direction2 == ArrowDirection.LEFT_TO_RIGHT_NORMAL) {
 			if (getArrowConfiguration().isAsync()) {
 				if (getArrowConfiguration().getPart() != ArrowPart.BOTTOM_PART) {
-					ug.drawNewWay(arrowHeadPosition, textHeight, new ULine(-getArrowDeltaX(), -getArrowDeltaY()));
+					ug.apply(new UTranslate(arrowHeadPosition, textHeight)).draw(new ULine(-getArrowDeltaX(), -getArrowDeltaY()));
 				}
 				if (getArrowConfiguration().getPart() != ArrowPart.TOP_PART) {
-					ug.drawNewWay(arrowHeadPosition, textHeight, new ULine(-getArrowDeltaX(), getArrowDeltaY()));
+					ug.apply(new UTranslate(arrowHeadPosition, textHeight)).draw(new ULine(-getArrowDeltaX(), getArrowDeltaY()));
 				}
 			} else if (decorationEnd == ArrowDecoration.CROSSX_toberemoved) {
 				ug = ug.apply(new UStroke(2));
-				ug.drawNewWay(x2 - getArrowDeltaX() - spaceCrossX, textHeight - getArrowDeltaX() / 2, new ULine(
-						getArrowDeltaX(), getArrowDeltaX()));
-				ug.drawNewWay(x2 - getArrowDeltaX() - spaceCrossX, textHeight + getArrowDeltaX() / 2, new ULine(
-						getArrowDeltaX(), -getArrowDeltaX()));
+				ug.apply(new UTranslate(x2 - getArrowDeltaX() - spaceCrossX, textHeight - getArrowDeltaX() / 2)).draw(new ULine(
+				getArrowDeltaX(), getArrowDeltaX()));
+				ug.apply(new UTranslate(x2 - getArrowDeltaX() - spaceCrossX, textHeight + getArrowDeltaX() / 2)).draw(new ULine(
+				getArrowDeltaX(), -getArrowDeltaX()));
 				ug = ug.apply(new UStroke());
 			} else {
 				final UPolygon polygon = getPolygonNormal(textHeight, arrowHeadPosition);
-				ug.apply(new UChangeBackColor(getForegroundColor())).drawOldWay(polygon);
+				ug.apply(new UChangeBackColor(getForegroundColor())).draw(polygon);
 			}
 
 			if (decorationStart == ArrowDecoration.CIRCLE) {
 				ug = ug.apply(new UStroke(thinCircle)).apply(new UChangeColor(getForegroundColor()));
 				final UEllipse circle = new UEllipse(diamCircle, diamCircle);
-				ug.drawNewWay(-diamCircle / 2 - 0.5, textHeight - diamCircle / 2 - thinCircle / 2, circle);
+				ug.apply(new UTranslate(-diamCircle / 2 - 0.5, textHeight - diamCircle / 2 - thinCircle / 2)).draw(circle);
 				ug = ug.apply(new UStroke());
 			}
 			if (decorationEnd == ArrowDecoration.CIRCLE) {
 				ug = ug.apply(new UStroke(thinCircle)).apply(new UChangeColor(getForegroundColor()));
 				final UEllipse circle = new UEllipse(diamCircle, diamCircle);
-				ug.drawNewWay(x2 - diamCircle / 2 + 0.5, textHeight - diamCircle / 2 - thinCircle / 2, circle);
+				ug.apply(new UTranslate(x2 - diamCircle / 2 + 0.5, textHeight - diamCircle / 2 - thinCircle / 2)).draw(circle);
 				ug = ug.apply(new UStroke());
 			}
 		} else {
 			if (getArrowConfiguration().isAsync()) {
 				if (getArrowConfiguration().getPart() != ArrowPart.BOTTOM_PART) {
-					ug.drawNewWay(arrowHeadPosition - 1, textHeight, new ULine(getArrowDeltaX(), -getArrowDeltaY()));
+					ug.apply(new UTranslate(arrowHeadPosition - 1, textHeight)).draw(new ULine(getArrowDeltaX(), -getArrowDeltaY()));
 				}
 				if (getArrowConfiguration().getPart() != ArrowPart.TOP_PART) {
-					ug.drawNewWay(arrowHeadPosition - 1, textHeight, new ULine(getArrowDeltaX(), getArrowDeltaY()));
+					ug.apply(new UTranslate(arrowHeadPosition - 1, textHeight)).draw(new ULine(getArrowDeltaX(), getArrowDeltaY()));
 				}
 			} else if (decorationEnd == ArrowDecoration.CROSSX_toberemoved) {
 				ug = ug.apply(new UStroke(2));
-				ug.drawNewWay(spaceCrossX, textHeight - getArrowDeltaX() / 2, new ULine(getArrowDeltaX(),
-						getArrowDeltaX()));
-				ug.drawNewWay(spaceCrossX, textHeight + getArrowDeltaX() / 2, new ULine(getArrowDeltaX(),
-						-getArrowDeltaX()));
+				ug.apply(new UTranslate(spaceCrossX, textHeight - getArrowDeltaX() / 2)).draw(new ULine(getArrowDeltaX(),
+				getArrowDeltaX()));
+				ug.apply(new UTranslate(spaceCrossX, textHeight + getArrowDeltaX() / 2)).draw(new ULine(getArrowDeltaX(),
+				-getArrowDeltaX()));
 				ug = ug.apply(new UStroke());
 			} else {
 				final UPolygon polygon = getPolygonReverse(textHeight);
-				ug.apply(new UChangeBackColor(getForegroundColor())).drawNewWay(arrowHeadPosition, 0, polygon);
+				ug.apply(new UChangeBackColor(getForegroundColor())).apply(new UTranslate(arrowHeadPosition, 0)).draw(polygon);
 			}
 
 			if (decorationStart == ArrowDecoration.CIRCLE) {
 				ug = ug.apply(new UStroke(thinCircle)).apply(new UChangeColor(getForegroundColor()));
 				final UEllipse circle = new UEllipse(diamCircle, diamCircle);
-				ug.drawNewWay(x2 - diamCircle / 2 + 0.5, textHeight - diamCircle / 2 - thinCircle / 2, circle);
+				ug.apply(new UTranslate(x2 - diamCircle / 2 + 0.5, textHeight - diamCircle / 2 - thinCircle / 2)).draw(circle);
 				ug = ug.apply(new UStroke());
 			}
 			if (decorationEnd == ArrowDecoration.CIRCLE) {
 				ug = ug.apply(new UStroke(thinCircle)).apply(new UChangeColor(getForegroundColor()));
 				final UEllipse circle = new UEllipse(diamCircle, diamCircle);
-				ug.drawNewWay(-diamCircle / 2 - 0.5, textHeight - diamCircle / 2 - thinCircle / 2, circle);
+				ug.apply(new UTranslate(-diamCircle / 2 - 0.5, textHeight - diamCircle / 2 - thinCircle / 2)).draw(circle);
 				ug = ug.apply(new UStroke());
 			}
 		}
@@ -216,7 +216,7 @@ public class ComponentRoseArrow extends AbstractComponentRoseArrow {
 		} else {
 			textPos = getMarginX1() + (direction2 == ArrowDirection.RIGHT_TO_LEFT_REVERSE ? getArrowDeltaX() : 0);
 		}
-		getTextBlock().drawUNewWayINLINED(ug.apply(new UTranslate(textPos, 0)));
+		getTextBlock().drawU(ug.apply(new UTranslate(textPos, 0)));
 	}
 
 	private UPolygon getPolygonNormal(final int textHeight, final double x2) {

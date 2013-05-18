@@ -41,6 +41,7 @@ import net.sourceforge.plantuml.ugraphic.UEllipse;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
 import net.sourceforge.plantuml.ugraphic.ULine;
 import net.sourceforge.plantuml.ugraphic.UStroke;
+import net.sourceforge.plantuml.ugraphic.UTranslate;
 
 class ExtremityCircleCross extends Extremity {
 
@@ -55,10 +56,9 @@ class ExtremityCircleCross extends Extremity {
 		this.dest = new Point2D.Double(p1.getX(), p1.getY());
 	}
 
-	public void drawUNewWayINLINED(UGraphic ug) {
+	public void drawU(UGraphic ug) {
 		ug = ug.apply(new UChangeBackColor(HtmlColorUtils.WHITE));
-		ug.apply(new UStroke(1.5)).drawNewWay(dest.getX() - radius, dest.getY() - radius,
-				new UEllipse(radius * 2, radius * 2));
+		ug.apply(new UStroke(1.5)).apply(new UTranslate(dest.getX() - radius, dest.getY() - radius)).draw(new UEllipse(radius * 2, radius * 2));
 		drawLine(ug, 0, 0, getPointOnCircle(Math.PI / 4), getPointOnCircle(Math.PI + Math.PI / 4));
 		drawLine(ug, 0, 0, getPointOnCircle(-Math.PI / 4), getPointOnCircle(Math.PI - Math.PI / 4));
 	}
@@ -72,7 +72,7 @@ class ExtremityCircleCross extends Extremity {
 	static private void drawLine(UGraphic ug, double x, double y, Point2D p1, Point2D p2) {
 		final double dx = p2.getX() - p1.getX();
 		final double dy = p2.getY() - p1.getY();
-		ug.drawNewWay(x + p1.getX(), y + p1.getY(), new ULine(dx, dy));
+		ug.apply(new UTranslate(x + p1.getX(), y + p1.getY())).draw(new ULine(dx, dy));
 
 	}
 

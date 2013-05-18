@@ -65,7 +65,7 @@ public class Footprint {
 
 	}
 
-	class MyUGraphic extends UGraphic {
+	class MyUGraphic implements UGraphic {
 
 		private final UTranslate translate;
 		private final List<Point2D.Double> all;
@@ -79,7 +79,6 @@ public class Footprint {
 			this(new ArrayList<Point2D.Double>(), new UTranslate());
 		}
 
-		@Override
 		public UGraphic apply(UChange change) {
 			if (change instanceof UTranslate) {
 				return new MyUGraphic(all, translate.compose((UTranslate) change));
@@ -97,7 +96,7 @@ public class Footprint {
 			return new UParamNull();
 		}
 
-		public void drawOldWay(UShape shape) {
+		public void draw(UShape shape) {
 			final double x = translate.getDx();
 			final double y = translate.getDy();
 			if (shape instanceof UText) {
@@ -143,7 +142,7 @@ public class Footprint {
 
 	public ContainingEllipse getEllipse(UDrawable drawable, double alpha) {
 		final MyUGraphic ug = new MyUGraphic();
-		drawable.drawUNewWayINLINED(ug);
+		drawable.drawU(ug);
 		final List<Point2D.Double> all = ug.all;
 		final ContainingEllipse circle = new ContainingEllipse(alpha);
 		for (Point2D pt : all) {

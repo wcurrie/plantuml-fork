@@ -170,7 +170,7 @@ public class EntityImageClassHeader2 extends AbstractEntityImage {
 		return headerLayout.getDimension(stringBounder);
 	}
 
-	final public void drawUNewWayINLINED(UGraphic ug) {
+	final public void drawU(UGraphic ug) {
 		throw new UnsupportedOperationException();
 	}
 

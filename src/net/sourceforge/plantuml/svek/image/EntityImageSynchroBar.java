@@ -59,7 +59,7 @@ public class EntityImageSynchroBar extends AbstractEntityImage {
 		return new Dimension2DDouble(80, 8);
 	}
 
-	final public void drawUNewWayINLINED(UGraphic ug) {
+	final public void drawU(UGraphic ug) {
 		final Dimension2D dim = calculateDimension(ug.getStringBounder());
 		final Shadowable rect = new URectangle(dim.getWidth(), dim.getHeight());
 		if (getSkinParam().shadowing()) {
@@ -67,7 +67,7 @@ public class EntityImageSynchroBar extends AbstractEntityImage {
 		}
 		ug.apply(new UChangeColor(null))
 				.apply(new UChangeBackColor(SkinParamUtils
-						.getColor(getSkinParam(), ColorParam.activityBar, getStereo()))).drawOldWay(rect);
+						.getColor(getSkinParam(), ColorParam.activityBar, getStereo()))).draw(rect);
 	}
 
 	public ShapeType getShapeType() {

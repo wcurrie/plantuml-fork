@@ -48,6 +48,7 @@ import net.sourceforge.plantuml.ugraphic.UChangeBackColor;
 import net.sourceforge.plantuml.ugraphic.UChangeColor;
 import net.sourceforge.plantuml.ugraphic.UEllipse;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
+import net.sourceforge.plantuml.ugraphic.UTranslate;
 
 public class FtileCircleStop extends AbstractFtile2 {
 
@@ -62,7 +63,7 @@ public class FtileCircleStop extends AbstractFtile2 {
 	public TextBlock asTextBlock() {
 		return new TextBlock() {
 
-			public void drawUNewWayINLINED(UGraphic ug) {
+			public void drawU(UGraphic ug) {
 				double xTheoricalPosition = 0;
 				double yTheoricalPosition = 0;
 				xTheoricalPosition = Math.round(xTheoricalPosition);
@@ -72,16 +73,14 @@ public class FtileCircleStop extends AbstractFtile2 {
 				if (SHADOWING) {
 					circle.setDeltaShadow(3);
 				}
-				ug.apply(new UChangeColor(backColor)).apply(new UChangeBackColor(null))
-						.drawNewWay(xTheoricalPosition, yTheoricalPosition, circle);
+				ug.apply(new UChangeColor(backColor)).apply(new UChangeBackColor(null)).apply(new UTranslate(xTheoricalPosition, yTheoricalPosition)).draw(circle);
 
 				final double delta = 4;
 				final UEllipse circleSmall = new UEllipse(SIZE - delta * 2, SIZE - delta * 2);
 				if (SHADOWING) {
 					circleSmall.setDeltaShadow(3);
 				}
-				ug.apply(new UChangeColor(null)).apply(new UChangeBackColor(backColor))
-						.drawNewWay(xTheoricalPosition + delta + .5, yTheoricalPosition + delta + .5, circleSmall);
+				ug.apply(new UChangeColor(null)).apply(new UChangeBackColor(backColor)).apply(new UTranslate(xTheoricalPosition + delta + .5, yTheoricalPosition + delta + .5)).draw(circleSmall);
 			}
 
 			public Dimension2D calculateDimension(StringBounder stringBounder) {

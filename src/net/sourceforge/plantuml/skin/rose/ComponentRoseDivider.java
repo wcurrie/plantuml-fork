@@ -87,11 +87,11 @@ public class ComponentRoseDivider extends AbstractTextualComponent {
 		if (withShadow) {
 			rectLong.setDeltaShadow(2);
 		}
-		ug.drawNewWay(0, dimensionToUse.getHeight() / 2 - 1, rectLong);
+		ug.apply(new UTranslate(0, dimensionToUse.getHeight() / 2 - 1)).draw(rectLong);
 
 		ug = ug.apply(new UStroke(stroke.getThickness() / 2)).apply(new UChangeColor(HtmlColorUtils.BLACK));
-		ug.drawNewWay(0, dimensionToUse.getHeight() / 2 - 1, new ULine(dimensionToUse.getWidth(), 0));
-		ug.drawNewWay(0, dimensionToUse.getHeight() / 2 + 2, new ULine(dimensionToUse.getWidth(), 0));
+		ug.apply(new UTranslate(0, dimensionToUse.getHeight() / 2 - 1)).draw(new ULine(dimensionToUse.getWidth(), 0));
+		ug.apply(new UTranslate(0, dimensionToUse.getHeight() / 2 + 2)).draw(new ULine(dimensionToUse.getWidth(), 0));
 
 		if (empty == false) {
 			ug = ug.apply(new UChangeBackColor(background)).apply(new UChangeColor(HtmlColorUtils.BLACK));
@@ -101,10 +101,10 @@ public class ComponentRoseDivider extends AbstractTextualComponent {
 			if (withShadow) {
 				rect.setDeltaShadow(4);
 			}
-			ug.drawNewWay(xpos, ypos, rect);
+			ug.apply(new UTranslate(xpos, ypos)).draw(rect);
 			ug = ug.apply(new UStroke());
 
-			textBlock.drawUNewWayINLINED(ug.apply(new UTranslate((xpos + deltaX), (ypos + getMarginY()))));
+			textBlock.drawU(ug.apply(new UTranslate((xpos + deltaX), (ypos + getMarginY()))));
 		}
 	}
 

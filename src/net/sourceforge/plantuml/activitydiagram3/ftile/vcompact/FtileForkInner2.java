@@ -60,12 +60,12 @@ class FtileForkInner2 extends AbstractFtile2 {
 	public TextBlock asTextBlock() {
 		return new TextBlock() {
 
-			public void drawUNewWayINLINED(UGraphic ug) {
+			public void drawU(UGraphic ug) {
 				final StringBounder stringBounder = ug.getStringBounder();
 
 				double xpos = 0;
 				for (Ftile ftile : forks) {
-					ftile.asTextBlock().drawUNewWayINLINED(ug.apply(new UTranslate(xpos, 0)));
+					ug.apply(new UTranslate(xpos, 0)).draw(ftile);
 					final Dimension2D dim = ftile.asTextBlock().calculateDimension(stringBounder);
 					xpos += dim.getWidth();
 				}

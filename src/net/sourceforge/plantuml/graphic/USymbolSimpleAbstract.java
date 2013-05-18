@@ -51,7 +51,7 @@ abstract class USymbolSimpleAbstract extends USymbol {
 		final TextBlock stickman = getDrawing(symbolContext);
 		return new TextBlock() {
 
-			public void drawUNewWayINLINED(UGraphic ug) {
+			public void drawU(UGraphic ug) {
 				final StringBounder stringBounder = ug.getStringBounder();
 				final Dimension2D dimName = label.calculateDimension(stringBounder);
 				final Dimension2D dimStereo = stereotype.calculateDimension(stringBounder);
@@ -60,13 +60,13 @@ abstract class USymbolSimpleAbstract extends USymbol {
 				final double stickmanX = (dimTotal.getWidth() - dimStickMan.getWidth()) / 2;
 				final double stickmanY = dimStereo.getHeight();
 				ug = symbolContext.apply(ug);
-				stickman.drawUNewWayINLINED(ug.apply(new UTranslate(stickmanX, stickmanY)));
+				stickman.drawU(ug.apply(new UTranslate(stickmanX, stickmanY)));
 				final double labelX = (dimTotal.getWidth() - dimName.getWidth()) / 2;
 				final double labelY = dimStickMan.getHeight() + dimStereo.getHeight();
-				label.drawUNewWayINLINED(ug.apply(new UTranslate(labelX, labelY)));
+				label.drawU(ug.apply(new UTranslate(labelX, labelY)));
 				
 				final double stereoX = (dimTotal.getWidth() - dimStereo.getWidth()) / 2;
-				stereotype.drawUNewWayINLINED(ug.apply(new UTranslate(stereoX, 0)));
+				stereotype.drawU(ug.apply(new UTranslate(stereoX, 0)));
 			}
 
 			public Dimension2D calculateDimension(StringBounder stringBounder) {

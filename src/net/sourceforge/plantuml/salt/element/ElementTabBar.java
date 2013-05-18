@@ -44,6 +44,7 @@ import net.sourceforge.plantuml.graphic.StringBounder;
 import net.sourceforge.plantuml.ugraphic.UFont;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
 import net.sourceforge.plantuml.ugraphic.ULine;
+import net.sourceforge.plantuml.ugraphic.UTranslate;
 
 public class ElementTabBar implements Element {
 
@@ -103,10 +104,10 @@ public class ElementTabBar implements Element {
 			elt.drawU(ug, x1 + margin1, y, zIndex, dimToUse);
 			final Dimension2D dimText = elt.getPreferredDimension(ug.getStringBounder(), x1, y);
 			final double w = dimText.getWidth();
-			ug.drawNewWay(x1, y, new ULine(0, dimText.getHeight()));
-			ug.drawNewWay(x1, y, new ULine(w + margin1 + margin2, 0));
-			ug.drawNewWay(x1 + w + margin1 + margin2, y, new ULine(0, dimText.getHeight()));
-			ug.drawNewWay(x1 + w + margin1 + margin2, y + dimText.getHeight(), new ULine(margin3, 0));
+			ug.apply(new UTranslate(x1, y)).draw(new ULine(0, dimText.getHeight()));
+			ug.apply(new UTranslate(x1, y)).draw(new ULine(w + margin1 + margin2, 0));
+			ug.apply(new UTranslate(x1 + w + margin1 + margin2, y)).draw(new ULine(0, dimText.getHeight()));
+			ug.apply(new UTranslate(x1 + w + margin1 + margin2, y + dimText.getHeight())).draw(new ULine(margin3, 0));
 			x1 += w + margin1 + margin2 + margin3;
 		}
 	}
@@ -130,10 +131,10 @@ public class ElementTabBar implements Element {
 			elt.drawU(ug, x, y1 + margin1, zIndex, dimToUse);
 			final Dimension2D dimText = elt.getPreferredDimension(ug.getStringBounder(), x, y1);
 			final double h = dimText.getHeight();
-			ug.drawNewWay(x, y1, new ULine(preferred.getWidth(), 0));
-			ug.drawNewWay(x, y1, new ULine(0, h + margin1 + margin2));
-			ug.drawNewWay(x, y1 + h + margin1 + margin2, new ULine(preferred.getWidth(), 0));
-			ug.drawNewWay(x + preferred.getWidth(), y1 + h + margin1 + margin2, new ULine(0, margin3));
+			ug.apply(new UTranslate(x, y1)).draw(new ULine(preferred.getWidth(), 0));
+			ug.apply(new UTranslate(x, y1)).draw(new ULine(0, h + margin1 + margin2));
+			ug.apply(new UTranslate(x, y1 + h + margin1 + margin2)).draw(new ULine(preferred.getWidth(), 0));
+			ug.apply(new UTranslate(x + preferred.getWidth(), y1 + h + margin1 + margin2)).draw(new ULine(0, margin3));
 			y1 += h + margin1 + margin2 + margin3;
 		}
 	}

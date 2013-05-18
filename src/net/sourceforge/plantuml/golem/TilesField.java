@@ -236,7 +236,7 @@ public class TilesField implements TextBlock {
 	}
 
 	// -----------
-	public void drawUNewWayINLINED(UGraphic ug) {
+	public void drawU(UGraphic ug) {
 		double x = 0;
 		double y = 0;
 		final int xmin = getXmin();
@@ -249,7 +249,7 @@ public class TilesField implements TextBlock {
 			final Tile t = ent.getKey();
 			final double xt = p.getXmin() * dimSingle.getWidth() / 2;
 			final double yt = p.getYmin() * dimSingle.getHeight() / 2;
-			t.drawUNewWayINLINED(ug.apply(new UTranslate((x + xt), (y + yt))));
+			t.drawU(ug.apply(new UTranslate((x + xt), (y + yt))));
 		}
 		ug = ug.apply(new UChangeColor(HtmlColorUtils.RED));
 		for (Path p : paths) {
@@ -257,8 +257,8 @@ public class TilesField implements TextBlock {
 			final TileArea dest = p.getDest();
 			final Point2D pstart = getPoint2D(dimSingle, start);
 			final Point2D pdest = getPoint2D(dimSingle, dest);
-			ug.drawNewWay(x + pstart.getX(), y + pstart.getY(), new ULine(pdest.getX() - pstart.getX(), pdest.getY()
-					- pstart.getY()));
+			ug.apply(new UTranslate(x + pstart.getX(), y + pstart.getY())).draw(new ULine(pdest.getX() - pstart.getX(), pdest.getY()
+			- pstart.getY()));
 		}
 	}
 

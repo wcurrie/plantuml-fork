@@ -49,6 +49,7 @@ import net.sourceforge.plantuml.ugraphic.UChangeColor;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
 import net.sourceforge.plantuml.ugraphic.URectangle;
 import net.sourceforge.plantuml.ugraphic.UShape;
+import net.sourceforge.plantuml.ugraphic.UTranslate;
 
 public class RowSimple implements Row {
 
@@ -79,13 +80,12 @@ public class RowSimple implements Row {
 	public TextBlock asTextBloc(final TimeConverter timeConverter) {
 		return new TextBlock() {
 
-			public void drawUNewWayINLINED(UGraphic ug) {
+			public void drawU(UGraphic ug) {
 				final double x1 = getMinXwithoutHeader(timeConverter) + 1;
 				final double x2 = getMaxXwithoutHeader(timeConverter) - 1;
 				final double height = getHeight() - 4;
 				final UShape rect = new URectangle(x2 - x1, height, 4, 4);
-				ug.apply(new UChangeColor(HtmlColorUtils.RED)).apply(new UChangeBackColor(backcolor))
-						.drawNewWay(x1, 2, rect);
+				ug.apply(new UChangeColor(HtmlColorUtils.RED)).apply(new UChangeBackColor(backcolor)).apply(new UTranslate(x1, 2)).draw(rect);
 			}
 
 			public Dimension2D calculateDimension(StringBounder stringBounder) {

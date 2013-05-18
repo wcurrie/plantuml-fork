@@ -70,11 +70,11 @@ public class GanttDiagram2 {
 		final double deltaX = headers.calculateDimension(ug.getStringBounder()).getWidth();
 		final double deltaY = timeHeader.calculateDimension(ug.getStringBounder()).getHeight();
 
-		headers.drawUNewWayINLINED(ug.apply(new UTranslate(x, (y + deltaY))));
+		headers.drawU(ug.apply(new UTranslate(x, (y + deltaY))));
 		final TextBlock tbRow = row.asTextBloc(project.getTimeConverter(dayWith));
-		tbRow.drawUNewWayINLINED(ug.apply(new UTranslate((x + deltaX), (y + deltaY))));
+		tbRow.drawU(ug.apply(new UTranslate((x + deltaX), (y + deltaY))));
 
-		timeHeader.drawUNewWayINLINED(ug.apply(new UTranslate((x + deltaX), y)));
+		timeHeader.drawU(ug.apply(new UTranslate((x + deltaX), y)));
 	}
 
 	private Row getMainRow() {

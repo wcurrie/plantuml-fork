@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 10204 $
+ * Revision $Revision: 10925 $
  *
  */
 package net.sourceforge.plantuml.skin.bluemodern;
@@ -55,7 +55,7 @@ public class ComponentBlueModernNewpage extends AbstractComponent {
 	protected void drawInternalU(UGraphic ug, Area area) {
 		final Dimension2D dimensionToUse = area.getDimensionToUse();
 		ug = stroke(ug, 10, 2);
-		ug.apply(new UChangeColor(foregroundColor)).drawOldWay(new ULine(dimensionToUse.getWidth(), 0));
+		ug.apply(new UChangeColor(foregroundColor)).draw(new ULine(dimensionToUse.getWidth(), 0));
 	}
 
 	@Override

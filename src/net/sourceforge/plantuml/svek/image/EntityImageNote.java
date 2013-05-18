@@ -184,7 +184,7 @@ public class EntityImageNote extends AbstractEntityImage {
 		return new Dimension2DDouble(width, height);
 	}
 
-	final public void drawUNewWayINLINED(UGraphic ug) {
+	final public void drawU(UGraphic ug) {
 		final List<Url> urls = getUrls();
 		if (urls.size() > 0 && urls.get(0).isMember() == false) {
 			ug.startUrl(urls.get(0));
@@ -210,7 +210,7 @@ public class EntityImageNote extends AbstractEntityImage {
 			final Point2D pp2 = path.getEndPoint();
 			final Opale opale = new Opale(borderColor, noteBackgroundColor, textBlock, skinParam.shadowing());
 			opale.setOpale(strategy, pp1, pp2);
-			opale.drawUNewWayINLINED(ug);
+			opale.drawU(ug);
 		}
 		if (urls.size() > 0 && urls.get(0).isMember() == false) {
 			ug.closeAction();
@@ -224,11 +224,11 @@ public class EntityImageNote extends AbstractEntityImage {
 			polygon.setDeltaShadow(4);
 		}
 		ug = ug.apply(new UChangeBackColor(noteBackgroundColor)).apply(new UChangeColor(borderColor));
-		ug.drawOldWay(polygon);
+		ug.draw(polygon);
 
-		ug.drawNewWay(getTextWidth(stringBounder) - cornersize, 0, new ULine(0, cornersize));
-		ug.drawNewWay(getTextWidth(stringBounder), cornersize, new ULine(-cornersize, 0));
-		getTextBlock().drawUNewWayINLINED(ug.apply(new UTranslate(marginX1, marginY)));
+		ug.apply(new UTranslate(getTextWidth(stringBounder) - cornersize, 0)).draw(new ULine(0, cornersize));
+		ug.apply(new UTranslate(getTextWidth(stringBounder), cornersize)).draw(new ULine(-cornersize, 0));
+		getTextBlock().drawU(ug.apply(new UTranslate(marginX1, marginY)));
 
 	}
 

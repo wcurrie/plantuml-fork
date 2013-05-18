@@ -39,9 +39,8 @@ import java.io.OutputStream;
 import net.sourceforge.plantuml.Url;
 import net.sourceforge.plantuml.graphic.StringBounder;
 
-public class SlotFinder extends UGraphic {
+public class SlotFinder implements UGraphic {
 
-	@Override
 	public UGraphic apply(UChange change) {
 		if (change instanceof UTranslate) {
 			return new SlotFinder(stringBounder, yslot, translate.compose((UTranslate) change));
@@ -81,7 +80,7 @@ public class SlotFinder extends UGraphic {
 		return new UParamNull();
 	}
 
-	public void drawOldWay(UShape shape) {
+	public void draw(UShape shape) {
 		final double x = translate.getDx();
 		final double y = translate.getDy();
 		if (shape instanceof URectangle) {
@@ -103,7 +102,7 @@ public class SlotFinder extends UGraphic {
 
 	private void drawText(double x, double y, UText shape) {
 		final TextLimitFinder finder = new TextLimitFinder(stringBounder, false);
-		finder.drawNewWay(x, y, shape);
+		finder.apply(new UTranslate(x, y)).draw(shape);
 		yslot.addSlot(finder.getMinY(), finder.getMaxY());
 	}
 

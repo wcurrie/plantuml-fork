@@ -76,7 +76,7 @@ class TimeScale {
 		final int nb = getNbCase();
 
 		ug = ug.apply(new UChangeColor(HtmlColorUtils.BLACK));
-		ug.drawNewWay(x, y, new URectangle(nb * caseWidth, monthHeight));
+		ug.apply(new UTranslate(x, y)).draw(new URectangle(nb * caseWidth, monthHeight));
 		final Instant end = project.getEnd();
 
 		Month printed = null;
@@ -85,28 +85,28 @@ class TimeScale {
 		for (Instant cur = project.getStart(); cur.compareTo(end) <= 0; cur = cur.next(project.getDayClose())) {
 			final Day d = cur.getDay();
 			if (printed == null || d.getMonth() != printed) {
-				ug.drawNewWay(curx, y, new ULine(0, monthHeight));
+				ug.apply(new UTranslate(curx, y)).draw(new ULine(0, monthHeight));
 				printed = d.getMonth();
 				final TextBlock b = TextBlockUtils.create(Display.asList(printed.name()), fontConfig,
 						HorizontalAlignement.LEFT, new SpriteContainerEmpty());
 				final Dimension2D dim = b.calculateDimension(stringBounder);
-				b.drawUNewWayINLINED(ug.apply(new UTranslate(curx, (y + (monthHeight - dim.getHeight()) / 2))));
+				b.drawU(ug.apply(new UTranslate(curx, (y + (monthHeight - dim.getHeight()) / 2))));
 			}
 			curx += caseWidth;
 		}
 
 		curx = x;
 		y += monthHeight;
-		ug.drawNewWay(x, y, new URectangle(nb * caseWidth, caseHeight));
+		ug.apply(new UTranslate(x, y)).draw(new URectangle(nb * caseWidth, caseHeight));
 
 		for (Instant cur = project.getStart(); cur.compareTo(end) <= 0; cur = cur.next(project.getDayClose())) {
 			final Day d = cur.getDay();
 			final TextBlock b = TextBlockUtils.create(Display.asList("" + d.getNumDay()), fontConfig,
 					HorizontalAlignement.LEFT, new SpriteContainerEmpty());
 			final Dimension2D dim = b.calculateDimension(stringBounder);
-			b.drawUNewWayINLINED(ug.apply(new UTranslate((curx + (caseWidth - dim.getWidth()) / 2), (y + (caseHeight - dim.getHeight()) / 2))));
+			b.drawU(ug.apply(new UTranslate((curx + (caseWidth - dim.getWidth()) / 2), (y + (caseHeight - dim.getHeight()) / 2))));
 			curx += caseWidth;
-			ug.drawNewWay(curx, y, new ULine(0, caseHeight));
+			ug.apply(new UTranslate(curx, y)).draw(new ULine(0, caseHeight));
 		}
 	}
 

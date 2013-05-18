@@ -167,11 +167,11 @@ public class EntityImageComponentForDescriptionDiagram extends AbstractEntityIma
 		return asSmall.calculateDimension(stringBounder);
 	}
 
-	final public void drawUNewWayINLINED(UGraphic ug) {
+	final public void drawU(UGraphic ug) {
 		if (url.size() > 0) {
 			ug.startUrl(url.get(0));
 		}
-		asSmall.drawUNewWayINLINED(ug);
+		asSmall.drawU(ug);
 
 		if (url.size() > 0) {
 			ug.closeAction();

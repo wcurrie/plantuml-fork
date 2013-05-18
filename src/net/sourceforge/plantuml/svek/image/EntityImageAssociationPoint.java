@@ -60,9 +60,9 @@ public class EntityImageAssociationPoint extends AbstractEntityImage {
 		return new Dimension2DDouble(SIZE, SIZE);
 	}
 
-	final public void drawUNewWayINLINED(UGraphic ug) {
+	final public void drawU(UGraphic ug) {
 		final UShape circle = new UEllipse(SIZE, SIZE);
-		ug.apply(new UChangeColor(null)).apply(new UChangeBackColor(HtmlColorUtils.BLACK)).drawOldWay(circle);
+		ug.apply(new UChangeColor(null)).apply(new UChangeBackColor(HtmlColorUtils.BLACK)).draw(circle);
 	}
 
 	public ShapeType getShapeType() {

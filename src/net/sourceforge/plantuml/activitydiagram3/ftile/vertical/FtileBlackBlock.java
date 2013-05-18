@@ -34,12 +34,13 @@
 package net.sourceforge.plantuml.activitydiagram3.ftile.vertical;
 
 import java.awt.geom.Dimension2D;
+import java.awt.geom.Point2D;
 import java.util.Collections;
 import java.util.List;
 
 import net.sourceforge.plantuml.Dimension2DDouble;
 import net.sourceforge.plantuml.Url;
-import net.sourceforge.plantuml.activitydiagram3.ftile.AbstractFtileOld;
+import net.sourceforge.plantuml.activitydiagram3.ftile.AbstractFtile2;
 import net.sourceforge.plantuml.activitydiagram3.ftile.Ftile;
 import net.sourceforge.plantuml.graphic.HtmlColor;
 import net.sourceforge.plantuml.graphic.StringBounder;
@@ -49,7 +50,7 @@ import net.sourceforge.plantuml.ugraphic.UChangeColor;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
 import net.sourceforge.plantuml.ugraphic.URectangle;
 
-class FtileBlackBlock extends AbstractFtileOld {
+public class FtileBlackBlock extends AbstractFtile2 {
 
 	private final double width;
 	private final double height;
@@ -61,15 +62,23 @@ class FtileBlackBlock extends AbstractFtileOld {
 		this.colorBar = colorBar;
 	}
 
+	public Point2D getPointIn(StringBounder stringBounder) {
+		return new Point2D.Double(width / 2, 0);
+	}
+
+	public Point2D getPointOut(StringBounder stringBounder) {
+		return new Point2D.Double(width / 2, height);
+	}
+
 	public TextBlock asTextBlock() {
 		return new TextBlock() {
 
-			public void drawUNewWayINLINED(UGraphic ug) {
+			public void drawU(UGraphic ug) {
 				final URectangle rect = new URectangle(width, height, 5, 5);
 				if (Ftile.SHADOWING) {
 					rect.setDeltaShadow(3);
 				}
-				ug.apply(new UChangeColor(colorBar)).apply(new UChangeBackColor(colorBar)).drawOldWay(rect);
+				ug.apply(new UChangeColor(colorBar)).apply(new UChangeBackColor(colorBar)).draw(rect);
 			}
 
 			public Dimension2D calculateDimension(StringBounder stringBounder) {
@@ -85,6 +94,5 @@ class FtileBlackBlock extends AbstractFtileOld {
 	public boolean isKilled() {
 		return false;
 	}
-
 
 }

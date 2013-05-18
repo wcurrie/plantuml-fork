@@ -44,6 +44,7 @@ import net.sourceforge.plantuml.ugraphic.UChangeBackColor;
 import net.sourceforge.plantuml.ugraphic.UChangeColor;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
 import net.sourceforge.plantuml.ugraphic.ULine;
+import net.sourceforge.plantuml.ugraphic.UTranslate;
 
 public class ComponentBlueModernDelayLine extends AbstractComponent {
 
@@ -59,8 +60,7 @@ public class ComponentBlueModernDelayLine extends AbstractComponent {
 		ug = ug.apply(new UChangeColor(color));
 		ug = stroke(ug, 1, 4);
 		final int x = (int) (dimensionToUse.getWidth() / 2);
-		ug.apply(new UChangeBackColor(color)).apply(UAntiAliasing.ANTI_ALIASING_OFF)
-				.drawNewWay(x + 1, 0, new ULine(0, dimensionToUse.getHeight()));
+		ug.apply(new UChangeBackColor(color)).apply(UAntiAliasing.ANTI_ALIASING_OFF).apply(new UTranslate(x + 1, 0)).draw(new ULine(0, dimensionToUse.getHeight()));
 	}
 
 	@Override

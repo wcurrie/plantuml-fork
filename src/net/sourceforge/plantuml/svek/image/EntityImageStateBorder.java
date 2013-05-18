@@ -104,7 +104,7 @@ public class EntityImageStateBorder extends AbstractEntityImage {
 		return dimDesc.getWidth();
 	}
 
-	final public void drawUNewWayINLINED(UGraphic ug) {
+	final public void drawU(UGraphic ug) {
 		final Shadowable circle = new UEllipse(RADIUS * 2, RADIUS * 2);
 		// if (getSkinParam().shadowing()) {
 		// circle.setDeltaShadow(4);
@@ -118,7 +118,7 @@ public class EntityImageStateBorder extends AbstractEntityImage {
 		} else {
 			y += 2 * RADIUS;
 		}
-		desc.drawUNewWayINLINED(ug.apply(new UTranslate(x, y)));
+		desc.drawU(ug.apply(new UTranslate(x, y)));
 
 		ug = ug.apply(new UStroke(1.5)).apply(
 				new UChangeColor(SkinParamUtils.getColor(getSkinParam(), ColorParam.stateBorder, getStereo())));
@@ -128,7 +128,7 @@ public class EntityImageStateBorder extends AbstractEntityImage {
 		}
 		ug = ug.apply(new UChangeBackColor(backcolor));
 
-		ug.drawOldWay(circle);
+		ug.draw(circle);
 		if (entityPosition == EntityPosition.EXIT_POINT) {
 			final double xc = 0 + RADIUS + .5;
 			final double yc = 0 + RADIUS + .5;
@@ -149,7 +149,7 @@ public class EntityImageStateBorder extends AbstractEntityImage {
 	static private void drawLine(UGraphic ug, Point2D p1, Point2D p2) {
 		final double dx = p2.getX() - p1.getX();
 		final double dy = p2.getY() - p1.getY();
-		ug.drawNewWay(p1.getX(), p1.getY(), new ULine(dx, dy));
+		ug.apply(new UTranslate(p1.getX(), p1.getY())).draw(new ULine(dx, dy));
 
 	}
 

@@ -97,7 +97,7 @@ public class EntityImageUseCase extends AbstractEntityImage {
 		return new TextBlockInEllipse(desc, stringBounder).calculateDimension(stringBounder);
 	}
 
-	final public void drawUNewWayINLINED(UGraphic ug) {
+	final public void drawU(UGraphic ug) {
 		final StringBounder stringBounder = ug.getStringBounder();
 		final TextBlockInEllipse ellipse = new TextBlockInEllipse(desc, stringBounder);
 		if (getSkinParam().shadowing()) {
@@ -117,7 +117,7 @@ public class EntityImageUseCase extends AbstractEntityImage {
 		ug = ug.apply(new UChangeBackColor(backcolor));
 		final UGraphic ug2 = new MyUGraphicEllipse(ug, 0, 0, ellipse.getUEllipse());
 
-		ellipse.drawUNewWayINLINED(ug2);
+		ellipse.drawU(ug2);
 
 		if (url.size() > 0) {
 			ug.closeAction();

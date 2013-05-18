@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 10577 $
+ * Revision $Revision: 10930 $
  *
  */
 package net.sourceforge.plantuml.skin.rose;
@@ -79,12 +79,12 @@ public class ComponentRoseSelfArrow extends AbstractComponentRoseArrow {
 		final double dx1 = area.getDeltaX1() < 0 ? area.getDeltaX1() : 0;
 		final double dx2 = area.getDeltaX1() > 0 ? -area.getDeltaX1() : 0;
 
-		ug.drawNewWay(dx1, textHeight, new ULine(x2 - dx1, 0));
+		ug.apply(new UTranslate(dx1, textHeight)).draw(new ULine(x2 - dx1, 0));
 
 		final double textAndArrowHeight = textHeight + getArrowOnlyHeight(stringBounder);
 
-		ug.drawNewWay(x2, textHeight, new ULine(0, textAndArrowHeight - textHeight));
-		ug.drawNewWay(dx2, textAndArrowHeight, new ULine(x2 - dx2, 0));
+		ug.apply(new UTranslate(x2, textHeight)).draw(new ULine(0, textAndArrowHeight - textHeight));
+		ug.apply(new UTranslate(dx2, textAndArrowHeight)).draw(new ULine(x2 - dx2, 0));
 
 		if (getArrowConfiguration().isDotted()) {
 			ug = ug.apply(new UStroke());
@@ -92,17 +92,17 @@ public class ComponentRoseSelfArrow extends AbstractComponentRoseArrow {
 
 		if (getArrowConfiguration().isAsync()) {
 			if (getArrowConfiguration().getPart() != ArrowPart.BOTTOM_PART) {
-				ug.drawNewWay(dx2, textAndArrowHeight, new ULine(getArrowDeltaX(), -getArrowDeltaY()));
+				ug.apply(new UTranslate(dx2, textAndArrowHeight)).draw(new ULine(getArrowDeltaX(), -getArrowDeltaY()));
 			}
 			if (getArrowConfiguration().getPart() != ArrowPart.TOP_PART) {
-				ug.drawNewWay(dx2, textAndArrowHeight, new ULine(getArrowDeltaX(), getArrowDeltaY()));
+				ug.apply(new UTranslate(dx2, textAndArrowHeight)).draw(new ULine(getArrowDeltaX(), getArrowDeltaY()));
 			}
 		} else {
 			final UPolygon polygon = getPolygon(textAndArrowHeight);
-			ug.apply(new UChangeBackColor(getForegroundColor())).drawNewWay(dx2, 0, polygon);
+			ug.apply(new UChangeBackColor(getForegroundColor())).apply(new UTranslate(dx2, 0)).draw(polygon);
 		}
 
-		getTextBlock().drawUNewWayINLINED(ug.apply(new UTranslate(getMarginX1(), 0)));
+		getTextBlock().drawU(ug.apply(new UTranslate(getMarginX1(), 0)));
 	}
 
 	private UPolygon getPolygon(final double textAndArrowHeight) {

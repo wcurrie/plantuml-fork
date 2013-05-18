@@ -27,56 +27,37 @@
  * in the United States and other countries.]
  *
  * Original Author:  Arnaud Roques
- *
- * Revision $Revision: 8475 $
+ * 
+ * Revision $Revision: 10266 $
  *
  */
-package net.sourceforge.plantuml.activitydiagram3.ftile.vertical;
+package net.sourceforge.plantuml.graphic;
 
 import java.awt.geom.Dimension2D;
-import java.util.Collections;
 import java.util.List;
 
-import net.sourceforge.plantuml.Dimension2DDouble;
 import net.sourceforge.plantuml.Url;
-import net.sourceforge.plantuml.activitydiagram3.ftile.AbstractFtileOld;
-import net.sourceforge.plantuml.graphic.HtmlColor;
-import net.sourceforge.plantuml.graphic.StringBounder;
-import net.sourceforge.plantuml.graphic.TextBlock;
-import net.sourceforge.plantuml.ugraphic.UChangeColor;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
-import net.sourceforge.plantuml.ugraphic.ULine;
-import net.sourceforge.plantuml.ugraphic.UStroke;
 
-class FtileVerticalLine extends AbstractFtileOld {
+public class TextBlockInterceptorTextBlockable implements TextBlock {
 
-	private final double height;
-	private final HtmlColor color;
+	private final TextBlock textBlock;
 
-	public FtileVerticalLine(double height, HtmlColor color) {
-		this.height = height;
-		this.color = color;
+	public TextBlockInterceptorTextBlockable(TextBlock textBlock) {
+		this.textBlock = textBlock;
 	}
 
-	public TextBlock asTextBlock() {
-		return new TextBlock() {
+	public void drawU(UGraphic ug) {
+		textBlock.drawU(new UGraphicInterceptorTextBlockable(ug));
 
-			public void drawUNewWayINLINED(UGraphic ug) {
-				ug.apply(new UStroke(1.5)).apply(new UChangeColor(color)).drawOldWay(new ULine(0, height));
-			}
-
-			public Dimension2D calculateDimension(StringBounder stringBounder) {
-				return new Dimension2DDouble(2, height);
-			}
-
-			public List<Url> getUrls() {
-				return Collections.emptyList();
-			}
-		};
 	}
 
-	public boolean isKilled() {
-		return false;
+	public Dimension2D calculateDimension(StringBounder stringBounder) {
+		throw new UnsupportedOperationException();
+	}
+
+	public List<Url> getUrls() {
+		throw new UnsupportedOperationException();
 	}
 
 }

@@ -48,6 +48,7 @@ import net.sourceforge.plantuml.ugraphic.UEllipse;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
 import net.sourceforge.plantuml.ugraphic.ULine;
 import net.sourceforge.plantuml.ugraphic.UStroke;
+import net.sourceforge.plantuml.ugraphic.UTranslate;
 
 public class Boundary implements TextBlock {
 
@@ -68,7 +69,7 @@ public class Boundary implements TextBlock {
 		this.thickness = thickness;
 	}
 
-	public void drawUNewWayINLINED(UGraphic ug) {
+	public void drawU(UGraphic ug) {
 		double x = 0;
 		double y = 0;
 		x += margin;
@@ -79,11 +80,11 @@ public class Boundary implements TextBlock {
 		circle.setDeltaShadow(deltaShadow);
 		final ULine line1 = new ULine(0, radius * 2);
 		line1.setDeltaShadow(deltaShadow);
-		ug.drawNewWay(x, y, line1);
+		ug.apply(new UTranslate(x, y)).draw(line1);
 		final ULine line2 = new ULine(left, 0);
 		line2.setDeltaShadow(deltaShadow);
-		ug.drawNewWay(x, y + radius, line2);
-		ug.drawNewWay(x + left, y, circle);
+		ug.apply(new UTranslate(x, y + radius)).draw(line2);
+		ug.apply(new UTranslate(x + left, y)).draw(circle);
 	}
 
 	public Dimension2D calculateDimension(StringBounder stringBounder) {

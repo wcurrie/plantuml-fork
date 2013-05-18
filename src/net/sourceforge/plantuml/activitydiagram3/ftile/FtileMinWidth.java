@@ -59,10 +59,10 @@ public class FtileMinWidth implements Ftile {
 	public TextBlock asTextBlock() {
 		return new TextBlock() {
 
-			public void drawUNewWayINLINED(UGraphic ug) {
+			public void drawU(UGraphic ug) {
 				final StringBounder stringBounder = ug.getStringBounder();
 				final UTranslate change = getUTranslateInternal(stringBounder);
-				ftile.asTextBlock().drawUNewWayINLINED(ug.apply(change));
+				ug.apply(change).draw(ftile);
 			}
 
 			public Dimension2D calculateDimension(StringBounder stringBounder) {

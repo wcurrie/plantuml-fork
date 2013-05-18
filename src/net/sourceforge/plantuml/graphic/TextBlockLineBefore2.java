@@ -42,6 +42,7 @@ import net.sourceforge.plantuml.ugraphic.UChangeColor;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
 import net.sourceforge.plantuml.ugraphic.UHorizontalLine;
 import net.sourceforge.plantuml.ugraphic.UStroke;
+import net.sourceforge.plantuml.ugraphic.UTranslate;
 
 public class TextBlockLineBefore2 implements TextBlock {
 
@@ -74,10 +75,10 @@ public class TextBlockLineBefore2 implements TextBlock {
 
 	private void drawLine(UGraphic ug, double y, UHorizontalLine line) {
 		if (separator == '=') {
-			ug.drawNewWay(0, y, line);
-			ug.drawNewWay(0, y + 2, line.blankTitle());
+			ug.apply(new UTranslate(0, y)).draw(line);
+			ug.apply(new UTranslate(0, y + 2)).draw(line.blankTitle());
 		} else {
-			ug.drawNewWay(0, y, line);
+			ug.apply(new UTranslate(0, y)).draw(line);
 		}
 	}
 
@@ -95,12 +96,12 @@ public class TextBlockLineBefore2 implements TextBlock {
 		}
 	}
 
-	public void drawUNewWayINLINED(UGraphic ug) {
+	public void drawU(UGraphic ug) {
 		final HtmlColor color = ug.getParam().getColor();
 		if (title == null) {
 			drawLine(ug, 0, UHorizontalLine.infinite(1, 1, getStroke()));
 		}
-		textBlock.drawUNewWayINLINED(ug);
+		textBlock.drawU(ug);
 		ug = ug.apply(new UChangeColor(color));
 		if (title != null) {
 			drawLine(ug, 0, UHorizontalLine.infinite(1, 1, title, getStroke()));

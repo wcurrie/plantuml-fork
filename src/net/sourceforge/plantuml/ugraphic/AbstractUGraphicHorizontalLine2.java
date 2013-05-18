@@ -39,7 +39,7 @@ import java.io.OutputStream;
 import net.sourceforge.plantuml.Url;
 import net.sourceforge.plantuml.graphic.StringBounder;
 
-public abstract class AbstractUGraphicHorizontalLine2 extends UGraphic {
+public abstract class AbstractUGraphicHorizontalLine2 implements UGraphic {
 
 	private UGraphic ug;
 	private UTranslate translate = new UTranslate();
@@ -72,11 +72,11 @@ public abstract class AbstractUGraphicHorizontalLine2 extends UGraphic {
 
 	protected abstract void drawHline(UGraphic ug, UHorizontalLine line, UTranslate translate);
 
-	public void drawOldWay(UShape shape) {
+	public void draw(UShape shape) {
 		if (shape instanceof UHorizontalLine) {
 			drawHline(ug, (UHorizontalLine) shape, new UTranslate(0, translate.getDy()));
 		} else {
-			ug.apply(translate).drawOldWay(shape);
+			ug.apply(translate).draw(shape);
 		}
 	}
 

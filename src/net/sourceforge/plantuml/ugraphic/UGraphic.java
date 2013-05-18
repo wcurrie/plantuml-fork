@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 10643 $
+ * Revision $Revision: 10925 $
  *
  */
 package net.sourceforge.plantuml.ugraphic;
@@ -39,35 +39,21 @@ import java.io.OutputStream;
 import net.sourceforge.plantuml.Url;
 import net.sourceforge.plantuml.graphic.StringBounder;
 
-public abstract class UGraphic {
-	/*
-public*draw*x*y
-void*draw*x*y
-draw*(*0*0
-Line
-UGroup
-UMotif
+public interface UGraphic {
 
-	 * 
-	 */
+	public StringBounder getStringBounder();
 
-	abstract public StringBounder getStringBounder();
+	public UParam getParam();
 
-	abstract public UParam getParam();
+	public void draw(UShape shape);
 
-	abstract public void drawOldWay(UShape shape);
+	public UGraphic apply(UChange change);
 
-	public final void drawNewWay(double x, double y, UShape shape) {
-		apply(new UTranslate(x, y)).drawOldWay(shape);
-	}
+	public ColorMapper getColorMapper();
 
-	abstract public UGraphic apply(UChange change);
+	public void startUrl(Url url);
 
-	abstract public ColorMapper getColorMapper();
+	public void closeAction();
 
-	abstract public void startUrl(Url url);
-
-	abstract public void closeAction();
-
-	abstract public void writeImage(OutputStream os, String metadata, int dpi) throws IOException;
+	public void writeImage(OutputStream os, String metadata, int dpi) throws IOException;
 }

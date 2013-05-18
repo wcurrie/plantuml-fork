@@ -38,10 +38,10 @@ import java.util.Collection;
 
 import net.sourceforge.plantuml.activitydiagram3.LinkRendering;
 import net.sourceforge.plantuml.graphic.StringBounder;
-import net.sourceforge.plantuml.graphic.TextBlock;
+import net.sourceforge.plantuml.graphic.TextBlockable;
 import net.sourceforge.plantuml.ugraphic.UTranslate;
 
-public interface Ftile {
+public interface Ftile extends TextBlockable {
 
 	public static final boolean SHADOWING = true;
 
@@ -56,8 +56,6 @@ public interface Ftile {
 	public Point2D getPointOut(StringBounder stringBounder);
 
 	public UTranslate getTranslateFor(Ftile child, StringBounder stringBounder);
-
-	public TextBlock asTextBlock();
 
 	public Collection<Connection> getInnerConnections();
 }

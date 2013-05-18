@@ -50,6 +50,10 @@ public class UTranslate implements UChange {
 		this.dy = dy;
 	}
 
+	public UTranslate(Point2D p) {
+		this(p.getX(), p.getY());
+	}
+
 	public UTranslate() {
 		this(0, 0);
 	}
@@ -63,6 +67,9 @@ public class UTranslate implements UChange {
 	}
 
 	public Point2D getTranslated(Point2D p) {
+		if (p == null) {
+			return null;
+		}
 		return new Point2D.Double(p.getX() + dx, p.getY() + dy);
 	}
 

@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 10269 $
+ * Revision $Revision: 10930 $
  *
  */
 package net.sourceforge.plantuml.graphic;
@@ -42,6 +42,7 @@ import net.sourceforge.plantuml.Dimension2DDouble;
 import net.sourceforge.plantuml.Url;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
 import net.sourceforge.plantuml.ugraphic.UImage;
+import net.sourceforge.plantuml.ugraphic.UTranslate;
 
 class TileImage implements TextBlock {
 
@@ -60,8 +61,8 @@ class TileImage implements TextBlock {
 		return new Dimension2DDouble(image.getWidth(), image.getHeight() + 2 * vspace);
 	}
 
-	public void drawUNewWayINLINED(UGraphic ug) {
-		ug.drawNewWay(0, vspace, new UImage(image));
+	public void drawU(UGraphic ug) {
+		ug.apply(new UTranslate(0, vspace)).draw(new UImage(image));
 	}
 
 	public List<Url> getUrls() {

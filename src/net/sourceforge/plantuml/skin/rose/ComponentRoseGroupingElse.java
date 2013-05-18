@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 10577 $
+ * Revision $Revision: 10930 $
  *
  */
 package net.sourceforge.plantuml.skin.rose;
@@ -69,16 +69,16 @@ public class ComponentRoseGroupingElse extends AbstractTextualComponent {
 	protected void drawBackgroundInternalU(UGraphic ug, Area area) {
 		final Dimension2D dimensionToUse = area.getDimensionToUse();
 		final URectangle rect = new URectangle(dimensionToUse.getWidth(), dimensionToUse.getHeight());
-		ug.apply(new UChangeColor(null)).apply(new UChangeBackColor(backgroundColor)).drawOldWay(rect);
+		ug.apply(new UChangeColor(null)).apply(new UChangeBackColor(backgroundColor)).draw(rect);
 	}
 
 	@Override
 	protected void drawInternalU(UGraphic ug, Area area) {
 		final Dimension2D dimensionToUse = area.getDimensionToUse();
 		ug = stroke(ug, 2, 2).apply(new UChangeColor(groupBorder));
-		ug.drawNewWay(0, 1, new ULine(dimensionToUse.getWidth(), 0));
+		ug.apply(new UTranslate(0, 1)).draw(new ULine(dimensionToUse.getWidth(), 0));
 		ug = ug.apply(new UStroke());
-		getTextBlock().drawUNewWayINLINED(ug.apply(new UTranslate(getMarginX1(), getMarginY())));
+		getTextBlock().drawU(ug.apply(new UTranslate(getMarginX1(), getMarginY())));
 	}
 
 	@Override

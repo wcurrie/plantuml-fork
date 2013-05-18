@@ -53,12 +53,12 @@ class USymbolComponent1 extends USymbol {
 			form.setDeltaShadow(4);
 		}
 
-		ug.drawOldWay(form);
+		ug.draw(form);
 		final UShape small = new URectangle(10, 5);
 
 		// UML 1 Component Notation
-		ug.drawNewWay(-5, 5, small);
-		ug.drawNewWay(-5, heightTotal - 10, small);
+		ug.apply(new UTranslate(-5, 5)).draw(small);
+		ug.apply(new UTranslate(-5, heightTotal - 10)).draw(small);
 
 	}
 
@@ -69,14 +69,14 @@ class USymbolComponent1 extends USymbol {
 	public TextBlock asSmall(final TextBlock label, final TextBlock stereotype, final SymbolContext symbolContext) {
 		return new TextBlock() {
 
-			public void drawUNewWayINLINED(UGraphic ug) {
+			public void drawU(UGraphic ug) {
 				final StringBounder stringBounder = ug.getStringBounder();
 				final Dimension2D dimTotal = calculateDimension(stringBounder);
 				ug = symbolContext.apply(ug);
 				drawNode(ug, dimTotal.getWidth(), dimTotal.getHeight(), symbolContext.isShadowing());
 				final Margin margin = getMargin();
 				final TextBlock tb = TextBlockUtils.mergeTB(stereotype, label, HorizontalAlignement.CENTER);
-				tb.drawUNewWayINLINED(ug.apply(new UTranslate(margin.getX1(), margin.getY1())));
+				tb.drawU(ug.apply(new UTranslate(margin.getX1(), margin.getY1())));
 			}
 
 			public Dimension2D calculateDimension(StringBounder stringBounder) {

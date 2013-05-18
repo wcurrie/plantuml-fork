@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 10205 $
+ * Revision $Revision: 10925 $
  *
  */
 package net.sourceforge.plantuml.skin.rose;
@@ -41,6 +41,7 @@ import net.sourceforge.plantuml.ugraphic.UChangeColor;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
 import net.sourceforge.plantuml.ugraphic.ULine;
 import net.sourceforge.plantuml.ugraphic.UStroke;
+import net.sourceforge.plantuml.ugraphic.UTranslate;
 
 public class ComponentRoseDestroy extends AbstractComponent {
 
@@ -56,8 +57,8 @@ public class ComponentRoseDestroy extends AbstractComponent {
 	protected void drawInternalU(UGraphic ug, Area area) {
 		ug = ug.apply(new UStroke(2)).apply(new UChangeColor(foregroundColor));
 
-		ug.drawOldWay(new ULine(2 * crossSize, 2 * crossSize));
-		ug.drawNewWay(0, 2 * crossSize, new ULine(2 * crossSize, -2 * crossSize));
+		ug.draw(new ULine(2 * crossSize, 2 * crossSize));
+		ug.apply(new UTranslate(0, 2 * crossSize)).draw(new ULine(2 * crossSize, -2 * crossSize));
 	}
 
 	@Override

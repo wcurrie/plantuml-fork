@@ -47,6 +47,7 @@ import net.sourceforge.plantuml.ugraphic.UChangeBackColor;
 import net.sourceforge.plantuml.ugraphic.UFont;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
 import net.sourceforge.plantuml.ugraphic.URectangle;
+import net.sourceforge.plantuml.ugraphic.UTranslate;
 
 public class ElementMenuBar implements Element {
 
@@ -103,8 +104,7 @@ public class ElementMenuBar implements Element {
 
 		double x1 = x;
 		if (zIndex == 0) {
-			ug.apply(new UChangeBackColor(HtmlColorUtils.getColorIfValid("#DDDDDD"))).drawNewWay(x, y,
-					new URectangle(dimToUse.getWidth(), dimToUse.getHeight()));
+			ug.apply(new UChangeBackColor(HtmlColorUtils.getColorIfValid("#DDDDDD"))).apply(new UTranslate(x, y)).draw(new URectangle(dimToUse.getWidth(), dimToUse.getHeight()));
 			for (ElementMenuEntry entry : entries) {
 				entry.drawU(ug, x1, y, zIndex, dimToUse);
 				final double w = entry.getPreferredDimension(ug.getStringBounder(), x1, y).getWidth();

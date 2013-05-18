@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 10578 $
+ * Revision $Revision: 10930 $
  *
  */
 package net.sourceforge.plantuml.graphic;
@@ -67,14 +67,14 @@ class TextBlockWithNumber extends TextBlockSimple {
 	}
 
 	@Override
-	public void drawUNewWayINLINED(UGraphic ug) {
+	public void drawU(UGraphic ug) {
 		final StringBounder stringBounder = ug.getStringBounder();
 		final double heightNum = numText.calculateDimension(stringBounder).getHeight();
 		
 		final double deltaY = calculateDimension(stringBounder).getHeight() - heightNum;
 		
-		numText.drawUNewWayINLINED(ug.apply(new UTranslate(0, deltaY / 2.0)));
-		super.drawUNewWayINLINED(ug.apply(new UTranslate(getNumberWithAndMargin(stringBounder), 0)));
+		numText.drawU(ug.apply(new UTranslate(0, deltaY / 2.0)));
+		super.drawU(ug.apply(new UTranslate(getNumberWithAndMargin(stringBounder), 0)));
 	}
 
 

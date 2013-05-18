@@ -97,7 +97,7 @@ public class EntityImageCircleInterface extends AbstractEntityImage {
 		return Dimension2DDouble.mergeLayoutT12B3(dimStereo, circle, dimName);
 	}
 
-	final public void drawUNewWayINLINED(UGraphic ug) {
+	final public void drawU(UGraphic ug) {
 		final StringBounder stringBounder = ug.getStringBounder();
 		final Dimension2D dimStereo = getStereoDimension(stringBounder);
 		final Dimension2D dimTotal = calculateDimension(stringBounder);
@@ -119,16 +119,16 @@ public class EntityImageCircleInterface extends AbstractEntityImage {
 		if (url.size() > 0) {
 			ug.startUrl(url.get(0));
 		}
-		ug.drawNewWay(circleX, circleY, circle);
+		ug.apply(new UTranslate(circleX, circleY)).draw(circle);
 		ug = ug.apply(new UStroke());
 
 		final double nameX = (dimTotal.getWidth() - dimName.getWidth()) / 2;
 		final double nameY = SIZE + dimStereo.getHeight();
-		name.drawUNewWayINLINED(ug.apply(new UTranslate(nameX, nameY)));
+		name.drawU(ug.apply(new UTranslate(nameX, nameY)));
 
 		if (stereo != null) {
 			final double stereoX = (dimTotal.getWidth() - dimStereo.getWidth()) / 2;
-			stereo.drawUNewWayINLINED(ug.apply(new UTranslate(stereoX, 0)));
+			stereo.drawU(ug.apply(new UTranslate(stereoX, 0)));
 		}
 		if (url.size() > 0) {
 			ug.closeAction();

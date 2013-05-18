@@ -42,6 +42,7 @@ import net.sourceforge.plantuml.ugraphic.UChangeColor;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
 import net.sourceforge.plantuml.ugraphic.ULine;
 import net.sourceforge.plantuml.ugraphic.UStroke;
+import net.sourceforge.plantuml.ugraphic.UTranslate;
 
 public class ElementLine implements Element {
 
@@ -69,14 +70,14 @@ public class ElementLine implements Element {
 
 	private static void drawLine(UGraphic ug, double x, double y, double widthToUse, char separator) {
 		if (separator == '=') {
-			ug.apply(new UStroke()).drawNewWay(x, y, new ULine(widthToUse, 0));
-			ug.apply(new UStroke()).drawNewWay(x, y + 2, new ULine(widthToUse, 0));
+			ug.apply(new UStroke()).apply(new UTranslate(x, y)).draw(new ULine(widthToUse, 0));
+			ug.apply(new UStroke()).apply(new UTranslate(x, y + 2)).draw(new ULine(widthToUse, 0));
 		} else if (separator == '.') {
-			ug.apply(new UStroke(1, 2, 1)).drawNewWay(x, y, new ULine(widthToUse, 0));
+			ug.apply(new UStroke(1, 2, 1)).apply(new UTranslate(x, y)).draw(new ULine(widthToUse, 0));
 		} else if (separator == '-') {
-			ug.apply(new UStroke()).drawNewWay(x, y, new ULine(widthToUse, 0));
+			ug.apply(new UStroke()).apply(new UTranslate(x, y)).draw(new ULine(widthToUse, 0));
 		} else {
-			ug.apply(new UStroke(1.5)).drawNewWay(x, y, new ULine(widthToUse, 0));
+			ug.apply(new UStroke(1.5)).apply(new UTranslate(x, y)).draw(new ULine(widthToUse, 0));
 		}
 	}
 

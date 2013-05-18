@@ -70,7 +70,7 @@ public class ElementTreeEntry implements Element {
 	}
 
 	public void drawU(UGraphic ug, double x, double y, int zIndex, Dimension2D dimToUse) {
-		block.drawUNewWayINLINED(ug.apply(new UTranslate((x + getXDelta()), y)));
+		block.drawU(ug.apply(new UTranslate((x + getXDelta()), y)));
 	}
 
 	public String getText() {

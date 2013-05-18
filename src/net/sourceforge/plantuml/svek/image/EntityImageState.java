@@ -115,7 +115,7 @@ public class EntityImageState extends AbstractEntityImage {
 		return Dimension2DDouble.atLeast(result, MIN_WIDTH, MIN_HEIGHT);
 	}
 
-	final public void drawUNewWayINLINED(UGraphic ug) {
+	final public void drawU(UGraphic ug) {
 		if (url.size() > 0) {
 			ug.startUrl(url.get(0));
 		}
@@ -138,10 +138,10 @@ public class EntityImageState extends AbstractEntityImage {
 		}
 		ug = ug.apply(new UChangeBackColor(backcolor));
 
-		ug.drawOldWay(rect);
+		ug.draw(rect);
 
 		final double yLine = MARGIN + dimDesc.getHeight() + MARGIN_LINE;
-		ug.drawNewWay(0, yLine, new ULine(widthTotal, 0));
+		ug.apply(new UTranslate(0, yLine)).draw(new ULine(widthTotal, 0));
 
 		ug = ug.apply(new UStroke());
 
@@ -153,11 +153,11 @@ public class EntityImageState extends AbstractEntityImage {
 
 		final double xDesc = (widthTotal - dimDesc.getWidth()) / 2;
 		final double yDesc = MARGIN;
-		desc.drawUNewWayINLINED(ug.apply(new UTranslate(xDesc, yDesc)));
+		desc.drawU(ug.apply(new UTranslate(xDesc, yDesc)));
 
 		final double xFields = MARGIN;
 		final double yFields = yLine + MARGIN_LINE;
-		fields.drawUNewWayINLINED(ug.apply(new UTranslate(xFields, yFields)));
+		fields.drawU(ug.apply(new UTranslate(xFields, yFields)));
 
 		if (url.size() > 0) {
 			ug.closeAction();
@@ -168,9 +168,9 @@ public class EntityImageState extends AbstractEntityImage {
 		xSymbol -= 4 * smallRadius + smallLine + smallMarginX;
 		ySymbol -= 2 * smallRadius + smallMarginY;
 		final UEllipse small = new UEllipse(2 * smallRadius, 2 * smallRadius);
-		ug.drawNewWay(xSymbol, ySymbol, small);
-		ug.drawNewWay(xSymbol + smallLine + 2 * smallRadius, ySymbol, small);
-		ug.drawNewWay(xSymbol + 2 * smallRadius, ySymbol + smallLine, new ULine(smallLine, 0));
+		ug.apply(new UTranslate(xSymbol, ySymbol)).draw(small);
+		ug.apply(new UTranslate(xSymbol + smallLine + 2 * smallRadius, ySymbol)).draw(small);
+		ug.apply(new UTranslate(xSymbol + 2 * smallRadius, ySymbol + smallLine)).draw(new ULine(smallLine, 0));
 	}
 
 	public ShapeType getShapeType() {

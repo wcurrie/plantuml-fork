@@ -320,7 +320,7 @@ public class Cluster implements Moveable {
 			final HtmlColor stateBack = getStateBackColor(getBackColor(), dotData.getSkinParam(),
 					group.getStereotype() == null ? null : group.getStereotype().getLabel());
 			ug = ug.apply(new UChangeBackColor(stateBack)).apply(new UChangeColor(borderColor));
-			ug.apply(new UStroke(2)).drawNewWay(minX, minY, rect);
+			ug.apply(new UStroke(2)).apply(new UTranslate(minX, minY)).draw(rect);
 
 		} finally {
 			if (url.size() > 0 && url.get(0).isMember() == false) {
@@ -360,12 +360,12 @@ public class Cluster implements Moveable {
 
 	private void drawSwinLinesState(UGraphic ug, HtmlColor borderColor, DotData dotData) {
 		if (ztitle != null) {
-			ztitle.drawUNewWayINLINED(ug.apply(new UTranslate(xTitle, 0)));
+			ztitle.drawU(ug.apply(new UTranslate(xTitle, 0)));
 		}
 		final ULine line = new ULine(0, maxY - minY);
 		ug = ug.apply(new UChangeColor(borderColor));
-		ug.drawNewWay(minX, 0, line);
-		ug.drawNewWay(maxX, 0, line);
+		ug.apply(new UTranslate(minX, 0)).draw(line);
+		ug.apply(new UTranslate(maxX, 0)).draw(line);
 
 	}
 
@@ -396,11 +396,11 @@ public class Cluster implements Moveable {
 		r.drawU(ug.apply(new UTranslate(minX, minY)), dotData.getSkinParam().shadowing());
 
 		if (ztitle != null) {
-			ztitle.drawUNewWayINLINED(ug.apply(new UTranslate(xTitle, yTitle)));
+			ztitle.drawU(ug.apply(new UTranslate(xTitle, yTitle)));
 		}
 
 		if (attributeHeight > 0) {
-			attribute.asTextBlock(total.getWidth()).drawUNewWayINLINED(
+			attribute.asTextBlock(total.getWidth()).drawU(
 					ug.apply(new UTranslate(minX + IEntityImage.MARGIN, minY + suppY + IEntityImage.MARGIN / 2.0)));
 		}
 

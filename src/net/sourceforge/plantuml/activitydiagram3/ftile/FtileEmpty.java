@@ -34,6 +34,7 @@
 package net.sourceforge.plantuml.activitydiagram3.ftile;
 
 import java.awt.geom.Dimension2D;
+import java.awt.geom.Point2D;
 import java.util.Collections;
 import java.util.List;
 
@@ -43,7 +44,7 @@ import net.sourceforge.plantuml.graphic.StringBounder;
 import net.sourceforge.plantuml.graphic.TextBlock;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
 
-public class FtileEmpty extends AbstractFtileOld {
+public class FtileEmpty extends AbstractFtile2 {
 
 	private final double width;
 	private final double height;
@@ -60,7 +61,7 @@ public class FtileEmpty extends AbstractFtileOld {
 	public TextBlock asTextBlock() {
 		return new TextBlock() {
 
-			public void drawUNewWayINLINED(UGraphic ug) {
+			public void drawU(UGraphic ug) {
 			}
 
 			public Dimension2D calculateDimension(StringBounder stringBounder) {
@@ -71,6 +72,14 @@ public class FtileEmpty extends AbstractFtileOld {
 				return Collections.emptyList();
 			}
 		};
+	}
+
+	public Point2D getPointIn(StringBounder stringBounder) {
+		return new Point2D.Double(width / 2, height / 2);
+	}
+
+	public Point2D getPointOut(StringBounder stringBounder) {
+		return new Point2D.Double(width / 2, height / 2);
 	}
 
 	public boolean isKilled() {

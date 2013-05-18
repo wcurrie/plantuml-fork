@@ -124,7 +124,7 @@ public class FlowDiagram extends UmlDiagram implements TextBlock {
 		return new ImageDataSimple();
 	}
 
-	public void drawUNewWayINLINED(UGraphic ug) {
+	public void drawU(UGraphic ug) {
 		double x = 0;
 		double y = 0;
 		final MinMax minMax = getMinMax();
@@ -140,7 +140,7 @@ public class FlowDiagram extends UmlDiagram implements TextBlock {
 			final Dimension2D dimBox = box.calculateDimension(stringBounder);
 			final double deltaX = SINGLE_SIZE_X * 2 - dimBox.getWidth();
 			final double deltaY = SINGLE_SIZE_Y * 2 - dimBox.getHeight();
-			box.drawUNewWayINLINED(ug.apply(new UTranslate((x + xmin * SINGLE_SIZE_X + deltaX / 2), (y + ymin
+			box.drawU(ug.apply(new UTranslate((x + xmin * SINGLE_SIZE_X + deltaX / 2), (y + ymin
 					* SINGLE_SIZE_Y + deltaY / 2))));
 		}
 		ug = ug.apply(new UChangeColor(HtmlColorUtils.getColorIfValid("#A80036")));
@@ -152,8 +152,8 @@ public class FlowDiagram extends UmlDiagram implements TextBlock {
 			final Point2D pStart = movePoint(getCenter(start), start.getTile(), start.getGeometry(), stringBounder);
 			final Point2D pDest = movePoint(getCenter(dest), dest.getTile(), dest.getGeometry(), stringBounder);
 			final ULine line = new ULine(pDest.getX() - pStart.getX(), pDest.getY() - pStart.getY());
-			ug.drawNewWay(x + pStart.getX(), y + pStart.getY(), line);
-			ug.drawNewWay(x + pDest.getX() - 3, y + pDest.getY() - 3, arrow);
+			ug.apply(new UTranslate(x + pStart.getX(), y + pStart.getY())).draw(line);
+			ug.apply(new UTranslate(x + pDest.getX() - 3, y + pDest.getY() - 3)).draw(arrow);
 
 		}
 	}

@@ -43,6 +43,7 @@ import net.sourceforge.plantuml.salt.Positionner;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
 import net.sourceforge.plantuml.ugraphic.ULine;
 import net.sourceforge.plantuml.ugraphic.URectangle;
+import net.sourceforge.plantuml.ugraphic.UTranslate;
 
 public class ElementPyramid implements Element {
 
@@ -113,7 +114,7 @@ public class ElementPyramid implements Element {
 		double ytmp = y + 2;
 		final Dimension2D preferred = getPreferredDimension(ug.getStringBounder(), 0, 0);
 		if (tableStrategy == TableStrategy.DRAW_OUTSIDE || tableStrategy == TableStrategy.DRAW_ALL) {
-			ug.drawNewWay(x, y, new URectangle(preferred.getWidth() - 1, preferred.getHeight() - 1));
+			ug.apply(new UTranslate(x, y)).draw(new URectangle(preferred.getWidth() - 1, preferred.getHeight() - 1));
 		}
 		for (int r = 0; r < rows; r++) {
 			double xtmp = x + 2;
@@ -122,20 +123,20 @@ public class ElementPyramid implements Element {
 				final double colWidth = getColWidth(ug.getStringBounder(), c);
 				this.elements[r][c].drawU(ug, xtmp, ytmp, zIndex, new Dimension2DDouble(colWidth, rowHeight));
 				if (tableStrategy == TableStrategy.DRAW_ALL || tableStrategy == TableStrategy.DRAW_VERTICAL) {
-					ug.drawNewWay(xtmp - 2, y, new ULine(0, preferred.getHeight() - 1));
+					ug.apply(new UTranslate(xtmp - 2, y)).draw(new ULine(0, preferred.getHeight() - 1));
 				}
 				xtmp += colWidth + 3;
 			}
 			if (tableStrategy == TableStrategy.DRAW_VERTICAL) {
-				ug.drawNewWay(xtmp - 2, y, new ULine(0, preferred.getHeight() - 1));
+				ug.apply(new UTranslate(xtmp - 2, y)).draw(new ULine(0, preferred.getHeight() - 1));
 			}
 			if (tableStrategy == TableStrategy.DRAW_ALL || tableStrategy == TableStrategy.DRAW_HORIZONTAL) {
-				ug.drawNewWay(x, ytmp - 2, new ULine(preferred.getWidth() - 1, 0));
+				ug.apply(new UTranslate(x, ytmp - 2)).draw(new ULine(preferred.getWidth() - 1, 0));
 			}
 			ytmp += rowHeight + 3;
 		}
 		if (tableStrategy == TableStrategy.DRAW_HORIZONTAL) {
-			ug.drawNewWay(x, ytmp - 2, new ULine(preferred.getWidth() - 1, 0));
+			ug.apply(new UTranslate(x, ytmp - 2)).draw(new ULine(preferred.getWidth() - 1, 0));
 		}
 	}
 

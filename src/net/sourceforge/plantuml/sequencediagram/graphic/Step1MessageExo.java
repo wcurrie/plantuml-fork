@@ -133,21 +133,25 @@ class Step1MessageExo extends Step1Abstract {
 	}
 
 	private ArrowConfiguration getArrowType(MessageExo m) {
-		ArrowConfiguration result = null;
 		final MessageExoType type = m.getType();
 		if (type.getDirection() == 1) {
-			result = ArrowConfiguration.withDirectionNormal();
-		} else {
-			result = ArrowConfiguration.withDirectionReverse();
+			return m.getArrowConfiguration();
 		}
-		if (m.getArrowConfiguration().isDotted()) {
-			result = result.withDotted();
-		}
-		if (m.getArrowConfiguration().isAsync()) {
-			result = result.withHead(ArrowHead.ASYNC);
-		}
-		result = result.withPart(m.getArrowConfiguration().getPart());
-		return result;
+		return m.getArrowConfiguration().reverse();
+		// ArrowConfiguration result = null;
+		// if (type.getDirection() == 1) {
+		// result = ArrowConfiguration.withDirectionNormal();
+		// } else {
+		// result = ArrowConfiguration.withDirectionReverse();
+		// }
+		// if (m.getArrowConfiguration().isDotted()) {
+		// result = result.withDotted();
+		// }
+		// if (m.getArrowConfiguration().isAsync()) {
+		// result = result.withHead(ArrowHead.ASYNC);
+		// }
+		// result = result.withPart(m.getArrowConfiguration().getPart());
+		// return result;
 	}
 
 }

@@ -28,20 +28,54 @@
  *
  * Original Author:  Arnaud Roques
  *
- * Revision $Revision: 9786 $
+ * Revision $Revision: 10933 $
  *
  */
 package net.sourceforge.plantuml.code;
 
 import java.io.IOException;
+import java.io.StringReader;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import net.sourceforge.plantuml.preproc.ReadLine;
+import net.sourceforge.plantuml.preproc.ReadLineReader;
+import net.sourceforge.plantuml.preproc.UncommentReadLine;
 
 public class ArobaseStringCompressor implements StringCompressor {
 
 	private final static Pattern p = Pattern.compile("(?s)(?i)^\\s*(@startuml[^\\n\\r]*)?\\s*(.*?)\\s*(@enduml)?\\s*$");
 
-	public String compress(String s) throws IOException {
+	public String compress(final String data) throws IOException {
+		final ReadLine r = new UncommentReadLine(new ReadLineReader(new StringReader(data)));
+		final StringBuilder sb = new StringBuilder();
+		final StringBuilder full = new StringBuilder();
+		String s = null;
+		boolean startDone = false;
+		while ((s = r.readLine()) != null) {
+			append(full, s);
+			if (s.startsWith("@startuml")) {
+				startDone = true;
+			} else if (s.startsWith("@enduml")) {
+				return sb.toString();
+			} else if (startDone) {
+				append(sb, s);
+			}
+		}
+		if (startDone == false) {
+			return compressOld(full.toString());
+		}
+		return sb.toString();
+	}
+
+	private void append(final StringBuilder sb, String s) {
+		if (sb.length() > 0) {
+			sb.append('\n');
+		}
+		sb.append(s);
+	}
+
+	private String compressOld(String s) throws IOException {
 		final Matcher m = p.matcher(s);
 		if (m.find()) {
 			return clean(m.group(2));

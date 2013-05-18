@@ -147,7 +147,7 @@ public class FileFormatOption {
 		ug.setBufferedImage(builder.getBufferedImage());
 		final BufferedImage im = ((UGraphicG2d) ug).getBufferedImage();
 		if (mybackcolor instanceof HtmlColorGradient) {
-			ug.apply(new UChangeBackColor(mybackcolor)).drawOldWay(new URectangle(im.getWidth(), im.getHeight()));
+			ug.apply(new UChangeBackColor(mybackcolor)).draw(new URectangle(im.getWidth(), im.getHeight()));
 		}
 
 		return ug;

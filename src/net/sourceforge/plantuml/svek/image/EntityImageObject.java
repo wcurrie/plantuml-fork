@@ -122,7 +122,7 @@ public class EntityImageObject extends AbstractEntityImage {
 		return new Dimension2DDouble(width, height);
 	}
 
-	final public void drawUNewWayINLINED(UGraphic ug) {
+	final public void drawU(UGraphic ug) {
 		final StringBounder stringBounder = ug.getStringBounder();
 		final Dimension2D dimTotal = calculateDimension(stringBounder);
 		final Dimension2D dimTitle = getTitleDimension(stringBounder);
@@ -145,7 +145,7 @@ public class EntityImageObject extends AbstractEntityImage {
 		}
 
 		final UStroke stroke = new UStroke(1.5);
-		ug.apply(stroke).drawOldWay(rect);
+		ug.apply(stroke).draw(rect);
 
 		final ULayoutGroup header = new ULayoutGroup(new PlacementStrategyY1Y2(ug.getStringBounder()));
 		if (stereo != null) {
@@ -155,7 +155,7 @@ public class EntityImageObject extends AbstractEntityImage {
 		header.drawU(ug, 0, 0, dimTotal.getWidth(), dimTitle.getHeight());
 
 		final UGraphic ug2 = new UGraphicHorizontalLine(ug, 0, widthTotal, stroke);
-		fields.drawUNewWayINLINED(ug2.apply(new UTranslate(0, dimTitle.getHeight())));
+		fields.drawU(ug2.apply(new UTranslate(0, dimTitle.getHeight())));
 
 		if (url.size() > 0) {
 			ug.closeAction();

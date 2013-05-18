@@ -58,7 +58,7 @@ public class EntityImageGroup extends AbstractEntityImage {
 		return new Dimension2DDouble(30, 30);
 	}
 
-	final public void drawUNewWayINLINED(UGraphic ug) {
+	final public void drawU(UGraphic ug) {
 	}
 
 	public ShapeType getShapeType() {

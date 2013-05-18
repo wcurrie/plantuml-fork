@@ -61,7 +61,7 @@ public interface FtileFactory {
 
 	public Ftile repeat(Ftile repeat, Display test);
 
-	public Ftile createWhile(Ftile whileBlock, Display test, Display yes, Display out);
+	public Ftile createWhile(Ftile whileBlock, Display test, Display yes, Display out, LinkRendering afterEndwhile);
 
 	public Ftile createIf(Ftile tile1, Ftile tile2, Display labelTest, Display label1, Display label2);
 

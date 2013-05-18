@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 10577 $
+ * Revision $Revision: 10930 $
  *
  */
 package net.sourceforge.plantuml.skin.bluemodern;
@@ -103,12 +103,12 @@ final public class ComponentBlueModernNote extends AbstractTextualComponent {
 
 		ug = ug.apply(new UChangeBackColor(back));
 		ug = ug.apply(new UChangeColor(foregroundColor));
-		ug.drawOldWay(polygon);
+		ug.draw(polygon);
 
-		ug.drawNewWay(textWidth - cornersize, 0, new ULine(0, cornersize));
-		ug.drawNewWay(textWidth, cornersize, new ULine(-cornersize, 0));
+		ug.apply(new UTranslate(textWidth - cornersize, 0)).draw(new ULine(0, cornersize));
+		ug.apply(new UTranslate(textWidth, cornersize)).draw(new ULine(-cornersize, 0));
 
-		getTextBlock().drawUNewWayINLINED(ug.apply(new UTranslate(getMarginX1(), getMarginY())));
+		getTextBlock().drawU(ug.apply(new UTranslate(getMarginX1(), getMarginY())));
 
 	}
 

@@ -76,7 +76,7 @@ public final class SvekResult implements IEntityImage, Moveable {
 		this.hasVerticalLine = hasVerticalLine;
 	}
 
-	public void drawUNewWayINLINED(UGraphic ug) {
+	public void drawU(UGraphic ug) {
 		for (Cluster cluster : dotStringFactory.getBibliotekon().allCluster()) {
 			cluster.drawU(ug, clusterBorder, dotData);
 		}
@@ -87,7 +87,7 @@ public final class SvekResult implements IEntityImage, Moveable {
 			final double minX = shape.getMinX();
 			final double minY = shape.getMinY();
 			final UGraphic ug2 = shape.isHidden() ? ug.apply(UHidden.HIDDEN) : ug;
-			shape.getImage().drawUNewWayINLINED(ug2.apply(new UTranslate(minX, minY)));
+			shape.getImage().drawU(ug2.apply(new UTranslate(minX, minY)));
 			if (hasVerticalLine) {
 				xdots.add(minX);
 				xdots.add(minX + shape.getWidth());
@@ -107,7 +107,7 @@ public final class SvekResult implements IEntityImage, Moveable {
 			final double height = calculateDimension(ug.getStringBounder()).getHeight();
 			ug = ug.apply(new UStroke(DASH, 10, THICKNESS_BORDER)).apply(new UChangeColor(clusterBorder));
 			for (Double xv : middeling(xdots)) {
-				ug.drawNewWay(xv, 0, new ULine(0, height));
+				ug.apply(new UTranslate(xv, 0)).draw(new ULine(0, height));
 			}
 		}
 	}

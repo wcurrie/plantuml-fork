@@ -80,6 +80,6 @@ public class LabelImage {
 		// ug.getParam().setColor(rose.getHtmlColor(param,
 		// ColorParam.classBorder).getColor());
 		// ug.draw(x, y, new URectangle(dim.getWidth(), dim.getHeight()));
-		name.drawUNewWayINLINED(ug.apply(new UTranslate(x, y)));
+		name.drawU(ug.apply(new UTranslate(x, y)));
 	}
 }

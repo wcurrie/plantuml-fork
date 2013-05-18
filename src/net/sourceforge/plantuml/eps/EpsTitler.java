@@ -131,7 +131,7 @@ public final class EpsTitler {
 			yText = height + margin;
 		}
 
-		textBloc.drawUNewWayINLINED(uGraphicEps.apply(new UTranslate(xpos, yText)));
+		textBloc.drawU(uGraphicEps.apply(new UTranslate(xpos, yText)));
 
 		final double yImage;
 		if (verticalPosition == VerticalPosition.TOP) {

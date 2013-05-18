@@ -40,6 +40,7 @@ import net.sourceforge.plantuml.ugraphic.UChangeBackColor;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
 import net.sourceforge.plantuml.ugraphic.URectangle;
 import net.sourceforge.plantuml.ugraphic.UStroke;
+import net.sourceforge.plantuml.ugraphic.UTranslate;
 
 class ExtremitySquarre extends Extremity {
 
@@ -50,9 +51,8 @@ class ExtremitySquarre extends Extremity {
 		this.dest = new Point2D.Double(p1.getX(), p1.getY());
 	}
 
-	public void drawUNewWayINLINED(UGraphic ug) {
-		ug.apply(new UStroke(1.5)).apply(new UChangeBackColor(HtmlColorUtils.WHITE))
-		.drawNewWay(dest.getX() - radius, dest.getY() - radius, new URectangle(radius * 2, radius * 2));
+	public void drawU(UGraphic ug) {
+		ug.apply(new UStroke(1.5)).apply(new UChangeBackColor(HtmlColorUtils.WHITE)).apply(new UTranslate(dest.getX() - radius, dest.getY() - radius)).draw(new URectangle(radius * 2, radius * 2));
 	}
 
 }

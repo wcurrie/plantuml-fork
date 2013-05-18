@@ -128,23 +128,23 @@ public class Line implements Moveable, Hideable {
 			this.down = down;
 		}
 
-		public void drawUNewWayINLINED(UGraphic ug) {
+		public void drawU(UGraphic ug) {
 			Direction dir = getDirection();
 			if (getLinkArrow() == LinkArrow.BACKWARD) {
 				dir = dir.getInv();
 			}
 			switch (dir) {
 			case RIGHT:
-				right.drawUNewWayINLINED(ug);
+				right.drawU(ug);
 				break;
 			case LEFT:
-				left.drawUNewWayINLINED(ug);
+				left.drawU(ug);
 				break;
 			case UP:
-				up.drawUNewWayINLINED(ug);
+				up.drawU(ug);
 				break;
 			case DOWN:
-				down.drawUNewWayINLINED(ug);
+				down.drawU(ug);
 				break;
 			default:
 				throw new UnsupportedOperationException();
@@ -414,8 +414,8 @@ public class Line implements Moveable, Hideable {
 		} else if (decor != LinkDecor.NONE) {
 			final UShape sh = new UPolygon(pointListIterator.next());
 			return new UDrawable() {
-				public void drawUNewWayINLINED(UGraphic ug) {
-					ug.drawOldWay(sh);
+				public void drawU(UGraphic ug) {
+					ug.draw(sh);
 				}
 			};
 		}
@@ -544,7 +544,7 @@ public class Line implements Moveable, Hideable {
 			moveStartX = proj.getX() - start.getX();
 			moveStartY = proj.getY() - start.getY();
 			copy.forceStartPoint(proj.getX(), proj.getY());
-			ug.drawNewWay(x, y, copy);
+			ug.apply(new UTranslate(x, y)).draw(copy);
 		} else if (projectionCluster != null && link.getEntity2() == projectionCluster.getGroup()) {
 			final DotPath copy = new DotPath(dotPath);
 			final Point2D end = copy.getEndPoint();
@@ -552,9 +552,9 @@ public class Line implements Moveable, Hideable {
 			moveEndX = proj.getX() - end.getX();
 			moveEndY = proj.getY() - end.getY();
 			copy.forceEndPoint(proj.getX(), proj.getY());
-			ug.drawNewWay(x, y, copy);
+			ug.apply(new UTranslate(x, y)).draw(copy);
 		} else {
-			ug.drawNewWay(x, y, dotPath);
+			ug.apply(new UTranslate(x, y)).draw(dotPath);
 		}
 
 		// if (picLine1 != null) {
@@ -577,7 +577,7 @@ public class Line implements Moveable, Hideable {
 			} else {
 				ug = ug.apply(new UChangeBackColor(null));
 			}
-			this.extremity1.drawUNewWayINLINED(ug.apply(new UTranslate(x + moveEndX, y + moveEndY)));
+			this.extremity1.drawU(ug.apply(new UTranslate(x + moveEndX, y + moveEndY)));
 		}
 		if (this.extremity2 != null) {
 			if (this.link.getType().getDecor2().isFill()) {
@@ -585,18 +585,18 @@ public class Line implements Moveable, Hideable {
 			} else {
 				ug = ug.apply(new UChangeBackColor(null));
 			}
-			this.extremity2.drawUNewWayINLINED(ug.apply(new UTranslate(x + moveStartX, y + moveStartY)));
+			this.extremity2.drawU(ug.apply(new UTranslate(x + moveStartX, y + moveStartY)));
 		}
 		if (this.noteLabelText != null && this.noteLabelXY != null) {
-			this.noteLabelText.drawUNewWayINLINED(ug.apply(new UTranslate(x + this.noteLabelXY.getPosition().getX(), y
+			this.noteLabelText.drawU(ug.apply(new UTranslate(x + this.noteLabelXY.getPosition().getX(), y
 					+ this.noteLabelXY.getPosition().getY())));
 		}
 		if (this.startTailText != null) {
-			this.startTailText.drawUNewWayINLINED(ug.apply(new UTranslate(x
+			this.startTailText.drawU(ug.apply(new UTranslate(x
 					+ this.startTailLabelXY.getPosition().getX(), y + this.startTailLabelXY.getPosition().getY())));
 		}
 		if (this.endHeadText != null) {
-			this.endHeadText.drawUNewWayINLINED(ug.apply(new UTranslate(x + this.endHeadLabelXY.getPosition().getX(), y
+			this.endHeadText.drawU(ug.apply(new UTranslate(x + this.endHeadLabelXY.getPosition().getX(), y
 					+ this.endHeadLabelXY.getPosition().getY())));
 		}
 
@@ -605,7 +605,7 @@ public class Line implements Moveable, Hideable {
 			final double angleRad = middle.getAngle();
 			final double angleDeg = -angleRad * 180.0 / Math.PI;
 			final UDrawable mi = link.getType().getMiddleDecor().getMiddleFactory().createUDrawable(angleDeg - 45);
-			mi.drawUNewWayINLINED(ug.apply(new UTranslate(x + middle.getX(), y + middle.getY())));
+			mi.drawU(ug.apply(new UTranslate(x + middle.getX(), y + middle.getY())));
 		}
 
 		if (url != null) {

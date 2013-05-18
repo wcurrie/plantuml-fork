@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 10266 $
+ * Revision $Revision: 10930 $
  *
  */
 package net.sourceforge.plantuml.graphic;
@@ -44,6 +44,7 @@ import net.sourceforge.plantuml.Url;
 import net.sourceforge.plantuml.ugraphic.UChangeColor;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
 import net.sourceforge.plantuml.ugraphic.UText;
+import net.sourceforge.plantuml.ugraphic.UTranslate;
 
 class TileText implements TextBlock {
 
@@ -78,7 +79,7 @@ class TileText implements TextBlock {
 		return stringBounder.calculateDimension(fontConfiguration.getFont(), "        ").getWidth();
 	}
 
-	public void drawUNewWayINLINED(UGraphic ug) {
+	public void drawU(UGraphic ug) {
 		double x = 0;
 		if (url != null) {
 			ug.startUrl(url);
@@ -104,7 +105,7 @@ class TileText implements TextBlock {
 					} else {
 						ypos = space;
 					}
-					ug.drawNewWay(x, ypos, utext);
+					ug.apply(new UTranslate(x, ypos)).draw(utext);
 					x += dim.getWidth();
 				}
 			}

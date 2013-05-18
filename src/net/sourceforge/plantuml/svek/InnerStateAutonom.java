@@ -76,7 +76,7 @@ public final class InnerStateAutonom implements IEntityImage {
 
 	public final static double THICKNESS_BORDER = 1.5;
 
-	public void drawUNewWayINLINED(UGraphic ug) {
+	public void drawU(UGraphic ug) {
 		final Dimension2D text = title.calculateDimension(ug.getStringBounder());
 		final Dimension2D attr = attribute.calculateDimension(ug.getStringBounder());
 		final Dimension2D total = calculateDimension(ug.getStringBounder());
@@ -91,13 +91,13 @@ public final class InnerStateAutonom implements IEntityImage {
 		}
 
 		r.drawU(ug, shadowing);
-		title.drawUNewWayINLINED(ug.apply(new UTranslate((total.getWidth() - text.getWidth()) / 2, IEntityImage.MARGIN)));
-		attribute.asTextBlock(total.getWidth()).drawUNewWayINLINED(
+		title.drawU(ug.apply(new UTranslate((total.getWidth() - text.getWidth()) / 2, IEntityImage.MARGIN)));
+		attribute.asTextBlock(total.getWidth()).drawU(
 				ug.apply(new UTranslate(0 + IEntityImage.MARGIN, IEntityImage.MARGIN + text.getHeight()
 						+ IEntityImage.MARGIN)));
 
 		final double spaceYforURL = getSpaceYforURL(ug.getStringBounder());
-		im.drawUNewWayINLINED(ug.apply(new UTranslate(IEntityImage.MARGIN, spaceYforURL)));
+		im.drawU(ug.apply(new UTranslate(IEntityImage.MARGIN, spaceYforURL)));
 
 		if (withSymbol) {
 			EntityImageState.drawSymbol(ug.apply(new UChangeColor(borderColor)), total.getWidth(), total.getHeight());

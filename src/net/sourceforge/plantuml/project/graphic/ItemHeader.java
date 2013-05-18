@@ -68,15 +68,15 @@ class ItemHeader {
 		final StringBounder stringBounder = ug.getStringBounder();
 
 		ug = ug.apply(new UChangeColor(HtmlColorUtils.BLACK));
-		ug.drawNewWay(x, y, new URectangle(getWidth(stringBounder), getHeight(stringBounder)));
+		ug.apply(new UTranslate(x, y)).draw(new URectangle(getWidth(stringBounder), getHeight(stringBounder)));
 
 		for (Item it : project.getValidItems()) {
 			final TextBlock b = TextBlockUtils.create(Display.asList("" + it.getCode()), fontConfig,
 					HorizontalAlignement.LEFT, new SpriteContainerEmpty());
 			final Dimension2D dim = b.calculateDimension(stringBounder);
-			b.drawUNewWayINLINED(ug.apply(new UTranslate(x, y)));
+			b.drawU(ug.apply(new UTranslate(x, y)));
 			y += dim.getHeight();
-			ug.drawNewWay(x, y, new ULine(getWidth(stringBounder), 0));
+			ug.apply(new UTranslate(x, y)).draw(new ULine(getWidth(stringBounder), 0));
 		}
 	}
 

@@ -46,6 +46,7 @@ import net.sourceforge.plantuml.ugraphic.UFont;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
 import net.sourceforge.plantuml.ugraphic.ULine;
 import net.sourceforge.plantuml.ugraphic.URectangle;
+import net.sourceforge.plantuml.ugraphic.UTranslate;
 
 public class ElementMenuPopup implements Element {
 
@@ -77,13 +78,12 @@ public class ElementMenuPopup implements Element {
 		if (zIndex != 1) {
 			return;
 		}
-		ug.apply(new UChangeBackColor(HtmlColorUtils.getColorIfValid("#DDDDDD"))).drawNewWay(x, y,
-				new URectangle(dimToUse.getWidth(), dimToUse.getHeight()));
+		ug.apply(new UChangeBackColor(HtmlColorUtils.getColorIfValid("#DDDDDD"))).apply(new UTranslate(x, y)).draw(new URectangle(dimToUse.getWidth(), dimToUse.getHeight()));
 
 		for (ElementMenuEntry entry : entries) {
 			final double h = entry.getPreferredDimension(ug.getStringBounder(), x, y).getHeight();
 			if (entry.getText().equals("-")) {
-				ug.drawNewWay(x, y + h / 2, new ULine(dimToUse.getWidth(), 0));
+				ug.apply(new UTranslate(x, y + h / 2)).draw(new ULine(dimToUse.getWidth(), 0));
 			} else {
 				entry.drawU(ug, x, y, zIndex, dimToUse);
 			}

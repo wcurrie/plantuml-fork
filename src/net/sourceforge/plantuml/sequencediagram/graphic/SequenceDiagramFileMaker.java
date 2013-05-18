@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 10459 $
+ * Revision $Revision: 10930 $
  *
  */
 package net.sourceforge.plantuml.sequencediagram.graphic;
@@ -282,7 +282,7 @@ public class SequenceDiagramFileMaker implements FileMaker {
 
 			if (diagram.getSkinParam().getBackgroundColor() instanceof HtmlColorGradient) {
 				final BufferedImage im = ((UGraphicG2d) ug).getBufferedImage();
-				ug.apply(new UChangeBackColor(diagram.getSkinParam().getBackgroundColor())).drawOldWay(
+				ug.apply(new UChangeBackColor(diagram.getSkinParam().getBackgroundColor())).draw(
 						new URectangle(im.getWidth(), im.getHeight()));
 			}
 		} else if (fileFormat == FileFormat.SVG) {
@@ -364,7 +364,7 @@ public class SequenceDiagramFileMaker implements FileMaker {
 		if (text == null) {
 			return;
 		}
-		text.drawUNewWayINLINED(ug.apply(new UTranslate(area.getFooterX(diagram.getFooterAlignement()), area.getFooterY())));
+		text.drawU(ug.apply(new UTranslate(area.getFooterX(diagram.getFooterAlignement()), area.getFooterY())));
 	}
 
 	private void addHeader3(SequenceDiagramArea area, UGraphic ug) {
@@ -377,7 +377,7 @@ public class SequenceDiagramFileMaker implements FileMaker {
 		if (text == null) {
 			return;
 		}
-		text.drawUNewWayINLINED(ug.apply(new UTranslate(area.getHeaderX(diagram.getHeaderAlignement()), area.getHeaderY())));
+		text.drawU(ug.apply(new UTranslate(area.getHeaderX(diagram.getHeaderAlignement()), area.getHeaderY())));
 	}
 
 	public static StringBounder getDummystringbounder() {

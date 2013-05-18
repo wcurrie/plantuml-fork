@@ -37,11 +37,11 @@ import net.sourceforge.plantuml.ugraphic.UGraphic;
 
 public interface Connection {
 
-	// public Ftile getFtile1();
+	public Ftile getFtile1();
 
 	// public Position getPosition1();
 
-	// public Ftile getFtile2();
+	public Ftile getFtile2();
 
 	// public Position getPosition2();
 

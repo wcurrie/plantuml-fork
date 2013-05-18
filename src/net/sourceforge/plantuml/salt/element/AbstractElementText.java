@@ -66,7 +66,7 @@ abstract class AbstractElementText implements Element {
 	}
 
 	protected void drawText(UGraphic ug, double x, double y) {
-		block.drawUNewWayINLINED(ug.apply(new UTranslate(x, y)));
+		block.drawU(ug.apply(new UTranslate(x, y)));
 	}
 
 	protected Dimension2D getPureTextDimension(StringBounder stringBounder) {

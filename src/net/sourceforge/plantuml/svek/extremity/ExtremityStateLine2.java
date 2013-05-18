@@ -41,6 +41,7 @@ import net.sourceforge.plantuml.ugraphic.UEllipse;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
 import net.sourceforge.plantuml.ugraphic.UPolygon;
 import net.sourceforge.plantuml.ugraphic.UStroke;
+import net.sourceforge.plantuml.ugraphic.UTranslate;
 
 class ExtremityStateLine2 extends Extremity {
 
@@ -64,11 +65,9 @@ class ExtremityStateLine2 extends Extremity {
 		polygon = polygon.translate(center.getX(), center.getY());
 	}
 
-	public void drawUNewWayINLINED(UGraphic ug) {
-		ug.apply(new UChangeBackColor(ug.getParam().getColor())).drawNewWay(-radius * Math.cos(angle),
-				-radius * Math.sin(angle), polygon);
-		ug.apply(new UStroke(1.5)).apply(new UChangeBackColor(HtmlColorUtils.WHITE))
-				.drawNewWay(dest.getX() - radius, dest.getY() - radius, new UEllipse(radius * 2, radius * 2));
+	public void drawU(UGraphic ug) {
+		ug.apply(new UChangeBackColor(ug.getParam().getColor())).apply(new UTranslate(-radius * Math.cos(angle), -radius * Math.sin(angle))).draw(polygon);
+		ug.apply(new UStroke(1.5)).apply(new UChangeBackColor(HtmlColorUtils.WHITE)).apply(new UTranslate(dest.getX() - radius, dest.getY() - radius)).draw(new UEllipse(radius * 2, radius * 2));
 	}
 
 }

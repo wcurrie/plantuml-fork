@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 10583 $
+ * Revision $Revision: 10930 $
  *
  */
 package net.sourceforge.plantuml.graphic;
@@ -176,7 +176,7 @@ class TextBlockSimple implements TextBlock {
 		return new Dimension2DDouble(width, height);
 	}
 
-	public void drawUNewWayINLINED(UGraphic ug) {
+	public void drawU(UGraphic ug) {
 		double y = 0;
 		final Dimension2D dimText = getTextDimension(ug.getStringBounder());
 
@@ -190,7 +190,7 @@ class TextBlockSimple implements TextBlock {
 				final double diff = dimText.getWidth() - line.calculateDimension(ug.getStringBounder()).getWidth();
 				deltaX = diff;
 			}
-			line.drawUNewWayINLINED(ug.apply(new UTranslate(deltaX, y)));
+			line.drawU(ug.apply(new UTranslate(deltaX, y)));
 			y += line.calculateDimension(ug.getStringBounder()).getHeight();
 		}
 	}

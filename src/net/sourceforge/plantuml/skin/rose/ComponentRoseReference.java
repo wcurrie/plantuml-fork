@@ -96,7 +96,7 @@ public class ComponentRoseReference extends AbstractTextualComponent {
 				dimensionToUse.getHeight() - heightFooter);
 		rect.setDeltaShadow(deltaShadow);
 		ug = ug.apply(new UChangeBackColor(background)).apply(new UChangeColor(borderColor));
-		ug.drawNewWay(xMargin, 0, rect);
+		ug.apply(new UTranslate(xMargin, 0)).draw(rect);
 
 		final UPolygon polygon = new UPolygon();
 		polygon.addPoint(0, 0);
@@ -109,11 +109,11 @@ public class ComponentRoseReference extends AbstractTextualComponent {
 		polygon.addPoint(0, 0);
 
 		ug = ug.apply(new UChangeBackColor(backgroundHeader)).apply(new UChangeColor(borderColor));
-		ug.drawNewWay(xMargin, 0, polygon);
+		ug.apply(new UTranslate(xMargin, 0)).draw(polygon);
 
 		ug = ug.apply(new UStroke());
 
-		textHeader.drawUNewWayINLINED(ug.apply(new UTranslate(15, 2)));
+		textHeader.drawU(ug.apply(new UTranslate(15, 2)));
 		final double textPos;
 		if (position == HorizontalAlignement.CENTER) {
 			final double textWidth = getTextBlock().calculateDimension(stringBounder).getWidth();
@@ -124,7 +124,7 @@ public class ComponentRoseReference extends AbstractTextualComponent {
 		} else {
 			textPos = getMarginX1() + xMargin;
 		}
-		getTextBlock().drawUNewWayINLINED(ug.apply(new UTranslate(textPos, (getMarginY() + textHeaderHeight))));
+		getTextBlock().drawU(ug.apply(new UTranslate(textPos, (getMarginY() + textHeaderHeight))));
 	}
 
 	private double getHeaderHeight(StringBounder stringBounder) {

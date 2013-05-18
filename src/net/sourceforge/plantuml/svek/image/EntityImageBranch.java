@@ -61,7 +61,7 @@ public class EntityImageBranch extends AbstractEntityImage {
 		return new Dimension2DDouble(SIZE * 2, SIZE * 2);
 	}
 
-	final public void drawUNewWayINLINED(UGraphic ug) {
+	final public void drawU(UGraphic ug) {
 		final UPolygon diams = new UPolygon();
 		if (getSkinParam().shadowing()) {
 			diams.setDeltaShadow(5);
@@ -74,7 +74,7 @@ public class EntityImageBranch extends AbstractEntityImage {
 
 		ug.apply(new UChangeColor(SkinParamUtils.getColor(getSkinParam(), ColorParam.activityBorder, getStereo())))
 				.apply(new UChangeBackColor(SkinParamUtils.getColor(getSkinParam(), ColorParam.activityBackground,
-						getStereo()))).apply(new UStroke(1.5)).drawOldWay(diams);
+						getStereo()))).apply(new UStroke(1.5)).draw(diams);
 	}
 
 	public ShapeType getShapeType() {

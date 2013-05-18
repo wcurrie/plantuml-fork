@@ -96,8 +96,8 @@ class FtileWithConnection implements Ftile {
 		final TextBlock original = ftile.asTextBlock();
 		return new TextBlock() {
 
-			public void drawUNewWayINLINED(UGraphic ug) {
-				original.drawUNewWayINLINED(ug);
+			public void drawU(UGraphic ug) {
+				original.drawU(ug);
 				for (Connection c : connections) {
 					c.drawU(ug);
 				}

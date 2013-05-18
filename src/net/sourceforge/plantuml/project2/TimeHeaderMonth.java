@@ -72,7 +72,7 @@ public class TimeHeaderMonth implements TextBlock {
 		this.dayWidth = dayWidth;
 	}
 
-	public void drawUNewWayINLINED(UGraphic ug) {
+	public void drawU(UGraphic ug) {
 		int n = 0;
 		String last = null;
 		
@@ -97,13 +97,13 @@ public class TimeHeaderMonth implements TextBlock {
 
 	private void manage(UGraphic ug, double x, double y, int n, String last, double pendingX) {
 		final double width = n * dayWidth - pendingX;
-		ug.drawNewWay(x + pendingX, y, new URectangle(width, getHeight()));
+		ug.apply(new UTranslate(x + pendingX, y)).draw(new URectangle(width, getHeight()));
 		final TextBlock b = TextBlockUtils.create(Display.asList(last), fontConfig, HorizontalAlignement.LEFT,
 				new SpriteContainerEmpty());
 		final Dimension2D dimText = b.calculateDimension(ug.getStringBounder());
 		final double diffX = width - dimText.getWidth();
 		final double diffY = getHeight() - dimText.getHeight();
-		b.drawUNewWayINLINED(ug.apply(new UTranslate((x + pendingX + diffX / 2), (y + diffY / 2))));
+		b.drawU(ug.apply(new UTranslate((x + pendingX + diffX / 2), (y + diffY / 2))));
 	}
 
 	private double getHeight() {

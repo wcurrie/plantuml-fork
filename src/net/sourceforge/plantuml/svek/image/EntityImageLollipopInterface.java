@@ -79,7 +79,7 @@ public class EntityImageLollipopInterface extends AbstractEntityImage {
 		return new Dimension2DDouble(SIZE, SIZE);
 	}
 
-	final public void drawUNewWayINLINED(UGraphic ug) {
+	final public void drawU(UGraphic ug) {
 		final UEllipse circle = new UEllipse(SIZE, SIZE);
 		if (getSkinParam().shadowing()) {
 			circle.setDeltaShadow(4);
@@ -90,7 +90,7 @@ public class EntityImageLollipopInterface extends AbstractEntityImage {
 		if (url.size() > 0) {
 			ug.startUrl(url.get(0));
 		}
-		ug.apply(new UStroke(1.5)).drawOldWay(circle);
+		ug.apply(new UStroke(1.5)).draw(circle);
 
 		final Dimension2D dimDesc = desc.calculateDimension(ug.getStringBounder());
 		final double widthDesc = dimDesc.getWidth();
@@ -98,7 +98,7 @@ public class EntityImageLollipopInterface extends AbstractEntityImage {
 
 		final double x = SIZE / 2 - widthDesc / 2;
 		final double y = SIZE;
-		desc.drawUNewWayINLINED(ug.apply(new UTranslate(x, y)));
+		desc.drawU(ug.apply(new UTranslate(x, y)));
 		if (url.size() > 0) {
 			ug.closeAction();
 		}

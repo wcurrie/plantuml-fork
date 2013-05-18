@@ -76,7 +76,7 @@ public class EntityImagePseudoState extends AbstractEntityImage {
 		return new Dimension2DDouble(SIZE, SIZE);
 	}
 
-	final public void drawUNewWayINLINED(UGraphic ug) {
+	final public void drawU(UGraphic ug) {
 		final UEllipse circle = new UEllipse(SIZE, SIZE);
 		if (getSkinParam().shadowing()) {
 			circle.setDeltaShadow(4);
@@ -85,7 +85,7 @@ public class EntityImagePseudoState extends AbstractEntityImage {
 		ug = ug.apply(
 				new UChangeBackColor(SkinParamUtils.getColor(getSkinParam(), ColorParam.stateBackground, getStereo())))
 				.apply(new UChangeColor(SkinParamUtils.getColor(getSkinParam(), ColorParam.stateBorder, getStereo())));
-		ug.drawOldWay(circle);
+		ug.draw(circle);
 		ug = ug.apply(new UStroke());
 
 		final Dimension2D dimDesc = desc.calculateDimension(ug.getStringBounder());
@@ -94,7 +94,7 @@ public class EntityImagePseudoState extends AbstractEntityImage {
 
 		final double x = (SIZE - widthDesc) / 2;
 		final double y = (SIZE - heightDesc) / 2;
-		desc.drawUNewWayINLINED(ug.apply(new UTranslate(x, y)));
+		desc.drawU(ug.apply(new UTranslate(x, y)));
 	}
 
 	public ShapeType getShapeType() {

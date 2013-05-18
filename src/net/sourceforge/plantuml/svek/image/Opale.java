@@ -96,7 +96,7 @@ public class Opale implements TextBlock {
 		return new Dimension2DDouble(width, height);
 	}
 
-	final public void drawUNewWayINLINED(UGraphic ug) {
+	final public void drawU(UGraphic ug) {
 		final StringBounder stringBounder = ug.getStringBounder();
 
 		final UPolygon polygon = getPolygonNormal(stringBounder);
@@ -104,7 +104,7 @@ public class Opale implements TextBlock {
 			polygon.setDeltaShadow(4);
 		}
 		ug = ug.apply(new UChangeBackColor(noteBackgroundColor)).apply(new UChangeColor(borderColor));
-		ug.drawOldWay(polygon);
+		ug.draw(polygon);
 
 		final UShape polygonOpale;
 		if (strategy == Direction.LEFT) {
@@ -119,11 +119,11 @@ public class Opale implements TextBlock {
 			throw new IllegalArgumentException();
 		}
 
-		ug.drawOldWay(polygonOpale);
+		ug.draw(polygonOpale);
 
-		ug.drawNewWay(getWidth(stringBounder) - cornersize, 0, new ULine(0, cornersize));
-		ug.drawNewWay(getWidth(stringBounder), cornersize, new ULine(-cornersize, 0));
-		textBlock.drawUNewWayINLINED(ug.apply(new UTranslate(marginX1, marginY)));
+		ug.apply(new UTranslate(getWidth(stringBounder) - cornersize, 0)).draw(new ULine(0, cornersize));
+		ug.apply(new UTranslate(getWidth(stringBounder), cornersize)).draw(new ULine(-cornersize, 0));
+		textBlock.drawU(ug.apply(new UTranslate(marginX1, marginY)));
 	}
 
 	private UPolygon getPolygonNormal(final StringBounder stringBounder) {

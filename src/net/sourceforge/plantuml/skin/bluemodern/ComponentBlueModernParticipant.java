@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 10577 $
+ * Revision $Revision: 10930 $
  *
  */
 package net.sourceforge.plantuml.skin.bluemodern;
@@ -72,7 +72,7 @@ public class ComponentBlueModernParticipant extends AbstractTextualComponent {
 				blue1, blue2, 10);
 		shape.drawU(ug);
 
-		getTextBlock().drawUNewWayINLINED(ug.apply(new UTranslate(getMarginX1(), getMarginY())));
+		getTextBlock().drawU(ug.apply(new UTranslate(getMarginX1(), getMarginY())));
 	}
 
 	@Override

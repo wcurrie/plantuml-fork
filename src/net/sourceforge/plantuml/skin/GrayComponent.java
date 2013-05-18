@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 10263 $
+ * Revision $Revision: 10930 $
  *
  */
 package net.sourceforge.plantuml.skin;
@@ -65,7 +65,7 @@ class GrayComponent extends AbstractComponent {
 	protected void drawInternalU(UGraphic ug, Area area) {
 		final StringBounder stringBounder = ug.getStringBounder();
 		ug = ug.apply(new UChangeBackColor(HtmlColorUtils.LIGHT_GRAY)).apply(new UChangeColor(HtmlColorUtils.BLACK));
-		ug.drawOldWay(new URectangle(getPreferredWidth(stringBounder), getPreferredHeight(stringBounder)));
+		ug.draw(new URectangle(getPreferredWidth(stringBounder), getPreferredHeight(stringBounder)));
 
 		final String n = type.name();
 		final int split = 9;
@@ -76,7 +76,7 @@ class GrayComponent extends AbstractComponent {
 
 		final TextBlock textBlock = TextBlockUtils.create(new Display(strings), new FontConfiguration(NORMAL,
 				HtmlColorUtils.BLACK), HorizontalAlignement.LEFT, new SpriteContainerEmpty());
-		textBlock.drawUNewWayINLINED(ug);
+		textBlock.drawU(ug);
 	}
 
 	@Override

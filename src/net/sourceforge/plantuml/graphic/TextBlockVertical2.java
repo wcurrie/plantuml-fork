@@ -70,16 +70,16 @@ public class TextBlockVertical2 implements TextBlock {
 		return dim;
 	}
 
-	public void drawUNewWayINLINED(UGraphic ug) {
+	public void drawU(UGraphic ug) {
 		double y = 0;
 		final Dimension2D dimtotal = calculateDimension(ug.getStringBounder());
 		for (TextBlock b : blocks) {
 			final Dimension2D dimb = b.calculateDimension(ug.getStringBounder());
 			if (horizontalAlignement == HorizontalAlignement.LEFT) {
-				b.drawUNewWayINLINED(ug.apply(new UTranslate(0, y)));
+				b.drawU(ug.apply(new UTranslate(0, y)));
 			} else if (horizontalAlignement == HorizontalAlignement.CENTER) {
 				final double dx = (dimtotal.getWidth() - dimb.getWidth()) / 2;
-				b.drawUNewWayINLINED(ug.apply(new UTranslate(dx, y)));
+				b.drawU(ug.apply(new UTranslate(dx, y)));
 			} else {
 				throw new UnsupportedOperationException();
 			}

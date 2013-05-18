@@ -35,54 +35,149 @@ package net.sourceforge.plantuml.activitydiagram3.ftile.vcompact;
 
 import java.awt.geom.Dimension2D;
 import java.awt.geom.Point2D;
+import java.util.ArrayList;
 import java.util.List;
 
+import net.sourceforge.plantuml.Dimension2DDouble;
 import net.sourceforge.plantuml.SpriteContainerEmpty;
 import net.sourceforge.plantuml.Url;
+import net.sourceforge.plantuml.activitydiagram3.LinkRendering;
+import net.sourceforge.plantuml.activitydiagram3.ftile.AbstractConnection;
 import net.sourceforge.plantuml.activitydiagram3.ftile.AbstractFtile2;
+import net.sourceforge.plantuml.activitydiagram3.ftile.Arrows;
+import net.sourceforge.plantuml.activitydiagram3.ftile.Connection;
 import net.sourceforge.plantuml.activitydiagram3.ftile.Diamond;
 import net.sourceforge.plantuml.activitydiagram3.ftile.Ftile;
+import net.sourceforge.plantuml.activitydiagram3.ftile.FtileUtils;
+import net.sourceforge.plantuml.activitydiagram3.ftile.Snake;
 import net.sourceforge.plantuml.cucadiagram.Display;
 import net.sourceforge.plantuml.graphic.FontConfiguration;
 import net.sourceforge.plantuml.graphic.HorizontalAlignement;
+import net.sourceforge.plantuml.graphic.HtmlColor;
 import net.sourceforge.plantuml.graphic.HtmlColorUtils;
 import net.sourceforge.plantuml.graphic.StringBounder;
 import net.sourceforge.plantuml.graphic.TextBlock;
 import net.sourceforge.plantuml.graphic.TextBlockUtils;
+import net.sourceforge.plantuml.ugraphic.UChangeBackColor;
+import net.sourceforge.plantuml.ugraphic.UChangeColor;
 import net.sourceforge.plantuml.ugraphic.UFont;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
+import net.sourceforge.plantuml.ugraphic.UStroke;
 import net.sourceforge.plantuml.ugraphic.UTranslate;
 
 class FtileRepeat2 extends AbstractFtile2 {
 
 	private final Ftile repeat;
+
 	private final TextBlock test;
 
-	public FtileRepeat2(Ftile repeat, Display test, UFont font) {
+	private final HtmlColor borderColor;
+	private final HtmlColor backColor;
+
+	private FtileRepeat2(Ftile repeat, Display test, HtmlColor borderColor, HtmlColor backColor, UFont font) {
 
 		this.repeat = repeat;
-		// final UFont font = new UFont("Serif", Font.PLAIN, 14);
+		this.borderColor = borderColor;
+		this.backColor = backColor;
 		final FontConfiguration fc = new FontConfiguration(font, HtmlColorUtils.BLACK);
-		if (test == null) {
-			this.test = TextBlockUtils.empty(0, 0);
-		} else {
-			this.test = TextBlockUtils.create(test, fc, HorizontalAlignement.LEFT, new SpriteContainerEmpty());
+		this.test = TextBlockUtils.create(test, fc, HorizontalAlignement.LEFT, new SpriteContainerEmpty());
+	}
+
+	public static Ftile create(Ftile repeat, Display test, HtmlColor borderColor, HtmlColor backColor, UFont font,
+			HtmlColor arrowColor, HtmlColor endRepeatLinkColor) {
+		final FtileRepeat2 result = new FtileRepeat2(repeat, test, borderColor, backColor, font);
+		final List<Connection> conns = new ArrayList<Connection>();
+		conns.add(result.new ConnectionIn(LinkRendering.getColor(repeat.getInLinkRendering(), arrowColor)));
+		conns.add(result.new ConnectionBack(arrowColor));
+		conns.add(result.new ConnectionOut(LinkRendering.getColor(endRepeatLinkColor, arrowColor)));
+		return FtileUtils.addConnection(result, conns);
+	}
+
+	class ConnectionIn extends AbstractConnection {
+		private final HtmlColor arrowColor;
+
+		public ConnectionIn(HtmlColor arrowColor) {
+			super(null, null);
+			this.arrowColor = arrowColor;
+		}
+
+		public void drawU(UGraphic ug) {
+			final StringBounder stringBounder = ug.getStringBounder();
+			final UTranslate translate = getTranslate(stringBounder);
+
+			final Point2D pIn = translate.getTranslated(repeat.getPointIn(stringBounder));
+			final Snake snake = new Snake(arrowColor, Arrows.asToDown());
+			final Dimension2D dimTotal = calculateDimensionInternal(stringBounder);
+			snake.addPoint(dimTotal.getWidth() / 2, 2 * Diamond.diamondHalfSize);
+			snake.addPoint(pIn.getX(), pIn.getY());
+
+			snake.drawU(ug);
+		}
+	}
+
+	class ConnectionBack extends AbstractConnection {
+		private final HtmlColor arrowColor;
+
+		public ConnectionBack(HtmlColor arrowColor) {
+			super(null, null);
+			this.arrowColor = arrowColor;
+		}
+
+		public void drawU(UGraphic ug) {
+			final StringBounder stringBounder = ug.getStringBounder();
+
+			final Snake snake = new Snake(arrowColor, Arrows.asToLeft());
+			final Dimension2D dimTotal = calculateDimensionInternal(stringBounder);
+			snake.addPoint(dimTotal.getWidth() / 2 + Diamond.diamondHalfSize, dimTotal.getHeight()
+					- Diamond.diamondHalfSize);
+			snake.addPoint(dimTotal.getWidth() - Diamond.diamondHalfSize, dimTotal.getHeight()
+					- Diamond.diamondHalfSize);
+			snake.addPoint(dimTotal.getWidth() - Diamond.diamondHalfSize, Diamond.diamondHalfSize);
+			snake.addPoint(dimTotal.getWidth() / 2 + Diamond.diamondHalfSize, Diamond.diamondHalfSize);
+
+			ug = ug.apply(new UChangeColor(arrowColor)).apply(new UChangeBackColor(arrowColor));
+			ug.apply(new UTranslate(dimTotal.getWidth() - Diamond.diamondHalfSize, dimTotal.getHeight() / 2))
+					.draw(Arrows.asToUp());
+			snake.drawU(ug.apply(new UStroke(1.5)));
+		}
+	}
+
+	class ConnectionOut extends AbstractConnection {
+		private final HtmlColor arrowColor;
+
+		public ConnectionOut(HtmlColor arrowColor) {
+			super(null, null);
+			this.arrowColor = arrowColor;
+		}
+
+		public void drawU(UGraphic ug) {
+			final StringBounder stringBounder = ug.getStringBounder();
+			final UTranslate translate = getTranslate(stringBounder);
+
+			final Point2D pIn = translate.getTranslated(repeat.getPointOut(stringBounder));
+			final Snake snake = new Snake(arrowColor, Arrows.asToDown());
+			final Dimension2D dimTotal = calculateDimensionInternal(stringBounder);
+			snake.addPoint(pIn.getX(), pIn.getY());
+			snake.addPoint(dimTotal.getWidth() / 2, dimTotal.getHeight() - 2 * Diamond.diamondHalfSize);
+
+			snake.drawU(ug);
 		}
 	}
 
 	public TextBlock asTextBlock() {
 		return new TextBlock() {
 
-			public void drawUNewWayINLINED(UGraphic ug) {
+			public void drawU(UGraphic ug) {
 				final StringBounder stringBounder = ug.getStringBounder();
 				final Dimension2D dimTotal = calculateDimension(stringBounder);
-				final Dimension2D dimRepeat = repeat.asTextBlock().calculateDimension(stringBounder);
-				final double diffx = dimTotal.getWidth() - dimRepeat.getWidth();
+				ug.apply(getTranslate(stringBounder)).draw(repeat);
 
-				repeat.asTextBlock().drawUNewWayINLINED(ug.apply(new UTranslate(diffx / 2, 0)));
+				final double xDiamond = (dimTotal.getWidth() - 2 * Diamond.diamondHalfSize) / 2;
+				drawDiamond(ug, xDiamond, 0);
+				drawDiamond(ug, xDiamond, dimTotal.getHeight() - 2 * Diamond.diamondHalfSize);
 
 				final Dimension2D dimTest = test.calculateDimension(stringBounder);
-				test.drawUNewWayINLINED(ug.apply(new UTranslate(dimTotal.getWidth() / 2 + Diamond.diamondHalfSize,
+				test.drawU(ug.apply(new UTranslate(dimTotal.getWidth() / 2 + Diamond.diamondHalfSize,
 						dimTotal.getHeight() - Diamond.diamondHalfSize - dimTest.getHeight())));
 			}
 
@@ -100,9 +195,27 @@ class FtileRepeat2 extends AbstractFtile2 {
 		return false;
 	}
 
+	private void drawDiamond(UGraphic ug, double xTheoricalPosition, double yTheoricalPosition) {
+		ug.apply(new UChangeColor(borderColor)).apply(new UStroke(1.5)).apply(new UChangeBackColor(backColor))
+				.apply(new UTranslate(xTheoricalPosition, yTheoricalPosition)).draw(Diamond.asPolygon());
+	}
+
 	private Dimension2D calculateDimensionInternal(StringBounder stringBounder) {
-		final Dimension2D dim = repeat.asTextBlock().calculateDimension(stringBounder);
+		Dimension2D dim = repeat.asTextBlock().calculateDimension(stringBounder);
+		dim = Dimension2DDouble.delta(dim, 2 * getDeltaX(stringBounder), 8 * Diamond.diamondHalfSize);
 		return dim;
+	}
+
+	private UTranslate getTranslate(StringBounder stringBounder) {
+		return new UTranslate(getDeltaX(stringBounder), 4 * Diamond.diamondHalfSize);
+	}
+
+	private double getDeltaX(StringBounder stringBounder) {
+		final double w = test.calculateDimension(stringBounder).getWidth();
+		if (w < 2 * Diamond.diamondHalfSize) {
+			return 2 * Diamond.diamondHalfSize;
+		}
+		return w + Diamond.diamondHalfSize;
 	}
 
 	public Point2D getPointIn(StringBounder stringBounder) {

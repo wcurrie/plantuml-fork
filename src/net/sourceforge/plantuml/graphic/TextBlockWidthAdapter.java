@@ -54,8 +54,8 @@ public class TextBlockWidthAdapter implements TextBlock {
 		this.width = widthToUse;
 	}
 
-	public void drawUNewWayINLINED(UGraphic ug) {
-		textBlockWidth.asTextBlock(width).drawUNewWayINLINED(ug);
+	public void drawU(UGraphic ug) {
+		textBlockWidth.asTextBlock(width).drawU(ug);
 	}
 
 	public Dimension2D calculateDimension(StringBounder stringBounder) {

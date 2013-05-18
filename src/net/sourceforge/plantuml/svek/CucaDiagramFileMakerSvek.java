@@ -264,7 +264,7 @@ public final class CucaDiagramFileMakerSvek {
 		}
 		final UGraphicG2d ug = (UGraphicG2d) fileFormatOption.createUGraphic(diagram.getSkinParam().getColorMapper(),
 				dpiFactor, dim, result.getBackcolor(), diagram.isRotation());
-		result.drawUNewWayINLINED(ug);
+		result.drawU(ug);
 
 		PngIO.write(ug.getBufferedImage(), os, diagram.getMetadata(), diagram.getDpi(fileFormatOption));
 
@@ -303,10 +303,10 @@ public final class CucaDiagramFileMakerSvek {
 		((UGraphicG2d) ug).setBufferedImage(builder.getBufferedImage());
 		final BufferedImage im = ((UGraphicG2d) ug).getBufferedImage();
 		if (result.getBackcolor() instanceof HtmlColorGradient) {
-			ug.apply(new UChangeBackColor(result.getBackcolor())).drawOldWay(
+			ug.apply(new UChangeBackColor(result.getBackcolor())).draw(
 					new URectangle(im.getWidth(), im.getHeight()));
 		}
-		result.drawUNewWayINLINED(ug);
+		result.drawU(ug);
 
 		PngIO.write(im, os, diagram.getMetadata(), diagram.getDpi(fileFormatOption));
 	}
@@ -329,7 +329,7 @@ public final class CucaDiagramFileMakerSvek {
 		}
 		// ug.getParam().setSprites(diagram.getSprites());
 
-		result.drawUNewWayINLINED(ug);
+		result.drawU(ug);
 
 		ug.createXml(os);
 
@@ -340,7 +340,7 @@ public final class CucaDiagramFileMakerSvek {
 
 		final UGraphicVdx ug = new UGraphicVdx(diagram.getSkinParam().getColorMapper());
 
-		result.drawUNewWayINLINED(ug);
+		result.drawU(ug);
 
 		ug.createVsd(os);
 
@@ -352,7 +352,7 @@ public final class CucaDiagramFileMakerSvek {
 		final UGraphicEps ug = new UGraphicEps(diagram.getSkinParam().getColorMapper(), EpsStrategy.getDefault2());
 		// ug.getParam().setSprites(diagram.getSprites());
 
-		result.drawUNewWayINLINED(ug);
+		result.drawU(ug);
 		os.write(ug.getEPSCode().getBytes());
 
 	}

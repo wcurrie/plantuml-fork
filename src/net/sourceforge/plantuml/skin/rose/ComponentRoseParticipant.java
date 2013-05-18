@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 10577 $
+ * Revision $Revision: 10930 $
  *
  */
 package net.sourceforge.plantuml.skin.rose;
@@ -76,10 +76,10 @@ public class ComponentRoseParticipant extends AbstractTextualComponent {
 		final URectangle rect = new URectangle(getTextWidth(stringBounder), getTextHeight(stringBounder), roundCorner,
 				roundCorner);
 		rect.setDeltaShadow(deltaShadow);
-		ug.drawOldWay(rect);
+		ug.draw(rect);
 		ug = ug.apply(new UStroke());
 		final TextBlock textBlock = getTextBlock();
-		textBlock.drawUNewWayINLINED(ug.apply(new UTranslate(getMarginX1(), getMarginY())));
+		textBlock.drawU(ug.apply(new UTranslate(getMarginX1(), getMarginY())));
 	}
 
 	@Override

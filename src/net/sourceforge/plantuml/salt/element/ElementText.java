@@ -70,7 +70,7 @@ public class ElementText implements Element {
 			return;
 		}
 		if (show) {
-			block.drawUNewWayINLINED(ug.apply(new UTranslate(x, y)));
+			block.drawU(ug.apply(new UTranslate(x, y)));
 		}
 	}
 

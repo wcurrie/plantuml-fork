@@ -96,22 +96,22 @@ public class HeaderLayout {
 
 		final double xCircle = h1;
 		final double yCircle = (height - circleDim.getHeight()) / 2;
-		circledCharacter.drawUNewWayINLINED(ug.apply(new UTranslate(xCircle, yCircle)));
+		circledCharacter.drawU(ug.apply(new UTranslate(xCircle, yCircle)));
 
 		final double diffHeight = height - stereoDim.getHeight() - nameDim.getHeight();
 		final double xStereo = circleDim.getWidth() + (widthStereoAndName - stereoDim.getWidth()) / 2 + h1 + h2;
 		final double yStereo = diffHeight / 2;
-		stereo.drawUNewWayINLINED(ug.apply(new UTranslate(xStereo, yStereo)));
+		stereo.drawU(ug.apply(new UTranslate(xStereo, yStereo)));
 
 		final double xName = circleDim.getWidth() + (widthStereoAndName - nameDim.getWidth()) / 2 + h1 + h2;
 		final double yName = diffHeight / 2 + stereoDim.getHeight();
-		name.drawUNewWayINLINED(ug.apply(new UTranslate(xName, yName)));
+		name.drawU(ug.apply(new UTranslate(xName, yName)));
 
 		if (genericDim.getWidth() > 0) {
 			final double delta = 4;
 			final double xGeneric = width - genericDim.getWidth() + delta;
 			final double yGeneric = -delta;
-			generic.drawUNewWayINLINED(ug.apply(new UTranslate(xGeneric, yGeneric)));
+			generic.drawU(ug.apply(new UTranslate(xGeneric, yGeneric)));
 		}
 	}
 

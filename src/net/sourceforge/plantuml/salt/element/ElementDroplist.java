@@ -93,11 +93,10 @@ public class ElementDroplist extends AbstractElementText implements Element {
 	public void drawU(UGraphic ug, double x, double y, int zIndex, Dimension2D dimToUse) {
 		final Dimension2D dim = getPreferredDimension(ug.getStringBounder(), 0, 0);
 		if (zIndex == 0) {
-			ug.apply(new UChangeBackColor(HtmlColorUtils.getColorIfValid("#EEEEEE"))).drawNewWay(x, y,
-					new URectangle(dim.getWidth() - 1, dim.getHeight() - 1));
+			ug.apply(new UChangeBackColor(HtmlColorUtils.getColorIfValid("#EEEEEE"))).apply(new UTranslate(x, y)).draw(new URectangle(dim.getWidth() - 1, dim.getHeight() - 1));
 			drawText(ug, x + 2, y + 2);
 			final double xline = dim.getWidth() - box;
-			ug.drawNewWay(x + xline, y, new ULine(0, dim.getHeight() - 1));
+			ug.apply(new UTranslate(x + xline, y)).draw(new ULine(0, dim.getHeight() - 1));
 
 			final UPolygon poly = new UPolygon();
 			poly.addPoint(0, 0);
@@ -105,15 +104,14 @@ public class ElementDroplist extends AbstractElementText implements Element {
 			final Dimension2D dimText = getPureTextDimension(ug.getStringBounder());
 			poly.addPoint((box - 6) / 2, dimText.getHeight() - 8);
 
-			ug.apply(new UChangeBackColor(ug.getParam().getColor())).drawNewWay(x + xline + 3, y + 6, poly);
+			ug.apply(new UChangeBackColor(ug.getParam().getColor())).apply(new UTranslate(x + xline + 3, y + 6)).draw(poly);
 		}
 
 		if (openDrop != null) {
 			final Dimension2D dimOpen = Dimension2DDouble.atLeast(openDrop.calculateDimension(ug.getStringBounder()),
 					dim.getWidth() - 1, 0);
-			ug.apply(new UChangeBackColor(HtmlColorUtils.getColorIfValid("#EEEEEE"))).drawNewWay(x,
-					y + dim.getHeight() - 1, new URectangle(dimOpen.getWidth() - 1, dimOpen.getHeight() - 1));
-			openDrop.drawUNewWayINLINED(ug.apply(new UTranslate(x, (y + dim.getHeight() - 1))));
+			ug.apply(new UChangeBackColor(HtmlColorUtils.getColorIfValid("#EEEEEE"))).apply(new UTranslate(x, y + dim.getHeight() - 1)).draw(new URectangle(dimOpen.getWidth() - 1, dimOpen.getHeight() - 1));
+			openDrop.drawU(ug.apply(new UTranslate(x, (y + dim.getHeight() - 1))));
 		}
 	}
 }

@@ -62,8 +62,8 @@ class TextBlockMarged implements TextBlock {
 		return Dimension2DDouble.delta(dim, x1 + x2, y1 + y2);
 	}
 
-	public void drawUNewWayINLINED(UGraphic ug) {
-		textBlock.drawUNewWayINLINED(ug.apply(new UTranslate(x1, y1)));
+	public void drawU(UGraphic ug) {
+		textBlock.drawU(ug.apply(new UTranslate(x1, y1)));
 	}
 
 	public List<Url> getUrls() {

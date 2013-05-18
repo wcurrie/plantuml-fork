@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 10577 $
+ * Revision $Revision: 10930 $
  *
  */
 package net.sourceforge.plantuml.skin.bluemodern;
@@ -109,14 +109,14 @@ public class ComponentBlueModernGroupingHeader extends AbstractTextualComponent 
 		final Dimension2D dimensionToUse = area.getDimensionToUse();
 		ug.apply(new UChangeColor(borderColor)).apply(new UStroke(2))
 				.apply(new UChangeBackColor(generalBackgroundColor))
-				.drawOldWay(new URectangle(dimensionToUse.getWidth(), dimensionToUse.getHeight()));
+				.draw(new URectangle(dimensionToUse.getWidth(), dimensionToUse.getHeight()));
 	}
 
 	@Override
 	protected void drawInternalU(UGraphic ug, Area area) {
 		final Dimension2D dimensionToUse = area.getDimensionToUse();
 		ug = ug.apply(new UChangeColor(borderColor));
-		ug.apply(new UStroke(2)).drawOldWay(new URectangle(dimensionToUse.getWidth(), dimensionToUse.getHeight()));
+		ug.apply(new UStroke(2)).draw(new URectangle(dimensionToUse.getWidth(), dimensionToUse.getHeight()));
 
 		final StringBounder stringBounder = ug.getStringBounder();
 		final int textWidth = (int) getTextWidth(stringBounder);
@@ -134,22 +134,22 @@ public class ComponentBlueModernGroupingHeader extends AbstractTextualComponent 
 
 		ug = ug.apply(new UStroke(2));
 		ug = ug.apply(new UChangeBackColor(headerBackgroundColor));
-		ug.drawOldWay(polygon);
-		ug.drawOldWay(new ULine(dimensionToUse.getWidth(), 0));
+		ug.draw(polygon);
+		ug.draw(new ULine(dimensionToUse.getWidth(), 0));
 
 		final double heightWithoutPadding = dimensionToUse.getHeight() - getPaddingY();
 
-		ug.drawNewWay(dimensionToUse.getWidth(), 0, new ULine(0, heightWithoutPadding));
-		ug.drawNewWay(0, textHeight, new ULine(0, heightWithoutPadding - textHeight));
+		ug.apply(new UTranslate(dimensionToUse.getWidth(), 0)).draw(new ULine(0, heightWithoutPadding));
+		ug.apply(new UTranslate(0, textHeight)).draw(new ULine(0, heightWithoutPadding - textHeight));
 		ug = ug.apply(new UStroke());
 
-		getTextBlock().drawUNewWayINLINED(ug.apply(new UTranslate(getMarginX1(), getMarginY())));
+		getTextBlock().drawU(ug.apply(new UTranslate(getMarginX1(), getMarginY())));
 
 		if (commentTextBlock != null) {
 			final int x1 = getMarginX1() + textWidth;
 			final int y2 = getMarginY() + 1;
 
-			commentTextBlock.drawUNewWayINLINED(ug.apply(new UChangeColor(generalBackgroundColor)).apply(new UTranslate(x1 + commentMargin, y2)));
+			commentTextBlock.drawU(ug.apply(new UChangeColor(generalBackgroundColor)).apply(new UTranslate(x1 + commentMargin, y2)));
 		}
 	}
 

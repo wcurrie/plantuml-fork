@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 10577 $
+ * Revision $Revision: 10930 $
  *
  */
 package net.sourceforge.plantuml.skin.rose;
@@ -117,7 +117,7 @@ public class ComponentRoseGroupingHeader extends AbstractTextualComponent {
 		ug = ug.apply(stroke).apply(new UChangeColor(groupBorder));
 		final URectangle rect = new URectangle(dimensionToUse.getWidth(), dimensionToUse.getHeight());
 		rect.setDeltaShadow(deltaShadow);
-		ug.apply(new UChangeBackColor(background)).drawOldWay(rect);
+		ug.apply(new UChangeBackColor(background)).draw(rect);
 	}
 
 	@Override
@@ -125,7 +125,7 @@ public class ComponentRoseGroupingHeader extends AbstractTextualComponent {
 		final Dimension2D dimensionToUse = area.getDimensionToUse();
 		ug = ug.apply(stroke).apply(new UChangeColor(groupBorder));
 		final URectangle rect = new URectangle(dimensionToUse.getWidth(), dimensionToUse.getHeight());
-		ug.drawOldWay(rect);
+		ug.draw(rect);
 
 		final StringBounder stringBounder = ug.getStringBounder();
 		final int textWidth = (int) getTextWidth(stringBounder);
@@ -141,17 +141,17 @@ public class ComponentRoseGroupingHeader extends AbstractTextualComponent {
 		polygon.addPoint(0, textHeight);
 		polygon.addPoint(0, 0);
 
-		ug.apply(new UChangeColor(groupBorder)).apply(new UChangeBackColor(groupBackground)).drawOldWay(polygon);
+		ug.apply(new UChangeColor(groupBorder)).apply(new UChangeBackColor(groupBackground)).draw(polygon);
 
 		ug = ug.apply(new UStroke());
 
-		getTextBlock().drawUNewWayINLINED(ug.apply(new UTranslate(getMarginX1(), getMarginY())));
+		getTextBlock().drawU(ug.apply(new UTranslate(getMarginX1(), getMarginY())));
 
 		if (commentTextBlock != null) {
 			final int x1 = getMarginX1() + textWidth;
 			final int y2 = getMarginY() + 1;
 
-			commentTextBlock.drawUNewWayINLINED(ug.apply(new UTranslate(x1 + commentMargin, y2)));
+			commentTextBlock.drawU(ug.apply(new UTranslate(x1 + commentMargin, y2)));
 		}
 	}
 

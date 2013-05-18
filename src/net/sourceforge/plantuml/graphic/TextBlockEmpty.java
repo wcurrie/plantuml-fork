@@ -59,7 +59,7 @@ public class TextBlockEmpty implements TextBlockWidth, TextBlock {
 		return new Dimension2DDouble(width, height);
 	}
 
-	public void drawUNewWayINLINED(UGraphic ug) {
+	public void drawU(UGraphic ug) {
 	}
 
 	public List<Url> getUrls() {
@@ -69,7 +69,7 @@ public class TextBlockEmpty implements TextBlockWidth, TextBlock {
 	public TextBlock asTextBlock(final double widthToUse) {
 		return new TextBlock() {
 
-			public void drawUNewWayINLINED(UGraphic ug) {
+			public void drawU(UGraphic ug) {
 			}
 
 			public Dimension2D calculateDimension(StringBounder stringBounder) {

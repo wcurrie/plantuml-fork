@@ -41,6 +41,7 @@ import net.sourceforge.plantuml.ugraphic.UEllipse;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
 import net.sourceforge.plantuml.ugraphic.ULine;
 import net.sourceforge.plantuml.ugraphic.UShape;
+import net.sourceforge.plantuml.ugraphic.UTranslate;
 
 class CircleAndArrow implements UDrawable {
 
@@ -80,9 +81,9 @@ class CircleAndArrow implements UDrawable {
 		return at2.transform(p, null);
 	}
 
-	public void drawUNewWayINLINED(UGraphic ug) {
+	public void drawU(UGraphic ug) {
 		final UShape circle = new UEllipse(radius * 2, radius * 2);
-		ug.drawNewWay(center.getX() - radius, center.getY() - radius, circle);
+		ug.apply(new UTranslate(center.getX() - radius, center.getY() - radius)).draw(circle);
 		// drawLine(ug, x, y, p1, p2);
 		// drawLine(ug, x, y, p3, p4);
 	}
@@ -90,7 +91,7 @@ class CircleAndArrow implements UDrawable {
 	static private void drawLine(UGraphic ug, double x, double y, Point2D p1, Point2D p2) {
 		final double dx = p2.getX() - p1.getX();
 		final double dy = p2.getY() - p1.getY();
-		ug.drawNewWay(x + p1.getX(), y + p1.getY(), new ULine(dx, dy));
+		ug.apply(new UTranslate(x + p1.getX(), y + p1.getY())).draw(new ULine(dx, dy));
 
 	}
 

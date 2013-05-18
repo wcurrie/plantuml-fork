@@ -40,38 +40,8 @@ import java.io.OutputStream;
 import net.sourceforge.plantuml.Url;
 import net.sourceforge.plantuml.graphic.StringBounder;
 
-public class TextLimitFinder extends UGraphic {
+public class TextLimitFinder implements UGraphic {
 
-	static class MinMax {
-		private double maxX;
-		private double maxY;
-		private double minX;
-		private double minY;
-
-		MinMax(boolean initToZero) {
-			if (initToZero) {
-				minX = 0;
-				maxX = 0;
-				minY = 0;
-				maxY = 0;
-			} else {
-				minX = Double.MAX_VALUE;
-				maxX = -Double.MAX_VALUE;
-				minY = Double.MAX_VALUE;
-				maxY = -Double.MAX_VALUE;
-			}
-		}
-
-		private void addPoint(double x, double y) {
-			this.maxX = Math.max(x, maxX);
-			this.maxY = Math.max(y, maxY);
-			this.minX = Math.min(x, minX);
-			this.minY = Math.min(y, minY);
-		}
-
-	}
-
-	@Override
 	public UGraphic apply(UChange change) {
 		if (change instanceof UTranslate) {
 			return new TextLimitFinder(stringBounder, minmax, translate.compose((UTranslate) change));
@@ -111,7 +81,7 @@ public class TextLimitFinder extends UGraphic {
 		return new UParamNull();
 	}
 
-	public void drawOldWay(UShape shape) {
+	public void draw(UShape shape) {
 		if (shape instanceof UText) {
 			final double x = translate.getDx();
 			final double y = translate.getDy();
@@ -143,19 +113,19 @@ public class TextLimitFinder extends UGraphic {
 	}
 
 	public double getMaxX() {
-		return minmax.maxX;
+		return minmax.getMaxX();
 	}
 
 	public double getMaxY() {
-		return minmax.maxY;
+		return minmax.getMaxY();
 	}
 
 	public double getMinX() {
-		return minmax.minX;
+		return minmax.getMinX();
 	}
 
 	public double getMinY() {
-		return minmax.minY;
+		return minmax.getMinY();
 	}
 
 }

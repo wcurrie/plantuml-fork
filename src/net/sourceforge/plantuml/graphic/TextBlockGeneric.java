@@ -60,13 +60,13 @@ public class TextBlockGeneric implements TextBlock {
 		return dim;
 	}
 
-	public void drawUNewWayINLINED(UGraphic ug) {
+	public void drawU(UGraphic ug) {
 		ug = ug.apply(new UChangeBackColor(background));
 		ug = ug.apply(new UChangeColor(border));
 		final Dimension2D dim = calculateDimension(ug.getStringBounder());
-		ug.apply(new UStroke(2, 2, 1)).drawOldWay(new URectangle(dim.getWidth(), dim.getHeight()));
+		ug.apply(new UStroke(2, 2, 1)).draw(new URectangle(dim.getWidth(), dim.getHeight()));
 		
-		textBlock.drawUNewWayINLINED(ug);
+		textBlock.drawU(ug);
 	}
 
 	public List<Url> getUrls() {

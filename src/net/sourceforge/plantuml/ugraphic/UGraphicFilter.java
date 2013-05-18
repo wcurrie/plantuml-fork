@@ -41,9 +41,8 @@ import java.util.Collection;
 import net.sourceforge.plantuml.Url;
 import net.sourceforge.plantuml.graphic.StringBounder;
 
-public class UGraphicFilter extends UGraphic {
+public class UGraphicFilter implements UGraphic {
 
-	@Override
 	public UGraphic apply(UChange translate) {
 		throw new UnsupportedOperationException();
 	}
@@ -64,9 +63,9 @@ public class UGraphicFilter extends UGraphic {
 		return ug.getParam();
 	}
 
-	public void drawOldWay(UShape shape) {
+	public void draw(UShape shape) {
 		if (toprint.contains(shape.getClass())) {
-			ug.drawOldWay(shape);
+			ug.draw(shape);
 		}
 	}
 

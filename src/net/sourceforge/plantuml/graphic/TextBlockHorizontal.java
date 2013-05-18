@@ -58,13 +58,13 @@ class TextBlockHorizontal implements TextBlock {
 		return Dimension2DDouble.mergeLR(dim1, dim2);
 	}
 
-	public void drawUNewWayINLINED(UGraphic ug) {
+	public void drawU(UGraphic ug) {
 		final Dimension2D dim = calculateDimension(ug.getStringBounder());
 		final Dimension2D dimb1 = b1.calculateDimension(ug.getStringBounder());
 		final Dimension2D dimb2 = b2.calculateDimension(ug.getStringBounder());
-		b1.drawUNewWayINLINED(ug.apply(new UTranslate(0, ((dim.getHeight() - dimb1.getHeight()) / 2))));
+		b1.drawU(ug.apply(new UTranslate(0, ((dim.getHeight() - dimb1.getHeight()) / 2))));
 		final Dimension2D dim1 = b1.calculateDimension(ug.getStringBounder());
-		b2.drawUNewWayINLINED(ug.apply(new UTranslate(dim1.getWidth(), ((dim.getHeight() - dimb2.getHeight()) / 2))));
+		b2.drawU(ug.apply(new UTranslate(dim1.getWidth(), ((dim.getHeight() - dimb2.getHeight()) / 2))));
 	}
 
 	public List<Url> getUrls() {

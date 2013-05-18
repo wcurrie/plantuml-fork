@@ -83,7 +83,7 @@ public class EntityImageActivity extends AbstractEntityImage {
 		return Dimension2DDouble.delta(dim, MARGIN * 2);
 	}
 
-	final public void drawUNewWayINLINED(UGraphic ug) {
+	final public void drawU(UGraphic ug) {
 		if (url.size() > 0) {
 			ug.startUrl(url.get(0));
 		}
@@ -104,9 +104,9 @@ public class EntityImageActivity extends AbstractEntityImage {
 		}
 		ug = ug.apply(new UChangeBackColor(backcolor));
 
-		ug.apply(new UStroke(1.5)).drawOldWay(rect);
+		ug.apply(new UStroke(1.5)).draw(rect);
 
-		desc.drawUNewWayINLINED(ug.apply(new UTranslate(MARGIN, MARGIN)));
+		desc.drawU(ug.apply(new UTranslate(MARGIN, MARGIN)));
 		if (url.size() > 0) {
 			ug.closeAction();
 		}

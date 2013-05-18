@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 10265 $
+ * Revision $Revision: 10930 $
  *
  */
 package net.sourceforge.plantuml.skin.bluemodern;
@@ -78,7 +78,7 @@ public class ComponentBlueModernArrow extends AbstractComponentBlueModernArrow {
 			ug = ug.apply(new UStroke(2));
 		}
 
-		ug.drawNewWay(2, textHeight, new ULine(x2 - 4, 0));
+		ug.apply(new UTranslate(2, textHeight)).draw(new ULine(x2 - 4, 0));
 		ug = ug.apply(new UStroke());
 
 		final int direction = getDirection();
@@ -88,21 +88,21 @@ public class ComponentBlueModernArrow extends AbstractComponentBlueModernArrow {
 			ug = ug.apply(new UStroke(1.5));
 			if (direction == 1) {
 				if (getArrowConfiguration().getPart() != ArrowPart.BOTTOM_PART) {
-					ug.drawNewWay(x2 - getArrowDeltaX2(), textHeight - getArrowDeltaY2(), new ULine(getArrowDeltaX2(),
-							getArrowDeltaY2()));
+					ug.apply(new UTranslate(x2 - getArrowDeltaX2(), textHeight - getArrowDeltaY2())).draw(new ULine(getArrowDeltaX2(),
+					getArrowDeltaY2()));
 				}
 				if (getArrowConfiguration().getPart() != ArrowPart.TOP_PART) {
-					ug.drawNewWay(x2 - getArrowDeltaX2(), textHeight + getArrowDeltaY2(), new ULine(getArrowDeltaX2(),
-							-getArrowDeltaY2()));
+					ug.apply(new UTranslate(x2 - getArrowDeltaX2(), textHeight + getArrowDeltaY2())).draw(new ULine(getArrowDeltaX2(),
+					-getArrowDeltaY2()));
 				}
 			} else {
 				if (getArrowConfiguration().getPart() != ArrowPart.BOTTOM_PART) {
-					ug.drawNewWay(getArrowDeltaX2(), textHeight - getArrowDeltaY2(), new ULine(-getArrowDeltaX2(),
-							getArrowDeltaY2()));
+					ug.apply(new UTranslate(getArrowDeltaX2(), textHeight - getArrowDeltaY2())).draw(new ULine(-getArrowDeltaX2(),
+					getArrowDeltaY2()));
 				}
 				if (getArrowConfiguration().getPart() != ArrowPart.TOP_PART) {
-					ug.drawNewWay(getArrowDeltaX2(), textHeight + getArrowDeltaY2(), new ULine(-getArrowDeltaX2(),
-							-getArrowDeltaY2()));
+					ug.apply(new UTranslate(getArrowDeltaX2(), textHeight + getArrowDeltaY2())).draw(new ULine(-getArrowDeltaX2(),
+					-getArrowDeltaY2()));
 				}
 			}
 			ug = ug.apply(new UStroke());
@@ -111,9 +111,9 @@ public class ComponentBlueModernArrow extends AbstractComponentBlueModernArrow {
 		} else {
 			createPolygonReverse(textHeight, polygon);
 		}
-		ug.drawOldWay(polygon);
+		ug.draw(polygon);
 
-		getTextBlock().drawUNewWayINLINED(ug.apply(new UTranslate(getMarginX1(), 0)));
+		getTextBlock().drawU(ug.apply(new UTranslate(getMarginX1(), 0)));
 	}
 
 	private void createPolygonReverse(final int textHeight, final UPolygon polygon) {

@@ -37,8 +37,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import net.sourceforge.plantuml.activitydiagram3.command.CommandActivity3;
+import net.sourceforge.plantuml.activitydiagram3.command.CommandActivityLegacy1;
 import net.sourceforge.plantuml.activitydiagram3.command.CommandActivityLong3;
 import net.sourceforge.plantuml.activitydiagram3.command.CommandElse3;
+import net.sourceforge.plantuml.activitydiagram3.command.CommandElseLegacy1;
 import net.sourceforge.plantuml.activitydiagram3.command.CommandEndif3;
 import net.sourceforge.plantuml.activitydiagram3.command.CommandFork3;
 import net.sourceforge.plantuml.activitydiagram3.command.CommandForkAgain3;
@@ -47,6 +49,7 @@ import net.sourceforge.plantuml.activitydiagram3.command.CommandGroup3;
 import net.sourceforge.plantuml.activitydiagram3.command.CommandGroupEnd3;
 import net.sourceforge.plantuml.activitydiagram3.command.CommandIf2;
 import net.sourceforge.plantuml.activitydiagram3.command.CommandIf4;
+import net.sourceforge.plantuml.activitydiagram3.command.CommandIfLegacy1;
 import net.sourceforge.plantuml.activitydiagram3.command.CommandKill3;
 import net.sourceforge.plantuml.activitydiagram3.command.CommandLink3;
 import net.sourceforge.plantuml.activitydiagram3.command.CommandNote3;
@@ -58,6 +61,7 @@ import net.sourceforge.plantuml.activitydiagram3.command.CommandSplitAgain3;
 import net.sourceforge.plantuml.activitydiagram3.command.CommandSplitEnd3;
 import net.sourceforge.plantuml.activitydiagram3.command.CommandStart3;
 import net.sourceforge.plantuml.activitydiagram3.command.CommandStop3;
+import net.sourceforge.plantuml.activitydiagram3.command.CommandStopLegacy1;
 import net.sourceforge.plantuml.activitydiagram3.command.CommandSwimlane3;
 import net.sourceforge.plantuml.activitydiagram3.command.CommandWhile3;
 import net.sourceforge.plantuml.activitydiagram3.command.CommandWhileEnd3;
@@ -76,7 +80,9 @@ public class ActivityDiagramFactory3_1317 extends UmlDiagramFactory1317 {
 		cmds.add(new CommandActivity3());
 		cmds.add(new CommandIf4());
 		cmds.add(new CommandIf2());
+		cmds.add(new CommandIfLegacy1());
 		cmds.add(new CommandElse3());
+		cmds.add(new CommandElseLegacy1());
 		cmds.add(new CommandEndif3());
 		cmds.add(new CommandRepeat3());
 		cmds.add(new CommandRepeatWhile3());
@@ -92,12 +98,14 @@ public class ActivityDiagramFactory3_1317 extends UmlDiagramFactory1317 {
 		cmds.add(new CommandGroupEnd3());
 		cmds.add(new CommandStart3());
 		cmds.add(new CommandStop3());
+		cmds.add(new CommandStopLegacy1());
 		cmds.add(new CommandKill3());
 		cmds.add(new CommandLink3());
 		cmds.add(new CommandNote3());
 		cmds.add(new CommandNoteLong3());
 
 		cmds.add(new CommandActivityLong3());
+		cmds.add(new CommandActivityLegacy1());
 
 		return cmds;
 	}

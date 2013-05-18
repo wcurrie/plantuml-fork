@@ -82,27 +82,26 @@ public class ElementRadioCheckbox implements Element {
 		if (zIndex != 0) {
 			return;
 		}
-		block.drawUNewWayINLINED(ug.apply(new UTranslate((x + margin), y)));
+		block.drawU(ug.apply(new UTranslate((x + margin), y)));
 
 		final Dimension2D dim = getPreferredDimension(ug.getStringBounder(), 0, 0);
 		final double height = dim.getHeight();
 
 		ug = ug.apply(new UStroke(stroke));
 		if (radio) {
-			ug.drawNewWay(x + 2, y + (height - ELLIPSE) / 2, new UEllipse(ELLIPSE, ELLIPSE));
+			ug.apply(new UTranslate(x + 2, y + (height - ELLIPSE) / 2)).draw(new UEllipse(ELLIPSE, ELLIPSE));
 			if (checked) {
-				ug.apply(new UChangeBackColor(ug.getParam().getColor())).drawNewWay(x + 2 + (ELLIPSE - ELLIPSE2) / 2,
-						y + (height - ELLIPSE2) / 2, new UEllipse(ELLIPSE2, ELLIPSE2));
+				ug.apply(new UChangeBackColor(ug.getParam().getColor())).apply(new UTranslate(x + 2 + (ELLIPSE - ELLIPSE2) / 2, y + (height - ELLIPSE2) / 2)).draw(new UEllipse(ELLIPSE2, ELLIPSE2));
 			}
 		} else {
-			ug.drawNewWay(x + 2, y + (height - RECTANGLE) / 2, new URectangle(RECTANGLE, RECTANGLE));
+			ug.apply(new UTranslate(x + 2, y + (height - RECTANGLE) / 2)).draw(new URectangle(RECTANGLE, RECTANGLE));
 			if (checked) {
 				final UPolygon poly = new UPolygon();
 				poly.addPoint(0, 0);
 				poly.addPoint(3, 3);
 				poly.addPoint(10, -6);
 				poly.addPoint(3, 1);
-				ug.apply(new UChangeBackColor(ug.getParam().getColor())).drawNewWay(x + 3, y + 6, poly);
+				ug.apply(new UChangeBackColor(ug.getParam().getColor())).apply(new UTranslate(x + 3, y + 6)).draw(poly);
 			}
 		}
 	}

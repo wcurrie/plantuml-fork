@@ -42,6 +42,7 @@ import net.sourceforge.plantuml.ugraphic.UGraphic;
 import net.sourceforge.plantuml.ugraphic.ULine;
 import net.sourceforge.plantuml.ugraphic.UPolygon;
 import net.sourceforge.plantuml.ugraphic.UStroke;
+import net.sourceforge.plantuml.ugraphic.UTranslate;
 
 class ExtremityStateLine1 extends Extremity {
 
@@ -65,12 +66,10 @@ class ExtremityStateLine1 extends Extremity {
 		polygon = polygon.translate(center.getX(), center.getY());
 	}
 
-	public void drawUNewWayINLINED(UGraphic ug) {
-		ug.apply(new UChangeBackColor(ug.getParam().getColor())).drawNewWay(-radius * Math.cos(angle),
-				-radius * Math.sin(angle), polygon);
+	public void drawU(UGraphic ug) {
+		ug.apply(new UChangeBackColor(ug.getParam().getColor())).apply(new UTranslate(-radius * Math.cos(angle), -radius * Math.sin(angle))).draw(polygon);
 		ug = ug.apply(new UChangeBackColor(HtmlColorUtils.WHITE));
-		ug.apply(new UStroke(1.5)).drawNewWay(dest.getX() - radius, dest.getY() - radius,
-				new UEllipse(radius * 2, radius * 2));
+		ug.apply(new UStroke(1.5)).apply(new UTranslate(dest.getX() - radius, dest.getY() - radius)).draw(new UEllipse(radius * 2, radius * 2));
 		drawLine(ug, getPointOnCircle(dest.getX(), dest.getY(), Math.PI / 4),
 				getPointOnCircle(dest.getX(), dest.getY(), Math.PI + Math.PI / 4));
 		drawLine(ug, getPointOnCircle(dest.getX(), dest.getY(), -Math.PI / 4),
@@ -86,7 +85,7 @@ class ExtremityStateLine1 extends Extremity {
 	static private void drawLine(UGraphic ug, Point2D p1, Point2D p2) {
 		final double dx = p2.getX() - p1.getX();
 		final double dy = p2.getY() - p1.getY();
-		ug.drawNewWay(p1.getX(), p1.getY(), new ULine(dx, dy));
+		ug.apply(new UTranslate(p1.getX(), p1.getY())).draw(new ULine(dx, dy));
 
 	}
 

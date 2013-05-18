@@ -37,6 +37,6 @@ import net.sourceforge.plantuml.ugraphic.UGraphic;
 
 public interface UDrawable {
 
-	public void drawUNewWayINLINED(UGraphic ug);
+	public void drawU(UGraphic ug);
 
 }

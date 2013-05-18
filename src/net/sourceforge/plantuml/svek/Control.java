@@ -48,6 +48,7 @@ import net.sourceforge.plantuml.ugraphic.UEllipse;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
 import net.sourceforge.plantuml.ugraphic.UPolygon;
 import net.sourceforge.plantuml.ugraphic.UStroke;
+import net.sourceforge.plantuml.ugraphic.UTranslate;
 
 public class Control implements TextBlock {
 
@@ -67,7 +68,7 @@ public class Control implements TextBlock {
 		this.thickness = thickness;
 	}
 
-	public void drawUNewWayINLINED(UGraphic ug) {
+	public void drawU(UGraphic ug) {
 		double x = 0;
 		double y = 0;
 		x += margin;
@@ -76,7 +77,7 @@ public class Control implements TextBlock {
 		ug = ug.apply(new UChangeBackColor(backgroundColor)).apply(new UChangeColor(foregroundColor));
 		final UEllipse circle = new UEllipse(radius * 2, radius * 2);
 		circle.setDeltaShadow(deltaShadow);
-		ug.drawNewWay(x, y, circle);
+		ug.apply(new UTranslate(x, y)).draw(circle);
 		ug = ug.apply(new UStroke());
 		
 		ug = ug.apply(new UChangeBackColor(foregroundColor));
@@ -90,7 +91,7 @@ public class Control implements TextBlock {
 		polygon.addPoint(xAile, yOuverture);
 		polygon.addPoint(0, 0);
 		
-		ug.drawNewWay(x + radius - xContact, y, polygon);
+		ug.apply(new UTranslate(x + radius - xContact, y)).draw(polygon);
 	}
 
 	public Dimension2D calculateDimension(StringBounder stringBounder) {

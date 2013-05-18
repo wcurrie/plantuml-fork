@@ -44,6 +44,7 @@ import net.sourceforge.plantuml.ugraphic.UChangeBackColor;
 import net.sourceforge.plantuml.ugraphic.UChangeColor;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
 import net.sourceforge.plantuml.ugraphic.UPolygon;
+import net.sourceforge.plantuml.ugraphic.UTranslate;
 
 public class TextBlockArrow implements TextBlock {
 
@@ -62,7 +63,7 @@ public class TextBlockArrow implements TextBlock {
 
 	}
 
-	public void drawUNewWayINLINED(UGraphic ug) {
+	public void drawU(UGraphic ug) {
 		ug = ug.apply(new UChangeBackColor(color));
 		ug = ug.apply(new UChangeColor(color));
 		int triSize = (int) (size * .8 - 3);
@@ -71,9 +72,9 @@ public class TextBlockArrow implements TextBlock {
 		}
 		final UPolygon triangle = getTriangle(triSize);
 		if (arrow == Direction.RIGHT || arrow == Direction.LEFT) {
-			ug.drawNewWay(2, (size - triSize) - 2, triangle);
+			ug.apply(new UTranslate(2, (size - triSize) - 2)).draw(triangle);
 		} else {
-			ug.drawNewWay(2, (size - triSize) - 2, triangle);
+			ug.apply(new UTranslate(2, (size - triSize) - 2)).draw(triangle);
 		}
 	}
 

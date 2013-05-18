@@ -176,14 +176,14 @@ public class EntityImageComponent extends AbstractEntityImage {
 		final Margin margin = getSuppDimension();
 		final double x = margin.x1 + (dimTotal.getWidth() - margin.getWidth() - dimDesc.getWidth()) / 2;
 		final double y = margin.y1 + (dimTotal.getHeight() - margin.getHeight() - dimTwoText.getHeight()) / 2;
-		desc.drawUNewWayINLINED(ug.apply(new UTranslate(x, y + dimStereo.getHeight())));
+		desc.drawU(ug.apply(new UTranslate(x, y + dimStereo.getHeight())));
 
 		final double stereoX = margin.x1 + (dimTotal.getWidth() - margin.getWidth() - dimStereo.getWidth()) / 2;
-		stereo.drawUNewWayINLINED(ug.apply(new UTranslate(stereoX, y)));
+		stereo.drawU(ug.apply(new UTranslate(stereoX, y)));
 
 	}
 
-	final public void drawUNewWayINLINED(UGraphic ug) {
+	final public void drawU(UGraphic ug) {
 		if (url.size() > 0) {
 			ug.startUrl(url.get(0));
 		}
@@ -201,7 +201,7 @@ public class EntityImageComponent extends AbstractEntityImage {
 					ColorParam.componentBorder, getStereo())).withStroke(new UStroke(1.5)).withShadow(
 					getSkinParam().shadowing());
 			symbol.asSmall(TextBlockUtils.mergeTB(desc, stereo, HorizontalAlignement.CENTER), null, ctx)
-					.drawUNewWayINLINED(ug);
+					.drawU(ug);
 		}
 		if (url.size() > 0) {
 			ug.closeAction();

@@ -40,6 +40,7 @@ import net.sourceforge.plantuml.Dimension2DDouble;
 import net.sourceforge.plantuml.graphic.StringBounder;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
 import net.sourceforge.plantuml.ugraphic.UPixel;
+import net.sourceforge.plantuml.ugraphic.UTranslate;
 
 public class ElementImage implements Element {
 
@@ -63,7 +64,7 @@ public class ElementImage implements Element {
 			for (int j = 0; j < h; j++) {
 				final char c = img.get(j).charAt(i);
 				if (c == 'X') {
-					ug.drawNewWay(x + i, y + j, new UPixel());
+					ug.apply(new UTranslate(x + i, y + j)).draw(new UPixel());
 				}
 			}
 		}

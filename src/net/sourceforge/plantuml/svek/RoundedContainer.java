@@ -42,6 +42,7 @@ import net.sourceforge.plantuml.ugraphic.UGraphic;
 import net.sourceforge.plantuml.ugraphic.ULine;
 import net.sourceforge.plantuml.ugraphic.URectangle;
 import net.sourceforge.plantuml.ugraphic.UStroke;
+import net.sourceforge.plantuml.ugraphic.UTranslate;
 
 public final class RoundedContainer {
 
@@ -72,7 +73,7 @@ public final class RoundedContainer {
 		if (shadowing) {
 			rect.setDeltaShadow(3.0);
 		}
-		ug.apply(new UStroke(THICKNESS_BORDER)).drawOldWay(rect);
+		ug.apply(new UStroke(THICKNESS_BORDER)).draw(rect);
 
 		final double yLine = titleHeight + attributeHeight;
 
@@ -80,15 +81,14 @@ public final class RoundedContainer {
 
 		final URectangle inner = new URectangle(dim.getWidth() - 4 * THICKNESS_BORDER, dim.getHeight() - titleHeight
 				- 4 * THICKNESS_BORDER - attributeHeight, IEntityImage.CORNER, IEntityImage.CORNER);
-		ug.apply(new UChangeColor(imgBackcolor)).drawNewWay(2 * THICKNESS_BORDER, yLine + 2 * THICKNESS_BORDER, inner);
+		ug.apply(new UChangeColor(imgBackcolor)).apply(new UTranslate(2 * THICKNESS_BORDER, yLine + 2 * THICKNESS_BORDER)).draw(inner);
 
 		if (titleHeight > 0) {
-			ug.apply(new UStroke(THICKNESS_BORDER)).drawNewWay(0, yLine, new ULine(dim.getWidth(), 0));
+			ug.apply(new UStroke(THICKNESS_BORDER)).apply(new UTranslate(0, yLine)).draw(new ULine(dim.getWidth(), 0));
 		}
 
 		if (attributeHeight > 0) {
-			ug.apply(new UStroke(THICKNESS_BORDER))
-					.drawNewWay(0, yLine - attributeHeight, new ULine(dim.getWidth(), 0));
+			ug.apply(new UStroke(THICKNESS_BORDER)).apply(new UTranslate(0, yLine - attributeHeight)).draw(new ULine(dim.getWidth(), 0));
 		}
 
 	}

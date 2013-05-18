@@ -52,8 +52,8 @@ import net.sourceforge.plantuml.sequencediagram.command.CommandBoxEnd;
 import net.sourceforge.plantuml.sequencediagram.command.CommandBoxStart;
 import net.sourceforge.plantuml.sequencediagram.command.CommandDelay;
 import net.sourceforge.plantuml.sequencediagram.command.CommandDivider;
-import net.sourceforge.plantuml.sequencediagram.command.CommandExoArrowLeft;
-import net.sourceforge.plantuml.sequencediagram.command.CommandExoArrowRight;
+import net.sourceforge.plantuml.sequencediagram.command.CommandExoArrowLeft2;
+import net.sourceforge.plantuml.sequencediagram.command.CommandExoArrowRight2;
 import net.sourceforge.plantuml.sequencediagram.command.CommandFootbox;
 import net.sourceforge.plantuml.sequencediagram.command.CommandFootboxOld;
 import net.sourceforge.plantuml.sequencediagram.command.CommandGrouping;
@@ -92,8 +92,8 @@ public class SequenceDiagramFactory1317 extends UmlDiagramFactory1317 {
 		cmds.add(new CommandParticipantA4());
 		cmds.add(new CommandArrow());
 		// addCommand(new CommandArrowCrossX());
-		cmds.add(new CommandExoArrowLeft());
-		cmds.add(new CommandExoArrowRight());
+		cmds.add(new CommandExoArrowLeft2());
+		cmds.add(new CommandExoArrowRight2());
 
 		final FactorySequenceNoteCommand factorySequenceNoteCommand = new FactorySequenceNoteCommand();
 		cmds.add(factorySequenceNoteCommand.createSingleLine());

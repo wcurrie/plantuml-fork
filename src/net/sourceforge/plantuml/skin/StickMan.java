@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 10266 $
+ * Revision $Revision: 10930 $
  *
  */
 package net.sourceforge.plantuml.skin;
@@ -48,6 +48,7 @@ import net.sourceforge.plantuml.ugraphic.UEllipse;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
 import net.sourceforge.plantuml.ugraphic.UPath;
 import net.sourceforge.plantuml.ugraphic.UStroke;
+import net.sourceforge.plantuml.ugraphic.UTranslate;
 
 public class StickMan implements TextBlock {
 
@@ -84,7 +85,7 @@ public class StickMan implements TextBlock {
 		this(backgroundColor, foregroundColor, 0, 2);
 	}
 
-	public void drawUNewWayINLINED(UGraphic ug) {
+	public void drawU(UGraphic ug) {
 		ug = ug.apply(new UStroke(thickness));
 		
 		final double startX = Math.max(armsLenght, legsX) - headDiam / 2.0 + thickness;
@@ -107,8 +108,8 @@ public class StickMan implements TextBlock {
 		}
 		
 		ug = ug.apply(new UChangeBackColor(backgroundColor)).apply(new UChangeColor(foregroundColor));
-		ug.drawNewWay(startX, thickness, head);
-		ug.drawNewWay(centerX, headDiam + thickness, path);
+		ug.apply(new UTranslate(startX, thickness)).draw(head);
+		ug.apply(new UTranslate(centerX, headDiam + thickness)).draw(path);
 	}
 
 	public double getPreferredWidth() {

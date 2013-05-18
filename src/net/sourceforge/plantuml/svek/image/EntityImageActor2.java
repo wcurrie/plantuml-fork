@@ -98,7 +98,7 @@ public class EntityImageActor2 extends AbstractEntityImage {
 		return stereo.calculateDimension(stringBounder);
 	}
 
-	final public void drawUNewWayINLINED(UGraphic ug) {
+	final public void drawU(UGraphic ug) {
 		final StringBounder stringBounder = ug.getStringBounder();
 		final Dimension2D dimStickMan = stickman.calculateDimension(stringBounder);
 		final Dimension2D dimStereo = getStereoDimension(stringBounder);
@@ -109,14 +109,14 @@ public class EntityImageActor2 extends AbstractEntityImage {
 		if (url.size() > 0) {
 			ug.startUrl(url.get(0));
 		}
-		stickman.drawUNewWayINLINED(ug.apply(new UTranslate(manX, manY)));
+		stickman.drawU(ug.apply(new UTranslate(manX, manY)));
 		final double nameX = (dimTotal.getWidth() - dimName.getWidth()) / 2;
 		final double nameY = dimStickMan.getHeight() + dimStereo.getHeight();
-		name.drawUNewWayINLINED(ug.apply(new UTranslate(nameX, nameY)));
+		name.drawU(ug.apply(new UTranslate(nameX, nameY)));
 
 		if (stereo != null) {
 			final double stereoX = (dimTotal.getWidth() - dimStereo.getWidth()) / 2;
-			stereo.drawUNewWayINLINED(ug.apply(new UTranslate(stereoX, 0)));
+			stereo.drawU(ug.apply(new UTranslate(stereoX, 0)));
 		}
 		if (url.size() > 0) {
 			ug.closeAction();

@@ -60,13 +60,13 @@ public class EntityImageCircleStart extends AbstractEntityImage {
 		return new Dimension2DDouble(SIZE, SIZE);
 	}
 
-	final public void drawUNewWayINLINED(UGraphic ug) {
+	final public void drawU(UGraphic ug) {
 		final UEllipse circle = new UEllipse(SIZE, SIZE);
 		if (getSkinParam().shadowing()) {
 			circle.setDeltaShadow(3);
 		}
 		ug.apply(new UChangeBackColor(SkinParamUtils.getColor(getSkinParam(), ColorParam.activityStart, getStereo())))
-				.apply(new UChangeColor(null)).drawOldWay(circle);
+				.apply(new UChangeColor(null)).draw(circle);
 	}
 
 	public ShapeType getShapeType() {

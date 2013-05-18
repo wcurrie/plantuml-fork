@@ -96,20 +96,16 @@ public class UGraphicVdx extends AbstractUGraphic<VisioGraphics> implements Clip
 		registerDriver(UCenteredCharacter.class, new DriverNoneVdx());
 	}
 
-	@Override
 	public StringBounder getStringBounder() {
 		return stringBounder;
 	}
 
-	@Override
 	public void startUrl(Url url) {
 	}
 
-	@Override
 	public void closeAction() {
 	}
 
-	@Override
 	public void writeImage(OutputStream os, String metadata, int dpi) throws IOException {
 		createVsd(os);
 	}

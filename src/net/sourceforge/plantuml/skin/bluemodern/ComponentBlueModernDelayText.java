@@ -65,7 +65,7 @@ public class ComponentBlueModernDelayText extends AbstractTextualComponent {
 		final double xpos = (dimensionToUse.getWidth() - textWidth) / 2;
 		final double ypos = (dimensionToUse.getHeight() - textHeight) / 2;
 
-		textBlock.drawUNewWayINLINED(ug.apply(new UTranslate(xpos, (ypos + getMarginY()))));
+		textBlock.drawU(ug.apply(new UTranslate(xpos, (ypos + getMarginY()))));
 	}
 
 	@Override

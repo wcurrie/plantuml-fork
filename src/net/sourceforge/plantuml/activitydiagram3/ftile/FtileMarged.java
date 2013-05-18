@@ -34,6 +34,7 @@
 package net.sourceforge.plantuml.activitydiagram3.ftile;
 
 import java.awt.geom.Dimension2D;
+import java.awt.geom.Point2D;
 import java.util.List;
 
 import net.sourceforge.plantuml.Dimension2DDouble;
@@ -43,7 +44,7 @@ import net.sourceforge.plantuml.graphic.TextBlock;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
 import net.sourceforge.plantuml.ugraphic.UTranslate;
 
-public class FtileMarged extends AbstractFtileOld {
+public class FtileMarged extends AbstractFtile2 {
 
 	private final Ftile tile;
 	private final double marge;
@@ -53,11 +54,21 @@ public class FtileMarged extends AbstractFtileOld {
 		this.marge = marge;
 	}
 
+	public Point2D getPointIn(StringBounder stringBounder) {
+		final Point2D p = tile.getPointIn(stringBounder);
+		return new UTranslate(marge, 0).getTranslated(p);
+	}
+
+	public Point2D getPointOut(StringBounder stringBounder) {
+		final Point2D p = tile.getPointOut(stringBounder);
+		return new UTranslate(marge, 0).getTranslated(p);
+	}
+
 	public TextBlock asTextBlock() {
 		return new TextBlock() {
 
-			public void drawUNewWayINLINED(UGraphic ug) {
-				tile.asTextBlock().drawUNewWayINLINED(ug.apply(new UTranslate(marge, 0)));
+			public void drawU(UGraphic ug) {
+				ug.apply(new UTranslate(marge, 0)).draw(tile);
 			}
 
 			public Dimension2D calculateDimension(StringBounder stringBounder) {
@@ -73,6 +84,5 @@ public class FtileMarged extends AbstractFtileOld {
 	public boolean isKilled() {
 		return tile.isKilled();
 	}
-
 
 }

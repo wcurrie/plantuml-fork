@@ -83,10 +83,10 @@ public class Frame implements Component {
 		final HtmlColor lineColor = rose.getHtmlColor(skinParam, ColorParam.packageBorder);
 		ug = ug.apply(new UChangeColor(lineColor));
 		ug = ug.apply(new UChangeBackColor(null));
-		ug.apply(new UStroke(1.4)).drawOldWay(new URectangle(dimensionToUse.getWidth(), dimensionToUse.getHeight()));
+		ug.apply(new UStroke(1.4)).draw(new URectangle(dimensionToUse.getWidth(), dimensionToUse.getHeight()));
 
 		final TextBlock textBlock = createTextBloc();
-		textBlock.drawUNewWayINLINED(ug.apply(new UTranslate(2, 2)));
+		textBlock.drawU(ug.apply(new UTranslate(2, 2)));
 
 		final Dimension2D textDim = getTextDim(ug.getStringBounder());
 		final double x = textDim.getWidth() + 6;
@@ -97,7 +97,7 @@ public class Frame implements Component {
 		poly.addPoint(x - 6, y);
 		poly.addPoint(0, y);
 		poly.addPoint(0, 0);
-		ug.apply(new UStroke(1.4)).drawOldWay(poly);
+		ug.apply(new UStroke(1.4)).draw(poly);
 
 	}
 

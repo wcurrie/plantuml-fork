@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 10205 $
+ * Revision $Revision: 10925 $
  *
  */
 package net.sourceforge.plantuml.skin.rose;
@@ -55,7 +55,7 @@ public class ComponentRoseNewpage extends AbstractComponent {
 	protected void drawInternalU(UGraphic ug, Area area) {
 		final Dimension2D dimensionToUse = area.getDimensionToUse();
 		ug = stroke(ug, 2, 2).apply(new UChangeColor(foregroundColor));
-		ug.drawOldWay(new ULine(dimensionToUse.getWidth(), 0));
+		ug.draw(new ULine(dimensionToUse.getWidth(), 0));
 	}
 
 	@Override

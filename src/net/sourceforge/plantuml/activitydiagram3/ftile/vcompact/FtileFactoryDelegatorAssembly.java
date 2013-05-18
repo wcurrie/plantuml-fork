@@ -35,33 +35,41 @@ package net.sourceforge.plantuml.activitydiagram3.ftile.vcompact;
 
 import java.awt.geom.Point2D;
 
+import net.sourceforge.plantuml.ISkinParam;
 import net.sourceforge.plantuml.activitydiagram3.ftile.Connection;
 import net.sourceforge.plantuml.activitydiagram3.ftile.Ftile;
 import net.sourceforge.plantuml.activitydiagram3.ftile.FtileEmpty;
 import net.sourceforge.plantuml.activitydiagram3.ftile.FtileFactory;
 import net.sourceforge.plantuml.activitydiagram3.ftile.FtileFactoryDelegator;
 import net.sourceforge.plantuml.activitydiagram3.ftile.FtileUtils;
-import net.sourceforge.plantuml.graphic.HtmlColorUtils;
+import net.sourceforge.plantuml.graphic.HtmlColor;
 import net.sourceforge.plantuml.graphic.StringBounder;
 import net.sourceforge.plantuml.ugraphic.UTranslate;
 
 public class FtileFactoryDelegatorAssembly extends FtileFactoryDelegator {
 
-	public FtileFactoryDelegatorAssembly(FtileFactory factory) {
-		super(factory);
+	public FtileFactoryDelegatorAssembly(FtileFactory factory, ISkinParam skinParam) {
+		super(factory, skinParam);
 	}
 
 	@Override
 	public Ftile assembly(final Ftile tile1, final Ftile tile2) {
-		final Ftile space = new FtileEmpty(1, 20);
+		final Ftile space = new FtileEmpty(1, 35);
 		final Ftile tile1andSpace = super.assembly(tile1, space);
 		final Ftile result = super.assembly(tile1andSpace, tile2);
 		final StringBounder stringBounder = getStringBounder();
 		final UTranslate translate1 = result.getTranslateFor(tile1, stringBounder);
-		final Point2D p1 = translate1.getTranslated(tile1.getPointOut(stringBounder));
+		final Point2D pointOut = tile1.getPointOut(stringBounder);
+		if (pointOut == null) {
+			return result;
+		}
+		final Point2D p1 = translate1.getTranslated(pointOut);
 		final UTranslate translate2 = result.getTranslateFor(tile2, stringBounder);
 		final Point2D p2 = translate2.getTranslated(tile2.getPointIn(stringBounder));
-		final Connection connection = new ConnectionVerticalDown(p1, p2, HtmlColorUtils.BLUE);
+		
+		final HtmlColor color = getInLinkRenderingColor(tile2);
+		
+		final Connection connection = new ConnectionVerticalDown(tile1, tile2, p1, p2, color);
 		return FtileUtils.addConnection(result, connection);
 	}
 }

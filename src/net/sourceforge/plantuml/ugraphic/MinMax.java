@@ -28,36 +28,61 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 4636 $
+ * Revision $Revision: 5183 $
  *
  */
-package net.sourceforge.plantuml.sequencediagram.command;
+package net.sourceforge.plantuml.ugraphic;
 
-import net.sourceforge.plantuml.sequencediagram.MessageExoType;
+import java.awt.geom.Dimension2D;
 
-public class CommandExoArrowRight extends CommandExoArrowAny {
+import net.sourceforge.plantuml.Dimension2DDouble;
 
-	public CommandExoArrowRight() {
-		super(
-				"(?i)^([\\p{L}0-9_.@]+|\"[^\"]+\")\\s*([=-]+(?:>>?|//?|\\\\\\\\?)\\]?|(?:<<?|//?|\\\\\\\\?)[=-]+\\]?)\\s*(?::\\s*(.*))?$",
-				1, 0);
+public class MinMax {
+
+	private double maxX;
+	private double maxY;
+	private double minX;
+	private double minY;
+
+	public MinMax(boolean initToZero) {
+		if (initToZero) {
+			minX = 0;
+			maxX = 0;
+			minY = 0;
+			maxY = 0;
+		} else {
+			minX = Double.MAX_VALUE;
+			maxX = -Double.MAX_VALUE;
+			minY = Double.MAX_VALUE;
+			maxY = -Double.MAX_VALUE;
+		}
 	}
 
-	@Override
-	MessageExoType getMessageExoType(String arrow) {
-		if (arrow.contains("<")) {
-			return MessageExoType.FROM_RIGHT;
-		}
-		if (arrow.contains(">")) {
-			return MessageExoType.TO_RIGHT;
-		}
-		if (arrow.startsWith("/") || arrow.startsWith("\\")) {
-			return MessageExoType.FROM_RIGHT;
-		}
-		if (arrow.endsWith("\\]") || arrow.endsWith("/]") || arrow.endsWith("\\") || arrow.endsWith("/")) {
-			return MessageExoType.TO_RIGHT;
-		}
-		throw new IllegalArgumentException(arrow);
+	public void addPoint(double x, double y) {
+		this.maxX = Math.max(x, maxX);
+		this.maxY = Math.max(y, maxY);
+		this.minX = Math.min(x, minX);
+		this.minY = Math.min(y, minY);
+	}
+
+	public final double getMaxX() {
+		return maxX;
+	}
+
+	public final double getMaxY() {
+		return maxY;
+	}
+
+	public final double getMinX() {
+		return minX;
+	}
+
+	public final double getMinY() {
+		return minY;
+	}
+
+	public Dimension2D getDimension() {
+		return new Dimension2DDouble(maxX - minX, maxY - minY);
 	}
 
 }

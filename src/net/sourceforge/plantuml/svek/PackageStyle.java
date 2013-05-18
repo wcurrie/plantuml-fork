@@ -44,6 +44,7 @@ import net.sourceforge.plantuml.ugraphic.UPath;
 import net.sourceforge.plantuml.ugraphic.UPolygon;
 import net.sourceforge.plantuml.ugraphic.URectangle;
 import net.sourceforge.plantuml.ugraphic.UShape;
+import net.sourceforge.plantuml.ugraphic.UTranslate;
 
 public enum PackageStyle {
 
@@ -103,9 +104,9 @@ public enum PackageStyle {
 		if (shadowing) {
 			polygon.setDeltaShadow(3.0);
 		}
-		ug.drawOldWay(polygon);
-		ug.drawNewWay(width - cornersize, 0, new ULine(0, cornersize));
-		ug.drawNewWay(width, cornersize, new ULine(-cornersize, 0));
+		ug.draw(polygon);
+		ug.apply(new UTranslate(width - cornersize, 0)).draw(new ULine(0, cornersize));
+		ug.apply(new UTranslate(width, cornersize)).draw(new ULine(-cornersize, 0));
 	}
 
 	private void drawStorage(UGraphic ug, double width, double height, boolean shadowing) {
@@ -113,7 +114,7 @@ public enum PackageStyle {
 		if (shadowing) {
 			shape.setDeltaShadow(3.0);
 		}
-		ug.drawOldWay(shape);
+		ug.draw(shape);
 	}
 
 	private void drawComponent1(UGraphic ug, double widthTotal, double heightTotal, boolean shadowing) {
@@ -125,11 +126,11 @@ public enum PackageStyle {
 
 		final UShape small = new URectangle(10, 5);
 
-		ug.drawOldWay(form);
+		ug.draw(form);
 
 		// UML 1 Component Notation
-		ug.drawNewWay(-5, 5, small);
-		ug.drawNewWay(-5, heightTotal - 10, small);
+		ug.apply(new UTranslate(-5, 5)).draw(small);
+		ug.apply(new UTranslate(-5, heightTotal - 10)).draw(small);
 	}
 
 	private void drawComponent2(UGraphic ug, double widthTotal, double heightTotal, boolean shadowing) {
@@ -142,12 +143,12 @@ public enum PackageStyle {
 		final UShape small = new URectangle(15, 10);
 		final UShape tiny = new URectangle(4, 2);
 
-		ug.drawOldWay(form);
+		ug.draw(form);
 
 		// UML 2 Component Notation
-		ug.drawNewWay(widthTotal - 20, 5, small);
-		ug.drawNewWay(widthTotal - 22, 7, tiny);
-		ug.drawNewWay(widthTotal - 22, 11, tiny);
+		ug.apply(new UTranslate(widthTotal - 20, 5)).draw(small);
+		ug.apply(new UTranslate(widthTotal - 22, 7)).draw(tiny);
+		ug.apply(new UTranslate(widthTotal - 22, 11)).draw(tiny);
 	}
 
 	private void drawRect(UGraphic ug, double width, double height, boolean shadowing) {
@@ -155,7 +156,7 @@ public enum PackageStyle {
 		if (shadowing) {
 			shape.setDeltaShadow(3.0);
 		}
-		ug.drawOldWay(shape);
+		ug.draw(shape);
 	}
 
 	private void drawCloud(UGraphic ug, double width, double height, boolean shadowing) {
@@ -163,7 +164,7 @@ public enum PackageStyle {
 		if (shadowing) {
 			shape.setDeltaShadow(3.0);
 		}
-		ug.drawNewWay(3, -3, shape);
+		ug.apply(new UTranslate(3, -3)).draw(shape);
 	}
 
 	private UPath getSpecificFrontierForCloud(double width, double height) {
@@ -198,7 +199,7 @@ public enum PackageStyle {
 			shape.setDeltaShadow(3.0);
 		}
 
-		ug.drawOldWay(shape);
+		ug.draw(shape);
 
 		final double textWidth;
 		final double textHeight;
@@ -220,7 +221,7 @@ public enum PackageStyle {
 		polygon.lineTo(textWidth - cornersize, textHeight);
 
 		polygon.lineTo(0, textHeight);
-		ug.drawOldWay(polygon);
+		ug.draw(polygon);
 
 	}
 
@@ -239,8 +240,8 @@ public enum PackageStyle {
 		if (shadowing) {
 			shape.setDeltaShadow(3.0);
 		}
-		ug.drawOldWay(shape);
-		ug.drawNewWay(0, htitle, new ULine(wtitle + marginTitleX3, 0));
+		ug.draw(shape);
+		ug.apply(new UTranslate(0, htitle)).draw(new ULine(wtitle + marginTitleX3, 0));
 	}
 
 	private void drawDatabase(UGraphic ug, double width, double height, boolean shadowing) {
@@ -256,14 +257,14 @@ public enum PackageStyle {
 		shape.cubicTo(width / 2 + 10, height, 10, height, 0, height - 10);
 		shape.lineTo(0, 10);
 
-		ug.drawOldWay(shape);
+		ug.draw(shape);
 
 		final UPath closing = new UPath();
 		closing.moveTo(0, 10);
 		closing.cubicTo(10, 20, width / 2 - 10, 20, width / 2, 20);
 		closing.cubicTo(width / 2 + 10, 20, width - 10, 20, width, 10);
 
-		ug.drawOldWay(closing);
+		ug.draw(closing);
 
 	}
 
@@ -280,14 +281,14 @@ public enum PackageStyle {
 		if (shadowing) {
 			shape.setDeltaShadow(2);
 		}
-		ug.drawNewWay(xTheoricalPosition, yTheoricalPosition, shape);
+		ug.apply(new UTranslate(xTheoricalPosition, yTheoricalPosition)).draw(shape);
 
-		ug.drawNewWay(xTheoricalPosition + width - 10, yTheoricalPosition + 10, new ULine(9, -9));
+		ug.apply(new UTranslate(xTheoricalPosition + width - 10, yTheoricalPosition + 10)).draw(new ULine(9, -9));
 		final UPath path = new UPath();
 		path.moveTo(0, 0);
 		path.lineTo(width - 10, 0);
 		path.lineTo(width - 10, height - 10);
-		ug.drawNewWay(xTheoricalPosition, yTheoricalPosition + 10, path);
+		ug.apply(new UTranslate(xTheoricalPosition, yTheoricalPosition + 10)).draw(path);
 	}
 
 }

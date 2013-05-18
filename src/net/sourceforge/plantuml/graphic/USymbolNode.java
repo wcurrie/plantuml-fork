@@ -59,14 +59,14 @@ class USymbolNode extends USymbol {
 		if (shadowing) {
 			shape.setDeltaShadow(2);
 		}
-		ug.drawOldWay(shape);
+		ug.draw(shape);
 
-		ug.drawNewWay(width - 10, 10, new ULine(9, -9));
+		ug.apply(new UTranslate(width - 10, 10)).draw(new ULine(9, -9));
 		final UPath path = new UPath();
 		path.moveTo(0, 0);
 		path.lineTo(width - 10, 0);
 		path.lineTo(width - 10, height - 10);
-		ug.drawNewWay(0, 10, path);
+		ug.apply(new UTranslate(0, 10)).draw(path);
 	}
 
 	private Margin getMargin() {
@@ -76,13 +76,13 @@ class USymbolNode extends USymbol {
 	public TextBlock asSmall(final TextBlock label, final TextBlock stereotype, final SymbolContext symbolContext) {
 		return new TextBlock() {
 
-			public void drawUNewWayINLINED(UGraphic ug) {
+			public void drawU(UGraphic ug) {
 				final Dimension2D dim = calculateDimension(ug.getStringBounder());
 				ug = symbolContext.apply(ug);
 				drawNode(ug, dim.getWidth(), dim.getHeight(), symbolContext.isShadowing());
 				final Margin margin = getMargin();
 				final TextBlock tb = TextBlockUtils.mergeTB(stereotype, label, HorizontalAlignement.CENTER);
-				tb.drawUNewWayINLINED(ug.apply(new UTranslate(margin.getX1(), margin.getY1())));
+				tb.drawU(ug.apply(new UTranslate(margin.getX1(), margin.getY1())));
 			}
 
 			public Dimension2D calculateDimension(StringBounder stringBounder) {
@@ -101,16 +101,16 @@ class USymbolNode extends USymbol {
 			final SymbolContext symbolContext) {
 		return new TextBlock() {
 
-			public void drawUNewWayINLINED(UGraphic ug) {
+			public void drawU(UGraphic ug) {
 				final Dimension2D dim = calculateDimension(ug.getStringBounder());
 				ug = symbolContext.apply(ug);
 				drawNode(ug, dim.getWidth(), dim.getHeight(), symbolContext.isShadowing());
-				title.drawUNewWayINLINED(ug.apply(new UTranslate(3, 13)));
+				title.drawU(ug.apply(new UTranslate(3, 13)));
 
 				final Dimension2D dimStereo = stereotype.calculateDimension(ug.getStringBounder());
 				final double posStereo = (width - dimStereo.getWidth()) / 2;
 				final Dimension2D dimTitle = title.calculateDimension(ug.getStringBounder());
-				stereotype.drawUNewWayINLINED(ug.apply(new UTranslate(posStereo, dimTitle.getHeight() + 13)));
+				stereotype.drawU(ug.apply(new UTranslate(posStereo, dimTitle.getHeight() + 13)));
 			}
 
 			public Dimension2D calculateDimension(StringBounder stringBounder) {

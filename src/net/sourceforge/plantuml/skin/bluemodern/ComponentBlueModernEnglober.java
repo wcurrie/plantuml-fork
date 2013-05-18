@@ -68,10 +68,10 @@ public class ComponentBlueModernEnglober extends AbstractTextualComponent {
 		ug = ug.apply(new UChangeColor(borderColor));
 		ug = ug.apply(new UChangeBackColor(backColor));
 		ug.apply(new UStroke(2))
-				.drawOldWay(new URectangle(dimensionToUse.getWidth(), dimensionToUse.getHeight(), 9, 9));
+				.draw(new URectangle(dimensionToUse.getWidth(), dimensionToUse.getHeight(), 9, 9));
 		final double xpos = (dimensionToUse.getWidth() - getPureTextWidth(ug.getStringBounder())) / 2;
 
-		getTextBlock().drawUNewWayINLINED(ug.apply(new UTranslate(xpos, 0)));
+		getTextBlock().drawU(ug.apply(new UTranslate(xpos, 0)));
 	}
 
 	@Override

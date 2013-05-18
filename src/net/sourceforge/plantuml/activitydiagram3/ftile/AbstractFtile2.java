@@ -42,7 +42,7 @@ import net.sourceforge.plantuml.ugraphic.UTranslate;
 
 public abstract class AbstractFtile2 implements Ftile {
 
-	final public LinkRendering getInLinkRendering() {
+	public LinkRendering getInLinkRendering() {
 		return null;
 	}
 

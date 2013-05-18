@@ -31,54 +31,67 @@
  * Revision $Revision: 8475 $
  *
  */
-package net.sourceforge.plantuml.activitydiagram3.ftile.vertical;
+package net.sourceforge.plantuml.activitydiagram3.ftile;
 
 import java.awt.geom.Dimension2D;
-import java.util.Collections;
+import java.awt.geom.Point2D;
 import java.util.List;
 
 import net.sourceforge.plantuml.Dimension2DDouble;
 import net.sourceforge.plantuml.Url;
-import net.sourceforge.plantuml.activitydiagram3.ftile.AbstractFtileOld;
-import net.sourceforge.plantuml.activitydiagram3.ftile.Diamond;
-import net.sourceforge.plantuml.graphic.HtmlColor;
 import net.sourceforge.plantuml.graphic.StringBounder;
 import net.sourceforge.plantuml.graphic.TextBlock;
-import net.sourceforge.plantuml.ugraphic.UChangeBackColor;
-import net.sourceforge.plantuml.ugraphic.UChangeColor;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
-import net.sourceforge.plantuml.ugraphic.UStroke;
+import net.sourceforge.plantuml.ugraphic.UTranslate;
 
-class FtileDiamond extends AbstractFtileOld {
+public class FtileHeightFixed extends AbstractFtile2 {
 
-	private final HtmlColor color;
-	private final HtmlColor backColor;
+	private final Ftile tile;
+	private final double fixedHeight;
 
-	FtileDiamond(HtmlColor color, HtmlColor backColor) {
-		this.color = color;
-		this.backColor = backColor;
+	public FtileHeightFixed(Ftile tile, double fixedHeight) {
+		this.tile = tile;
+		this.fixedHeight = fixedHeight;
+	}
+
+	public Point2D getPointIn(StringBounder stringBounder) {
+		final Point2D p = tile.getPointIn(stringBounder);
+		return getTranslate(stringBounder).getTranslated(p);
+	}
+
+	public Point2D getPointOut(StringBounder stringBounder) {
+		final Point2D p = tile.getPointOut(stringBounder);
+		return getTranslate(stringBounder).getTranslated(p);
+	}
+
+	private UTranslate getTranslate(StringBounder stringBounder) {
+		final Dimension2D dim = tile.asTextBlock().calculateDimension(stringBounder);
+		if (dim.getHeight() > fixedHeight) {
+			throw new IllegalStateException();
+		}
+		return new UTranslate(0, (fixedHeight - dim.getHeight()) / 2);
 	}
 
 	public TextBlock asTextBlock() {
 		return new TextBlock() {
 
-			public void drawUNewWayINLINED(UGraphic ug) {
-				ug.apply(new UChangeColor(color)).apply(new UChangeBackColor(backColor)).apply(new UStroke(1.5))
-						.drawOldWay(Diamond.asPolygon());
+			public void drawU(UGraphic ug) {
+				ug.apply(getTranslate(ug.getStringBounder())).draw(tile);
 			}
 
 			public Dimension2D calculateDimension(StringBounder stringBounder) {
-				return new Dimension2DDouble(2 * Diamond.diamondHalfSize, 2 * Diamond.diamondHalfSize);
+				final Dimension2D dim = tile.asTextBlock().calculateDimension(stringBounder);
+				return new Dimension2DDouble(dim.getWidth(), fixedHeight);
 			}
 
 			public List<Url> getUrls() {
-				return Collections.emptyList();
+				throw new UnsupportedOperationException();
 			}
 		};
 	}
 
 	public boolean isKilled() {
-		return false;
+		return tile.isKilled();
 	}
 
 }

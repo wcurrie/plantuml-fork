@@ -47,6 +47,7 @@ import net.sourceforge.plantuml.ugraphic.UChangeColor;
 import net.sourceforge.plantuml.ugraphic.UEllipse;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
 import net.sourceforge.plantuml.ugraphic.UStroke;
+import net.sourceforge.plantuml.ugraphic.UTranslate;
 
 public class CircleInterface2 implements TextBlock {
 
@@ -66,7 +67,7 @@ public class CircleInterface2 implements TextBlock {
 		this.deltaShadow = deltaShadow;
 	}
 
-	public void drawUNewWayINLINED(UGraphic ug) {
+	public void drawU(UGraphic ug) {
 		double x = 0;
 		double y = 0;
 		x += margin;
@@ -75,7 +76,7 @@ public class CircleInterface2 implements TextBlock {
 				.apply(new UChangeColor(foregroundColor));
 		final UEllipse circle = new UEllipse(radius * 2, radius * 2);
 		circle.setDeltaShadow(deltaShadow);
-		ug.drawNewWay(x, y, circle);
+		ug.apply(new UTranslate(x, y)).draw(circle);
 	}
 
 	public Dimension2D calculateDimension(StringBounder stringBounder) {

@@ -88,7 +88,7 @@ public class ActivityBox implements TextBlock {
 		return label;
 	}
 
-	public void drawUNewWayINLINED(UGraphic ug) {
+	public void drawU(UGraphic ug) {
 		final Dimension2D dimTotal = calculateDimension(ug.getStringBounder());
 		// final Dimension2D dimDesc = tb.calculateDimension(ug.getStringBounder());
 		
@@ -97,9 +97,9 @@ public class ActivityBox implements TextBlock {
 		final Shadowable rect = new URectangle(widthTotal, heightTotal, CORNER, CORNER);
 		ug = ug.apply(new UChangeColor(HtmlColorUtils.getColorIfValid("#A80036")));
 		ug = ug.apply(new UChangeBackColor(HtmlColorUtils.getColorIfValid("#FEFECE")));
-		ug.apply(new UStroke(1.5)).drawOldWay(rect);
+		ug.apply(new UStroke(1.5)).draw(rect);
 		
-		tb.drawUNewWayINLINED(ug.apply(new UTranslate(MARGIN, MARGIN)));
+		tb.drawU(ug.apply(new UTranslate(MARGIN, MARGIN)));
 	}
 
 	public Dimension2D calculateDimension(StringBounder stringBounder) {

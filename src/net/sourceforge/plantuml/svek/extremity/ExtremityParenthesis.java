@@ -38,6 +38,7 @@ import java.awt.geom.Point2D;
 import net.sourceforge.plantuml.ugraphic.UEllipse;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
 import net.sourceforge.plantuml.ugraphic.UStroke;
+import net.sourceforge.plantuml.ugraphic.UTranslate;
 
 class ExtremityParenthesis extends Extremity {
 
@@ -52,10 +53,10 @@ class ExtremityParenthesis extends Extremity {
 		this.ortho = ortho;
 	}
 
-	public void drawUNewWayINLINED(UGraphic ug) {
+	public void drawU(UGraphic ug) {
 		final double deg = -ortho * 180 / Math.PI + 90 - ang;
 		final UEllipse arc1 = new UEllipse(2 * radius2, 2 * radius2, deg, 2 * ang);
-		ug.apply(new UStroke(1.5)).drawNewWay(dest.getX() - radius2, dest.getY() - radius2, arc1);
+		ug.apply(new UStroke(1.5)).apply(new UTranslate(dest.getX() - radius2, dest.getY() - radius2)).draw(arc1);
 	}
 
 }

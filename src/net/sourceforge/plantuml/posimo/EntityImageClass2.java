@@ -190,7 +190,7 @@ public class EntityImageClass2 extends AbstractEntityImage2 {
 
 		double x = xTheoricalPosition;
 		double y = yTheoricalPosition;
-		ug.drawNewWay(x, y, rect);
+		ug.apply(new UTranslate(x, y)).draw(rect);
 
 		final ULayoutGroup header;
 		if (circledCharacter == null) {
@@ -209,13 +209,13 @@ public class EntityImageClass2 extends AbstractEntityImage2 {
 
 		x = xTheoricalPosition;
 		ug = ug.apply(new UChangeColor(getColor(ColorParam.classBorder)));
-		ug.drawNewWay(x, y, new ULine(widthTotal, 0));
-		fields.drawUNewWayINLINED(ug.apply(new UTranslate((x + xMarginFieldsOrMethod), y)));
+		ug.apply(new UTranslate(x, y)).draw(new ULine(widthTotal, 0));
+		fields.drawU(ug.apply(new UTranslate((x + xMarginFieldsOrMethod), y)));
 
 		y += getMethodOrFieldHeight(fields.calculateDimension(stringBounder));
 		ug = ug.apply(new UChangeColor(getColor(ColorParam.classBorder)));
-		ug.drawNewWay(x, y, new ULine(widthTotal, 0));
+		ug.apply(new UTranslate(x, y)).draw(new ULine(widthTotal, 0));
 
-		methods.drawUNewWayINLINED(ug.apply(new UTranslate((x + xMarginFieldsOrMethod), y)));
+		methods.drawU(ug.apply(new UTranslate((x + xMarginFieldsOrMethod), y)));
 	}
 }

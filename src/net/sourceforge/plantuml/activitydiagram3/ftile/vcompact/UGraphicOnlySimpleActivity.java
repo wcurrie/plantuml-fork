@@ -27,51 +27,67 @@
  * in the United States and other countries.]
  *
  * Original Author:  Arnaud Roques
- *
- * Revision $Revision: 8475 $
+ * 
+ * Revision $Revision: 10266 $
  *
  */
 package net.sourceforge.plantuml.activitydiagram3.ftile.vcompact;
 
-import java.awt.geom.Point2D;
+import java.io.IOException;
+import java.io.OutputStream;
 
-import net.sourceforge.plantuml.activitydiagram3.ftile.Arrows;
-import net.sourceforge.plantuml.activitydiagram3.ftile.Connection;
-import net.sourceforge.plantuml.activitydiagram3.ftile.Snake;
-import net.sourceforge.plantuml.graphic.HtmlColor;
-import net.sourceforge.plantuml.ugraphic.UChangeBackColor;
-import net.sourceforge.plantuml.ugraphic.UChangeColor;
+import net.sourceforge.plantuml.Url;
+import net.sourceforge.plantuml.activitydiagram3.ftile.vertical.FtileBox;
+import net.sourceforge.plantuml.graphic.StringBounder;
+import net.sourceforge.plantuml.ugraphic.ColorMapper;
+import net.sourceforge.plantuml.ugraphic.UChange;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
-import net.sourceforge.plantuml.ugraphic.UStroke;
-import net.sourceforge.plantuml.ugraphic.UTranslate;
+import net.sourceforge.plantuml.ugraphic.UParam;
+import net.sourceforge.plantuml.ugraphic.UShape;
 
-class ConnectionHorizontalThenVertical implements Connection {
+public class UGraphicOnlySimpleActivity implements UGraphic {
 
-	private final Point2D p1;
-	private final Point2D p2;
-	private final HtmlColor color;
+	final private UGraphic ug;
 
-	public ConnectionHorizontalThenVertical(Point2D p1, Point2D p2, HtmlColor color) {
-		this.p1 = p1;
-		this.p2 = p2;
-		this.color = color;
+	public UGraphicOnlySimpleActivity(UGraphic ug) {
+		this.ug = ug;
 	}
 
-	public void drawU(UGraphic ug) {
+	public StringBounder getStringBounder() {
+		return ug.getStringBounder();
+	}
 
-		final double x1 = p1.getX();
-		final double y1 = p1.getY();
-		final double x2 = p2.getX();
-		final double y2 = p2.getY();
+	public UParam getParam() {
+		return ug.getParam();
+	}
 
-		final Snake snake = new Snake();
-		snake.addPoint(x1, y1);
-		snake.addPoint(x2, y1);
-		snake.addPoint(x2, y2);
+	public void draw(UShape shape) {
+		if (shape instanceof FtileBox) {
+			ug.draw(shape);
+		} else {
+			System.err.println("Filtering " + shape);
+		}
 
-		ug = ug.apply(new UStroke(1.5)).apply(new UChangeColor(color)).apply(new UChangeBackColor(color));
-		snake.drawU(ug);
-		ug.apply(new UTranslate(x2, y2)).drawOldWay(Arrows.asToDown());
+	}
+
+	public UGraphic apply(UChange change) {
+		return new UGraphicOnlySimpleActivity(ug.apply(change));
+	}
+
+	public ColorMapper getColorMapper() {
+		return ug.getColorMapper();
+	}
+
+	public void startUrl(Url url) {
+		ug.startUrl(url);
+	}
+
+	public void closeAction() {
+		ug.closeAction();
+	}
+
+	public void writeImage(OutputStream os, String metadata, int dpi) throws IOException {
+		ug.writeImage(os, metadata, dpi);
 	}
 
 }

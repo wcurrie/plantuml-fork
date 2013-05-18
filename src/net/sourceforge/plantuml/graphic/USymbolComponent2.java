@@ -56,12 +56,12 @@ class USymbolComponent2 extends USymbol {
 		final UShape small = new URectangle(15, 10);
 		final UShape tiny = new URectangle(4, 2);
 
-		ug.drawOldWay(form);
+		ug.draw(form);
 
 		// UML 2 Component Notation
-		ug.drawNewWay(widthTotal - 20, 5, small);
-		ug.drawNewWay(widthTotal - 22, 7, tiny);
-		ug.drawNewWay(widthTotal - 22, 11, tiny);
+		ug.apply(new UTranslate(widthTotal - 20, 5)).draw(small);
+		ug.apply(new UTranslate(widthTotal - 22, 7)).draw(tiny);
+		ug.apply(new UTranslate(widthTotal - 22, 11)).draw(tiny);
 
 	}
 
@@ -72,12 +72,12 @@ class USymbolComponent2 extends USymbol {
 	public TextBlock asSmall(final TextBlock label, TextBlock stereotype, final SymbolContext symbolContext) {
 		return new TextBlock() {
 
-			public void drawUNewWayINLINED(UGraphic ug) {
+			public void drawU(UGraphic ug) {
 				final Dimension2D dim = calculateDimension(ug.getStringBounder());
 				ug = symbolContext.apply(ug);
 				drawNode(ug, dim.getWidth(), dim.getHeight(), symbolContext.isShadowing());
 				final Margin margin = getMargin();
-				label.drawUNewWayINLINED(ug.apply(new UTranslate(margin.getX1(), margin.getY1())));
+				label.drawU(ug.apply(new UTranslate(margin.getX1(), margin.getY1())));
 			}
 
 			public Dimension2D calculateDimension(StringBounder stringBounder) {
@@ -95,11 +95,11 @@ class USymbolComponent2 extends USymbol {
 			final SymbolContext symbolContext) {
 		return new TextBlock() {
 
-			public void drawUNewWayINLINED(UGraphic ug) {
+			public void drawU(UGraphic ug) {
 				final Dimension2D dim = calculateDimension(ug.getStringBounder());
 				ug = symbolContext.apply(ug);
 				drawNode(ug, dim.getWidth(), dim.getHeight(), symbolContext.isShadowing());
-				title.drawUNewWayINLINED(ug.apply(new UTranslate(3, 13)));
+				title.drawU(ug.apply(new UTranslate(3, 13)));
 			}
 
 			public Dimension2D calculateDimension(StringBounder stringBounder) {

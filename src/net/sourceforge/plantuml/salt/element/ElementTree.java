@@ -47,6 +47,7 @@ import net.sourceforge.plantuml.ugraphic.UFont;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
 import net.sourceforge.plantuml.ugraphic.ULine;
 import net.sourceforge.plantuml.ugraphic.URectangle;
+import net.sourceforge.plantuml.ugraphic.UTranslate;
 
 public class ElementTree implements Element {
 
@@ -112,7 +113,7 @@ public class ElementTree implements Element {
 			}
 
 			public void drawRectangle(UGraphic ug) {
-				ug.drawNewWay(xpos, ypos, new URectangle(2, 2));
+				ug.apply(new UTranslate(xpos, ypos)).draw(new URectangle(2, 2));
 			}
 		}
 
@@ -141,10 +142,10 @@ public class ElementTree implements Element {
 
 		private void drawChild(UGraphic ug, Entry parent, Entry child) {
 			final double dy = child.ypos - parent.ypos - 2;
-			ug.drawNewWay(parent.xpos + 1, parent.ypos + 3, new ULine(0, dy));
+			ug.apply(new UTranslate(parent.xpos + 1, parent.ypos + 3)).draw(new ULine(0, dy));
 
 			final double dx = child.xpos - parent.xpos - 2;
-			ug.drawNewWay(parent.xpos + 1, child.ypos + 1, new ULine(dx, 0));
+			ug.apply(new UTranslate(parent.xpos + 1, child.ypos + 1)).draw(new ULine(dx, 0));
 
 		}
 

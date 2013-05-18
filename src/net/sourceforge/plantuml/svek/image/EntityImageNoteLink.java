@@ -68,7 +68,7 @@ public class EntityImageNoteLink implements IEntityImage {
 		return new Dimension2DDouble(width, height);
 	}
 
-	public void drawUNewWayINLINED(UGraphic ug) {
+	public void drawU(UGraphic ug) {
 		comp.drawU(ug, new Area(calculateDimension(ug.getStringBounder())), new SimpleContext2D(false));
 	}
 

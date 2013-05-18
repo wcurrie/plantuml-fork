@@ -39,6 +39,7 @@ import net.sourceforge.plantuml.ugraphic.UChangeColor;
 import net.sourceforge.plantuml.ugraphic.UEllipse;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
 import net.sourceforge.plantuml.ugraphic.UStroke;
+import net.sourceforge.plantuml.ugraphic.UTranslate;
 
 class MiddleCircleCircled extends Extremity {
 
@@ -55,10 +56,10 @@ class MiddleCircleCircled extends Extremity {
 		this.mode = mode;
 	}
 
-	public void drawUNewWayINLINED(UGraphic ug) {
+	public void drawU(UGraphic ug) {
 		ug = ug.apply(new UChangeBackColor(HtmlColorUtils.WHITE));
 		if (mode == MiddleCircleCircledMode.BOTH) {
-			ug.apply(new UChangeColor(HtmlColorUtils.WHITE)).drawNewWay(-radius2, -radius2, bigcircle);
+			ug.apply(new UChangeColor(HtmlColorUtils.WHITE)).apply(new UTranslate(-radius2, -radius2)).draw(bigcircle);
 		}
 
 		ug = ug.apply(new UStroke(1.5));
@@ -66,13 +67,13 @@ class MiddleCircleCircled extends Extremity {
 		final double d = 0;
 		if (mode == MiddleCircleCircledMode.MODE1 || mode == MiddleCircleCircledMode.BOTH) {
 			final UEllipse arc1 = new UEllipse(2 * radius2, 2 * radius2, angle, 90);
-			ug.drawNewWay(-radius2 + d, -radius2 + d, arc1);
+			ug.apply(new UTranslate(-radius2 + d, -radius2 + d)).draw(arc1);
 		}
 		if (mode == MiddleCircleCircledMode.MODE2 || mode == MiddleCircleCircledMode.BOTH) {
 			final UEllipse arc2 = new UEllipse(2 * radius2, 2 * radius2, angle + 180, 90);
-			ug.drawNewWay(-radius2 + d, -radius2 + d, arc2);
+			ug.apply(new UTranslate(-radius2 + d, -radius2 + d)).draw(arc2);
 		}
-		ug.drawNewWay(-radius1, -radius1, circle);
+		ug.apply(new UTranslate(-radius1, -radius1)).draw(circle);
 	}
 
 }

@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 10204 $
+ * Revision $Revision: 10925 $
  *
  */
 package net.sourceforge.plantuml.skin.bluemodern;
@@ -43,6 +43,7 @@ import net.sourceforge.plantuml.ugraphic.UChangeBackColor;
 import net.sourceforge.plantuml.ugraphic.UChangeColor;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
 import net.sourceforge.plantuml.ugraphic.URectangle;
+import net.sourceforge.plantuml.ugraphic.UTranslate;
 
 public class ComponentBlueModernLine extends AbstractComponent {
 
@@ -57,8 +58,7 @@ public class ComponentBlueModernLine extends AbstractComponent {
 		final Dimension2D dimensionToUse = area.getDimensionToUse();
 		final int x = (int) (dimensionToUse.getWidth() / 2);
 		final StringBounder stringBounder = ug.getStringBounder();
-		ug.apply(new UChangeColor(color)).apply(new UChangeBackColor(color))
-				.drawNewWay(x, 0, new URectangle(getPreferredWidth(stringBounder), dimensionToUse.getHeight()));
+		ug.apply(new UChangeColor(color)).apply(new UChangeBackColor(color)).apply(new UTranslate(x, 0)).draw(new URectangle(getPreferredWidth(stringBounder), dimensionToUse.getHeight()));
 	}
 
 	@Override

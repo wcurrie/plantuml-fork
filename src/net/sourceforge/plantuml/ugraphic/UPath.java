@@ -40,9 +40,13 @@ import java.util.List;
 public class UPath extends AbstractShadowable implements Iterable<USegment> {
 
 	private final List<USegment> segments = new ArrayList<USegment>();
+	private final MinMax minmax = new MinMax(false);
 
 	public void add(double[] coord, USegmentType pathType) {
 		segments.add(new USegment(coord, pathType));
+		for (int i = 0; i < coord.length; i += 2) {
+			minmax.addPoint(coord[i], coord[i + 1]);
+		}
 	}
 
 	public void moveTo(double x, double y) {
@@ -55,6 +59,22 @@ public class UPath extends AbstractShadowable implements Iterable<USegment> {
 
 	public void cubicTo(double ctrlx1, double ctrly1, double ctrlx2, double ctrly2, double x2, double y2) {
 		add(new double[] { ctrlx1, ctrly1, ctrlx2, ctrly2, x2, y2 }, USegmentType.SEG_CUBICTO);
+	}
+
+	public double getMaxX() {
+		return minmax.getMaxX();
+	}
+
+	public double getMaxY() {
+		return minmax.getMaxY();
+	}
+
+	public double getMinX() {
+		return minmax.getMinX();
+	}
+
+	public double getMinY() {
+		return minmax.getMinY();
 	}
 
 	@Override

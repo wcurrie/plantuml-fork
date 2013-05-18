@@ -72,7 +72,7 @@ public class TimeHeaderDay implements TextBlock {
 		this.dayWidth = dayWidth;
 	}
 
-	public void drawUNewWayINLINED(UGraphic ug) {
+	public void drawU(UGraphic ug) {
 		int n = 0;
 		for (Day d = start; d.compareTo(end) <= 0; d = (Day) timeline.next(d)) {
 			final String text = "" + d.getNumDay();
@@ -83,8 +83,8 @@ public class TimeHeaderDay implements TextBlock {
 			final double diffY = getHeight() - dimText.getHeight();
 			ug = ug.apply(new UChangeColor(HtmlColorUtils.BLACK));
 			ug = ug.apply(new UChangeBackColor(HtmlColorUtils.WHITE));
-			ug.drawNewWay(n * dayWidth, 0, new URectangle(dayWidth, getHeight()));
-			b.drawUNewWayINLINED(ug.apply(new UTranslate((n * dayWidth + diffX / 2), (diffY / 2))));
+			ug.apply(new UTranslate(n * dayWidth, 0)).draw(new URectangle(dayWidth, getHeight()));
+			b.drawU(ug.apply(new UTranslate((n * dayWidth + diffX / 2), (diffY / 2))));
 			n++;
 		}
 	}

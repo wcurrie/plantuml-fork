@@ -62,12 +62,12 @@ public class FtileCircleStart extends AbstractFtile2 {
 	public TextBlock asTextBlock() {
 		return new TextBlock() {
 
-			public void drawUNewWayINLINED(UGraphic ug) {
+			public void drawU(UGraphic ug) {
 				final UEllipse circle = new UEllipse(SIZE, SIZE);
 				if (SHADOWING) {
 					circle.setDeltaShadow(3);
 				}
-				ug.apply(new UChangeColor(null)).apply(new UChangeBackColor(backColor)).drawOldWay(circle);
+				ug.apply(new UChangeColor(null)).apply(new UChangeBackColor(backColor)).draw(circle);
 			}
 
 			public Dimension2D calculateDimension(StringBounder stringBounder) {

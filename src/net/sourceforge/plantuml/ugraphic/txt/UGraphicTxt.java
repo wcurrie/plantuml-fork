@@ -71,7 +71,7 @@ public class UGraphicTxt extends AbstractCommonUGraphic {
 		return new TextStringBounder();
 	}
 
-	public void drawOldWay(UShape shape) {
+	public void draw(UShape shape) {
 		if (shape instanceof UText) {
 			final UText txt = (UText) shape;
 			final int y = getDy() / 10 - 1;

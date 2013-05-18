@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 10205 $
+ * Revision $Revision: 10925 $
  *
  */
 package net.sourceforge.plantuml.skin.rose;
@@ -43,6 +43,7 @@ import net.sourceforge.plantuml.ugraphic.UChangeColor;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
 import net.sourceforge.plantuml.ugraphic.ULine;
 import net.sourceforge.plantuml.ugraphic.UStroke;
+import net.sourceforge.plantuml.ugraphic.UTranslate;
 
 public class ComponentRoseLine extends AbstractComponent {
 
@@ -66,7 +67,7 @@ public class ComponentRoseLine extends AbstractComponent {
 			ug = stroke(ug, 5, 5, stroke.getThickness());
 		}
 		final int x = (int) (dimensionToUse.getWidth() / 2);
-		ug.drawNewWay(x, 0, new ULine(0, dimensionToUse.getHeight()));
+		ug.apply(new UTranslate(x, 0)).draw(new ULine(0, dimensionToUse.getHeight()));
 	}
 
 	@Override

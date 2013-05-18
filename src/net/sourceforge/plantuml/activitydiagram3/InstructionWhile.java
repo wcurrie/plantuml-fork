@@ -63,8 +63,8 @@ public class InstructionWhile implements Instruction {
 
 	public Ftile createFtile(FtileFactory factory) {
 		Ftile tmp = factory.decorateOut(repeatList.createFtile(factory), endInlinkRendering);
-		tmp = factory.createWhile(tmp, test, yes, out);
-		tmp = factory.decorateOut(tmp, afterEndwhile);
+		tmp = factory.createWhile(tmp, test, yes, out, afterEndwhile);
+		// tmp = factory.decorateOut(tmp, afterEndwhile);
 		return tmp;
 	}
 

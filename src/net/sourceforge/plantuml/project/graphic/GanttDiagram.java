@@ -51,6 +51,7 @@ import net.sourceforge.plantuml.ugraphic.ULine;
 import net.sourceforge.plantuml.ugraphic.UPolygon;
 import net.sourceforge.plantuml.ugraphic.URectangle;
 import net.sourceforge.plantuml.ugraphic.UShape;
+import net.sourceforge.plantuml.ugraphic.UTranslate;
 
 public class GanttDiagram {
 
@@ -95,7 +96,7 @@ public class GanttDiagram {
 			}
 			ug = ug.apply(new UChangeColor(HtmlColorUtils.GREEN));
 			ug = ug.apply(new UChangeBackColor(HtmlColorUtils.GRAY));
-			ug.drawNewWay(x0start + x1, yitem, rect);
+			ug.apply(new UTranslate(x0start + x1, yitem)).draw(rect);
 
 		}
 
@@ -120,7 +121,7 @@ public class GanttDiagram {
 			} else {
 				ug = ug.apply(new UChangeColor(HtmlColorUtils.BLACK));
 			}
-			ug.drawNewWay(x + xcur, y, line);
+			ug.apply(new UTranslate(x + xcur, y)).draw(line);
 			last = ent.getKey();
 		}
 	}

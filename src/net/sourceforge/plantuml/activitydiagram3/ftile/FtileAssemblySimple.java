@@ -78,12 +78,14 @@ public class FtileAssemblySimple implements Ftile {
 	public TextBlock asTextBlock() {
 		return new TextBlock() {
 
-			public void drawUNewWayINLINED(UGraphic ug) {
+			public void drawU(UGraphic ug) {
 				final StringBounder stringBounder = ug.getStringBounder();
-				final TextBlock textBlock1 = tile1.asTextBlock();
-				final TextBlock textBlock2 = tile2.asTextBlock();
-				textBlock1.drawUNewWayINLINED(ug.apply(getTranslated1(stringBounder)));
-				textBlock2.drawUNewWayINLINED(ug.apply(getTranslated2(stringBounder)));
+				// final TextBlock textBlock1 = tile1.asTextBlock();
+				// final TextBlock textBlock2 = tile2.asTextBlock();
+				// textBlock1.drawUNewWayINLINED(ug.apply(getTranslated1(stringBounder)));
+				// textBlock2.drawUNewWayINLINED(ug.apply(getTranslated2(stringBounder)));
+				ug.apply(getTranslated1(stringBounder)).draw(tile1);
+				ug.apply(getTranslated2(stringBounder)).draw(tile2);
 			}
 
 			public Dimension2D calculateDimension(StringBounder stringBounder) {
@@ -120,6 +122,9 @@ public class FtileAssemblySimple implements Ftile {
 	public Point2D getPointOut(StringBounder stringBounder) {
 		final UTranslate dx2 = getTranslated2(stringBounder);
 		final Point2D pt = tile2.getPointOut(stringBounder);
+		if (pt == null) {
+			return null;
+		}
 		return dx2.getTranslated(pt);
 	}
 

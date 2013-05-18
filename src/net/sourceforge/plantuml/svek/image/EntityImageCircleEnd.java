@@ -48,6 +48,7 @@ import net.sourceforge.plantuml.ugraphic.UChangeColor;
 import net.sourceforge.plantuml.ugraphic.UEllipse;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
 import net.sourceforge.plantuml.ugraphic.UShape;
+import net.sourceforge.plantuml.ugraphic.UTranslate;
 
 public class EntityImageCircleEnd extends AbstractEntityImage {
 
@@ -61,19 +62,19 @@ public class EntityImageCircleEnd extends AbstractEntityImage {
 		return new Dimension2DDouble(SIZE, SIZE);
 	}
 
-	final public void drawUNewWayINLINED(UGraphic ug) {
+	final public void drawU(UGraphic ug) {
 		final UEllipse circle = new UEllipse(SIZE, SIZE);
 		if (getSkinParam().shadowing()) {
 			circle.setDeltaShadow(3);
 		}
 		ug.apply(new UChangeBackColor(null))
 				.apply(new UChangeColor(SkinParamUtils.getColor(getSkinParam(), ColorParam.activityEnd, getStereo())))
-				.drawOldWay(circle);
+				.draw(circle);
 
 		final double delta = 4;
 		final UShape circleSmall = new UEllipse(SIZE - delta * 2, SIZE - delta * 2);
 		ug.apply(new UChangeBackColor(SkinParamUtils.getColor(getSkinParam(), ColorParam.activityEnd, getStereo())))
-				.apply(new UChangeColor(null)).drawNewWay(delta + 0.5, delta + 0.5, circleSmall);
+		.apply(new UChangeColor(null)).apply(new UTranslate(delta + 0.5, delta + 0.5)).draw(circleSmall);
 	}
 
 	public ShapeType getShapeType() {

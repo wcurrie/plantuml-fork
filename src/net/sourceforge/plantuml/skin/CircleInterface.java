@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 10266 $
+ * Revision $Revision: 10930 $
  *
  */
 package net.sourceforge.plantuml.skin;
@@ -41,6 +41,7 @@ import net.sourceforge.plantuml.ugraphic.UChangeColor;
 import net.sourceforge.plantuml.ugraphic.UEllipse;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
 import net.sourceforge.plantuml.ugraphic.UStroke;
+import net.sourceforge.plantuml.ugraphic.UTranslate;
 
 public class CircleInterface implements UDrawable {
 
@@ -60,11 +61,11 @@ public class CircleInterface implements UDrawable {
 		this.thickness = thickness;
 	}
 
-	public void drawUNewWayINLINED(UGraphic ug) {
+	public void drawU(UGraphic ug) {
 		final UEllipse head = new UEllipse(headDiam, headDiam);
 		
 		ug.apply(new UStroke(thickness)).apply(new UChangeBackColor(backgroundColor))
-				.apply(new UChangeColor(foregroundColor)).drawNewWay(thickness, thickness, head);
+		.apply(new UChangeColor(foregroundColor)).apply(new UTranslate((double) thickness, (double) thickness)).draw(head);
 	}
 
 	public double getPreferredWidth(StringBounder stringBounder) {

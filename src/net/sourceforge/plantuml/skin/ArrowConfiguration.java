@@ -61,7 +61,7 @@ public class ArrowConfiguration {
 	}
 
 	public String name() {
-		return body.name() + "-" + dressing1.name() + "-" + dressing2.name();
+		return body.name() + "-" + dressing1.name() + "-" + dressing2.name() + " " + color;
 	}
 
 	public static ArrowConfiguration withDirectionNormal() {
@@ -101,7 +101,7 @@ public class ArrowConfiguration {
 		}
 		return new ArrowConfiguration(body, dressing1.withHead(head), dressing2, color);
 	}
-	
+
 	public ArrowConfiguration withHead1(ArrowHead head) {
 		return new ArrowConfiguration(body, dressing1.withHead(head), dressing2, color);
 	}

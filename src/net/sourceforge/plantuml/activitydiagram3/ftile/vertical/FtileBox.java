@@ -40,6 +40,7 @@ import java.util.List;
 import net.sourceforge.plantuml.Dimension2DDouble;
 import net.sourceforge.plantuml.SpriteContainerEmpty;
 import net.sourceforge.plantuml.Url;
+import net.sourceforge.plantuml.activitydiagram3.LinkRendering;
 import net.sourceforge.plantuml.activitydiagram3.ftile.AbstractFtile2;
 import net.sourceforge.plantuml.cucadiagram.Display;
 import net.sourceforge.plantuml.graphic.FontConfiguration;
@@ -67,10 +68,16 @@ public class FtileBox extends AbstractFtile2 {
 
 	private final HtmlColor color;
 	private final HtmlColor backColor;
+	private final LinkRendering inRenreding;
 
-	public FtileBox(Display label, HtmlColor color, HtmlColor backColor, UFont font) {
+	final public LinkRendering getInLinkRendering() {
+		return inRenreding;
+	}
+
+	public FtileBox(Display label, HtmlColor color, HtmlColor backColor, UFont font, HtmlColor arrowColor) {
 		this.color = color;
 		this.backColor = backColor;
+		this.inRenreding = new LinkRendering(arrowColor);
 		final FontConfiguration fc = new FontConfiguration(font, HtmlColorUtils.BLACK);
 		tb = TextBlockUtils.create(label, fc, HorizontalAlignement.LEFT, new SpriteContainerEmpty());
 	}
@@ -78,7 +85,7 @@ public class FtileBox extends AbstractFtile2 {
 	public TextBlock asTextBlock() {
 		return new TextBlock() {
 
-			public void drawUNewWayINLINED(UGraphic ug) {
+			public void drawU(UGraphic ug) {
 				final Dimension2D dimTotal = calculateDimension(ug.getStringBounder());
 				// final Dimension2D dimDesc =
 				// tb.calculateDimension(ug.getStringBounder());
@@ -90,9 +97,9 @@ public class FtileBox extends AbstractFtile2 {
 					rect.setDeltaShadow(3);
 				}
 				ug.apply(new UChangeColor(color)).apply(new UChangeBackColor(backColor)).apply(new UStroke(1.5))
-						.drawOldWay(rect);
+						.draw(rect);
 
-				tb.drawUNewWayINLINED(ug.apply(new UTranslate(MARGIN, MARGIN)));
+				tb.drawU(ug.apply(new UTranslate(MARGIN, MARGIN)));
 			}
 
 			public Dimension2D calculateDimension(StringBounder stringBounder) {

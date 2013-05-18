@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 10577 $
+ * Revision $Revision: 10930 $
  *
  */
 package net.sourceforge.plantuml.skin.rose;
@@ -56,7 +56,7 @@ public class ComponentRoseTitle extends AbstractTextualComponent {
 	@Override
 	protected void drawInternalU(UGraphic ug, Area area) {
 		final TextBlock textBlock = getTextBlock();
-		textBlock.drawUNewWayINLINED(ug.apply(new UTranslate(outMargin + getMarginX1(), getMarginY())));
+		textBlock.drawU(ug.apply(new UTranslate(outMargin + getMarginX1(), getMarginY())));
 	}
 
 	@Override

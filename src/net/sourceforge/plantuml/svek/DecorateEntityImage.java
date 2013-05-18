@@ -70,7 +70,7 @@ public class DecorateEntityImage implements IEntityImage {
 		this.text2 = text2;
 	}
 
-	public void drawUNewWayINLINED(UGraphic ug) {
+	public void drawU(UGraphic ug) {
 		final StringBounder stringBounder = ug.getStringBounder();
 		final Dimension2D dimOriginal = original.calculateDimension(stringBounder);
 		final Dimension2D dimText1 = getTextDim(text1, stringBounder);
@@ -84,14 +84,14 @@ public class DecorateEntityImage implements IEntityImage {
 
 		if (text1 != null) {
 			final double xText1 = getTextX(dimText1, dimTotal, horizontal1);
-			text1.drawUNewWayINLINED(ug.apply(new UTranslate(xText1, 0)));
+			text1.drawU(ug.apply(new UTranslate(xText1, 0)));
 		}
-		original.drawUNewWayINLINED(ug.apply(new UTranslate(xImage, yImage)));
+		original.drawU(ug.apply(new UTranslate(xImage, yImage)));
 		deltaX = xImage;
 		deltaY = yImage;
 		if (text2 != null) {
 			final double xText2 = getTextX(dimText2, dimTotal, horizontal2);
-			text2.drawUNewWayINLINED(ug.apply(new UTranslate(xText2, yText2)));
+			text2.drawU(ug.apply(new UTranslate(xText2, yText2)));
 		}
 	}
 

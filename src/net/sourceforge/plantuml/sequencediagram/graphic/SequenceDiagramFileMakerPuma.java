@@ -337,7 +337,7 @@ public class SequenceDiagramFileMakerPuma implements FileMaker {
 		if (text == null) {
 			return;
 		}
-		text.drawUNewWayINLINED(ug.apply(new UTranslate(area.getFooterX(diagram.getFooterAlignement()), area.getFooterY())));
+		text.drawU(ug.apply(new UTranslate(area.getFooterX(diagram.getFooterAlignement()), area.getFooterY())));
 	}
 
 	private void addHeader3(SequenceDiagramArea area, UGraphic ug) {
@@ -350,7 +350,7 @@ public class SequenceDiagramFileMakerPuma implements FileMaker {
 		if (text == null) {
 			return;
 		}
-		text.drawUNewWayINLINED(ug.apply(new UTranslate(area.getHeaderX(diagram.getHeaderAlignement()), area.getHeaderY())));
+		text.drawU(ug.apply(new UTranslate(area.getHeaderX(diagram.getHeaderAlignement()), area.getHeaderY())));
 	}
 
 	public static StringBounder getDummystringbounder() {

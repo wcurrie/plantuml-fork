@@ -79,7 +79,7 @@ public class Tile implements TextBlock {
 		return this.geometries.get(geometry);
 	}
 
-	public void drawUNewWayINLINED(UGraphic ug) {
+	public void drawU(UGraphic ug) {
 		ug = ug.apply(new UChangeColor(HtmlColorUtils.BLACK));
 		final TextBlock n = TextBlockUtils.create(Display.asList("" + num), fc, HorizontalAlignement.LEFT,
 				new SpriteContainerEmpty());
@@ -90,9 +90,9 @@ public class Tile implements TextBlock {
 		final double radius = Math.max(dimNum.getWidth(), dimNum.getHeight());
 		final double diffx2 = dimTotal.getWidth() - radius;
 		final double diffy2 = dimTotal.getHeight() - radius;
-		n.drawUNewWayINLINED(ug.apply(new UTranslate((diffx / 2), (diffy / 2))));
-		ug.drawOldWay(new URectangle(SIZE, SIZE));
-		ug.drawNewWay(diffx2 / 2, diffy2 / 2, new UEllipse(radius, radius));
+		n.drawU(ug.apply(new UTranslate((diffx / 2), (diffy / 2))));
+		ug.draw(new URectangle(SIZE, SIZE));
+		ug.apply(new UTranslate(diffx2 / 2, diffy2 / 2)).draw(new UEllipse(radius, radius));
 	}
 
 	public Dimension2D calculateDimension(StringBounder stringBounder) {

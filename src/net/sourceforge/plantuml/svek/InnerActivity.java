@@ -63,7 +63,7 @@ public final class InnerActivity implements IEntityImage {
 
 	public final static double THICKNESS_BORDER = 1.5;
 
-	public void drawUNewWayINLINED(UGraphic ug) {
+	public void drawU(UGraphic ug) {
 		final Dimension2D total = calculateDimension(ug.getStringBounder());
 
 		ug = ug.apply(new UChangeBackColor(backColor)).apply(new UChangeColor(borderColor))
@@ -73,9 +73,9 @@ public final class InnerActivity implements IEntityImage {
 		if (shadowing) {
 			rect.setDeltaShadow(4);
 		}
-		ug.drawOldWay(rect);
+		ug.draw(rect);
 		ug = ug.apply(new UStroke());
-		im.drawUNewWayINLINED(ug);
+		im.drawU(ug);
 	}
 
 	public HtmlColor getBackcolor() {

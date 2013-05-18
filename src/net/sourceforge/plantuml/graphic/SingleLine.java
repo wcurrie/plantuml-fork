@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 10571 $
+ * Revision $Revision: 10930 $
  *
  */
 package net.sourceforge.plantuml.graphic;
@@ -119,17 +119,17 @@ class SingleLine implements Line {
 		return result;
 	}
 
-	public void drawUNewWayINLINED(UGraphic ug) {
+	public void drawU(UGraphic ug) {
 		final double deltaY = maxDeltaY(ug);
 		final StringBounder stringBounder = ug.getStringBounder();
 		final Dimension2D dim = calculateDimension(stringBounder);
 		double x = 0;
 		for (TextBlock b : blocs) {
 			if (b instanceof TileText) {
-				b.drawUNewWayINLINED(ug.apply(new UTranslate(x, deltaY)));
+				b.drawU(ug.apply(new UTranslate(x, deltaY)));
 			} else {
 				final double dy = dim.getHeight() - b.calculateDimension(stringBounder).getHeight();
-				b.drawUNewWayINLINED(ug.apply(new UTranslate(x, dy)));
+				b.drawU(ug.apply(new UTranslate(x, dy)));
 			}
 			x += b.calculateDimension(stringBounder).getWidth();
 		}

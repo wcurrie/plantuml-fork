@@ -109,18 +109,18 @@ public class EntityImageNote2 implements TextBlock {
 		return new Dimension2DDouble(width, height);
 	}
 
-	public void drawUNewWayINLINED(UGraphic ug) {
+	public void drawU(UGraphic ug) {
 		final StringBounder stringBounder = ug.getStringBounder();
 		final UPolygon polygon = getPolygonNormal(stringBounder);
 		if (withShadow) {
 			polygon.setDeltaShadow(4);
 		}
 		ug = ug.apply(new UChangeBackColor(noteBackgroundColor)).apply(new UChangeColor(borderColor));
-		ug.drawOldWay(polygon);
+		ug.draw(polygon);
 
-		ug.drawNewWay(getTextWidth(stringBounder) - cornersize, 0, new ULine(0, cornersize));
-		ug.drawNewWay(getTextWidth(stringBounder), cornersize, new ULine(-cornersize, 0));
-		textBlock.drawUNewWayINLINED(ug.apply(new UTranslate(marginX1, marginY)));
+		ug.apply(new UTranslate(getTextWidth(stringBounder) - cornersize, 0)).draw(new ULine(0, cornersize));
+		ug.apply(new UTranslate(getTextWidth(stringBounder), cornersize)).draw(new ULine(-cornersize, 0));
+		textBlock.drawU(ug.apply(new UTranslate(marginX1, marginY)));
 
 	}
 

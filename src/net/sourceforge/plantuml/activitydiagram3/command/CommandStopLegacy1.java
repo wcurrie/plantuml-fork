@@ -27,37 +27,40 @@
  * in the United States and other countries.]
  *
  * Original Author:  Arnaud Roques
- * 
- * Revision $Revision: 4636 $
+ *
+ * Revision $Revision: 4762 $
  *
  */
-package net.sourceforge.plantuml.sequencediagram.command;
+package net.sourceforge.plantuml.activitydiagram3.command;
 
-import net.sourceforge.plantuml.sequencediagram.MessageExoType;
+import net.sourceforge.plantuml.activitydiagram3.ActivityDiagram3;
+import net.sourceforge.plantuml.command.CommandExecutionResult;
+import net.sourceforge.plantuml.command.SingleLineCommand2;
+import net.sourceforge.plantuml.command.regex.RegexConcat;
+import net.sourceforge.plantuml.command.regex.RegexLeaf;
+import net.sourceforge.plantuml.command.regex.RegexResult;
 
-public class CommandExoArrowLeft extends CommandExoArrowAny {
+public class CommandStopLegacy1 extends SingleLineCommand2<ActivityDiagram3> {
 
-	public CommandExoArrowLeft() {
-		super(
-				"(?i)^(\\[?[=-]+(?:>>?|//?|\\\\\\\\?)|\\[?(?:<<?|//?|\\\\\\\\?)[=-]+)\\s*([\\p{L}0-9_.@]+|\"[^\"]+\")\\s*(?::\\s*(.*))?$",
-				0, 1);
+	public CommandStopLegacy1() {
+		super(getRegexConcat());
+	}
+
+	static RegexConcat getRegexConcat() {
+		return new RegexConcat(//
+				new RegexLeaf("^"), //
+				new RegexLeaf("end"), //
+				new RegexLeaf(";?$"));
 	}
 
 	@Override
-	MessageExoType getMessageExoType(String arrow) {
-		if (arrow.contains(">")) {
-			return MessageExoType.FROM_LEFT;
-		}
-		if (arrow.contains("<")) {
-			return MessageExoType.TO_LEFT;
-		}
-		if (arrow.startsWith("/") || arrow.startsWith("[/") || arrow.startsWith("\\") || arrow.startsWith("[\\")) {
-			return MessageExoType.TO_LEFT;
-		}
-		if (arrow.endsWith("\\") || arrow.endsWith("/")) {
-			return MessageExoType.FROM_LEFT;
-		}
-		throw new IllegalArgumentException(arrow);
+	protected CommandExecutionResult executeArg(ActivityDiagram3 diagram, RegexResult arg) {
+		// if (getSystem().getLastEntityConsulted() == null) {
+		// return CommandExecutionResult.error("No if for this endif");
+		// }
+		diagram.stop();
+
+		return CommandExecutionResult.ok();
 	}
 
 }

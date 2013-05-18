@@ -33,55 +33,39 @@
  */
 package net.sourceforge.plantuml.activitydiagram3.ftile.vcompact;
 
-import java.awt.geom.Dimension2D;
-import java.awt.geom.Point2D;
-import java.util.ArrayList;
-import java.util.List;
-
-import net.sourceforge.plantuml.activitydiagram3.ftile.Connection;
-import net.sourceforge.plantuml.activitydiagram3.ftile.Diamond;
+import net.sourceforge.plantuml.ColorParam;
+import net.sourceforge.plantuml.FontParam;
+import net.sourceforge.plantuml.ISkinParam;
+import net.sourceforge.plantuml.activitydiagram3.LinkRendering;
 import net.sourceforge.plantuml.activitydiagram3.ftile.Ftile;
 import net.sourceforge.plantuml.activitydiagram3.ftile.FtileFactory;
 import net.sourceforge.plantuml.activitydiagram3.ftile.FtileFactoryDelegator;
-import net.sourceforge.plantuml.activitydiagram3.ftile.FtileUtils;
 import net.sourceforge.plantuml.cucadiagram.Display;
-import net.sourceforge.plantuml.graphic.HtmlColorUtils;
-import net.sourceforge.plantuml.graphic.StringBounder;
-import net.sourceforge.plantuml.ugraphic.UTranslate;
+import net.sourceforge.plantuml.graphic.HtmlColor;
+import net.sourceforge.plantuml.ugraphic.UFont;
 
 public class FtileFactoryDelegatorIf extends FtileFactoryDelegator {
 
-	public FtileFactoryDelegatorIf(FtileFactory factory) {
-		super(factory);
+	public FtileFactoryDelegatorIf(FtileFactory factory, ISkinParam skinParam) {
+		super(factory, skinParam);
 	}
 
 	@Override
 	public Ftile createIf(final Ftile tile1, final Ftile tile2, Display labelTest, Display label1, Display label2) {
-		final FtileIf2 result = new FtileIf2(tile1, tile2, HtmlColorUtils.BLUE, HtmlColorUtils.LIGHT_GRAY);
-		final StringBounder stringBounder = getStringBounder();
 
-		final UTranslate translate1 = result.getTranslateFor(tile1, stringBounder);
-		final UTranslate translate2 = result.getTranslateFor(tile2, stringBounder);
+		final UFont font = getSkinParam().getFont(FontParam.ACTIVITY_ARROW2, null);
 
-		final Point2D p1in = translate1.getTranslated(tile1.getPointIn(stringBounder));
-		final Point2D p2in = translate2.getTranslated(tile2.getPointIn(stringBounder));
-		final Point2D p1out = translate1.getTranslated(tile1.getPointOut(stringBounder));
-		final Point2D p2out = translate2.getTranslated(tile2.getPointOut(stringBounder));
+		final HtmlColor borderColor = getRose().getHtmlColor(getSkinParam(), ColorParam.activityBorder);
+		final HtmlColor backColor = getRose().getHtmlColor(getSkinParam(), ColorParam.activityBackground);
+		final HtmlColor arrowColor = getRose().getHtmlColor(getSkinParam(), ColorParam.activityArrow);
+		final LinkRendering endThenInlinkRendering = tile1.getOutLinkRendering();
+		final LinkRendering endElseInlinkRendering = tile2.getOutLinkRendering();
+		final HtmlColor endThenInlinkColor = endThenInlinkRendering == null ? null : endThenInlinkRendering.getColor();
+		final HtmlColor endElseInlinkColor = endElseInlinkRendering == null ? null : endElseInlinkRendering.getColor();
 
-		final Dimension2D dim = result.asTextBlock().calculateDimension(stringBounder);
-		final Point2D pA1 = new Point2D.Double(dim.getWidth() / 2 - Diamond.diamondHalfSize, Diamond.diamondHalfSize);
-		final Point2D pA2 = new Point2D.Double(dim.getWidth() / 2 + Diamond.diamondHalfSize, Diamond.diamondHalfSize);
-		final Point2D pB1 = new Point2D.Double(dim.getWidth() / 2 - Diamond.diamondHalfSize, dim.getHeight()
-				- Diamond.diamondHalfSize);
-		final Point2D pB2 = new Point2D.Double(dim.getWidth() / 2 + Diamond.diamondHalfSize, dim.getHeight()
-				- Diamond.diamondHalfSize);
-
-		final List<Connection> conns = new ArrayList<Connection>();
-		conns.add(new ConnectionHorizontalThenVertical(pA1, p1in, HtmlColorUtils.GREEN));
-		conns.add(new ConnectionHorizontalThenVertical(pA2, p2in, HtmlColorUtils.GREEN));
-		conns.add(new ConnectionVerticalDown(p1out, pB1, HtmlColorUtils.GREEN));
-		conns.add(new ConnectionVerticalDown(p2out, pB2, HtmlColorUtils.GREEN));
-		return FtileUtils.addConnection(result, conns);
+		final Ftile result = FtileIf2.create(tile1, tile2, borderColor, backColor, labelTest, label1, label2, font,
+				arrowColor, endThenInlinkColor, endElseInlinkColor);
+		return result;
 	}
 
 }

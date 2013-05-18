@@ -58,11 +58,11 @@ class ExtremityDiamond extends Extremity {
 		polygon = polygon.translate(p1.getX(), p1.getY());
 	}
 
-	public void drawUNewWayINLINED(UGraphic ug) {
+	public void drawU(UGraphic ug) {
 		if (fill) {
 			ug = ug.apply(new UChangeBackColor(ug.getParam().getColor()));
 		}
-		ug.drawOldWay(polygon);
+		ug.draw(polygon);
 	}
 
 }

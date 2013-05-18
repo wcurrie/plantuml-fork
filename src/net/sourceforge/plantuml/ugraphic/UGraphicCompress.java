@@ -39,9 +39,8 @@ import java.io.OutputStream;
 import net.sourceforge.plantuml.Url;
 import net.sourceforge.plantuml.graphic.StringBounder;
 
-public class UGraphicCompress extends UGraphic {
+public class UGraphicCompress implements UGraphic {
 
-	@Override
 	public UGraphic apply(UChange change) {
 		if (change instanceof UTranslate) {
 			return new UGraphicCompress(ug, compressionTransform, translate.compose((UTranslate) change));
@@ -73,13 +72,13 @@ public class UGraphicCompress extends UGraphic {
 		return ug.getParam();
 	}
 
-	public void drawOldWay(UShape shape) {
+	public void draw(UShape shape) {
 		final double x = translate.getDx();
 		final double y = translate.getDy();
 		if (shape instanceof ULine) {
 			drawLine(x, y, (ULine) shape);
 		} else {
-			ug.drawNewWay(x, ct(y), shape);
+			ug.apply(new UTranslate(x, ct(y))).draw(shape);
 		}
 	}
 
@@ -96,7 +95,7 @@ public class UGraphicCompress extends UGraphic {
 		final double xmax = Math.max(x1, x2);
 		final double ymin = Math.min(y1, y2);
 		final double ymax = Math.max(y1, y2);
-		ug.drawNewWay(xmin, ymin, new ULine(xmax - xmin, ymax - ymin));
+		ug.apply(new UTranslate(xmin, ymin)).draw(new ULine(xmax - xmin, ymax - ymin));
 	}
 
 	public void writeImage(OutputStream os, String metadata, int dpi) throws IOException {

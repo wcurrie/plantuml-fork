@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 10201 $
+ * Revision $Revision: 10925 $
  *
  */
 package net.sourceforge.plantuml.skin.bluemodern;
@@ -64,9 +64,7 @@ public class ComponentBlueModernActiveLine extends AbstractComponent {
 		shadowShape.drawU(ug.apply(new UTranslate(shadowview, shadowview)));
 
 		ug.apply(new UChangeColor(foregroundColor))
-				.apply(new UChangeBackColor(foregroundColor))
-				.drawNewWay(x, 0,
-						new URectangle(getPreferredWidth(stringBounder), dimensionToUse.getHeight() - shadowview));
+		.apply(new UChangeBackColor(foregroundColor)).apply(new UTranslate(x, 0)).draw(new URectangle(getPreferredWidth(stringBounder), dimensionToUse.getHeight() - shadowview));
 	}
 
 	@Override

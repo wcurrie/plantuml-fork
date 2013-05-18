@@ -97,7 +97,7 @@ public class EntityImageClass extends AbstractEntityImage {
 		return new Dimension2DDouble(width, height);
 	}
 
-	final public void drawUNewWayINLINED(UGraphic ug) {
+	final public void drawU(UGraphic ug) {
 		if (url.size() > 0 && url.get(0).isMember() == false) {
 			ug.startUrl(url.get(0));
 		}
@@ -156,13 +156,13 @@ public class EntityImageClass extends AbstractEntityImage {
 		ug = ug.apply(new UChangeBackColor(backcolor));
 
 		final UStroke stroke = getStroke();
-		ug.apply(stroke).drawNewWay(0, 0, rect);
+		ug.apply(stroke).apply(new UTranslate(0, 0)).draw(rect);
 
 		header.drawU(ug, dimTotal.getWidth(), dimHeader.getHeight());
 
 		if (body != null) {
 			final UGraphic ug2 = new UGraphicHorizontalLine(ug, 0, widthTotal, stroke);
-			body.drawUNewWayINLINED(ug2.apply(new UTranslate(0, dimHeader.getHeight())));
+			body.drawU(ug2.apply(new UTranslate(0, dimHeader.getHeight())));
 		}
 	}
 

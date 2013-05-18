@@ -74,10 +74,9 @@ public class ElementMenuEntry implements Element {
 	public void drawU(UGraphic ug, double x, double y, int zIndex, Dimension2D dimToUse) {
 		if (background != null) {
 			final Dimension2D dim = getPreferredDimension(ug.getStringBounder(), x, y);
-			ug.apply(new UChangeBackColor(background))
-					.drawNewWay(x, y, new URectangle(dim.getWidth(), dim.getHeight()));
+			ug.apply(new UChangeBackColor(background)).apply(new UTranslate(x, y)).draw(new URectangle(dim.getWidth(), dim.getHeight()));
 		}
-		block.drawUNewWayINLINED(ug.apply(new UTranslate(x, y)));
+		block.drawU(ug.apply(new UTranslate(x, y)));
 	}
 
 	public double getX() {

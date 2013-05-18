@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 10298 $
+ * Revision $Revision: 10930 $
  *
  */
 package net.sourceforge.plantuml.sudoku;
@@ -113,7 +113,7 @@ public class GraphicsSudoku {
 				if (num > 0) {
 					final TextBlock text = TextBlockUtils.create(Display.asList("" + num), new FontConfiguration(
 							numberFont, HtmlColorUtils.BLACK), HorizontalAlignement.CENTER, new SpriteContainerEmpty());
-					text.drawUNewWayINLINED(ug.apply(new UTranslate((numberxOffset + x * cellWidth), (numberyOffset + y * cellHeight))));
+					text.drawU(ug.apply(new UTranslate((numberxOffset + x * cellWidth), (numberyOffset + y * cellHeight))));
 				}
 			}
 		}
@@ -122,12 +122,12 @@ public class GraphicsSudoku {
 		for (int i = 0; i < 10; i++) {
 			final boolean bold = i % boldWidth == 0;
 			final int w = bold ? boldWidth : 1;
-			ug.drawNewWay(0, i * cellHeight, new URectangle(9 * cellWidth + boldWidth, w));
+			ug.apply(new UTranslate(0, i * cellHeight)).draw(new URectangle(9 * cellWidth + boldWidth, w));
 		}
 		for (int i = 0; i < 10; i++) {
 			final boolean bold = i % boldWidth == 0;
 			final int w = bold ? boldWidth : 1;
-			ug.drawNewWay(i * cellWidth, 0, new URectangle(w, 9 * cellHeight + boldWidth));
+			ug.apply(new UTranslate(i * cellWidth, 0)).draw(new URectangle(w, 9 * cellHeight + boldWidth));
 		}
 
 		ug = ug.apply(new UTranslate(0, sudoHeight));
@@ -137,7 +137,7 @@ public class GraphicsSudoku {
 		texts.add("Difficulty " + sudoku.getRatting());
 		final TextBlock textBlock = TextBlockUtils.create(new Display(texts), new FontConfiguration(font,
 				HtmlColorUtils.BLACK), HorizontalAlignement.LEFT, new SpriteContainerEmpty());
-		textBlock.drawUNewWayINLINED(ug);
+		textBlock.drawU(ug);
 		g3d.dispose();
 		return im;
 	}

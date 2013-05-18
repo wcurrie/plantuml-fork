@@ -44,6 +44,7 @@ import net.sourceforge.plantuml.ugraphic.UFont;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
 import net.sourceforge.plantuml.ugraphic.URectangle;
 import net.sourceforge.plantuml.ugraphic.UStroke;
+import net.sourceforge.plantuml.ugraphic.UTranslate;
 
 public class ElementButton extends AbstractElementText implements Element {
 
@@ -67,8 +68,7 @@ public class ElementButton extends AbstractElementText implements Element {
 		}
 		final Dimension2D dim = getPreferredDimension(ug.getStringBounder(), x, y);
 		ug = ug.apply(new UStroke(stroke));
-		ug.apply(new UChangeBackColor(HtmlColorUtils.getColorIfValid("#EEEEEE"))).drawNewWay(x + stroke, y + stroke,
-				new URectangle(dim.getWidth() - 2 * stroke, dim.getHeight() - 2 * stroke, 10, 10));
+		ug.apply(new UChangeBackColor(HtmlColorUtils.getColorIfValid("#EEEEEE"))).apply(new UTranslate(x + stroke, y + stroke)).draw(new URectangle(dim.getWidth() - 2 * stroke, dim.getHeight() - 2 * stroke, 10, 10));
 		final Dimension2D dimPureText = getPureTextDimension(ug.getStringBounder());
 		drawText(ug, x + (dim.getWidth() - dimPureText.getWidth()) / 2, y + stroke + marginY);
 	}

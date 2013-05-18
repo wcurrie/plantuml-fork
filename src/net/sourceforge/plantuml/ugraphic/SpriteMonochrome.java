@@ -108,8 +108,8 @@ public class SpriteMonochrome implements Sprite {
 	public TextBlock asTextBlock(final HtmlColor color) {
 		return new TextBlock() {
 
-			public void drawUNewWayINLINED(UGraphic ug) {
-				ug.drawOldWay(toUImage(ug.getColorMapper(), ug.getParam().getBackcolor(), color));
+			public void drawU(UGraphic ug) {
+				ug.draw(toUImage(ug.getColorMapper(), ug.getParam().getBackcolor(), color));
 			}
 
 			public Dimension2D calculateDimension(StringBounder stringBounder) {

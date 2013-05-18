@@ -35,23 +35,21 @@ package net.sourceforge.plantuml.activitydiagram3.ftile.vcompact;
 
 import java.awt.geom.Point2D;
 
+import net.sourceforge.plantuml.activitydiagram3.ftile.AbstractConnection;
 import net.sourceforge.plantuml.activitydiagram3.ftile.Arrows;
-import net.sourceforge.plantuml.activitydiagram3.ftile.Connection;
+import net.sourceforge.plantuml.activitydiagram3.ftile.Ftile;
+import net.sourceforge.plantuml.activitydiagram3.ftile.Snake;
 import net.sourceforge.plantuml.graphic.HtmlColor;
-import net.sourceforge.plantuml.ugraphic.UChangeBackColor;
-import net.sourceforge.plantuml.ugraphic.UChangeColor;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
-import net.sourceforge.plantuml.ugraphic.ULine;
-import net.sourceforge.plantuml.ugraphic.UStroke;
-import net.sourceforge.plantuml.ugraphic.UTranslate;
 
-class ConnectionVerticalDown implements Connection {
+class ConnectionVerticalDown extends AbstractConnection {
 
 	private final Point2D p1;
 	private final Point2D p2;
 	private final HtmlColor color;
 
-	public ConnectionVerticalDown(Point2D p1, Point2D p2, HtmlColor color) {
+	public ConnectionVerticalDown(Ftile ftile1, Ftile ftile2, Point2D p1, Point2D p2, HtmlColor color) {
+		super(ftile1, ftile2);
 		this.p1 = p1;
 		this.p2 = p2;
 		this.color = color;
@@ -64,9 +62,10 @@ class ConnectionVerticalDown implements Connection {
 		final double x2 = p2.getX();
 		final double y2 = p2.getY();
 
-		ug = ug.apply(new UStroke(1.5)).apply(new UChangeColor(color)).apply(new UChangeBackColor(color));
-		ug.apply(new UTranslate(x1, y1)).drawOldWay(new ULine(x2 - x1, y2 - y1));
-		ug.apply(new UTranslate(x2, y2)).drawOldWay(Arrows.asToDown());
+		final Snake snake = new Snake(color, Arrows.asToDown());
+		snake.addPoint(x1, y1);
+		snake.addPoint(x2, y2);
+		snake.drawU(ug);
 	}
 
 }

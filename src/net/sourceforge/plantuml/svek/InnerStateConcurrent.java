@@ -59,13 +59,13 @@ public final class InnerStateConcurrent implements IEntityImage {
 	public final static double THICKNESS_BORDER = 1.5;
 	private static final int DASH = 8;
 
-	public void drawUNewWayINLINED(UGraphic ug) {
+	public void drawU(UGraphic ug) {
 		final Dimension2D dim = calculateDimension(ug.getStringBounder());
 		final UShape rect = new URectangle(dim.getWidth(), dim.getHeight());
 		ug = ug.apply(new UChangeColor(HtmlColorUtils.BLACK));
-		ug.apply(new UStroke(DASH, 10, THICKNESS_BORDER)).drawOldWay(rect);
+		ug.apply(new UStroke(DASH, 10, THICKNESS_BORDER)).draw(rect);
 
-		im.drawUNewWayINLINED(ug);
+		im.drawU(ug);
 	}
 
 	public HtmlColor getBackcolor() {

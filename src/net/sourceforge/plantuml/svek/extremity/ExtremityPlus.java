@@ -40,6 +40,7 @@ import net.sourceforge.plantuml.ugraphic.UChangeBackColor;
 import net.sourceforge.plantuml.ugraphic.UEllipse;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
 import net.sourceforge.plantuml.ugraphic.ULine;
+import net.sourceforge.plantuml.ugraphic.UTranslate;
 
 class ExtremityPlus extends Extremity {
 
@@ -56,8 +57,8 @@ class ExtremityPlus extends Extremity {
 		this.py = p1.getY() - radius - radius * Math.cos(angle);
 	}
 
-	public void drawUNewWayINLINED(UGraphic ug) {
-		ug.apply(new UChangeBackColor(HtmlColorUtils.WHITE)).drawNewWay(px + 0, py + 0, circle);
+	public void drawU(UGraphic ug) {
+		ug.apply(new UChangeBackColor(HtmlColorUtils.WHITE)).apply(new UTranslate(px + 0, py + 0)).draw(circle);
 		drawLine(ug, 0, 0, getPointOnCircle(angle - Math.PI / 2), getPointOnCircle(angle + Math.PI / 2));
 		drawLine(ug, 0, 0, getPointOnCircle(angle), getPointOnCircle(angle + Math.PI));
 	}
@@ -71,7 +72,7 @@ class ExtremityPlus extends Extremity {
 	static private void drawLine(UGraphic ug, double x, double y, Point2D p1, Point2D p2) {
 		final double dx = p2.getX() - p1.getX();
 		final double dy = p2.getY() - p1.getY();
-		ug.drawNewWay(x + p1.getX(), y + p1.getY(), new ULine(dx, dy));
+		ug.apply(new UTranslate(x + p1.getX(), y + p1.getY())).draw(new ULine(dx, dy));
 
 	}
 

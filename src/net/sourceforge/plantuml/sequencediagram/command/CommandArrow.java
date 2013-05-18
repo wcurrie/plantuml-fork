@@ -61,25 +61,27 @@ public class CommandArrow extends SingleLineCommand2<SequenceDiagram> {
 		super(getRegexConcat());
 	}
 
+	public static String getColorOrStylePattern() {
+		return "(?:\\[((?:#\\w+|dotted|dashed|bold|hidden)(?:,#\\w+|,dotted|,dashed|,bold|,hidden)*)\\])?";
+	}
+
+
 	static RegexConcat getRegexConcat() {
 		return new RegexConcat(new RegexLeaf("^"), //
 				new RegexOr("PART1", //
 						new RegexLeaf("PART1CODE", "([\\p{L}0-9_.@]+)"), //
 						new RegexLeaf("PART1LONG", "\"([^\"]+)\""), //
 						new RegexLeaf("PART1LONGCODE", "\"([^\"]+)\"\\s*as\\s+([\\p{L}0-9_.@]+)"), //
-						new RegexLeaf("PART1CODELONG", "([\\p{L}0-9_.@]+)\\s+as\\s*\"([^\"]+)\"")),
+						new RegexLeaf("PART1CODELONG", "([\\p{L}0-9_.@]+)\\s+as\\s*\"([^\"]+)\"")), //
 				new RegexLeaf("\\s*"), //
 				new RegexLeaf("ARROW_DRESSING1", "( [ox]|(?: [ox])?<<?|(?: [ox])?//?|(?: [ox])?\\\\\\\\?)?"), //
-				new RegexOr(
-						new RegexConcat(
-								new RegexLeaf("ARROW_BODYA1", "(-+)"), //
-								new RegexLeaf("ARROW_STYLE1",
-										"(?:\\[((?:#\\w+|dotted|dashed|bold|hidden)(?:,#\\w+|,dotted|,dashed|,bold|,hidden)*)\\])?"),
-								new RegexLeaf("ARROW_BODYB1", "(-*)")),
-						new RegexConcat(
+				new RegexOr(new RegexConcat( //
+						new RegexLeaf("ARROW_BODYA1", "(-+)"), //
+						new RegexLeaf("ARROW_STYLE1", getColorOrStylePattern()), //
+						new RegexLeaf("ARROW_BODYB1", "(-*)")), //
+						new RegexConcat( //
 								new RegexLeaf("ARROW_BODYA2", "(-*)"), //
-								new RegexLeaf("ARROW_STYLE2",
-										"(?:\\[((?:#\\w+|dotted|dashed|bold|hidden)(?:,#\\w+|,dotted|,dashed|,bold|,hidden)*)\\])?"),
+								new RegexLeaf("ARROW_STYLE2", getColorOrStylePattern()), //
 								new RegexLeaf("ARROW_BODYB2", "(-+)"))), //
 				new RegexLeaf("ARROW_DRESSING2", "(>>?(?:[ox] )?|//?(?:[ox] )?|\\\\\\\\?(?:[ox] )?|[ox] )?"), //
 				new RegexLeaf("\\s*"), //
@@ -212,8 +214,7 @@ public class CommandArrow extends SingleLineCommand2<SequenceDiagram> {
 			system.activate(p2, LifeEventType.CREATE, null);
 		}
 
-		final String error = system.addMessage(
-				new Message(p1, p2, labels, config, system.getNextMessageNumber()));
+		final String error = system.addMessage(new Message(p1, p2, labels, config, system.getNextMessageNumber()));
 		if (error != null) {
 			return CommandExecutionResult.error(error);
 		}
@@ -257,7 +258,7 @@ public class CommandArrow extends SingleLineCommand2<SequenceDiagram> {
 		return sa.length() + sb.length();
 	}
 
-	private ArrowConfiguration applyStyle(String arrowStyle, ArrowConfiguration config) {
+	public static ArrowConfiguration applyStyle(String arrowStyle, ArrowConfiguration config) {
 		if (arrowStyle == null) {
 			return config;
 		}

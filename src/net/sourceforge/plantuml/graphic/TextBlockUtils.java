@@ -28,17 +28,19 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 10578 $
+ * Revision $Revision: 10930 $
  *
  */
 package net.sourceforge.plantuml.graphic;
 
 import java.awt.geom.Dimension2D;
 import java.awt.geom.Point2D;
+import java.awt.image.BufferedImage;
 import java.util.Collections;
 import java.util.List;
 
 import net.sourceforge.plantuml.Dimension2DDouble;
+import net.sourceforge.plantuml.FileFormatOption;
 import net.sourceforge.plantuml.SpriteContainer;
 import net.sourceforge.plantuml.Url;
 import net.sourceforge.plantuml.cucadiagram.Display;
@@ -46,12 +48,19 @@ import net.sourceforge.plantuml.cucadiagram.Stereotype;
 import net.sourceforge.plantuml.posimo.Positionable;
 import net.sourceforge.plantuml.posimo.PositionableImpl;
 import net.sourceforge.plantuml.sequencediagram.MessageNumber;
+import net.sourceforge.plantuml.ugraphic.ColorMapper;
+import net.sourceforge.plantuml.ugraphic.LimitFinder;
+import net.sourceforge.plantuml.ugraphic.MinMax;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
+import net.sourceforge.plantuml.ugraphic.UTranslate;
 
 public class TextBlockUtils {
 
 	public static TextBlock create(Display texts, FontConfiguration fontConfiguration,
 			HorizontalAlignement horizontalAlignement, SpriteContainer spriteContainer) {
+		if (texts == null) {
+			return empty(0, 0);
+		}
 		return create(texts, fontConfiguration, horizontalAlignement, spriteContainer, 0);
 	}
 
@@ -113,7 +122,7 @@ public class TextBlockUtils {
 
 	public static TextBlock empty(final double width, final double height) {
 		return new TextBlock() {
-			public void drawUNewWayINLINED(UGraphic ug) {
+			public void drawU(UGraphic ug) {
 			}
 
 			public Dimension2D calculateDimension(StringBounder stringBounder) {
@@ -138,4 +147,28 @@ public class TextBlockUtils {
 		return new TextBlockVertical2(b1, b2, horizontalAlignement);
 	}
 
+	public static MinMax getMinMax(TextBlock tb, StringBounder stringBounder) {
+		final LimitFinder limitFinder = new LimitFinder(stringBounder, false);
+		tb.drawU(limitFinder);
+		return limitFinder.getMinMax();
+	}
+
+	static {
+		final BufferedImage imDummy = new BufferedImage(10, 10, BufferedImage.TYPE_INT_RGB);
+		dummyStringBounder = StringBounderUtils.asStringBounder(imDummy.createGraphics());
+	}
+
+	private static final StringBounder dummyStringBounder;
+
+	public static UGraphic getPrinted(TextBlock tb, FileFormatOption fileFormatOption, ColorMapper colorMapper,
+			double dpiFactor, HtmlColor mybackcolor) {
+		final MinMax minmax = getMinMax(tb, dummyStringBounder);
+		final double margin = 10;
+		final UGraphic ug = fileFormatOption.createUGraphic(colorMapper, dpiFactor,
+				Dimension2DDouble.delta(minmax.getDimension(), 2 * margin), mybackcolor, false);
+		final double dx = -minmax.getMinX() + margin;
+		final double dy = -minmax.getMinY() + margin;
+		tb.drawU(ug.apply(new UTranslate(dx, dy)));
+		return ug;
+	}
 }

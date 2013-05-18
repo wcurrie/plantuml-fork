@@ -57,12 +57,12 @@ class RowOverwrite implements Row {
 	public TextBlock asTextBloc(final TimeConverter timeConverter) {
 		return new TextBlock() {
 
-			public void drawUNewWayINLINED(UGraphic ug) {
+			public void drawU(UGraphic ug) {
 				final double minX = getMinXwithoutHeader(timeConverter);
 				final double minXr1 = r1.getMinXwithoutHeader(timeConverter);
 				final double minXr2 = r2.getMinXwithoutHeader(timeConverter);
-				r1.asTextBloc(timeConverter).drawUNewWayINLINED(ug.apply(new UTranslate((minXr1 - minX), 0)));
-				r2.asTextBloc(timeConverter).drawUNewWayINLINED(ug.apply(new UTranslate((minXr2 - minX), 0)));
+				r1.asTextBloc(timeConverter).drawU(ug.apply(new UTranslate((minXr1 - minX), 0)));
+				r2.asTextBloc(timeConverter).drawU(ug.apply(new UTranslate((minXr2 - minX), 0)));
 			}
 
 			public Dimension2D calculateDimension(StringBounder stringBounder) {

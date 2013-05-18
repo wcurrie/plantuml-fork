@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 10265 $
+ * Revision $Revision: 10930 $
  *
  */
 package net.sourceforge.plantuml.graph;
@@ -88,7 +88,7 @@ public class MethodsOrFieldsArea {
 	public void draw(UGraphic ug, double x, double y) {
 		for (String s : strings) {
 			final TextBlock bloc = createTextBlock(s);
-			bloc.drawUNewWayINLINED(ug.apply(new UTranslate(x, y)));
+			bloc.drawU(ug.apply(new UTranslate(x, y)));
 			y += bloc.calculateDimension(ug.getStringBounder()).getHeight();
 		}
 	}

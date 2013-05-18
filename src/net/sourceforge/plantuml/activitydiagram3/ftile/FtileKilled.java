@@ -34,20 +34,28 @@
 package net.sourceforge.plantuml.activitydiagram3.ftile;
 
 import java.awt.geom.Dimension2D;
+import java.awt.geom.Point2D;
 import java.util.List;
 
 import net.sourceforge.plantuml.Url;
-import net.sourceforge.plantuml.activitydiagram3.LinkRendering;
 import net.sourceforge.plantuml.graphic.StringBounder;
 import net.sourceforge.plantuml.graphic.TextBlock;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
 
-public class FtileKilled extends AbstractFtileOld {
+public class FtileKilled extends AbstractFtile2 {
 
 	private final Ftile tile;
 
 	public FtileKilled(Ftile tileToKill) {
 		this.tile = tileToKill;
+	}
+
+	public Point2D getPointIn(StringBounder stringBounder) {
+		return tile.getPointIn(stringBounder);
+	}
+
+	public Point2D getPointOut(StringBounder stringBounder) {
+		return null;
 	}
 
 	public TextBlock asTextBlock() {
@@ -61,8 +69,8 @@ public class FtileKilled extends AbstractFtileOld {
 				return tile.asTextBlock().getUrls();
 			}
 
-			public void drawUNewWayINLINED(UGraphic ug) {
-				tile.asTextBlock().drawUNewWayINLINED(ug);
+			public void drawU(UGraphic ug) {
+				ug.draw(tile);
 			}
 		};
 	}

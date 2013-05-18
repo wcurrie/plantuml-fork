@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 10205 $
+ * Revision $Revision: 10925 $
  *
  */
 package net.sourceforge.plantuml.skin.rose;
@@ -44,6 +44,7 @@ import net.sourceforge.plantuml.ugraphic.UChangeColor;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
 import net.sourceforge.plantuml.ugraphic.ULine;
 import net.sourceforge.plantuml.ugraphic.URectangle;
+import net.sourceforge.plantuml.ugraphic.UTranslate;
 
 public class ComponentRoseActiveLine extends AbstractComponent {
 
@@ -73,22 +74,21 @@ public class ComponentRoseActiveLine extends AbstractComponent {
 		}
 		ug = ug.apply(new UChangeColor(foregroundColor));
 		if (closeUp && closeDown) {
-			ug.apply(new UChangeBackColor(lifeLineBackground)).drawNewWay(x, 0, rect);
+			ug.apply(new UChangeBackColor(lifeLineBackground)).apply(new UTranslate(x, 0)).draw(rect);
 			return;
 		}
-		ug.apply(new UChangeBackColor(lifeLineBackground)).apply(new UChangeColor(lifeLineBackground))
-				.drawNewWay(x, 0, rect);
+		ug.apply(new UChangeBackColor(lifeLineBackground)).apply(new UChangeColor(lifeLineBackground)).apply(new UTranslate(x, 0)).draw(rect);
 
 		final ULine vline = new ULine(0, dimensionToUse.getHeight());
-		ug.drawNewWay(x, 0, vline);
-		ug.drawNewWay(x + getPreferredWidth(stringBounder), 0, vline);
+		ug.apply(new UTranslate(x, 0)).draw(vline);
+		ug.apply(new UTranslate(x + getPreferredWidth(stringBounder), 0)).draw(vline);
 
 		final ULine hline = new ULine(getPreferredWidth(stringBounder), 0);
 		if (closeUp) {
-			ug.drawNewWay(x, 0, hline);
+			ug.apply(new UTranslate(x, 0)).draw(hline);
 		}
 		if (closeDown) {
-			ug.drawNewWay(x, dimensionToUse.getHeight(), hline);
+			ug.apply(new UTranslate(x, dimensionToUse.getHeight())).draw(hline);
 		}
 	}
 

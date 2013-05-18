@@ -39,20 +39,12 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.util.List;
 
-import net.sourceforge.plantuml.CMapData;
-import net.sourceforge.plantuml.Dimension2DDouble;
 import net.sourceforge.plantuml.FileFormatOption;
 import net.sourceforge.plantuml.FontParam;
 import net.sourceforge.plantuml.ISkinParam;
 import net.sourceforge.plantuml.UmlDiagram;
 import net.sourceforge.plantuml.UmlDiagramType;
-import net.sourceforge.plantuml.activitydiagram3.ftile.Ftile;
-import net.sourceforge.plantuml.activitydiagram3.ftile.FtileFactory;
 import net.sourceforge.plantuml.activitydiagram3.ftile.Swimlanes;
-import net.sourceforge.plantuml.activitydiagram3.ftile.vcompact.FtileFactoryDelegatorAssembly;
-import net.sourceforge.plantuml.activitydiagram3.ftile.vcompact.FtileFactoryDelegatorIf;
-import net.sourceforge.plantuml.activitydiagram3.ftile.vcompact.VCompactFactory;
-import net.sourceforge.plantuml.activitydiagram3.ftile.vertical.VerticalFactory;
 import net.sourceforge.plantuml.api.ImageDataSimple;
 import net.sourceforge.plantuml.command.CommandExecutionResult;
 import net.sourceforge.plantuml.core.ImageData;
@@ -63,17 +55,13 @@ import net.sourceforge.plantuml.graphic.HtmlColor;
 import net.sourceforge.plantuml.graphic.StringBounder;
 import net.sourceforge.plantuml.graphic.StringBounderUtils;
 import net.sourceforge.plantuml.graphic.TextBlock;
+import net.sourceforge.plantuml.graphic.TextBlockCompressed;
+import net.sourceforge.plantuml.graphic.TextBlockInterceptorTextBlockable;
 import net.sourceforge.plantuml.graphic.TextBlockUtils;
 import net.sourceforge.plantuml.sequencediagram.NotePosition;
 import net.sourceforge.plantuml.svek.DecorateEntityImage2;
-import net.sourceforge.plantuml.ugraphic.CompressionTransform;
-import net.sourceforge.plantuml.ugraphic.SlotFinder;
-import net.sourceforge.plantuml.ugraphic.SlotSet;
-import net.sourceforge.plantuml.ugraphic.TextLimitFinder;
 import net.sourceforge.plantuml.ugraphic.UFont;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
-import net.sourceforge.plantuml.ugraphic.UGraphicCompress;
-import net.sourceforge.plantuml.ugraphic.UTranslate;
 
 public class ActivityDiagram3 extends UmlDiagram {
 
@@ -82,11 +70,9 @@ public class ActivityDiagram3 extends UmlDiagram {
 		dummyStringBounder = StringBounderUtils.asStringBounder(imDummy.createGraphics());
 	}
 
-	final private boolean USE_COMPACT = false;
-
 	private static final StringBounder dummyStringBounder;
 
-	private final Swimlanes swinlanes = new Swimlanes();
+	private final Swimlanes swinlanes = new Swimlanes(getSkinParam());
 
 	public CommandExecutionResult swimlane(String name) {
 		swinlanes.swimlane(name);
@@ -118,81 +104,20 @@ public class ActivityDiagram3 extends UmlDiagram {
 		return UmlDiagramType.ACTIVITY;
 	}
 
-	// @Override
-	private Dimension2D exportDiagramInternalUnused(OutputStream os, CMapData cmap, int index,
-			FileFormatOption fileFormatOption, List<BufferedImage> flashcodes) throws IOException {
-		final TextBlock result = getResult(dummyStringBounder);
-
-		final TextLimitFinder limitFinder = new TextLimitFinder(dummyStringBounder, true);
-		result.drawUNewWayINLINED(limitFinder);
-		final double negX = Math.min(0, limitFinder.getMinX());
-		final double negY = Math.min(0, limitFinder.getMinY());
-		assert negX <= 0;
-		assert negY <= 0;
-
-		final ISkinParam skinParam = getSkinParam();
-		Dimension2D dim = result.calculateDimension(dummyStringBounder);
-		dim = new Dimension2DDouble(Math.max(dim.getWidth(), limitFinder.getMaxX() - negX), Math.max(dim.getHeight(),
-				limitFinder.getMaxY() - negY));
-		dim = Dimension2DDouble.delta(dim, 20);
-
-		final double dpiFactor = getDpiFactor(fileFormatOption);
-
-		final UGraphic ug = fileFormatOption.createUGraphic(skinParam.getColorMapper(), dpiFactor, dim, getSkinParam()
-				.getBackgroundColor(), isRotation());
-
-		final double posy = 5 - negY;
-		result.drawUNewWayINLINED(ug.apply(new UTranslate((8 - negX), posy)));
-		ug.writeImage(os, getMetadata(), getDpi(fileFormatOption));
-
-		return new Dimension2DDouble(dim.getWidth(), dim.getHeight());
-	}
-
 	protected ImageData exportDiagramInternal(OutputStream os, int index, FileFormatOption fileFormatOption,
 			List<BufferedImage> flashcodes) throws IOException {
 		final TextBlock result = getResult(dummyStringBounder);
 		final ISkinParam skinParam = getSkinParam();
 		final double dpiFactor = getDpiFactor(fileFormatOption);
 
-		if (USE_COMPACT) {
-			final Dimension2D dim = result.calculateDimension(dummyStringBounder);
-			final UGraphic ug = fileFormatOption.createUGraphic(skinParam.getColorMapper(), dpiFactor, dim,
-					getSkinParam().getBackgroundColor(), isRotation());
-			result.drawUNewWayINLINED(ug);
-			ug.writeImage(os, getMetadata(), getDpi(fileFormatOption));
-			return new ImageDataSimple((int) dim.getWidth(), (int) dim.getHeight());
-		}
-
-		final TextLimitFinder limitFinder = new TextLimitFinder(dummyStringBounder, true);
-		result.drawUNewWayINLINED(limitFinder);
-		final double negX = Math.min(0, limitFinder.getMinX());
-		final double negY = Math.min(0, limitFinder.getMinY());
-		assert negX <= 0;
-		assert negY <= 0;
-
-		final SlotFinder slotFinder = new SlotFinder(dummyStringBounder);
-		result.drawUNewWayINLINED(slotFinder);
-		final SlotSet ysSlotSet = slotFinder.getYSlotSet().reverse().smaller(5.0);
-
-		Dimension2D dim = result.calculateDimension(dummyStringBounder);
-		final CompressionTransform compressionTransform = new CompressionTransform(ysSlotSet);
-		dim = new Dimension2DDouble(Math.max(dim.getWidth(), limitFinder.getMaxX() - negX),
-				compressionTransform.transform(Math.max(dim.getHeight(), limitFinder.getMaxY() - negY)));
-		dim = Dimension2DDouble.delta(dim, 20);
-
-		UGraphic ug = fileFormatOption.createUGraphic(skinParam.getColorMapper(), dpiFactor, dim, getSkinParam()
-				.getBackgroundColor(), isRotation());
-		// ug = new UGraphicFilter(ug, URectangle.class, UEllipse.class, UPolygon.class);
-
-		// for (Slot sl : ysSlotSet) {
-		// ug.getParam().setBackcolor(HtmlColorUtils.RED);
-		// ug.draw(0, posy + sl.getStart(), new URectangle(dim.getWidth(), sl.size()));
-		// }
-
-		ug = new UGraphicCompress(ug, compressionTransform);
-		result.drawUNewWayINLINED(ug.apply(new UTranslate((8 - negX), 0)));
+		final TextBlock tb = new TextBlockCompressed(new TextBlockInterceptorTextBlockable(result));
+		// final TextBlock tb = new TextBlockInterceptorTextBlockable(result);
+		final UGraphic ug = TextBlockUtils.getPrinted(tb, fileFormatOption, skinParam.getColorMapper(), dpiFactor,
+				getSkinParam().getBackgroundColor());
+		// // ug = new UGraphicOnlySimpleActivity(ug);
+		// // ug = new UGraphicInterceptorTextBlockableOnlySimpleActivity(ug);
 		ug.writeImage(os, getMetadata(), getDpi(fileFormatOption));
-
+		final Dimension2D dim = TextBlockUtils.getMinMax(tb, dummyStringBounder).getDimension();
 		return new ImageDataSimple((int) dim.getWidth(), (int) dim.getHeight());
 	}
 
@@ -201,18 +126,8 @@ public class ActivityDiagram3 extends UmlDiagram {
 		setNextLinkRenderer(null);
 	}
 
-	private Ftile getFtile(StringBounder stringBounder) {
-		FtileFactory factory = new VerticalFactory(getSkinParam(), stringBounder);
-		if (USE_COMPACT) {
-			factory = new VCompactFactory(getSkinParam(), stringBounder);
-			factory = new FtileFactoryDelegatorAssembly(factory);
-			factory = new FtileFactoryDelegatorIf(factory);
-		}
-		return current().createFtile(factory);
-	}
-
 	private TextBlock getResult(StringBounder stringBounder) {
-		TextBlock result = getFtile(stringBounder).asTextBlock();
+		TextBlock result = swinlanes;
 		result = addTitle(result);
 		result = addHeaderAndFooter(result);
 		return result;

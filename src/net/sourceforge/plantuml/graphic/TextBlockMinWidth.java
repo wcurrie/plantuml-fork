@@ -58,13 +58,13 @@ class TextBlockMinWidth implements TextBlock {
 		return Dimension2DDouble.atLeast(dim, minWidth, 0);
 	}
 
-	public void drawUNewWayINLINED(UGraphic ug) {
+	public void drawU(UGraphic ug) {
 		if (horizontalAlignement == HorizontalAlignement.LEFT) {
-			textBlock.drawUNewWayINLINED(ug);
+			textBlock.drawU(ug);
 		} else if (horizontalAlignement == HorizontalAlignement.RIGHT) {
 			final Dimension2D dim = textBlock.calculateDimension(ug.getStringBounder());
 			final double diffx = minWidth - dim.getWidth();
-			textBlock.drawUNewWayINLINED(ug.apply(new UTranslate(diffx, 0)));
+			textBlock.drawU(ug.apply(new UTranslate(diffx, 0)));
 		} else {
 			throw new UnsupportedOperationException();
 		}

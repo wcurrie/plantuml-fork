@@ -83,18 +83,18 @@ public class ComponentBlueModernDivider extends AbstractTextualComponent {
 		ug = ug.apply(new UChangeBackColor(HtmlColorUtils.BLACK));
 		ug = ug.apply(new UStroke(2));
 
-		ug.drawNewWay(0, dimensionToUse.getHeight() / 2 - 1, new ULine(dimensionToUse.getWidth(), 0));
-		ug.drawNewWay(0, dimensionToUse.getHeight() / 2 + 2, new ULine(dimensionToUse.getWidth(), 0));
+		ug.apply(new UTranslate(0, dimensionToUse.getHeight() / 2 - 1)).draw(new ULine(dimensionToUse.getWidth(), 0));
+		ug.apply(new UTranslate(0, dimensionToUse.getHeight() / 2 + 2)).draw(new ULine(dimensionToUse.getWidth(), 0));
 
 		final FillRoundShape shape = new FillRoundShape(textWidth + deltaX, textHeight, background1, background2, 5);
 		shape.drawU(ug.apply(new UTranslate(xpos, ypos)));
 
 		ug = ug.apply(new UChangeColor(borderColor));
 		ug = ug.apply(new UChangeBackColor(null));
-		ug.drawNewWay(xpos, ypos, new URectangle(textWidth + deltaX, textHeight, 5, 5));
+		ug.apply(new UTranslate(xpos, ypos)).draw(new URectangle(textWidth + deltaX, textHeight, 5, 5));
 		ug = ug.apply(new UStroke());
 
-		textBlock.drawUNewWayINLINED(ug.apply(new UTranslate(xpos + deltaX, ypos + getMarginY())));
+		textBlock.drawU(ug.apply(new UTranslate(xpos + deltaX, ypos + getMarginY())));
 	}
 
 	@Override

@@ -74,11 +74,11 @@ class EmbededSystemLine implements Line {
 		return new Dimension2DDouble(42, 42);
 	}
 
-	public void drawUNewWayINLINED(UGraphic ug) {
+	public void drawU(UGraphic ug) {
 		try {
 			final BufferedImage im = getImage();
 			final UShape image = new UImage(im);
-			ug.drawOldWay(image);
+			ug.draw(image);
 		} catch (IOException e) {
 			e.printStackTrace();
 		} catch (InterruptedException e) {

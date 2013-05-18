@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 10265 $
+ * Revision $Revision: 10930 $
  *
  */
 package net.sourceforge.plantuml.skin.bluemodern;
@@ -75,12 +75,12 @@ public class ComponentBlueModernSelfArrow extends AbstractComponentBlueModernArr
 			ug = ug.apply(new UStroke(2));
 		}
 
-		ug.drawNewWay(0, textHeight, new ULine(x2, 0));
+		ug.apply(new UTranslate(0, textHeight)).draw(new ULine(x2, 0));
 
 		final int textAndArrowHeight = (int) (textHeight + getArrowOnlyHeight(stringBounder));
 
-		ug.drawNewWay(x2, textHeight, new ULine(0, textAndArrowHeight - textHeight));
-		ug.drawNewWay(x2, textAndArrowHeight, new ULine(2 - x2, 0));
+		ug.apply(new UTranslate(x2, textHeight)).draw(new ULine(0, textAndArrowHeight - textHeight));
+		ug.apply(new UTranslate(x2, textAndArrowHeight)).draw(new ULine(2 - x2, 0));
 
 		ug = ug.apply(new UStroke());
 
@@ -88,19 +88,17 @@ public class ComponentBlueModernSelfArrow extends AbstractComponentBlueModernArr
 
 		if (getArrowConfiguration().isAsync()) {
 			if (getArrowConfiguration().getPart() != ArrowPart.BOTTOM_PART) {
-				ug.apply(new UStroke(1.5)).drawNewWay(getArrowDeltaX2(), textHeight - getArrowDeltaY2() + delta,
-						new ULine(-getArrowDeltaX2(), getArrowDeltaY2()));
+				ug.apply(new UStroke(1.5)).apply(new UTranslate(getArrowDeltaX2(), textHeight - getArrowDeltaY2() + delta)).draw(new ULine(-getArrowDeltaX2(), getArrowDeltaY2()));
 			}
 			if (getArrowConfiguration().getPart() != ArrowPart.TOP_PART) {
-				ug.apply(new UStroke(1.5)).drawNewWay(getArrowDeltaX2(), textHeight + getArrowDeltaY2() + delta,
-						new ULine(-getArrowDeltaX2(), -getArrowDeltaY2()));
+				ug.apply(new UStroke(1.5)).apply(new UTranslate(getArrowDeltaX2(), textHeight + getArrowDeltaY2() + delta)).draw(new ULine(-getArrowDeltaX2(), -getArrowDeltaY2()));
 			}
 		} else {
 			final UPolygon polygon = getPolygon(textHeight, delta);
-			ug.drawOldWay(polygon);
+			ug.draw(polygon);
 		}
 
-		getTextBlock().drawUNewWayINLINED(ug.apply(new UTranslate(getMarginX1(), 0)));
+		getTextBlock().drawU(ug.apply(new UTranslate(getMarginX1(), 0)));
 
 	}
 

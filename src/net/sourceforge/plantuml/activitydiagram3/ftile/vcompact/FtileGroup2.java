@@ -31,16 +31,17 @@
  * Revision $Revision: 8475 $
  *
  */
-package net.sourceforge.plantuml.activitydiagram3.ftile.vertical;
+package net.sourceforge.plantuml.activitydiagram3.ftile.vcompact;
 
 import java.awt.Font;
 import java.awt.geom.Dimension2D;
+import java.awt.geom.Point2D;
 import java.util.List;
 
 import net.sourceforge.plantuml.Dimension2DDouble;
 import net.sourceforge.plantuml.SpriteContainerEmpty;
 import net.sourceforge.plantuml.Url;
-import net.sourceforge.plantuml.activitydiagram3.ftile.AbstractFtileOld;
+import net.sourceforge.plantuml.activitydiagram3.ftile.AbstractFtile2;
 import net.sourceforge.plantuml.activitydiagram3.ftile.Ftile;
 import net.sourceforge.plantuml.activitydiagram3.ftile.FtileMarged;
 import net.sourceforge.plantuml.cucadiagram.Display;
@@ -58,13 +59,14 @@ import net.sourceforge.plantuml.ugraphic.UGraphic;
 import net.sourceforge.plantuml.ugraphic.UStroke;
 import net.sourceforge.plantuml.ugraphic.UTranslate;
 
-class FtileGroup extends AbstractFtileOld {
+public class FtileGroup2 extends AbstractFtile2 {
 
+	private final double diffYY = 25;
 	private final Ftile inner;
 	private final TextBlock name;
 	private final HtmlColor color;
 
-	public FtileGroup(Ftile inner, Display test, HtmlColor color) {
+	public FtileGroup2(Ftile inner, Display test, HtmlColor color) {
 		this.inner = new FtileMarged(inner, 10);
 		this.color = color;
 		final UFont font = new UFont("Serif", Font.PLAIN, 14);
@@ -76,40 +78,40 @@ class FtileGroup extends AbstractFtileOld {
 		}
 	}
 
+	private Dimension2D calculateDimensionInternal(StringBounder stringBounder) {
+		final Dimension2D dim = inner.asTextBlock().calculateDimension(stringBounder);
+		return Dimension2DDouble.delta(dim, 0, diffYY * 2);
+	}
+
+	private UTranslate getTranslate() {
+		return new UTranslate(0, diffYY);
+	}
+
+	public Point2D getPointIn(StringBounder stringBounder) {
+		return getTranslate().getTranslated(inner.getPointIn(stringBounder));
+	}
+
+	public Point2D getPointOut(StringBounder stringBounder) {
+		return getTranslate().getTranslated(inner.getPointOut(stringBounder));
+	}
+
 	public TextBlock asTextBlock() {
 		return new TextBlock() {
 
-			public void drawUNewWayINLINED(UGraphic ug) {
-				final StringBounder stringBounder = ug.getStringBounder();
-				final Dimension2D dimTotal = calculateDimension(stringBounder);
-				final Dimension2D dimInner = inner.asTextBlock().calculateDimension(stringBounder);
+			public void drawU(UGraphic ug) {
+				final Dimension2D dimTotal = calculateDimension(ug.getStringBounder());
 
 				final SymbolContext symbolContext = new SymbolContext(HtmlColorUtils.WHITE, HtmlColorUtils.BLACK)
 						.withShadow(SHADOWING).withStroke(new UStroke(2));
 				USymbol.FRAME.asBig(name, TextBlockUtils.empty(0, 0), dimTotal.getWidth(), dimTotal.getHeight(),
-						symbolContext).drawUNewWayINLINED(ug);
-				// ug.getParam().resetStroke();
+						symbolContext).drawU(ug);
 
-				final double diffY = dimTotal.getHeight() - dimInner.getHeight();
-				inner.asTextBlock().drawUNewWayINLINED(ug.apply(new UTranslate(0, diffY / 2)));
+				ug.apply(getTranslate()).draw(inner);
 
-				final Ftile line1 = new FtileVerticalArrow(diffY / 2, color);
-				final TextBlock textBlock1 = line1.asTextBlock();
-				textBlock1.drawUNewWayINLINED(ug.apply(new UTranslate(dimTotal.getWidth() / 2
-						- textBlock1.calculateDimension(stringBounder).getWidth() / 2, 0)));
-
-				final Ftile line2 = new FtileVerticalLine(diffY / 2, color);
-				final TextBlock textBlock2 = line2.asTextBlock();
-				textBlock2
-						.drawUNewWayINLINED(ug.apply(new UTranslate(dimTotal.getWidth() / 2
-								- textBlock2.calculateDimension(stringBounder).getWidth() / 2, dimInner.getHeight()
-								+ diffY / 2)));
 			}
 
 			public Dimension2D calculateDimension(StringBounder stringBounder) {
-				Dimension2D dim = inner.asTextBlock().calculateDimension(stringBounder);
-				dim = Dimension2DDouble.delta(dim, 0, 50);
-				return dim;
+				return calculateDimensionInternal(stringBounder);
 			}
 
 			public List<Url> getUrls() {
@@ -121,4 +123,5 @@ class FtileGroup extends AbstractFtileOld {
 	public boolean isKilled() {
 		return false;
 	}
+
 }

@@ -49,6 +49,7 @@ import net.sourceforge.plantuml.ugraphic.UChangeColor;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
 import net.sourceforge.plantuml.ugraphic.UPolygon;
 import net.sourceforge.plantuml.ugraphic.URectangle;
+import net.sourceforge.plantuml.ugraphic.UTranslate;
 
 public class PathDrawerInterface implements PathDrawer {
 
@@ -141,7 +142,7 @@ public class PathDrawerInterface implements PathDrawer {
 		if (linkType.isDashed()) {
 			goDash(ug);
 		}
-		ug.drawOldWay(dotPath);
+		ug.draw(dotPath);
 		if (linkType.isDashed()) {
 			noDash(ug);
 		}
@@ -217,7 +218,7 @@ public class PathDrawerInterface implements PathDrawer {
 		ug = ug.apply(new UChangeColor(rose.getHtmlColor(param, ColorParam.classBorder)));
 		final double width = 10;
 		final double height = 10;
-		ug.drawNewWay(centerX - width / 2, centerY - height / 2, new URectangle(width, height));
+		ug.apply(new UTranslate(centerX - width / 2, centerY - height / 2)).draw(new URectangle(width, height));
 		return new Point2D.Double(centerX, centerY);
 	}
 
@@ -235,7 +236,7 @@ public class PathDrawerInterface implements PathDrawer {
 		triangle.addPoint(-width / 2, height);
 		triangle.addPoint(width / 2, height);
 		triangle.rotate(theta);
-		ug.drawNewWay(x, y, triangle);
+		ug.apply(new UTranslate(x, y)).draw(triangle);
 
 		final Point2D middle = BezierUtils.middle(triangle.getPoints().get(1), triangle.getPoints().get(2));
 		middle.setLocation(middle.getX() + x, middle.getY() + y);
@@ -255,7 +256,7 @@ public class PathDrawerInterface implements PathDrawer {
 		triangle.addPoint(0, height);
 		triangle.addPoint(width / 2, height / 2);
 		triangle.rotate(theta);
-		ug.drawNewWay(x, y, triangle);
+		ug.apply(new UTranslate(x, y)).draw(triangle);
 
 		final Point2D middle = triangle.getPoints().get(2);
 		middle.setLocation(middle.getX() + x, middle.getY() + y);
@@ -277,7 +278,7 @@ public class PathDrawerInterface implements PathDrawer {
 		triangle.addPoint(0, height2);
 		triangle.addPoint(width / 2, height);
 		triangle.rotate(theta);
-		ug.drawNewWay(x, y, triangle);
+		ug.apply(new UTranslate(x, y)).draw(triangle);
 
 		final Point2D middle = triangle.getPoints().get(2);
 		middle.setLocation(middle.getX() + x, middle.getY() + y);

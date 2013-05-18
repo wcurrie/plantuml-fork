@@ -37,12 +37,29 @@ import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.List;
 
+import net.sourceforge.plantuml.graphic.HtmlColor;
+import net.sourceforge.plantuml.ugraphic.UChangeBackColor;
+import net.sourceforge.plantuml.ugraphic.UChangeColor;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
 import net.sourceforge.plantuml.ugraphic.ULine;
+import net.sourceforge.plantuml.ugraphic.UPolygon;
+import net.sourceforge.plantuml.ugraphic.UStroke;
+import net.sourceforge.plantuml.ugraphic.UTranslate;
 
 public class Snake {
 
 	private final List<Point2D.Double> points = new ArrayList<Point2D.Double>();
+	private final UPolygon endDecoration;
+	private final HtmlColor color;
+
+	public Snake(HtmlColor color, UPolygon endDecoration) {
+		this.endDecoration = endDecoration;
+		this.color = color;
+	}
+
+	public Snake(HtmlColor color) {
+		this(color, null);
+	}
 
 	public void addPoint(double x, double y) {
 		this.points.add(new Point2D.Double(x, y));
@@ -53,8 +70,14 @@ public class Snake {
 	}
 
 	public void drawU(UGraphic ug) {
+		ug = ug.apply(new UChangeColor(color));
 		for (int i = 0; i < points.size() - 1; i++) {
-			drawLine(ug, points.get(i), points.get(i + 1));
+			drawLine(ug.apply(new UStroke(1.5)), points.get(i), points.get(i + 1));
+		}
+		if (endDecoration != null) {
+			ug = ug.apply(new UChangeBackColor(color));
+			final Point2D end = points.get(points.size() - 1);
+			ug.apply(new UTranslate(end)).apply(new UStroke()).draw(endDecoration);
 		}
 	}
 
@@ -67,7 +90,7 @@ public class Snake {
 		final double xmax = Math.max(x1, x2);
 		final double ymin = Math.min(y1, y2);
 		final double ymax = Math.max(y1, y2);
-		ug.drawNewWay(xmin, ymin, new ULine(xmax - xmin, ymax - ymin));
+		ug.apply(new UTranslate(xmin, ymin)).draw(new ULine(xmax - xmin, ymax - ymin));
 	}
 
 }

@@ -57,9 +57,9 @@ class RowMerge implements Row {
 	public TextBlock asTextBloc(final TimeConverter timeConverter) {
 		return new TextBlock() {
 
-			public void drawUNewWayINLINED(UGraphic ug) {
-				r1.asTextBloc(timeConverter).drawUNewWayINLINED(ug);
-				r2.asTextBloc(timeConverter).drawUNewWayINLINED(ug.apply(new UTranslate(0, r1.getHeight())));
+			public void drawU(UGraphic ug) {
+				r1.asTextBloc(timeConverter).drawU(ug);
+				r2.asTextBloc(timeConverter).drawU(ug.apply(new UTranslate(0, r1.getHeight())));
 			}
 
 			public Dimension2D calculateDimension(StringBounder stringBounder) {
@@ -89,9 +89,9 @@ class RowMerge implements Row {
 	public TextBlock header() {
 		return new TextBlock() {
 
-			public void drawUNewWayINLINED(UGraphic ug) {
-				r1.header().drawUNewWayINLINED(ug);
-				r2.header().drawUNewWayINLINED(ug.apply(new UTranslate(0, r1.getHeight())));
+			public void drawU(UGraphic ug) {
+				r1.header().drawU(ug);
+				r2.header().drawU(ug.apply(new UTranslate(0, r1.getHeight())));
 			}
 
 			public Dimension2D calculateDimension(StringBounder stringBounder) {

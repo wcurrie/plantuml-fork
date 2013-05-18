@@ -50,6 +50,7 @@ import net.sourceforge.plantuml.ugraphic.UEllipse;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
 import net.sourceforge.plantuml.ugraphic.UPolygon;
 import net.sourceforge.plantuml.ugraphic.URectangle;
+import net.sourceforge.plantuml.ugraphic.UTranslate;
 
 public enum VisibilityModifier {
 	PRIVATE_FIELD(ColorParam.iconPrivate, null), PROTECTED_FIELD(ColorParam.iconProtected, null), PACKAGE_PRIVATE_FIELD(
@@ -70,7 +71,7 @@ public enum VisibilityModifier {
 
 	public UDrawable getUDrawable(final int size, final HtmlColor foregroundColor, final HtmlColor backgoundColor) {
 		return new UDrawable() {
-			public void drawUNewWayINLINED(UGraphic ug) {
+			public void drawU(UGraphic ug) {
 				drawInternal(ug, size, foregroundColor, backgoundColor, 0, 0);
 			}
 
@@ -84,7 +85,7 @@ public enum VisibilityModifier {
 				return new Dimension2DDouble(size + 1, size + 1);
 			}
 
-			public void drawUNewWayINLINED(UGraphic ug) {
+			public void drawU(UGraphic ug) {
 				// final double tx = ug.getTranslateX();
 				// final double ty = ug.getTranslateY();
 				// ug.translate(x, y);F
@@ -141,11 +142,11 @@ public enum VisibilityModifier {
 	}
 
 	private void drawSquare(UGraphic ug, boolean filled, int size, double x, double y) {
-		ug.drawNewWay(x + 2, y + 2, new URectangle(size - 4, size - 4));
+		ug.apply(new UTranslate(x + 2, y + 2)).draw(new URectangle(size - 4, size - 4));
 	}
 
 	private void drawCircle(UGraphic ug, boolean filled, int size, double x, double y) {
-		ug.drawNewWay(x + 2, y + 2, new UEllipse(size - 4, size - 4));
+		ug.apply(new UTranslate(x + 2, y + 2)).draw(new UEllipse(size - 4, size - 4));
 	}
 
 	static private int ensureEven(int n) {
@@ -162,7 +163,7 @@ public enum VisibilityModifier {
 		poly.addPoint(size, size / 2.0);
 		poly.addPoint(size / 2.0, size);
 		poly.addPoint(0, size / 2.0);
-		ug.drawNewWay(x + 1, y, poly);
+		ug.apply(new UTranslate(x + 1, y)).draw(poly);
 	}
 
 	private void drawTriangle(UGraphic ug, boolean filled, int size, double x, double y) {
@@ -171,7 +172,7 @@ public enum VisibilityModifier {
 		poly.addPoint(size / 2.0, 1);
 		poly.addPoint(0, size - 1);
 		poly.addPoint(size, size - 1);
-		ug.drawNewWay(x + 1, y, poly);
+		ug.apply(new UTranslate(x + 1, y)).draw(poly);
 	}
 
 	public static boolean isVisibilityCharacter(char c) {

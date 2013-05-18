@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 10266 $
+ * Revision $Revision: 10930 $
  *
  */
 package net.sourceforge.plantuml.graphic;
@@ -76,17 +76,17 @@ public class CircledCharacter implements TextBlock {
 	// drawU(new UGraphicG2d(colorMapper, g2d, null, 1.0), x, y);
 	// }
 
-	public void drawUNewWayINLINED(UGraphic ug) {
+	public void drawU(UGraphic ug) {
 		if (circle != null) {
 			ug = ug.apply(new UChangeColor(circle));
 		}
 		// final HtmlColor back = ug.getParam().getBackcolor();
 		ug = ug.apply(new UChangeBackColor(innerCircle));
 		ug = ug.apply(new UTranslate(0, 0));
-		ug.drawOldWay(new UEllipse(radius * 2, radius * 2));
+		ug.draw(new UEllipse(radius * 2, radius * 2));
 		ug = ug.apply(new UChangeColor(fontColor));
 		ug = ug.apply(new UTranslate(radius, radius));
-		ug.drawOldWay(new UCenteredCharacter(c.charAt(0), font));
+		ug.draw(new UCenteredCharacter(c.charAt(0), font));
 	}
 
 	final public double getPreferredWidth(StringBounder stringBounder) {

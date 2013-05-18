@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 10643 $
+ * Revision $Revision: 10925 $
  *
  */
 package net.sourceforge.plantuml.ugraphic;
@@ -65,7 +65,7 @@ public abstract class AbstractUGraphic<O> extends AbstractCommonUGraphic {
 		this.drivers.put(cl, driver);
 	}
 
-	public final void drawOldWay(UShape shape) {
+	public final void draw(UShape shape) {
 		if (shape instanceof UEmpty) {
 			return;
 		}

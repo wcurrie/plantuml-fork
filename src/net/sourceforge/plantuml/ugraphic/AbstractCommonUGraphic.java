@@ -28,14 +28,14 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 10672 $
+ * Revision $Revision: 10920 $
  *
  */
 package net.sourceforge.plantuml.ugraphic;
 
 import net.sourceforge.plantuml.graphic.HtmlColor;
 
-public abstract class AbstractCommonUGraphic extends UGraphic {
+public abstract class AbstractCommonUGraphic implements UGraphic {
 
 	private UStroke stroke = new UStroke();
 	private boolean hidden = false;
@@ -47,7 +47,6 @@ public abstract class AbstractCommonUGraphic extends UGraphic {
 	private final ColorMapper colorMapper;
 	private UClip clip;
 
-	@Override
 	public UGraphic apply(UChange change) {
 		final AbstractCommonUGraphic copy = copyUGraphic();
 		if (change instanceof UTranslate) {

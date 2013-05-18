@@ -69,8 +69,8 @@ class TileImageSvg implements TextBlock {
 		return new Dimension2DDouble(svg.getWidth(), svg.getHeight());
 	}
 
-	public void drawUNewWayINLINED(UGraphic ug) {
-		ug.drawOldWay(svg);
+	public void drawU(UGraphic ug) {
+		ug.draw(svg);
 	}
 
 	public List<Url> getUrls() {

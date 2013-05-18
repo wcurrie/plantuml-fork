@@ -85,7 +85,7 @@ public class ClusterDecoration {
 		if (symbol != null) {
 			final SymbolContext symbolContext = new SymbolContext(stateBack, borderColor).withShadow(shadowing)
 					.withStroke(new UStroke(2));
-			symbol.asBig(title, stereo, maxX - minX, maxY - minY, symbolContext).drawUNewWayINLINED(
+			symbol.asBig(title, stereo, maxX - minX, maxY - minY, symbolContext).drawU(
 					ug.apply(new UTranslate(minX, minY)));
 			// ug.getParam().resetStroke();
 			return;
@@ -115,7 +115,7 @@ public class ClusterDecoration {
 		PackageStyle.CLOUD.drawU(ug.apply(new UTranslate(minX, minY)), new Dimension2DDouble(width, height), dimTitle,
 				shadowing);
 		ug = ug.apply(new UStroke());
-		title.drawUNewWayINLINED(ug.apply(new UTranslate(minX + (width - dimTitle.getWidth()) / 2, minY + 10)));
+		title.drawU(ug.apply(new UTranslate(minX + (width - dimTitle.getWidth()) / 2, minY + 10)));
 
 	}
 
@@ -129,7 +129,7 @@ public class ClusterDecoration {
 		PackageStyle.DATABASE.drawU(ug.apply(new UTranslate(minX, minY - 10)),
 				new Dimension2DDouble(width, height + 10), dimTitle, shadowing);
 		ug = ug.apply(new UStroke());
-		title.drawUNewWayINLINED(ug.apply(new UTranslate(minX + marginTitleX1, minY + 10)));
+		title.drawU(ug.apply(new UTranslate(minX + marginTitleX1, minY + 10)));
 
 	}
 
@@ -143,7 +143,7 @@ public class ClusterDecoration {
 		PackageStyle.FRAME.drawU(ug.apply(new UTranslate(minX, minY)), new Dimension2DDouble(width, height), dimTitle,
 				shadowing);
 		ug = ug.apply(new UStroke());
-		title.drawUNewWayINLINED(ug.apply(new UTranslate(minX + marginTitleX1, minY)));
+		title.drawU(ug.apply(new UTranslate(minX + marginTitleX1, minY)));
 
 	}
 
@@ -153,7 +153,7 @@ public class ClusterDecoration {
 		final double height = maxY - minY;
 		final SymbolContext ctx = new SymbolContext(stateBack, borderColor).withStroke(new UStroke(2)).withShadow(
 				shadowing);
-		USymbol.NODE.asBig(title, stereo, width + 10, height, ctx).drawUNewWayINLINED(
+		USymbol.NODE.asBig(title, stereo, width + 10, height, ctx).drawU(
 				ug.apply(new UTranslate(minX, minY)));
 		// ug.getParam().resetStroke();
 	}
@@ -187,10 +187,10 @@ public class ClusterDecoration {
 
 		ug = ug.apply(new UChangeBackColor(stateBack)).apply(new UChangeColor(borderColor));
 		ug = ug.apply(new UStroke(2));
-		ug.drawNewWay(minX, minY, shape);
-		ug.drawNewWay(minX, minY + htitle, new ULine(wtitle + marginTitleX3, 0));
+		ug.apply(new UTranslate(minX, minY)).draw(shape);
+		ug.apply(new UTranslate(minX, minY + htitle)).draw(new ULine(wtitle + marginTitleX3, 0));
 		ug = ug.apply(new UStroke());
-		title.drawUNewWayINLINED(ug.apply(new UTranslate(minX + marginTitleX1, minY + marginTitleY1)));
+		title.drawU(ug.apply(new UTranslate(minX + marginTitleX1, minY + marginTitleY1)));
 	}
 
 	// Rect
@@ -206,10 +206,10 @@ public class ClusterDecoration {
 		ug = ug.apply(new UChangeBackColor(stateBack)).apply(new UChangeColor(borderColor));
 		ug = ug.apply(new UStroke(2));
 
-		ug.drawNewWay(minX, minY, shape);
+		ug.apply(new UTranslate(minX, minY)).draw(shape);
 		ug = ug.apply(new UStroke());
 		final double deltax = width - dimTitle.getWidth();
-		title.drawUNewWayINLINED(ug.apply(new UTranslate(minX + deltax / 2, minY + 5)));
+		title.drawU(ug.apply(new UTranslate(minX + deltax / 2, minY + 5)));
 	}
 
 	public final static int marginTitleX1 = 3;

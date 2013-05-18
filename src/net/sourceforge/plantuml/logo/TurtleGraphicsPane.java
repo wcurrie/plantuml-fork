@@ -121,7 +121,7 @@ class TurtleGraphicsPane {
 		final HtmlColor turtleColor1 = HtmlColorUtils.getColorIfValid("OliveDrab");
 		final HtmlColor turtleColor2 = HtmlColorUtils.getColorIfValid("MediumSpringGreen");
 
-		ug.apply(new UChangeColor(turtleColor1)).apply(new UChangeBackColor(turtleColor2)).drawNewWay(x, -y, poly);
+		ug.apply(new UChangeColor(turtleColor1)).apply(new UChangeBackColor(turtleColor2)).apply(new UTranslate(x, -y)).draw(poly);
 		// ug.setAntiAliasing(true);
 	}
 
@@ -189,7 +189,7 @@ class TurtleGraphicsPane {
 			final HtmlColor color = colors.get(i);
 			final Rectangle2D.Double r = lines.get(i);
 			final ULine line = new ULine(r.width - r.x, -r.height + r.y);
-			ug.apply(new UChangeColor(color)).drawNewWay(r.x, -r.y, line);
+			ug.apply(new UChangeColor(color)).apply(new UTranslate(r.x, -r.y)).draw(line);
 
 		}
 		drawTurtle(ug);
@@ -199,7 +199,7 @@ class TurtleGraphicsPane {
 					new SpriteContainerEmpty());
 			final Dimension2D dim = text.calculateDimension(ug.getStringBounder());
 			final double textHeight = dim.getHeight();
-			text.drawUNewWayINLINED(ug.apply(new UTranslate(0, (height - textHeight))));
+			text.drawU(ug.apply(new UTranslate(0, (height - textHeight))));
 		}
 	}
 

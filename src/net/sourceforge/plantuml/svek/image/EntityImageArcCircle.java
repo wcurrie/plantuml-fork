@@ -95,7 +95,7 @@ public class EntityImageArcCircle extends AbstractEntityImage {
 		return stereo.calculateDimension(stringBounder);
 	}
 
-	final public void drawUNewWayINLINED(UGraphic ug) {
+	final public void drawU(UGraphic ug) {
 		final StringBounder stringBounder = ug.getStringBounder();
 		final Dimension2D dimStereo = getStereoDimension(stringBounder);
 		final Dimension2D dimTotal = calculateDimension(stringBounder);
@@ -103,11 +103,11 @@ public class EntityImageArcCircle extends AbstractEntityImage {
 
 		final double nameX = (dimTotal.getWidth() - dimName.getWidth()) / 2;
 		final double nameY = dimStereo.getHeight();
-		name.drawUNewWayINLINED(ug.apply(new UTranslate(nameX, nameY)));
+		name.drawU(ug.apply(new UTranslate(nameX, nameY)));
 
 		if (stereo != null) {
 			final double stereoX = (dimTotal.getWidth() - dimStereo.getWidth()) / 2;
-			stereo.drawUNewWayINLINED(ug.apply(new UTranslate(stereoX, 0)));
+			stereo.drawU(ug.apply(new UTranslate(stereoX, 0)));
 		}
 	}
 
