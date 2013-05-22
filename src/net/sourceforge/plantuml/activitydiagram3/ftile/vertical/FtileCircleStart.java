@@ -37,10 +37,12 @@ import java.awt.geom.Dimension2D;
 import java.awt.geom.Point2D;
 import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 
 import net.sourceforge.plantuml.Dimension2DDouble;
 import net.sourceforge.plantuml.Url;
-import net.sourceforge.plantuml.activitydiagram3.ftile.AbstractFtile2;
+import net.sourceforge.plantuml.activitydiagram3.ftile.AbstractFtile;
+import net.sourceforge.plantuml.activitydiagram3.ftile.Swimlane;
 import net.sourceforge.plantuml.graphic.HtmlColor;
 import net.sourceforge.plantuml.graphic.StringBounder;
 import net.sourceforge.plantuml.graphic.TextBlock;
@@ -49,15 +51,34 @@ import net.sourceforge.plantuml.ugraphic.UChangeColor;
 import net.sourceforge.plantuml.ugraphic.UEllipse;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
 
-public class FtileCircleStart extends AbstractFtile2 {
+public class FtileCircleStart extends AbstractFtile {
 
 	private static final int SIZE = 20;
 
 	private final HtmlColor backColor;
+	private final Swimlane swimlane;
 
-	public FtileCircleStart(HtmlColor backColor) {
+	public FtileCircleStart(HtmlColor backColor, Swimlane swimlane) {
 		this.backColor = backColor;
+		this.swimlane = swimlane;
 	}
+	
+	public Set<Swimlane> getSwimlanes() {
+		if (swimlane == null) {
+			return Collections.emptySet();
+		}
+		return Collections.singleton(swimlane);
+	}
+	
+	public Swimlane getSwimlaneIn() {
+		return swimlane;
+	}
+
+	public Swimlane getSwimlaneOut() {
+		return swimlane;
+	}
+
+
 
 	public TextBlock asTextBlock() {
 		return new TextBlock() {

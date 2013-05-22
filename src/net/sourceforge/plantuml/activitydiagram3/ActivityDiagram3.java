@@ -94,6 +94,20 @@ public class ActivityDiagram3 extends UmlDiagram {
 	private void setNextLinkRenderer(LinkRendering link) {
 		swinlanes.setNextLinkRenderer(link);
 	}
+	
+	public void addActivity(Display activity, HtmlColor color) {
+		current().add(new InstructionSimple(activity, color, nextLinkRenderer(), swinlanes.getCurrentSwimlane()));
+		setNextLinkRenderer(null);
+	}
+	
+	public void start() {
+		current().add(new InstructionStart(swinlanes.getCurrentSwimlane()));
+	}
+
+	public void stop() {
+		current().add(new InstructionStop(swinlanes.getCurrentSwimlane()));
+	}
+
 
 	public String getDescription() {
 		return "activity3";
@@ -106,31 +120,21 @@ public class ActivityDiagram3 extends UmlDiagram {
 
 	protected ImageData exportDiagramInternal(OutputStream os, int index, FileFormatOption fileFormatOption,
 			List<BufferedImage> flashcodes) throws IOException {
-		final TextBlock result = getResult(dummyStringBounder);
+		TextBlock result = swinlanes;
+		result = addTitle(result);
+		result = addHeaderAndFooter(result);
 		final ISkinParam skinParam = getSkinParam();
 		final double dpiFactor = getDpiFactor(fileFormatOption);
 
-		final TextBlock tb = new TextBlockCompressed(new TextBlockInterceptorTextBlockable(result));
+		// final TextBlock tb = new TextBlockCompressed(new TextBlockInterceptorTextBlockable(result));
 		// final TextBlock tb = new TextBlockInterceptorTextBlockable(result);
-		final UGraphic ug = TextBlockUtils.getPrinted(tb, fileFormatOption, skinParam.getColorMapper(), dpiFactor,
+		final UGraphic ug = TextBlockUtils.getPrinted(result, fileFormatOption, skinParam.getColorMapper(), dpiFactor,
 				getSkinParam().getBackgroundColor());
 		// // ug = new UGraphicOnlySimpleActivity(ug);
 		// // ug = new UGraphicInterceptorTextBlockableOnlySimpleActivity(ug);
 		ug.writeImage(os, getMetadata(), getDpi(fileFormatOption));
-		final Dimension2D dim = TextBlockUtils.getMinMax(tb, dummyStringBounder).getDimension();
+		final Dimension2D dim = TextBlockUtils.getMinMax(result, dummyStringBounder).getDimension();
 		return new ImageDataSimple((int) dim.getWidth(), (int) dim.getHeight());
-	}
-
-	public void addActivity(Display activity, HtmlColor color) {
-		current().add(new InstructionSimple(activity, color, nextLinkRenderer()));
-		setNextLinkRenderer(null);
-	}
-
-	private TextBlock getResult(StringBounder stringBounder) {
-		TextBlock result = swinlanes;
-		result = addTitle(result);
-		result = addHeaderAndFooter(result);
-		return result;
 	}
 
 	private TextBlock addTitle(TextBlock original) {
@@ -274,15 +278,7 @@ public class ActivityDiagram3 extends UmlDiagram {
 		return CommandExecutionResult.error("Cannot find while");
 	}
 
-	public void start() {
-		current().add(new InstructionStart());
-	}
-
-	public void stop() {
-		current().add(new InstructionStop());
-	}
-
-	public CommandExecutionResult kill() {
+	final public CommandExecutionResult kill() {
 		if (current().kill() == false) {
 			return CommandExecutionResult.error("kill cannot be used here");
 		}

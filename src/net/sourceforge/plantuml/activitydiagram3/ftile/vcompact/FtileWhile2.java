@@ -37,19 +37,21 @@ import java.awt.geom.Dimension2D;
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import net.sourceforge.plantuml.Dimension2DDouble;
 import net.sourceforge.plantuml.SpriteContainerEmpty;
 import net.sourceforge.plantuml.Url;
 import net.sourceforge.plantuml.activitydiagram3.LinkRendering;
 import net.sourceforge.plantuml.activitydiagram3.ftile.AbstractConnection;
-import net.sourceforge.plantuml.activitydiagram3.ftile.AbstractFtile2;
+import net.sourceforge.plantuml.activitydiagram3.ftile.AbstractFtile;
 import net.sourceforge.plantuml.activitydiagram3.ftile.Arrows;
 import net.sourceforge.plantuml.activitydiagram3.ftile.Connection;
 import net.sourceforge.plantuml.activitydiagram3.ftile.Diamond;
 import net.sourceforge.plantuml.activitydiagram3.ftile.Ftile;
 import net.sourceforge.plantuml.activitydiagram3.ftile.FtileUtils;
 import net.sourceforge.plantuml.activitydiagram3.ftile.Snake;
+import net.sourceforge.plantuml.activitydiagram3.ftile.Swimlane;
 import net.sourceforge.plantuml.cucadiagram.Display;
 import net.sourceforge.plantuml.graphic.FontConfiguration;
 import net.sourceforge.plantuml.graphic.HorizontalAlignement;
@@ -66,7 +68,7 @@ import net.sourceforge.plantuml.ugraphic.UGraphic;
 import net.sourceforge.plantuml.ugraphic.UStroke;
 import net.sourceforge.plantuml.ugraphic.UTranslate;
 
-class FtileWhile2 extends AbstractFtile2 {
+class FtileWhile2 extends AbstractFtile {
 
 	private final Ftile whileBlock;
 
@@ -78,6 +80,20 @@ class FtileWhile2 extends AbstractFtile2 {
 
 	private final HtmlColor arrowColor;
 	private final HtmlColor endInlinkColor;
+
+	
+	public Set<Swimlane> getSwimlanes() {
+		return whileBlock.getSwimlanes();
+	}
+	
+	public Swimlane getSwimlaneIn() {
+		return whileBlock.getSwimlaneIn();
+	}
+
+	public Swimlane getSwimlaneOut() {
+		return getSwimlaneIn();
+	}
+
 
 	private FtileWhile2(Ftile whileBlock, Display test, HtmlColor borderColor, HtmlColor backColor,
 			HtmlColor arrowColor, Display yes, Display out, UFont font, HtmlColor endInlinkColor) {

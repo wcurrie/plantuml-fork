@@ -33,60 +33,31 @@
  */
 package net.sourceforge.plantuml.graphic;
 
-import java.io.IOException;
-import java.io.OutputStream;
-
-import net.sourceforge.plantuml.Url;
-import net.sourceforge.plantuml.ugraphic.ColorMapper;
 import net.sourceforge.plantuml.ugraphic.UChange;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
-import net.sourceforge.plantuml.ugraphic.UParam;
 import net.sourceforge.plantuml.ugraphic.UShape;
 
-public class UGraphicInterceptorTextBlockable implements UGraphic {
-
-	final private UGraphic ug;
+public class UGraphicInterceptorTextBlockable extends UGraphicDelegator {
 
 	public UGraphicInterceptorTextBlockable(UGraphic ug) {
-		this.ug = ug;
-	}
-
-	public StringBounder getStringBounder() {
-		return ug.getStringBounder();
-	}
-
-	public UParam getParam() {
-		return ug.getParam();
+		super(ug);
 	}
 
 	public void draw(UShape shape) {
 		if (shape instanceof TextBlockable) {
 			final TextBlock textBlock = ((TextBlockable) shape).asTextBlock();
 			textBlock.drawU(this);
+		} else if (shape instanceof UDrawable) {
+			final UDrawable drawable = (UDrawable) shape;
+			drawable.drawU(this);
 		} else {
-			ug.draw(shape);
+			getUg().draw(shape);
 		}
 
 	}
 
 	public UGraphic apply(UChange change) {
-		return new UGraphicInterceptorTextBlockable(ug.apply(change));
-	}
-
-	public ColorMapper getColorMapper() {
-		return ug.getColorMapper();
-	}
-
-	public void startUrl(Url url) {
-		ug.startUrl(url);
-	}
-
-	public void closeAction() {
-		ug.closeAction();
-	}
-
-	public void writeImage(OutputStream os, String metadata, int dpi) throws IOException {
-		ug.writeImage(os, metadata, dpi);
+		return new UGraphicInterceptorTextBlockable(getUg().apply(change));
 	}
 
 }

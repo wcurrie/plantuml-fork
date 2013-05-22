@@ -37,13 +37,15 @@ import java.awt.Font;
 import java.awt.geom.Dimension2D;
 import java.awt.geom.Point2D;
 import java.util.List;
+import java.util.Set;
 
 import net.sourceforge.plantuml.Dimension2DDouble;
 import net.sourceforge.plantuml.SpriteContainerEmpty;
 import net.sourceforge.plantuml.Url;
-import net.sourceforge.plantuml.activitydiagram3.ftile.AbstractFtile2;
+import net.sourceforge.plantuml.activitydiagram3.ftile.AbstractFtile;
 import net.sourceforge.plantuml.activitydiagram3.ftile.Ftile;
 import net.sourceforge.plantuml.activitydiagram3.ftile.FtileMarged;
+import net.sourceforge.plantuml.activitydiagram3.ftile.Swimlane;
 import net.sourceforge.plantuml.cucadiagram.Display;
 import net.sourceforge.plantuml.graphic.FontConfiguration;
 import net.sourceforge.plantuml.graphic.HorizontalAlignement;
@@ -59,7 +61,7 @@ import net.sourceforge.plantuml.ugraphic.UGraphic;
 import net.sourceforge.plantuml.ugraphic.UStroke;
 import net.sourceforge.plantuml.ugraphic.UTranslate;
 
-public class FtileGroup2 extends AbstractFtile2 {
+public class FtileGroup2 extends AbstractFtile {
 
 	private final double diffYY = 25;
 	private final Ftile inner;
@@ -77,6 +79,19 @@ public class FtileGroup2 extends AbstractFtile2 {
 			this.name = TextBlockUtils.create(test, fc, HorizontalAlignement.LEFT, new SpriteContainerEmpty());
 		}
 	}
+
+	public Set<Swimlane> getSwimlanes() {
+		return inner.getSwimlanes();
+	}
+	
+	public Swimlane getSwimlaneIn() {
+		return inner.getSwimlaneIn();
+	}
+
+	public Swimlane getSwimlaneOut() {
+		return inner.getSwimlaneOut();
+	}
+
 
 	private Dimension2D calculateDimensionInternal(StringBounder stringBounder) {
 		final Dimension2D dim = inner.asTextBlock().calculateDimension(stringBounder);

@@ -36,6 +36,7 @@ package net.sourceforge.plantuml.activitydiagram3.ftile.vcompact;
 import java.awt.geom.Dimension2D;
 import java.awt.geom.Point2D;
 import java.util.List;
+import java.util.Set;
 
 import net.sourceforge.plantuml.ColorParam;
 import net.sourceforge.plantuml.Dimension2DDouble;
@@ -45,8 +46,9 @@ import net.sourceforge.plantuml.ISkinParam;
 import net.sourceforge.plantuml.SkinParam;
 import net.sourceforge.plantuml.UmlDiagramType;
 import net.sourceforge.plantuml.Url;
-import net.sourceforge.plantuml.activitydiagram3.ftile.AbstractFtile2;
+import net.sourceforge.plantuml.activitydiagram3.ftile.AbstractFtile;
 import net.sourceforge.plantuml.activitydiagram3.ftile.Ftile;
+import net.sourceforge.plantuml.activitydiagram3.ftile.Swimlane;
 import net.sourceforge.plantuml.cucadiagram.Display;
 import net.sourceforge.plantuml.graphic.FontConfiguration;
 import net.sourceforge.plantuml.graphic.HorizontalAlignement;
@@ -61,7 +63,7 @@ import net.sourceforge.plantuml.ugraphic.UFont;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
 import net.sourceforge.plantuml.ugraphic.UTranslate;
 
-public class FtileWithNoteOpale2 extends AbstractFtile2 {
+public class FtileWithNoteOpale2 extends AbstractFtile {
 
 	private final Ftile tile;
 	private final Opale opale;
@@ -69,6 +71,19 @@ public class FtileWithNoteOpale2 extends AbstractFtile2 {
 	private final HtmlColor arrowColor;
 	private final NotePosition notePosition;
 	private final double halfSuppSpace = 20;
+
+	public Set<Swimlane> getSwimlanes() {
+		return tile.getSwimlanes();
+	}
+	
+	public Swimlane getSwimlaneIn() {
+		return tile.getSwimlaneIn();
+	}
+
+	public Swimlane getSwimlaneOut() {
+		return tile.getSwimlaneOut();
+	}
+
 
 	public FtileWithNoteOpale2(Ftile tile, Display note, HtmlColor arrowColor, NotePosition notePosition) {
 		this.tile = tile;

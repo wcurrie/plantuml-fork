@@ -36,49 +36,39 @@ package net.sourceforge.plantuml.ugraphic;
 import java.awt.geom.Dimension2D;
 
 import net.sourceforge.plantuml.Dimension2DDouble;
-import net.sourceforge.plantuml.graphic.HtmlColor;
-import net.sourceforge.plantuml.graphic.HtmlColorUtils;
 
-public class MinMax {
+public class MinMaxMutable {
 
-	private final double maxX;
-	private final double maxY;
-	private final double minX;
-	private final double minY;
+	private double maxX;
+	private double maxY;
+	private double minX;
+	private double minY;
 
-	public static MinMax getEmpty(boolean initToZero) {
+	public static MinMaxMutable getEmpty(boolean initToZero) {
 		if (initToZero) {
-			return new MinMax(0, 0, 0, 0);
+			return new MinMaxMutable(0, 0, 0, 0);
 		}
-		return new MinMax(Double.MAX_VALUE, Double.MAX_VALUE, -Double.MAX_VALUE, -Double.MAX_VALUE);
+		return new MinMaxMutable(Double.MAX_VALUE, Double.MAX_VALUE, -Double.MAX_VALUE, -Double.MAX_VALUE);
 	}
 
-	@Override
-	public String toString() {
-		return "(" + minX + "," + minY + ")->(" + maxX + "," + maxY + ")";
-	}
-
-	public static MinMax fromMutable(MinMaxMutable minmax) {
-		return new MinMax(minmax.getMinX(), minmax.getMinY(), minmax.getMaxX(), minmax.getMaxY());
-	}
-
-	private MinMax(double minX, double minY, double maxX, double maxY) {
+	private MinMaxMutable(double minX, double minY, double maxX, double maxY) {
 		this.minX = minX;
 		this.minY = minY;
 		this.maxX = maxX;
 		this.maxY = maxY;
 	}
 
-	public MinMax addPoint(double x, double y) {
-		return new MinMax(Math.min(x, minX), Math.min(y, minY), Math.max(x, maxX), Math.max(y, maxY));
+	public void addPoint(double x, double y) {
+		this.maxX = Math.max(x, maxX);
+		this.maxY = Math.max(y, maxY);
+		this.minX = Math.min(x, minX);
+		this.minY = Math.min(y, minY);
 	}
 
-	public static MinMax fromMax(double maxX, double maxY) {
-		return MinMax.getEmpty(true).addPoint(maxX, maxY);
-	}
-
-	public static MinMax fromDim(Dimension2D dim) {
-		return fromMax(dim.getWidth(), dim.getHeight());
+	public static MinMaxMutable fromMax(double maxX, double maxY) {
+		final MinMaxMutable result = MinMaxMutable.getEmpty(true);
+		result.addPoint(maxX, maxY);
+		return result;
 	}
 
 	public final double getMaxX() {
@@ -97,24 +87,8 @@ public class MinMax {
 		return minY;
 	}
 
-	public double getHeight() {
-		return maxY - minY;
-	}
-
-	public double getWidth() {
-		return maxX - minX;
-	}
-
 	public Dimension2D getDimension() {
 		return new Dimension2DDouble(maxX - minX, maxY - minY);
-	}
-
-	public void drawGrey(UGraphic ug) {
-		final HtmlColor color = HtmlColorUtils.GRAY;
-		ug = ug.apply(new UChangeColor(color)).apply(new UChangeBackColor(color));
-		ug = ug.apply(new UTranslate(-minX, -minY));
-		ug.draw(new URectangle(getWidth(), getHeight()));
-
 	}
 
 }

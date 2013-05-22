@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 9786 $
+ * Revision $Revision: 10992 $
  *
  */
 package net.sourceforge.plantuml.ugraphic;
@@ -36,6 +36,7 @@ package net.sourceforge.plantuml.ugraphic;
 import java.awt.geom.Dimension2D;
 
 import net.sourceforge.plantuml.Dimension2DDouble;
+import net.sourceforge.plantuml.graphic.StringBounder;
 
 public class UEllipse extends AbstractShadowable {
 
@@ -62,6 +63,11 @@ public class UEllipse extends AbstractShadowable {
 	public double getHeight() {
 		return height;
 	}
+	
+	public MinMax getMinMax(StringBounder stringBounder) {
+		return MinMax.fromMax(getWidth(), getHeight());
+	}
+
 
 	public final double getStart() {
 		return start;

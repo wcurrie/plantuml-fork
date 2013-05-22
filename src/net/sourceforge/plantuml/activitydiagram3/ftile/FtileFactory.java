@@ -34,6 +34,7 @@
 package net.sourceforge.plantuml.activitydiagram3.ftile;
 
 import java.util.List;
+import java.util.Set;
 
 import net.sourceforge.plantuml.activitydiagram3.LinkRendering;
 import net.sourceforge.plantuml.cucadiagram.Display;
@@ -45,11 +46,11 @@ public interface FtileFactory {
 
 	public StringBounder getStringBounder();
 
-	public Ftile start();
+	public Ftile start(Swimlane swimlane);
 
-	public Ftile stop();
+	public Ftile stop(Swimlane swimlane);
 
-	public Ftile activity(Display label, HtmlColor color);
+	public Ftile activity(Display label, HtmlColor color, Swimlane swimlane);
 
 	public Ftile addNote(Ftile ftile, Display note, NotePosition notePosition);
 

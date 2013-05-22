@@ -96,7 +96,7 @@ public class FtileFactoryDelegatorCreateFork extends FtileFactoryDelegator {
 
 		inner = FtileUtils.addConnection(inner, conns);
 		final Ftile black = new FtileBlackBlock(inner.asTextBlock().calculateDimension(getStringBounder()).getWidth(),
-				barHeight, colorBar);
+				barHeight, colorBar, FtileForkInner2.mergeSwimlanes(list), list.get(0).getSwimlaneIn());
 		return new FtileAssemblySimple(new FtileAssemblySimple(black, inner), black);
 	}
 

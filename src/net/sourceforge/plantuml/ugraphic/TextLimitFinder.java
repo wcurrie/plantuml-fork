@@ -57,13 +57,13 @@ public class TextLimitFinder implements UGraphic {
 
 	private final StringBounder stringBounder;
 	private final UTranslate translate;
-	private final MinMax minmax;
+	private final MinMaxMutable minmax;
 
 	public TextLimitFinder(StringBounder stringBounder, boolean initToZero) {
-		this(stringBounder, new MinMax(initToZero), new UTranslate());
+		this(stringBounder, MinMaxMutable.getEmpty(initToZero), new UTranslate());
 	}
 
-	private TextLimitFinder(StringBounder stringBounder, MinMax minmax, UTranslate translate) {
+	private TextLimitFinder(StringBounder stringBounder, MinMaxMutable minmax, UTranslate translate) {
 		this.stringBounder = stringBounder;
 		this.minmax = minmax;
 		this.translate = translate;

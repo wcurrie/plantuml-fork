@@ -33,9 +33,11 @@
  */
 package net.sourceforge.plantuml.activitydiagram3.ftile;
 
-import net.sourceforge.plantuml.ugraphic.UGraphic;
+import net.sourceforge.plantuml.graphic.UDrawable;
+import net.sourceforge.plantuml.ugraphic.UShape;
 
-public interface Connection {
+
+public interface Connection extends UDrawable, UShape {
 
 	public Ftile getFtile1();
 
@@ -44,7 +46,5 @@ public interface Connection {
 	public Ftile getFtile2();
 
 	// public Position getPosition2();
-
-	public void drawU(UGraphic ug);
 
 }

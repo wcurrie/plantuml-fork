@@ -28,11 +28,15 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 9786 $
+ * Revision $Revision: 10986 $
  *
  */
 package net.sourceforge.plantuml.ugraphic;
 
+import net.sourceforge.plantuml.graphic.StringBounder;
+
 public interface UShape {
+
+	// public MinMax getMinMax(StringBounder stringBounder);
 
 }

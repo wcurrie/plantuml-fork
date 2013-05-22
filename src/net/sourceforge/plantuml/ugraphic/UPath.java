@@ -37,15 +37,17 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import net.sourceforge.plantuml.graphic.StringBounder;
+
 public class UPath extends AbstractShadowable implements Iterable<USegment> {
 
 	private final List<USegment> segments = new ArrayList<USegment>();
-	private final MinMax minmax = new MinMax(false);
+	private MinMax minmax = MinMax.getEmpty(false);
 
 	public void add(double[] coord, USegmentType pathType) {
 		segments.add(new USegment(coord, pathType));
 		for (int i = 0; i < coord.length; i += 2) {
-			minmax.addPoint(coord[i], coord[i + 1]);
+			minmax = minmax.addPoint(coord[i], coord[i + 1]);
 		}
 	}
 
@@ -84,6 +86,10 @@ public class UPath extends AbstractShadowable implements Iterable<USegment> {
 
 	public Iterator<USegment> iterator() {
 		return segments.iterator();
+	}
+
+	public MinMax getMinMax(StringBounder stringBounder) {
+		return minmax;
 	}
 
 }

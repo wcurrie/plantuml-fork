@@ -35,22 +35,29 @@ package net.sourceforge.plantuml.activitydiagram3.ftile.vcompact;
 
 import java.io.IOException;
 import java.io.OutputStream;
+import java.util.Set;
 
 import net.sourceforge.plantuml.Url;
-import net.sourceforge.plantuml.activitydiagram3.ftile.vertical.FtileBox;
+import net.sourceforge.plantuml.activitydiagram3.ftile.Connection;
+import net.sourceforge.plantuml.activitydiagram3.ftile.Ftile;
+import net.sourceforge.plantuml.activitydiagram3.ftile.Swimlane;
 import net.sourceforge.plantuml.graphic.StringBounder;
+import net.sourceforge.plantuml.graphic.TextBlock;
+import net.sourceforge.plantuml.graphic.UDrawable;
 import net.sourceforge.plantuml.ugraphic.ColorMapper;
 import net.sourceforge.plantuml.ugraphic.UChange;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
 import net.sourceforge.plantuml.ugraphic.UParam;
 import net.sourceforge.plantuml.ugraphic.UShape;
 
-public class UGraphicOnlySimpleActivity implements UGraphic {
+public class UGraphicInterceptorOneSwimlane implements UGraphic {
 
 	final private UGraphic ug;
+	private final Swimlane swimlane;
 
-	public UGraphicOnlySimpleActivity(UGraphic ug) {
+	public UGraphicInterceptorOneSwimlane(UGraphic ug, Swimlane swimlane) {
 		this.ug = ug;
+		this.swimlane = swimlane;
 	}
 
 	public StringBounder getStringBounder() {
@@ -62,16 +69,37 @@ public class UGraphicOnlySimpleActivity implements UGraphic {
 	}
 
 	public void draw(UShape shape) {
-		if (shape instanceof FtileBox) {
-			ug.draw(shape);
+		// System.err.println("inter=" + shape.getClass());
+		if (shape instanceof Ftile) {
+			final Ftile tile = (Ftile) shape;
+			final Set<Swimlane> swinlanes = tile.getSwimlanes();
+			final boolean contained = swinlanes.contains(swimlane);
+			if (contained) {
+				tile.asTextBlock().drawU(this);
+			}
+		} else if (shape instanceof Connection) {
+			final Connection connection = (Connection) shape;
+			// System.err.println("conn="+connection);
+			final Ftile tile1 = connection.getFtile1();
+			final Ftile tile2 = connection.getFtile2();
+			if (tile1 == null || tile2 == null) {
+				connection.drawU(this);
+			} else {
+				final boolean contained1 = tile1.getSwimlaneOut() == swimlane;
+				final boolean contained2 = tile2.getSwimlaneIn() == swimlane;
+				if (contained1 && contained2) {
+					connection.drawU(this);
+				}
+			}
 		} else {
-			System.err.println("Filtering " + shape);
+			ug.draw(shape);
+			// System.err.println("Drawing " + shape);
 		}
 
 	}
 
 	public UGraphic apply(UChange change) {
-		return new UGraphicOnlySimpleActivity(ug.apply(change));
+		return new UGraphicInterceptorOneSwimlane(ug.apply(change), swimlane);
 	}
 
 	public ColorMapper getColorMapper() {

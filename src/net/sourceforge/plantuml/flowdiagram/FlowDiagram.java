@@ -50,7 +50,7 @@ import net.sourceforge.plantuml.UmlDiagramType;
 import net.sourceforge.plantuml.Url;
 import net.sourceforge.plantuml.api.ImageDataSimple;
 import net.sourceforge.plantuml.core.ImageData;
-import net.sourceforge.plantuml.golem.MinMax;
+import net.sourceforge.plantuml.golem.MinMaxGolem;
 import net.sourceforge.plantuml.golem.Path;
 import net.sourceforge.plantuml.golem.Position;
 import net.sourceforge.plantuml.golem.Tile;
@@ -127,7 +127,7 @@ public class FlowDiagram extends UmlDiagram implements TextBlock {
 	public void drawU(UGraphic ug) {
 		double x = 0;
 		double y = 0;
-		final MinMax minMax = getMinMax();
+		final MinMaxGolem minMax = getMinMax();
 		x -= minMax.getMinX() * SINGLE_SIZE_X;
 		y -= minMax.getMinY() * SINGLE_SIZE_Y;
 		final StringBounder stringBounder = ug.getStringBounder();
@@ -191,8 +191,8 @@ public class FlowDiagram extends UmlDiagram implements TextBlock {
 		return new Point2D.Double(x, y);
 	}
 
-	private MinMax getMinMax() {
-		final MinMax minMax = new MinMax();
+	private MinMaxGolem getMinMax() {
+		final MinMaxGolem minMax = new MinMaxGolem();
 		for (Tile tile : tilesBoxes.keySet()) {
 			minMax.manage(field.getPosition(tile));
 		}
@@ -200,7 +200,7 @@ public class FlowDiagram extends UmlDiagram implements TextBlock {
 	}
 
 	public Dimension2D calculateDimension(StringBounder stringBounder) {
-		final MinMax minMax = getMinMax();
+		final MinMaxGolem minMax = getMinMax();
 		return new Dimension2DDouble(minMax.getWidth() * SINGLE_SIZE_X, minMax.getHeight() * SINGLE_SIZE_Y);
 	}
 

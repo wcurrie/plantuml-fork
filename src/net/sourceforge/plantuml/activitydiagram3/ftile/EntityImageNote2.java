@@ -52,6 +52,7 @@ import net.sourceforge.plantuml.graphic.StringBounder;
 import net.sourceforge.plantuml.graphic.TextBlock;
 import net.sourceforge.plantuml.graphic.TextBlockUtils;
 import net.sourceforge.plantuml.skin.rose.Rose;
+import net.sourceforge.plantuml.ugraphic.MinMax;
 import net.sourceforge.plantuml.ugraphic.UChangeBackColor;
 import net.sourceforge.plantuml.ugraphic.UChangeColor;
 import net.sourceforge.plantuml.ugraphic.UFont;
@@ -108,6 +109,11 @@ public class EntityImageNote2 implements TextBlock {
 		final double width = getTextWidth(stringBounder);
 		return new Dimension2DDouble(width, height);
 	}
+	
+	public MinMax getMinMax(StringBounder stringBounder) {
+		return MinMax.fromDim(calculateDimension(stringBounder));
+	}
+
 
 	public void drawU(UGraphic ug) {
 		final StringBounder stringBounder = ug.getStringBounder();

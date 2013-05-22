@@ -35,6 +35,7 @@ package net.sourceforge.plantuml.activitydiagram3.ftile.vcompact;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Set;
 
 import net.sourceforge.plantuml.ColorParam;
 import net.sourceforge.plantuml.FontParam;
@@ -43,6 +44,7 @@ import net.sourceforge.plantuml.activitydiagram3.LinkRendering;
 import net.sourceforge.plantuml.activitydiagram3.ftile.Ftile;
 import net.sourceforge.plantuml.activitydiagram3.ftile.FtileAssemblySimple;
 import net.sourceforge.plantuml.activitydiagram3.ftile.FtileFactory;
+import net.sourceforge.plantuml.activitydiagram3.ftile.Swimlane;
 import net.sourceforge.plantuml.activitydiagram3.ftile.vertical.FtileBox;
 import net.sourceforge.plantuml.activitydiagram3.ftile.vertical.FtileCircleStart;
 import net.sourceforge.plantuml.activitydiagram3.ftile.vertical.FtileCircleStop;
@@ -70,22 +72,22 @@ public class VCompactFactory implements FtileFactory {
 		this.stringBounder = stringBounder;
 	}
 
-	public Ftile start() {
+	public Ftile start(Swimlane swimlane) {
 		final HtmlColor color = rose.getHtmlColor(skinParam, ColorParam.activityStart);
-		return new FtileCircleStart(color);
+		return new FtileCircleStart(color, swimlane);
 	}
 
-	public Ftile stop() {
+	public Ftile stop(Swimlane swimlane) {
 		final HtmlColor color = rose.getHtmlColor(skinParam, ColorParam.activityEnd);
-		return new FtileCircleStop(color);
+		return new FtileCircleStop(color, swimlane);
 	}
 
-	public Ftile activity(Display label, final HtmlColor color) {
+	public Ftile activity(Display label, final HtmlColor color, Swimlane swimlane) {
 		final HtmlColor borderColor = rose.getHtmlColor(skinParam, ColorParam.activityBorder);
 		final HtmlColor backColor = color == null ? rose.getHtmlColor(skinParam, ColorParam.activityBackground) : color;
 		final UFont font = skinParam.getFont(FontParam.ACTIVITY2, null);
 		final HtmlColor arrowColor = rose.getHtmlColor(skinParam, ColorParam.activityArrow);
-		return new FtileBox(label, borderColor, backColor, font, arrowColor);
+		return new FtileBox(label, borderColor, backColor, font, arrowColor, swimlane);
 	}
 
 	public Ftile addNote(Ftile ftile, Display note, NotePosition notePosition) {

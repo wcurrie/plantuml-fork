@@ -27,37 +27,29 @@
  * in the United States and other countries.]
  *
  * Original Author:  Arnaud Roques
- * 
- * Revision $Revision: 10266 $
+ *
+ * Revision $Revision: 8475 $
  *
  */
-package net.sourceforge.plantuml.graphic;
+package net.sourceforge.plantuml.activitydiagram3.ftile;
 
-import java.awt.geom.Dimension2D;
-import java.util.List;
-
-import net.sourceforge.plantuml.Url;
+import net.sourceforge.plantuml.activitydiagram3.ftile.vcompact.ConnectionVerticalDown;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
 
-public class TextBlockInterceptorTextBlockable implements TextBlock {
+public class ConnectionCross extends AbstractConnection {
 
-	private final TextBlock textBlock;
+	private final Connection connection;
 
-	public TextBlockInterceptorTextBlockable(TextBlock textBlock) {
-		this.textBlock = textBlock;
+	public ConnectionCross(Connection connection) {
+		super(connection.getFtile1(), connection.getFtile2());
+		this.connection = connection;
 	}
 
 	public void drawU(UGraphic ug) {
-		textBlock.drawU(new UGraphicInterceptorTextBlockable(ug));
-
+		if (connection instanceof ConnectionVerticalDown) {
+			final Swimlane swimlane1 = getFtile1().getSwimlaneOut();
+			final Swimlane swimlane2 = getFtile2().getSwimlaneIn();
+			((ConnectionVerticalDown) connection).drawTranslate(ug, swimlane1.getTranslate(), swimlane2.getTranslate());
+		}
 	}
-
-	public Dimension2D calculateDimension(StringBounder stringBounder) {
-		return TextBlockUtils.getMinMax(this, stringBounder).getDimension();
-	}
-
-	public List<Url> getUrls() {
-		throw new UnsupportedOperationException();
-	}
-
 }

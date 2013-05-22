@@ -34,12 +34,16 @@
 package net.sourceforge.plantuml.activitydiagram3;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import net.sourceforge.plantuml.activitydiagram3.ftile.Ftile;
 import net.sourceforge.plantuml.activitydiagram3.ftile.FtileEmpty;
 import net.sourceforge.plantuml.activitydiagram3.ftile.FtileFactory;
 import net.sourceforge.plantuml.activitydiagram3.ftile.FtileKilled;
+import net.sourceforge.plantuml.activitydiagram3.ftile.Swimlane;
 import net.sourceforge.plantuml.cucadiagram.Display;
 import net.sourceforge.plantuml.sequencediagram.NotePosition;
 
@@ -77,7 +81,7 @@ public class InstructionList implements Instruction {
 		return result;
 	}
 
-	public boolean kill() {
+	final public boolean kill() {
 		this.killed = true;
 		return true;
 	}
@@ -95,6 +99,18 @@ public class InstructionList implements Instruction {
 
 	public void addNote(Display note, NotePosition position) {
 		getLast().addNote(note, position);
+	}
+
+	public Set<Swimlane> getSwimlanes() {
+		return getSwimlanes(all);
+	}
+
+	public static Set<Swimlane> getSwimlanes(List<? extends Instruction> list) {
+		final Set<Swimlane> result = new HashSet<Swimlane>();
+		for (Instruction ins : list) {
+			result.addAll(ins.getSwimlanes());
+		}
+		return Collections.unmodifiableSet(result);
 	}
 
 }

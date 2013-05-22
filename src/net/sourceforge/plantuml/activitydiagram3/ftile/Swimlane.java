@@ -33,35 +33,33 @@
  */
 package net.sourceforge.plantuml.activitydiagram3.ftile;
 
-import java.awt.geom.Dimension2D;
-import java.util.List;
+import net.sourceforge.plantuml.ugraphic.UTranslate;
 
-import net.sourceforge.plantuml.Url;
-import net.sourceforge.plantuml.cucadiagram.Display;
-import net.sourceforge.plantuml.graphic.StringBounder;
-import net.sourceforge.plantuml.graphic.TextBlock;
-import net.sourceforge.plantuml.ugraphic.UGraphic;
+public class Swimlane {
 
-public class Swimlane implements TextBlock {
+	private final String name;
 
-	public Dimension2D calculateDimension(StringBounder stringBounder) {
-		throw new UnsupportedOperationException();
+	private UTranslate translate = new UTranslate();
+
+	public Swimlane(String name) {
+		this.name = name;
 	}
 
-	public List<Url> getUrls() {
-		throw new UnsupportedOperationException();
+	@Override
+	public String toString() {
+		return name;
 	}
 
-	public void drawU(UGraphic ug) {
-		throw new UnsupportedOperationException();
+	public String getName() {
+		return name;
 	}
-	
-	public String getId() {
-		throw new UnsupportedOperationException();
+
+	public final UTranslate getTranslate() {
+		return translate;
 	}
-	
-	public Display getDescription() {
-		throw new UnsupportedOperationException();
+
+	public final void setTranslate(UTranslate translate) {
+		this.translate = translate;
 	}
 
 }

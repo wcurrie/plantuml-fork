@@ -27,35 +27,24 @@
  * in the United States and other countries.]
  *
  * Original Author:  Arnaud Roques
- *
- * Revision $Revision: 8475 $
+ * 
+ * Revision $Revision: 10930 $
  *
  */
-package net.sourceforge.plantuml.activitydiagram3.ftile;
+package net.sourceforge.plantuml.graphic;
 
-import java.util.Collection;
-import java.util.Collections;
+import java.util.Arrays;
+import java.util.List;
 
-import net.sourceforge.plantuml.activitydiagram3.LinkRendering;
-import net.sourceforge.plantuml.graphic.StringBounder;
-import net.sourceforge.plantuml.ugraphic.UTranslate;
+public class QuoteUtils {
 
-public abstract class AbstractFtile2 implements Ftile {
+	private static final List<String> quotes = Arrays.asList("He's dead, Jim.", "I need a vacation.");
 
-	public LinkRendering getInLinkRendering() {
-		return null;
+	private QuoteUtils() {
 	}
 
-	final public LinkRendering getOutLinkRendering() {
-		return null;
+	public static String getSomeQuote(int v) {
+		final int i = v % quotes.size();
+		return quotes.get(i);
 	}
-
-	public Collection<Connection> getInnerConnections() {
-		return Collections.emptyList();
-	}
-
-	public UTranslate getTranslateFor(Ftile child, StringBounder stringBounder) {
-		throw new UnsupportedOperationException();
-	}
-
 }

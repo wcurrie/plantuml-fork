@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  *
- * Revision $Revision: 10459 $
+ * Revision $Revision: 10973 $
  *
  */
 package net.sourceforge.plantuml;
@@ -61,6 +61,7 @@ import net.sourceforge.plantuml.flashcode.FlashCodeUtils;
 import net.sourceforge.plantuml.graphic.GraphicStrings;
 import net.sourceforge.plantuml.graphic.HorizontalAlignement;
 import net.sourceforge.plantuml.graphic.HtmlColorUtils;
+import net.sourceforge.plantuml.graphic.QuoteUtils;
 import net.sourceforge.plantuml.mjpeg.MJPEGGenerator;
 import net.sourceforge.plantuml.pdf.PdfConverter;
 import net.sourceforge.plantuml.svek.EmptySvgException;
@@ -232,8 +233,16 @@ public abstract class UmlDiagram extends AbstractPSystem implements Diagram {
 	private void exportDiagramError(OutputStream os, Throwable exception, FileFormatOption fileFormat,
 			String graphvizVersion) throws IOException {
 		final UFont font = new UFont("SansSerif", Font.PLAIN, 12);
+
+		final List<String> stack = new ArrayList<String>();
+		for (StackTraceElement ste : exception.getStackTrace()) {
+			stack.add("  " + ste.toString());
+		}
+		final String quote = QuoteUtils.getSomeQuote(stack.hashCode());
+
 		final List<String> strings = new ArrayList<String>();
 		strings.add("An error has occured : " + exception);
+		strings.add("<i>" + quote);
 		strings.add(" ");
 		strings.add("PlantUML (" + Version.versionString() + ") cannot parse result from dot/GraphViz.");
 		if (exception instanceof EmptySvgException) {
@@ -252,10 +261,8 @@ public abstract class UmlDiagram extends AbstractPSystem implements Diagram {
 		strings.add("You can try to turn arround this issue by simplifing your diagram.");
 		strings.add(" ");
 		strings.add(exception.toString());
-		for (StackTraceElement ste : exception.getStackTrace()) {
-			strings.add("  " + ste.toString());
+		strings.addAll(stack);
 
-		}
 		final GraphicStrings graphicStrings = new GraphicStrings(strings, font, HtmlColorUtils.BLACK,
 				HtmlColorUtils.WHITE, UAntiAliasing.ANTI_ALIASING_ON);
 		graphicStrings.writeImage(os, fileFormat);
@@ -299,8 +306,8 @@ public abstract class UmlDiagram extends AbstractPSystem implements Diagram {
 		return result;
 	}
 
-	protected abstract ImageData exportDiagramInternal(OutputStream os, int index,
-			FileFormatOption fileFormatOption, List<BufferedImage> flashcodes) throws IOException;
+	protected abstract ImageData exportDiagramInternal(OutputStream os, int index, FileFormatOption fileFormatOption,
+			List<BufferedImage> flashcodes) throws IOException;
 
 	final protected void exportCmap(File suggestedFile, final ImageData cmapdata) throws FileNotFoundException {
 		final String name = changeName(suggestedFile.getAbsolutePath());
@@ -343,7 +350,6 @@ public abstract class UmlDiagram extends AbstractPSystem implements Diagram {
 		}
 		return null;
 	}
-
 
 	public void addSprite(String name, Sprite sprite) {
 		skinParam.addSprite(name, sprite);

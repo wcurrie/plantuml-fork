@@ -35,10 +35,12 @@ package net.sourceforge.plantuml.activitydiagram3.ftile.vertical;
 
 import java.awt.geom.Point2D;
 import java.util.Collection;
+import java.util.Set;
 
 import net.sourceforge.plantuml.activitydiagram3.LinkRendering;
 import net.sourceforge.plantuml.activitydiagram3.ftile.Connection;
 import net.sourceforge.plantuml.activitydiagram3.ftile.Ftile;
+import net.sourceforge.plantuml.activitydiagram3.ftile.Swimlane;
 import net.sourceforge.plantuml.graphic.StringBounder;
 import net.sourceforge.plantuml.graphic.TextBlock;
 import net.sourceforge.plantuml.ugraphic.UTranslate;
@@ -84,5 +86,19 @@ public class FtileDecorateIn implements Ftile {
 	public UTranslate getTranslateFor(Ftile child, StringBounder stringBounder) {
 		return ftile.getTranslateFor(child, stringBounder);
 	}
+	
+	public Set<Swimlane> getSwimlanes() {
+		return ftile.getSwimlanes();
+	}
+	
+	public Swimlane getSwimlaneIn() {
+		return ftile.getSwimlaneIn();
+	}
+
+	public Swimlane getSwimlaneOut() {
+		return ftile.getSwimlaneOut();
+	}
+
+
 
 }

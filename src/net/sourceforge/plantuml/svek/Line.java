@@ -62,6 +62,7 @@ import net.sourceforge.plantuml.graphic.TextBlock;
 import net.sourceforge.plantuml.graphic.TextBlockArrow;
 import net.sourceforge.plantuml.graphic.TextBlockUtils;
 import net.sourceforge.plantuml.graphic.UDrawable;
+import net.sourceforge.plantuml.graphic.VerticallAlignement;
 import net.sourceforge.plantuml.posimo.BezierUtils;
 import net.sourceforge.plantuml.posimo.DotPath;
 import net.sourceforge.plantuml.posimo.Moveable;
@@ -223,9 +224,9 @@ public class Line implements Moveable, Hideable {
 				labelOnly = label;
 			} else {
 				TextBlock right = new TextBlockArrow(Direction.RIGHT, labelFont);
-				right = TextBlockUtils.mergeLR(label, right);
+				right = TextBlockUtils.mergeLR(label, right, VerticallAlignement.CENTER);
 				TextBlock left = new TextBlockArrow(Direction.LEFT, labelFont);
-				left = TextBlockUtils.mergeLR(left, label);
+				left = TextBlockUtils.mergeLR(left, label, VerticallAlignement.CENTER);
 				TextBlock up = new TextBlockArrow(Direction.UP, labelFont);
 				up = TextBlockUtils.mergeTB(up, label, HorizontalAlignement.CENTER);
 				TextBlock down = new TextBlockArrow(Direction.DOWN, labelFont);
@@ -243,9 +244,9 @@ public class Line implements Moveable, Hideable {
 
 		if (labelOnly != null && noteOnly != null) {
 			if (link.getNotePosition() == Position.LEFT) {
-				noteLabelText = TextBlockUtils.mergeLR(noteOnly, labelOnly);
+				noteLabelText = TextBlockUtils.mergeLR(noteOnly, labelOnly, VerticallAlignement.CENTER);
 			} else if (link.getNotePosition() == Position.RIGHT) {
-				noteLabelText = TextBlockUtils.mergeLR(labelOnly, noteOnly);
+				noteLabelText = TextBlockUtils.mergeLR(labelOnly, noteOnly, VerticallAlignement.CENTER);
 			} else if (link.getNotePosition() == Position.TOP) {
 				noteLabelText = TextBlockUtils.mergeTB(noteOnly, labelOnly, HorizontalAlignement.CENTER);
 			} else {

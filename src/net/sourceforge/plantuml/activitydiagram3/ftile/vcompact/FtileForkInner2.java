@@ -36,18 +36,22 @@ package net.sourceforge.plantuml.activitydiagram3.ftile.vcompact;
 import java.awt.geom.Dimension2D;
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import net.sourceforge.plantuml.Dimension2DDouble;
 import net.sourceforge.plantuml.Url;
-import net.sourceforge.plantuml.activitydiagram3.ftile.AbstractFtile2;
+import net.sourceforge.plantuml.activitydiagram3.ftile.AbstractFtile;
 import net.sourceforge.plantuml.activitydiagram3.ftile.Ftile;
+import net.sourceforge.plantuml.activitydiagram3.ftile.Swimlane;
 import net.sourceforge.plantuml.graphic.StringBounder;
 import net.sourceforge.plantuml.graphic.TextBlock;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
 import net.sourceforge.plantuml.ugraphic.UTranslate;
 
-class FtileForkInner2 extends AbstractFtile2 {
+class FtileForkInner2 extends AbstractFtile {
 
 	private final List<Ftile> forks = new ArrayList<Ftile>();
 
@@ -55,6 +59,27 @@ class FtileForkInner2 extends AbstractFtile2 {
 		for (Ftile ftile : forks) {
 			this.forks.add(ftile);
 		}
+	}
+	
+	public Swimlane getSwimlaneIn() {
+		return forks.get(0).getSwimlaneIn();
+	}
+
+	public Swimlane getSwimlaneOut() {
+		return getSwimlaneIn();
+	}
+
+
+	public Set<Swimlane> getSwimlanes() {
+		return mergeSwimlanes(forks);
+	}
+
+	public static Set<Swimlane> mergeSwimlanes(List<Ftile> tiles) {
+		final Set<Swimlane> result = new HashSet<Swimlane>();
+		for (Ftile tile : tiles) {
+			result.addAll(tile.getSwimlanes());
+		}
+		return Collections.unmodifiableSet(result);
 	}
 
 	public TextBlock asTextBlock() {

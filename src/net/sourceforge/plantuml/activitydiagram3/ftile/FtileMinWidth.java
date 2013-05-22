@@ -37,6 +37,7 @@ import java.awt.geom.Dimension2D;
 import java.awt.geom.Point2D;
 import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 
 import net.sourceforge.plantuml.Dimension2DDouble;
 import net.sourceforge.plantuml.Url;
@@ -134,5 +135,18 @@ public class FtileMinWidth implements Ftile {
 		// return ftile.getInnerConnections();
 		throw new UnsupportedOperationException();
 	}
+
+	public Set<Swimlane> getSwimlanes() {
+		return ftile.getSwimlanes();
+	}
+	
+	public Swimlane getSwimlaneIn() {
+		return ftile.getSwimlaneIn();
+	}
+
+	public Swimlane getSwimlaneOut() {
+		return ftile.getSwimlaneOut();
+	}
+
 
 }

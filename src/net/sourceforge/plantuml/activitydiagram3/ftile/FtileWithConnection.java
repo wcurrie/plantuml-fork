@@ -40,6 +40,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 
 import net.sourceforge.plantuml.Url;
 import net.sourceforge.plantuml.activitydiagram3.LinkRendering;
@@ -59,6 +60,11 @@ class FtileWithConnection implements Ftile {
 		}
 		this.ftile = ftile;
 		this.connections.addAll(connections);
+	}
+
+	@Override
+	public String toString() {
+		return "FtileWithConnection " + ftile + " " + connections;
 	}
 
 	public FtileWithConnection(Ftile ftile, Connection connection) {
@@ -99,7 +105,7 @@ class FtileWithConnection implements Ftile {
 			public void drawU(UGraphic ug) {
 				original.drawU(ug);
 				for (Connection c : connections) {
-					c.drawU(ug);
+					ug.draw(c);
 				}
 			}
 
@@ -118,5 +124,18 @@ class FtileWithConnection implements Ftile {
 		result.addAll(connections);
 		return Collections.unmodifiableList(connections);
 	}
+
+	public Set<Swimlane> getSwimlanes() {
+		return ftile.getSwimlanes();
+	}
+	
+	public Swimlane getSwimlaneIn() {
+		return ftile.getSwimlaneIn();
+	}
+
+	public Swimlane getSwimlaneOut() {
+		return ftile.getSwimlaneOut();
+	}
+
 
 }

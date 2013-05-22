@@ -55,7 +55,7 @@ abstract class CommandExoArrowAny2 extends SingleLineCommand2<SequenceDiagram> {
 
 	@Override
 	final protected CommandExecutionResult executeArg(SequenceDiagram sequenceDiagram, RegexResult arg2) {
-		final String body = arg2.getLazzy("ARROW_BODY", 0);
+		final String body = arg2.getLazzy("ARROW_BODYA", 0) + arg2.getLazzy("ARROW_BODYB", 0);
 		final String dressing = arg2.getLazzy("ARROW_DRESSING", 0);
 		final Participant p = sequenceDiagram.getOrCreateParticipant(StringUtils
 				.eventuallyRemoveStartingAndEndingDoubleQuote(arg2.get("PARTICIPANT", 0)));

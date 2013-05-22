@@ -46,10 +46,12 @@ class TextBlockHorizontal implements TextBlock {
 
 	private final TextBlock b1;
 	private final TextBlock b2;
+	private final VerticallAlignement alignement;
 
-	public TextBlockHorizontal(TextBlock b1, TextBlock b2) {
+	public TextBlockHorizontal(TextBlock b1, TextBlock b2, VerticallAlignement alignement) {
 		this.b1 = b1;
 		this.b2 = b2;
+		this.alignement = alignement;
 	}
 
 	public Dimension2D calculateDimension(StringBounder stringBounder) {
@@ -62,9 +64,14 @@ class TextBlockHorizontal implements TextBlock {
 		final Dimension2D dim = calculateDimension(ug.getStringBounder());
 		final Dimension2D dimb1 = b1.calculateDimension(ug.getStringBounder());
 		final Dimension2D dimb2 = b2.calculateDimension(ug.getStringBounder());
-		b1.drawU(ug.apply(new UTranslate(0, ((dim.getHeight() - dimb1.getHeight()) / 2))));
 		final Dimension2D dim1 = b1.calculateDimension(ug.getStringBounder());
-		b2.drawU(ug.apply(new UTranslate(dim1.getWidth(), ((dim.getHeight() - dimb2.getHeight()) / 2))));
+		if (alignement == VerticallAlignement.CENTER) {
+			b1.drawU(ug.apply(new UTranslate(0, ((dim.getHeight() - dimb1.getHeight()) / 2))));
+			b2.drawU(ug.apply(new UTranslate(dim1.getWidth(), ((dim.getHeight() - dimb2.getHeight()) / 2))));
+		} else {
+			b1.drawU(ug);
+			b2.drawU(ug.apply(new UTranslate(dim1.getWidth(), 0)));
+		}
 	}
 
 	public List<Url> getUrls() {

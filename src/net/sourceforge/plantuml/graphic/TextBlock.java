@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 10266 $
+ * Revision $Revision: 10993 $
  *
  */
 package net.sourceforge.plantuml.graphic;
@@ -37,11 +37,14 @@ import java.awt.geom.Dimension2D;
 import java.util.List;
 
 import net.sourceforge.plantuml.Url;
+import net.sourceforge.plantuml.ugraphic.MinMax;
 
 public interface TextBlock extends UDrawable {
 
 	public abstract Dimension2D calculateDimension(StringBounder stringBounder);
 	
 	public abstract List<Url> getUrls();
+
+	// public MinMax getMinMax(StringBounder stringBounder);
 
 }

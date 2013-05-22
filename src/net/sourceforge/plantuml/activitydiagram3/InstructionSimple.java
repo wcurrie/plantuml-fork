@@ -33,8 +33,12 @@
  */
 package net.sourceforge.plantuml.activitydiagram3;
 
+import java.util.Collections;
+import java.util.Set;
+
 import net.sourceforge.plantuml.activitydiagram3.ftile.Ftile;
 import net.sourceforge.plantuml.activitydiagram3.ftile.FtileFactory;
+import net.sourceforge.plantuml.activitydiagram3.ftile.Swimlane;
 import net.sourceforge.plantuml.cucadiagram.Display;
 import net.sourceforge.plantuml.graphic.HtmlColor;
 import net.sourceforge.plantuml.sequencediagram.NotePosition;
@@ -46,15 +50,17 @@ public class InstructionSimple implements Instruction {
 	private final LinkRendering inlinkRendering;
 	private Display note;
 	private NotePosition notePosition;
+	private final Swimlane swimlane;
 
-	public InstructionSimple(Display label, HtmlColor color, LinkRendering inlinkRendering) {
+	public InstructionSimple(Display label, HtmlColor color, LinkRendering inlinkRendering, Swimlane swimlane) {
 		this.label = label;
 		this.color = color;
 		this.inlinkRendering = inlinkRendering;
+		this.swimlane = swimlane;
 	}
 
 	public Ftile createFtile(FtileFactory factory) {
-		final Ftile result = factory.activity(label, color);
+		final Ftile result = factory.activity(label, color, swimlane);
 		if (note == null) {
 			return result;
 		}
@@ -65,7 +71,7 @@ public class InstructionSimple implements Instruction {
 		throw new UnsupportedOperationException();
 	}
 
-	public boolean kill() {
+	final public boolean kill() {
 		return false;
 	}
 
@@ -76,6 +82,11 @@ public class InstructionSimple implements Instruction {
 	public void addNote(Display note, NotePosition position) {
 		this.note = note;
 		this.notePosition = position;
+	}
+
+	public Set<Swimlane> getSwimlanes() {
+		return swimlane == null ? Collections.<Swimlane> emptySet() : Collections
+				.<Swimlane> singleton(swimlane);
 	}
 
 }

@@ -37,7 +37,9 @@ import java.awt.geom.Dimension2D;
 import java.awt.geom.Point2D;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import net.sourceforge.plantuml.Dimension2DDouble;
 import net.sourceforge.plantuml.Url;
@@ -52,10 +54,24 @@ public class FtileAssemblySimple implements Ftile {
 	private final Ftile tile1;
 	private final Ftile tile2;
 
+	@Override
+	public String toString() {
+		return "FtileAssemblySimple " + tile1 + " && " + tile2;
+	}
+
 	public FtileAssemblySimple(Ftile tile1, Ftile tile2) {
 		this.tile1 = tile1;
 		this.tile2 = tile2;
 	}
+	
+	public Swimlane getSwimlaneIn() {
+		return tile1.getSwimlaneIn();
+	}
+
+	public Swimlane getSwimlaneOut() {
+		return tile2.getSwimlaneOut();
+	}
+
 
 	public UTranslate getTranslateFor(Ftile child, StringBounder stringBounder) {
 		if (child == tile1) {
@@ -148,6 +164,13 @@ public class FtileAssemblySimple implements Ftile {
 
 	public Collection<Connection> getInnerConnections() {
 		return Collections.emptyList();
+	}
+
+	public Set<Swimlane> getSwimlanes() {
+		final Set<Swimlane> result = new HashSet<Swimlane>();
+		result.addAll(tile1.getSwimlanes());
+		result.addAll(tile2.getSwimlanes());
+		return Collections.unmodifiableSet(result);
 	}
 
 }

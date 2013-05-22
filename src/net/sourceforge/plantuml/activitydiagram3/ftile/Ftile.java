@@ -35,6 +35,7 @@ package net.sourceforge.plantuml.activitydiagram3.ftile;
 
 import java.awt.geom.Point2D;
 import java.util.Collection;
+import java.util.Set;
 
 import net.sourceforge.plantuml.activitydiagram3.LinkRendering;
 import net.sourceforge.plantuml.graphic.StringBounder;
@@ -58,4 +59,11 @@ public interface Ftile extends TextBlockable {
 	public UTranslate getTranslateFor(Ftile child, StringBounder stringBounder);
 
 	public Collection<Connection> getInnerConnections();
+
+	public Set<Swimlane> getSwimlanes();
+
+	public Swimlane getSwimlaneIn();
+
+	public Swimlane getSwimlaneOut();
+
 }

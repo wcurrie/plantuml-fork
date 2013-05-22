@@ -86,11 +86,7 @@ public class Snake {
 	}
 
 	private void drawLine(UGraphic ug, double x1, double y1, double x2, double y2) {
-		final double xmin = Math.min(x1, x2);
-		final double xmax = Math.max(x1, x2);
-		final double ymin = Math.min(y1, y2);
-		final double ymax = Math.max(y1, y2);
-		ug.apply(new UTranslate(xmin, ymin)).draw(new ULine(xmax - xmin, ymax - ymin));
+		ug.apply(new UTranslate(x1, y1)).draw(new ULine(x2 - x1, y2 - y1));
 	}
 
 }

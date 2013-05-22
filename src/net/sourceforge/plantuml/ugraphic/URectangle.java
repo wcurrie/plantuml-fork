@@ -31,6 +31,8 @@
  */
 package net.sourceforge.plantuml.ugraphic;
 
+import net.sourceforge.plantuml.graphic.StringBounder;
+
 public class URectangle extends AbstractShadowable {
 
 	private final double width;
@@ -68,6 +70,10 @@ public class URectangle extends AbstractShadowable {
 		return height;
 	}
 
+	public MinMax getMinMax(StringBounder stringBounder) {
+		return MinMax.fromMax(getWidth(), getHeight());
+	}
+
 	public double getRx() {
 		return rx;
 	}
@@ -79,5 +85,6 @@ public class URectangle extends AbstractShadowable {
 	public URectangle clip(UClip clip) {
 		return this;
 	}
+
 
 }

@@ -37,19 +37,21 @@ import java.awt.geom.Dimension2D;
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import net.sourceforge.plantuml.Dimension2DDouble;
 import net.sourceforge.plantuml.SpriteContainerEmpty;
 import net.sourceforge.plantuml.Url;
 import net.sourceforge.plantuml.activitydiagram3.LinkRendering;
 import net.sourceforge.plantuml.activitydiagram3.ftile.AbstractConnection;
-import net.sourceforge.plantuml.activitydiagram3.ftile.AbstractFtile2;
+import net.sourceforge.plantuml.activitydiagram3.ftile.AbstractFtile;
 import net.sourceforge.plantuml.activitydiagram3.ftile.Arrows;
 import net.sourceforge.plantuml.activitydiagram3.ftile.Connection;
 import net.sourceforge.plantuml.activitydiagram3.ftile.Diamond;
 import net.sourceforge.plantuml.activitydiagram3.ftile.Ftile;
 import net.sourceforge.plantuml.activitydiagram3.ftile.FtileUtils;
 import net.sourceforge.plantuml.activitydiagram3.ftile.Snake;
+import net.sourceforge.plantuml.activitydiagram3.ftile.Swimlane;
 import net.sourceforge.plantuml.cucadiagram.Display;
 import net.sourceforge.plantuml.graphic.FontConfiguration;
 import net.sourceforge.plantuml.graphic.HorizontalAlignement;
@@ -65,7 +67,7 @@ import net.sourceforge.plantuml.ugraphic.UGraphic;
 import net.sourceforge.plantuml.ugraphic.UStroke;
 import net.sourceforge.plantuml.ugraphic.UTranslate;
 
-class FtileRepeat2 extends AbstractFtile2 {
+class FtileRepeat2 extends AbstractFtile {
 
 	private final Ftile repeat;
 
@@ -81,6 +83,19 @@ class FtileRepeat2 extends AbstractFtile2 {
 		this.backColor = backColor;
 		final FontConfiguration fc = new FontConfiguration(font, HtmlColorUtils.BLACK);
 		this.test = TextBlockUtils.create(test, fc, HorizontalAlignement.LEFT, new SpriteContainerEmpty());
+	}
+
+	public Swimlane getSwimlaneIn() {
+		return repeat.getSwimlaneIn();
+	}
+
+	public Swimlane getSwimlaneOut() {
+		return getSwimlaneIn();
+	}
+
+
+	public Set<Swimlane> getSwimlanes() {
+		return repeat.getSwimlanes();
 	}
 
 	public static Ftile create(Ftile repeat, Display test, HtmlColor borderColor, HtmlColor backColor, UFont font,

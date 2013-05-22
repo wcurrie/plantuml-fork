@@ -33,22 +33,37 @@
  */
 package net.sourceforge.plantuml.activitydiagram3;
 
+import java.util.Collections;
+import java.util.Set;
+
 import net.sourceforge.plantuml.activitydiagram3.ftile.Ftile;
 import net.sourceforge.plantuml.activitydiagram3.ftile.FtileFactory;
+import net.sourceforge.plantuml.activitydiagram3.ftile.Swimlane;
 import net.sourceforge.plantuml.cucadiagram.Display;
 import net.sourceforge.plantuml.sequencediagram.NotePosition;
 
 public class InstructionStop implements Instruction {
+	
+	private final Swimlane swimlane;
+
+	public InstructionStop(Swimlane swimlane) {
+		this.swimlane = swimlane;
+	}
+
+	public Set<Swimlane> getSwimlanes() {
+		return swimlane == null ? Collections.<Swimlane> emptySet() : Collections
+				.<Swimlane> singleton(swimlane);
+	}
 
 	public Ftile createFtile(FtileFactory factory) {
-		return factory.stop();
+		return factory.stop(swimlane);
 	}
 
 	public void add(Instruction other) {
 		throw new UnsupportedOperationException();
 	}
 	
-	public boolean kill() {
+	final public boolean kill() {
 		return false;
 	}
 

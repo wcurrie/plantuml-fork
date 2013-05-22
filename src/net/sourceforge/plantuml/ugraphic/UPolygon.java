@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 10905 $
+ * Revision $Revision: 10992 $
  *
  */
 package net.sourceforge.plantuml.ugraphic;
@@ -42,10 +42,7 @@ public class UPolygon extends AbstractShadowable {
 
 	private final List<Point2D.Double> all = new ArrayList<Point2D.Double>();
 
-	private double minX = Double.MAX_VALUE;
-	private double minY = Double.MAX_VALUE;
-	private double maxX = -Double.MAX_VALUE;
-	private double maxY = -Double.MAX_VALUE;
+	private MinMax minmax = MinMax.getEmpty(false);
 
 	public UPolygon() {
 	}
@@ -63,18 +60,7 @@ public class UPolygon extends AbstractShadowable {
 	}
 
 	private void manageMinMax(double x, double y) {
-		if (x > maxX) {
-			maxX = x;
-		}
-		if (x < minX) {
-			minX = x;
-		}
-		if (y > maxY) {
-			maxY = y;
-		}
-		if (y < minY) {
-			minY = y;
-		}
+		minmax = minmax.addPoint(x, y);
 	}
 
 	public List<Point2D.Double> getPoints() {
@@ -102,26 +88,28 @@ public class UPolygon extends AbstractShadowable {
 	}
 
 	public double getHeight() {
-		return maxY - minY;
+		return minmax.getHeight();
 	}
 
 	public double getWidth() {
-		return maxX - minX;
+		return minmax.getWidth();
 	}
 
 	public double getMinX() {
-		return minX;
+		return minmax.getMinX();
 	}
 
 	public double getMinY() {
-		return minY;
-	}
-
-	public double getMaxY() {
-		return maxY;
+		return minmax.getMinY();
 	}
 
 	public double getMaxX() {
-		return maxX;
+		return minmax.getMaxX();
+
 	}
+
+	public double getMaxY() {
+		return minmax.getMaxY();
+	}
+
 }

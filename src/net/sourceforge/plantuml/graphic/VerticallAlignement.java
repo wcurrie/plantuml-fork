@@ -28,36 +28,11 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 10266 $
+ * Revision $Revision: 9786 $
  *
  */
 package net.sourceforge.plantuml.graphic;
 
-import java.awt.geom.Dimension2D;
-import java.util.List;
-
-import net.sourceforge.plantuml.Url;
-import net.sourceforge.plantuml.ugraphic.UGraphic;
-
-public class TextBlockInterceptorTextBlockable implements TextBlock {
-
-	private final TextBlock textBlock;
-
-	public TextBlockInterceptorTextBlockable(TextBlock textBlock) {
-		this.textBlock = textBlock;
-	}
-
-	public void drawU(UGraphic ug) {
-		textBlock.drawU(new UGraphicInterceptorTextBlockable(ug));
-
-	}
-
-	public Dimension2D calculateDimension(StringBounder stringBounder) {
-		return TextBlockUtils.getMinMax(this, stringBounder).getDimension();
-	}
-
-	public List<Url> getUrls() {
-		throw new UnsupportedOperationException();
-	}
-
+public enum VerticallAlignement {
+	TOP, CENTER;
 }

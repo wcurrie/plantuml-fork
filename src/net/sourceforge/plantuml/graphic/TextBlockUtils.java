@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 10930 $
+ * Revision $Revision: 10991 $
  *
  */
 package net.sourceforge.plantuml.graphic;
@@ -139,8 +139,8 @@ public class TextBlockUtils {
 		return new PositionableImpl(pt, textBlock.calculateDimension(stringBounder));
 	}
 
-	public static TextBlock mergeLR(TextBlock b1, TextBlock b2) {
-		return new TextBlockHorizontal(b1, b2);
+	public static TextBlock mergeLR(TextBlock b1, TextBlock b2, VerticallAlignement verticallAlignement) {
+		return new TextBlockHorizontal(b1, b2, verticallAlignement);
 	}
 
 	public static TextBlock mergeTB(TextBlock b1, TextBlock b2, HorizontalAlignement horizontalAlignement) {

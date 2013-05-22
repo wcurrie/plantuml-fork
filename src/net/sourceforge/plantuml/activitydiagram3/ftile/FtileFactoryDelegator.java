@@ -34,6 +34,7 @@
 package net.sourceforge.plantuml.activitydiagram3.ftile;
 
 import java.util.List;
+import java.util.Set;
 
 import net.sourceforge.plantuml.ColorParam;
 import net.sourceforge.plantuml.ISkinParam;
@@ -66,16 +67,16 @@ public class FtileFactoryDelegator implements FtileFactory {
 		this.skinParam = skinParam;
 	}
 
-	public Ftile start() {
-		return factory.start();
+	public Ftile start(Swimlane swimlane) {
+		return factory.start(swimlane);
 	}
 
-	public Ftile stop() {
-		return factory.stop();
+	public Ftile stop(Swimlane swimlane) {
+		return factory.stop(swimlane);
 	}
 
-	public Ftile activity(Display label, HtmlColor color) {
-		return factory.activity(label, color);
+	public Ftile activity(Display label, HtmlColor color, Swimlane swimlane) {
+		return factory.activity(label, color, swimlane);
 	}
 
 	public Ftile addNote(Ftile ftile, Display note, NotePosition notePosition) {

@@ -35,13 +35,16 @@ package net.sourceforge.plantuml.activitydiagram3.ftile.vertical;
 
 import java.awt.geom.Dimension2D;
 import java.awt.geom.Point2D;
+import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 
 import net.sourceforge.plantuml.Dimension2DDouble;
 import net.sourceforge.plantuml.SpriteContainerEmpty;
 import net.sourceforge.plantuml.Url;
 import net.sourceforge.plantuml.activitydiagram3.LinkRendering;
-import net.sourceforge.plantuml.activitydiagram3.ftile.AbstractFtile2;
+import net.sourceforge.plantuml.activitydiagram3.ftile.AbstractFtile;
+import net.sourceforge.plantuml.activitydiagram3.ftile.Swimlane;
 import net.sourceforge.plantuml.cucadiagram.Display;
 import net.sourceforge.plantuml.graphic.FontConfiguration;
 import net.sourceforge.plantuml.graphic.HorizontalAlignement;
@@ -59,7 +62,7 @@ import net.sourceforge.plantuml.ugraphic.URectangle;
 import net.sourceforge.plantuml.ugraphic.UStroke;
 import net.sourceforge.plantuml.ugraphic.UTranslate;
 
-public class FtileBox extends AbstractFtile2 {
+public class FtileBox extends AbstractFtile {
 
 	private static final int CORNER = 25;
 	private static final int MARGIN = 10;
@@ -69,17 +72,43 @@ public class FtileBox extends AbstractFtile2 {
 	private final HtmlColor color;
 	private final HtmlColor backColor;
 	private final LinkRendering inRenreding;
+	private final Swimlane swimlane;
 
 	final public LinkRendering getInLinkRendering() {
 		return inRenreding;
 	}
 
-	public FtileBox(Display label, HtmlColor color, HtmlColor backColor, UFont font, HtmlColor arrowColor) {
+	public Set<Swimlane> getSwimlanes() {
+		if (swimlane == null) {
+			return Collections.emptySet();
+		}
+		return Collections.singleton(swimlane);
+	}
+
+	public Swimlane getSwimlaneIn() {
+		return swimlane;
+	}
+
+	public Swimlane getSwimlaneOut() {
+		return swimlane;
+	}
+
+	public FtileBox(Display label, HtmlColor color, HtmlColor backColor, UFont font, HtmlColor arrowColor,
+			Swimlane swimlane) {
 		this.color = color;
+		this.swimlane = swimlane;
 		this.backColor = backColor;
 		this.inRenreding = new LinkRendering(arrowColor);
 		final FontConfiguration fc = new FontConfiguration(font, HtmlColorUtils.BLACK);
 		tb = TextBlockUtils.create(label, fc, HorizontalAlignement.LEFT, new SpriteContainerEmpty());
+		this.print = label.toString();
+	}
+
+	final private String print;
+
+	@Override
+	public String toString() {
+		return print;
 	}
 
 	public TextBlock asTextBlock() {
@@ -126,5 +155,6 @@ public class FtileBox extends AbstractFtile2 {
 		final Dimension2D dim = tb.calculateDimension(stringBounder);
 		return new Point2D.Double(dim.getWidth() / 2 + MARGIN, dim.getHeight() + 2 * MARGIN);
 	}
+
 
 }

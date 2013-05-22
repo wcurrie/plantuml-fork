@@ -35,9 +35,11 @@ package net.sourceforge.plantuml.activitydiagram3;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import net.sourceforge.plantuml.activitydiagram3.ftile.Ftile;
 import net.sourceforge.plantuml.activitydiagram3.ftile.FtileFactory;
+import net.sourceforge.plantuml.activitydiagram3.ftile.Swimlane;
 import net.sourceforge.plantuml.cucadiagram.Display;
 import net.sourceforge.plantuml.sequencediagram.NotePosition;
 
@@ -75,7 +77,7 @@ public class InstructionSplit implements Instruction {
 		this.splits.add(new InstructionList());
 	}
 
-	public boolean kill() {
+	final public boolean kill() {
 		return getLast().kill();
 	}
 
@@ -85,6 +87,10 @@ public class InstructionSplit implements Instruction {
 
 	public void addNote(Display note, NotePosition position) {
 		getLast().addNote(note, position);
+	}
+
+	public Set<Swimlane> getSwimlanes() {
+		return InstructionList.getSwimlanes(splits);
 	}
 
 }

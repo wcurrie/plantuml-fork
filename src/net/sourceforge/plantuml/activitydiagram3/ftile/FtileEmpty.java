@@ -37,6 +37,7 @@ import java.awt.geom.Dimension2D;
 import java.awt.geom.Point2D;
 import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 
 import net.sourceforge.plantuml.Dimension2DDouble;
 import net.sourceforge.plantuml.Url;
@@ -44,7 +45,7 @@ import net.sourceforge.plantuml.graphic.StringBounder;
 import net.sourceforge.plantuml.graphic.TextBlock;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
 
-public class FtileEmpty extends AbstractFtile2 {
+public class FtileEmpty extends AbstractFtile {
 
 	private final double width;
 	private final double height;
@@ -52,6 +53,11 @@ public class FtileEmpty extends AbstractFtile2 {
 	public FtileEmpty(double width, double height) {
 		this.width = width;
 		this.height = height;
+	}
+
+	@Override
+	public String toString() {
+		return "FtileEmpty";
 	}
 
 	public FtileEmpty() {
@@ -85,5 +91,18 @@ public class FtileEmpty extends AbstractFtile2 {
 	public boolean isKilled() {
 		return false;
 	}
+
+	public Swimlane getSwimlaneIn() {
+		return null;
+	}
+
+	public Swimlane getSwimlaneOut() {
+		return null;
+	}
+
+	public Set<Swimlane> getSwimlanes() {
+		return Collections.emptySet();
+	}
+
 
 }

@@ -28,10 +28,12 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 9786 $
+ * Revision $Revision: 10992 $
  *
  */
 package net.sourceforge.plantuml.ugraphic;
+
+import net.sourceforge.plantuml.graphic.StringBounder;
 
 public class ULine extends AbstractShadowable {
 
@@ -47,6 +49,11 @@ public class ULine extends AbstractShadowable {
 	public String toString() {
 		return "ULine dx=" + dx + " dy=" + dy;
 	}
+	
+	public MinMax getMinMax(StringBounder stringBounder) {
+		return MinMax.fromMax(dx, dy);
+	}
+
 
 	public double getDX() {
 		return dx;

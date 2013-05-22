@@ -36,14 +36,17 @@ package net.sourceforge.plantuml.activitydiagram3.ftile.vcompact;
 import java.awt.geom.Dimension2D;
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import net.sourceforge.plantuml.Dimension2DDouble;
 import net.sourceforge.plantuml.SpriteContainerEmpty;
 import net.sourceforge.plantuml.Url;
 import net.sourceforge.plantuml.activitydiagram3.LinkRendering;
 import net.sourceforge.plantuml.activitydiagram3.ftile.AbstractConnection;
-import net.sourceforge.plantuml.activitydiagram3.ftile.AbstractFtile2;
+import net.sourceforge.plantuml.activitydiagram3.ftile.AbstractFtile;
 import net.sourceforge.plantuml.activitydiagram3.ftile.Arrows;
 import net.sourceforge.plantuml.activitydiagram3.ftile.Connection;
 import net.sourceforge.plantuml.activitydiagram3.ftile.Diamond;
@@ -51,6 +54,7 @@ import net.sourceforge.plantuml.activitydiagram3.ftile.Ftile;
 import net.sourceforge.plantuml.activitydiagram3.ftile.FtileMinWidth;
 import net.sourceforge.plantuml.activitydiagram3.ftile.FtileUtils;
 import net.sourceforge.plantuml.activitydiagram3.ftile.Snake;
+import net.sourceforge.plantuml.activitydiagram3.ftile.Swimlane;
 import net.sourceforge.plantuml.cucadiagram.Display;
 import net.sourceforge.plantuml.graphic.FontConfiguration;
 import net.sourceforge.plantuml.graphic.HorizontalAlignement;
@@ -67,7 +71,7 @@ import net.sourceforge.plantuml.ugraphic.UPolygon;
 import net.sourceforge.plantuml.ugraphic.UStroke;
 import net.sourceforge.plantuml.ugraphic.UTranslate;
 
-class FtileIf2 extends AbstractFtile2 {
+class FtileIf2 extends AbstractFtile {
 
 	private final Ftile tile1;
 	private final Ftile tile2;
@@ -96,6 +100,23 @@ class FtileIf2 extends AbstractFtile2 {
 		this.label2 = TextBlockUtils.create(label2, fc, HorizontalAlignement.LEFT, new SpriteContainerEmpty());
 
 	}
+	
+	public Set<Swimlane> getSwimlanes() {
+		final Set<Swimlane> result = new HashSet<Swimlane>();
+		result.addAll(tile1.getSwimlanes());
+		result.addAll(tile2.getSwimlanes());
+		return Collections.unmodifiableSet(result);
+	}
+	
+	public Swimlane getSwimlaneIn() {
+		return tile1.getSwimlaneIn();
+	}
+
+	public Swimlane getSwimlaneOut() {
+		return getSwimlaneIn();
+	}
+
+
 
 	static Ftile create(Ftile tile1, Ftile tile2, HtmlColor borderColor, HtmlColor backColor, Display labelTest,
 			Display label1, Display label2, UFont font, HtmlColor arrowColor, HtmlColor endThenInlinkColor,
@@ -358,5 +379,6 @@ class FtileIf2 extends AbstractFtile2 {
 		final Dimension2D dimTotal = calculateDimensionInternal(stringBounder);
 		return new Point2D.Double(dimTotal.getWidth() / 2, dimTotal.getHeight());
 	}
+	
 
 }

@@ -43,6 +43,11 @@ public abstract class AbstractConnection implements Connection {
 		this.ftile2 = ftile2;
 	}
 
+	@Override
+	public String toString() {
+		return "[" + ftile1 + "]->[" + ftile2 + "]";
+	}
+
 	final public Ftile getFtile1() {
 		return ftile1;
 	}

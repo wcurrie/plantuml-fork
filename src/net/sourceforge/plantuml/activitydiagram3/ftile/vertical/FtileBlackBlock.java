@@ -37,11 +37,13 @@ import java.awt.geom.Dimension2D;
 import java.awt.geom.Point2D;
 import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 
 import net.sourceforge.plantuml.Dimension2DDouble;
 import net.sourceforge.plantuml.Url;
-import net.sourceforge.plantuml.activitydiagram3.ftile.AbstractFtile2;
+import net.sourceforge.plantuml.activitydiagram3.ftile.AbstractFtile;
 import net.sourceforge.plantuml.activitydiagram3.ftile.Ftile;
+import net.sourceforge.plantuml.activitydiagram3.ftile.Swimlane;
 import net.sourceforge.plantuml.graphic.HtmlColor;
 import net.sourceforge.plantuml.graphic.StringBounder;
 import net.sourceforge.plantuml.graphic.TextBlock;
@@ -50,16 +52,20 @@ import net.sourceforge.plantuml.ugraphic.UChangeColor;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
 import net.sourceforge.plantuml.ugraphic.URectangle;
 
-public class FtileBlackBlock extends AbstractFtile2 {
+public class FtileBlackBlock extends AbstractFtile {
 
 	private final double width;
 	private final double height;
 	private final HtmlColor colorBar;
+	private final Set<Swimlane> swimlanes;
+	private final Swimlane swimlane;
 
-	public FtileBlackBlock(double width, double height, HtmlColor colorBar) {
+	public FtileBlackBlock(double width, double height, HtmlColor colorBar, Set<Swimlane> swimlanes, Swimlane swimlane) {
 		this.height = height;
 		this.width = width;
 		this.colorBar = colorBar;
+		this.swimlanes = swimlanes;
+		this.swimlane = swimlane;
 	}
 
 	public Point2D getPointIn(StringBounder stringBounder) {
@@ -93,6 +99,18 @@ public class FtileBlackBlock extends AbstractFtile2 {
 
 	public boolean isKilled() {
 		return false;
+	}
+
+	public Set<Swimlane> getSwimlanes() {
+		return swimlanes;
+	}
+
+	public Swimlane getSwimlaneIn() {
+		return swimlane;
+	}
+
+	public Swimlane getSwimlaneOut() {
+		return swimlane;
 	}
 
 }

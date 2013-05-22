@@ -36,6 +36,7 @@ package net.sourceforge.plantuml.activitydiagram3.ftile;
 import java.awt.geom.Dimension2D;
 import java.awt.geom.Point2D;
 import java.util.List;
+import java.util.Set;
 
 import net.sourceforge.plantuml.Dimension2DDouble;
 import net.sourceforge.plantuml.Url;
@@ -44,7 +45,7 @@ import net.sourceforge.plantuml.graphic.TextBlock;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
 import net.sourceforge.plantuml.ugraphic.UTranslate;
 
-public class FtileHeightFixed extends AbstractFtile2 {
+public class FtileHeightFixed extends AbstractFtile {
 
 	private final Ftile tile;
 	private final double fixedHeight;
@@ -53,6 +54,20 @@ public class FtileHeightFixed extends AbstractFtile2 {
 		this.tile = tile;
 		this.fixedHeight = fixedHeight;
 	}
+	
+	public Set<Swimlane> getSwimlanes() {
+		return tile.getSwimlanes();
+	}
+	
+	public Swimlane getSwimlaneIn() {
+		return tile.getSwimlaneIn();
+	}
+
+	public Swimlane getSwimlaneOut() {
+		return tile.getSwimlaneOut();
+	}
+	
+
 
 	public Point2D getPointIn(StringBounder stringBounder) {
 		final Point2D p = tile.getPointIn(stringBounder);

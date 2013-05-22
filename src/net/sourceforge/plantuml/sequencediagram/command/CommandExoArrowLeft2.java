@@ -50,13 +50,15 @@ public class CommandExoArrowLeft2 extends CommandExoArrowAny2 {
 				new RegexLeaf("\\[?"), //
 				new RegexOr( //
 						new RegexConcat( //
-								new RegexLeaf("ARROW_BODY1", "(-+)"), //
+								new RegexLeaf("ARROW_BODYA1", "(-+)"), //
 								new RegexLeaf("ARROW_STYLE1", CommandArrow.getColorOrStylePattern()), //
+								new RegexLeaf("ARROW_BODYB1", "(-*)"), //
 								new RegexLeaf("ARROW_DRESSING1", "(>>?|//?|\\\\\\\\?)")), //
 						new RegexConcat( //
 								new RegexLeaf("ARROW_DRESSING2", "(<<?|//?|\\\\\\\\?)"), //
+								new RegexLeaf("ARROW_BODYB1", "(-*)"), //
 								new RegexLeaf("ARROW_STYLE2", CommandArrow.getColorOrStylePattern()), //
-								new RegexLeaf("ARROW_BODY2", "(-+)"))), //
+								new RegexLeaf("ARROW_BODYA2", "(-+)"))), //
 				new RegexLeaf("\\s*"), //
 				new RegexLeaf("PARTICIPANT", "([\\p{L}0-9_.@]+|\"[^\"]+\")"), //
 				new RegexLeaf("\\s*"), //

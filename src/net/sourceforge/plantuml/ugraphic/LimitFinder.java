@@ -39,6 +39,8 @@ import java.io.OutputStream;
 
 import net.sourceforge.plantuml.Url;
 import net.sourceforge.plantuml.graphic.StringBounder;
+import net.sourceforge.plantuml.graphic.TextBlock;
+import net.sourceforge.plantuml.graphic.TextBlockable;
 
 public class LimitFinder implements UGraphic {
 
@@ -57,13 +59,13 @@ public class LimitFinder implements UGraphic {
 
 	private final StringBounder stringBounder;
 	private final UTranslate translate;
-	private final MinMax minmax;
+	private final MinMaxMutable minmax;
 
 	public LimitFinder(StringBounder stringBounder, boolean initToZero) {
-		this(stringBounder, new MinMax(initToZero), new UTranslate());
+		this(stringBounder, MinMaxMutable.getEmpty(initToZero), new UTranslate());
 	}
 
-	private LimitFinder(StringBounder stringBounder, MinMax minmax, UTranslate translate) {
+	private LimitFinder(StringBounder stringBounder, MinMaxMutable minmax, UTranslate translate) {
 		this.stringBounder = stringBounder;
 		this.minmax = minmax;
 		this.translate = translate;
@@ -98,6 +100,9 @@ public class LimitFinder implements UGraphic {
 			drawRectangle(x, y, (URectangle) shape);
 		} else if (shape instanceof UEmpty) {
 			drawEmpty(x, y, (UEmpty) shape);
+		} else if (shape instanceof TextBlockable) {
+			final TextBlock tb = ((TextBlockable) shape).asTextBlock();
+			tb.drawU(this);
 		} else {
 			throw new UnsupportedOperationException(shape.getClass().getName());
 		}
@@ -173,7 +178,7 @@ public class LimitFinder implements UGraphic {
 	}
 
 	public MinMax getMinMax() {
-		return minmax;
+		return MinMax.fromMutable(minmax);
 	}
 
 }

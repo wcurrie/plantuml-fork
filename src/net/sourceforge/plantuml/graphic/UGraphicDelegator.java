@@ -31,30 +31,22 @@
  * Revision $Revision: 10266 $
  *
  */
-package net.sourceforge.plantuml.activitydiagram3.ftile.vcompact;
+package net.sourceforge.plantuml.graphic;
 
 import java.io.IOException;
 import java.io.OutputStream;
 
 import net.sourceforge.plantuml.Url;
-import net.sourceforge.plantuml.activitydiagram3.ftile.Ftile;
-import net.sourceforge.plantuml.activitydiagram3.ftile.vertical.FtileBox;
-import net.sourceforge.plantuml.activitydiagram3.ftile.vertical.FtileCircleStart;
-import net.sourceforge.plantuml.activitydiagram3.ftile.vertical.FtileCircleStop;
-import net.sourceforge.plantuml.graphic.StringBounder;
-import net.sourceforge.plantuml.graphic.TextBlock;
-import net.sourceforge.plantuml.graphic.TextBlockable;
 import net.sourceforge.plantuml.ugraphic.ColorMapper;
-import net.sourceforge.plantuml.ugraphic.UChange;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
 import net.sourceforge.plantuml.ugraphic.UParam;
 import net.sourceforge.plantuml.ugraphic.UShape;
 
-public class UGraphicInterceptorTextBlockableOnlySimpleActivity implements UGraphic {
+public abstract class UGraphicDelegator implements UGraphic {
 
 	final private UGraphic ug;
 
-	public UGraphicInterceptorTextBlockableOnlySimpleActivity(UGraphic ug) {
+	public UGraphicDelegator(UGraphic ug) {
 		this.ug = ug;
 	}
 
@@ -67,21 +59,7 @@ public class UGraphicInterceptorTextBlockableOnlySimpleActivity implements UGrap
 	}
 
 	public void draw(UShape shape) {
-		if (shape instanceof FtileBox || shape instanceof FtileCircleStart || shape instanceof FtileCircleStop) {
-			final TextBlock textBlock = ((TextBlockable) shape).asTextBlock();
-			textBlock.drawU(ug);
-		} else if (shape instanceof Ftile) {
-			final TextBlock textBlock = ((TextBlockable) shape).asTextBlock();
-			textBlock.drawU(this);
-		} else {
-			// ug.drawOldWay(shape);
-			System.err.println("Filtering " + shape);
-		}
-
-	}
-
-	public UGraphic apply(UChange change) {
-		return new UGraphicInterceptorTextBlockableOnlySimpleActivity(ug.apply(change));
+		ug.draw(shape);
 	}
 
 	public ColorMapper getColorMapper() {
@@ -98,6 +76,10 @@ public class UGraphicInterceptorTextBlockableOnlySimpleActivity implements UGrap
 
 	public void writeImage(OutputStream os, String metadata, int dpi) throws IOException {
 		ug.writeImage(os, metadata, dpi);
+	}
+
+	protected UGraphic getUg() {
+		return ug;
 	}
 
 }

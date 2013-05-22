@@ -28,52 +28,34 @@
  *
  * Original Author:  Arnaud Roques
  *
- * Revision $Revision: 4236 $
- * 
+ * Revision $Revision: 8475 $
+ *
  */
-package net.sourceforge.plantuml.golem;
+package net.sourceforge.plantuml.activitydiagram3.ftile;
 
-public class MinMax {
+import java.util.Collection;
+import java.util.Collections;
 
-	private int minX = Integer.MAX_VALUE;
-	private int minY = Integer.MAX_VALUE;
-	private int maxX = Integer.MIN_VALUE;
-	private int maxY = Integer.MIN_VALUE;
+import net.sourceforge.plantuml.activitydiagram3.LinkRendering;
+import net.sourceforge.plantuml.graphic.StringBounder;
+import net.sourceforge.plantuml.ugraphic.UTranslate;
 
-	public void manage(int x, int y) {
-		if (x < minX) {
-			minX = x;
-		}
-		if (y < minY) {
-			minY = y;
-		}
-		if (x > maxX) {
-			maxX = x;
-		}
-		if (y > maxY) {
-			maxY = y;
-		}
+public abstract class AbstractFtile implements Ftile {
+
+	public LinkRendering getInLinkRendering() {
+		return null;
 	}
 
-	public void manage(Position position) {
-		manage(position.getXmin(), position.getYmin());
-		manage(position.getXmax(), position.getYmax());
+	final public LinkRendering getOutLinkRendering() {
+		return null;
 	}
 
-	public int getMinX() {
-		return minX;
+	public Collection<Connection> getInnerConnections() {
+		return Collections.emptyList();
 	}
 
-	public int getMinY() {
-		return minY;
-	}
-
-	public int getWidth() {
-		return maxX - minX + 1;
-	}
-
-	public int getHeight() {
-		return maxY - minY + 1;
+	public UTranslate getTranslateFor(Ftile child, StringBounder stringBounder) {
+		throw new UnsupportedOperationException();
 	}
 
 }

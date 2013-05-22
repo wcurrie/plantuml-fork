@@ -41,8 +41,9 @@ import net.sourceforge.plantuml.activitydiagram3.ftile.Ftile;
 import net.sourceforge.plantuml.activitydiagram3.ftile.Snake;
 import net.sourceforge.plantuml.graphic.HtmlColor;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
+import net.sourceforge.plantuml.ugraphic.UTranslate;
 
-class ConnectionVerticalDown extends AbstractConnection {
+public class ConnectionVerticalDown extends AbstractConnection {
 
 	private final Point2D p1;
 	private final Point2D p2;
@@ -56,16 +57,23 @@ class ConnectionVerticalDown extends AbstractConnection {
 	}
 
 	public void drawU(UGraphic ug) {
-
-		final double x1 = p1.getX();
-		final double y1 = p1.getY();
-		final double x2 = p2.getX();
-		final double y2 = p2.getY();
-
 		final Snake snake = new Snake(color, Arrows.asToDown());
-		snake.addPoint(x1, y1);
-		snake.addPoint(x2, y2);
+		snake.addPoint(p1);
+		snake.addPoint(p2);
 		snake.drawU(ug);
+	}
+
+	public void drawTranslate(UGraphic ug, UTranslate translate1, UTranslate translate2) {
+		final Snake snake = new Snake(color, Arrows.asToDown());
+		final Point2D mp1a = translate1.getTranslated(p1);
+		final Point2D mp2b = translate2.getTranslated(p2);
+		final double middle = (mp1a.getY() + mp2b.getY()) / 2.0;
+		snake.addPoint(mp1a);
+		snake.addPoint(mp1a.getX(), middle);
+		snake.addPoint(mp2b.getX(), middle);
+		snake.addPoint(mp2b);
+		snake.drawU(ug);
+
 	}
 
 }
