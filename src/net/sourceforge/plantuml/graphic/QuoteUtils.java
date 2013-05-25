@@ -38,13 +38,61 @@ import java.util.List;
 
 public class QuoteUtils {
 
-	private static final List<String> quotes = Arrays.asList("He's dead, Jim.", "I need a vacation.");
+	private static final List<String> quotes = Arrays.asList( //
+			"He's dead, Jim.", //
+			"By Grabthar's hammer, by the sons of Worvan, you shall be avenged.", //
+			"Roads? Where we're going, we don't need roads.", //
+			"The time is out of joint.", //
+			"C'est curieux chez les marins ce besoin de faire des phrases.", //
+			"I'm talking about the other Peter, the one on the other side.", //
+			"May the Force be with you!", //
+			"Never give up, never surrender...", //
+			"Hasta la vista, baby.", //
+			"Hey, Doc, we better back up. We don't have enough road to get up to 88.", //
+			"Greetings, Professor Falken. Shall we play a game?", //
+			"I can't change the law of physics!", //
+			"A strange game. The only winning move is not to play.", //
+			"I'm the Gatekeeper, are you the Keymaster?", //
+			"I am the Master Control Program. No one User wrote me.", //
+			"Life? Don't talk to me about life.", //
+			"I always thought something was fundamentally wrong with the universe.", //
+			"A robot may not injure a human being or, through inaction, allow a human being to come to harm.", //
+			"Surrender may be our only option.", //
+			"Six by nine. Forty two.", //
+			"It's life, Jim, but not as we know it.", //
+			"Don't Panic!", //
+			"What do you mean? An African or European swallow?", //
+			"You forgot to say please...", //
+			"You have died of dysentery.", //
+			"Wouldn't you prefer a nice game of chess?", //
+			"When you have eliminated the impossible, whatever remains, however improbable, must be the truth.", //
+			"I know now why you cry. But it's something I can never do.", //
+			"Resistance is futile. You will be assimilated.", //
+			"Anything different is good.", //
+			"Cracked by Aldo Reset and Laurent Rueil.", //
+			"I'm both. I'm a celebrity in an emergency.", //
+			"Do you know this great great polish actor, Joseph Tura?", //
+			"To infinity and beyond!", //
+			"Space: the final frontier...", //
+			"Sur mon billet, tenez, y a ecrit Saint-Lazare, c'est mes yeux ou quoi ?", //
+			"The boy is important. He has to live.", //
+			"Once upon a time in a galaxy far, far away...", //
+			"And you know there's a long long way ahead of you...", //
+			"An allergy to oxygen? Elm blight?", //
+			"But alors you are French!", //
+			"N'ai-je donc tant vecu que pour cette infamie?", //
+			"Something is rotten in the State of Denmark.", //
+			"Hey, what do you want? Miracles?", //
+			"Pour qui sont ces serpents qui sifflent sur vos tetes?", //
+			"Le silence eternel de ces espaces infinis m'effraie.", //
+			"I need a vacation." //
+	);
 
 	private QuoteUtils() {
 	}
 
-	public static String getSomeQuote(int v) {
-		final int i = v % quotes.size();
-		return quotes.get(i);
+	public static String getSomeQuote() {
+		final int v = (int) (System.currentTimeMillis() / 1000L);
+		return quotes.get(v % quotes.size());
 	}
 }

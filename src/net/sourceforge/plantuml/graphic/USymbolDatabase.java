@@ -39,7 +39,7 @@ import java.util.List;
 
 import net.sourceforge.plantuml.Dimension2DDouble;
 import net.sourceforge.plantuml.Url;
-import net.sourceforge.plantuml.ugraphic.AbstractUGraphicHorizontalLine2;
+import net.sourceforge.plantuml.ugraphic.AbstractUGraphicHorizontalLine;
 import net.sourceforge.plantuml.ugraphic.UChangeBackColor;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
 import net.sourceforge.plantuml.ugraphic.UHorizontalLine;
@@ -76,12 +76,12 @@ class USymbolDatabase extends USymbol {
 		return closing;
 	}
 
-	class MyUGraphicDatabase extends AbstractUGraphicHorizontalLine2 {
+	class MyUGraphicDatabase extends AbstractUGraphicHorizontalLine {
 
 		private final double endingX;
 
 		@Override
-		protected AbstractUGraphicHorizontalLine2 copy(UGraphic ug) {
+		protected AbstractUGraphicHorizontalLine copy(UGraphic ug) {
 			return new MyUGraphicDatabase(ug, endingX);
 		}
 

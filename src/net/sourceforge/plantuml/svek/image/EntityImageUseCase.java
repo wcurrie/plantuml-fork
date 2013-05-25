@@ -54,7 +54,7 @@ import net.sourceforge.plantuml.graphic.TextBlockUtils;
 import net.sourceforge.plantuml.svek.AbstractEntityImage;
 import net.sourceforge.plantuml.svek.ShapeType;
 import net.sourceforge.plantuml.svek.image.EntityImageUseCase.MyUGraphicEllipse;
-import net.sourceforge.plantuml.ugraphic.AbstractUGraphicHorizontalLine2;
+import net.sourceforge.plantuml.ugraphic.AbstractUGraphicHorizontalLine;
 import net.sourceforge.plantuml.ugraphic.TextBlockInEllipse;
 import net.sourceforge.plantuml.ugraphic.UChangeBackColor;
 import net.sourceforge.plantuml.ugraphic.UChangeColor;
@@ -132,14 +132,14 @@ public class EntityImageUseCase extends AbstractEntityImage {
 		return 0;
 	}
 
-	static class MyUGraphicEllipse extends AbstractUGraphicHorizontalLine2 {
+	static class MyUGraphicEllipse extends AbstractUGraphicHorizontalLine {
 
 		private final double startingX;
 		private final double yTheoricalPosition;
 		private final UEllipse ellipse;
 
 		@Override
-		protected AbstractUGraphicHorizontalLine2 copy(UGraphic ug) {
+		protected AbstractUGraphicHorizontalLine copy(UGraphic ug) {
 			return new MyUGraphicEllipse(ug, startingX, yTheoricalPosition, ellipse);
 		}
 

@@ -39,13 +39,13 @@ import java.io.OutputStream;
 import net.sourceforge.plantuml.Url;
 import net.sourceforge.plantuml.graphic.StringBounder;
 
-public abstract class AbstractUGraphicHorizontalLine2 implements UGraphic {
+public abstract class AbstractUGraphicHorizontalLine implements UGraphic {
 
 	private UGraphic ug;
 	private UTranslate translate = new UTranslate();
 
 	public UGraphic apply(UChange change) {
-		final AbstractUGraphicHorizontalLine2 result;
+		final AbstractUGraphicHorizontalLine result;
 		if (change instanceof UTranslate) {
 			result = copy(ug);
 			result.translate = this.translate.compose((UTranslate) change);
@@ -56,9 +56,9 @@ public abstract class AbstractUGraphicHorizontalLine2 implements UGraphic {
 		return result;
 	}
 
-	protected abstract AbstractUGraphicHorizontalLine2 copy(UGraphic ug);
+	protected abstract AbstractUGraphicHorizontalLine copy(UGraphic ug);
 
-	protected AbstractUGraphicHorizontalLine2(UGraphic ug) {
+	protected AbstractUGraphicHorizontalLine(UGraphic ug) {
 		this.ug = ug;
 	}
 

@@ -110,11 +110,6 @@ public class EntityImageNote2 implements TextBlock {
 		return new Dimension2DDouble(width, height);
 	}
 	
-	public MinMax getMinMax(StringBounder stringBounder) {
-		return MinMax.fromDim(calculateDimension(stringBounder));
-	}
-
-
 	public void drawU(UGraphic ug) {
 		final StringBounder stringBounder = ug.getStringBounder();
 		final UPolygon polygon = getPolygonNormal(stringBounder);

@@ -70,10 +70,6 @@ public class URectangle extends AbstractShadowable {
 		return height;
 	}
 
-	public MinMax getMinMax(StringBounder stringBounder) {
-		return MinMax.fromMax(getWidth(), getHeight());
-	}
-
 	public double getRx() {
 		return rx;
 	}

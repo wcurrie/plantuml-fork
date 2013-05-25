@@ -37,9 +37,10 @@ import java.awt.geom.Dimension2D;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
+import net.sourceforge.plantuml.FontParam;
 import net.sourceforge.plantuml.ISkinParam;
+import net.sourceforge.plantuml.SpriteContainerEmpty;
 import net.sourceforge.plantuml.Url;
 import net.sourceforge.plantuml.activitydiagram3.Instruction;
 import net.sourceforge.plantuml.activitydiagram3.InstructionList;
@@ -54,6 +55,9 @@ import net.sourceforge.plantuml.activitydiagram3.ftile.vcompact.FtileFactoryDele
 import net.sourceforge.plantuml.activitydiagram3.ftile.vcompact.FtileFactoryDelegatorWhile;
 import net.sourceforge.plantuml.activitydiagram3.ftile.vcompact.UGraphicInterceptorOneSwimlane;
 import net.sourceforge.plantuml.activitydiagram3.ftile.vcompact.VCompactFactory;
+import net.sourceforge.plantuml.graphic.FontConfiguration;
+import net.sourceforge.plantuml.graphic.HorizontalAlignement;
+import net.sourceforge.plantuml.graphic.HtmlColorUtils;
 import net.sourceforge.plantuml.graphic.StringBounder;
 import net.sourceforge.plantuml.graphic.StringBounderUtils;
 import net.sourceforge.plantuml.graphic.TextBlock;
@@ -61,9 +65,15 @@ import net.sourceforge.plantuml.graphic.TextBlockCompressed;
 import net.sourceforge.plantuml.graphic.TextBlockInterceptorTextBlockable;
 import net.sourceforge.plantuml.graphic.TextBlockUtils;
 import net.sourceforge.plantuml.graphic.UGraphicDelegator;
+import net.sourceforge.plantuml.ugraphic.LimitFinder;
+import net.sourceforge.plantuml.ugraphic.MinMax;
 import net.sourceforge.plantuml.ugraphic.UChange;
+import net.sourceforge.plantuml.ugraphic.UChangeColor;
+import net.sourceforge.plantuml.ugraphic.UFont;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
+import net.sourceforge.plantuml.ugraphic.ULine;
 import net.sourceforge.plantuml.ugraphic.UShape;
+import net.sourceforge.plantuml.ugraphic.UStroke;
 import net.sourceforge.plantuml.ugraphic.UTranslate;
 
 public class Swimlanes implements TextBlock {
@@ -151,7 +161,7 @@ public class Swimlanes implements TextBlock {
 
 	}
 
-	public void drawU(UGraphic ug) {
+	public void drawU(final UGraphic ug) {
 		final FtileFactory factory = getFtileFactory();
 		TextBlock full = root.createFtile(factory).asTextBlock();
 		if (swinlanes.size() <= 1) {
@@ -161,19 +171,56 @@ public class Swimlanes implements TextBlock {
 		}
 
 		final StringBounder stringBounder = ug.getStringBounder();
-
 		final Dimension2D dimensionFull = full.calculateDimension(stringBounder);
 
 		double x = 0;
-		for (Swimlane swimlane : swinlanes) {
-			final UTranslate translate = new UTranslate(x, 0);
-			swimlane.setTranslate(translate);
-			final UGraphic ugOneSwimlane = new UGraphicInterceptorOneSwimlane(ug, swimlane);
-			full.drawU(ugOneSwimlane.apply(translate));
-			x += dimensionFull.getWidth();
+		final double separationMargin = 10;
 
+		final UFont font = skinParam.getFont(FontParam.TITLE, null);
+		final FontConfiguration fc = new FontConfiguration(font, HtmlColorUtils.BLACK);
+
+		double titlesHeight = 0;
+		for (Swimlane swimlane : swinlanes) {
+			final TextBlock swTitle = TextBlockUtils.create(swimlane.getDisplay(), fc, HorizontalAlignement.LEFT,
+					new SpriteContainerEmpty());
+			titlesHeight = Math.max(titlesHeight, swTitle.calculateDimension(stringBounder).getHeight());
 		}
-		full.drawU(new Cross(ug));
+
+		final UTranslate titleHeightTranslate = new UTranslate(0, titlesHeight);
+		for (Swimlane swimlane : swinlanes) {
+			final TextBlock swTitle = TextBlockUtils.create(swimlane.getDisplay(), fc, HorizontalAlignement.LEFT,
+					new SpriteContainerEmpty());
+
+			final LimitFinder limitFinder = new LimitFinder(stringBounder, false);
+			full.drawU(new UGraphicInterceptorOneSwimlane(limitFinder, swimlane));
+			final MinMax minMax = limitFinder.getMinMax();
+			// System.err.println("minMax=" + minMax);
+
+			final UTranslate translate = new UTranslate(x - minMax.getMinX() + separationMargin, 0);
+			// System.err.println("translate=" + translate);
+
+			swimlane.setTranslate(translate);
+			final double width = minMax.getWidth() + 2 * separationMargin;
+			final double titleWidth = swTitle.calculateDimension(stringBounder).getWidth();
+			final double posTitle = x + (width - titleWidth) / 2;
+			swTitle.drawU(ug.apply(new UTranslate(posTitle, 0)));
+
+			drawSeparation(ug.apply(new UTranslate(x, 0)), dimensionFull.getHeight() + titlesHeight);
+
+			final UGraphic ugOneSwimlane = new UGraphicInterceptorOneSwimlane(ug, swimlane);
+
+			// minMax.drawGrey(ug.apply(translate));
+			full.drawU(ugOneSwimlane.apply(translate).apply(titleHeightTranslate));
+
+			// x += dimensionFull.getWidth();
+			x += width;
+		}
+		drawSeparation(ug.apply(new UTranslate(x, 0)), dimensionFull.getHeight() + titlesHeight);
+		full.drawU(new Cross(ug.apply(titleHeightTranslate)));
+	}
+
+	private void drawSeparation(UGraphic ug, double height) {
+		ug.apply(new UStroke(2)).apply(new UChangeColor(HtmlColorUtils.BLACK)).draw(new ULine(0, height));
 	}
 
 	public Dimension2D calculateDimension(StringBounder stringBounder) {

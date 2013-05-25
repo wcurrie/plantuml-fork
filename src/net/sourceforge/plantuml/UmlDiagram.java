@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  *
- * Revision $Revision: 10973 $
+ * Revision $Revision: 11007 $
  *
  */
 package net.sourceforge.plantuml;
@@ -233,16 +233,48 @@ public abstract class UmlDiagram extends AbstractPSystem implements Diagram {
 	private void exportDiagramError(OutputStream os, Throwable exception, FileFormatOption fileFormat,
 			String graphvizVersion) throws IOException {
 		final UFont font = new UFont("SansSerif", Font.PLAIN, 12);
+		final List<String> strings = new ArrayList<String>();
+		strings.add("An error has occured : " + exception);
+		final String quote = QuoteUtils.getSomeQuote();
+		strings.add("<i>" + quote);
+		strings.add(" ");
+		strings.add("PlantUML (" + Version.versionString() + ") cannot parse result from dot/GraphViz.");
+		if (exception instanceof EmptySvgException) {
+			strings.add("Because dot/GraphViz returns an empty string.");
+		}
+		if (graphvizVersion != null) {
+			strings.add(" ");
+			strings.add("GraphViz version used : " + graphvizVersion);
+		}
+		strings.add(" ");
+		strings.add("This may be caused by :");
+		strings.add(" - a bug in PlantUML");
+		strings.add(" - a problem in GraphViz");
+		strings.add(" ");
+		strings.add("You should send this diagram and this image to <b>plantuml@gmail.com</b> to solve this issue.");
+		strings.add("You can try to turn arround this issue by simplifing your diagram.");
+		strings.add(" ");
+		strings.add(exception.toString());
+		for (StackTraceElement ste : exception.getStackTrace()) {
+			strings.add("  " + ste.toString());
+
+		}
+		final GraphicStrings graphicStrings = new GraphicStrings(strings, font, HtmlColorUtils.BLACK,
+				HtmlColorUtils.WHITE, UAntiAliasing.ANTI_ALIASING_ON);
+		graphicStrings.writeImage(os, fileFormat);
+	}
+
+	private void exportDiagramErrorOld(OutputStream os, Throwable exception, FileFormatOption fileFormat,
+			String graphvizVersion) throws IOException {
+		final UFont font = new UFont("SansSerif", Font.PLAIN, 12);
 
 		final List<String> stack = new ArrayList<String>();
 		for (StackTraceElement ste : exception.getStackTrace()) {
 			stack.add("  " + ste.toString());
 		}
-		final String quote = QuoteUtils.getSomeQuote(stack.hashCode());
 
 		final List<String> strings = new ArrayList<String>();
 		strings.add("An error has occured : " + exception);
-		strings.add("<i>" + quote);
 		strings.add(" ");
 		strings.add("PlantUML (" + Version.versionString() + ") cannot parse result from dot/GraphViz.");
 		if (exception instanceof EmptySvgException) {

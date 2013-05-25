@@ -88,8 +88,4 @@ public class UPath extends AbstractShadowable implements Iterable<USegment> {
 		return segments.iterator();
 	}
 
-	public MinMax getMinMax(StringBounder stringBounder) {
-		return minmax;
-	}
-
 }

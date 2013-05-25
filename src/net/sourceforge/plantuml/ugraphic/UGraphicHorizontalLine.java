@@ -33,7 +33,7 @@
  */
 package net.sourceforge.plantuml.ugraphic;
 
-public class UGraphicHorizontalLine extends AbstractUGraphicHorizontalLine2 {
+public class UGraphicHorizontalLine extends AbstractUGraphicHorizontalLine {
 
 	private final double startingX;
 	private final double endingX;
@@ -47,7 +47,7 @@ public class UGraphicHorizontalLine extends AbstractUGraphicHorizontalLine2 {
 	}
 
 	@Override
-	protected AbstractUGraphicHorizontalLine2 copy(UGraphic ug) {
+	protected AbstractUGraphicHorizontalLine copy(UGraphic ug) {
 		return new UGraphicHorizontalLine(ug, startingX, endingX, defaultStroke);
 	}
 

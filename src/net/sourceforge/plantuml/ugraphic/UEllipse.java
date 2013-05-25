@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 10992 $
+ * Revision $Revision: 11025 $
  *
  */
 package net.sourceforge.plantuml.ugraphic;
@@ -64,11 +64,6 @@ public class UEllipse extends AbstractShadowable {
 		return height;
 	}
 	
-	public MinMax getMinMax(StringBounder stringBounder) {
-		return MinMax.fromMax(getWidth(), getHeight());
-	}
-
-
 	public final double getStart() {
 		return start;
 	}

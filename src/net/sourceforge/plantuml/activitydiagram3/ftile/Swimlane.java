@@ -33,6 +33,7 @@
  */
 package net.sourceforge.plantuml.activitydiagram3.ftile;
 
+import net.sourceforge.plantuml.cucadiagram.Display;
 import net.sourceforge.plantuml.ugraphic.UTranslate;
 
 public class Swimlane {
@@ -52,6 +53,10 @@ public class Swimlane {
 
 	public String getName() {
 		return name;
+	}
+
+	public Display getDisplay() {
+		return Display.getWithNewlines(name);
 	}
 
 	public final UTranslate getTranslate() {
