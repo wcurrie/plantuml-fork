@@ -57,7 +57,7 @@ import net.sourceforge.plantuml.cucadiagram.MethodsOrFieldsArea;
 import net.sourceforge.plantuml.cucadiagram.Stereotype;
 import net.sourceforge.plantuml.cucadiagram.dot.DotData;
 import net.sourceforge.plantuml.graphic.FontConfiguration;
-import net.sourceforge.plantuml.graphic.HorizontalAlignement;
+import net.sourceforge.plantuml.graphic.HorizontalAlignment;
 import net.sourceforge.plantuml.graphic.HtmlColor;
 import net.sourceforge.plantuml.graphic.HtmlColorUtils;
 import net.sourceforge.plantuml.graphic.TextBlock;
@@ -109,7 +109,7 @@ public final class GroupPngMakerState {
 	public IEntityImage getImage() throws IOException, InterruptedException {
 		final Display display = group.getDisplay();
 		final TextBlock title = TextBlockUtils.create(display, new FontConfiguration(getFont(FontParam.STATE),
-				HtmlColorUtils.BLACK), HorizontalAlignement.CENTER, diagram.getSkinParam());
+				HtmlColorUtils.BLACK), HorizontalAlignment.CENTER, diagram.getSkinParam());
 
 		if (group.zsize() == 0) {
 			return new EntityImageState(group, diagram.getSkinParam());

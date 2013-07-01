@@ -98,8 +98,8 @@ class EmbededSystemLine implements Line {
 		return im;
 	}
 
-	public HorizontalAlignement getHorizontalAlignement() {
-		return HorizontalAlignement.LEFT;
+	public HorizontalAlignment getHorizontalAlignment() {
+		return HorizontalAlignment.LEFT;
 	}
 
 	private Diagram getSystem() throws IOException, InterruptedException {

@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 10930 $
+ * Revision $Revision: 11154 $
  *
  */
 package net.sourceforge.plantuml.graphic;
@@ -54,15 +54,15 @@ class TextBlockSimple implements TextBlock {
 
 	private final Display texts;
 	private final FontConfiguration fontConfiguration;
-	private final HorizontalAlignement horizontalAlignement;
+	private final HorizontalAlignment horizontalAlignment;
 	private final SpriteContainer spriteContainer;
 	private final double maxMessageSize;
 
 	protected TextBlockSimple(Display texts, FontConfiguration fontConfiguration,
-			HorizontalAlignement horizontalAlignement, SpriteContainer spriteContainer, double maxMessageSize) {
+			HorizontalAlignment horizontalAlignment, SpriteContainer spriteContainer, double maxMessageSize) {
 		this.texts = texts;
 		this.fontConfiguration = fontConfiguration;
-		this.horizontalAlignement = horizontalAlignement;
+		this.horizontalAlignment = horizontalAlignment;
 		this.spriteContainer = spriteContainer;
 		this.maxMessageSize = maxMessageSize;
 	}
@@ -75,7 +75,7 @@ class TextBlockSimple implements TextBlock {
 			this.lines2 = new ArrayList<Line>();
 			for (CharSequence s : texts) {
 				if (s instanceof Stereotype) {
-					lines2.addAll(createLinesForStereotype(fontConfiguration, (Stereotype) s, horizontalAlignement,
+					lines2.addAll(createLinesForStereotype(fontConfiguration, (Stereotype) s, horizontalAlignment,
 							spriteContainer));
 				} else if (s instanceof EmbededDiagram) {
 					lines2.add(new EmbededSystemLine((EmbededDiagram) s));
@@ -130,15 +130,15 @@ class TextBlockSimple implements TextBlock {
 		if (s.length() == 0 || s.matches("^\\s*$ ")) {
 			return;
 		}
-		lines2.add(new SingleLine(s, fontConfiguration, horizontalAlignement, spriteContainer));
+		lines2.add(new SingleLine(s, fontConfiguration, horizontalAlignment, spriteContainer));
 	}
 
 	private void addSingleLine(String s) {
-		lines2.add(new SingleLine(s, fontConfiguration, horizontalAlignement, spriteContainer));
+		lines2.add(new SingleLine(s, fontConfiguration, horizontalAlignment, spriteContainer));
 	}
 
 	private double getTextWidth(StringBounder stringBounder, String s) {
-		final Line line = new SingleLine(s, fontConfiguration, horizontalAlignement, spriteContainer);
+		final Line line = new SingleLine(s, fontConfiguration, horizontalAlignment, spriteContainer);
 		return line.calculateDimension(stringBounder).getWidth();
 	}
 
@@ -151,11 +151,11 @@ class TextBlockSimple implements TextBlock {
 	}
 
 	private List<SingleLine> createLinesForStereotype(FontConfiguration fontConfiguration, Stereotype s,
-			HorizontalAlignement horizontalAlignement, SpriteContainer spriteContainer) {
+			HorizontalAlignment horizontalAlignment, SpriteContainer spriteContainer) {
 		assert s.getLabel() != null;
 		final List<SingleLine> result = new ArrayList<SingleLine>();
 		for (String st : s.getLabels()) {
-			result.add(new SingleLine(st, fontConfiguration.add(FontStyle.ITALIC), horizontalAlignement,
+			result.add(new SingleLine(st, fontConfiguration.add(FontStyle.ITALIC), horizontalAlignment,
 					spriteContainer));
 		}
 		return Collections.unmodifiableList(result);
@@ -181,12 +181,12 @@ class TextBlockSimple implements TextBlock {
 		final Dimension2D dimText = getTextDimension(ug.getStringBounder());
 
 		for (Line line : getLines(ug.getStringBounder())) {
-			final HorizontalAlignement lineHorizontalAlignement = line.getHorizontalAlignement();
+			final HorizontalAlignment lineHorizontalAlignment = line.getHorizontalAlignment();
 			double deltaX = 0;
-			if (lineHorizontalAlignement == HorizontalAlignement.CENTER) {
+			if (lineHorizontalAlignment == HorizontalAlignment.CENTER) {
 				final double diff = dimText.getWidth() - line.calculateDimension(ug.getStringBounder()).getWidth();
 				deltaX = diff / 2.0;
-			} else if (lineHorizontalAlignement == HorizontalAlignement.RIGHT) {
+			} else if (lineHorizontalAlignment == HorizontalAlignment.RIGHT) {
 				final double diff = dimText.getWidth() - line.calculateDimension(ug.getStringBounder()).getWidth();
 				deltaX = diff;
 			}

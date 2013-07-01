@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 10930 $
+ * Revision $Revision: 11153 $
  *
  */
 package net.sourceforge.plantuml.skin.rose;
@@ -36,10 +36,9 @@ package net.sourceforge.plantuml.skin.rose;
 import java.awt.geom.Dimension2D;
 import java.awt.geom.Point2D;
 
-import net.sourceforge.plantuml.OptionFlags;
 import net.sourceforge.plantuml.SpriteContainer;
 import net.sourceforge.plantuml.cucadiagram.Display;
-import net.sourceforge.plantuml.graphic.HorizontalAlignement;
+import net.sourceforge.plantuml.graphic.HorizontalAlignment;
 import net.sourceforge.plantuml.graphic.HtmlColor;
 import net.sourceforge.plantuml.graphic.StringBounder;
 import net.sourceforge.plantuml.skin.Area;
@@ -57,11 +56,14 @@ import net.sourceforge.plantuml.ugraphic.UTranslate;
 public class ComponentRoseSelfArrow extends AbstractComponentRoseArrow {
 
 	private final double arrowWidth = 45;
+	private final boolean niceArrow;
 
 	public ComponentRoseSelfArrow(HtmlColor foregroundColor, HtmlColor colorFont, UFont font, Display stringsToDisplay,
-			ArrowConfiguration arrowConfiguration, SpriteContainer spriteContainer, double maxMessageSize) {
+			ArrowConfiguration arrowConfiguration, SpriteContainer spriteContainer, double maxMessageSize,
+			boolean niceArrow) {
 		super(foregroundColor, colorFont, font, stringsToDisplay, arrowConfiguration, spriteContainer,
-				HorizontalAlignement.LEFT, maxMessageSize);
+				HorizontalAlignment.LEFT, maxMessageSize);
+		this.niceArrow = niceArrow;
 	}
 
 	@Override
@@ -119,7 +121,7 @@ public class ComponentRoseSelfArrow extends AbstractComponentRoseArrow {
 			polygon.addPoint(getArrowDeltaX(), textAndArrowHeight - getArrowDeltaY());
 			polygon.addPoint(0, textAndArrowHeight);
 			polygon.addPoint(getArrowDeltaX(), textAndArrowHeight + getArrowDeltaY());
-			if (OptionFlags.NICE_ARROW) {
+			if (niceArrow) {
 				polygon.addPoint(getArrowDeltaX() - 4, textAndArrowHeight);
 			}
 		}

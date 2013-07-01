@@ -50,20 +50,26 @@ import net.sourceforge.plantuml.command.CommandExecutionResult;
 import net.sourceforge.plantuml.core.ImageData;
 import net.sourceforge.plantuml.cucadiagram.Display;
 import net.sourceforge.plantuml.graphic.FontConfiguration;
-import net.sourceforge.plantuml.graphic.HorizontalAlignement;
+import net.sourceforge.plantuml.graphic.HorizontalAlignment;
 import net.sourceforge.plantuml.graphic.HtmlColor;
 import net.sourceforge.plantuml.graphic.StringBounder;
 import net.sourceforge.plantuml.graphic.StringBounderUtils;
 import net.sourceforge.plantuml.graphic.TextBlock;
 import net.sourceforge.plantuml.graphic.TextBlockCompressed;
-import net.sourceforge.plantuml.graphic.TextBlockInterceptorTextBlockable;
+import net.sourceforge.plantuml.graphic.TextBlockRecentred;
 import net.sourceforge.plantuml.graphic.TextBlockUtils;
 import net.sourceforge.plantuml.sequencediagram.NotePosition;
-import net.sourceforge.plantuml.svek.DecorateEntityImage2;
+import net.sourceforge.plantuml.svek.DecorateTextBlock;
 import net.sourceforge.plantuml.ugraphic.UFont;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
 
 public class ActivityDiagram3 extends UmlDiagram {
+
+	enum SwimlaneStrategy {
+		SWIMLANE_FORBIDDEN, SWIMLANE_ALLOWED;
+	}
+
+	private SwimlaneStrategy swimlaneStrategy;
 
 	static {
 		final BufferedImage imDummy = new BufferedImage(10, 10, BufferedImage.TYPE_INT_RGB);
@@ -74,8 +80,21 @@ public class ActivityDiagram3 extends UmlDiagram {
 
 	private final Swimlanes swinlanes = new Swimlanes(getSkinParam());
 
-	public CommandExecutionResult swimlane(String name) {
-		swinlanes.swimlane(name);
+	private void manageSwimlaneStrategy() {
+		if (swimlaneStrategy == null) {
+			swimlaneStrategy = SwimlaneStrategy.SWIMLANE_FORBIDDEN;
+		}
+	}
+
+	public CommandExecutionResult swimlane(String name, HtmlColor color, Display label) {
+		if (swimlaneStrategy == null) {
+			swimlaneStrategy = SwimlaneStrategy.SWIMLANE_ALLOWED;
+		}
+		if (swimlaneStrategy == SwimlaneStrategy.SWIMLANE_FORBIDDEN) {
+			return CommandExecutionResult.error("This swimlane must be defined at the start of the diagram.");
+		}
+
+		swinlanes.swimlane(name, color, label);
 		return CommandExecutionResult.ok();
 	}
 
@@ -94,20 +113,22 @@ public class ActivityDiagram3 extends UmlDiagram {
 	private void setNextLinkRenderer(LinkRendering link) {
 		swinlanes.setNextLinkRenderer(link);
 	}
-	
+
 	public void addActivity(Display activity, HtmlColor color) {
+		manageSwimlaneStrategy();
 		current().add(new InstructionSimple(activity, color, nextLinkRenderer(), swinlanes.getCurrentSwimlane()));
 		setNextLinkRenderer(null);
 	}
-	
+
 	public void start() {
+		manageSwimlaneStrategy();
 		current().add(new InstructionStart(swinlanes.getCurrentSwimlane()));
 	}
 
 	public void stop() {
+		manageSwimlaneStrategy();
 		current().add(new InstructionStop(swinlanes.getCurrentSwimlane()));
 	}
-
 
 	public String getDescription() {
 		return "activity3";
@@ -120,18 +141,17 @@ public class ActivityDiagram3 extends UmlDiagram {
 
 	protected ImageData exportDiagramInternal(OutputStream os, int index, FileFormatOption fileFormatOption,
 			List<BufferedImage> flashcodes) throws IOException {
-		TextBlock result = swinlanes;
+		// BUG42
+		// TextBlock result = swinlanes;
+		TextBlock result = new TextBlockCompressed(swinlanes);
+		result = new TextBlockRecentred(result);
 		result = addTitle(result);
 		result = addHeaderAndFooter(result);
 		final ISkinParam skinParam = getSkinParam();
 		final double dpiFactor = getDpiFactor(fileFormatOption);
 
-		// final TextBlock tb = new TextBlockCompressed(new TextBlockInterceptorTextBlockable(result));
-		// final TextBlock tb = new TextBlockInterceptorTextBlockable(result);
 		final UGraphic ug = TextBlockUtils.getPrinted(result, fileFormatOption, skinParam.getColorMapper(), dpiFactor,
 				getSkinParam().getBackgroundColor());
-		// // ug = new UGraphicOnlySimpleActivity(ug);
-		// // ug = new UGraphicInterceptorTextBlockableOnlySimpleActivity(ug);
 		ug.writeImage(os, getMetadata(), getDpi(fileFormatOption));
 		final Dimension2D dim = TextBlockUtils.getMinMax(result, dummyStringBounder).getDimension();
 		return new ImageDataSimple((int) dim.getWidth(), (int) dim.getHeight());
@@ -143,9 +163,9 @@ public class ActivityDiagram3 extends UmlDiagram {
 			return original;
 		}
 		final TextBlock text = TextBlockUtils.create(title, new FontConfiguration(getFont(FontParam.TITLE),
-				getFontColor(FontParam.TITLE, null)), HorizontalAlignement.CENTER, getSkinParam());
+				getFontColor(FontParam.TITLE, null)), HorizontalAlignment.CENTER, getSkinParam());
 
-		return new DecorateEntityImage2(original, text, HorizontalAlignement.CENTER);
+		return new DecorateTextBlock(original, text, HorizontalAlignment.CENTER);
 	}
 
 	private TextBlock addHeaderAndFooter(TextBlock original) {
@@ -156,12 +176,12 @@ public class ActivityDiagram3 extends UmlDiagram {
 		}
 		final TextBlock textFooter = footer == null ? null : TextBlockUtils
 				.create(footer, new FontConfiguration(getFont(FontParam.FOOTER), getFontColor(FontParam.FOOTER, null)),
-						getFooterAlignement(), getSkinParam());
+						getFooterAlignment(), getSkinParam());
 		final TextBlock textHeader = header == null ? null : TextBlockUtils
 				.create(header, new FontConfiguration(getFont(FontParam.HEADER), getFontColor(FontParam.HEADER, null)),
-						getHeaderAlignement(), getSkinParam());
+						getHeaderAlignment(), getSkinParam());
 
-		return new DecorateEntityImage2(original, textHeader, getHeaderAlignement(), textFooter, getFooterAlignement());
+		return new DecorateTextBlock(original, textHeader, getHeaderAlignment(), textFooter, getFooterAlignment());
 	}
 
 	private final UFont getFont(FontParam fontParam) {
@@ -219,6 +239,7 @@ public class ActivityDiagram3 extends UmlDiagram {
 	}
 
 	public void startIf(Display test, Display whenThen) {
+		manageSwimlaneStrategy();
 		final InstructionIf instructionIf = new InstructionIf(current(), test, whenThen, nextLinkRenderer());
 		current().add(instructionIf);
 		setCurrent(instructionIf);
@@ -244,6 +265,7 @@ public class ActivityDiagram3 extends UmlDiagram {
 	}
 
 	public void startRepeat() {
+		manageSwimlaneStrategy();
 		final InstructionRepeat instructionRepeat = new InstructionRepeat(current(), nextLinkRenderer());
 		current().add(instructionRepeat);
 		setCurrent(instructionRepeat);
@@ -251,6 +273,7 @@ public class ActivityDiagram3 extends UmlDiagram {
 	}
 
 	public CommandExecutionResult repeatWhile(Display label) {
+		manageSwimlaneStrategy();
 		if (current() instanceof InstructionRepeat) {
 			final InstructionRepeat instructionRepeat = (InstructionRepeat) current();
 			instructionRepeat.setTest(label, nextLinkRenderer());
@@ -263,6 +286,7 @@ public class ActivityDiagram3 extends UmlDiagram {
 	}
 
 	public void doWhile(Display test, Display yes) {
+		manageSwimlaneStrategy();
 		final InstructionWhile instructionWhile = new InstructionWhile(current(), test, nextLinkRenderer(), yes);
 		current().add(instructionWhile);
 		setCurrent(instructionWhile);
@@ -286,6 +310,7 @@ public class ActivityDiagram3 extends UmlDiagram {
 	}
 
 	public void startGroup(Display name) {
+		manageSwimlaneStrategy();
 		final InstructionGroup instructionGroup = new InstructionGroup(current(), name);
 		current().add(instructionGroup);
 		setCurrent(instructionGroup);

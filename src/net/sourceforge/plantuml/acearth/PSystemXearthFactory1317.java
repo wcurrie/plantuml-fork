@@ -41,7 +41,6 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import net.sourceforge.plantuml.command.PSystemBasicFactory1317;
-import net.sourceforge.plantuml.core.DiagramType;
 
 import com.ctreber.acearth.plugins.markers.Marker;
 

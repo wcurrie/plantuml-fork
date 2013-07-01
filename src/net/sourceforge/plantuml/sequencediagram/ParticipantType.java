@@ -28,12 +28,12 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 9786 $
+ * Revision $Revision: 11060 $
  *
  */
 package net.sourceforge.plantuml.sequencediagram;
 
 public enum ParticipantType {
-	PARTICIPANT, ACTOR, BOUNDARY, CONTROL, ENTITY
+	PARTICIPANT, ACTOR, BOUNDARY, CONTROL, ENTITY, DATABASE
 
 }

@@ -42,7 +42,6 @@ import java.util.Set;
 import net.sourceforge.plantuml.Dimension2DDouble;
 import net.sourceforge.plantuml.Url;
 import net.sourceforge.plantuml.activitydiagram3.ftile.AbstractFtile;
-import net.sourceforge.plantuml.activitydiagram3.ftile.Ftile;
 import net.sourceforge.plantuml.activitydiagram3.ftile.Swimlane;
 import net.sourceforge.plantuml.graphic.HtmlColor;
 import net.sourceforge.plantuml.graphic.StringBounder;
@@ -57,14 +56,13 @@ public class FtileBlackBlock extends AbstractFtile {
 	private final double width;
 	private final double height;
 	private final HtmlColor colorBar;
-	private final Set<Swimlane> swimlanes;
 	private final Swimlane swimlane;
 
-	public FtileBlackBlock(double width, double height, HtmlColor colorBar, Set<Swimlane> swimlanes, Swimlane swimlane) {
+	public FtileBlackBlock(boolean shadowing, double width, double height, HtmlColor colorBar, Swimlane swimlane) {
+		super(shadowing);
 		this.height = height;
 		this.width = width;
 		this.colorBar = colorBar;
-		this.swimlanes = swimlanes;
 		this.swimlane = swimlane;
 	}
 
@@ -81,7 +79,7 @@ public class FtileBlackBlock extends AbstractFtile {
 
 			public void drawU(UGraphic ug) {
 				final URectangle rect = new URectangle(width, height, 5, 5);
-				if (Ftile.SHADOWING) {
+				if (shadowing()) {
 					rect.setDeltaShadow(3);
 				}
 				ug.apply(new UChangeColor(colorBar)).apply(new UChangeBackColor(colorBar)).draw(rect);
@@ -102,7 +100,7 @@ public class FtileBlackBlock extends AbstractFtile {
 	}
 
 	public Set<Swimlane> getSwimlanes() {
-		return swimlanes;
+		return Collections.singleton(swimlane);
 	}
 
 	public Swimlane getSwimlaneIn() {

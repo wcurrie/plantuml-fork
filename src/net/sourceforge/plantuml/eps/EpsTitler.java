@@ -42,7 +42,7 @@ import java.util.StringTokenizer;
 import net.sourceforge.plantuml.SpriteContainerEmpty;
 import net.sourceforge.plantuml.cucadiagram.Display;
 import net.sourceforge.plantuml.graphic.FontConfiguration;
-import net.sourceforge.plantuml.graphic.HorizontalAlignement;
+import net.sourceforge.plantuml.graphic.HorizontalAlignment;
 import net.sourceforge.plantuml.graphic.HtmlColor;
 import net.sourceforge.plantuml.graphic.TextBlock;
 import net.sourceforge.plantuml.graphic.TextBlockUtils;
@@ -55,7 +55,7 @@ import net.sourceforge.plantuml.ugraphic.eps.UGraphicEps;
 public final class EpsTitler {
 
 	private final List<? extends CharSequence> text;
-	private final HorizontalAlignement horizontalAlignement;
+	private final HorizontalAlignment horizontalAlignment;
 	private final VerticalPosition verticalPosition;
 	private final int margin;
 	private final TextBlock textBloc;
@@ -64,11 +64,11 @@ public final class EpsTitler {
 
 	public EpsTitler(ColorMapper colorMapper, EpsStrategy epsStrategy, HtmlColor textColor,
 			List<? extends CharSequence> text, int fontSize, String fontFamily,
-			HorizontalAlignement horizontalAlignement, VerticalPosition verticalPosition, int margin) {
+			HorizontalAlignment horizontalAlignment, VerticalPosition verticalPosition, int margin) {
 		this.text = text;
 		this.colorMapper = colorMapper;
 		this.epsStrategy = epsStrategy;
-		this.horizontalAlignement = horizontalAlignement;
+		this.horizontalAlignment = horizontalAlignment;
 		this.verticalPosition = verticalPosition;
 		this.margin = margin;
 		if (text == null || text.size() == 0) {
@@ -76,7 +76,7 @@ public final class EpsTitler {
 		} else {
 			final UFont normalFont = new UFont(fontFamily, Font.PLAIN, fontSize);
 			textBloc = TextBlockUtils.create(new Display(text), new FontConfiguration(normalFont, textColor),
-					HorizontalAlignement.LEFT, new SpriteContainerEmpty());
+					HorizontalAlignment.LEFT, new SpriteContainerEmpty());
 		}
 	}
 
@@ -112,11 +112,11 @@ public final class EpsTitler {
 		final Dimension2D dimText = textBloc.calculateDimension(uGraphicEps.getStringBounder());
 		final double xpos;
 
-		if (horizontalAlignement == HorizontalAlignement.LEFT) {
+		if (horizontalAlignment == HorizontalAlignment.LEFT) {
 			xpos = 2;
-		} else if (horizontalAlignement == HorizontalAlignement.RIGHT) {
+		} else if (horizontalAlignment == HorizontalAlignment.RIGHT) {
 			xpos = width - dimText.getWidth() - 2;
-		} else if (horizontalAlignement == HorizontalAlignement.CENTER) {
+		} else if (horizontalAlignment == HorizontalAlignment.CENTER) {
 			xpos = (width - dimText.getWidth()) / 2;
 		} else {
 			xpos = 0;

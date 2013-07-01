@@ -33,17 +33,23 @@
  */
 package net.sourceforge.plantuml.activitydiagram3.ftile;
 
+import net.sourceforge.plantuml.SpecificBackcolorable;
 import net.sourceforge.plantuml.cucadiagram.Display;
+import net.sourceforge.plantuml.graphic.HtmlColor;
 import net.sourceforge.plantuml.ugraphic.UTranslate;
 
-public class Swimlane {
+public class Swimlane implements SpecificBackcolorable {
 
 	private final String name;
+	private HtmlColor color;
+	private Display display;
 
 	private UTranslate translate = new UTranslate();
 
 	public Swimlane(String name) {
 		this.name = name;
+		this.display = Display.getWithNewlines(name);
+
 	}
 
 	@Override
@@ -56,7 +62,11 @@ public class Swimlane {
 	}
 
 	public Display getDisplay() {
-		return Display.getWithNewlines(name);
+		return display;
+	}
+
+	public void setDisplay(Display label) {
+		this.display = label;
 	}
 
 	public final UTranslate getTranslate() {
@@ -65,6 +75,14 @@ public class Swimlane {
 
 	public final void setTranslate(UTranslate translate) {
 		this.translate = translate;
+	}
+
+	public HtmlColor getSpecificBackColor() {
+		return color;
+	}
+
+	public void setSpecificBackcolor(HtmlColor specificBackcolor) {
+		this.color = specificBackcolor;
 	}
 
 }

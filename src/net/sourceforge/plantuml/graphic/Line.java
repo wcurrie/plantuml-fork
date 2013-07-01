@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 10571 $
+ * Revision $Revision: 11154 $
  *
  */
 package net.sourceforge.plantuml.graphic;
@@ -36,5 +36,5 @@ package net.sourceforge.plantuml.graphic;
 
 interface Line extends TextBlock {
 
-	HorizontalAlignement getHorizontalAlignement();
+	HorizontalAlignment getHorizontalAlignment();
 }

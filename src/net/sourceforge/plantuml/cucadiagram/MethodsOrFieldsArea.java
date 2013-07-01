@@ -43,7 +43,7 @@ import net.sourceforge.plantuml.FontParam;
 import net.sourceforge.plantuml.ISkinParam;
 import net.sourceforge.plantuml.Url;
 import net.sourceforge.plantuml.graphic.FontConfiguration;
-import net.sourceforge.plantuml.graphic.HorizontalAlignement;
+import net.sourceforge.plantuml.graphic.HorizontalAlignment;
 import net.sourceforge.plantuml.graphic.HtmlColor;
 import net.sourceforge.plantuml.graphic.StringBounder;
 import net.sourceforge.plantuml.graphic.TextBlock;
@@ -66,14 +66,14 @@ public class MethodsOrFieldsArea implements TextBlockWidth, TextBlock {
 	private final HtmlColor color;
 	private final Rose rose = new Rose();
 	private final List<Member> members = new ArrayList<Member>();
-	private final HorizontalAlignement align;
+	private final HorizontalAlignment align;
 
 	public MethodsOrFieldsArea(List<Member> members, FontParam fontParam, ISkinParam skinParam) {
-		this(members, fontParam, skinParam, HorizontalAlignement.LEFT);
+		this(members, fontParam, skinParam, HorizontalAlignment.LEFT);
 	}
 
 	public MethodsOrFieldsArea(List<Member> members, FontParam fontParam, ISkinParam skinParam,
-			HorizontalAlignement align) {
+			HorizontalAlignment align) {
 		this.align = align;
 		this.skinParam = skinParam;
 		this.font = skinParam.getFont(fontParam, null);
@@ -213,9 +213,9 @@ public class MethodsOrFieldsArea implements TextBlockWidth, TextBlock {
 			}
 		} else {
 			final PlacementStrategy placementStrategy;
-			if (align == HorizontalAlignement.LEFT) {
+			if (align == HorizontalAlignment.LEFT) {
 				placementStrategy = new PlacementStrategyY1Y2Left(ug.getStringBounder());
-			} else if (align == HorizontalAlignement.CENTER) {
+			} else if (align == HorizontalAlignment.CENTER) {
 				placementStrategy = new PlacementStrategyY1Y2Center(ug.getStringBounder());
 			} else {
 				throw new IllegalStateException();

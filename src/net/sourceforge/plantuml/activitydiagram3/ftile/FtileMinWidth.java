@@ -57,6 +57,11 @@ public class FtileMinWidth implements Ftile {
 		this.minWidth = minWidth;
 	}
 
+	@Override
+	public String toString() {
+		return "FtileMinWidth:" + ftile;
+	}
+
 	public TextBlock asTextBlock() {
 		return new TextBlock() {
 
@@ -139,7 +144,7 @@ public class FtileMinWidth implements Ftile {
 	public Set<Swimlane> getSwimlanes() {
 		return ftile.getSwimlanes();
 	}
-	
+
 	public Swimlane getSwimlaneIn() {
 		return ftile.getSwimlaneIn();
 	}
@@ -148,5 +153,8 @@ public class FtileMinWidth implements Ftile {
 		return ftile.getSwimlaneOut();
 	}
 
+	public boolean shadowing() {
+		return ftile.shadowing();
+	}
 
 }

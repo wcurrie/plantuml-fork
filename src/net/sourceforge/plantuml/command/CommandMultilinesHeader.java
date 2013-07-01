@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 10779 $
+ * Revision $Revision: 11153 $
  *
  */
 package net.sourceforge.plantuml.command;
@@ -39,7 +39,7 @@ import java.util.regex.Matcher;
 import net.sourceforge.plantuml.StringUtils;
 import net.sourceforge.plantuml.UmlDiagram;
 import net.sourceforge.plantuml.cucadiagram.Display;
-import net.sourceforge.plantuml.graphic.HorizontalAlignement;
+import net.sourceforge.plantuml.graphic.HorizontalAlignment;
 
 public class CommandMultilinesHeader extends CommandMultilines<UmlDiagram> {
 
@@ -61,7 +61,7 @@ public class CommandMultilinesHeader extends CommandMultilines<UmlDiagram> {
 		}
 		final String align = m.group(1);
 		if (align != null) {
-			diagram.setHeaderAlignement(HorizontalAlignement.valueOf(align.toUpperCase()));
+			diagram.setHeaderAlignment(HorizontalAlignment.valueOf(align.toUpperCase()));
 		}
 		final Display strings = new Display(lines.subList(1, lines.size() - 1));
 		if (strings.size() > 0) {

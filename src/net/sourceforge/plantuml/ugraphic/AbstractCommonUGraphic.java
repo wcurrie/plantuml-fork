@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 10920 $
+ * Revision $Revision: 11123 $
  *
  */
 package net.sourceforge.plantuml.ugraphic;
@@ -38,6 +38,7 @@ import net.sourceforge.plantuml.graphic.HtmlColor;
 public abstract class AbstractCommonUGraphic implements UGraphic {
 
 	private UStroke stroke = new UStroke();
+	private UPattern pattern = UPattern.FULL;
 	private boolean hidden = false;
 	private HtmlColor backColor = null;
 	private HtmlColor color = null;
@@ -56,6 +57,8 @@ public abstract class AbstractCommonUGraphic implements UGraphic {
 			copy.clip = copy.clip.translate(getTranslateX(), getTranslateY());
 		} else if (change instanceof UStroke) {
 			copy.stroke = (UStroke) change;
+		} else if (change instanceof UPattern) {
+			copy.pattern = (UPattern) change;
 		} else if (change instanceof UHidden) {
 			copy.hidden = change == UHidden.HIDDEN;
 		} else if (change instanceof UChangeBackColor) {
@@ -80,6 +83,7 @@ public abstract class AbstractCommonUGraphic implements UGraphic {
 		this.clip = other.clip;
 
 		this.stroke = other.stroke;
+		this.pattern = other.pattern;
 		this.hidden = other.hidden;
 		this.color = other.color;
 		this.backColor = other.backColor;
@@ -104,6 +108,10 @@ public abstract class AbstractCommonUGraphic implements UGraphic {
 
 			public HtmlColor getBackcolor() {
 				return backColor;
+			}
+
+			public UPattern getPattern() {
+				return pattern;
 			}
 		};
 	}

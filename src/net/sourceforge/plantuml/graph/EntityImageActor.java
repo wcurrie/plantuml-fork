@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 9786 $
+ * Revision $Revision: 11154 $
  *
  */
 package net.sourceforge.plantuml.graph;
@@ -48,7 +48,7 @@ class EntityImageActor extends AbstractEntityImage {
 	public EntityImageActor(IEntity entity) {
 		super(entity);
 //		this.name = TextBlockUtils.create(entity.getDisplay(), new FontConfiguration(
-//				getFont14(), HtmlColorUtils.BLACK), HorizontalAlignement.CENTER, new SpriteContainerEmpty());
+//				getFont14(), HtmlColorUtils.BLACK), HorizontalAlignment.CENTER, new SpriteContainerEmpty());
 //		this.stickman = new StickMan(getYellow(), getRed());
 	}
 //

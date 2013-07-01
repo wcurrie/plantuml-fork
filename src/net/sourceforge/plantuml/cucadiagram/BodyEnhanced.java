@@ -44,7 +44,7 @@ import net.sourceforge.plantuml.SpriteContainer;
 import net.sourceforge.plantuml.StringUtils;
 import net.sourceforge.plantuml.Url;
 import net.sourceforge.plantuml.graphic.FontConfiguration;
-import net.sourceforge.plantuml.graphic.HorizontalAlignement;
+import net.sourceforge.plantuml.graphic.HorizontalAlignment;
 import net.sourceforge.plantuml.graphic.StringBounder;
 import net.sourceforge.plantuml.graphic.TextBlock;
 import net.sourceforge.plantuml.graphic.TextBlockLineBefore2;
@@ -61,7 +61,7 @@ public class BodyEnhanced implements TextBlock {
 	private final FontParam fontParam;
 	private final ISkinParam skinParam;
 	private final boolean lineFirst;
-	private final HorizontalAlignement align;
+	private final HorizontalAlignment align;
 	private final boolean manageHorizontalLine;
 	private final boolean manageModifier;
 	private final List<Url> urls = new ArrayList<Url>();
@@ -74,12 +74,12 @@ public class BodyEnhanced implements TextBlock {
 		this.titleConfig = new FontConfiguration(skinParam.getFont(fontParam, null), new Rose().getFontColor(skinParam,
 				fontParam));
 		this.lineFirst = true;
-		this.align = HorizontalAlignement.LEFT;
+		this.align = HorizontalAlignment.LEFT;
 		this.manageHorizontalLine = true;
 		this.manageModifier = manageModifier;
 	}
 
-	public BodyEnhanced(Display display, FontParam fontParam, ISkinParam skinParam, HorizontalAlignement align,
+	public BodyEnhanced(Display display, FontParam fontParam, ISkinParam skinParam, HorizontalAlignment align,
 			Stereotype stereotype, boolean manageHorizontalLine, boolean manageModifier) {
 		this.rawBody = new ArrayList<String>();
 		for (CharSequence s : display) {
@@ -171,7 +171,7 @@ public class BodyEnhanced implements TextBlock {
 			return null;
 		}
 		s = s.substring(2, s.length() - 2).trim();
-		return TextBlockUtils.create(Display.getWithNewlines(s), titleConfig, HorizontalAlignement.LEFT,
+		return TextBlockUtils.create(Display.getWithNewlines(s), titleConfig, HorizontalAlignment.LEFT,
 				spriteContainer);
 	}
 

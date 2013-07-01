@@ -47,7 +47,7 @@ import net.sourceforge.plantuml.cucadiagram.Link;
 import net.sourceforge.plantuml.cucadiagram.Stereotype;
 import net.sourceforge.plantuml.graphic.CircledCharacter;
 import net.sourceforge.plantuml.graphic.FontConfiguration;
-import net.sourceforge.plantuml.graphic.HorizontalAlignement;
+import net.sourceforge.plantuml.graphic.HorizontalAlignment;
 import net.sourceforge.plantuml.graphic.HtmlColor;
 import net.sourceforge.plantuml.graphic.HtmlColorUtils;
 import net.sourceforge.plantuml.graphic.StringBounder;
@@ -75,14 +75,14 @@ public class EntityImageClass2 extends AbstractEntityImage2 {
 	public EntityImageClass2(IEntity entity, ISkinParam skinParam, Collection<Link> links) {
 		super(entity, skinParam);
 		this.name = TextBlockUtils.create(entity.getDisplay(), new FontConfiguration(getFont(FontParam.CLASS),
-				HtmlColorUtils.BLACK), HorizontalAlignement.CENTER, skinParam);
+				HtmlColorUtils.BLACK), HorizontalAlignment.CENTER, skinParam);
 		final Stereotype stereotype = entity.getStereotype();
 		if (stereotype == null || stereotype.getLabel() == null) {
 			this.stereo = null;
 		} else {
 			this.stereo = TextBlockUtils.create(Display.getWithNewlines(stereotype.getLabel()), new FontConfiguration(
 					getFont(FontParam.CLASS_STEREOTYPE), getFontColor(FontParam.CLASS_STEREOTYPE)),
-					HorizontalAlignement.CENTER, skinParam);
+					HorizontalAlignment.CENTER, skinParam);
 		}
 		// this.methods = entity.getMethodsToDisplay().asTextBlock(FontParam.CLASS_ATTRIBUTE, skinParam);
 		// this.fields = entity.getFieldsToDisplay().asTextBlock(FontParam.CLASS_ATTRIBUTE, skinParam);

@@ -51,7 +51,7 @@ import net.sourceforge.plantuml.api.ImageDataSimple;
 import net.sourceforge.plantuml.core.ImageData;
 import net.sourceforge.plantuml.cucadiagram.Display;
 import net.sourceforge.plantuml.png.PngIO;
-import net.sourceforge.plantuml.sequencediagram.graphic.SequenceDiagramFileMaker;
+import net.sourceforge.plantuml.sequencediagram.graphic.SequenceDiagramFileMakerPuma;
 import net.sourceforge.plantuml.ugraphic.ColorMapperIdentity;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
 import net.sourceforge.plantuml.ugraphic.eps.UGraphicEps;
@@ -119,7 +119,7 @@ public class PostItDiagram extends UmlDiagram {
 		final FileFormat fileFormat = fileFormatOption.getFileFormat();
 		if (fileFormat == FileFormat.PNG) {
 			final double height = getDefaultArea().heightWhenWidthIs(width,
-					SequenceDiagramFileMaker.getDummystringbounder());
+					SequenceDiagramFileMakerPuma.getDummystringbounder());
 			final EmptyImageBuilder builder = new EmptyImageBuilder(width, height, backColor);
 
 			final Graphics2D graphics2D = builder.getGraphics2D();

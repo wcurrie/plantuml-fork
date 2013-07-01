@@ -48,7 +48,7 @@ import net.sourceforge.plantuml.cucadiagram.ILeaf;
 import net.sourceforge.plantuml.cucadiagram.PortionShower;
 import net.sourceforge.plantuml.cucadiagram.Stereotype;
 import net.sourceforge.plantuml.graphic.FontConfiguration;
-import net.sourceforge.plantuml.graphic.HorizontalAlignement;
+import net.sourceforge.plantuml.graphic.HorizontalAlignment;
 import net.sourceforge.plantuml.graphic.HtmlColor;
 import net.sourceforge.plantuml.graphic.StringBounder;
 import net.sourceforge.plantuml.graphic.TextBlock;
@@ -83,7 +83,7 @@ public class EntityImageObject extends AbstractEntityImage {
 		this.name = TextBlockUtils.withMargin(TextBlockUtils.create(entity.getDisplay(),
 				new FontConfiguration(SkinParamUtils.getFont(getSkinParam(), FontParam.OBJECT, stereotype),
 						SkinParamUtils.getFontColor(getSkinParam(), FontParam.OBJECT, stereotype)),
-				HorizontalAlignement.CENTER, skinParam), 2, 2);
+				HorizontalAlignment.CENTER, skinParam), 2, 2);
 		if (stereotype == null || stereotype.getLabel() == null) {
 			this.stereo = null;
 		} else {
@@ -91,7 +91,7 @@ public class EntityImageObject extends AbstractEntityImage {
 					Display.getWithNewlines(stereotype.getLabel()),
 					new FontConfiguration(SkinParamUtils.getFont(getSkinParam(), FontParam.OBJECT_STEREOTYPE,
 							stereotype), SkinParamUtils.getFontColor(getSkinParam(), FontParam.OBJECT_STEREOTYPE,
-							stereotype)), HorizontalAlignement.CENTER, skinParam);
+							stereotype)), HorizontalAlignment.CENTER, skinParam);
 		}
 
 		if (entity.getFieldsToDisplay().size() == 0) {

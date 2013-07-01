@@ -47,7 +47,7 @@ import net.sourceforge.plantuml.cucadiagram.IEntity;
 import net.sourceforge.plantuml.cucadiagram.Member;
 import net.sourceforge.plantuml.cucadiagram.Stereotype;
 import net.sourceforge.plantuml.graphic.FontConfiguration;
-import net.sourceforge.plantuml.graphic.HorizontalAlignement;
+import net.sourceforge.plantuml.graphic.HorizontalAlignment;
 import net.sourceforge.plantuml.graphic.HtmlColor;
 import net.sourceforge.plantuml.graphic.StringBounder;
 import net.sourceforge.plantuml.graphic.TextBlock;
@@ -88,7 +88,7 @@ public class EntityImageState extends AbstractEntityImage {
 		this.desc = TextBlockUtils.create(entity.getDisplay(),
 				new FontConfiguration(SkinParamUtils.getFont(getSkinParam(), FontParam.STATE, stereotype),
 						SkinParamUtils.getFontColor(getSkinParam(), FontParam.STATE, stereotype)),
-				HorizontalAlignement.CENTER, skinParam);
+				HorizontalAlignment.CENTER, skinParam);
 
 		Display list = new Display();
 		for (Member att : entity.getFieldsToDisplay()) {
@@ -100,7 +100,7 @@ public class EntityImageState extends AbstractEntityImage {
 		this.fields = TextBlockUtils.create(list,
 				new FontConfiguration(SkinParamUtils.getFont(getSkinParam(), FontParam.STATE_ATTRIBUTE, stereotype),
 						SkinParamUtils.getFontColor(getSkinParam(), FontParam.STATE_ATTRIBUTE, stereotype)),
-				HorizontalAlignement.LEFT, skinParam);
+				HorizontalAlignment.LEFT, skinParam);
 
 	}
 

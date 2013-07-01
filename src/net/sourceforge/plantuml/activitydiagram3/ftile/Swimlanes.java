@@ -55,23 +55,27 @@ import net.sourceforge.plantuml.activitydiagram3.ftile.vcompact.FtileFactoryDele
 import net.sourceforge.plantuml.activitydiagram3.ftile.vcompact.FtileFactoryDelegatorWhile;
 import net.sourceforge.plantuml.activitydiagram3.ftile.vcompact.UGraphicInterceptorOneSwimlane;
 import net.sourceforge.plantuml.activitydiagram3.ftile.vcompact.VCompactFactory;
+import net.sourceforge.plantuml.cucadiagram.Display;
 import net.sourceforge.plantuml.graphic.FontConfiguration;
-import net.sourceforge.plantuml.graphic.HorizontalAlignement;
+import net.sourceforge.plantuml.graphic.HorizontalAlignment;
+import net.sourceforge.plantuml.graphic.HtmlColor;
 import net.sourceforge.plantuml.graphic.HtmlColorUtils;
 import net.sourceforge.plantuml.graphic.StringBounder;
 import net.sourceforge.plantuml.graphic.StringBounderUtils;
 import net.sourceforge.plantuml.graphic.TextBlock;
-import net.sourceforge.plantuml.graphic.TextBlockCompressed;
 import net.sourceforge.plantuml.graphic.TextBlockInterceptorTextBlockable;
 import net.sourceforge.plantuml.graphic.TextBlockUtils;
 import net.sourceforge.plantuml.graphic.UGraphicDelegator;
+import net.sourceforge.plantuml.svek.UGraphicLineMerger;
 import net.sourceforge.plantuml.ugraphic.LimitFinder;
 import net.sourceforge.plantuml.ugraphic.MinMax;
 import net.sourceforge.plantuml.ugraphic.UChange;
+import net.sourceforge.plantuml.ugraphic.UChangeBackColor;
 import net.sourceforge.plantuml.ugraphic.UChangeColor;
 import net.sourceforge.plantuml.ugraphic.UFont;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
 import net.sourceforge.plantuml.ugraphic.ULine;
+import net.sourceforge.plantuml.ugraphic.URectangle;
 import net.sourceforge.plantuml.ugraphic.UShape;
 import net.sourceforge.plantuml.ugraphic.UStroke;
 import net.sourceforge.plantuml.ugraphic.UTranslate;
@@ -112,8 +116,14 @@ public class Swimlanes implements TextBlock {
 		return factory;
 	}
 
-	public void swimlane(String name) {
+	public void swimlane(String name, HtmlColor color, Display label) {
 		currentSwimlane = getOrCreate(name);
+		if (color != null) {
+			currentSwimlane.setSpecificBackcolor(color);
+		}
+		if (label != null) {
+			currentSwimlane.setDisplay(label);
+		}
 	}
 
 	private Swimlane getOrCreate(String name) {
@@ -165,30 +175,34 @@ public class Swimlanes implements TextBlock {
 		final FtileFactory factory = getFtileFactory();
 		TextBlock full = root.createFtile(factory).asTextBlock();
 		if (swinlanes.size() <= 1) {
-			full = new TextBlockCompressed(new TextBlockInterceptorTextBlockable(full));
-			full.drawU(ug);
+			full = new TextBlockInterceptorTextBlockable(full);
+			// BUG42
+			// full.drawU(ug);
+			final UGraphicLineMerger ugLineMerger = new UGraphicLineMerger(ug);
+			full.drawU(ugLineMerger);
+			ugLineMerger.draw(new ULineFlush());
 			return;
 		}
 
 		final StringBounder stringBounder = ug.getStringBounder();
 		final Dimension2D dimensionFull = full.calculateDimension(stringBounder);
 
-		double x = 0;
-		final double separationMargin = 10;
-
 		final UFont font = skinParam.getFont(FontParam.TITLE, null);
 		final FontConfiguration fc = new FontConfiguration(font, HtmlColorUtils.BLACK);
 
 		double titlesHeight = 0;
 		for (Swimlane swimlane : swinlanes) {
-			final TextBlock swTitle = TextBlockUtils.create(swimlane.getDisplay(), fc, HorizontalAlignement.LEFT,
+			final TextBlock swTitle = TextBlockUtils.create(swimlane.getDisplay(), fc, HorizontalAlignment.LEFT,
 					new SpriteContainerEmpty());
+
 			titlesHeight = Math.max(titlesHeight, swTitle.calculateDimension(stringBounder).getHeight());
 		}
+		double x = 0;
+		final double separationMargin = 10;
 
 		final UTranslate titleHeightTranslate = new UTranslate(0, titlesHeight);
 		for (Swimlane swimlane : swinlanes) {
-			final TextBlock swTitle = TextBlockUtils.create(swimlane.getDisplay(), fc, HorizontalAlignement.LEFT,
+			final TextBlock swTitle = TextBlockUtils.create(swimlane.getDisplay(), fc, HorizontalAlignment.LEFT,
 					new SpriteContainerEmpty());
 
 			final LimitFinder limitFinder = new LimitFinder(stringBounder, false);
@@ -196,24 +210,30 @@ public class Swimlanes implements TextBlock {
 			final MinMax minMax = limitFinder.getMinMax();
 			// System.err.println("minMax=" + minMax);
 
-			final UTranslate translate = new UTranslate(x - minMax.getMinX() + separationMargin, 0);
-			// System.err.println("translate=" + translate);
-
-			swimlane.setTranslate(translate);
-			final double width = minMax.getWidth() + 2 * separationMargin;
+			final double drawingWidth = minMax.getWidth() + 2 * separationMargin;
 			final double titleWidth = swTitle.calculateDimension(stringBounder).getWidth();
-			final double posTitle = x + (width - titleWidth) / 2;
+			final double totalWidth = Math.max(drawingWidth, titleWidth + 2 * separationMargin);
+
+			if (swimlane.getSpecificBackColor() != null) {
+				final UGraphic background = ug.apply(new UChangeBackColor(swimlane.getSpecificBackColor()))
+						.apply(new UChangeColor(swimlane.getSpecificBackColor())).apply(new UTranslate(x, 0));
+				background.draw(new URectangle(totalWidth, dimensionFull.getHeight() + titlesHeight));
+			}
+
+			final UTranslate translate = new UTranslate(x - minMax.getMinX() + separationMargin
+					+ (totalWidth - drawingWidth) / 2.0, 0);
+			swimlane.setTranslate(translate);
+
+			final double posTitle = x + (totalWidth - titleWidth) / 2;
 			swTitle.drawU(ug.apply(new UTranslate(posTitle, 0)));
 
 			drawSeparation(ug.apply(new UTranslate(x, 0)), dimensionFull.getHeight() + titlesHeight);
 
 			final UGraphic ugOneSwimlane = new UGraphicInterceptorOneSwimlane(ug, swimlane);
 
-			// minMax.drawGrey(ug.apply(translate));
 			full.drawU(ugOneSwimlane.apply(translate).apply(titleHeightTranslate));
 
-			// x += dimensionFull.getWidth();
-			x += width;
+			x += totalWidth;
 		}
 		drawSeparation(ug.apply(new UTranslate(x, 0)), dimensionFull.getHeight() + titlesHeight);
 		full.drawU(new Cross(ug.apply(titleHeightTranslate)));

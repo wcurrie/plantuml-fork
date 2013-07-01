@@ -47,7 +47,7 @@ import net.sourceforge.plantuml.activitydiagram3.ftile.AbstractFtile;
 import net.sourceforge.plantuml.activitydiagram3.ftile.Swimlane;
 import net.sourceforge.plantuml.cucadiagram.Display;
 import net.sourceforge.plantuml.graphic.FontConfiguration;
-import net.sourceforge.plantuml.graphic.HorizontalAlignement;
+import net.sourceforge.plantuml.graphic.HorizontalAlignment;
 import net.sourceforge.plantuml.graphic.HtmlColor;
 import net.sourceforge.plantuml.graphic.HtmlColorUtils;
 import net.sourceforge.plantuml.graphic.StringBounder;
@@ -93,14 +93,15 @@ public class FtileBox extends AbstractFtile {
 		return swimlane;
 	}
 
-	public FtileBox(Display label, HtmlColor color, HtmlColor backColor, UFont font, HtmlColor arrowColor,
-			Swimlane swimlane) {
+	public FtileBox(boolean shadowing, Display label, HtmlColor color, HtmlColor backColor, UFont font,
+			HtmlColor arrowColor, Swimlane swimlane) {
+		super(shadowing);
 		this.color = color;
 		this.swimlane = swimlane;
 		this.backColor = backColor;
 		this.inRenreding = new LinkRendering(arrowColor);
 		final FontConfiguration fc = new FontConfiguration(font, HtmlColorUtils.BLACK);
-		tb = TextBlockUtils.create(label, fc, HorizontalAlignement.LEFT, new SpriteContainerEmpty());
+		tb = TextBlockUtils.create(label, fc, HorizontalAlignment.LEFT, new SpriteContainerEmpty());
 		this.print = label.toString();
 	}
 
@@ -122,7 +123,7 @@ public class FtileBox extends AbstractFtile {
 				final double widthTotal = dimTotal.getWidth();
 				final double heightTotal = dimTotal.getHeight();
 				final Shadowable rect = new URectangle(widthTotal, heightTotal, CORNER, CORNER);
-				if (SHADOWING) {
+				if (shadowing()) {
 					rect.setDeltaShadow(3);
 				}
 				ug.apply(new UChangeColor(color)).apply(new UChangeBackColor(backColor)).apply(new UStroke(1.5))
@@ -155,6 +156,5 @@ public class FtileBox extends AbstractFtile {
 		final Dimension2D dim = tb.calculateDimension(stringBounder);
 		return new Point2D.Double(dim.getWidth() / 2 + MARGIN, dim.getHeight() + 2 * MARGIN);
 	}
-
 
 }

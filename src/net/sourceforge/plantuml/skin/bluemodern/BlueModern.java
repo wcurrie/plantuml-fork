@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 9786 $
+ * Revision $Revision: 11153 $
  *
  */
 package net.sourceforge.plantuml.skin.bluemodern;
@@ -39,7 +39,7 @@ import net.sourceforge.plantuml.FontParam;
 import net.sourceforge.plantuml.ISkinParam;
 import net.sourceforge.plantuml.LineParam;
 import net.sourceforge.plantuml.cucadiagram.Display;
-import net.sourceforge.plantuml.graphic.HorizontalAlignement;
+import net.sourceforge.plantuml.graphic.HorizontalAlignment;
 import net.sourceforge.plantuml.graphic.HtmlColor;
 import net.sourceforge.plantuml.graphic.HtmlColorUtils;
 import net.sourceforge.plantuml.skin.ArrowConfiguration;
@@ -144,7 +144,7 @@ public class BlueModern implements Skin {
 		}
 		if (type == ComponentType.REFERENCE) {
 			return new ComponentRoseReference(HtmlColorUtils.BLACK, HtmlColorUtils.WHITE, normalFont, borderGroupColor,
-					blue1, blue3, normalFont, stringsToDisplay, HorizontalAlignement.CENTER, param, 0, Rose.getStroke(
+					blue1, blue3, normalFont, stringsToDisplay, HorizontalAlignment.CENTER, param, 0, Rose.getStroke(
 							param, LineParam.sequenceDividerBorder, 2));
 		}
 		if (type == ComponentType.NEWPAGE) {

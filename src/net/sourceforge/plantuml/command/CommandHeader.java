@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 10778 $
+ * Revision $Revision: 11153 $
  *
  */
 package net.sourceforge.plantuml.command;
@@ -37,7 +37,7 @@ import java.util.List;
 
 import net.sourceforge.plantuml.UmlDiagram;
 import net.sourceforge.plantuml.cucadiagram.Display;
-import net.sourceforge.plantuml.graphic.HorizontalAlignement;
+import net.sourceforge.plantuml.graphic.HorizontalAlignment;
 
 public class CommandHeader extends SingleLineCommand<UmlDiagram> {
 
@@ -49,7 +49,7 @@ public class CommandHeader extends SingleLineCommand<UmlDiagram> {
 	protected CommandExecutionResult executeArg(UmlDiagram diagram, List<String> arg) {
 		final String align = arg.get(0);
 		if (align != null) {
-			diagram.setHeaderAlignement(HorizontalAlignement.valueOf(align.toUpperCase()));
+			diagram.setHeaderAlignment(HorizontalAlignment.valueOf(align.toUpperCase()));
 		}
 		diagram.setHeader(Display.getWithNewlines(arg.get(1)));
 		return CommandExecutionResult.ok();

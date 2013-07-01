@@ -48,6 +48,7 @@ public class LanguageDescriptor {
 	private final Set<String> preproc = new TreeSet<String>();
 
 	public LanguageDescriptor() {
+		
 		type.add("actor");
 		type.add("participant");
 		type.add("usecase");
@@ -58,6 +59,18 @@ public class LanguageDescriptor {
 		type.add("component");
 		type.add("state");
 		type.add("object");
+		type.add("artifact");
+		type.add("folder");
+		type.add("rect");
+		type.add("node");
+		type.add("frame");
+		type.add("cloud");
+		type.add("database");
+		type.add("storage");
+		type.add("agent");
+		type.add("boundary");
+		type.add("control");
+		type.add("entity");
 
 		keyword.add("@startuml");
 		keyword.add("@enduml");

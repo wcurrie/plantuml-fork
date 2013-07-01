@@ -54,7 +54,7 @@ import net.sourceforge.plantuml.activitydiagram3.ftile.Snake;
 import net.sourceforge.plantuml.activitydiagram3.ftile.Swimlane;
 import net.sourceforge.plantuml.cucadiagram.Display;
 import net.sourceforge.plantuml.graphic.FontConfiguration;
-import net.sourceforge.plantuml.graphic.HorizontalAlignement;
+import net.sourceforge.plantuml.graphic.HorizontalAlignment;
 import net.sourceforge.plantuml.graphic.HtmlColor;
 import net.sourceforge.plantuml.graphic.HtmlColorUtils;
 import net.sourceforge.plantuml.graphic.StringBounder;
@@ -67,7 +67,7 @@ import net.sourceforge.plantuml.ugraphic.UGraphic;
 import net.sourceforge.plantuml.ugraphic.UStroke;
 import net.sourceforge.plantuml.ugraphic.UTranslate;
 
-class FtileRepeat2 extends AbstractFtile {
+class FtileRepeat extends AbstractFtile {
 
 	private final Ftile repeat;
 
@@ -76,13 +76,13 @@ class FtileRepeat2 extends AbstractFtile {
 	private final HtmlColor borderColor;
 	private final HtmlColor backColor;
 
-	private FtileRepeat2(Ftile repeat, Display test, HtmlColor borderColor, HtmlColor backColor, UFont font) {
-
+	private FtileRepeat(Ftile repeat, Display test, HtmlColor borderColor, HtmlColor backColor, UFont font) {
+		super(repeat.shadowing());
 		this.repeat = repeat;
 		this.borderColor = borderColor;
 		this.backColor = backColor;
 		final FontConfiguration fc = new FontConfiguration(font, HtmlColorUtils.BLACK);
-		this.test = TextBlockUtils.create(test, fc, HorizontalAlignement.LEFT, new SpriteContainerEmpty());
+		this.test = TextBlockUtils.create(test, fc, HorizontalAlignment.LEFT, new SpriteContainerEmpty());
 	}
 
 	public Swimlane getSwimlaneIn() {
@@ -93,14 +93,13 @@ class FtileRepeat2 extends AbstractFtile {
 		return getSwimlaneIn();
 	}
 
-
 	public Set<Swimlane> getSwimlanes() {
 		return repeat.getSwimlanes();
 	}
 
 	public static Ftile create(Ftile repeat, Display test, HtmlColor borderColor, HtmlColor backColor, UFont font,
 			HtmlColor arrowColor, HtmlColor endRepeatLinkColor) {
-		final FtileRepeat2 result = new FtileRepeat2(repeat, test, borderColor, backColor, font);
+		final FtileRepeat result = new FtileRepeat(repeat, test, borderColor, backColor, font);
 		final List<Connection> conns = new ArrayList<Connection>();
 		conns.add(result.new ConnectionIn(LinkRendering.getColor(repeat.getInLinkRendering(), arrowColor)));
 		conns.add(result.new ConnectionBack(arrowColor));
@@ -151,8 +150,8 @@ class FtileRepeat2 extends AbstractFtile {
 			snake.addPoint(dimTotal.getWidth() / 2 + Diamond.diamondHalfSize, Diamond.diamondHalfSize);
 
 			ug = ug.apply(new UChangeColor(arrowColor)).apply(new UChangeBackColor(arrowColor));
-			ug.apply(new UTranslate(dimTotal.getWidth() - Diamond.diamondHalfSize, dimTotal.getHeight() / 2))
-					.draw(Arrows.asToUp());
+			ug.apply(new UTranslate(dimTotal.getWidth() - Diamond.diamondHalfSize, dimTotal.getHeight() / 2)).draw(
+					Arrows.asToUp());
 			snake.drawU(ug.apply(new UStroke(1.5)));
 		}
 	}
@@ -192,8 +191,8 @@ class FtileRepeat2 extends AbstractFtile {
 				drawDiamond(ug, xDiamond, dimTotal.getHeight() - 2 * Diamond.diamondHalfSize);
 
 				final Dimension2D dimTest = test.calculateDimension(stringBounder);
-				test.drawU(ug.apply(new UTranslate(dimTotal.getWidth() / 2 + Diamond.diamondHalfSize,
-						dimTotal.getHeight() - Diamond.diamondHalfSize - dimTest.getHeight())));
+				test.drawU(ug.apply(new UTranslate(dimTotal.getWidth() / 2 + Diamond.diamondHalfSize, dimTotal
+						.getHeight() - Diamond.diamondHalfSize - dimTest.getHeight())));
 			}
 
 			public Dimension2D calculateDimension(StringBounder stringBounder) {
@@ -212,7 +211,7 @@ class FtileRepeat2 extends AbstractFtile {
 
 	private void drawDiamond(UGraphic ug, double xTheoricalPosition, double yTheoricalPosition) {
 		ug.apply(new UChangeColor(borderColor)).apply(new UStroke(1.5)).apply(new UChangeBackColor(backColor))
-				.apply(new UTranslate(xTheoricalPosition, yTheoricalPosition)).draw(Diamond.asPolygon());
+				.apply(new UTranslate(xTheoricalPosition, yTheoricalPosition)).draw(Diamond.asPolygon(shadowing()));
 	}
 
 	private Dimension2D calculateDimensionInternal(StringBounder stringBounder) {

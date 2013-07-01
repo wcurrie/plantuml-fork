@@ -45,7 +45,7 @@ import net.sourceforge.plantuml.Url;
 import net.sourceforge.plantuml.cucadiagram.ILeaf;
 import net.sourceforge.plantuml.cucadiagram.Stereotype;
 import net.sourceforge.plantuml.graphic.FontConfiguration;
-import net.sourceforge.plantuml.graphic.HorizontalAlignement;
+import net.sourceforge.plantuml.graphic.HorizontalAlignment;
 import net.sourceforge.plantuml.graphic.HtmlColor;
 import net.sourceforge.plantuml.graphic.StringBounder;
 import net.sourceforge.plantuml.graphic.TextBlock;
@@ -74,7 +74,7 @@ public class EntityImageActivity extends AbstractEntityImage {
 		this.desc = TextBlockUtils.create(entity.getDisplay(),
 				new FontConfiguration(SkinParamUtils.getFont(getSkinParam(), FontParam.ACTIVITY, stereotype),
 						SkinParamUtils.getFontColor(getSkinParam(), FontParam.ACTIVITY, stereotype)),
-				HorizontalAlignement.CENTER, skinParam);
+				HorizontalAlignment.CENTER, skinParam);
 		this.url = entity.getUrls();
 	}
 

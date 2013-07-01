@@ -51,6 +51,7 @@ public class FtileHeightFixed extends AbstractFtile {
 	private final double fixedHeight;
 
 	public FtileHeightFixed(Ftile tile, double fixedHeight) {
+		super(tile.shadowing());
 		this.tile = tile;
 		this.fixedHeight = fixedHeight;
 	}

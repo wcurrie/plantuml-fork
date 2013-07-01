@@ -48,7 +48,7 @@ import net.sourceforge.plantuml.activitydiagram3.ftile.FtileMarged;
 import net.sourceforge.plantuml.activitydiagram3.ftile.Swimlane;
 import net.sourceforge.plantuml.cucadiagram.Display;
 import net.sourceforge.plantuml.graphic.FontConfiguration;
-import net.sourceforge.plantuml.graphic.HorizontalAlignement;
+import net.sourceforge.plantuml.graphic.HorizontalAlignment;
 import net.sourceforge.plantuml.graphic.HtmlColor;
 import net.sourceforge.plantuml.graphic.HtmlColorUtils;
 import net.sourceforge.plantuml.graphic.StringBounder;
@@ -61,14 +61,15 @@ import net.sourceforge.plantuml.ugraphic.UGraphic;
 import net.sourceforge.plantuml.ugraphic.UStroke;
 import net.sourceforge.plantuml.ugraphic.UTranslate;
 
-public class FtileGroup2 extends AbstractFtile {
+public class FtileGroup extends AbstractFtile {
 
 	private final double diffYY = 25;
 	private final Ftile inner;
 	private final TextBlock name;
 	private final HtmlColor color;
 
-	public FtileGroup2(Ftile inner, Display test, HtmlColor color) {
+	public FtileGroup(Ftile inner, Display test, HtmlColor color) {
+		super(inner.shadowing());
 		this.inner = new FtileMarged(inner, 10);
 		this.color = color;
 		final UFont font = new UFont("Serif", Font.PLAIN, 14);
@@ -76,14 +77,14 @@ public class FtileGroup2 extends AbstractFtile {
 		if (test == null) {
 			this.name = TextBlockUtils.empty(0, 0);
 		} else {
-			this.name = TextBlockUtils.create(test, fc, HorizontalAlignement.LEFT, new SpriteContainerEmpty());
+			this.name = TextBlockUtils.create(test, fc, HorizontalAlignment.LEFT, new SpriteContainerEmpty());
 		}
 	}
 
 	public Set<Swimlane> getSwimlanes() {
 		return inner.getSwimlanes();
 	}
-	
+
 	public Swimlane getSwimlaneIn() {
 		return inner.getSwimlaneIn();
 	}
@@ -91,7 +92,6 @@ public class FtileGroup2 extends AbstractFtile {
 	public Swimlane getSwimlaneOut() {
 		return inner.getSwimlaneOut();
 	}
-
 
 	private Dimension2D calculateDimensionInternal(StringBounder stringBounder) {
 		final Dimension2D dim = inner.asTextBlock().calculateDimension(stringBounder);
@@ -117,7 +117,7 @@ public class FtileGroup2 extends AbstractFtile {
 				final Dimension2D dimTotal = calculateDimension(ug.getStringBounder());
 
 				final SymbolContext symbolContext = new SymbolContext(HtmlColorUtils.WHITE, HtmlColorUtils.BLACK)
-						.withShadow(SHADOWING).withStroke(new UStroke(2));
+						.withShadow(shadowing()).withStroke(new UStroke(2));
 				USymbol.FRAME.asBig(name, TextBlockUtils.empty(0, 0), dimTotal.getWidth(), dimTotal.getHeight(),
 						symbolContext).drawU(ug);
 

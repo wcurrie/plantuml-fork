@@ -54,7 +54,7 @@ public class FtileFactoryDelegatorAssembly extends FtileFactoryDelegator {
 
 	@Override
 	public Ftile assembly(final Ftile tile1, final Ftile tile2) {
-		final Ftile space = new FtileEmpty(1, 35);
+		final Ftile space = new FtileEmpty(getFactory().shadowing(), 1, 35);
 		final Ftile tile1andSpace = super.assembly(tile1, space);
 		final Ftile result = super.assembly(tile1andSpace, tile2);
 		final StringBounder stringBounder = getStringBounder();
@@ -66,9 +66,9 @@ public class FtileFactoryDelegatorAssembly extends FtileFactoryDelegator {
 		final Point2D p1 = translate1.getTranslated(pointOut);
 		final UTranslate translate2 = result.getTranslateFor(tile2, stringBounder);
 		final Point2D p2 = translate2.getTranslated(tile2.getPointIn(stringBounder));
-		
+
 		final HtmlColor color = getInLinkRenderingColor(tile2);
-		
+
 		final Connection connection = new ConnectionVerticalDown(tile1, tile2, p1, p2, color);
 		return FtileUtils.addConnection(result, connection);
 	}

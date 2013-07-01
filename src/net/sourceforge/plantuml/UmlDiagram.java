@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  *
- * Revision $Revision: 11007 $
+ * Revision $Revision: 11153 $
  *
  */
 package net.sourceforge.plantuml;
@@ -59,7 +59,7 @@ import net.sourceforge.plantuml.cucadiagram.UnparsableGraphvizException;
 import net.sourceforge.plantuml.flashcode.FlashCodeFactory;
 import net.sourceforge.plantuml.flashcode.FlashCodeUtils;
 import net.sourceforge.plantuml.graphic.GraphicStrings;
-import net.sourceforge.plantuml.graphic.HorizontalAlignement;
+import net.sourceforge.plantuml.graphic.HorizontalAlignment;
 import net.sourceforge.plantuml.graphic.HtmlColorUtils;
 import net.sourceforge.plantuml.graphic.QuoteUtils;
 import net.sourceforge.plantuml.mjpeg.MJPEGGenerator;
@@ -80,8 +80,11 @@ public abstract class UmlDiagram extends AbstractPSystem implements Diagram {
 	private Display title;
 	private Display header;
 	private Display footer;
-	private HorizontalAlignement headerAlignement = HorizontalAlignement.RIGHT;
-	private HorizontalAlignement footerAlignement = HorizontalAlignement.CENTER;
+	private Display legend = null;
+	private HorizontalAlignment legendAlignment = HorizontalAlignment.CENTER;
+
+	private HorizontalAlignment headerAlignment = HorizontalAlignment.RIGHT;
+	private HorizontalAlignment footerAlignment = HorizontalAlignment.CENTER;
 	private final Pragma pragma = new Pragma();
 	private Scale scale;
 
@@ -135,20 +138,20 @@ public abstract class UmlDiagram extends AbstractPSystem implements Diagram {
 		this.footer = footer;
 	}
 
-	public final HorizontalAlignement getHeaderAlignement() {
-		return headerAlignement;
+	public final HorizontalAlignment getHeaderAlignment() {
+		return headerAlignment;
 	}
 
-	public final void setHeaderAlignement(HorizontalAlignement headerAlignement) {
-		this.headerAlignement = headerAlignement;
+	public final void setHeaderAlignment(HorizontalAlignment headerAlignment) {
+		this.headerAlignment = headerAlignment;
 	}
 
-	public final HorizontalAlignement getFooterAlignement() {
-		return footerAlignement;
+	public final HorizontalAlignment getFooterAlignment() {
+		return footerAlignment;
 	}
 
-	public final void setFooterAlignement(HorizontalAlignement footerAlignement) {
-		this.footerAlignement = footerAlignement;
+	public final void setFooterAlignment(HorizontalAlignment footerAlignment) {
+		this.footerAlignment = footerAlignment;
 	}
 
 	abstract public UmlDiagramType getUmlDiagramType();
@@ -385,5 +388,18 @@ public abstract class UmlDiagram extends AbstractPSystem implements Diagram {
 
 	public void addSprite(String name, Sprite sprite) {
 		skinParam.addSprite(name, sprite);
+	}
+
+	public final Display getLegend() {
+		return legend;
+	}
+
+	public final HorizontalAlignment getLegendAlignment() {
+		return legendAlignment;
+	}
+
+	public final void setLegend(Display legend, HorizontalAlignment horizontalAlignment) {
+		this.legend = legend;
+		this.legendAlignment = horizontalAlignment;
 	}
 }

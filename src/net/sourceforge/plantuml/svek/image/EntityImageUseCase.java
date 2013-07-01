@@ -46,7 +46,7 @@ import net.sourceforge.plantuml.cucadiagram.Display;
 import net.sourceforge.plantuml.cucadiagram.ILeaf;
 import net.sourceforge.plantuml.cucadiagram.Stereotype;
 import net.sourceforge.plantuml.graphic.FontConfiguration;
-import net.sourceforge.plantuml.graphic.HorizontalAlignement;
+import net.sourceforge.plantuml.graphic.HorizontalAlignment;
 import net.sourceforge.plantuml.graphic.HtmlColor;
 import net.sourceforge.plantuml.graphic.StringBounder;
 import net.sourceforge.plantuml.graphic.TextBlock;
@@ -77,7 +77,7 @@ public class EntityImageUseCase extends AbstractEntityImage {
 		final Stereotype stereotype = entity.getStereotype();
 
 		final TextBlock tmp = new BodyEnhanced(entity.getDisplay(), FontParam.USECASE, skinParam,
-				HorizontalAlignement.CENTER, stereotype, true, false);
+				HorizontalAlignment.CENTER, stereotype, true, false);
 
 		if (stereotype == null || stereotype.getLabel() == null) {
 			this.desc = tmp;
@@ -86,8 +86,8 @@ public class EntityImageUseCase extends AbstractEntityImage {
 					Display.getWithNewlines(stereotype.getLabel()),
 					new FontConfiguration(SkinParamUtils.getFont(getSkinParam(), FontParam.USECASE_ACTOR_STEREOTYPE,
 							stereotype), SkinParamUtils.getFontColor(getSkinParam(),
-							FontParam.USECASE_ACTOR_STEREOTYPE, null)), HorizontalAlignement.CENTER, skinParam);
-			this.desc = TextBlockUtils.mergeTB(stereo, tmp, HorizontalAlignement.CENTER);
+							FontParam.USECASE_ACTOR_STEREOTYPE, null)), HorizontalAlignment.CENTER, skinParam);
+			this.desc = TextBlockUtils.mergeTB(stereo, tmp, HorizontalAlignment.CENTER);
 		}
 		this.url = entity.getUrls();
 

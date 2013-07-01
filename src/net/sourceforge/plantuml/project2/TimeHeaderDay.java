@@ -43,7 +43,7 @@ import net.sourceforge.plantuml.SpriteContainerEmpty;
 import net.sourceforge.plantuml.Url;
 import net.sourceforge.plantuml.cucadiagram.Display;
 import net.sourceforge.plantuml.graphic.FontConfiguration;
-import net.sourceforge.plantuml.graphic.HorizontalAlignement;
+import net.sourceforge.plantuml.graphic.HorizontalAlignment;
 import net.sourceforge.plantuml.graphic.HtmlColorUtils;
 import net.sourceforge.plantuml.graphic.StringBounder;
 import net.sourceforge.plantuml.graphic.TextBlock;
@@ -76,7 +76,7 @@ public class TimeHeaderDay implements TextBlock {
 		int n = 0;
 		for (Day d = start; d.compareTo(end) <= 0; d = (Day) timeline.next(d)) {
 			final String text = "" + d.getNumDay();
-			final TextBlock b = TextBlockUtils.create(Display.asList(text), fontConfig, HorizontalAlignement.LEFT,
+			final TextBlock b = TextBlockUtils.create(Display.asList(text), fontConfig, HorizontalAlignment.LEFT,
 					new SpriteContainerEmpty());
 			final Dimension2D dimText = b.calculateDimension(ug.getStringBounder());
 			final double diffX = dayWidth - dimText.getWidth();

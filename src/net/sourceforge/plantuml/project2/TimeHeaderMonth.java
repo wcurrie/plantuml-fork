@@ -43,7 +43,7 @@ import net.sourceforge.plantuml.SpriteContainerEmpty;
 import net.sourceforge.plantuml.Url;
 import net.sourceforge.plantuml.cucadiagram.Display;
 import net.sourceforge.plantuml.graphic.FontConfiguration;
-import net.sourceforge.plantuml.graphic.HorizontalAlignement;
+import net.sourceforge.plantuml.graphic.HorizontalAlignment;
 import net.sourceforge.plantuml.graphic.HtmlColorUtils;
 import net.sourceforge.plantuml.graphic.StringBounder;
 import net.sourceforge.plantuml.graphic.TextBlock;
@@ -98,7 +98,7 @@ public class TimeHeaderMonth implements TextBlock {
 	private void manage(UGraphic ug, double x, double y, int n, String last, double pendingX) {
 		final double width = n * dayWidth - pendingX;
 		ug.apply(new UTranslate(x + pendingX, y)).draw(new URectangle(width, getHeight()));
-		final TextBlock b = TextBlockUtils.create(Display.asList(last), fontConfig, HorizontalAlignement.LEFT,
+		final TextBlock b = TextBlockUtils.create(Display.asList(last), fontConfig, HorizontalAlignment.LEFT,
 				new SpriteContainerEmpty());
 		final Dimension2D dimText = b.calculateDimension(ug.getStringBounder());
 		final double diffX = width - dimText.getWidth();

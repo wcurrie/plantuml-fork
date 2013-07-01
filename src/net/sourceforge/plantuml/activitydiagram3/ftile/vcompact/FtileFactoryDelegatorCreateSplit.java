@@ -85,20 +85,14 @@ public class FtileFactoryDelegatorCreateSplit extends FtileFactoryDelegator {
 		final List<Connection> conns = new ArrayList<Connection>();
 
 		double x = 0;
-		double minX = 0;
-		double maxX = 0;
 		for (Ftile tmp : list) {
 			final Dimension2D dim = tmp.asTextBlock().calculateDimension(getStringBounder());
 			conns.add(new ConnectionIn(tmp, x, arrowColor));
 			conns.add(new ConnectionOut(tmp, x, arrowColor, height1));
-			if (x == 0) {
-				minX = dim.getWidth() / 2;
-			}
-			maxX = x + dim.getWidth() / 2;
 			x += dim.getWidth();
 		}
-		conns.add(new ConnectionHline(minX, maxX, arrowColor, 0));
-		conns.add(new ConnectionHline(minX, maxX, arrowColor, height1));
+		conns.add(new ConnectionHline(arrowColor, 0, list));
+		conns.add(new ConnectionHline(arrowColor, height1, list));
 
 		inner = FtileUtils.addConnection(inner, conns);
 		return inner;
@@ -106,23 +100,34 @@ public class FtileFactoryDelegatorCreateSplit extends FtileFactoryDelegator {
 
 	class ConnectionHline extends AbstractConnection {
 
-		private final double x1;
-		private final double x2;
 		private final double y;
 		private final HtmlColor arrowColor;
+		private final List<Ftile> list;
 
-		public ConnectionHline(double x1, double x2, HtmlColor arrowColor, double y) {
+		public ConnectionHline(HtmlColor arrowColor, double y, List<Ftile> list) {
 			super(null, null);
-			this.x1 = x1;
-			this.x2 = x2;
 			this.y = y;
 			this.arrowColor = arrowColor;
+			this.list = list;
 		}
 
 		public void drawU(UGraphic ug) {
+
+			double x = 0;
+			double minX = 0;
+			double maxX = 0;
+			for (Ftile tmp : list) {
+				final Dimension2D dim = tmp.asTextBlock().calculateDimension(getStringBounder());
+				if (x == 0) {
+					minX = dim.getWidth() / 2;
+				}
+				maxX = x + dim.getWidth() / 2;
+				x += dim.getWidth();
+			}
+
 			final Snake s = new Snake(arrowColor);
-			s.addPoint(x1, y);
-			s.addPoint(x2, y);
+			s.addPoint(minX, y);
+			s.addPoint(maxX, y);
 			s.drawU(ug);
 		}
 	}

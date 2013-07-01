@@ -35,7 +35,7 @@ package net.sourceforge.plantuml;
 
 import net.sourceforge.plantuml.cucadiagram.dot.DotSplines;
 import net.sourceforge.plantuml.cucadiagram.dot.GraphvizLayoutStrategy;
-import net.sourceforge.plantuml.graphic.HorizontalAlignement;
+import net.sourceforge.plantuml.graphic.HorizontalAlignment;
 import net.sourceforge.plantuml.graphic.HtmlColor;
 import net.sourceforge.plantuml.svek.PackageStyle;
 import net.sourceforge.plantuml.ugraphic.ColorMapper;
@@ -56,19 +56,15 @@ public interface ISkinParam extends SpriteContainer {
 
 	public UFont getFont(FontParam fontParam, String stereotype);
 
-	public HorizontalAlignement getHorizontalAlignement(AlignParam param);
+	public HorizontalAlignment getHorizontalAlignment(AlignParam param);
 
 	public int getCircledCharacterRadius();
-
-	public boolean isClassCollapse();
 
 	public int classAttributeIconSize();
 
 	public ColorMapper getColorMapper();
 
 	public int getDpi();
-
-	public boolean useOctagonForActivity();
 
 	public DotSplines getDotSplines();
 
@@ -91,5 +87,7 @@ public interface ISkinParam extends SpriteContainer {
 	public double getRoundCorner();
 	
 	public double maxMessageSize();
+	
+	public boolean strictUmlStyle();
 
 }

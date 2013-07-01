@@ -61,7 +61,7 @@ import net.sourceforge.plantuml.cucadiagram.Member;
 import net.sourceforge.plantuml.cucadiagram.PortionShower;
 import net.sourceforge.plantuml.cucadiagram.Rankdir;
 import net.sourceforge.plantuml.cucadiagram.Stereotype;
-import net.sourceforge.plantuml.graphic.HorizontalAlignement;
+import net.sourceforge.plantuml.graphic.HorizontalAlignment;
 import net.sourceforge.plantuml.graphic.HtmlColor;
 import net.sourceforge.plantuml.graphic.TextBlock;
 import net.sourceforge.plantuml.graphic.TextBlockVertical2;
@@ -308,7 +308,7 @@ class EntityImpl implements ILeaf, IGroup {
 						return new TextBlockVertical2(new BlockMemberImpl(getFieldsToDisplay()).asTextBlock(fontParam,
 								skinParam),
 								new BlockMemberImpl(getMethodsToDisplay()).asTextBlock(fontParam, skinParam),
-								HorizontalAlignement.LEFT);
+								HorizontalAlignment.LEFT);
 					} else if (showFields) {
 						return new BlockMemberImpl(getFieldsToDisplay()).asTextBlock(fontParam, skinParam);
 					} else if (showMethods) {

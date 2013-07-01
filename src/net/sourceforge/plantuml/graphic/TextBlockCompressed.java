@@ -36,6 +36,7 @@ package net.sourceforge.plantuml.graphic;
 import java.awt.geom.Dimension2D;
 import java.util.List;
 
+import net.sourceforge.plantuml.Dimension2DDouble;
 import net.sourceforge.plantuml.Url;
 import net.sourceforge.plantuml.ugraphic.CompressionTransform;
 import net.sourceforge.plantuml.ugraphic.SlotFinder;
@@ -53,16 +54,22 @@ public class TextBlockCompressed implements TextBlock {
 
 	public void drawU(final UGraphic ug) {
 		final StringBounder stringBounder = ug.getStringBounder();
-		final SlotFinder slotFinder = new SlotFinder(stringBounder);
-		textBlock.drawU(slotFinder);
-		final SlotSet ysSlotSet = slotFinder.getYSlotSet().reverse().smaller(5.0);
-
-		final CompressionTransform compressionTransform = new CompressionTransform(ysSlotSet);
+		final CompressionTransform compressionTransform = getCompressionTransform(stringBounder);
 		textBlock.drawU(new UGraphicCompress(ug, compressionTransform));
 	}
 
+	private CompressionTransform getCompressionTransform(final StringBounder stringBounder) {
+		final SlotFinder slotFinder = new SlotFinder(stringBounder);
+		textBlock.drawU(slotFinder);
+		final SlotSet ysSlotSet = slotFinder.getYSlotSet().reverse().smaller(5.0);
+		final CompressionTransform compressionTransform = new CompressionTransform(ysSlotSet);
+		return compressionTransform;
+	}
+
 	public Dimension2D calculateDimension(StringBounder stringBounder) {
-		throw new UnsupportedOperationException();
+		final CompressionTransform compressionTransform = getCompressionTransform(stringBounder);
+		final Dimension2D dim = textBlock.calculateDimension(stringBounder);
+		return new Dimension2DDouble(dim.getWidth(), compressionTransform.transform(dim.getHeight()));
 	}
 
 	public List<Url> getUrls() {

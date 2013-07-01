@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  *
- * Revision $Revision: 10583 $
+ * Revision $Revision: 11153 $
  *
  */
 package net.sourceforge.plantuml;
@@ -46,7 +46,7 @@ import java.util.regex.Pattern;
 
 import net.sourceforge.plantuml.cucadiagram.dot.DotSplines;
 import net.sourceforge.plantuml.cucadiagram.dot.GraphvizLayoutStrategy;
-import net.sourceforge.plantuml.graphic.HorizontalAlignement;
+import net.sourceforge.plantuml.graphic.HorizontalAlignment;
 import net.sourceforge.plantuml.graphic.HtmlColor;
 import net.sourceforge.plantuml.graphic.HtmlColorUtils;
 import net.sourceforge.plantuml.svek.PackageStyle;
@@ -252,10 +252,6 @@ public class SkinParam implements ISkinParam {
 		return getFontSize(FontParam.CIRCLED_CHARACTER, null) / 3 + 6;
 	}
 
-	public boolean isClassCollapse() {
-		return true;
-	}
-
 	public int classAttributeIconSize() {
 		final String value = getValue("classAttributeIconSize");
 		if (value != null && value.matches("\\d+")) {
@@ -304,17 +300,6 @@ public class SkinParam implements ISkinParam {
 		return 96;
 	}
 
-	public boolean useOctagonForActivity() {
-		final String value = getValue("activityshape");
-		if ("roundedbox".equalsIgnoreCase(value)) {
-			return false;
-		}
-		if ("octagon".equalsIgnoreCase(value)) {
-			return true;
-		}
-		return false;
-	}
-
 	public DotSplines getDotSplines() {
 		final String value = getValue("linetype");
 		if ("polyline".equalsIgnoreCase(value)) {
@@ -343,7 +328,7 @@ public class SkinParam implements ISkinParam {
 		return GraphvizLayoutStrategy.DOT;
 	}
 
-	public HorizontalAlignement getHorizontalAlignement(AlignParam param) {
+	public HorizontalAlignment getHorizontalAlignment(AlignParam param) {
 		final String value;
 		switch (param) {
 		case SEQUENCE_MESSAGE_ALIGN:
@@ -355,7 +340,7 @@ public class SkinParam implements ISkinParam {
 		default:
 			value = getValue(param.name());
 		}
-		final HorizontalAlignement result = HorizontalAlignement.fromString(value);
+		final HorizontalAlignment result = HorizontalAlignment.fromString(value);
 		if (result == null) {
 			return param.getDefaultValue();
 		}
@@ -381,6 +366,9 @@ public class SkinParam implements ISkinParam {
 	}
 
 	public boolean shadowing() {
+		if (strictUmlStyle()) {
+			return false;
+		}
 		final String value = getValue("shadowing");
 		if ("false".equalsIgnoreCase(value)) {
 			return false;
@@ -408,6 +396,9 @@ public class SkinParam implements ISkinParam {
 	}
 
 	public boolean useUml2ForComponent() {
+		if (strictUmlStyle()) {
+			return true;
+		}
 		final String value = getValue("componentstyle");
 		return "uml2".equalsIgnoreCase(value);
 	}
@@ -471,6 +462,14 @@ public class SkinParam implements ISkinParam {
 			return Double.parseDouble(value);
 		}
 		return 0;
+	}
+
+	public boolean strictUmlStyle() {
+		final String value = getValue("style");
+		if ("strictuml".equalsIgnoreCase(value)) {
+			return true;
+		}
+		return false;
 	}
 
 }

@@ -46,13 +46,12 @@ import net.sourceforge.plantuml.UmlDiagramType;
 import net.sourceforge.plantuml.Url;
 import net.sourceforge.plantuml.cucadiagram.Display;
 import net.sourceforge.plantuml.graphic.FontConfiguration;
-import net.sourceforge.plantuml.graphic.HorizontalAlignement;
+import net.sourceforge.plantuml.graphic.HorizontalAlignment;
 import net.sourceforge.plantuml.graphic.HtmlColor;
 import net.sourceforge.plantuml.graphic.StringBounder;
 import net.sourceforge.plantuml.graphic.TextBlock;
 import net.sourceforge.plantuml.graphic.TextBlockUtils;
 import net.sourceforge.plantuml.skin.rose.Rose;
-import net.sourceforge.plantuml.ugraphic.MinMax;
 import net.sourceforge.plantuml.ugraphic.UChangeBackColor;
 import net.sourceforge.plantuml.ugraphic.UChangeColor;
 import net.sourceforge.plantuml.ugraphic.UFont;
@@ -86,7 +85,7 @@ public class EntityImageNote2 implements TextBlock {
 		final UFont fontNote = skinParam.getFont(FontParam.NOTE, null);
 
 		this.textBlock = TextBlockUtils.create(note, new FontConfiguration(fontNote, fontColor),
-				HorizontalAlignement.LEFT, skinParam);
+				HorizontalAlignment.LEFT, skinParam);
 
 	}
 
@@ -107,9 +106,9 @@ public class EntityImageNote2 implements TextBlock {
 	public Dimension2D calculateDimension(StringBounder stringBounder) {
 		final double height = getTextHeight(stringBounder);
 		final double width = getTextWidth(stringBounder);
-		return new Dimension2DDouble(width, height);
+		return new Dimension2DDouble(width + 1, height + 1);
 	}
-	
+
 	public void drawU(UGraphic ug) {
 		final StringBounder stringBounder = ug.getStringBounder();
 		final UPolygon polygon = getPolygonNormal(stringBounder);
@@ -129,9 +128,10 @@ public class EntityImageNote2 implements TextBlock {
 		final UPolygon polygon = new UPolygon();
 		polygon.addPoint(0, 0);
 		polygon.addPoint(0, getTextHeight(stringBounder));
-		polygon.addPoint(getTextWidth(stringBounder), getTextHeight(stringBounder));
-		polygon.addPoint(getTextWidth(stringBounder), cornersize);
-		polygon.addPoint(getTextWidth(stringBounder) - cornersize, 0);
+		final double width = getTextWidth(stringBounder);
+		polygon.addPoint(width, getTextHeight(stringBounder));
+		polygon.addPoint(width, cornersize);
+		polygon.addPoint(width - cornersize, 0);
 		polygon.addPoint(0, 0);
 		return polygon;
 	}

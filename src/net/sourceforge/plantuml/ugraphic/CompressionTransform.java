@@ -43,20 +43,20 @@ public class CompressionTransform {
 		this.all = slotSet.getSlots();
 	}
 
-	public double transform(double x) {
-		return x - getCompressDelta(x);
+	public double transform(double v) {
+		return v - getCompressDelta(v);
 	}
 
-	private double getCompressDelta(double x) {
+	private double getCompressDelta(double v) {
 		double result = 0;
 		for (Slot s : all) {
-			if (s.getStart() > x) {
+			if (s.getStart() > v) {
 				continue;
 			}
-			if (x > s.getEnd()) {
+			if (v > s.getEnd()) {
 				result += s.size();
 			} else {
-				result += x - s.getStart();
+				result += v - s.getStart();
 			}
 		}
 		return result;

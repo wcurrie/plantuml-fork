@@ -74,9 +74,9 @@ public class PSystemUtils {
 			final File f = fileFormat.getFileFormat().computeFilename(suggestedFile, i);
 			Log.info("Creating file: " + f);
 			final OutputStream fos = new BufferedOutputStream(new FileOutputStream(f));
-			ImageData cmap = null;
+			// ImageData cmap = null;
 			try {
-				cmap = system.exportDiagram(fos, i, fileFormat);
+				/*cmap =*/ system.exportDiagram(fos, i, fileFormat);
 			} finally {
 				fos.close();
 			}

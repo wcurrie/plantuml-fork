@@ -39,7 +39,7 @@ import net.sourceforge.plantuml.Dimension2DDouble;
 import net.sourceforge.plantuml.SpriteContainer;
 import net.sourceforge.plantuml.cucadiagram.Display;
 import net.sourceforge.plantuml.graphic.FontConfiguration;
-import net.sourceforge.plantuml.graphic.HorizontalAlignement;
+import net.sourceforge.plantuml.graphic.HorizontalAlignment;
 import net.sourceforge.plantuml.graphic.HtmlColorUtils;
 import net.sourceforge.plantuml.graphic.StringBounder;
 import net.sourceforge.plantuml.graphic.TextBlock;
@@ -62,7 +62,7 @@ abstract class AbstractElementText implements Element {
 		} else {
 			this.charLength = 0;
 		}
-		this.block = TextBlockUtils.create(Display.asList(text), config, HorizontalAlignement.LEFT, spriteContainer);
+		this.block = TextBlockUtils.create(Display.asList(text), config, HorizontalAlignment.LEFT, spriteContainer);
 	}
 
 	protected void drawText(UGraphic ug, double x, double y) {
@@ -90,7 +90,7 @@ abstract class AbstractElementText implements Element {
 //		double max = 0;
 //		for (int i = 32; i < 127; i++) {
 //			final char c = (char) i;
-//			final double w = TextBlockUtils.create(Arrays.asList("" + c), config, HorizontalAlignement.LEFT)
+//			final double w = TextBlockUtils.create(Arrays.asList("" + c), config, HorizontalAlignment.LEFT)
 //					.calculateDimension(stringBounder).getWidth();
 //			if (w > max) {
 // Log.println("c="+c+" "+max);

@@ -173,4 +173,8 @@ public class FtileAssemblySimple implements Ftile {
 		return Collections.unmodifiableSet(result);
 	}
 
+	public boolean shadowing() {
+		return tile1.shadowing() || tile2.shadowing();
+	}
+
 }

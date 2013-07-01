@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 10218 $
+ * Revision $Revision: 11098 $
  *
  */
 package net.sourceforge.plantuml.ugraphic;
@@ -44,4 +44,6 @@ public interface UParam {
 	public UStroke getStroke();
 
 	public boolean isHidden();
+
+	public UPattern getPattern();
 }

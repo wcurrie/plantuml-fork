@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 10930 $
+ * Revision $Revision: 11153 $
  *
  */
 package net.sourceforge.plantuml.graphic;
@@ -202,7 +202,7 @@ public class GraphicStrings implements IEntityImage {
 
 	Dimension2D drawAndGetSize(final UGraphic ug) {
 		final TextBlock textBlock = TextBlockUtils.create(new Display(strings), new FontConfiguration(font, green),
-				HorizontalAlignement.LEFT, new SpriteContainerEmpty());
+				HorizontalAlignment.LEFT, new SpriteContainerEmpty());
 		Dimension2D size = getSizeWithMin(textBlock.calculateDimension(ug.getStringBounder()));
 		textBlock.drawU(ug);
 
@@ -225,7 +225,7 @@ public class GraphicStrings implements IEntityImage {
 
 	public Dimension2D calculateDimension(StringBounder stringBounder) {
 		final TextBlock textBlock = TextBlockUtils.create(new Display(strings), new FontConfiguration(font, green),
-				HorizontalAlignement.LEFT, new SpriteContainerEmpty());
+				HorizontalAlignment.LEFT, new SpriteContainerEmpty());
 		return getSizeWithMin(textBlock.calculateDimension(stringBounder));
 	}
 

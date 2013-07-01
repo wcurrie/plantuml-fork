@@ -47,7 +47,7 @@ import net.sourceforge.plantuml.cucadiagram.Display;
 import net.sourceforge.plantuml.cucadiagram.ILeaf;
 import net.sourceforge.plantuml.cucadiagram.Stereotype;
 import net.sourceforge.plantuml.graphic.FontConfiguration;
-import net.sourceforge.plantuml.graphic.HorizontalAlignement;
+import net.sourceforge.plantuml.graphic.HorizontalAlignment;
 import net.sourceforge.plantuml.graphic.HtmlColor;
 import net.sourceforge.plantuml.graphic.StringBounder;
 import net.sourceforge.plantuml.graphic.SymbolContext;
@@ -78,7 +78,7 @@ public class EntityImageComponent extends AbstractEntityImage {
 		this.desc = TextBlockUtils.create(entity.getDisplay(),
 				new FontConfiguration(SkinParamUtils.getFont(getSkinParam(), FontParam.COMPONENT, stereotype),
 						SkinParamUtils.getFontColor(getSkinParam(), FontParam.COMPONENT, stereotype)),
-				HorizontalAlignement.CENTER, skinParam);
+				HorizontalAlignment.CENTER, skinParam);
 
 		this.style = stereotype == null ? null : stereotype.getPackageStyle();
 		if (this.style == null) {
@@ -88,7 +88,7 @@ public class EntityImageComponent extends AbstractEntityImage {
 						Display.getWithNewlines(stereotype.getLabel()),
 						new FontConfiguration(SkinParamUtils.getFont(getSkinParam(), FontParam.COMPONENT_STEREOTYPE,
 								stereotype), SkinParamUtils.getFontColor(getSkinParam(),
-								FontParam.COMPONENT_STEREOTYPE, null)), HorizontalAlignement.CENTER, skinParam);
+								FontParam.COMPONENT_STEREOTYPE, null)), HorizontalAlignment.CENTER, skinParam);
 			}
 		}
 		this.symbol = getUSymbol();
@@ -200,7 +200,7 @@ public class EntityImageComponent extends AbstractEntityImage {
 			final SymbolContext ctx = new SymbolContext(backcolor, SkinParamUtils.getColor(getSkinParam(),
 					ColorParam.componentBorder, getStereo())).withStroke(new UStroke(1.5)).withShadow(
 					getSkinParam().shadowing());
-			symbol.asSmall(TextBlockUtils.mergeTB(desc, stereo, HorizontalAlignement.CENTER), null, ctx)
+			symbol.asSmall(TextBlockUtils.mergeTB(desc, stereo, HorizontalAlignment.CENTER), null, ctx)
 					.drawU(ug);
 		}
 		if (url.size() > 0) {

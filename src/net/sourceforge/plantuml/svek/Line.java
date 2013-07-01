@@ -55,14 +55,14 @@ import net.sourceforge.plantuml.cucadiagram.LinkDecor;
 import net.sourceforge.plantuml.cucadiagram.LinkHat;
 import net.sourceforge.plantuml.cucadiagram.LinkMiddleDecor;
 import net.sourceforge.plantuml.graphic.FontConfiguration;
-import net.sourceforge.plantuml.graphic.HorizontalAlignement;
+import net.sourceforge.plantuml.graphic.HorizontalAlignment;
 import net.sourceforge.plantuml.graphic.HtmlColor;
 import net.sourceforge.plantuml.graphic.StringBounder;
 import net.sourceforge.plantuml.graphic.TextBlock;
 import net.sourceforge.plantuml.graphic.TextBlockArrow;
 import net.sourceforge.plantuml.graphic.TextBlockUtils;
 import net.sourceforge.plantuml.graphic.UDrawable;
-import net.sourceforge.plantuml.graphic.VerticallAlignement;
+import net.sourceforge.plantuml.graphic.VerticalAlignment;
 import net.sourceforge.plantuml.posimo.BezierUtils;
 import net.sourceforge.plantuml.posimo.DotPath;
 import net.sourceforge.plantuml.posimo.Moveable;
@@ -218,19 +218,19 @@ public class Line implements Moveable, Hideable {
 		} else {
 			final double marginLabel = startUid.equals(endUid) ? 6 : 1;
 			final TextBlock label = TextBlockUtils.withMargin(
-					TextBlockUtils.create(link.getLabel(), labelFont, HorizontalAlignement.CENTER, skinParam),
+					TextBlockUtils.create(link.getLabel(), labelFont, HorizontalAlignment.CENTER, skinParam),
 					marginLabel, marginLabel);
 			if (getLinkArrow() == LinkArrow.NONE) {
 				labelOnly = label;
 			} else {
 				TextBlock right = new TextBlockArrow(Direction.RIGHT, labelFont);
-				right = TextBlockUtils.mergeLR(label, right, VerticallAlignement.CENTER);
+				right = TextBlockUtils.mergeLR(label, right, VerticalAlignment.CENTER);
 				TextBlock left = new TextBlockArrow(Direction.LEFT, labelFont);
-				left = TextBlockUtils.mergeLR(left, label, VerticallAlignement.CENTER);
+				left = TextBlockUtils.mergeLR(left, label, VerticalAlignment.CENTER);
 				TextBlock up = new TextBlockArrow(Direction.UP, labelFont);
-				up = TextBlockUtils.mergeTB(up, label, HorizontalAlignement.CENTER);
+				up = TextBlockUtils.mergeTB(up, label, HorizontalAlignment.CENTER);
 				TextBlock down = new TextBlockArrow(Direction.DOWN, labelFont);
-				down = TextBlockUtils.mergeTB(label, down, HorizontalAlignement.CENTER);
+				down = TextBlockUtils.mergeTB(label, down, HorizontalAlignment.CENTER);
 				labelOnly = new DirectionalTextBlock(right, left, up, down);
 			}
 		}
@@ -244,13 +244,13 @@ public class Line implements Moveable, Hideable {
 
 		if (labelOnly != null && noteOnly != null) {
 			if (link.getNotePosition() == Position.LEFT) {
-				noteLabelText = TextBlockUtils.mergeLR(noteOnly, labelOnly, VerticallAlignement.CENTER);
+				noteLabelText = TextBlockUtils.mergeLR(noteOnly, labelOnly, VerticalAlignment.CENTER);
 			} else if (link.getNotePosition() == Position.RIGHT) {
-				noteLabelText = TextBlockUtils.mergeLR(labelOnly, noteOnly, VerticallAlignement.CENTER);
+				noteLabelText = TextBlockUtils.mergeLR(labelOnly, noteOnly, VerticalAlignment.CENTER);
 			} else if (link.getNotePosition() == Position.TOP) {
-				noteLabelText = TextBlockUtils.mergeTB(noteOnly, labelOnly, HorizontalAlignement.CENTER);
+				noteLabelText = TextBlockUtils.mergeTB(noteOnly, labelOnly, HorizontalAlignment.CENTER);
 			} else {
-				noteLabelText = TextBlockUtils.mergeTB(labelOnly, noteOnly, HorizontalAlignement.CENTER);
+				noteLabelText = TextBlockUtils.mergeTB(labelOnly, noteOnly, HorizontalAlignment.CENTER);
 			}
 		} else if (labelOnly != null) {
 			noteLabelText = labelOnly;
@@ -264,14 +264,14 @@ public class Line implements Moveable, Hideable {
 			startTailText = null;
 		} else {
 			startTailText = TextBlockUtils.create(Display.getWithNewlines(link.getQualifier1()), labelFont,
-					HorizontalAlignement.CENTER, skinParam);
+					HorizontalAlignment.CENTER, skinParam);
 		}
 
 		if (link.getQualifier2() == null) {
 			endHeadText = null;
 		} else {
 			endHeadText = TextBlockUtils.create(Display.getWithNewlines(link.getQualifier2()), labelFont,
-					HorizontalAlignement.CENTER, skinParam);
+					HorizontalAlignment.CENTER, skinParam);
 		}
 
 	}

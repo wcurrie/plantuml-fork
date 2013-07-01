@@ -37,7 +37,7 @@ import java.awt.geom.Dimension2D;
 
 import net.sourceforge.plantuml.SpriteContainer;
 import net.sourceforge.plantuml.cucadiagram.Display;
-import net.sourceforge.plantuml.graphic.HorizontalAlignement;
+import net.sourceforge.plantuml.graphic.HorizontalAlignment;
 import net.sourceforge.plantuml.graphic.HtmlColor;
 import net.sourceforge.plantuml.graphic.HtmlColorUtils;
 import net.sourceforge.plantuml.graphic.StringBounder;
@@ -63,7 +63,7 @@ public class ComponentRoseDivider extends AbstractTextualComponent {
 
 	public ComponentRoseDivider(HtmlColor fontColor, UFont font, HtmlColor background, Display stringsToDisplay,
 			SpriteContainer spriteContainer, boolean withShadow, UStroke stroke) {
-		super(stringsToDisplay, fontColor, font, HorizontalAlignement.CENTER, 4, 4, 4, spriteContainer, 0);
+		super(stringsToDisplay, fontColor, font, HorizontalAlignment.CENTER, 4, 4, 4, spriteContainer, 0);
 		this.background = background;
 		this.empty = stringsToDisplay.get(0).length() == 0;
 		this.withShadow = withShadow;

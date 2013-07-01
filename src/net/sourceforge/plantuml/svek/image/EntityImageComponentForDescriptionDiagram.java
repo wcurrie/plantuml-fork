@@ -47,7 +47,7 @@ import net.sourceforge.plantuml.cucadiagram.Display;
 import net.sourceforge.plantuml.cucadiagram.ILeaf;
 import net.sourceforge.plantuml.cucadiagram.Stereotype;
 import net.sourceforge.plantuml.graphic.FontConfiguration;
-import net.sourceforge.plantuml.graphic.HorizontalAlignement;
+import net.sourceforge.plantuml.graphic.HorizontalAlignment;
 import net.sourceforge.plantuml.graphic.HtmlColor;
 import net.sourceforge.plantuml.graphic.StringBounder;
 import net.sourceforge.plantuml.graphic.SymbolContext;
@@ -75,12 +75,12 @@ public class EntityImageComponentForDescriptionDiagram extends AbstractEntityIma
 		}
 
 		final TextBlock desc = new BodyEnhanced(entity.getDisplay(), getFontParam(symbol), skinParam,
-				HorizontalAlignement.CENTER, stereotype, symbol.manageHorizontalLine(), false);
+				HorizontalAlignment.CENTER, stereotype, symbol.manageHorizontalLine(), false);
 
 		// final TextBlock desc = TextBlockUtils.create(
 		// entity.getDisplay(),
 		// new FontConfiguration(getFont(getFontParam(symbol), stereotype), getFontColor(getFontParam(symbol),
-		// stereotype)), HorizontalAlignement.CENTER, skinParam);
+		// stereotype)), HorizontalAlignment.CENTER, skinParam);
 
 		this.url = entity.getUrls();
 
@@ -98,7 +98,7 @@ public class EntityImageComponentForDescriptionDiagram extends AbstractEntityIma
 					Display.getWithNewlines(stereotype.getLabel()),
 					new FontConfiguration(SkinParamUtils.getFont(getSkinParam(), getFontParamStereotype(symbol),
 							stereotype), SkinParamUtils.getFontColor(getSkinParam(), getFontParamStereotype(symbol),
-							null)), HorizontalAlignement.CENTER, skinParam);
+							null)), HorizontalAlignment.CENTER, skinParam);
 		}
 
 		asSmall = symbol.asSmall(desc, stereo, ctx);

@@ -58,18 +58,19 @@ public class FtileCircleStart extends AbstractFtile {
 	private final HtmlColor backColor;
 	private final Swimlane swimlane;
 
-	public FtileCircleStart(HtmlColor backColor, Swimlane swimlane) {
+	public FtileCircleStart(boolean shadowing, HtmlColor backColor, Swimlane swimlane) {
+		super(shadowing);
 		this.backColor = backColor;
 		this.swimlane = swimlane;
 	}
-	
+
 	public Set<Swimlane> getSwimlanes() {
 		if (swimlane == null) {
 			return Collections.emptySet();
 		}
 		return Collections.singleton(swimlane);
 	}
-	
+
 	public Swimlane getSwimlaneIn() {
 		return swimlane;
 	}
@@ -78,14 +79,12 @@ public class FtileCircleStart extends AbstractFtile {
 		return swimlane;
 	}
 
-
-
 	public TextBlock asTextBlock() {
 		return new TextBlock() {
 
 			public void drawU(UGraphic ug) {
 				final UEllipse circle = new UEllipse(SIZE, SIZE);
-				if (SHADOWING) {
+				if (shadowing()) {
 					circle.setDeltaShadow(3);
 				}
 				ug.apply(new UChangeColor(null)).apply(new UChangeBackColor(backColor)).draw(circle);

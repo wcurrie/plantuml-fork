@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 9786 $
+ * Revision $Revision: 11154 $
  *
  */
 package net.sourceforge.plantuml.png;
@@ -39,7 +39,7 @@ import java.awt.geom.Dimension2D;
 import net.sourceforge.plantuml.SpriteContainerEmpty;
 import net.sourceforge.plantuml.cucadiagram.Display;
 import net.sourceforge.plantuml.graphic.FontConfiguration;
-import net.sourceforge.plantuml.graphic.HorizontalAlignement;
+import net.sourceforge.plantuml.graphic.HorizontalAlignment;
 import net.sourceforge.plantuml.graphic.HtmlColor;
 import net.sourceforge.plantuml.graphic.StringBounder;
 import net.sourceforge.plantuml.graphic.TextBlock;
@@ -52,15 +52,15 @@ public class PngTitler {
 	private final Display text;
 	private final int fontSize;
 	private final String fontFamily;
-	private final HorizontalAlignement horizontalAlignement;
+	private final HorizontalAlignment horizontalAlignment;
 
 	public PngTitler(HtmlColor textColor, Display text, int fontSize, String fontFamily,
-			HorizontalAlignement horizontalAlignement) {
+			HorizontalAlignment horizontalAlignment) {
 		this.textColor = textColor;
 		this.text = text;
 		this.fontSize = fontSize;
 		this.fontFamily = fontFamily;
-		this.horizontalAlignement = horizontalAlignement;
+		this.horizontalAlignment = horizontalAlignment;
 
 	}
 
@@ -77,7 +77,7 @@ public class PngTitler {
 			return null;
 		}
 		final UFont normalFont = new UFont(fontFamily, Font.PLAIN, fontSize);
-		return TextBlockUtils.create(text, new FontConfiguration(normalFont, textColor), horizontalAlignement,
+		return TextBlockUtils.create(text, new FontConfiguration(normalFont, textColor), horizontalAlignment,
 				new SpriteContainerEmpty());
 	}
 

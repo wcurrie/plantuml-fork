@@ -57,7 +57,7 @@ import net.sourceforge.plantuml.activitydiagram3.ftile.Snake;
 import net.sourceforge.plantuml.activitydiagram3.ftile.Swimlane;
 import net.sourceforge.plantuml.cucadiagram.Display;
 import net.sourceforge.plantuml.graphic.FontConfiguration;
-import net.sourceforge.plantuml.graphic.HorizontalAlignement;
+import net.sourceforge.plantuml.graphic.HorizontalAlignment;
 import net.sourceforge.plantuml.graphic.HtmlColor;
 import net.sourceforge.plantuml.graphic.HtmlColorUtils;
 import net.sourceforge.plantuml.graphic.StringBounder;
@@ -71,7 +71,7 @@ import net.sourceforge.plantuml.ugraphic.UPolygon;
 import net.sourceforge.plantuml.ugraphic.UStroke;
 import net.sourceforge.plantuml.ugraphic.UTranslate;
 
-class FtileIf2 extends AbstractFtile {
+class FtileIf extends AbstractFtile {
 
 	private final Ftile tile1;
 	private final Ftile tile2;
@@ -84,8 +84,9 @@ class FtileIf2 extends AbstractFtile {
 	private final TextBlock label1;
 	private final TextBlock label2;
 
-	private FtileIf2(Ftile tile1, Ftile tile2, HtmlColor borderColor, HtmlColor backColor, Display labelTest,
+	private FtileIf(Ftile tile1, Ftile tile2, HtmlColor borderColor, HtmlColor backColor, Display labelTest,
 			Display label1, Display label2, UFont font, HtmlColor arrowColor) {
+		super(tile1.shadowing() || tile2.shadowing());
 		this.borderColor = borderColor;
 		this.backColor = backColor;
 		this.tile1 = tile1;
@@ -95,19 +96,19 @@ class FtileIf2 extends AbstractFtile {
 
 		final FontConfiguration fc = new FontConfiguration(font, HtmlColorUtils.BLACK);
 
-		this.label = TextBlockUtils.create(labelTest, fc, HorizontalAlignement.LEFT, new SpriteContainerEmpty());
-		this.label1 = TextBlockUtils.create(label1, fc, HorizontalAlignement.LEFT, new SpriteContainerEmpty());
-		this.label2 = TextBlockUtils.create(label2, fc, HorizontalAlignement.LEFT, new SpriteContainerEmpty());
+		this.label = TextBlockUtils.create(labelTest, fc, HorizontalAlignment.LEFT, new SpriteContainerEmpty());
+		this.label1 = TextBlockUtils.create(label1, fc, HorizontalAlignment.LEFT, new SpriteContainerEmpty());
+		this.label2 = TextBlockUtils.create(label2, fc, HorizontalAlignment.LEFT, new SpriteContainerEmpty());
 
 	}
-	
+
 	public Set<Swimlane> getSwimlanes() {
 		final Set<Swimlane> result = new HashSet<Swimlane>();
 		result.addAll(tile1.getSwimlanes());
 		result.addAll(tile2.getSwimlanes());
 		return Collections.unmodifiableSet(result);
 	}
-	
+
 	public Swimlane getSwimlaneIn() {
 		return tile1.getSwimlaneIn();
 	}
@@ -116,15 +117,13 @@ class FtileIf2 extends AbstractFtile {
 		return getSwimlaneIn();
 	}
 
-
-
 	static Ftile create(Ftile tile1, Ftile tile2, HtmlColor borderColor, HtmlColor backColor, Display labelTest,
 			Display label1, Display label2, UFont font, HtmlColor arrowColor, HtmlColor endThenInlinkColor,
 			HtmlColor endElseInlinkColor) {
 
 		tile1 = new FtileMinWidth(tile1, 30);
 		tile2 = new FtileMinWidth(tile2, 30);
-		final FtileIf2 result = new FtileIf2(tile1, tile2, borderColor, backColor, labelTest, label1, label2, font,
+		final FtileIf result = new FtileIf(tile1, tile2, borderColor, backColor, labelTest, label1, label2, font,
 				arrowColor);
 		final List<Connection> conns = new ArrayList<Connection>();
 		conns.add(result.new ConnectionHorizontalThenVertical(tile1));
@@ -266,7 +265,7 @@ class FtileIf2 extends AbstractFtile {
 			final double x2 = p2.getX();
 			final double y2 = p2.getY();
 
-			final Snake snake = new Snake(myArrowColor);
+			final Snake snake = new Snake(myArrowColor, true);
 			snake.addPoint(x1, y1);
 			snake.addPoint(x1, y2);
 			snake.addPoint(x2, y2);
@@ -336,12 +335,12 @@ class FtileIf2 extends AbstractFtile {
 				label.drawU(ug.apply(new UTranslate(dimTotal.getWidth() / 2 + 5, -dimLabel.getHeight() - 7)));
 
 				final Dimension2D dimLabel1 = label1.calculateDimension(stringBounder);
-				label1.drawU(ug.apply(new UTranslate(xDiamond - dimLabel1.getWidth(), -dimLabel1
-						.getHeight() + Diamond.diamondHalfSize)));
+				label1.drawU(ug.apply(new UTranslate(xDiamond - dimLabel1.getWidth(), -dimLabel1.getHeight()
+						+ Diamond.diamondHalfSize)));
 
 				final Dimension2D dimLabel2 = label2.calculateDimension(stringBounder);
-				label2.drawU(ug.apply(new UTranslate(xDiamond + 2 * Diamond.diamondHalfSize, -dimLabel2
-						.getHeight() + Diamond.diamondHalfSize)));
+				label2.drawU(ug.apply(new UTranslate(xDiamond + 2 * Diamond.diamondHalfSize, -dimLabel2.getHeight()
+						+ Diamond.diamondHalfSize)));
 			}
 
 			public Dimension2D calculateDimension(StringBounder stringBounder) {
@@ -355,11 +354,12 @@ class FtileIf2 extends AbstractFtile {
 	}
 
 	public boolean isKilled() {
-		return false;
+		return tile1.isKilled() && tile2.isKilled();
 	}
 
 	private void drawDiamond(UGraphic ug, double xTheoricalPosition, double yTheoricalPosition) {
-		ug.apply(new UChangeColor(borderColor)).apply(new UStroke(1.5)).apply(new UChangeBackColor(backColor)).apply(new UTranslate(xTheoricalPosition, yTheoricalPosition)).draw(Diamond.asPolygon());
+		ug.apply(new UChangeColor(borderColor)).apply(new UStroke(1.5)).apply(new UChangeBackColor(backColor))
+				.apply(new UTranslate(xTheoricalPosition, yTheoricalPosition)).draw(Diamond.asPolygon(shadowing()));
 	}
 
 	private Dimension2D calculateDimensionInternal(StringBounder stringBounder) {
@@ -379,6 +379,5 @@ class FtileIf2 extends AbstractFtile {
 		final Dimension2D dimTotal = calculateDimensionInternal(stringBounder);
 		return new Point2D.Double(dimTotal.getWidth() / 2, dimTotal.getHeight());
 	}
-	
 
 }

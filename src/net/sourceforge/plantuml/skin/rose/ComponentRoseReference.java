@@ -38,7 +38,7 @@ import java.awt.geom.Dimension2D;
 import net.sourceforge.plantuml.SpriteContainer;
 import net.sourceforge.plantuml.cucadiagram.Display;
 import net.sourceforge.plantuml.graphic.FontConfiguration;
-import net.sourceforge.plantuml.graphic.HorizontalAlignement;
+import net.sourceforge.plantuml.graphic.HorizontalAlignment;
 import net.sourceforge.plantuml.graphic.HtmlColor;
 import net.sourceforge.plantuml.graphic.StringBounder;
 import net.sourceforge.plantuml.graphic.TextBlock;
@@ -63,14 +63,14 @@ public class ComponentRoseReference extends AbstractTextualComponent {
 	private final TextBlock textHeader;
 	private final double heightFooter = 5;
 	private final double xMargin = 2;
-	private final HorizontalAlignement position;
+	private final HorizontalAlignment position;
 	private final double deltaShadow;
 	private final UStroke stroke;
 
 	public ComponentRoseReference(HtmlColor fontColor, HtmlColor fontHeaderColor, UFont font, HtmlColor borderColor,
 			HtmlColor backgroundHeader, HtmlColor background, UFont header, Display stringsToDisplay,
-			HorizontalAlignement position, SpriteContainer spriteContainer, double deltaShadow, UStroke stroke) {
-		super(stringsToDisplay.subList(1, stringsToDisplay.size()), fontColor, font, HorizontalAlignement.LEFT, 4, 4,
+			HorizontalAlignment position, SpriteContainer spriteContainer, double deltaShadow, UStroke stroke) {
+		super(stringsToDisplay.subList(1, stringsToDisplay.size()), fontColor, font, HorizontalAlignment.LEFT, 4, 4,
 				4, spriteContainer, 0);
 		this.position = position;
 		this.backgroundHeader = backgroundHeader;
@@ -80,7 +80,7 @@ public class ComponentRoseReference extends AbstractTextualComponent {
 		this.stroke = stroke;
 
 		textHeader = TextBlockUtils.create(stringsToDisplay.subList(0, 1), new FontConfiguration(header,
-				fontHeaderColor), HorizontalAlignement.LEFT, spriteContainer);
+				fontHeaderColor), HorizontalAlignment.LEFT, spriteContainer);
 
 	}
 
@@ -115,10 +115,10 @@ public class ComponentRoseReference extends AbstractTextualComponent {
 
 		textHeader.drawU(ug.apply(new UTranslate(15, 2)));
 		final double textPos;
-		if (position == HorizontalAlignement.CENTER) {
+		if (position == HorizontalAlignment.CENTER) {
 			final double textWidth = getTextBlock().calculateDimension(stringBounder).getWidth();
 			textPos = (dimensionToUse.getWidth() - textWidth) / 2;
-		} else if (position == HorizontalAlignement.RIGHT) {
+		} else if (position == HorizontalAlignment.RIGHT) {
 			final double textWidth = getTextBlock().calculateDimension(stringBounder).getWidth();
 			textPos = dimensionToUse.getWidth() - textWidth - getMarginX2() - xMargin;
 		} else {

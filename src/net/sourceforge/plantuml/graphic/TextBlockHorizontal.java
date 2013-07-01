@@ -46,12 +46,12 @@ class TextBlockHorizontal implements TextBlock {
 
 	private final TextBlock b1;
 	private final TextBlock b2;
-	private final VerticallAlignement alignement;
+	private final VerticalAlignment alignment;
 
-	public TextBlockHorizontal(TextBlock b1, TextBlock b2, VerticallAlignement alignement) {
+	public TextBlockHorizontal(TextBlock b1, TextBlock b2, VerticalAlignment alignment) {
 		this.b1 = b1;
 		this.b2 = b2;
-		this.alignement = alignement;
+		this.alignment = alignment;
 	}
 
 	public Dimension2D calculateDimension(StringBounder stringBounder) {
@@ -65,7 +65,7 @@ class TextBlockHorizontal implements TextBlock {
 		final Dimension2D dimb1 = b1.calculateDimension(ug.getStringBounder());
 		final Dimension2D dimb2 = b2.calculateDimension(ug.getStringBounder());
 		final Dimension2D dim1 = b1.calculateDimension(ug.getStringBounder());
-		if (alignement == VerticallAlignement.CENTER) {
+		if (alignment == VerticalAlignment.CENTER) {
 			b1.drawU(ug.apply(new UTranslate(0, ((dim.getHeight() - dimb1.getHeight()) / 2))));
 			b2.drawU(ug.apply(new UTranslate(dim1.getWidth(), ((dim.getHeight() - dimb2.getHeight()) / 2))));
 		} else {

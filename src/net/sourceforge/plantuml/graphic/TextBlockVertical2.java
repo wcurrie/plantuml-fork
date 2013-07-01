@@ -46,20 +46,20 @@ import net.sourceforge.plantuml.ugraphic.UTranslate;
 public class TextBlockVertical2 implements TextBlock {
 
 	private final List<TextBlock> blocks = new ArrayList<TextBlock>();
-	private final HorizontalAlignement horizontalAlignement;
+	private final HorizontalAlignment horizontalAlignment;
 
-	public TextBlockVertical2(TextBlock b1, TextBlock b2, HorizontalAlignement horizontalAlignement) {
+	public TextBlockVertical2(TextBlock b1, TextBlock b2, HorizontalAlignment horizontalAlignment) {
 		this.blocks.add(b1);
 		this.blocks.add(b2);
-		this.horizontalAlignement = horizontalAlignement;
+		this.horizontalAlignment = horizontalAlignment;
 	}
 
-	public TextBlockVertical2(List<TextBlock> all, HorizontalAlignement horizontalAlignement) {
+	public TextBlockVertical2(List<TextBlock> all, HorizontalAlignment horizontalAlignment) {
 		if (all.size() < 2) {
 			throw new IllegalArgumentException();
 		}
 		this.blocks.addAll(all);
-		this.horizontalAlignement = horizontalAlignement;
+		this.horizontalAlignment = horizontalAlignment;
 	}
 
 	public Dimension2D calculateDimension(StringBounder stringBounder) {
@@ -75,9 +75,9 @@ public class TextBlockVertical2 implements TextBlock {
 		final Dimension2D dimtotal = calculateDimension(ug.getStringBounder());
 		for (TextBlock b : blocks) {
 			final Dimension2D dimb = b.calculateDimension(ug.getStringBounder());
-			if (horizontalAlignement == HorizontalAlignement.LEFT) {
+			if (horizontalAlignment == HorizontalAlignment.LEFT) {
 				b.drawU(ug.apply(new UTranslate(0, y)));
-			} else if (horizontalAlignement == HorizontalAlignement.CENTER) {
+			} else if (horizontalAlignment == HorizontalAlignment.CENTER) {
 				final double dx = (dimtotal.getWidth() - dimb.getWidth()) / 2;
 				b.drawU(ug.apply(new UTranslate(dx, y)));
 			} else {

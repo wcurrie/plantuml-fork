@@ -58,7 +58,7 @@ public class FtileFactoryDelegatorWhile extends FtileFactoryDelegator {
 		final UFont font = getSkinParam().getFont(FontParam.ACTIVITY_ARROW2, null);
 		final LinkRendering endInlinkRendering = whileBlock.getOutLinkRendering();
 		final HtmlColor endInlinkColor = endInlinkRendering == null ? arrowColor : endInlinkRendering.getColor();
-		return FtileWhile2.create(whileBlock, test, borderColor, backColor, arrowColor, yes, out, font, endInlinkColor,
+		return FtileWhile.create(whileBlock, test, borderColor, backColor, arrowColor, yes, out, font, endInlinkColor,
 				afterEndwhile);
 	}
 

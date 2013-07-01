@@ -51,7 +51,7 @@ import net.sourceforge.plantuml.activitydiagram3.ftile.Ftile;
 import net.sourceforge.plantuml.activitydiagram3.ftile.Swimlane;
 import net.sourceforge.plantuml.cucadiagram.Display;
 import net.sourceforge.plantuml.graphic.FontConfiguration;
-import net.sourceforge.plantuml.graphic.HorizontalAlignement;
+import net.sourceforge.plantuml.graphic.HorizontalAlignment;
 import net.sourceforge.plantuml.graphic.HtmlColor;
 import net.sourceforge.plantuml.graphic.StringBounder;
 import net.sourceforge.plantuml.graphic.TextBlock;
@@ -63,7 +63,7 @@ import net.sourceforge.plantuml.ugraphic.UFont;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
 import net.sourceforge.plantuml.ugraphic.UTranslate;
 
-public class FtileWithNoteOpale2 extends AbstractFtile {
+public class FtileWithNoteOpale extends AbstractFtile {
 
 	private final Ftile tile;
 	private final Opale opale;
@@ -75,7 +75,7 @@ public class FtileWithNoteOpale2 extends AbstractFtile {
 	public Set<Swimlane> getSwimlanes() {
 		return tile.getSwimlanes();
 	}
-	
+
 	public Swimlane getSwimlaneIn() {
 		return tile.getSwimlaneIn();
 	}
@@ -84,13 +84,16 @@ public class FtileWithNoteOpale2 extends AbstractFtile {
 		return tile.getSwimlaneOut();
 	}
 
-
-	public FtileWithNoteOpale2(Ftile tile, Display note, HtmlColor arrowColor, NotePosition notePosition) {
+	public FtileWithNoteOpale(Ftile tile, Display note, HtmlColor arrowColor, NotePosition notePosition) {
+		super(tile.shadowing());
 		this.tile = tile;
 		this.notePosition = notePosition;
 		this.arrowColor = arrowColor;
 
-		final ISkinParam skinParam = new SkinParam(UmlDiagramType.ACTIVITY);
+		final SkinParam skinParam = new SkinParam(UmlDiagramType.ACTIVITY);
+		if (shadowing() == false) {
+			skinParam.setParam("shadowing", "false");
+		}
 
 		final Rose rose = new Rose();
 		final HtmlColor fontColor = rose.getFontColor(skinParam, FontParam.NOTE);
@@ -100,7 +103,7 @@ public class FtileWithNoteOpale2 extends AbstractFtile {
 		final HtmlColor borderColor = rose.getHtmlColor(skinParam, ColorParam.noteBorder);
 
 		final TextBlock text = TextBlockUtils.create(note, new FontConfiguration(fontNote, fontColor),
-				HorizontalAlignement.LEFT, skinParam);
+				HorizontalAlignment.LEFT, skinParam);
 		opale = new Opale(borderColor, noteBackgroundColor, text, skinParam.shadowing());
 
 	}

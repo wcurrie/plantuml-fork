@@ -35,7 +35,7 @@ package net.sourceforge.plantuml;
 
 import net.sourceforge.plantuml.cucadiagram.dot.DotSplines;
 import net.sourceforge.plantuml.cucadiagram.dot.GraphvizLayoutStrategy;
-import net.sourceforge.plantuml.graphic.HorizontalAlignement;
+import net.sourceforge.plantuml.graphic.HorizontalAlignment;
 import net.sourceforge.plantuml.graphic.HtmlColor;
 import net.sourceforge.plantuml.svek.PackageStyle;
 import net.sourceforge.plantuml.ugraphic.ColorMapper;
@@ -77,20 +77,12 @@ public class SkinParamForecolored implements ISkinParam {
 		return skinParam.getValue(key);
 	}
 
-	public boolean isClassCollapse() {
-		return skinParam.isClassCollapse();
-	}
-
 	public int classAttributeIconSize() {
 		return skinParam.classAttributeIconSize();
 	}
 
 	public int getDpi() {
 		return skinParam.getDpi();
-	}
-
-	public boolean useOctagonForActivity() {
-		return skinParam.useOctagonForActivity();
 	}
 
 	public DotSplines getDotSplines() {
@@ -101,8 +93,8 @@ public class SkinParamForecolored implements ISkinParam {
 		return skinParam.getStrategy();
 	}
 
-	public HorizontalAlignement getHorizontalAlignement(AlignParam param) {
-		return skinParam.getHorizontalAlignement(param);
+	public HorizontalAlignment getHorizontalAlignment(AlignParam param) {
+		return skinParam.getHorizontalAlignment(param);
 	}
 
 	public ColorMapper getColorMapper() {
@@ -151,6 +143,10 @@ public class SkinParamForecolored implements ISkinParam {
 
 	public double maxMessageSize() {
 		return skinParam.maxMessageSize();
+	}
+	
+	public boolean strictUmlStyle() {
+		return skinParam.strictUmlStyle();
 	}
 
 }

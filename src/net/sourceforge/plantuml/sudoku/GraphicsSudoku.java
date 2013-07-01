@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 10930 $
+ * Revision $Revision: 11153 $
  *
  */
 package net.sourceforge.plantuml.sudoku;
@@ -48,7 +48,7 @@ import net.sourceforge.plantuml.api.ImageDataSimple;
 import net.sourceforge.plantuml.core.ImageData;
 import net.sourceforge.plantuml.cucadiagram.Display;
 import net.sourceforge.plantuml.graphic.FontConfiguration;
-import net.sourceforge.plantuml.graphic.HorizontalAlignement;
+import net.sourceforge.plantuml.graphic.HorizontalAlignment;
 import net.sourceforge.plantuml.graphic.HtmlColorUtils;
 import net.sourceforge.plantuml.graphic.TextBlock;
 import net.sourceforge.plantuml.graphic.TextBlockUtils;
@@ -112,7 +112,7 @@ public class GraphicsSudoku {
 				final int num = sudoku.getGiven(x, y);
 				if (num > 0) {
 					final TextBlock text = TextBlockUtils.create(Display.asList("" + num), new FontConfiguration(
-							numberFont, HtmlColorUtils.BLACK), HorizontalAlignement.CENTER, new SpriteContainerEmpty());
+							numberFont, HtmlColorUtils.BLACK), HorizontalAlignment.CENTER, new SpriteContainerEmpty());
 					text.drawU(ug.apply(new UTranslate((numberxOffset + x * cellWidth), (numberyOffset + y * cellHeight))));
 				}
 			}
@@ -136,7 +136,7 @@ public class GraphicsSudoku {
 		texts.add("Seed " + Long.toString(sudoku.getSeed(), 36));
 		texts.add("Difficulty " + sudoku.getRatting());
 		final TextBlock textBlock = TextBlockUtils.create(new Display(texts), new FontConfiguration(font,
-				HtmlColorUtils.BLACK), HorizontalAlignement.LEFT, new SpriteContainerEmpty());
+				HtmlColorUtils.BLACK), HorizontalAlignment.LEFT, new SpriteContainerEmpty());
 		textBlock.drawU(ug);
 		g3d.dispose();
 		return im;

@@ -44,7 +44,7 @@ import net.sourceforge.plantuml.cucadiagram.Display;
 import net.sourceforge.plantuml.cucadiagram.ILeaf;
 import net.sourceforge.plantuml.cucadiagram.Stereotype;
 import net.sourceforge.plantuml.graphic.FontConfiguration;
-import net.sourceforge.plantuml.graphic.HorizontalAlignement;
+import net.sourceforge.plantuml.graphic.HorizontalAlignment;
 import net.sourceforge.plantuml.graphic.StringBounder;
 import net.sourceforge.plantuml.graphic.TextBlock;
 import net.sourceforge.plantuml.graphic.TextBlockUtils;
@@ -68,7 +68,7 @@ public class EntityImagePseudoState extends AbstractEntityImage {
 		this.desc = TextBlockUtils.create(Display.asList("H"),
 				new FontConfiguration(SkinParamUtils.getFont(getSkinParam(), FontParam.STATE, stereotype),
 						SkinParamUtils.getFontColor(getSkinParam(), FontParam.STATE, stereotype)),
-				HorizontalAlignement.CENTER, skinParam);
+				HorizontalAlignment.CENTER, skinParam);
 
 	}
 

@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 10624 $
+ * Revision $Revision: 11134 $
  *
  */
 package net.sourceforge.plantuml.sequencediagram.graphic;
@@ -589,6 +589,9 @@ class DrawableSetInitializer {
 		} else if (p.getType() == ParticipantType.ENTITY) {
 			headType = ComponentType.ENTITY_HEAD;
 			tailType = ComponentType.ENTITY_TAIL;
+		} else if (p.getType() == ParticipantType.DATABASE) {
+			headType = ComponentType.DATABASE_HEAD;
+			tailType = ComponentType.DATABASE_TAIL;
 		} else {
 			throw new IllegalArgumentException();
 		}
@@ -600,8 +603,7 @@ class DrawableSetInitializer {
 				drawableSet.getSkinParam(), p.getDisplay());
 		final Component delayLine = drawableSet.getSkin().createComponent(ComponentType.DELAY_LINE, null,
 				drawableSet.getSkinParam(), p.getDisplay());
-		final ParticipantBox box = new ParticipantBox(head, line, tail, delayLine, this.freeX, drawableSet
-				.getSkinParam().shadowing());
+		final ParticipantBox box = new ParticipantBox(head, line, tail, delayLine, this.freeX);
 
 		final Component comp = drawableSet.getSkin().createComponent(ComponentType.ALIVE_BOX_CLOSE_CLOSE, null,
 				drawableSet.getSkinParam(), null);

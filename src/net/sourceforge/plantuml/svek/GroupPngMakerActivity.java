@@ -96,7 +96,7 @@ public final class GroupPngMakerActivity {
 	public IEntityImage getImage() throws IOException, InterruptedException {
 		// final List<? extends CharSequence> display = group.getDisplay();
 		// final TextBlock title = TextBlockUtils.create(display, new FontConfiguration(
-		// getFont(FontParam.STATE), HtmlColorUtils.BLACK), HorizontalAlignement.CENTER, diagram.getSkinParam());
+		// getFont(FontParam.STATE), HtmlColorUtils.BLACK), HorizontalAlignment.CENTER, diagram.getSkinParam());
 
 		if (group.zsize() == 0) {
 			return new EntityImageState(group, diagram.getSkinParam());

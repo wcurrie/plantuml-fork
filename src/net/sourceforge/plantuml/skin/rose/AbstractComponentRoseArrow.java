@@ -28,14 +28,14 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 10577 $
+ * Revision $Revision: 11154 $
  *
  */
 package net.sourceforge.plantuml.skin.rose;
 
 import net.sourceforge.plantuml.SpriteContainer;
 import net.sourceforge.plantuml.cucadiagram.Display;
-import net.sourceforge.plantuml.graphic.HorizontalAlignement;
+import net.sourceforge.plantuml.graphic.HorizontalAlignment;
 import net.sourceforge.plantuml.graphic.HtmlColor;
 import net.sourceforge.plantuml.skin.AbstractTextualComponent;
 import net.sourceforge.plantuml.skin.ArrowComponent;
@@ -51,8 +51,8 @@ public abstract class AbstractComponentRoseArrow extends AbstractTextualComponen
 
 	public AbstractComponentRoseArrow(HtmlColor foregroundColor, HtmlColor fontColor, UFont font,
 			Display stringsToDisplay, ArrowConfiguration arrowConfiguration, SpriteContainer spriteContainer,
-			HorizontalAlignement textHorizontalAlignement, double maxMessageSize) {
-		super(stringsToDisplay, fontColor, font, textHorizontalAlignement, 7, 7, 1, spriteContainer, maxMessageSize);
+			HorizontalAlignment textHorizontalAlignment, double maxMessageSize) {
+		super(stringsToDisplay, fontColor, font, textHorizontalAlignment, 7, 7, 1, spriteContainer, maxMessageSize);
 		this.arrowConfiguration = arrowConfiguration;
 		this.foregroundColor = foregroundColor;
 	}

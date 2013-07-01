@@ -45,12 +45,12 @@ class TextBlockMinWidth implements TextBlock {
 
 	private final TextBlock textBlock;
 	private final double minWidth;
-	private final HorizontalAlignement horizontalAlignement;
+	private final HorizontalAlignment horizontalAlignment;
 
-	public TextBlockMinWidth(TextBlock textBlock, double minWidth, HorizontalAlignement horizontalAlignement) {
+	public TextBlockMinWidth(TextBlock textBlock, double minWidth, HorizontalAlignment horizontalAlignment) {
 		this.textBlock = textBlock;
 		this.minWidth = minWidth;
-		this.horizontalAlignement = horizontalAlignement;
+		this.horizontalAlignment = horizontalAlignment;
 	}
 
 	public Dimension2D calculateDimension(StringBounder stringBounder) {
@@ -59,9 +59,9 @@ class TextBlockMinWidth implements TextBlock {
 	}
 
 	public void drawU(UGraphic ug) {
-		if (horizontalAlignement == HorizontalAlignement.LEFT) {
+		if (horizontalAlignment == HorizontalAlignment.LEFT) {
 			textBlock.drawU(ug);
-		} else if (horizontalAlignement == HorizontalAlignement.RIGHT) {
+		} else if (horizontalAlignment == HorizontalAlignment.RIGHT) {
 			final Dimension2D dim = textBlock.calculateDimension(ug.getStringBounder());
 			final double diffx = minWidth - dim.getWidth();
 			textBlock.drawU(ug.apply(new UTranslate(diffx, 0)));

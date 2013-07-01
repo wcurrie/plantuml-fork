@@ -44,7 +44,7 @@ import net.sourceforge.plantuml.ugraphic.UTranslate;
 
 public interface Ftile extends TextBlockable {
 
-	public static final boolean SHADOWING = true;
+	public boolean shadowing();
 
 	public boolean isKilled();
 

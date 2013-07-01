@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 9786 $
+ * Revision $Revision: 11116 $
  *
  */
 package net.sourceforge.plantuml.ugraphic.g2d;
@@ -36,16 +36,21 @@ package net.sourceforge.plantuml.ugraphic.g2d;
 import java.awt.BasicStroke;
 import java.awt.GradientPaint;
 import java.awt.Graphics2D;
+import java.awt.Rectangle;
 import java.awt.Shape;
+import java.awt.TexturePaint;
 import java.awt.geom.Rectangle2D;
 import java.awt.geom.RoundRectangle2D;
+import java.awt.image.BufferedImage;
 
 import net.sourceforge.plantuml.EnsureVisible;
 import net.sourceforge.plantuml.graphic.HtmlColor;
 import net.sourceforge.plantuml.graphic.HtmlColorGradient;
+import net.sourceforge.plantuml.graphic.HtmlColorSimple;
 import net.sourceforge.plantuml.ugraphic.ColorMapper;
 import net.sourceforge.plantuml.ugraphic.UDriver;
 import net.sourceforge.plantuml.ugraphic.UParam;
+import net.sourceforge.plantuml.ugraphic.UPattern;
 import net.sourceforge.plantuml.ugraphic.URectangle;
 import net.sourceforge.plantuml.ugraphic.UShape;
 
@@ -114,6 +119,7 @@ public class DriverRectangleG2d extends DriverShadowedG2d implements UDriver<Gra
 			if (param.getBackcolor() != null) {
 				g2d.setColor(mapper.getMappedColor(param.getBackcolor()));
 				DriverLineG2d.manageStroke(param, g2d);
+				managePattern(param, g2d);
 				g2d.fill(rect);
 			}
 			if (param.getColor() != null && param.getColor().equals(param.getBackcolor()) == false) {
@@ -121,6 +127,45 @@ public class DriverRectangleG2d extends DriverShadowedG2d implements UDriver<Gra
 				DriverLineG2d.manageStroke(param, g2d);
 				g2d.draw(rect);
 			}
+		}
+	}
+
+	public static void managePattern(UParam param, Graphics2D g2d) {
+		final UPattern pattern = param.getPattern();
+		if (pattern == UPattern.VERTICAL_STRIPE) {
+			final BufferedImage bi = new BufferedImage(4, 4, BufferedImage.TYPE_INT_ARGB);
+			final Rectangle r = new Rectangle(0, 0, 4, 4);
+			final int rgb = ((HtmlColorSimple) param.getBackcolor()).getColor999().getRGB();
+			for (int i = 0; i < 4; i++) {
+				for (int j = 0; j < 4; j++) {
+					if (i == 0 || i == 1) {
+						bi.setRGB(i, j, rgb);
+					}
+				}
+			}
+			g2d.setPaint(new TexturePaint(bi, r));
+		} else if (pattern == UPattern.HORIZONTAL_STRIPE) {
+			final BufferedImage bi = new BufferedImage(4, 4, BufferedImage.TYPE_INT_ARGB);
+			final Rectangle r = new Rectangle(0, 0, 4, 4);
+			final int rgb = ((HtmlColorSimple) param.getBackcolor()).getColor999().getRGB();
+			for (int i = 0; i < 4; i++) {
+				for (int j = 0; j < 4; j++) {
+					if (j == 0 || j == 1) {
+						bi.setRGB(i, j, rgb);
+					}
+				}
+			}
+			g2d.setPaint(new TexturePaint(bi, r));
+		} else if (pattern == UPattern.SMALL_CIRCLE) {
+			final BufferedImage bi = new BufferedImage(4, 4, BufferedImage.TYPE_INT_ARGB);
+			final Rectangle r = new Rectangle(0, 0, 4, 4);
+			final int rgb = ((HtmlColorSimple) param.getBackcolor()).getColor999().getRGB();
+			bi.setRGB(0, 1, rgb);
+			bi.setRGB(1, 0, rgb);
+			bi.setRGB(1, 1, rgb);
+			bi.setRGB(1, 2, rgb);
+			bi.setRGB(2, 1, rgb);
+			g2d.setPaint(new TexturePaint(bi, r));
 		}
 	}
 

@@ -51,6 +51,7 @@ public class FtileMarged extends AbstractFtile {
 	private final double marge;
 
 	public FtileMarged(Ftile tile, double marge) {
+		super(tile.shadowing());
 		this.tile = tile;
 		this.marge = marge;
 	}

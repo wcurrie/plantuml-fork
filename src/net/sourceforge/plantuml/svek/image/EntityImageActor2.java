@@ -45,7 +45,7 @@ import net.sourceforge.plantuml.cucadiagram.Display;
 import net.sourceforge.plantuml.cucadiagram.ILeaf;
 import net.sourceforge.plantuml.cucadiagram.Stereotype;
 import net.sourceforge.plantuml.graphic.FontConfiguration;
-import net.sourceforge.plantuml.graphic.HorizontalAlignement;
+import net.sourceforge.plantuml.graphic.HorizontalAlignment;
 import net.sourceforge.plantuml.graphic.StringBounder;
 import net.sourceforge.plantuml.graphic.TextBlock;
 import net.sourceforge.plantuml.graphic.TextBlockUtils;
@@ -69,7 +69,7 @@ public class EntityImageActor2 extends AbstractEntityImage {
 		this.name = TextBlockUtils.create(
 				entity.getDisplay(),
 				new FontConfiguration(SkinParamUtils.getFont(getSkinParam(), fontName, stereotype), SkinParamUtils
-						.getFontColor(getSkinParam(), fontName, stereotype)), HorizontalAlignement.CENTER, skinParam);
+						.getFontColor(getSkinParam(), fontName, stereotype)), HorizontalAlignment.CENTER, skinParam);
 		this.stickman = stickman;
 
 		if (stereotype == null || stereotype.getLabel() == null) {
@@ -78,7 +78,7 @@ public class EntityImageActor2 extends AbstractEntityImage {
 			this.stereo = TextBlockUtils.create(Display.getWithNewlines(stereotype.getLabel()),
 					new FontConfiguration(SkinParamUtils.getFont(getSkinParam(), fontStereotype, stereotype),
 							SkinParamUtils.getFontColor(getSkinParam(), fontStereotype, null)),
-					HorizontalAlignement.CENTER, skinParam);
+					HorizontalAlignment.CENTER, skinParam);
 		}
 		this.url = entity.getUrls();
 

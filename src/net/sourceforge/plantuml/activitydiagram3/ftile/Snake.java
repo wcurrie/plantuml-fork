@@ -51,14 +51,24 @@ public class Snake {
 	private final List<Point2D.Double> points = new ArrayList<Point2D.Double>();
 	private final UPolygon endDecoration;
 	private final HtmlColor color;
+	private final boolean mergeable;
 
-	public Snake(HtmlColor color, UPolygon endDecoration) {
+	private Snake(HtmlColor color, UPolygon endDecoration, boolean mergeable) {
 		this.endDecoration = endDecoration;
 		this.color = color;
+		this.mergeable = mergeable;
+	}
+
+	public Snake(HtmlColor color, UPolygon endDecoration) {
+		this(color, endDecoration, false);
 	}
 
 	public Snake(HtmlColor color) {
-		this(color, null);
+		this(color, null, false);
+	}
+
+	public Snake(HtmlColor color, boolean mergeable) {
+		this(color, null, mergeable);
 	}
 
 	public void addPoint(double x, double y) {
@@ -86,7 +96,13 @@ public class Snake {
 	}
 
 	private void drawLine(UGraphic ug, double x1, double y1, double x2, double y2) {
-		ug.apply(new UTranslate(x1, y1)).draw(new ULine(x2 - x1, y2 - y1));
+		ug = ug.apply(new UTranslate(x1, y1));
+
+		if (mergeable) {
+			ug.draw(new ULineMergeable(x2 - x1, y2 - y1));
+		} else {
+			ug.draw(new ULine(x2 - x1, y2 - y1));
+		}
 	}
 
 }

@@ -85,6 +85,8 @@ public class QuoteUtils {
 			"Hey, what do you want? Miracles?", //
 			"Pour qui sont ces serpents qui sifflent sur vos tetes?", //
 			"Le silence eternel de ces espaces infinis m'effraie.", //
+			"1.21 gigawatts! 1.21 gigawatts. Great Scott! ", //
+			"What the hell is a gigawatt?", //
 			"I need a vacation." //
 	);
 

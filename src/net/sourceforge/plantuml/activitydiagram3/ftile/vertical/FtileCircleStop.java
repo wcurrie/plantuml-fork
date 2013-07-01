@@ -59,11 +59,12 @@ public class FtileCircleStop extends AbstractFtile {
 	private final HtmlColor backColor;
 	private final Swimlane swimlane;
 
-	public FtileCircleStop(HtmlColor backColor, Swimlane swimlane) {
+	public FtileCircleStop(boolean shadowing, HtmlColor backColor, Swimlane swimlane) {
+		super(shadowing);
 		this.backColor = backColor;
 		this.swimlane = swimlane;
 	}
-	
+
 	public Set<Swimlane> getSwimlanes() {
 		if (swimlane == null) {
 			return Collections.emptySet();
@@ -79,7 +80,6 @@ public class FtileCircleStop extends AbstractFtile {
 		return swimlane;
 	}
 
-
 	public TextBlock asTextBlock() {
 		return new TextBlock() {
 
@@ -90,17 +90,20 @@ public class FtileCircleStop extends AbstractFtile {
 				yTheoricalPosition = Math.round(yTheoricalPosition);
 
 				final UEllipse circle = new UEllipse(SIZE, SIZE);
-				if (SHADOWING) {
+				if (shadowing()) {
 					circle.setDeltaShadow(3);
 				}
-				ug.apply(new UChangeColor(backColor)).apply(new UChangeBackColor(null)).apply(new UTranslate(xTheoricalPosition, yTheoricalPosition)).draw(circle);
+				ug.apply(new UChangeColor(backColor)).apply(new UChangeBackColor(null))
+						.apply(new UTranslate(xTheoricalPosition, yTheoricalPosition)).draw(circle);
 
 				final double delta = 4;
 				final UEllipse circleSmall = new UEllipse(SIZE - delta * 2, SIZE - delta * 2);
-				if (SHADOWING) {
+				if (shadowing()) {
 					circleSmall.setDeltaShadow(3);
 				}
-				ug.apply(new UChangeColor(null)).apply(new UChangeBackColor(backColor)).apply(new UTranslate(xTheoricalPosition + delta + .5, yTheoricalPosition + delta + .5)).draw(circleSmall);
+				ug.apply(new UChangeColor(null)).apply(new UChangeBackColor(backColor))
+						.apply(new UTranslate(xTheoricalPosition + delta + .5, yTheoricalPosition + delta + .5))
+						.draw(circleSmall);
 			}
 
 			public Dimension2D calculateDimension(StringBounder stringBounder) {

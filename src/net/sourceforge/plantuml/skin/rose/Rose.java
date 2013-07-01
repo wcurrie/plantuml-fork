@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 10591 $
+ * Revision $Revision: 11154 $
  *
  */
 package net.sourceforge.plantuml.skin.rose;
@@ -43,7 +43,7 @@ import net.sourceforge.plantuml.ISkinParam;
 import net.sourceforge.plantuml.LineParam;
 import net.sourceforge.plantuml.OptionFlags;
 import net.sourceforge.plantuml.cucadiagram.Display;
-import net.sourceforge.plantuml.graphic.HorizontalAlignement;
+import net.sourceforge.plantuml.graphic.HorizontalAlignment;
 import net.sourceforge.plantuml.graphic.HtmlColor;
 import net.sourceforge.plantuml.graphic.HtmlColorUtils;
 import net.sourceforge.plantuml.skin.ArrowConfiguration;
@@ -85,6 +85,9 @@ public class Rose implements Skin {
 
 		defaultsColor.put(ColorParam.noteBackground, HtmlColorUtils.getColorIfValid("#FBFB77"));
 		defaultsColor.put(ColorParam.noteBorder, HtmlColorUtils.getColorIfValid("#A80036"));
+
+		defaultsColor.put(ColorParam.legendBackground, HtmlColorUtils.getColorIfValid("#DDDDDD"));
+		defaultsColor.put(ColorParam.legendBorder, HtmlColorUtils.getColorIfValid("#000000"));
 
 		defaultsColor.put(ColorParam.activityBackground, HtmlColorUtils.getColorIfValid("#FEFECE"));
 		defaultsColor.put(ColorParam.activityBorder, HtmlColorUtils.getColorIfValid("#A80036"));
@@ -183,20 +186,21 @@ public class Rose implements Skin {
 					: config.getColor();
 			if (config.getArrowDirection() == ArrowDirection.SELF) {
 				return new ComponentRoseSelfArrow(sequenceArrow, getFontColor(param, FontParam.SEQUENCE_ARROW),
-						fontArrow, stringsToDisplay, config, param, param.maxMessageSize());
+						fontArrow, stringsToDisplay, config, param, param.maxMessageSize(),
+						param.strictUmlStyle() == false);
 			}
-			final HorizontalAlignement messageHorizontalAlignement = param
-					.getHorizontalAlignement(AlignParam.SEQUENCE_MESSAGE_ALIGN);
-			final HorizontalAlignement textHorizontalAlignement = param
-					.getHorizontalAlignement(AlignParam.SEQUENCE_MESSAGETEXT_ALIGN);
+			final HorizontalAlignment messageHorizontalAlignment = param
+					.getHorizontalAlignment(AlignParam.SEQUENCE_MESSAGE_ALIGN);
+			final HorizontalAlignment textHorizontalAlignment = param
+					.getHorizontalAlignment(AlignParam.SEQUENCE_MESSAGETEXT_ALIGN);
 			if (OptionFlags.NEW_ARROW) {
 				return new ComponentRoseArrow2(sequenceArrow, getFontColor(param, FontParam.SEQUENCE_ARROW), fontArrow,
-						stringsToDisplay, config, messageHorizontalAlignement, param, textHorizontalAlignement,
-						param.maxMessageSize());
+						stringsToDisplay, config, messageHorizontalAlignment, param, textHorizontalAlignment,
+						param.maxMessageSize(), param.strictUmlStyle() == false);
 			}
 			return new ComponentRoseArrow(sequenceArrow, getFontColor(param, FontParam.SEQUENCE_ARROW), fontArrow,
-					stringsToDisplay, config, messageHorizontalAlignement, param, textHorizontalAlignement,
-					param.maxMessageSize());
+					stringsToDisplay, config, messageHorizontalAlignment, param, textHorizontalAlignment,
+					param.maxMessageSize(), param.strictUmlStyle() == false);
 		}
 		if (type == ComponentType.PARTICIPANT_HEAD) {
 			final HtmlColor borderColor = getHtmlColor(param, ColorParam.sequenceParticipantBorder);
@@ -263,6 +267,18 @@ public class Rose implements Skin {
 		if (type == ComponentType.ENTITY_TAIL) {
 			final HtmlColor borderColor = getHtmlColor(param, ColorParam.sequenceActorBorder);
 			return new ComponentRoseEntity(sequenceActorBackground, borderColor, getFontColor(param,
+					FontParam.SEQUENCE_ACTOR), fontActor, stringsToDisplay, false, param, deltaShadow, getStroke(param,
+					LineParam.sequenceActorBorder, 2));
+		}
+		if (type == ComponentType.DATABASE_HEAD) {
+			final HtmlColor borderColor = getHtmlColor(param, ColorParam.sequenceActorBorder);
+			return new ComponentRoseDatabase(sequenceActorBackground, borderColor, getFontColor(param,
+					FontParam.SEQUENCE_ACTOR), fontActor, stringsToDisplay, true, param, deltaShadow, getStroke(param,
+					LineParam.sequenceActorBorder, 2));
+		}
+		if (type == ComponentType.DATABASE_TAIL) {
+			final HtmlColor borderColor = getHtmlColor(param, ColorParam.sequenceActorBorder);
+			return new ComponentRoseDatabase(sequenceActorBackground, borderColor, getFontColor(param,
 					FontParam.SEQUENCE_ACTOR), fontActor, stringsToDisplay, false, param, deltaShadow, getStroke(param,
 					LineParam.sequenceActorBorder, 2));
 		}
@@ -345,7 +361,7 @@ public class Rose implements Skin {
 					FontParam.SEQUENCE_GROUP), param.getFont(FontParam.SEQUENCE_REFERENCE, null),
 					sequenceReferenceBorder, sequenceReferenceHeaderBackground, sequenceReferenceBackground,
 					fontGroupingHeader, stringsToDisplay,
-					param.getHorizontalAlignement(AlignParam.SEQUENCE_REFERENCE_ALIGN), param, deltaShadow, getStroke(
+					param.getHorizontalAlignment(AlignParam.SEQUENCE_REFERENCE_ALIGN), param, deltaShadow, getStroke(
 							param, LineParam.sequenceReferenceBorder, 2));
 		}
 		if (type == ComponentType.TITLE) {

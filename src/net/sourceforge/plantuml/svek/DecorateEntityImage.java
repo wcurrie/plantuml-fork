@@ -39,30 +39,34 @@ import java.util.List;
 
 import net.sourceforge.plantuml.Dimension2DDouble;
 import net.sourceforge.plantuml.Url;
-import net.sourceforge.plantuml.graphic.HorizontalAlignement;
+import net.sourceforge.plantuml.graphic.HorizontalAlignment;
 import net.sourceforge.plantuml.graphic.HtmlColor;
 import net.sourceforge.plantuml.graphic.StringBounder;
 import net.sourceforge.plantuml.graphic.TextBlock;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
 import net.sourceforge.plantuml.ugraphic.UTranslate;
 
-public class DecorateEntityImage implements IEntityImage {
+public class DecorateEntityImage implements TextBlockBackcolored {
 
-	private final IEntityImage original;
-	private final HorizontalAlignement horizontal1;
+	private final TextBlockBackcolored original;
+	private final HorizontalAlignment horizontal1;
 	private final TextBlock text1;
-	private final HorizontalAlignement horizontal2;
+	private final HorizontalAlignment horizontal2;
 	private final TextBlock text2;
 
 	private double deltaX;
 	private double deltaY;
 
-	public DecorateEntityImage(IEntityImage original, TextBlock text, HorizontalAlignement horizontal) {
-		this(original, text, horizontal, null, null);
+	public static DecorateEntityImage addTop(TextBlockBackcolored original, TextBlock text, HorizontalAlignment horizontal) {
+		return new DecorateEntityImage(original, text, horizontal, null, null);
 	}
 
-	public DecorateEntityImage(IEntityImage original, TextBlock text1, HorizontalAlignement horizontal1,
-			TextBlock text2, HorizontalAlignement horizontal2) {
+	public static DecorateEntityImage addBottom(TextBlockBackcolored original, TextBlock text, HorizontalAlignment horizontal) {
+		return new DecorateEntityImage(original, null, null, text, horizontal);
+	}
+
+	public DecorateEntityImage(TextBlockBackcolored original, TextBlock text1, HorizontalAlignment horizontal1,
+			TextBlock text2, HorizontalAlignment horizontal2) {
 		this.original = original;
 		this.horizontal1 = horizontal1;
 		this.text1 = text1;
@@ -102,12 +106,12 @@ public class DecorateEntityImage implements IEntityImage {
 		return text.calculateDimension(stringBounder);
 	}
 
-	private double getTextX(final Dimension2D dimText, final Dimension2D dimTotal, HorizontalAlignement h) {
-		if (h == HorizontalAlignement.CENTER) {
+	private double getTextX(final Dimension2D dimText, final Dimension2D dimTotal, HorizontalAlignment h) {
+		if (h == HorizontalAlignment.CENTER) {
 			return (dimTotal.getWidth() - dimText.getWidth()) / 2;
-		} else if (h == HorizontalAlignement.LEFT) {
+		} else if (h == HorizontalAlignment.LEFT) {
 			return 0;
-		} else if (h == HorizontalAlignement.RIGHT) {
+		} else if (h == HorizontalAlignment.RIGHT) {
 			return dimTotal.getWidth() - dimText.getWidth();
 		} else {
 			throw new IllegalStateException();
@@ -125,14 +129,6 @@ public class DecorateEntityImage implements IEntityImage {
 		return Dimension2DDouble.mergeTB(dimOriginal, dimText);
 	}
 
-	public ShapeType getShapeType() {
-		return ShapeType.RECTANGLE;
-	}
-
-	public int getShield() {
-		return 0;
-	}
-
 	public final double getDeltaX() {
 		if (original instanceof DecorateEntityImage) {
 			return deltaX + ((DecorateEntityImage) original).deltaX;
@@ -145,10 +141,6 @@ public class DecorateEntityImage implements IEntityImage {
 			return deltaY + ((DecorateEntityImage) original).deltaY;
 		}
 		return deltaY;
-	}
-
-	public boolean isHidden() {
-		return original.isHidden();
 	}
 
 	final public List<Url> getUrls() {

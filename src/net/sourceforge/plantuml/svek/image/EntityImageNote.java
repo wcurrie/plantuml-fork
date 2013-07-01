@@ -51,7 +51,7 @@ import net.sourceforge.plantuml.cucadiagram.ILeaf;
 import net.sourceforge.plantuml.cucadiagram.Stereotype;
 import net.sourceforge.plantuml.graph2.GeomUtils;
 import net.sourceforge.plantuml.graphic.FontConfiguration;
-import net.sourceforge.plantuml.graphic.HorizontalAlignement;
+import net.sourceforge.plantuml.graphic.HorizontalAlignment;
 import net.sourceforge.plantuml.graphic.HtmlColor;
 import net.sourceforge.plantuml.graphic.StringBounder;
 import net.sourceforge.plantuml.graphic.TextBlock;
@@ -107,7 +107,7 @@ public class EntityImageNote extends AbstractEntityImage {
 			textBlock = new TextBlockEmpty();
 		} else {
 			textBlock = TextBlockUtils.create(strings, new FontConfiguration(fontNote, fontColor),
-					HorizontalAlignement.LEFT, skinParam);
+					HorizontalAlignment.LEFT, skinParam);
 		}
 		// for (Url u : textBlock.getUrls()) {
 		// entity.addUrl(u);

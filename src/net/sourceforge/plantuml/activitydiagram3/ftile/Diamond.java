@@ -39,7 +39,7 @@ public class Diamond {
 
 	final static public double diamondHalfSize = 12;
 
-	public static UPolygon asPolygon() {
+	public static UPolygon asPolygon(boolean shadowing) {
 		final UPolygon diams = new UPolygon();
 
 		diams.addPoint(diamondHalfSize, 0);
@@ -48,7 +48,7 @@ public class Diamond {
 		diams.addPoint(0, diamondHalfSize);
 		diams.addPoint(diamondHalfSize, 0);
 
-		if (Ftile.SHADOWING) {
+		if (shadowing) {
 			diams.setDeltaShadow(3);
 		}
 

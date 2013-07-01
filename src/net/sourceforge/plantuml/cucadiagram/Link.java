@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 10534 $
+ * Revision $Revision: 11153 $
  *
  */
 package net.sourceforge.plantuml.cucadiagram;
@@ -42,7 +42,7 @@ import net.sourceforge.plantuml.UniqueSequence;
 import net.sourceforge.plantuml.Url;
 import net.sourceforge.plantuml.command.Position;
 import net.sourceforge.plantuml.graphic.FontConfiguration;
-import net.sourceforge.plantuml.graphic.HorizontalAlignement;
+import net.sourceforge.plantuml.graphic.HorizontalAlignment;
 import net.sourceforge.plantuml.graphic.HtmlColor;
 import net.sourceforge.plantuml.graphic.HtmlColorUtils;
 import net.sourceforge.plantuml.graphic.StringBounder;
@@ -315,7 +315,7 @@ public class Link implements Hideable, Removeable {
 			SpriteContainer spriteContainer) {
 		if (qualif != null) {
 			final TextBlock b = TextBlockUtils.create(Display.asList(qualif), new FontConfiguration(fontQualif,
-					HtmlColorUtils.BLACK), HorizontalAlignement.LEFT, spriteContainer);
+					HtmlColorUtils.BLACK), HorizontalAlignment.LEFT, spriteContainer);
 			final Dimension2D dim = b.calculateDimension(stringBounder);
 			return Math.max(dim.getWidth(), dim.getHeight());
 		}

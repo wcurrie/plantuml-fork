@@ -45,7 +45,7 @@ import net.sourceforge.plantuml.Url;
 import net.sourceforge.plantuml.cucadiagram.ILeaf;
 import net.sourceforge.plantuml.cucadiagram.Stereotype;
 import net.sourceforge.plantuml.graphic.FontConfiguration;
-import net.sourceforge.plantuml.graphic.HorizontalAlignement;
+import net.sourceforge.plantuml.graphic.HorizontalAlignment;
 import net.sourceforge.plantuml.graphic.StringBounder;
 import net.sourceforge.plantuml.graphic.TextBlock;
 import net.sourceforge.plantuml.graphic.TextBlockUtils;
@@ -70,7 +70,7 @@ public class EntityImageLollipopInterface extends AbstractEntityImage {
 		this.desc = TextBlockUtils.create(entity.getDisplay(),
 				new FontConfiguration(SkinParamUtils.getFont(getSkinParam(), FontParam.CLASS, stereotype),
 						SkinParamUtils.getFontColor(getSkinParam(), FontParam.CLASS, stereotype)),
-				HorizontalAlignement.CENTER, skinParam);
+				HorizontalAlignment.CENTER, skinParam);
 		this.url = entity.getUrls();
 
 	}

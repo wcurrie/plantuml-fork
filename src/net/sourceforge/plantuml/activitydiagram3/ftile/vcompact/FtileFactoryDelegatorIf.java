@@ -63,7 +63,7 @@ public class FtileFactoryDelegatorIf extends FtileFactoryDelegator {
 		final HtmlColor endThenInlinkColor = endThenInlinkRendering == null ? null : endThenInlinkRendering.getColor();
 		final HtmlColor endElseInlinkColor = endElseInlinkRendering == null ? null : endElseInlinkRendering.getColor();
 
-		final Ftile result = FtileIf2.create(tile1, tile2, borderColor, backColor, labelTest, label1, label2, font,
+		final Ftile result = FtileIf.create(tile1, tile2, borderColor, backColor, labelTest, label1, label2, font,
 				arrowColor, endThenInlinkColor, endElseInlinkColor);
 		return result;
 	}

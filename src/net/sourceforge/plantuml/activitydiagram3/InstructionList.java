@@ -60,7 +60,7 @@ public class InstructionList implements Instruction {
 
 	public Ftile createFtile(FtileFactory factory) {
 		if (all.size() == 0) {
-			return new FtileEmpty();
+			return new FtileEmpty(factory.shadowing());
 		}
 		Ftile result = null;
 		for (Instruction ins : all) {

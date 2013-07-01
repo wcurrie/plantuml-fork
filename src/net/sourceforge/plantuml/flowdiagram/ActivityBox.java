@@ -43,7 +43,7 @@ import net.sourceforge.plantuml.Url;
 import net.sourceforge.plantuml.cucadiagram.Display;
 import net.sourceforge.plantuml.golem.Tile;
 import net.sourceforge.plantuml.graphic.FontConfiguration;
-import net.sourceforge.plantuml.graphic.HorizontalAlignement;
+import net.sourceforge.plantuml.graphic.HorizontalAlignment;
 import net.sourceforge.plantuml.graphic.HtmlColorUtils;
 import net.sourceforge.plantuml.graphic.StringBounder;
 import net.sourceforge.plantuml.graphic.TextBlock;
@@ -73,7 +73,7 @@ public class ActivityBox implements TextBlock {
 		this.label = label;
 		final UFont font = new UFont("Serif", Font.PLAIN, 14);
 		final FontConfiguration fc = new FontConfiguration(font, HtmlColorUtils.BLACK);
-		tb = TextBlockUtils.create(Display.asList(label), fc, HorizontalAlignement.LEFT, new SpriteContainerEmpty());
+		tb = TextBlockUtils.create(Display.asList(label), fc, HorizontalAlignment.LEFT, new SpriteContainerEmpty());
 	}
 
 	public Tile getTile() {

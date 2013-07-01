@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 10017 $
+ * Revision $Revision: 11151 $
  *
  */
 package net.sourceforge.plantuml.sequencediagram.graphic;
@@ -41,7 +41,7 @@ import net.sourceforge.plantuml.CMapData;
 
 public interface FileMaker {
 
-	Dimension2D createOne2(OutputStream os, int index) throws IOException;
+	Dimension2D createOne(OutputStream os, int index) throws IOException;
 
 	public int getNbPages();
 

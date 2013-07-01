@@ -28,11 +28,17 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 9786 $
+ * Revision $Revision: 5079 $
  *
  */
-package net.sourceforge.plantuml.graphic;
+package net.sourceforge.plantuml.hector;
 
-public enum VerticallAlignement {
-	TOP, CENTER;
+public class PinFactory {
+
+	private int uid = 0;
+
+	public Pin create(int row, Object userData) {
+		return new Pin(uid++, row, userData);
+	}
+
 }

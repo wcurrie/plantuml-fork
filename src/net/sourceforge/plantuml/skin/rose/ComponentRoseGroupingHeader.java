@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 10930 $
+ * Revision $Revision: 11153 $
  *
  */
 package net.sourceforge.plantuml.skin.rose;
@@ -38,7 +38,7 @@ import java.awt.geom.Dimension2D;
 import net.sourceforge.plantuml.SpriteContainer;
 import net.sourceforge.plantuml.cucadiagram.Display;
 import net.sourceforge.plantuml.graphic.FontConfiguration;
-import net.sourceforge.plantuml.graphic.HorizontalAlignement;
+import net.sourceforge.plantuml.graphic.HorizontalAlignment;
 import net.sourceforge.plantuml.graphic.HtmlColor;
 import net.sourceforge.plantuml.graphic.StringBounder;
 import net.sourceforge.plantuml.graphic.TextBlock;
@@ -70,7 +70,7 @@ public class ComponentRoseGroupingHeader extends AbstractTextualComponent {
 	public ComponentRoseGroupingHeader(HtmlColor fontColor, HtmlColor background, HtmlColor groupBackground,
 			HtmlColor groupBorder, UFont bigFont, UFont smallFont, Display strings, SpriteContainer spriteContainer,
 			double deltaShadow, UStroke stroke) {
-		super(strings.get(0), fontColor, bigFont, HorizontalAlignement.LEFT, 15, 30, 1, spriteContainer, 0);
+		super(strings.get(0), fontColor, bigFont, HorizontalAlignment.LEFT, 15, 30, 1, spriteContainer, 0);
 		this.groupBackground = groupBackground;
 		this.groupBorder = groupBorder;
 		this.background = background;
@@ -80,7 +80,7 @@ public class ComponentRoseGroupingHeader extends AbstractTextualComponent {
 			this.commentTextBlock = null;
 		} else {
 			this.commentTextBlock = TextBlockUtils.create(Display.asList("[" + strings.get(1) + "]"),
-					new FontConfiguration(smallFont, fontColor), HorizontalAlignement.LEFT, spriteContainer);
+					new FontConfiguration(smallFont, fontColor), HorizontalAlignment.LEFT, spriteContainer);
 		}
 		if (this.background == null) {
 			throw new IllegalArgumentException();

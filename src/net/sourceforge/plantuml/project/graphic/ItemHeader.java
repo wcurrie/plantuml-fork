@@ -39,7 +39,7 @@ import java.awt.geom.Dimension2D;
 import net.sourceforge.plantuml.SpriteContainerEmpty;
 import net.sourceforge.plantuml.cucadiagram.Display;
 import net.sourceforge.plantuml.graphic.FontConfiguration;
-import net.sourceforge.plantuml.graphic.HorizontalAlignement;
+import net.sourceforge.plantuml.graphic.HorizontalAlignment;
 import net.sourceforge.plantuml.graphic.HtmlColorUtils;
 import net.sourceforge.plantuml.graphic.StringBounder;
 import net.sourceforge.plantuml.graphic.TextBlock;
@@ -72,7 +72,7 @@ class ItemHeader {
 
 		for (Item it : project.getValidItems()) {
 			final TextBlock b = TextBlockUtils.create(Display.asList("" + it.getCode()), fontConfig,
-					HorizontalAlignement.LEFT, new SpriteContainerEmpty());
+					HorizontalAlignment.LEFT, new SpriteContainerEmpty());
 			final Dimension2D dim = b.calculateDimension(stringBounder);
 			b.drawU(ug.apply(new UTranslate(x, y)));
 			y += dim.getHeight();

@@ -47,7 +47,7 @@ import net.sourceforge.plantuml.cucadiagram.PortionShower;
 import net.sourceforge.plantuml.cucadiagram.Stereotype;
 import net.sourceforge.plantuml.graphic.CircledCharacter;
 import net.sourceforge.plantuml.graphic.FontConfiguration;
-import net.sourceforge.plantuml.graphic.HorizontalAlignement;
+import net.sourceforge.plantuml.graphic.HorizontalAlignment;
 import net.sourceforge.plantuml.graphic.HtmlColor;
 import net.sourceforge.plantuml.graphic.StringBounder;
 import net.sourceforge.plantuml.graphic.TextBlock;
@@ -78,7 +78,7 @@ public class EntityImageClassHeader2 extends AbstractEntityImage {
 			fontConfigurationName = fontConfigurationName.italic();
 		}
 		final TextBlock name = TextBlockUtils.withMargin(TextBlockUtils.create(entity.getDisplay(),
-				fontConfigurationName, HorizontalAlignement.CENTER, skinParam), 3, 3, 0, 0);
+				fontConfigurationName, HorizontalAlignment.CENTER, skinParam), 3, 3, 0, 0);
 
 		final TextBlock stereo;
 		if (stereotype == null || stereotype.getLabel() == null
@@ -90,7 +90,7 @@ public class EntityImageClassHeader2 extends AbstractEntityImage {
 					new FontConfiguration(SkinParamUtils
 							.getFont(getSkinParam(), FontParam.CLASS_STEREOTYPE, stereotype), SkinParamUtils
 							.getFontColor(getSkinParam(), FontParam.CLASS_STEREOTYPE, stereotype)),
-					HorizontalAlignement.CENTER, skinParam), 1, 0);
+					HorizontalAlignment.CENTER, skinParam), 1, 0);
 		}
 
 		TextBlock genericBlock;
@@ -102,7 +102,7 @@ public class EntityImageClassHeader2 extends AbstractEntityImage {
 					new FontConfiguration(SkinParamUtils
 							.getFont(getSkinParam(), FontParam.CLASS_STEREOTYPE, stereotype), SkinParamUtils
 							.getFontColor(getSkinParam(), FontParam.CLASS_STEREOTYPE, stereotype)),
-					HorizontalAlignement.CENTER, skinParam);
+					HorizontalAlignment.CENTER, skinParam);
 			genericBlock = TextBlockUtils.withMargin(genericBlock, 1, 1);
 			final HtmlColor classBackground = SkinParamUtils
 					.getColor(getSkinParam(), ColorParam.background, stereotype);

@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 9786 $
+ * Revision $Revision: 11127 $
  *
  */
 package net.sourceforge.plantuml.ugraphic.g2d;
@@ -113,11 +113,13 @@ public class DriverPolygonG2d extends DriverShadowedG2d implements UDriver<Graph
 			g2d.fill(path);
 		} else if (back!=null) {
 			g2d.setColor(mapper.getMappedColor(back));
+			DriverRectangleG2d.managePattern(param, g2d);
 			g2d.fill(path);
 		}
 
 		if (param.getColor() != null) {
 			g2d.setColor(mapper.getMappedColor(param.getColor()));
+			DriverLineG2d.manageStroke(param, g2d);
 			g2d.draw(path);
 		}
 	}

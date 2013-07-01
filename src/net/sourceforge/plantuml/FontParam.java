@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  *
- * Revision $Revision: 9953 $
+ * Revision $Revision: 11071 $
  *
  */
 package net.sourceforge.plantuml;
@@ -68,6 +68,7 @@ public enum FontParam {
 	STATE(14, Font.PLAIN, "black", null), //
 	STATE_ARROW(13, Font.PLAIN, "black", null), //
 	STATE_ATTRIBUTE(12, Font.PLAIN, "black", null), //
+	LEGEND(14, Font.PLAIN, "black", null), //
 	TITLE(18, Font.PLAIN, "black", null), //
 	FOOTER(10, Font.PLAIN, "#888888", null), //
 	HEADER(10, Font.PLAIN, "#888888", null), //

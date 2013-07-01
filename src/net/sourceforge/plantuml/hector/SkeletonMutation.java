@@ -28,26 +28,13 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 9786 $
+ * Revision $Revision: 5079 $
  *
  */
-package net.sourceforge.plantuml.graphic;
+package net.sourceforge.plantuml.hector;
 
-public enum HorizontalAlignement {
+interface SkeletonMutation {
 
-	LEFT, CENTER, RIGHT;
-	
-	public static HorizontalAlignement fromString(String s) {
-		if (LEFT.name().equalsIgnoreCase(s)) {
-			return LEFT;
-		}
-		if (CENTER.name().equalsIgnoreCase(s)) {
-			return CENTER;
-		}
-		if (RIGHT.name().equalsIgnoreCase(s)) {
-			return RIGHT;
-		}
-		return null;
-	}
+	public SkeletonConfiguration mutate();
 
 }

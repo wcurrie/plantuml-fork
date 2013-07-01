@@ -98,6 +98,11 @@ public class FtileDecorateIn implements Ftile {
 	public Swimlane getSwimlaneOut() {
 		return ftile.getSwimlaneOut();
 	}
+	
+	public boolean shadowing() {
+		return ftile.shadowing();
+	}
+
 
 
 

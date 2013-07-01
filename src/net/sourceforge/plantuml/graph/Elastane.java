@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 9786 $
+ * Revision $Revision: 11153 $
  *
  */
 package net.sourceforge.plantuml.graph;
@@ -59,7 +59,7 @@ import net.sourceforge.plantuml.geom.Point2DInt;
 import net.sourceforge.plantuml.geom.PolylineBreakeable;
 import net.sourceforge.plantuml.geom.XMoveable;
 import net.sourceforge.plantuml.graphic.FontConfiguration;
-import net.sourceforge.plantuml.graphic.HorizontalAlignement;
+import net.sourceforge.plantuml.graphic.HorizontalAlignment;
 import net.sourceforge.plantuml.graphic.HtmlColorUtils;
 import net.sourceforge.plantuml.graphic.StringBounderUtils;
 import net.sourceforge.plantuml.graphic.TextBlock;
@@ -271,7 +271,7 @@ public class Elastane {
 				// polyline.getFirst().getCenter();
 				final TextBlock textBlock = TextBlockUtils.create(Display.asList(label),
 						new FontConfiguration(UFont.getCurrentFont(g2d), HtmlColorUtils.BLACK),
-						HorizontalAlignement.LEFT, new SpriteContainerEmpty());
+						HorizontalAlignment.LEFT, new SpriteContainerEmpty());
 				textBlock.calculateDimension(StringBounderUtils.asStringBounder(g2d));
 				// textBlock.drawTOBEREMOVED(new ColorMapperIdentity(), g2d, center.getXint() - dim.getWidth() / 2,
 				// center.getYint() - dim.getHeight() / 2);

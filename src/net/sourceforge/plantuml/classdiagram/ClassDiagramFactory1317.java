@@ -133,6 +133,18 @@ public class ClassDiagramFactory1317 extends UmlDiagramFactory1317 {
 	@Override
 	public String checkFinalError(AbstractPSystem sys) {
 		final ClassDiagram system = (ClassDiagram) sys;
+
+		for (Link link : system.getLinks()) {
+			final int len = link.getLength();
+			if (len == 1) {
+				for (Link link2 : system.getLinks()) {
+					if (link2.sameConnections(link) && link2.getLength() != 1) {
+						link2.setLength(1);
+					}
+				}
+			}
+		}
+
 		for (IGroup g : system.getGroups(true)) {
 			final List<ILeaf> standalones = new ArrayList<ILeaf>();
 			for (ILeaf ent : g.getLeafsDirect()) {

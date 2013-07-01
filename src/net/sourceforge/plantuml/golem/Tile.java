@@ -45,7 +45,7 @@ import net.sourceforge.plantuml.SpriteContainerEmpty;
 import net.sourceforge.plantuml.Url;
 import net.sourceforge.plantuml.cucadiagram.Display;
 import net.sourceforge.plantuml.graphic.FontConfiguration;
-import net.sourceforge.plantuml.graphic.HorizontalAlignement;
+import net.sourceforge.plantuml.graphic.HorizontalAlignment;
 import net.sourceforge.plantuml.graphic.HtmlColorUtils;
 import net.sourceforge.plantuml.graphic.StringBounder;
 import net.sourceforge.plantuml.graphic.TextBlock;
@@ -81,7 +81,7 @@ public class Tile implements TextBlock {
 
 	public void drawU(UGraphic ug) {
 		ug = ug.apply(new UChangeColor(HtmlColorUtils.BLACK));
-		final TextBlock n = TextBlockUtils.create(Display.asList("" + num), fc, HorizontalAlignement.LEFT,
+		final TextBlock n = TextBlockUtils.create(Display.asList("" + num), fc, HorizontalAlignment.LEFT,
 				new SpriteContainerEmpty());
 		final Dimension2D dimNum = n.calculateDimension(ug.getStringBounder());
 		final Dimension2D dimTotal = calculateDimension(ug.getStringBounder());

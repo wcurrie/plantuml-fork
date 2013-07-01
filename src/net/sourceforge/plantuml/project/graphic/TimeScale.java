@@ -42,7 +42,7 @@ import java.util.TreeMap;
 import net.sourceforge.plantuml.SpriteContainerEmpty;
 import net.sourceforge.plantuml.cucadiagram.Display;
 import net.sourceforge.plantuml.graphic.FontConfiguration;
-import net.sourceforge.plantuml.graphic.HorizontalAlignement;
+import net.sourceforge.plantuml.graphic.HorizontalAlignment;
 import net.sourceforge.plantuml.graphic.HtmlColorUtils;
 import net.sourceforge.plantuml.graphic.StringBounder;
 import net.sourceforge.plantuml.graphic.TextBlock;
@@ -88,7 +88,7 @@ class TimeScale {
 				ug.apply(new UTranslate(curx, y)).draw(new ULine(0, monthHeight));
 				printed = d.getMonth();
 				final TextBlock b = TextBlockUtils.create(Display.asList(printed.name()), fontConfig,
-						HorizontalAlignement.LEFT, new SpriteContainerEmpty());
+						HorizontalAlignment.LEFT, new SpriteContainerEmpty());
 				final Dimension2D dim = b.calculateDimension(stringBounder);
 				b.drawU(ug.apply(new UTranslate(curx, (y + (monthHeight - dim.getHeight()) / 2))));
 			}
@@ -102,7 +102,7 @@ class TimeScale {
 		for (Instant cur = project.getStart(); cur.compareTo(end) <= 0; cur = cur.next(project.getDayClose())) {
 			final Day d = cur.getDay();
 			final TextBlock b = TextBlockUtils.create(Display.asList("" + d.getNumDay()), fontConfig,
-					HorizontalAlignement.LEFT, new SpriteContainerEmpty());
+					HorizontalAlignment.LEFT, new SpriteContainerEmpty());
 			final Dimension2D dim = b.calculateDimension(stringBounder);
 			b.drawU(ug.apply(new UTranslate((curx + (caseWidth - dim.getWidth()) / 2), (y + (caseHeight - dim.getHeight()) / 2))));
 			curx += caseWidth;

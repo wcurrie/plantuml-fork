@@ -69,6 +69,10 @@ public class FtileFactoryDelegatorCreateFork extends FtileFactoryDelegator {
 		super(factory, skinParam);
 	}
 
+	private Ftile createForkDefault(List<Ftile> all) {
+		return new FtileForkInner(all);
+	}
+
 	@Override
 	public Ftile createFork(List<Ftile> all) {
 		final HtmlColor colorBar = rose.getHtmlColor(getSkinParam(), ColorParam.activityBar);
@@ -95,8 +99,8 @@ public class FtileFactoryDelegatorCreateFork extends FtileFactoryDelegator {
 		}
 
 		inner = FtileUtils.addConnection(inner, conns);
-		final Ftile black = new FtileBlackBlock(inner.asTextBlock().calculateDimension(getStringBounder()).getWidth(),
-				barHeight, colorBar, FtileForkInner2.mergeSwimlanes(list), list.get(0).getSwimlaneIn());
+		final Ftile black = new FtileBlackBlock(shadowing(), inner.asTextBlock().calculateDimension(getStringBounder())
+				.getWidth(), barHeight, colorBar, list.get(0).getSwimlaneIn());
 		return new FtileAssemblySimple(new FtileAssemblySimple(black, inner), black);
 	}
 

@@ -34,18 +34,14 @@
 package net.sourceforge.plantuml.svek;
 
 import net.sourceforge.plantuml.Hideable;
-import net.sourceforge.plantuml.graphic.HtmlColor;
-import net.sourceforge.plantuml.graphic.TextBlock;
 
-public interface IEntityImage extends Hideable, TextBlock {
+public interface IEntityImage extends Hideable, TextBlockBackcolored {
 
 	public static final int CORNER = 25;
 	public static final int MARGIN = 5;
 	public static final int MARGIN_LINE = 5;
 
 	ShapeType getShapeType();
-
-	HtmlColor getBackcolor();
 
 	int getShield();
 

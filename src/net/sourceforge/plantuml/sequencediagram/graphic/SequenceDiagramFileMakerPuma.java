@@ -159,7 +159,7 @@ public class SequenceDiagramFileMakerPuma implements FileMaker {
 				newpageHeight, title);
 	}
 
-	public Dimension2D createOne2(OutputStream os, int index) throws IOException {
+	public Dimension2D createOne(OutputStream os, int index) throws IOException {
 		final UGraphic createImage = createImage((int) fullDimension.getWidth(), pages.get(index), index);
 		createImage.writeImage(os, diagram.getMetadata(), diagram.getDpi(fileFormatOption));
 		return new Dimension2DDouble(fullDimension.getWidth(), fullDimension.getHeight());
@@ -308,7 +308,7 @@ public class SequenceDiagramFileMakerPuma implements FileMaker {
 		final String fontFamily = diagram.getSkinParam().getFont(FontParam.FOOTER, null).getFamily(null);
 		final int fontSize = diagram.getSkinParam().getFont(FontParam.FOOTER, null).getSize();
 		final PngTitler pngTitler = new PngTitler(titleColor, diagram.getFooter(), fontSize, fontFamily,
-				diagram.getFooterAlignement());
+				diagram.getFooterAlignment());
 		final Dimension2D dim = pngTitler.getTextDimension(dummyStringBounder);
 		if (dim != null) {
 			area.setFooterArea(dim.getWidth(), dim.getHeight(), 3);
@@ -320,7 +320,7 @@ public class SequenceDiagramFileMakerPuma implements FileMaker {
 		final String fontFamily = diagram.getSkinParam().getFont(FontParam.HEADER, null).getFamily(null);
 		final int fontSize = diagram.getSkinParam().getFont(FontParam.HEADER, null).getSize();
 		final PngTitler pngTitler = new PngTitler(titleColor, diagram.getHeader(), fontSize, fontFamily,
-				diagram.getHeaderAlignement());
+				diagram.getHeaderAlignment());
 		final Dimension2D dim = pngTitler.getTextDimension(dummyStringBounder);
 		if (dim != null) {
 			area.setHeaderArea(dim.getWidth(), dim.getHeight(), 3);
@@ -332,12 +332,12 @@ public class SequenceDiagramFileMakerPuma implements FileMaker {
 		final String fontFamily = diagram.getSkinParam().getFont(FontParam.FOOTER, null).getFamily(null);
 		final int fontSize = diagram.getSkinParam().getFont(FontParam.FOOTER, null).getSize();
 		final PngTitler pngTitler = new PngTitler(titleColor, diagram.getFooter(), fontSize, fontFamily,
-				diagram.getFooterAlignement());
+				diagram.getFooterAlignment());
 		final TextBlock text = pngTitler.getTextBlock();
 		if (text == null) {
 			return;
 		}
-		text.drawU(ug.apply(new UTranslate(area.getFooterX(diagram.getFooterAlignement()), area.getFooterY())));
+		text.drawU(ug.apply(new UTranslate(area.getFooterX(diagram.getFooterAlignment()), area.getFooterY())));
 	}
 
 	private void addHeader3(SequenceDiagramArea area, UGraphic ug) {
@@ -345,12 +345,12 @@ public class SequenceDiagramFileMakerPuma implements FileMaker {
 		final String fontFamily = diagram.getSkinParam().getFont(FontParam.HEADER, null).getFamily(null);
 		final int fontSize = diagram.getSkinParam().getFont(FontParam.HEADER, null).getSize();
 		final PngTitler pngTitler = new PngTitler(titleColor, diagram.getHeader(), fontSize, fontFamily,
-				diagram.getHeaderAlignement());
+				diagram.getHeaderAlignment());
 		final TextBlock text = pngTitler.getTextBlock();
 		if (text == null) {
 			return;
 		}
-		text.drawU(ug.apply(new UTranslate(area.getHeaderX(diagram.getHeaderAlignement()), area.getHeaderY())));
+		text.drawU(ug.apply(new UTranslate(area.getHeaderX(diagram.getHeaderAlignment()), area.getHeaderY())));
 	}
 
 	public static StringBounder getDummystringbounder() {

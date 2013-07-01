@@ -207,6 +207,7 @@ public abstract class UmlDiagramFactory1317 extends PSystemAbstractFactory1317 {
 		cmds.add(new CommandPragma());
 		cmds.add(new CommandTitle());
 		cmds.add(new CommandMultilinesTitle());
+		cmds.add(new CommandMultilinesLegend());
 
 		cmds.add(new CommandFooter());
 		cmds.add(new CommandMultilinesFooter());

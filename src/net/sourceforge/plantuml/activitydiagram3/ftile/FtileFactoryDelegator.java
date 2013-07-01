@@ -34,7 +34,6 @@
 package net.sourceforge.plantuml.activitydiagram3.ftile;
 
 import java.util.List;
-import java.util.Set;
 
 import net.sourceforge.plantuml.ColorParam;
 import net.sourceforge.plantuml.ISkinParam;
@@ -129,6 +128,14 @@ public class FtileFactoryDelegator implements FtileFactory {
 
 	protected final Rose getRose() {
 		return rose;
+	}
+
+	public boolean shadowing() {
+		return skinParam.shadowing();
+	}
+
+	protected FtileFactory getFactory() {
+		return factory;
 	}
 
 }

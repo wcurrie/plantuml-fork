@@ -37,7 +37,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import net.sourceforge.plantuml.graphic.HorizontalAlignement;
+import net.sourceforge.plantuml.graphic.HorizontalAlignment;
 import net.sourceforge.plantuml.graphic.TextBlock;
 import net.sourceforge.plantuml.graphic.TextBlockUtils;
 
@@ -138,7 +138,7 @@ public class Project2 implements TaskContainer {
 	public TextBlock getTimeHeader(double dayWith) {
 		final TimeHeaderDay day = new TimeHeaderDay(getStart(), getEnd(), timeline, dayWith);
 		final TimeHeaderMonth month = new TimeHeaderMonth(getStart(), getEnd(), timeline, dayWith);
-		return TextBlockUtils.mergeTB(month, day, HorizontalAlignement.CENTER);
+		return TextBlockUtils.mergeTB(month, day, HorizontalAlignment.CENTER);
 	}
 
 	private Day getStart() {

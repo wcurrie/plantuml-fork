@@ -42,6 +42,16 @@ import net.sourceforge.plantuml.ugraphic.UTranslate;
 
 public abstract class AbstractFtile implements Ftile {
 
+	private final boolean shadowing;
+
+	public AbstractFtile(boolean shadowing) {
+		this.shadowing = shadowing;
+	}
+
+	final public boolean shadowing() {
+		return shadowing;
+	}
+
 	public LinkRendering getInLinkRendering() {
 		return null;
 	}

@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 10930 $
+ * Revision $Revision: 11154 $
  *
  */
 package net.sourceforge.plantuml.graphic;
@@ -48,14 +48,14 @@ import net.sourceforge.plantuml.ugraphic.UTranslate;
 class SingleLine implements Line {
 
 	private final List<TextBlock> blocs = new ArrayList<TextBlock>();
-	private final HorizontalAlignement horizontalAlignement;
+	private final HorizontalAlignment horizontalAlignment;
 
-	public SingleLine(String text, FontConfiguration fontConfiguration, HorizontalAlignement horizontalAlignement,
+	public SingleLine(String text, FontConfiguration fontConfiguration, HorizontalAlignment horizontalAlignment,
 			SpriteContainer spriteContainer) {
 		if (text.length() == 0) {
 			text = " ";
 		}
-		this.horizontalAlignement = horizontalAlignement;
+		this.horizontalAlignment = horizontalAlignment;
 		final Splitter lineSplitter = new Splitter(text);
 
 		for (HtmlCommand cmd : lineSplitter.getHtmlCommands(false)) {
@@ -135,8 +135,8 @@ class SingleLine implements Line {
 		}
 	}
 
-	public HorizontalAlignement getHorizontalAlignement() {
-		return horizontalAlignement;
+	public HorizontalAlignment getHorizontalAlignment() {
+		return horizontalAlignment;
 	}
 
 	public List<Url> getUrls() {

@@ -36,10 +36,9 @@ package net.sourceforge.plantuml.skin.rose;
 import java.awt.geom.Dimension2D;
 import java.awt.geom.Point2D;
 
-import net.sourceforge.plantuml.OptionFlags;
 import net.sourceforge.plantuml.SpriteContainer;
 import net.sourceforge.plantuml.cucadiagram.Display;
-import net.sourceforge.plantuml.graphic.HorizontalAlignement;
+import net.sourceforge.plantuml.graphic.HorizontalAlignment;
 import net.sourceforge.plantuml.graphic.HtmlColor;
 import net.sourceforge.plantuml.graphic.StringBounder;
 import net.sourceforge.plantuml.skin.Area;
@@ -61,14 +60,17 @@ import net.sourceforge.plantuml.ugraphic.UTranslate;
 
 public class ComponentRoseArrow2 extends AbstractComponentRoseArrow {
 
-	private final HorizontalAlignement messagePosition;
+	private final HorizontalAlignment messagePosition;
+	private final boolean niceArrow;
 
 	public ComponentRoseArrow2(HtmlColor foregroundColor, HtmlColor fontColor, UFont font, Display stringsToDisplay,
-			ArrowConfiguration arrowConfiguration, HorizontalAlignement messagePosition,
-			SpriteContainer spriteContainer, HorizontalAlignement textHorizontalAlignement, double maxMessageSize) {
+			ArrowConfiguration arrowConfiguration, HorizontalAlignment messagePosition,
+			SpriteContainer spriteContainer, HorizontalAlignment textHorizontalAlignment, double maxMessageSize,
+			boolean niceArrow) {
 		super(foregroundColor, fontColor, font, stringsToDisplay, arrowConfiguration, spriteContainer,
-				textHorizontalAlignement, maxMessageSize);
+				textHorizontalAlignment, maxMessageSize);
 		this.messagePosition = messagePosition;
+		this.niceArrow = niceArrow;
 	}
 
 	private final double spaceCrossX = 6;
@@ -136,10 +138,10 @@ public class ComponentRoseArrow2 extends AbstractComponentRoseArrow {
 
 		final ArrowDirection direction2 = getDirection2();
 		final double textPos;
-		if (messagePosition == HorizontalAlignement.CENTER) {
+		if (messagePosition == HorizontalAlignment.CENTER) {
 			final double textWidth = getTextBlock().calculateDimension(stringBounder).getWidth();
 			textPos = (dimensionToUse.getWidth() - textWidth) / 2;
-		} else if (messagePosition == HorizontalAlignement.RIGHT) {
+		} else if (messagePosition == HorizontalAlignment.RIGHT) {
 			final double textWidth = getTextBlock().calculateDimension(stringBounder).getWidth();
 			textPos = dimensionToUse.getWidth() - textWidth - getMarginX2()
 					- (direction2 == ArrowDirection.LEFT_TO_RIGHT_NORMAL ? getArrowDeltaX() : 0);
@@ -158,7 +160,8 @@ public class ComponentRoseArrow2 extends AbstractComponentRoseArrow {
 		if (dressing.getDecoration() == ArrowDecoration.CIRCLE) {
 			ug = ug.apply(new UStroke(thinCircle)).apply(new UChangeColor(getForegroundColor()));
 			final UEllipse circle = new UEllipse(diamCircle, diamCircle);
-			ug.apply(new UTranslate(x - diamCircle / 2 - thinCircle, textHeight - diamCircle / 2 - thinCircle / 2)).draw(circle);
+			ug.apply(new UTranslate(x - diamCircle / 2 - thinCircle, textHeight - diamCircle / 2 - thinCircle / 2))
+					.draw(circle);
 			ug = ug.apply(new UStroke());
 			x += diamCircle / 2 + thinCircle;
 		}
@@ -172,8 +175,10 @@ public class ComponentRoseArrow2 extends AbstractComponentRoseArrow {
 			}
 		} else if (dressing.getHead() == ArrowHead.CROSSX) {
 			ug = ug.apply(new UStroke(2));
-			ug.apply(new UTranslate(spaceCrossX, textHeight - getArrowDeltaX() / 2)).draw(new ULine(getArrowDeltaX(), getArrowDeltaX()));
-			ug.apply(new UTranslate(spaceCrossX, textHeight + getArrowDeltaX() / 2)).draw(new ULine(getArrowDeltaX(), -getArrowDeltaX()));
+			ug.apply(new UTranslate(spaceCrossX, textHeight - getArrowDeltaX() / 2)).draw(
+					new ULine(getArrowDeltaX(), getArrowDeltaX()));
+			ug.apply(new UTranslate(spaceCrossX, textHeight + getArrowDeltaX() / 2)).draw(
+					new ULine(getArrowDeltaX(), -getArrowDeltaX()));
 		} else if (dressing.getHead() == ArrowHead.NORMAL) {
 			final UPolygon polygon = getPolygonReverse(dressing.getPart(), textHeight);
 			ug.apply(new UChangeBackColor(getForegroundColor())).apply(new UTranslate(x, 0)).draw(polygon);
@@ -188,7 +193,8 @@ public class ComponentRoseArrow2 extends AbstractComponentRoseArrow {
 		if (dressing.getDecoration() == ArrowDecoration.CIRCLE) {
 			ug = ug.apply(new UStroke(thinCircle)).apply(new UChangeColor(getForegroundColor()));
 			final UEllipse circle = new UEllipse(diamCircle, diamCircle);
-			ug.apply(new UTranslate(x - diamCircle / 2 + thinCircle, textHeight - diamCircle / 2 - thinCircle / 2)).draw(circle);
+			ug.apply(new UTranslate(x - diamCircle / 2 + thinCircle, textHeight - diamCircle / 2 - thinCircle / 2))
+					.draw(circle);
 			ug = ug.apply(new UStroke());
 			x -= diamCircle / 2 + thinCircle;
 		}
@@ -202,10 +208,10 @@ public class ComponentRoseArrow2 extends AbstractComponentRoseArrow {
 			}
 		} else if (dressing.getHead() == ArrowHead.CROSSX) {
 			ug = ug.apply(new UStroke(2));
-			ug.apply(new UTranslate(x - spaceCrossX - getArrowDeltaX(), textHeight - getArrowDeltaX() / 2)).draw(new ULine(
-			getArrowDeltaX(), getArrowDeltaX()));
-			ug.apply(new UTranslate(x - spaceCrossX - getArrowDeltaX(), textHeight + getArrowDeltaX() / 2)).draw(new ULine(
-			getArrowDeltaX(), -getArrowDeltaX()));
+			ug.apply(new UTranslate(x - spaceCrossX - getArrowDeltaX(), textHeight - getArrowDeltaX() / 2)).draw(
+					new ULine(getArrowDeltaX(), getArrowDeltaX()));
+			ug.apply(new UTranslate(x - spaceCrossX - getArrowDeltaX(), textHeight + getArrowDeltaX() / 2)).draw(
+					new ULine(getArrowDeltaX(), -getArrowDeltaX()));
 			ug = ug.apply(new UStroke());
 		} else if (dressing.getHead() == ArrowHead.NORMAL) {
 			final UPolygon polygon = getPolygonNormal(dressing.getPart(), textHeight, x);
@@ -228,7 +234,7 @@ public class ComponentRoseArrow2 extends AbstractComponentRoseArrow {
 			polygon.addPoint(x2 - getArrowDeltaX(), textHeight - getArrowDeltaY());
 			polygon.addPoint(x2, textHeight);
 			polygon.addPoint(x2 - getArrowDeltaX(), textHeight + getArrowDeltaY());
-			if (OptionFlags.NICE_ARROW) {
+			if (niceArrow) {
 				polygon.addPoint(x2 - getArrowDeltaX() + 4, textHeight);
 			}
 		}
@@ -249,7 +255,7 @@ public class ComponentRoseArrow2 extends AbstractComponentRoseArrow {
 			polygon.addPoint(getArrowDeltaX(), textHeight - getArrowDeltaY());
 			polygon.addPoint(0, textHeight);
 			polygon.addPoint(getArrowDeltaX(), textHeight + getArrowDeltaY());
-			if (OptionFlags.NICE_ARROW) {
+			if (niceArrow) {
 				polygon.addPoint(getArrowDeltaX() - 4, textHeight);
 			}
 		}

@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 10991 $
+ * Revision $Revision: 11154 $
  *
  */
 package net.sourceforge.plantuml.graphic;
@@ -57,41 +57,41 @@ import net.sourceforge.plantuml.ugraphic.UTranslate;
 public class TextBlockUtils {
 
 	public static TextBlock create(Display texts, FontConfiguration fontConfiguration,
-			HorizontalAlignement horizontalAlignement, SpriteContainer spriteContainer) {
+			HorizontalAlignment horizontalAlignment, SpriteContainer spriteContainer) {
 		if (texts == null) {
 			return empty(0, 0);
 		}
-		return create(texts, fontConfiguration, horizontalAlignement, spriteContainer, 0);
+		return create(texts, fontConfiguration, horizontalAlignment, spriteContainer, 0);
 	}
 
 	public static TextBlock create(Display texts, FontConfiguration fontConfiguration,
-			HorizontalAlignement horizontalAlignement, SpriteContainer spriteContainer, double maxMessageSize) {
+			HorizontalAlignment horizontalAlignment, SpriteContainer spriteContainer, double maxMessageSize) {
 		if (texts.size() > 0) {
 			if (texts.get(0) instanceof Stereotype) {
-				return createStereotype(texts, fontConfiguration, horizontalAlignement, spriteContainer, 0);
+				return createStereotype(texts, fontConfiguration, horizontalAlignment, spriteContainer, 0);
 			}
 			if (texts.get(texts.size() - 1) instanceof Stereotype) {
-				return createStereotype(texts, fontConfiguration, horizontalAlignement, spriteContainer,
+				return createStereotype(texts, fontConfiguration, horizontalAlignment, spriteContainer,
 						texts.size() - 1);
 			}
 			if (texts.get(0) instanceof MessageNumber) {
-				return createMessageNumber(texts, fontConfiguration, horizontalAlignement, spriteContainer,
+				return createMessageNumber(texts, fontConfiguration, horizontalAlignment, spriteContainer,
 						maxMessageSize);
 			}
 		}
-		return new TextBlockSimple(texts, fontConfiguration, horizontalAlignement, spriteContainer, maxMessageSize);
+		return new TextBlockSimple(texts, fontConfiguration, horizontalAlignment, spriteContainer, maxMessageSize);
 	}
 
 	private static TextBlock createMessageNumber(Display texts, FontConfiguration fontConfiguration,
-			HorizontalAlignement horizontalAlignement, SpriteContainer spriteContainer, double maxMessageSize) {
+			HorizontalAlignment horizontalAlignment, SpriteContainer spriteContainer, double maxMessageSize) {
 		final MessageNumber number = (MessageNumber) texts.get(0);
 		return new TextBlockWithNumber(number.getNumber(), texts.subList(1, texts.size()), fontConfiguration,
-				horizontalAlignement, spriteContainer, maxMessageSize);
+				horizontalAlignment, spriteContainer, maxMessageSize);
 
 	}
 
 	private static TextBlock createStereotype(Display texts, FontConfiguration fontConfiguration,
-			HorizontalAlignement horizontalAlignement, SpriteContainer spriteContainer, int position) {
+			HorizontalAlignment horizontalAlignment, SpriteContainer spriteContainer, int position) {
 		final Stereotype stereotype = (Stereotype) texts.get(position);
 		if (stereotype.isSpotted()) {
 			final CircledCharacter circledCharacter = new CircledCharacter(stereotype.getCharacter(),
@@ -99,20 +99,20 @@ public class TextBlockUtils {
 					fontConfiguration.getColor());
 			if (stereotype.getLabel() == null) {
 				return new TextBlockSpotted(circledCharacter, texts.subList(1, texts.size()), fontConfiguration,
-						horizontalAlignement, spriteContainer);
+						horizontalAlignment, spriteContainer);
 			}
-			return new TextBlockSpotted(circledCharacter, texts, fontConfiguration, horizontalAlignement,
+			return new TextBlockSpotted(circledCharacter, texts, fontConfiguration, horizontalAlignment,
 					spriteContainer);
 		}
-		return new TextBlockSimple(texts, fontConfiguration, horizontalAlignement, spriteContainer, 0);
+		return new TextBlockSimple(texts, fontConfiguration, horizontalAlignment, spriteContainer, 0);
 	}
 
 	public static TextBlock withMargin(TextBlock textBlock, double marginX, double marginY) {
 		return new TextBlockMarged(textBlock, marginX, marginX, marginY, marginY);
 	}
 
-	public static TextBlock withMinWidth(TextBlock textBlock, double minWidth, HorizontalAlignement horizontalAlignement) {
-		return new TextBlockMinWidth(textBlock, minWidth, horizontalAlignement);
+	public static TextBlock withMinWidth(TextBlock textBlock, double minWidth, HorizontalAlignment horizontalAlignment) {
+		return new TextBlockMinWidth(textBlock, minWidth, horizontalAlignment);
 	}
 
 	public static TextBlock withMargin(TextBlock textBlock, double marginX1, double marginX2, double marginY1,
@@ -139,12 +139,12 @@ public class TextBlockUtils {
 		return new PositionableImpl(pt, textBlock.calculateDimension(stringBounder));
 	}
 
-	public static TextBlock mergeLR(TextBlock b1, TextBlock b2, VerticallAlignement verticallAlignement) {
-		return new TextBlockHorizontal(b1, b2, verticallAlignement);
+	public static TextBlock mergeLR(TextBlock b1, TextBlock b2, VerticalAlignment verticallAlignment) {
+		return new TextBlockHorizontal(b1, b2, verticallAlignment);
 	}
 
-	public static TextBlock mergeTB(TextBlock b1, TextBlock b2, HorizontalAlignement horizontalAlignement) {
-		return new TextBlockVertical2(b1, b2, horizontalAlignement);
+	public static TextBlock mergeTB(TextBlock b1, TextBlock b2, HorizontalAlignment horizontalAlignment) {
+		return new TextBlockVertical2(b1, b2, horizontalAlignment);
 	}
 
 	public static MinMax getMinMax(TextBlock tb, StringBounder stringBounder) {
@@ -171,4 +171,13 @@ public class TextBlockUtils {
 		tb.drawU(ug.apply(new UTranslate(dx, dy)));
 		return ug;
 	}
+
+	public static MinMax getMinMax(TextBlock tb) {
+		return getMinMax(tb, dummyStringBounder);
+	}
+
+	public static Dimension2D getDimension(TextBlock tb) {
+		return tb.calculateDimension(dummyStringBounder);
+	}
+
 }

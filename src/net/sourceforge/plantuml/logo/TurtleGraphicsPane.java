@@ -42,7 +42,7 @@ import java.util.List;
 import net.sourceforge.plantuml.SpriteContainerEmpty;
 import net.sourceforge.plantuml.cucadiagram.Display;
 import net.sourceforge.plantuml.graphic.FontConfiguration;
-import net.sourceforge.plantuml.graphic.HorizontalAlignement;
+import net.sourceforge.plantuml.graphic.HorizontalAlignment;
 import net.sourceforge.plantuml.graphic.HtmlColor;
 import net.sourceforge.plantuml.graphic.HtmlColorUtils;
 import net.sourceforge.plantuml.graphic.TextBlock;
@@ -195,7 +195,7 @@ class TurtleGraphicsPane {
 		drawTurtle(ug);
 		if (message != null) {
 			final FontConfiguration font = new FontConfiguration(new UFont("", Font.PLAIN, 14), HtmlColorUtils.BLACK);
-			final TextBlock text = TextBlockUtils.create(Display.asList(message), font, HorizontalAlignement.LEFT,
+			final TextBlock text = TextBlockUtils.create(Display.asList(message), font, HorizontalAlignment.LEFT,
 					new SpriteContainerEmpty());
 			final Dimension2D dim = text.calculateDimension(ug.getStringBounder());
 			final double textHeight = dim.getHeight();

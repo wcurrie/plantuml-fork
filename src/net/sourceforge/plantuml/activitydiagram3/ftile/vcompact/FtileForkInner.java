@@ -51,11 +51,12 @@ import net.sourceforge.plantuml.graphic.TextBlock;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
 import net.sourceforge.plantuml.ugraphic.UTranslate;
 
-class FtileForkInner2 extends AbstractFtile {
+class FtileForkInner extends AbstractFtile {
 
 	private final List<Ftile> forks = new ArrayList<Ftile>();
 
-	public FtileForkInner2(List<Ftile> forks) {
+	public FtileForkInner(List<Ftile> forks) {
+		super(forks.get(0).shadowing());
 		for (Ftile ftile : forks) {
 			this.forks.add(ftile);
 		}

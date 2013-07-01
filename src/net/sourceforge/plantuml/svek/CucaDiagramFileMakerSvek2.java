@@ -66,7 +66,7 @@ import net.sourceforge.plantuml.cucadiagram.dot.DotData;
 import net.sourceforge.plantuml.cucadiagram.entity.EntityFactory;
 import net.sourceforge.plantuml.graphic.FontConfiguration;
 import net.sourceforge.plantuml.graphic.GraphicStrings;
-import net.sourceforge.plantuml.graphic.HorizontalAlignement;
+import net.sourceforge.plantuml.graphic.HorizontalAlignment;
 import net.sourceforge.plantuml.graphic.HtmlColor;
 import net.sourceforge.plantuml.graphic.HtmlColorUtils;
 import net.sourceforge.plantuml.graphic.StringBounder;
@@ -471,7 +471,7 @@ public final class CucaDiagramFileMakerSvek2 {
 
 		final TextBlock title = getTitleBlock(g);
 		final TextBlock stereo = getStereoBlock(g);
-		final TextBlock stereoAndTitle = TextBlockUtils.mergeTB(stereo, title, HorizontalAlignement.CENTER);
+		final TextBlock stereoAndTitle = TextBlockUtils.mergeTB(stereo, title, HorizontalAlignment.CENTER);
 		final Dimension2D dimLabel = stereoAndTitle.calculateDimension(stringBounder);
 		if (dimLabel.getWidth() > 0) {
 			final List<Member> members = ((IEntity) g).getFieldsToDisplay();
@@ -508,7 +508,7 @@ public final class CucaDiagramFileMakerSvek2 {
 
 		final FontParam fontParam = g.zgetGroupType() == GroupType.STATE ? FontParam.STATE : FontParam.PACKAGE;
 		return TextBlockUtils.create(label, new FontConfiguration(dotData.getSkinParam().getFont(fontParam, stereo),
-				dotData.getSkinParam().getFontHtmlColor(fontParam, stereo)), HorizontalAlignement.CENTER, dotData
+				dotData.getSkinParam().getFontHtmlColor(fontParam, stereo)), HorizontalAlignment.CENTER, dotData
 				.getSkinParam());
 	}
 
@@ -525,7 +525,7 @@ public final class CucaDiagramFileMakerSvek2 {
 		final FontParam fontParam = FontParam.COMPONENT_STEREOTYPE;
 		return TextBlockUtils.create(new Display(stereos),
 				new FontConfiguration(dotData.getSkinParam().getFont(fontParam, stereo), dotData.getSkinParam()
-						.getFontHtmlColor(fontParam, stereo)), HorizontalAlignement.CENTER, dotData.getSkinParam());
+						.getFontHtmlColor(fontParam, stereo)), HorizontalAlignment.CENTER, dotData.getSkinParam());
 	}
 
 }

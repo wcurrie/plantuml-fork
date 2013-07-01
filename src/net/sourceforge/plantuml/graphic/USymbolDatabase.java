@@ -54,11 +54,11 @@ class USymbolDatabase extends USymbol {
 			shape.setDeltaShadow(3.0);
 		}
 		shape.moveTo(0, 10);
-		shape.cubicTo(10, 0, width / 2 - 10, 0, width / 2, 0);
-		shape.cubicTo(width / 2 + 10, 0, width - 10, 0, width, 10);
+		shape.cubicTo(0, 0, width / 2, 0, width / 2, 0);
+		shape.cubicTo(width / 2, 0, width, 0, width, 10);
 		shape.lineTo(width, height - 10);
-		shape.cubicTo(width - 10, height, width / 2 - 10, height, width / 2, height);
-		shape.cubicTo(width / 2 + 10, height, 10, height, 0, height - 10);
+		shape.cubicTo(width, height, width / 2, height, width / 2, height);
+		shape.cubicTo(width / 2, height, 0, height, 0, height - 10);
 		shape.lineTo(0, 10);
 
 		ug.draw(shape);
@@ -71,8 +71,8 @@ class USymbolDatabase extends USymbol {
 	private UPath getClosingPath(double width) {
 		final UPath closing = new UPath();
 		closing.moveTo(0, 10);
-		closing.cubicTo(10, 20, width / 2 - 10, 20, width / 2, 20);
-		closing.cubicTo(width / 2 + 10, 20, width - 10, 20, width, 10);
+		closing.cubicTo(0, 20, width / 2, 20, width / 2, 20);
+		closing.cubicTo(width / 2, 20, width, 20, width, 10);
 		return closing;
 	}
 
@@ -112,7 +112,7 @@ class USymbolDatabase extends USymbol {
 				ug = symbolContext.apply(ug).apply(new UTranslate(0, 0));
 				drawDatabase(ug, dim.getWidth(), dim.getHeight(), symbolContext.isShadowing());
 				final Margin margin = getMargin();
-				final TextBlock tb = TextBlockUtils.mergeTB(stereotype, label, HorizontalAlignement.CENTER);
+				final TextBlock tb = TextBlockUtils.mergeTB(stereotype, label, HorizontalAlignment.CENTER);
 				final UGraphic ug2 = new MyUGraphicDatabase(ug, dim.getWidth());
 				tb.drawU(ug2.apply(new UTranslate(margin.getX1(), margin.getY1())));
 			}

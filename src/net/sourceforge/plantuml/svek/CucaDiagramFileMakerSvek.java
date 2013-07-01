@@ -55,6 +55,7 @@ import net.sourceforge.plantuml.Scale;
 import net.sourceforge.plantuml.StringUtils;
 import net.sourceforge.plantuml.UmlDiagramType;
 import net.sourceforge.plantuml.Url;
+import net.sourceforge.plantuml.activitydiagram3.ftile.EntityImageLegend;
 import net.sourceforge.plantuml.api.ImageDataComplex;
 import net.sourceforge.plantuml.core.ImageData;
 import net.sourceforge.plantuml.cucadiagram.CucaDiagram;
@@ -66,7 +67,7 @@ import net.sourceforge.plantuml.cucadiagram.dot.CucaDiagramSimplifierState;
 import net.sourceforge.plantuml.cucadiagram.dot.DotData;
 import net.sourceforge.plantuml.eps.EpsStrategy;
 import net.sourceforge.plantuml.graphic.FontConfiguration;
-import net.sourceforge.plantuml.graphic.HorizontalAlignement;
+import net.sourceforge.plantuml.graphic.HorizontalAlignment;
 import net.sourceforge.plantuml.graphic.HtmlColor;
 import net.sourceforge.plantuml.graphic.HtmlColorGradient;
 import net.sourceforge.plantuml.graphic.HtmlColorSimple;
@@ -119,13 +120,14 @@ public final class CucaDiagramFileMakerSvek {
 			new CucaDiagramSimplifierState(diagram, dotStrings);
 		}
 
-		final DotData dotData = new DotData(diagram.getEntityFactory().getRootGroup(), diagram.getLinks(), diagram
+		final DotData dotData = new DotData(diagram.getEntityFactory().getRootGroup(), getOrderedLinks(), diagram
 				.getLeafs().values(), diagram.getUmlDiagramType(), diagram.getSkinParam(), diagram.getRankdir(),
 				diagram, diagram, diagram.getColorMapper(), diagram.getEntityFactory());
 		final CucaDiagramFileMakerSvek2 svek2 = new CucaDiagramFileMakerSvek2(dotData, diagram.getEntityFactory(),
 				false);
 
-		IEntityImage result = svek2.createFile(diagram.getDotStringSkek());
+		TextBlockBackcolored result = svek2.createFile(diagram.getDotStringSkek());
+		result = addLegend(result);
 		result = addTitle(result);
 		result = addHeaderAndFooter(result);
 
@@ -168,6 +170,33 @@ public final class CucaDiagramFileMakerSvek {
 		}
 
 		return new ImageDataComplex(finalDimension, cmap, getWarningOrError());
+	}
+
+	private List<Link> getOrderedLinks() {
+		final List<Link> result = new ArrayList<Link>();
+		for (Link l : diagram.getLinks()) {
+			addLinkNew(result, l);
+		}
+		return result;
+		// return diagram.getLinks();
+	}
+
+	private void addLinkNew(List<Link> result, Link link) {
+		for (int i = 0; i < result.size(); i++) {
+			final Link other = result.get(i);
+			if (other.sameConnections(link)) {
+				while (i < result.size() && result.get(i).sameConnections(link)) {
+					i++;
+				}
+				if (i == result.size()) {
+					result.add(link);
+				} else {
+					result.add(i, link);
+				}
+				return;
+			}
+		}
+		result.add(link);
 	}
 
 	private String warningOrError;
@@ -215,32 +244,42 @@ public final class CucaDiagramFileMakerSvek {
 		cmapdata.appendString("\n");
 	}
 
-	private IEntityImage addHeaderAndFooter(IEntityImage original) {
+	private TextBlockBackcolored addHeaderAndFooter(TextBlockBackcolored original) {
 		final Display footer = diagram.getFooter();
 		final Display header = diagram.getHeader();
 		if (footer == null && header == null) {
 			return original;
 		}
 		final TextBlock textFooter = footer == null ? null : TextBlockUtils.create(footer, new FontConfiguration(
-				getFont(FontParam.FOOTER), getFontColor(FontParam.FOOTER, null)), diagram.getFooterAlignement(),
+				getFont(FontParam.FOOTER), getFontColor(FontParam.FOOTER, null)), diagram.getFooterAlignment(),
 				diagram.getSkinParam());
 		final TextBlock textHeader = header == null ? null : TextBlockUtils.create(header, new FontConfiguration(
-				getFont(FontParam.HEADER), getFontColor(FontParam.HEADER, null)), diagram.getHeaderAlignement(),
+				getFont(FontParam.HEADER), getFontColor(FontParam.HEADER, null)), diagram.getHeaderAlignment(),
 				diagram.getSkinParam());
 
-		return new DecorateEntityImage(original, textHeader, diagram.getHeaderAlignement(), textFooter,
-				diagram.getFooterAlignement());
+		return new DecorateEntityImage(original, textHeader, diagram.getHeaderAlignment(), textFooter,
+				diagram.getFooterAlignment());
 	}
 
-	private IEntityImage addTitle(IEntityImage original) {
+	private TextBlockBackcolored addTitle(TextBlockBackcolored original) {
 		final Display title = diagram.getTitle();
 		if (title == null) {
 			return original;
 		}
 		final TextBlock text = TextBlockUtils.create(title, new FontConfiguration(getFont(FontParam.TITLE),
-				getFontColor(FontParam.TITLE, null)), HorizontalAlignement.CENTER, diagram.getSkinParam());
+				getFontColor(FontParam.TITLE, null)), HorizontalAlignment.CENTER, diagram.getSkinParam());
 
-		return new DecorateEntityImage(original, text, HorizontalAlignement.CENTER);
+		return DecorateEntityImage.addTop(original, text, HorizontalAlignment.CENTER);
+	}
+
+	private TextBlockBackcolored addLegend(TextBlockBackcolored original) {
+		final Display legend = diagram.getLegend();
+		if (legend == null) {
+			return original;
+		}
+		final TextBlock text = new EntityImageLegend(legend, diagram.getSkinParam());
+
+		return DecorateEntityImage.addBottom(original, text, diagram.getLegendAlignment());
 	}
 
 	private final UFont getFont(FontParam fontParam) {
@@ -253,7 +292,7 @@ public final class CucaDiagramFileMakerSvek {
 		return skinParam.getFontHtmlColor(fontParam, stereo);
 	}
 
-	private void createPng(OutputStream os, FileFormatOption fileFormatOption, final IEntityImage result,
+	private void createPng(OutputStream os, FileFormatOption fileFormatOption, final TextBlockBackcolored result,
 			final Dimension2D dim) throws IOException {
 		final double dpiFactor;
 		final Scale scale = diagram.getScale();
@@ -303,15 +342,14 @@ public final class CucaDiagramFileMakerSvek {
 		((UGraphicG2d) ug).setBufferedImage(builder.getBufferedImage());
 		final BufferedImage im = ((UGraphicG2d) ug).getBufferedImage();
 		if (result.getBackcolor() instanceof HtmlColorGradient) {
-			ug.apply(new UChangeBackColor(result.getBackcolor())).draw(
-					new URectangle(im.getWidth(), im.getHeight()));
+			ug.apply(new UChangeBackColor(result.getBackcolor())).draw(new URectangle(im.getWidth(), im.getHeight()));
 		}
 		result.drawU(ug);
 
 		PngIO.write(im, os, diagram.getMetadata(), diagram.getDpi(fileFormatOption));
 	}
 
-	private void createSvg(OutputStream os, FileFormatOption fileFormatOption, final IEntityImage result,
+	private void createSvg(OutputStream os, FileFormatOption fileFormatOption, final TextBlockBackcolored result,
 			final Dimension2D dim) throws IOException {
 
 		Color backColor = Color.WHITE;
@@ -335,7 +373,7 @@ public final class CucaDiagramFileMakerSvek {
 
 	}
 
-	private void createVdx(OutputStream os, FileFormatOption fileFormatOption, final IEntityImage result,
+	private void createVdx(OutputStream os, FileFormatOption fileFormatOption, final TextBlockBackcolored result,
 			final Dimension2D dim) throws IOException {
 
 		final UGraphicVdx ug = new UGraphicVdx(diagram.getSkinParam().getColorMapper());
@@ -346,7 +384,7 @@ public final class CucaDiagramFileMakerSvek {
 
 	}
 
-	private void createEps(OutputStream os, FileFormatOption fileFormatOption, final IEntityImage result,
+	private void createEps(OutputStream os, FileFormatOption fileFormatOption, final TextBlockBackcolored result,
 			final Dimension2D dim) throws IOException {
 
 		final UGraphicEps ug = new UGraphicEps(diagram.getSkinParam().getColorMapper(), EpsStrategy.getDefault2());

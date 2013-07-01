@@ -64,6 +64,6 @@ public class FtileFactoryDelegatorAddNote extends FtileFactoryDelegator {
 		} else {
 			colorlink = inlinkRendering.getColor();
 		}
-		return new FtileWithNoteOpale2(ftile, note, colorlink, notePosition);
+		return new FtileWithNoteOpale(ftile, note, colorlink, notePosition);
 	}
 }

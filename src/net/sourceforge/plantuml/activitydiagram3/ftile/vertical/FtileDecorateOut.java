@@ -54,6 +54,12 @@ public class FtileDecorateOut implements Ftile {
 		this.ftile = ftile;
 		this.linkRendering = linkRendering;
 	}
+	
+	@Override
+	public String toString() {
+		return "FtileDecorateOut:" + ftile;
+	}
+
 
 	public boolean isKilled() {
 		return ftile.isKilled();
@@ -98,6 +104,11 @@ public class FtileDecorateOut implements Ftile {
 	public Swimlane getSwimlaneOut() {
 		return ftile.getSwimlaneOut();
 	}
+	
+	public boolean shadowing() {
+		return ftile.shadowing();
+	}
+
 
 
 }

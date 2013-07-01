@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 10930 $
+ * Revision $Revision: 11153 $
  *
  */
 package net.sourceforge.plantuml.graph;
@@ -42,7 +42,7 @@ import net.sourceforge.plantuml.SpriteContainerEmpty;
 import net.sourceforge.plantuml.cucadiagram.Display;
 import net.sourceforge.plantuml.cucadiagram.Member;
 import net.sourceforge.plantuml.graphic.FontConfiguration;
-import net.sourceforge.plantuml.graphic.HorizontalAlignement;
+import net.sourceforge.plantuml.graphic.HorizontalAlignment;
 import net.sourceforge.plantuml.graphic.HtmlColorUtils;
 import net.sourceforge.plantuml.graphic.StringBounder;
 import net.sourceforge.plantuml.graphic.TextBlock;
@@ -82,7 +82,7 @@ public class MethodsOrFieldsArea {
 
 	private TextBlock createTextBlock(String s) {
 		return TextBlockUtils.create(Display.asList(s), new FontConfiguration(font, HtmlColorUtils.BLACK),
-				HorizontalAlignement.LEFT, new SpriteContainerEmpty());
+				HorizontalAlignment.LEFT, new SpriteContainerEmpty());
 	}
 
 	public void draw(UGraphic ug, double x, double y) {

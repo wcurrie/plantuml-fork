@@ -51,13 +51,12 @@ class ArrowAndParticipant extends Arrow implements InGroupable {
 		this.participantBox = participantBox;
 		arrow.setPaddingArrowHead(participantBox.getPreferredWidth(stringBounder) / 2);
 	}
-	
+
 	@Override
 	public void setMaxX(double m) {
 		super.setMaxX(m);
 		arrow.setMaxX(m);
 	}
-
 
 	@Override
 	final public double getArrowOnlyWidth(StringBounder stringBounder) {
@@ -85,8 +84,17 @@ class ArrowAndParticipant extends Arrow implements InGroupable {
 	}
 
 	@Override
-	protected void drawInternalU(UGraphic ug, double maxX, Context2D context) {
-		arrow.drawInternalU(ug, maxX, context);
+	protected void drawInternalU(final UGraphic ug, double maxX, Context2D context) {
+		final double participantBoxStartingX = participantBox.getStartingX();
+		final double arrowStartingX = arrow.getStartingX(ug.getStringBounder());
+
+		if (arrowStartingX < participantBoxStartingX) {
+			arrow.drawInternalU(ug, maxX, context);
+		} else {
+			final double boxWidth = participantBox.getPreferredWidth(ug.getStringBounder());
+			arrow.drawInternalU(ug.apply(new UTranslate(boxWidth / 2, 0)), maxX, context);
+		}
+
 		final double arrowHeight = arrow.getPreferredHeight(ug.getStringBounder());
 		final double boxHeight = participantBox.getHeadHeight(ug.getStringBounder());
 		// final double diff = getDiff(ug);
@@ -94,8 +102,7 @@ class ArrowAndParticipant extends Arrow implements InGroupable {
 		if (arrowHeight > boxHeight) {
 			diff = arrowHeight - boxHeight;
 		}
-		ug = ug.apply(new UTranslate(participantBox.getStartingX(), getStartingY() + diff));
-		participantBox.drawParticipantHead(ug);
+		participantBox.drawParticipantHead(ug.apply(new UTranslate(participantBoxStartingX, getStartingY() + diff)));
 	}
 
 	private double getDiff(UGraphic ug) {
@@ -120,7 +127,6 @@ class ArrowAndParticipant extends Arrow implements InGroupable {
 		return arrow.getActualWidth(stringBounder) + participantBox.getPreferredWidth(stringBounder) / 2;
 	}
 
-
 	@Override
 	public double getStartingX(StringBounder stringBounder) {
 		return arrow.getStartingX(stringBounder);
@@ -137,5 +143,5 @@ class ArrowAndParticipant extends Arrow implements InGroupable {
 	public String toString(StringBounder stringBounder) {
 		return arrow.toString(stringBounder);
 	}
-	
+
 }

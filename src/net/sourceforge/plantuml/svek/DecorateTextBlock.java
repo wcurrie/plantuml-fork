@@ -38,29 +38,29 @@ import java.util.List;
 
 import net.sourceforge.plantuml.Dimension2DDouble;
 import net.sourceforge.plantuml.Url;
-import net.sourceforge.plantuml.graphic.HorizontalAlignement;
+import net.sourceforge.plantuml.graphic.HorizontalAlignment;
 import net.sourceforge.plantuml.graphic.StringBounder;
 import net.sourceforge.plantuml.graphic.TextBlock;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
 import net.sourceforge.plantuml.ugraphic.UTranslate;
 
-public class DecorateEntityImage2 implements TextBlock {
+public class DecorateTextBlock implements TextBlock {
 
 	private final TextBlock original;
-	private final HorizontalAlignement horizontal1;
+	private final HorizontalAlignment horizontal1;
 	private final TextBlock text1;
-	private final HorizontalAlignement horizontal2;
+	private final HorizontalAlignment horizontal2;
 	private final TextBlock text2;
 
 	private double deltaX;
 	private double deltaY;
 
-	public DecorateEntityImage2(TextBlock original, TextBlock text, HorizontalAlignement horizontal) {
+	public DecorateTextBlock(TextBlock original, TextBlock text, HorizontalAlignment horizontal) {
 		this(original, text, horizontal, null, null);
 	}
 
-	public DecorateEntityImage2(TextBlock original, TextBlock text1, HorizontalAlignement horizontal1, TextBlock text2,
-			HorizontalAlignement horizontal2) {
+	public DecorateTextBlock(TextBlock original, TextBlock text1, HorizontalAlignment horizontal1, TextBlock text2,
+			HorizontalAlignment horizontal2) {
 		this.original = original;
 		this.horizontal1 = horizontal1;
 		this.text1 = text1;
@@ -101,12 +101,12 @@ public class DecorateEntityImage2 implements TextBlock {
 		return text.calculateDimension(stringBounder);
 	}
 
-	private double getTextX(final Dimension2D dimText, final Dimension2D dimTotal, HorizontalAlignement h) {
-		if (h == HorizontalAlignement.CENTER) {
+	private double getTextX(final Dimension2D dimText, final Dimension2D dimTotal, HorizontalAlignment h) {
+		if (h == HorizontalAlignment.CENTER) {
 			return (dimTotal.getWidth() - dimText.getWidth()) / 2;
-		} else if (h == HorizontalAlignement.LEFT) {
+		} else if (h == HorizontalAlignment.LEFT) {
 			return 0;
-		} else if (h == HorizontalAlignement.RIGHT) {
+		} else if (h == HorizontalAlignment.RIGHT) {
 			return dimTotal.getWidth() - dimText.getWidth();
 		} else {
 			throw new IllegalStateException();
@@ -121,15 +121,15 @@ public class DecorateEntityImage2 implements TextBlock {
 	}
 
 	private double getDeltaX() {
-		if (original instanceof DecorateEntityImage2) {
-			return deltaX + ((DecorateEntityImage2) original).deltaX;
+		if (original instanceof DecorateTextBlock) {
+			return deltaX + ((DecorateTextBlock) original).deltaX;
 		}
 		return deltaX;
 	}
 
 	private double getDeltaY() {
-		if (original instanceof DecorateEntityImage2) {
-			return deltaY + ((DecorateEntityImage2) original).deltaY;
+		if (original instanceof DecorateTextBlock) {
+			return deltaY + ((DecorateTextBlock) original).deltaY;
 		}
 		return deltaY;
 	}

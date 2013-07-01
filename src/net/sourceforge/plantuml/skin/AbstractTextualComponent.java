@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 10578 $
+ * Revision $Revision: 11154 $
  *
  */
 package net.sourceforge.plantuml.skin;
@@ -38,7 +38,7 @@ import java.awt.geom.Dimension2D;
 import net.sourceforge.plantuml.SpriteContainer;
 import net.sourceforge.plantuml.cucadiagram.Display;
 import net.sourceforge.plantuml.graphic.FontConfiguration;
-import net.sourceforge.plantuml.graphic.HorizontalAlignement;
+import net.sourceforge.plantuml.graphic.HorizontalAlignment;
 import net.sourceforge.plantuml.graphic.HtmlColor;
 import net.sourceforge.plantuml.graphic.StringBounder;
 import net.sourceforge.plantuml.graphic.TextBlock;
@@ -60,14 +60,14 @@ public abstract class AbstractTextualComponent extends AbstractComponent {
 	private final HtmlColor fontColor;
 
 	public AbstractTextualComponent(CharSequence label, HtmlColor fontColor, UFont font,
-			HorizontalAlignement horizontalAlignement, int marginX1, int marginX2, int marginY,
+			HorizontalAlignment horizontalAlignment, int marginX1, int marginX2, int marginY,
 			SpriteContainer spriteContainer, double maxMessageSize) {
-		this(Display.asList(label == null ? "" : label), fontColor, font, horizontalAlignement, marginX1, marginX2,
+		this(Display.asList(label == null ? "" : label), fontColor, font, horizontalAlignment, marginX1, marginX2,
 				marginY, spriteContainer, maxMessageSize);
 	}
 
 	public AbstractTextualComponent(Display strings, HtmlColor fontColor, UFont font,
-			HorizontalAlignement horizontalAlignement, int marginX1, int marginX2, int marginY,
+			HorizontalAlignment horizontalAlignment, int marginX1, int marginX2, int marginY,
 			SpriteContainer spriteContainer, double maxMessageSize) {
 		this.font = font;
 		this.fontColor = fontColor;
@@ -79,7 +79,7 @@ public abstract class AbstractTextualComponent extends AbstractComponent {
 		if (strings.size() == 1 && strings.get(0).length() == 0) {
 			textBlock = new TextBlockEmpty();
 		} else {
-			textBlock = TextBlockUtils.create(strings, new FontConfiguration(font, fontColor), horizontalAlignement,
+			textBlock = TextBlockUtils.create(strings, new FontConfiguration(font, fontColor), horizontalAlignment,
 					spriteContainer, maxMessageSize);
 		}
 	}

@@ -137,5 +137,9 @@ class FtileWithConnection implements Ftile {
 		return ftile.getSwimlaneOut();
 	}
 
+	public boolean shadowing() {
+		return ftile.shadowing();
+	}
+
 
 }

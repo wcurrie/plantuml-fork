@@ -54,7 +54,7 @@ import net.sourceforge.plantuml.activitydiagram3.ftile.Snake;
 import net.sourceforge.plantuml.activitydiagram3.ftile.Swimlane;
 import net.sourceforge.plantuml.cucadiagram.Display;
 import net.sourceforge.plantuml.graphic.FontConfiguration;
-import net.sourceforge.plantuml.graphic.HorizontalAlignement;
+import net.sourceforge.plantuml.graphic.HorizontalAlignment;
 import net.sourceforge.plantuml.graphic.HtmlColor;
 import net.sourceforge.plantuml.graphic.HtmlColorUtils;
 import net.sourceforge.plantuml.graphic.StringBounder;
@@ -68,7 +68,7 @@ import net.sourceforge.plantuml.ugraphic.UGraphic;
 import net.sourceforge.plantuml.ugraphic.UStroke;
 import net.sourceforge.plantuml.ugraphic.UTranslate;
 
-class FtileWhile2 extends AbstractFtile {
+class FtileWhile extends AbstractFtile {
 
 	private final Ftile whileBlock;
 
@@ -81,11 +81,10 @@ class FtileWhile2 extends AbstractFtile {
 	private final HtmlColor arrowColor;
 	private final HtmlColor endInlinkColor;
 
-	
 	public Set<Swimlane> getSwimlanes() {
 		return whileBlock.getSwimlanes();
 	}
-	
+
 	public Swimlane getSwimlaneIn() {
 		return whileBlock.getSwimlaneIn();
 	}
@@ -94,9 +93,9 @@ class FtileWhile2 extends AbstractFtile {
 		return getSwimlaneIn();
 	}
 
-
-	private FtileWhile2(Ftile whileBlock, Display test, HtmlColor borderColor, HtmlColor backColor,
+	private FtileWhile(Ftile whileBlock, Display test, HtmlColor borderColor, HtmlColor backColor,
 			HtmlColor arrowColor, Display yes, Display out, UFont font, HtmlColor endInlinkColor) {
+		super(whileBlock.shadowing());
 		this.arrowColor = arrowColor;
 		this.whileBlock = whileBlock;
 		this.borderColor = borderColor;
@@ -104,23 +103,23 @@ class FtileWhile2 extends AbstractFtile {
 		this.endInlinkColor = endInlinkColor;
 
 		final FontConfiguration fc = new FontConfiguration(font, HtmlColorUtils.BLACK);
-		final TextBlock tmpb = TextBlockUtils.create(yes, fc, HorizontalAlignement.LEFT, new SpriteContainerEmpty());
+		final TextBlock tmpb = TextBlockUtils.create(yes, fc, HorizontalAlignment.LEFT, new SpriteContainerEmpty());
 		if (test == null) {
 			this.test = tmpb;
 		} else {
 			this.test = TextBlockUtils.mergeTB(
-					TextBlockUtils.create(test, fc, HorizontalAlignement.LEFT, new SpriteContainerEmpty()), tmpb,
-					HorizontalAlignement.CENTER);
+					TextBlockUtils.create(test, fc, HorizontalAlignment.LEFT, new SpriteContainerEmpty()), tmpb,
+					HorizontalAlignment.CENTER);
 		}
-		this.out = TextBlockUtils.create(out, fc, HorizontalAlignement.LEFT, new SpriteContainerEmpty());
+		this.out = TextBlockUtils.create(out, fc, HorizontalAlignment.LEFT, new SpriteContainerEmpty());
 
 	}
 
 	public static Ftile create(Ftile whileBlock, Display test, HtmlColor borderColor, HtmlColor backColor,
 			HtmlColor arrowColor, Display yes, Display out, UFont font, HtmlColor endInlinkColor,
 			LinkRendering afterEndwhile) {
-		final FtileWhile2 result = new FtileWhile2(whileBlock, test, borderColor, backColor, arrowColor, yes, out,
-				font, endInlinkColor);
+		final FtileWhile result = new FtileWhile(whileBlock, test, borderColor, backColor, arrowColor, yes, out, font,
+				endInlinkColor);
 		final List<Connection> conns = new ArrayList<Connection>();
 		conns.add(result.new ConnectionIn());
 		conns.add(result.new ConnectionBack());
@@ -253,7 +252,7 @@ class FtileWhile2 extends AbstractFtile {
 
 	private void drawDiamond(UGraphic ug, double xTheoricalPosition, double yTheoricalPosition) {
 		ug.apply(new UChangeColor(borderColor)).apply(new UStroke(1.5)).apply(new UChangeBackColor(backColor))
-				.apply(new UTranslate(xTheoricalPosition, yTheoricalPosition)).draw(Diamond.asPolygon());
+				.apply(new UTranslate(xTheoricalPosition, yTheoricalPosition)).draw(Diamond.asPolygon(shadowing()));
 	}
 
 	public boolean isKilled() {

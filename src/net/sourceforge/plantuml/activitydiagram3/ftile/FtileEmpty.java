@@ -50,7 +50,8 @@ public class FtileEmpty extends AbstractFtile {
 	private final double width;
 	private final double height;
 
-	public FtileEmpty(double width, double height) {
+	public FtileEmpty(boolean shadowing, double width, double height) {
+		super(shadowing);
 		this.width = width;
 		this.height = height;
 	}
@@ -60,8 +61,8 @@ public class FtileEmpty extends AbstractFtile {
 		return "FtileEmpty";
 	}
 
-	public FtileEmpty() {
-		this(0, 0);
+	public FtileEmpty(boolean shadowing) {
+		this(shadowing, 0, 0);
 	}
 
 	public TextBlock asTextBlock() {

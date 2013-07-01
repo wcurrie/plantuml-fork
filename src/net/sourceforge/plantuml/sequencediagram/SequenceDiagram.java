@@ -47,7 +47,6 @@ import java.util.Stack;
 import net.sourceforge.plantuml.CMapData;
 import net.sourceforge.plantuml.FileFormat;
 import net.sourceforge.plantuml.FileFormatOption;
-import net.sourceforge.plantuml.OptionFlags;
 import net.sourceforge.plantuml.UmlDiagram;
 import net.sourceforge.plantuml.UmlDiagramType;
 import net.sourceforge.plantuml.api.ImageDataComplex;
@@ -55,7 +54,6 @@ import net.sourceforge.plantuml.core.ImageData;
 import net.sourceforge.plantuml.cucadiagram.Display;
 import net.sourceforge.plantuml.graphic.HtmlColor;
 import net.sourceforge.plantuml.sequencediagram.graphic.FileMaker;
-import net.sourceforge.plantuml.sequencediagram.graphic.SequenceDiagramFileMaker;
 import net.sourceforge.plantuml.sequencediagram.graphic.SequenceDiagramFileMakerPuma;
 import net.sourceforge.plantuml.sequencediagram.graphic.SequenceDiagramTxtMaker;
 import net.sourceforge.plantuml.skin.ProtectedSkin;
@@ -185,17 +183,14 @@ public class SequenceDiagram extends UmlDiagram {
 			return new SequenceDiagramTxtMaker(this, fileFormat);
 		}
 
-		if (OptionFlags.USE_PUMA) {
-			return new SequenceDiagramFileMakerPuma(this, skin, fileFormatOption, flashcodes);
-		}
-		return new SequenceDiagramFileMaker(this, skin, fileFormatOption, flashcodes);
+		return new SequenceDiagramFileMakerPuma(this, skin, fileFormatOption, flashcodes);
 	}
 
 	@Override
 	protected ImageData exportDiagramInternal(OutputStream os, int index, FileFormatOption fileFormat,
 			List<BufferedImage> flashcodes) throws IOException {
 		final FileMaker sequenceDiagramPngMaker = getSequenceDiagramPngMaker(fileFormat, flashcodes);
-		final Dimension2D info = sequenceDiagramPngMaker.createOne2(os, index);
+		final Dimension2D info = sequenceDiagramPngMaker.createOne(os, index);
 		final CMapData cmap = new CMapData();
 		if (this.hasUrl() && fileFormat.getFileFormat() == FileFormat.PNG) {
 			sequenceDiagramPngMaker.appendCmap(cmap);
@@ -305,6 +300,9 @@ public class SequenceDiagram extends UmlDiagram {
 	}
 
 	public boolean isShowFootbox() {
+		if (getSkinParam().strictUmlStyle()) {
+			return false;
+		}
 		final String footbox = getSkinParam().getValue("footbox");
 		if (footbox == null) {
 			return showFootbox;

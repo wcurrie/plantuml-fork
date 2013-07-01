@@ -42,8 +42,6 @@ import net.sourceforge.plantuml.activitydiagram3.ftile.Connection;
 import net.sourceforge.plantuml.activitydiagram3.ftile.Ftile;
 import net.sourceforge.plantuml.activitydiagram3.ftile.Swimlane;
 import net.sourceforge.plantuml.graphic.StringBounder;
-import net.sourceforge.plantuml.graphic.TextBlock;
-import net.sourceforge.plantuml.graphic.UDrawable;
 import net.sourceforge.plantuml.ugraphic.ColorMapper;
 import net.sourceforge.plantuml.ugraphic.UChange;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
@@ -79,17 +77,14 @@ public class UGraphicInterceptorOneSwimlane implements UGraphic {
 			}
 		} else if (shape instanceof Connection) {
 			final Connection connection = (Connection) shape;
-			// System.err.println("conn="+connection);
 			final Ftile tile1 = connection.getFtile1();
 			final Ftile tile2 = connection.getFtile2();
-			if (tile1 == null || tile2 == null) {
+			final boolean contained1 = tile1 == null || tile1.getSwimlaneOut() == null
+					|| tile1.getSwimlaneOut() == swimlane;
+			final boolean contained2 = tile2 == null || tile2.getSwimlaneIn() == null
+					|| tile2.getSwimlaneIn() == swimlane;
+			if (contained1 && contained2) {
 				connection.drawU(this);
-			} else {
-				final boolean contained1 = tile1.getSwimlaneOut() == swimlane;
-				final boolean contained2 = tile2.getSwimlaneIn() == swimlane;
-				if (contained1 && contained2) {
-					connection.drawU(this);
-				}
 			}
 		} else {
 			ug.draw(shape);
