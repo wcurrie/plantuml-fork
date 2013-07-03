@@ -97,6 +97,7 @@ import net.sourceforge.plantuml.svek.image.EntityImageObject;
 import net.sourceforge.plantuml.svek.image.EntityImagePseudoState;
 import net.sourceforge.plantuml.svek.image.EntityImageState;
 import net.sourceforge.plantuml.svek.image.EntityImageStateBorder;
+import net.sourceforge.plantuml.svek.image.EntityImageStateEmptyDescription;
 import net.sourceforge.plantuml.svek.image.EntityImageSynchroBar;
 import net.sourceforge.plantuml.svek.image.EntityImageUseCase;
 
@@ -342,6 +343,9 @@ public final class CucaDiagramFileMakerSvek2 {
 			if (leaf.getEntityPosition() != EntityPosition.NORMAL) {
 				final Cluster stateParent = getBibliotekon().getCluster(leaf.getParentContainer());
 				return new EntityImageStateBorder(leaf, dotData.getSkinParam(), stateParent, getBibliotekon());
+			}
+			if (dotData.isHideEmptyDescriptionForState() && leaf.getFieldsToDisplay().size() == 0) {
+				return new EntityImageStateEmptyDescription(leaf, dotData.getSkinParam());
 			}
 			return new EntityImageState(leaf, dotData.getSkinParam());
 		}

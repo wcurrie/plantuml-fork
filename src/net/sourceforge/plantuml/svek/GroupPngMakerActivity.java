@@ -102,13 +102,13 @@ public final class GroupPngMakerActivity {
 			return new EntityImageState(group, diagram.getSkinParam());
 		}
 		final List<Link> links = getPureInnerLinks();
-		ISkinParam skinParam = diagram.getSkinParam();
+		final ISkinParam skinParam = diagram.getSkinParam();
 //		if (OptionFlags.PBBACK && group.getSpecificBackColor() != null) {
 //			skinParam = new SkinParamBackcolored(skinParam, null, group.getSpecificBackColor());
 //		}
 		final DotData dotData = new DotData(group, links, group.getLeafsDirect(), diagram.getUmlDiagramType(),
 				skinParam, group.zgetRankdir(), new InnerGroupHierarchy(), diagram.getColorMapper(),
-				diagram.getEntityFactory());
+				diagram.getEntityFactory(), false);
 
 		final CucaDiagramFileMakerSvek2 svek2 = new CucaDiagramFileMakerSvek2(dotData, diagram.getEntityFactory(), false);
 

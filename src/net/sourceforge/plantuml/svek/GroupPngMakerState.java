@@ -115,13 +115,13 @@ public final class GroupPngMakerState {
 			return new EntityImageState(group, diagram.getSkinParam());
 		}
 		final List<Link> links = getPureInnerLinks();
-		ISkinParam skinParam = diagram.getSkinParam();
+		final ISkinParam skinParam = diagram.getSkinParam();
 //		if (OptionFlags.PBBACK && group.getSpecificBackColor() != null) {
 //			skinParam = new SkinParamBackcolored(skinParam, null, group.getSpecificBackColor());
 //		}
 		final DotData dotData = new DotData(group, links, group.getLeafsDirect(), diagram.getUmlDiagramType(),
 				skinParam, group.zgetRankdir(), new InnerGroupHierarchy(), diagram.getColorMapper(),
-				diagram.getEntityFactory());
+				diagram.getEntityFactory(), diagram.isHideEmptyDescriptionForState());
 
 		boolean hasVerticalLine = false;
 		for (ILeaf leaf : group.getLeafsDirect()) {

@@ -122,7 +122,7 @@ public final class CucaDiagramFileMakerSvek {
 
 		final DotData dotData = new DotData(diagram.getEntityFactory().getRootGroup(), getOrderedLinks(), diagram
 				.getLeafs().values(), diagram.getUmlDiagramType(), diagram.getSkinParam(), diagram.getRankdir(),
-				diagram, diagram, diagram.getColorMapper(), diagram.getEntityFactory());
+				diagram, diagram, diagram.getColorMapper(), diagram.getEntityFactory(), diagram.isHideEmptyDescriptionForState());
 		final CucaDiagramFileMakerSvek2 svek2 = new CucaDiagramFileMakerSvek2(dotData, diagram.getEntityFactory(),
 				false);
 
@@ -207,9 +207,9 @@ public final class CucaDiagramFileMakerSvek {
 
 	private CMapData cmapString(CucaDiagramFileMakerSvek2 svek2) {
 		final CMapData cmapdata = new CMapData();
-		int seq = 1;
 		final Collection<IEntity> all = new ArrayList<IEntity>(diagram.getLeafs().values());
 		all.addAll(diagram.getGroups(false));
+		int seq = 1;
 		for (IEntity ent : all) {
 			final List<Url> rev = new ArrayList<Url>(ent.getUrls());
 			// For zlevel order

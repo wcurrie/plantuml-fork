@@ -39,6 +39,7 @@ import net.sourceforge.plantuml.FileFormat;
 import net.sourceforge.plantuml.StringUtils;
 import net.sourceforge.plantuml.cucadiagram.Display;
 import net.sourceforge.plantuml.graphic.StringBounder;
+import net.sourceforge.plantuml.sequencediagram.MessageNumber;
 import net.sourceforge.plantuml.skin.Area;
 import net.sourceforge.plantuml.skin.ArrowConfiguration;
 import net.sourceforge.plantuml.skin.ArrowDirection;
@@ -55,11 +56,33 @@ public class ComponentTextArrow implements Component {
 	private final FileFormat fileFormat;
 	private final ArrowConfiguration config;
 
-	public ComponentTextArrow(ComponentType type, ArrowConfiguration config, Display stringsToDisplay, FileFormat fileFormat) {
+	public ComponentTextArrow(ComponentType type, ArrowConfiguration config, Display stringsToDisplay,
+			FileFormat fileFormat) {
 		this.type = type;
 		this.config = config;
-		this.stringsToDisplay = stringsToDisplay;
+		this.stringsToDisplay = clean(stringsToDisplay);
 		this.fileFormat = fileFormat;
+	}
+
+	private static Display clean(Display orig) {
+		if (orig.size() == 0 || orig.get(0) instanceof MessageNumber == false) {
+			return orig;
+		}
+		Display result = new Display();
+		for (int i = 0; i < orig.size(); i++) {
+			CharSequence element = orig.get(i);
+			if (i == 1) {
+				element = removeTag(orig.get(0).toString()) + " " + element;
+			}
+			if (i != 0) {
+				result = result.add(element);
+			}
+		}
+		return result;
+	}
+
+	private static String removeTag(String s) {
+		return s.replaceAll("\\<[^<>]+\\>", "");
 	}
 
 	public void drawU(UGraphic ug, Area area, Context2D context) {

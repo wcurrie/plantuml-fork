@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 9786 $
+ * Revision $Revision: 11160 $
  *
  */
 package net.sourceforge.plantuml.statediagram;
@@ -137,7 +137,7 @@ public class StateDiagram extends AbstractEntityDiagram {
 		this.hideEmptyDescription = hideEmptyDescription;
 	}
 
-	public final boolean isHideEmptyDescription() {
+	public final boolean isHideEmptyDescriptionForState() {
 		return hideEmptyDescription;
 	}
 

@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 11154 $
+ * Revision $Revision: 11158 $
  *
  */
 package net.sourceforge.plantuml.skin;
@@ -62,7 +62,7 @@ public abstract class AbstractTextualComponent extends AbstractComponent {
 	public AbstractTextualComponent(CharSequence label, HtmlColor fontColor, UFont font,
 			HorizontalAlignment horizontalAlignment, int marginX1, int marginX2, int marginY,
 			SpriteContainer spriteContainer, double maxMessageSize) {
-		this(Display.asList(label == null ? "" : label), fontColor, font, horizontalAlignment, marginX1, marginX2,
+		this(Display.getWithNewlines(label == null ? "" : label.toString()), fontColor, font, horizontalAlignment, marginX1, marginX2,
 				marginY, spriteContainer, maxMessageSize);
 	}
 
