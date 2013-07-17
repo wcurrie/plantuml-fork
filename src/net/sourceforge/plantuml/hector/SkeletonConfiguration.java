@@ -37,6 +37,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -149,7 +150,6 @@ public class SkeletonConfiguration {
 	}
 
 	class Switch implements SkeletonMutation {
-
 		private final SkeletonConfiguration newConfiguration;
 
 		public Switch(Pin pin1, Pin pin2) {
@@ -172,13 +172,43 @@ public class SkeletonConfiguration {
 		public SkeletonConfiguration mutate() {
 			return newConfiguration;
 		}
+	}
 
+	class Move implements SkeletonMutation {
+		private final SkeletonConfiguration newConfiguration;
+
+		public Move(Pin pin, int deltaX) {
+			final int copy[] = new int[position.length];
+			for (int i = 0; i < position.length; i++) {
+				if (i == pin.getUid()) {
+					copy[i] = position[i] + deltaX;
+				} else {
+					copy[i] = position[i];
+				}
+			}
+			this.newConfiguration = new SkeletonConfiguration(skeleton, copy);
+		}
+
+		public SkeletonConfiguration mutate() {
+			return newConfiguration;
+		}
 	}
 
 	private Collection<SkeletonMutation> getMutationForRow(int row) {
 		final Collection<Pin> pins = skeleton.getPinsOfRow(row);
+		final Collection<Integer> usedCols = new HashSet<Integer>();
+		for (Pin pin : pins) {
+			usedCols.add(getCol(pin));
+		}
 		final Collection<SkeletonMutation> result = new ArrayList<SkeletonMutation>();
 		for (Pin pin1 : pins) {
+			final int c = getCol(pin1);
+			if (usedCols.contains(c + 1) == false) {
+				result.add(new Move(pin1, 1));
+			}
+			if (usedCols.contains(c - 1) == false) {
+				result.add(new Move(pin1, -1));
+			}
 			for (Pin pin2 : pins) {
 				if (pin1 == pin2) {
 					continue;
@@ -206,8 +236,19 @@ public class SkeletonConfiguration {
 		return result;
 	}
 
-	public double getPrice() {
-		throw new UnsupportedOperationException();
+	public List<PinLink> getPinLinks() {
+		return skeleton.getPinLinks();
 	}
+
+	public double getLength(PinLink link) {
+		final double x1 = getCol(link.getPin1());
+		final double y1 = link.getPin1().getRow();
+		final double x2 = getCol(link.getPin2());
+		final double y2 = link.getPin2().getRow();
+		final double dx = x2 - x1;
+		final double dy = y2 - y1;
+		return Math.sqrt(dx * dx + dy * dy);
+	}
+
 
 }

@@ -33,16 +33,24 @@
  */
 package net.sourceforge.plantuml.hector;
 
+
 public class Pin {
 
-	private final int row;
-	private final int uid;
+	private int row;
+	private int uid = -1;
+
 	private final Object userData;
 
-	public Pin(int uid, int row, Object userData) {
-		this.uid = uid;
+	public Pin(int row, Object userData) {
 		this.row = row;
 		this.userData = userData;
+	}
+
+	public void setUid(int uid) {
+		if (this.uid != -1) {
+			throw new IllegalStateException();
+		}
+		this.uid = uid;
 	}
 
 	public int getRow() {
@@ -51,6 +59,18 @@ public class Pin {
 
 	public int getUid() {
 		return uid;
+	}
+
+	public Object getUserData() {
+		return userData;
+	}
+
+	public void setRow(int row) {
+		this.row = row;
+	}
+
+	public void push(int push) {
+		setRow(getRow() + push);
 	}
 
 }

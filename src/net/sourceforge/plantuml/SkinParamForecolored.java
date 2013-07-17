@@ -149,4 +149,8 @@ public class SkinParamForecolored implements ISkinParam {
 		return skinParam.strictUmlStyle();
 	}
 
+	public boolean forceSequenceParticipantUnderlined() {
+		return skinParam.forceSequenceParticipantUnderlined();
+	}
+
 }

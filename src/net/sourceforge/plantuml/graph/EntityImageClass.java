@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 11153 $
+ * Revision $Revision: 11254 $
  *
  */
 package net.sourceforge.plantuml.graph;
@@ -63,8 +63,9 @@ class EntityImageClass extends AbstractEntityImage {
 
 	public EntityImageClass(IEntity entity) {
 		super(entity);
-		this.name = TextBlockUtils.create(entity.getDisplay(), new FontConfiguration(
-				getFont14(), HtmlColorUtils.BLACK), HorizontalAlignment.CENTER, new SpriteContainerEmpty());
+		this.name = TextBlockUtils.create(entity.getDisplay(),
+				new FontConfiguration(getFont14(), HtmlColorUtils.BLACK), HorizontalAlignment.CENTER,
+				new SpriteContainerEmpty());
 		this.methods = new MethodsOrFieldsArea(entity.getMethodsToDisplay(), getFont14());
 		this.fields = new MethodsOrFieldsArea(entity.getFieldsToDisplay(), getFont14());
 
@@ -79,6 +80,9 @@ class EntityImageClass extends AbstractEntityImage {
 		// red, Color.BLACK);
 		// }
 		final double radius = 10;
+		if (entity.getEntityType() == LeafType.ANNOTATION) {
+			return new CircledCharacter('@', radius, getFont17(), getBlue(), getRed(), HtmlColorUtils.BLACK);
+		}
 		if (entity.getEntityType() == LeafType.ABSTRACT_CLASS) {
 			return new CircledCharacter('A', radius, getFont17(), getBlue(), getRed(), HtmlColorUtils.BLACK);
 		}
@@ -142,15 +146,15 @@ class EntityImageClass extends AbstractEntityImage {
 		g2d.drawLine(0, (int) line1, width, (int) line1);
 		g2d.drawLine(0, (int) line2, width, (int) line2);
 
-//		final double circledWidth = getCircledWidth(StringBounderUtils.asStringBounder(g2d));
+		// final double circledWidth = getCircledWidth(StringBounderUtils.asStringBounder(g2d));
 		g2d.setColor(Color.BLACK);
-//		name.drawTOBEREMOVED(colorMapper, g2d, xMargin + circledWidth, yMargin);
-//		fields.drawTOBEREMOVED(colorMapper, g2d, xMargin, line1 + yMargin);
-//		methods.drawTOBEREMOVED(colorMapper, g2d, xMargin, line2 + yMargin);
-//
-//		if (circledCharacter != null) {
-//			circledCharacter.draw(new ColorMapperIdentity(), g2d, xMargin, yMargin, 1.0);
-//		}
+		// name.drawTOBEREMOVED(colorMapper, g2d, xMargin + circledWidth, yMargin);
+		// fields.drawTOBEREMOVED(colorMapper, g2d, xMargin, line1 + yMargin);
+		// methods.drawTOBEREMOVED(colorMapper, g2d, xMargin, line2 + yMargin);
+		//
+		// if (circledCharacter != null) {
+		// circledCharacter.draw(new ColorMapperIdentity(), g2d, xMargin, yMargin, 1.0);
+		// }
 
 	}
 }

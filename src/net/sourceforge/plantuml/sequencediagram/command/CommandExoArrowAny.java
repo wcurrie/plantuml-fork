@@ -47,9 +47,9 @@ import net.sourceforge.plantuml.skin.ArrowConfiguration;
 import net.sourceforge.plantuml.skin.ArrowHead;
 import net.sourceforge.plantuml.skin.ArrowPart;
 
-abstract class CommandExoArrowAny2 extends SingleLineCommand2<SequenceDiagram> {
+abstract class CommandExoArrowAny extends SingleLineCommand2<SequenceDiagram> {
 
-	public CommandExoArrowAny2(RegexConcat pattern) {
+	public CommandExoArrowAny(RegexConcat pattern) {
 		super(pattern);
 	}
 
@@ -69,8 +69,11 @@ abstract class CommandExoArrowAny2 extends SingleLineCommand2<SequenceDiagram> {
 		} else {
 			labels = Display.getWithNewlines(arg2.get("LABEL", 0));
 		}
+		
+		final boolean bothDirection = arg2.get("ARROW_BOTHDRESSING", 0) != null;
 
-		ArrowConfiguration config = ArrowConfiguration.withDirectionNormal();
+		ArrowConfiguration config = bothDirection ? ArrowConfiguration.withDirectionBoth() : ArrowConfiguration
+				.withDirectionNormal();
 		if (dotted) {
 			config = config.withDotted();
 		}

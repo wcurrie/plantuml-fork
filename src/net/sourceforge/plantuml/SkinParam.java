@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  *
- * Revision $Revision: 11153 $
+ * Revision $Revision: 11264 $
  *
  */
 package net.sourceforge.plantuml;
@@ -81,7 +81,12 @@ public class SkinParam implements ISkinParam {
 		key = key.toLowerCase().trim();
 		key = key.replaceAll("_|\\.|\\s", "");
 		key = key.replaceAll("partition", "package");
-		key = key.replaceAll("componentarrow", "usecasearrow");
+		key = key.replaceAll("activityarrow", "genericarrow");
+		key = key.replaceAll("objectarrow", "genericarrow");
+		key = key.replaceAll("classarrow", "genericarrow");
+		key = key.replaceAll("componentarrow", "genericarrow");
+		key = key.replaceAll("statearrow", "genericarrow");
+		key = key.replaceAll("usecasearrow", "genericarrow");
 		final Matcher m = stereoPattern.matcher(key);
 		if (m.find()) {
 			final String s = m.group(1);
@@ -237,8 +242,9 @@ public class SkinParam implements ISkinParam {
 		if (stereotype != null) {
 			checkStereotype(stereotype);
 		}
-		return new UFont(getFontFamily(fontParam, stereotype), getFontStyle(fontParam, stereotype), getFontSize(
-				fontParam, stereotype));
+		final String fontFamily = getFontFamily(fontParam, stereotype);
+		final int fontStyle = getFontStyle(fontParam, stereotype);
+		return new UFont(fontFamily, fontStyle, getFontSize(fontParam, stereotype));
 	}
 
 	public int getCircledCharacterRadius() {
@@ -467,6 +473,14 @@ public class SkinParam implements ISkinParam {
 	public boolean strictUmlStyle() {
 		final String value = getValue("style");
 		if ("strictuml".equalsIgnoreCase(value)) {
+			return true;
+		}
+		return false;
+	}
+
+	public boolean forceSequenceParticipantUnderlined() {
+		final String value = getValue("sequenceParticipant");
+		if ("underline".equalsIgnoreCase(value)) {
 			return true;
 		}
 		return false;

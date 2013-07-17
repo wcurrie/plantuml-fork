@@ -68,7 +68,7 @@ public class EntityImageLegend implements TextBlock {
 
 	private final TextBlock textBlock;
 
-	public EntityImageLegend(Display note, ISkinParam skinParam) {
+	private EntityImageLegend(Display note, ISkinParam skinParam) {
 		this.withShadow = false;
 		final Rose rose = new Rose();
 
@@ -80,7 +80,10 @@ public class EntityImageLegend implements TextBlock {
 
 		this.textBlock = TextBlockUtils.create(note, new FontConfiguration(fontNote, fontColor),
 				HorizontalAlignment.LEFT, skinParam);
+	}
 
+	public static TextBlock create(Display legend, ISkinParam skinParam) {
+		return TextBlockUtils.withMargin(new EntityImageLegend(legend, skinParam), 8, 8);
 	}
 
 	private double getTextHeight(StringBounder stringBounder) {

@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 9786 $
+ * Revision $Revision: 11254 $
  *
  */
 package net.sourceforge.plantuml.graph;
@@ -39,8 +39,9 @@ import net.sourceforge.plantuml.cucadiagram.LeafType;
 public class EntityImageFactory {
 
 	public AbstractEntityImage createEntityImage(IEntity entity) {
-		if (entity.getEntityType() == LeafType.CLASS || entity.getEntityType() == LeafType.ABSTRACT_CLASS
-				|| entity.getEntityType() == LeafType.INTERFACE || entity.getEntityType() == LeafType.ENUM) {
+		if (entity.getEntityType() == LeafType.CLASS || entity.getEntityType() == LeafType.ANNOTATION
+				|| entity.getEntityType() == LeafType.ABSTRACT_CLASS || entity.getEntityType() == LeafType.INTERFACE
+				|| entity.getEntityType() == LeafType.ENUM) {
 			return new EntityImageClass(entity);
 		}
 		if (entity.getEntityType() == LeafType.ACTIVITY) {

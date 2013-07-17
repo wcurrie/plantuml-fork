@@ -69,7 +69,7 @@ public class CommandCreateClass extends SingleLineCommand2<ClassDiagram> {
 	private static RegexConcat getRegexConcat() {
 		return new RegexConcat(new RegexLeaf("^"), //
 				new RegexLeaf("TYPE", //
-						"(interface|enum|abstract\\s+class|abstract|class)\\s+"), //
+						"(interface|enum|annotation|abstract\\s+class|abstract|class)\\s+"), //
 				new RegexOr(//
 						new RegexConcat(//
 								new RegexLeaf("DISPLAY1", "\"([^\"]+)\""), //

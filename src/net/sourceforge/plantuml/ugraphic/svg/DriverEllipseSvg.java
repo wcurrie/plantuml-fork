@@ -32,6 +32,8 @@
 package net.sourceforge.plantuml.ugraphic.svg;
 
 import net.sourceforge.plantuml.StringUtils;
+import net.sourceforge.plantuml.graphic.HtmlColor;
+import net.sourceforge.plantuml.graphic.HtmlColorGradient;
 import net.sourceforge.plantuml.svg.SvgGraphics;
 import net.sourceforge.plantuml.ugraphic.ColorMapper;
 import net.sourceforge.plantuml.ugraphic.UDriver;
@@ -47,10 +49,20 @@ public class DriverEllipseSvg implements UDriver<SvgGraphics> {
 		final double height = shape.getHeight();
 
 		final String color = StringUtils.getAsSvg(mapper, param.getColor()); 
-		final String backcolor = StringUtils.getAsSvg(mapper, param.getBackcolor()); 
+		
+		final HtmlColor back = param.getBackcolor();
+		if (back instanceof HtmlColorGradient) {
+			final HtmlColorGradient gr = (HtmlColorGradient) back;
+			final String id = svg.createSvgGradient(StringUtils.getAsHtml(mapper.getMappedColor(gr.getColor1())),
+					StringUtils.getAsHtml(mapper.getMappedColor(gr.getColor2())), gr.getPolicy());
+			svg.setFillColor("url(#" + id + ")");
+			svg.setStrokeColor(color);
+		} else {
+			final String backcolor = StringUtils.getAsSvg(mapper, back);
+			svg.setFillColor(backcolor);
+			svg.setStrokeColor(color);
+		}
 
-		svg.setFillColor(backcolor);
-		svg.setStrokeColor(color);
 		svg.setStrokeWidth("" + param.getStroke().getThickness(), param.getStroke().getDasharraySvg());
 
 		double start = shape.getStart();

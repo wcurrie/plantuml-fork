@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  *
- * Revision $Revision: 11071 $
+ * Revision $Revision: 11254 $
  *
  */
 package net.sourceforge.plantuml;
@@ -38,21 +38,22 @@ import java.awt.Font;
 public enum FontParam {
 
 	ACTIVITY(14, Font.PLAIN, "black", null), //
-	ACTIVITY_ARROW(13, Font.PLAIN, "black", null), //
+	// ACTIVITY_ARROW(13, Font.PLAIN, "black", null), //
+	GENERIC_ARROW(13, Font.PLAIN, "black", null), //
 	ACTIVITY2(12, Font.PLAIN, "black", null), //
 	ACTIVITY_ARROW2(11, Font.PLAIN, "black", null), //
-	CIRCLED_CHARACTER(17, Font.BOLD, "black", "Courier"), //
-	OBJECT_ARROW(10, Font.PLAIN, "black", null), //
+	CIRCLED_CHARACTER(17, Font.BOLD, "black", "Monospaced"), //
+	// OBJECT_ARROW(10, Font.PLAIN, "black", null), //
 	OBJECT_ATTRIBUTE(10, Font.PLAIN, "black", null), //
 	OBJECT(12, Font.PLAIN, "black", null), //
 	OBJECT_STEREOTYPE(12, Font.ITALIC, "black", null), //
-	CLASS_ARROW(10, Font.PLAIN, "black", null), //
+	// CLASS_ARROW(10, Font.PLAIN, "black", null), //
 	CLASS_ATTRIBUTE(10, Font.PLAIN, "black", null), //
 	CLASS(12, Font.PLAIN, "black", null), //
 	CLASS_STEREOTYPE(12, Font.ITALIC, "black", null), //
 	COMPONENT(14, Font.PLAIN, "black", null), //
 	COMPONENT_STEREOTYPE(14, Font.ITALIC, "black", null), //
-	COMPONENT_ARROW(13, Font.PLAIN, "black", null), //
+	// COMPONENT_ARROW(13, Font.PLAIN, "black", null), //
 	NOTE(13, Font.PLAIN, "black", null), //
 	PACKAGE(14, Font.PLAIN, "black", null), //
 	SEQUENCE_ACTOR(13, Font.PLAIN, "black", null), //
@@ -66,7 +67,7 @@ public enum FontParam {
 	SEQUENCE_PARTICIPANT(13, Font.PLAIN, "black", null), //
 	SEQUENCE_TITLE(13, Font.BOLD, "black", null), //
 	STATE(14, Font.PLAIN, "black", null), //
-	STATE_ARROW(13, Font.PLAIN, "black", null), //
+	// STATE_ARROW(13, Font.PLAIN, "black", null), //
 	STATE_ATTRIBUTE(12, Font.PLAIN, "black", null), //
 	LEGEND(14, Font.PLAIN, "black", null), //
 	TITLE(18, Font.PLAIN, "black", null), //
@@ -75,8 +76,8 @@ public enum FontParam {
 	USECASE(14, Font.PLAIN, "black", null), //
 	USECASE_STEREOTYPE(14, Font.ITALIC, "black", null), //
 	USECASE_ACTOR(14, Font.PLAIN, "black", null), //
-	USECASE_ACTOR_STEREOTYPE(14, Font.ITALIC, "black", null), //
-	USECASE_ARROW(13, Font.PLAIN, "black", null);
+	USECASE_ACTOR_STEREOTYPE(14, Font.ITALIC, "black", null); //
+	// USECASE_ARROW(13, Font.PLAIN, "black", null);
 
 	private final int defaultSize;
 	private final int fontStyle;

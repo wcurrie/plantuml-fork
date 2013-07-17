@@ -50,14 +50,17 @@ import net.sourceforge.plantuml.FileFormat;
 import net.sourceforge.plantuml.FileFormatOption;
 import net.sourceforge.plantuml.FontParam;
 import net.sourceforge.plantuml.StringUtils;
+import net.sourceforge.plantuml.activitydiagram3.ftile.EntityImageLegend;
 import net.sourceforge.plantuml.cucadiagram.Display;
 import net.sourceforge.plantuml.eps.EpsStrategy;
+import net.sourceforge.plantuml.graphic.HorizontalAlignment;
 import net.sourceforge.plantuml.graphic.HtmlColor;
 import net.sourceforge.plantuml.graphic.HtmlColorGradient;
 import net.sourceforge.plantuml.graphic.HtmlColorSimple;
 import net.sourceforge.plantuml.graphic.StringBounder;
 import net.sourceforge.plantuml.graphic.StringBounderUtils;
 import net.sourceforge.plantuml.graphic.TextBlock;
+import net.sourceforge.plantuml.graphic.TextBlockUtils;
 import net.sourceforge.plantuml.png.PngTitler;
 import net.sourceforge.plantuml.sequencediagram.Event;
 import net.sourceforge.plantuml.sequencediagram.LifeEvent;
@@ -165,9 +168,9 @@ public class SequenceDiagramFileMakerPuma implements FileMaker {
 		return new Dimension2DDouble(fullDimension.getWidth(), fullDimension.getHeight());
 	}
 
-	private double getImageWidth(SequenceDiagramArea area, boolean rotate, double dpiFactor) {
+	private double getImageWidth(SequenceDiagramArea area, boolean rotate, double dpiFactor, double legendWidth) {
 		final int minsize = diagram.getMinwidth();
-		final double w = getImageWidthWithoutMinsize(area, rotate, dpiFactor);
+		final double w = Math.max(getImageWidthWithoutMinsize(area, rotate, dpiFactor), legendWidth);
 		if (minsize == Integer.MAX_VALUE) {
 			return w;
 		}
@@ -231,11 +234,19 @@ public class SequenceDiagramFileMakerPuma implements FileMaker {
 			backColor = diagram.getSkinParam().getColorMapper()
 					.getMappedColor(diagram.getSkinParam().getBackgroundColor());
 		}
-		UGraphic ug;
 		final FileFormat fileFormat = fileFormatOption.getFileFormat();
 		final double dpiFactor = diagram.getDpiFactor(fileFormatOption);
-		final double imageWidthWithDpi = getImageWidth(area, diagram.isRotation(), 1);
-		// final double imageWidthWithoutDpiAndRotation = getImageWidth(area, false, 1);
+
+		final Display legend = diagram.getLegend();
+		final TextBlock legendBlock;
+		if (legend == null) {
+			legendBlock = TextBlockUtils.empty(0, 0);
+		} else {
+			legendBlock = EntityImageLegend.create(legend, diagram.getSkinParam());
+		}
+		final Dimension2D dimLegend = TextBlockUtils.getDimension(legendBlock);
+
+		UGraphic ug;
 		if (fileFormat == FileFormat.PNG) {
 			double imageHeight = getImageHeight(area, page, diagram.isRotation(), 1);
 			if (imageHeight == 0) {
@@ -247,10 +258,11 @@ public class SequenceDiagramFileMakerPuma implements FileMaker {
 			}
 
 			final Dimension2D dim;
+			final double imageWidthWithDpi = getImageWidth(area, diagram.isRotation(), 1, dimLegend.getWidth());
 			if (diagram.isRotation()) {
-				dim = new Dimension2DDouble(imageHeight, imageWidthWithDpi + flashCodeHeight);
+				dim = new Dimension2DDouble(imageHeight + dimLegend.getHeight(), imageWidthWithDpi + flashCodeHeight);
 			} else {
-				dim = new Dimension2DDouble(imageWidthWithDpi, imageHeight + flashCodeHeight);
+				dim = new Dimension2DDouble(imageWidthWithDpi, imageHeight + flashCodeHeight + dimLegend.getHeight());
 			}
 
 			ug = fileFormatOption.createUGraphic(diagram.getSkinParam().getColorMapper(), dpiFactor, dim, diagram
@@ -284,21 +296,32 @@ public class SequenceDiagramFileMakerPuma implements FileMaker {
 		}
 
 		if (compTitle != null) {
-			// ug.translate(area.getTitleX(), area.getTitleY());
 			final StringBounder stringBounder = ug.getStringBounder();
 			final double h = compTitle.getPreferredHeight(stringBounder);
 			final double w = compTitle.getPreferredWidth(stringBounder);
 			compTitle.drawU(ug.apply(new UTranslate(area.getTitleX(), area.getTitleY())), new Area(
 					new Dimension2DDouble(w, h)), new SimpleContext2D(false));
-			// ug.translate(-area.getTitleX(), -area.getTitleY());
 		}
 
 		addHeader3(area, ug);
 		addFooter3(area, ug);
 
+		final double delta1 = Math.max(0, dimLegend.getWidth() - area.getWidth());
 		// bugnewway X*58
-		ug = ug.apply(new UTranslate(area.getSequenceAreaX(), area.getSequenceAreaY()));
-		drawableSet.drawU(ug, delta, diagramWidth, page, diagram.isShowFootbox());
+		drawableSet.drawU(ug.apply(new UTranslate(area.getSequenceAreaX() + delta1 / 2, area.getSequenceAreaY())),
+				delta, diagramWidth, page, diagram.isShowFootbox());
+
+		if (legend != null) {
+			final double delta2;
+			if (diagram.getLegendAlignment() == HorizontalAlignment.LEFT) {
+				delta2 = 0;
+			} else if (diagram.getLegendAlignment() == HorizontalAlignment.RIGHT) {
+				delta2 = Math.max(0, area.getWidth() - dimLegend.getWidth());
+			} else {
+				delta2 = Math.max(0, area.getWidth() - dimLegend.getWidth()) / 2;
+			}
+			legendBlock.drawU(ug.apply(new UTranslate(delta2, area.getHeight())));
+		}
 
 		return ug;
 	}

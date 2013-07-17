@@ -33,12 +33,34 @@
  */
 package net.sourceforge.plantuml.hector;
 
+import java.util.HashMap;
+import java.util.Map;
+
+import net.sourceforge.plantuml.cucadiagram.Link;
+
 public class PinFactory {
 
-	private int uid = 0;
+	private final Map<Object, Pin> pins = new HashMap<Object, Pin>();
 
-	public Pin create(int row, Object userData) {
-		return new Pin(uid++, row, userData);
+	Pin create(Object userData) {
+		return create(Integer.MAX_VALUE, userData);
+	}
+
+	Pin create(int row, Object userData) {
+		if (userData == null) {
+			return new Pin(row, userData);
+		}
+		Pin result = pins.get(userData);
+		if (result == null) {
+			result = new Pin(row, userData);
+			pins.put(userData, result);
+		}
+		return result;
+	}
+
+	public PinLink createPinLink(Link link) {
+		final PinLink result = new PinLink(create(link.getEntity1()), create(link.getEntity2()), link.getLength(), link);
+		return result;
 	}
 
 }

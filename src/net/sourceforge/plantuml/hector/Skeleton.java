@@ -34,7 +34,7 @@
 package net.sourceforge.plantuml.hector;
 
 import java.util.Collection;
-import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.SortedSet;
@@ -49,9 +49,10 @@ public class Skeleton {
 	public Skeleton(List<Pin> pins, List<PinLink> pinLinks) {
 		this.pins = pins;
 		this.pinLinks = pinLinks;
+		int uid = 0;
 		for (Pin pin : pins) {
+			pin.setUid(uid++);
 			rows.add(pin.getRow());
-
 		}
 	}
 
@@ -64,7 +65,7 @@ public class Skeleton {
 	}
 
 	public Collection<Pin> getPinsOfRow(int row) {
-		final Set<Pin> result = new HashSet<Pin>();
+		final Set<Pin> result = new LinkedHashSet<Pin>();
 		for (Pin pin : pins) {
 			if (pin.getRow() == row) {
 				result.add(pin);
@@ -72,5 +73,11 @@ public class Skeleton {
 		}
 		return result;
 	}
+	
+	public List<PinLink> getPinLinks() {
+		return pinLinks;
+	}
+
+
 
 }

@@ -28,16 +28,12 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 10930 $
+ * Revision $Revision: 11254 $
  *
  */
 package net.sourceforge.plantuml.graphic;
 
-import java.awt.Shape;
-import java.awt.font.FontRenderContext;
-import java.awt.font.TextLayout;
 import java.awt.geom.Dimension2D;
-import java.awt.geom.PathIterator;
 import java.util.Collections;
 import java.util.List;
 
@@ -49,8 +45,6 @@ import net.sourceforge.plantuml.ugraphic.UChangeColor;
 import net.sourceforge.plantuml.ugraphic.UEllipse;
 import net.sourceforge.plantuml.ugraphic.UFont;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
-import net.sourceforge.plantuml.ugraphic.UPath;
-import net.sourceforge.plantuml.ugraphic.USegmentType;
 import net.sourceforge.plantuml.ugraphic.UTranslate;
 
 public class CircledCharacter implements TextBlock {
@@ -97,26 +91,26 @@ public class CircledCharacter implements TextBlock {
 		return 2 * radius;
 	}
 
-	private PathIterator getPathIteratorCharacter(FontRenderContext frc) {
-		final TextLayout textLayout = new TextLayout(c, font.getFont(), frc);
-		final Shape s = textLayout.getOutline(null);
-		return s.getPathIterator(null);
-	}
-
-	public UPath getUPath(FontRenderContext frc) {
-		final UPath result = new UPath();
-
-		final PathIterator path = getPathIteratorCharacter(frc);
-
-		final double coord[] = new double[6];
-		while (path.isDone() == false) {
-			final int code = path.currentSegment(coord);
-			result.add(coord, USegmentType.getByCode(code));
-			path.next();
-		}
-
-		return result;
-	}
+	// private PathIterator getPathIteratorCharacter(FontRenderContext frc) {
+	// final TextLayout textLayout = new TextLayout(c, font.getFont(), frc);
+	// final Shape s = textLayout.getOutline(null);
+	// return s.getPathIterator(null);
+	// }
+	//
+	// private UPath getUPath(FontRenderContext frc) {
+	// final UPath result = new UPath();
+	//
+	// final PathIterator path = getPathIteratorCharacter(frc);
+	//
+	// final double coord[] = new double[6];
+	// while (path.isDone() == false) {
+	// final int code = path.currentSegment(coord);
+	// result.add(coord, USegmentType.getByCode(code));
+	// path.next();
+	// }
+	//
+	// return result;
+	// }
 
 	public Dimension2D calculateDimension(StringBounder stringBounder) {
 		return new Dimension2DDouble(getPreferredWidth(stringBounder), getPreferredHeight(stringBounder));

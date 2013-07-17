@@ -162,12 +162,12 @@ class EntityImpl implements ILeaf, IGroup {
 			throw new IllegalArgumentException();
 		}
 		if (leafType != LeafType.STILL_UNKNOWN) {
-			if (leafType != LeafType.ABSTRACT_CLASS && leafType != LeafType.CLASS && leafType != LeafType.ENUM
-					&& leafType != LeafType.INTERFACE) {
+			if (leafType != LeafType.ANNOTATION && leafType != LeafType.ABSTRACT_CLASS && leafType != LeafType.CLASS
+					&& leafType != LeafType.ENUM && leafType != LeafType.INTERFACE) {
 				throw new IllegalArgumentException("type=" + leafType);
 			}
-			if (newType != LeafType.ABSTRACT_CLASS && newType != LeafType.CLASS && newType != LeafType.ENUM
-					&& newType != LeafType.INTERFACE) {
+			if (newType != LeafType.ANNOTATION && newType != LeafType.ABSTRACT_CLASS && newType != LeafType.CLASS
+					&& newType != LeafType.ENUM && newType != LeafType.INTERFACE) {
 				throw new IllegalArgumentException("newtype=" + newType);
 			}
 		}

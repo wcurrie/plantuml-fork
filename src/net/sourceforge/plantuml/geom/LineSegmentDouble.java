@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 9786 $
+ * Revision $Revision: 11253 $
  *
  */
 package net.sourceforge.plantuml.geom;
@@ -43,7 +43,7 @@ public class LineSegmentDouble extends AbstractLineSegment {
 
 	@Override
 	public String toString() {
-		return String.format(Locale.US, "( %d,%d - %d,%d )", getP1().getX(), getP1().getY(), getP2().getX(), getP2()
+		return String.format(Locale.US, "( %.2f,%.2f - %.2f,%.2f )", getP1().getX(), getP1().getY(), getP2().getX(), getP2()
 				.getY());
 	}
 

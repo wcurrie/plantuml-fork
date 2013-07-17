@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 11160 $
+ * Revision $Revision: 11277 $
  *
  */
 package net.sourceforge.plantuml.cucadiagram;
@@ -49,6 +49,7 @@ import java.util.Set;
 import net.sourceforge.plantuml.FileFormat;
 import net.sourceforge.plantuml.FileFormatOption;
 import net.sourceforge.plantuml.Log;
+import net.sourceforge.plantuml.OptionFlags;
 import net.sourceforge.plantuml.UmlDiagram;
 import net.sourceforge.plantuml.UmlDiagramType;
 import net.sourceforge.plantuml.api.ImageDataSimple;
@@ -56,7 +57,9 @@ import net.sourceforge.plantuml.core.ImageData;
 import net.sourceforge.plantuml.cucadiagram.dot.CucaDiagramPngMaker3;
 import net.sourceforge.plantuml.cucadiagram.dot.CucaDiagramTxtMaker;
 import net.sourceforge.plantuml.cucadiagram.entity.EntityFactory;
+import net.sourceforge.plantuml.hector.CucaDiagramFileMakerHectorB2;
 import net.sourceforge.plantuml.skin.VisibilityModifier;
+import net.sourceforge.plantuml.svek.CucaDiagramFileMaker;
 import net.sourceforge.plantuml.svek.CucaDiagramFileMakerSvek;
 import net.sourceforge.plantuml.svek.SingleStrategy;
 import net.sourceforge.plantuml.ugraphic.ColorMapper;
@@ -286,7 +289,8 @@ public abstract class CucaDiagram extends UmlDiagram implements GroupHierarchy, 
 			throw new UnsupportedOperationException();
 		}
 
-		final CucaDiagramFileMakerSvek maker = new CucaDiagramFileMakerSvek(this, flashcodes);
+		final CucaDiagramFileMaker maker = OptionFlags.USE_HECTOR ? new CucaDiagramFileMakerHectorB2(this)
+				: new CucaDiagramFileMakerSvek(this, flashcodes);
 		final ImageData result = maker.createFile(os, getDotStrings(), fileFormatOption);
 
 		if (result == null) {
@@ -530,10 +534,9 @@ public abstract class CucaDiagram extends UmlDiagram implements GroupHierarchy, 
 			}
 		}
 	}
-	
+
 	public boolean isHideEmptyDescriptionForState() {
 		return false;
 	}
-
 
 }

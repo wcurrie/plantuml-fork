@@ -39,6 +39,7 @@ import java.awt.geom.AffineTransform;
 import java.awt.geom.Dimension2D;
 import java.awt.image.BufferedImage;
 
+import net.sourceforge.plantuml.eps.EpsStrategy;
 import net.sourceforge.plantuml.graphic.HtmlColor;
 import net.sourceforge.plantuml.graphic.HtmlColorGradient;
 import net.sourceforge.plantuml.graphic.HtmlColorSimple;
@@ -47,8 +48,11 @@ import net.sourceforge.plantuml.ugraphic.ColorMapper;
 import net.sourceforge.plantuml.ugraphic.UChangeBackColor;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
 import net.sourceforge.plantuml.ugraphic.URectangle;
+import net.sourceforge.plantuml.ugraphic.eps.UGraphicEps;
 import net.sourceforge.plantuml.ugraphic.g2d.UGraphicG2d;
+import net.sourceforge.plantuml.ugraphic.html5.UGraphicHtml5;
 import net.sourceforge.plantuml.ugraphic.svg.UGraphicSvg;
+import net.sourceforge.plantuml.ugraphic.visio.UGraphicVdx;
 
 /**
  * A FileFormat with some parameters.
@@ -96,8 +100,16 @@ public class FileFormatOption {
 			return createUGraphicPNG(colorMapper, dpiFactor, dim, mybackcolor, rotation);
 		case SVG:
 			return createUGraphicSVG(colorMapper, dpiFactor, dim, mybackcolor, rotation);
+		case EPS:
+			return new UGraphicEps(colorMapper, EpsStrategy.getDefault2());
+		case EPS_TEXT:
+			return new UGraphicEps(colorMapper, EpsStrategy.WITH_MACRO_AND_TEXT);
+		case HTML5:
+			return new UGraphicHtml5(colorMapper);
+		case VDX:
+			return new UGraphicVdx(colorMapper);
 		default:
-			throw new UnsupportedOperationException();
+			throw new UnsupportedOperationException(fileFormat.toString());
 		}
 
 	}

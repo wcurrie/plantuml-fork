@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 11116 $
+ * Revision $Revision: 11188 $
  *
  */
 package net.sourceforge.plantuml.ugraphic.g2d;
@@ -86,26 +86,7 @@ public class DriverRectangleG2d extends DriverShadowedG2d implements UDriver<Gra
 
 		final HtmlColor back = param.getBackcolor();
 		if (back instanceof HtmlColorGradient) {
-			final HtmlColorGradient gr = (HtmlColorGradient) back;
-			final char policy = gr.getPolicy();
-			final GradientPaint paint;
-			if (policy == '|') {
-				paint = new GradientPaint((float) x, (float) (y + shape.getHeight()) / 2, mapper.getMappedColor(gr
-						.getColor1()), (float) (x + shape.getWidth()), (float) (y + shape.getHeight()) / 2,
-						mapper.getMappedColor(gr.getColor2()));
-			} else if (policy == '\\') {
-				paint = new GradientPaint((float) x, (float) (y + shape.getHeight()), mapper.getMappedColor(gr
-						.getColor1()), (float) (x + shape.getWidth()), (float) y, mapper.getMappedColor(gr.getColor2()));
-			} else if (policy == '-') {
-				paint = new GradientPaint((float) (x + shape.getWidth()) / 2, (float) y, mapper.getMappedColor(gr
-						.getColor1()), (float) (x + shape.getWidth()) / 2, (float) (y + shape.getHeight()),
-						mapper.getMappedColor(gr.getColor2()));
-			} else {
-				// for /
-				paint = new GradientPaint((float) x, (float) y, mapper.getMappedColor(gr.getColor1()),
-						(float) (x + shape.getWidth()), (float) (y + shape.getHeight()), mapper.getMappedColor(gr
-								.getColor2()));
-			}
+			final GradientPaint paint = getPaintGradient(x, y, mapper, shape, back);
 			g2d.setPaint(paint);
 			g2d.fill(rect);
 
@@ -128,6 +109,31 @@ public class DriverRectangleG2d extends DriverShadowedG2d implements UDriver<Gra
 				g2d.draw(rect);
 			}
 		}
+	}
+
+	private GradientPaint getPaintGradient(double x, double y, ColorMapper mapper, final URectangle shape,
+			final HtmlColor back) {
+		final HtmlColorGradient gr = (HtmlColorGradient) back;
+		final char policy = gr.getPolicy();
+		final GradientPaint paint;
+		if (policy == '|') {
+			paint = new GradientPaint((float) x, (float) (y + shape.getHeight()) / 2, mapper.getMappedColor(gr
+					.getColor1()), (float) (x + shape.getWidth()), (float) (y + shape.getHeight()) / 2,
+					mapper.getMappedColor(gr.getColor2()));
+		} else if (policy == '\\') {
+			paint = new GradientPaint((float) x, (float) (y + shape.getHeight()), mapper.getMappedColor(gr
+					.getColor1()), (float) (x + shape.getWidth()), (float) y, mapper.getMappedColor(gr.getColor2()));
+		} else if (policy == '-') {
+			paint = new GradientPaint((float) (x + shape.getWidth()) / 2, (float) y, mapper.getMappedColor(gr
+					.getColor1()), (float) (x + shape.getWidth()) / 2, (float) (y + shape.getHeight()),
+					mapper.getMappedColor(gr.getColor2()));
+		} else {
+			// for /
+			paint = new GradientPaint((float) x, (float) y, mapper.getMappedColor(gr.getColor1()),
+					(float) (x + shape.getWidth()), (float) (y + shape.getHeight()), mapper.getMappedColor(gr
+							.getColor2()));
+		}
+		return paint;
 	}
 
 	public static void managePattern(UParam param, Graphics2D g2d) {

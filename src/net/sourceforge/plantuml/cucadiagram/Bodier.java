@@ -93,8 +93,9 @@ public class Bodier {
 	}
 
 	private boolean isMethod(String s) {
-		if (getEntityType() == LeafType.ABSTRACT_CLASS || getEntityType() == LeafType.CLASS
-				|| getEntityType() == LeafType.INTERFACE || getEntityType() == LeafType.ENUM) {
+		if (getEntityType() == LeafType.ANNOTATION || getEntityType() == LeafType.ABSTRACT_CLASS
+				|| getEntityType() == LeafType.CLASS || getEntityType() == LeafType.INTERFACE
+				|| getEntityType() == LeafType.ENUM) {
 			return StringUtils.isMethod(s);
 		}
 		return false;

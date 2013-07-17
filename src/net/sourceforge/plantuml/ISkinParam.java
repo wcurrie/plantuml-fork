@@ -89,5 +89,7 @@ public interface ISkinParam extends SpriteContainer {
 	public double maxMessageSize();
 	
 	public boolean strictUmlStyle();
+	
+	public boolean forceSequenceParticipantUnderlined();
 
 }

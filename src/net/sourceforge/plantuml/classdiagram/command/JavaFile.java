@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  *
- * Revision $Revision: 9786 $
+ * Revision $Revision: 11254 $
  *
  */
 package net.sourceforge.plantuml.classdiagram.command;
@@ -48,7 +48,7 @@ import net.sourceforge.plantuml.cucadiagram.LeafType;
 class JavaFile {
 
 	private static final Pattern classDefinition = Pattern
-			.compile("^(?:public\\s+|abstract\\s+|final\\s+)*(class|interface|enum)\\s+(\\w+)(?:.*\\b(extends|implements)\\s+([\\w\\s,]+))?");
+			.compile("^(?:public\\s+|abstract\\s+|final\\s+)*(class|interface|enum|annotation)\\s+(\\w+)(?:.*\\b(extends|implements)\\s+([\\w\\s,]+))?");
 
 	private static final Pattern packageDefinition = Pattern.compile("^package\\s+([\\w+.]+)\\s*;");
 

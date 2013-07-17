@@ -72,7 +72,7 @@ final public class UmlSource {
 			final StringBuilder pending = new StringBuilder();
 			for (CharSequence cs : source) {
 				final String s = cs.toString();
-				if (s.endsWith("\\")) {
+				if (s.endsWith("\\") && s.endsWith("\\\\") == false) {
 					pending.append(s.substring(0, s.length() - 1));
 				} else {
 					pending.append(s);

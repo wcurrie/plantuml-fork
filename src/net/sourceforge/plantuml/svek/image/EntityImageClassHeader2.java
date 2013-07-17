@@ -127,40 +127,37 @@ public class EntityImageClassHeader2 extends AbstractEntityImage {
 		if (stereotype != null && stereotype.getSprite() != null) {
 			return skinParam.getSprite(stereotype.getSprite()).asTextBlock(stereotype.getHtmlColor());
 		}
+		final UFont font = SkinParamUtils.getFont(getSkinParam(), FontParam.CIRCLED_CHARACTER, null);
+		final HtmlColor classBorder = SkinParamUtils.getColor(getSkinParam(), ColorParam.classBorder, stereotype);
 		if (stereotype != null && stereotype.getCharacter() != 0) {
-			final HtmlColor classBorder = SkinParamUtils.getColor(getSkinParam(), ColorParam.classBorder, stereotype);
-			final UFont font = SkinParamUtils.getFont(getSkinParam(), FontParam.CIRCLED_CHARACTER, null);
 			return new CircledCharacter(stereotype.getCharacter(), getSkinParam().getCircledCharacterRadius(), font,
 					stereotype.getHtmlColor(), classBorder, SkinParamUtils.getFontColor(getSkinParam(),
 							FontParam.CIRCLED_CHARACTER, null));
 		}
+		if (entity.getEntityType() == LeafType.ANNOTATION) {
+			return new CircledCharacter('@', getSkinParam().getCircledCharacterRadius(), font, SkinParamUtils.getColor(
+					getSkinParam(), ColorParam.stereotypeABackground, stereotype), classBorder,
+					SkinParamUtils.getFontColor(getSkinParam(), FontParam.CIRCLED_CHARACTER, null));
+		}
 		if (entity.getEntityType() == LeafType.ABSTRACT_CLASS) {
-			return new CircledCharacter('A', getSkinParam().getCircledCharacterRadius(), SkinParamUtils.getFont(
-					getSkinParam(), FontParam.CIRCLED_CHARACTER, null), SkinParamUtils.getColor(getSkinParam(),
-					ColorParam.stereotypeABackground, stereotype), SkinParamUtils.getColor(getSkinParam(),
-					ColorParam.classBorder, stereotype), SkinParamUtils.getFontColor(getSkinParam(),
-					FontParam.CIRCLED_CHARACTER, null));
+			return new CircledCharacter('A', getSkinParam().getCircledCharacterRadius(), font, SkinParamUtils.getColor(
+					getSkinParam(), ColorParam.stereotypeABackground, stereotype), classBorder,
+					SkinParamUtils.getFontColor(getSkinParam(), FontParam.CIRCLED_CHARACTER, null));
 		}
 		if (entity.getEntityType() == LeafType.CLASS) {
-			return new CircledCharacter('C', getSkinParam().getCircledCharacterRadius(), SkinParamUtils.getFont(
-					getSkinParam(), FontParam.CIRCLED_CHARACTER, null), SkinParamUtils.getColor(getSkinParam(),
-					ColorParam.stereotypeCBackground, stereotype), SkinParamUtils.getColor(getSkinParam(),
-					ColorParam.classBorder, stereotype), SkinParamUtils.getFontColor(getSkinParam(),
-					FontParam.CIRCLED_CHARACTER, null));
+			return new CircledCharacter('C', getSkinParam().getCircledCharacterRadius(), font, SkinParamUtils.getColor(
+					getSkinParam(), ColorParam.stereotypeCBackground, stereotype), classBorder,
+					SkinParamUtils.getFontColor(getSkinParam(), FontParam.CIRCLED_CHARACTER, null));
 		}
 		if (entity.getEntityType() == LeafType.INTERFACE) {
-			return new CircledCharacter('I', getSkinParam().getCircledCharacterRadius(), SkinParamUtils.getFont(
-					getSkinParam(), FontParam.CIRCLED_CHARACTER, null), SkinParamUtils.getColor(getSkinParam(),
-					ColorParam.stereotypeIBackground, stereotype), SkinParamUtils.getColor(getSkinParam(),
-					ColorParam.classBorder, stereotype), SkinParamUtils.getFontColor(getSkinParam(),
-					FontParam.CIRCLED_CHARACTER, null));
+			return new CircledCharacter('I', getSkinParam().getCircledCharacterRadius(), font, SkinParamUtils.getColor(
+					getSkinParam(), ColorParam.stereotypeIBackground, stereotype), classBorder,
+					SkinParamUtils.getFontColor(getSkinParam(), FontParam.CIRCLED_CHARACTER, null));
 		}
 		if (entity.getEntityType() == LeafType.ENUM) {
-			return new CircledCharacter('E', getSkinParam().getCircledCharacterRadius(), SkinParamUtils.getFont(
-					getSkinParam(), FontParam.CIRCLED_CHARACTER, null), SkinParamUtils.getColor(getSkinParam(),
-					ColorParam.stereotypeEBackground, stereotype), SkinParamUtils.getColor(getSkinParam(),
-					ColorParam.classBorder, stereotype), SkinParamUtils.getFontColor(getSkinParam(),
-					FontParam.CIRCLED_CHARACTER, null));
+			return new CircledCharacter('E', getSkinParam().getCircledCharacterRadius(), font, SkinParamUtils.getColor(
+					getSkinParam(), ColorParam.stereotypeEBackground, stereotype), classBorder,
+					SkinParamUtils.getFontColor(getSkinParam(), FontParam.CIRCLED_CHARACTER, null));
 		}
 		assert false;
 		return null;

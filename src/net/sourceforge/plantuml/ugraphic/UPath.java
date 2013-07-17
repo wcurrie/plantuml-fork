@@ -37,8 +37,6 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import net.sourceforge.plantuml.graphic.StringBounder;
-
 public class UPath extends AbstractShadowable implements Iterable<USegment> {
 
 	private final List<USegment> segments = new ArrayList<USegment>();

@@ -57,6 +57,14 @@ public class Display implements Iterable<CharSequence> {
 		this.display.addAll(other);
 	}
 
+	public Display underlined() {
+		final List<CharSequence> result = new ArrayList<CharSequence>();
+		for (CharSequence line : display) {
+			result.add("<u>" + line);
+		}
+		return new Display(result);
+	}
+
 	@Override
 	public String toString() {
 		return display.toString();
@@ -179,7 +187,7 @@ public class Display implements Iterable<CharSequence> {
 		result.display.add(current.toString());
 		return result;
 	}
-	
+
 	public Url initUrl() {
 		if (this.size() == 0) {
 			return null;
@@ -198,8 +206,5 @@ public class Display implements Iterable<CharSequence> {
 		return result;
 
 	}
-
-
-
 
 }

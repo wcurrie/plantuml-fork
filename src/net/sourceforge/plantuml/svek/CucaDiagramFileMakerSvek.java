@@ -85,7 +85,7 @@ import net.sourceforge.plantuml.ugraphic.g2d.UGraphicG2d;
 import net.sourceforge.plantuml.ugraphic.svg.UGraphicSvg;
 import net.sourceforge.plantuml.ugraphic.visio.UGraphicVdx;
 
-public final class CucaDiagramFileMakerSvek {
+public final class CucaDiagramFileMakerSvek implements CucaDiagramFileMaker {
 
 	private final CucaDiagram diagram;
 	private final List<BufferedImage> flashcodes;
@@ -277,7 +277,7 @@ public final class CucaDiagramFileMakerSvek {
 		if (legend == null) {
 			return original;
 		}
-		final TextBlock text = new EntityImageLegend(legend, diagram.getSkinParam());
+		final TextBlock text = EntityImageLegend.create(legend, diagram.getSkinParam());
 
 		return DecorateEntityImage.addBottom(original, text, diagram.getLegendAlignment());
 	}

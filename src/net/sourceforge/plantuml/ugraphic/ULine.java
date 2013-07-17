@@ -28,12 +28,11 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 11025 $
+ * Revision $Revision: 11235 $
  *
  */
 package net.sourceforge.plantuml.ugraphic;
 
-import net.sourceforge.plantuml.graphic.StringBounder;
 
 public class ULine extends AbstractShadowable {
 

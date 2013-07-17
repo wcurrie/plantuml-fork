@@ -73,6 +73,7 @@ public final class CucaDiagramHtmlMaker {
 		pw.println("<html>");
 		printAllType(pw, LeafType.ENUM);
 		printAllType(pw, LeafType.INTERFACE);
+		printAllType(pw, LeafType.ANNOTATION);
 		printAllType(pw, LeafType.ABSTRACT_CLASS);
 		printAllType(pw, LeafType.CLASS);
 		htmlClose(pw);

@@ -1,0 +1,82 @@
+/* ========================================================================
+ * PlantUML : a free UML diagram generator
+ * ========================================================================
+ *
+ * (C) Copyright 2009-2013, Arnaud Roques
+ *
+ * Project Info:  http://plantuml.sourceforge.net
+ * 
+ * This file is part of PlantUML.
+ *
+ * PlantUML is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * PlantUML distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+ * or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public
+ * License for more details.
+ *
+ * You should have received a copy of the GNU General Public
+ * License along with this library; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301,
+ * USA.
+ *
+ * [Java is a trademark or registered trademark of Sun Microsystems, Inc.
+ * in the United States and other countries.]
+ *
+ * Original Author:  Arnaud Roques
+ * 
+ * Revision $Revision: 5079 $
+ *
+ */
+package net.sourceforge.plantuml.hector;
+
+class UnlinearCompression {
+
+	private final double inner;
+	private final double outer;
+
+	public UnlinearCompression(double inner, double outer) {
+		this.inner = inner;
+		this.outer = outer;
+	}
+
+	public double compress(double x) {
+		final double pour = x / (inner + outer);
+		final double pourInter = Math.floor(pour);
+		x -= pourInter * (inner + outer);
+		if (x < inner) {
+			return pourInter * outer;
+		}
+		return x - inner + pourInter * outer;
+	}
+
+	public double uncompress(double x) {
+		final int pourInter = nbOuterBefore(x);
+		x += pourInter * inner;
+		return x;
+	}
+
+	private int nbOuterBefore(double x) {
+		final double pour = x / outer;
+		final int pourInter = (int) Math.floor(pour);
+		return pourInter + 1;
+	}
+
+	public double[] encounteredSingularities(double from, double to) {
+		final int outer1 = nbOuterBefore(from);
+		final int outer2 = nbOuterBefore(to);
+		final double result[] = new double[outer2 - outer1];
+		for (int i = 0; i < result.length; i++) {
+			result[i] = (outer1 + i) * outer;
+		}
+		return result;
+	}
+
+	public double innerSize() {
+		return inner;
+	}
+
+}

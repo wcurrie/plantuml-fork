@@ -83,8 +83,6 @@ public class QuoteUtils {
 			"N'ai-je donc tant vecu que pour cette infamie?", //
 			"Something is rotten in the State of Denmark.", //
 			"Hey, what do you want? Miracles?", //
-			"Pour qui sont ces serpents qui sifflent sur vos tetes?", //
-			"Le silence eternel de ces espaces infinis m'effraie.", //
 			"1.21 gigawatts! 1.21 gigawatts. Great Scott! ", //
 			"What the hell is a gigawatt?", //
 			"I need a vacation." //

@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 11134 $
+ * Revision $Revision: 11263 $
  *
  */
 package net.sourceforge.plantuml.sequencediagram.graphic;
@@ -597,12 +597,13 @@ class DrawableSetInitializer {
 		}
 		final ISkinParam skinParam = new SkinParamBackcolored(drawableSet.getSkinParam(), p.getSpecificBackColor(),
 				p.getUrl() != null);
-		final Component head = drawableSet.getSkin().createComponent(headType, null, skinParam, p.getDisplay());
-		final Component tail = drawableSet.getSkin().createComponent(tailType, null, skinParam, p.getDisplay());
+		final Display participantDisplay = p.getDisplay(skinParam.forceSequenceParticipantUnderlined());
+		final Component head = drawableSet.getSkin().createComponent(headType, null, skinParam, participantDisplay);
+		final Component tail = drawableSet.getSkin().createComponent(tailType, null, skinParam, participantDisplay);
 		final Component line = drawableSet.getSkin().createComponent(this.defaultLineType, null,
-				drawableSet.getSkinParam(), p.getDisplay());
+				drawableSet.getSkinParam(), participantDisplay);
 		final Component delayLine = drawableSet.getSkin().createComponent(ComponentType.DELAY_LINE, null,
-				drawableSet.getSkinParam(), p.getDisplay());
+				drawableSet.getSkinParam(), participantDisplay);
 		final ParticipantBox box = new ParticipantBox(head, line, tail, delayLine, this.freeX);
 
 		final Component comp = drawableSet.getSkin().createComponent(ComponentType.ALIVE_BOX_CLOSE_CLOSE, null,

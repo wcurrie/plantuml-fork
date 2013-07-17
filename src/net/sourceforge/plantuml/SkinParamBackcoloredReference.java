@@ -158,5 +158,9 @@ public class SkinParamBackcoloredReference implements ISkinParam {
 		return skinParam.strictUmlStyle();
 	}
 
+	public boolean forceSequenceParticipantUnderlined() {
+		return skinParam.forceSequenceParticipantUnderlined();
+	}
+
 
 }

@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 9786 $
+ * Revision $Revision: 11271 $
  *
  */
 package net.sourceforge.plantuml.geom;
@@ -101,7 +101,7 @@ public abstract class AbstractLineSegment extends Line2D {
 		return isBetween(toTest.getX(), pos1.getX(), pos2.getX()) && isBetween(toTest.getY(), pos1.getY(), pos2.getY());
 	}
 
-	private double getIntersectionVertical(double xOther) {
+	public double getIntersectionVertical(double xOther) {
 		final double coef = getP2().getX() - getP1().getX();
 		if (coef == 0) {
 			return java.lang.Double.NaN;
@@ -109,7 +109,7 @@ public abstract class AbstractLineSegment extends Line2D {
 		return (xOther - getP1().getX()) / coef;
 	}
 
-	private double getIntersectionHorizontal(double yOther) {
+	public double getIntersectionHorizontal(double yOther) {
 		final double coef = getP2().getY() - getP1().getY();
 		if (coef == 0) {
 			return java.lang.Double.NaN;

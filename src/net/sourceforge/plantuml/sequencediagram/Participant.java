@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 9786 $
+ * Revision $Revision: 11263 $
  *
  */
 package net.sourceforge.plantuml.sequencediagram;
@@ -73,7 +73,10 @@ public class Participant implements SpecificBackcolorable {
 		return getCode();
 	}
 
-	public Display getDisplay() {
+	public Display getDisplay(boolean underlined) {
+		if (underlined) {
+			return display.underlined();
+		}
 		return display;
 	}
 
@@ -82,9 +85,9 @@ public class Participant implements SpecificBackcolorable {
 	}
 
 	public final void setStereotype(Stereotype stereotype, boolean stereotypePositionTop) {
-//		if (type == ParticipantType.ACTOR) {
-//			return;
-//		}
+		// if (type == ParticipantType.ACTOR) {
+		// return;
+		// }
 		if (this.stereotype != null) {
 			throw new IllegalStateException();
 		}

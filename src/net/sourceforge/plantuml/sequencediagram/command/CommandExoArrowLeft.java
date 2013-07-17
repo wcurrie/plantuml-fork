@@ -39,18 +39,18 @@ import net.sourceforge.plantuml.command.regex.RegexOr;
 import net.sourceforge.plantuml.command.regex.RegexResult;
 import net.sourceforge.plantuml.sequencediagram.MessageExoType;
 
-public class CommandExoArrowRight2 extends CommandExoArrowAny2 {
+public class CommandExoArrowLeft extends CommandExoArrowAny {
 
-	public CommandExoArrowRight2() {
+	public CommandExoArrowLeft() {
 		super(getRegexConcat());
 	}
 
 	static RegexConcat getRegexConcat() {
 		return new RegexConcat(new RegexLeaf("^"), //
-				new RegexLeaf("PARTICIPANT", "([\\p{L}0-9_.@]+|\"[^\"]+\")"), //
-				new RegexLeaf("\\s*"), //
+				new RegexLeaf("\\[?"), //
 				new RegexOr( //
 						new RegexConcat( //
+								new RegexLeaf("ARROW_BOTHDRESSING", "(<<?|//?|\\\\\\\\?)?"), //
 								new RegexLeaf("ARROW_BODYA1", "(-+)"), //
 								new RegexLeaf("ARROW_STYLE1", CommandArrow.getColorOrStylePattern()), //
 								new RegexLeaf("ARROW_BODYB1", "(-*)"), //
@@ -60,7 +60,8 @@ public class CommandExoArrowRight2 extends CommandExoArrowAny2 {
 								new RegexLeaf("ARROW_BODYB1", "(-*)"), //
 								new RegexLeaf("ARROW_STYLE2", CommandArrow.getColorOrStylePattern()), //
 								new RegexLeaf("ARROW_BODYA2", "(-+)"))), //
-				new RegexLeaf("\\]?"), //
+				new RegexLeaf("\\s*"), //
+				new RegexLeaf("PARTICIPANT", "([\\p{L}0-9_.@]+|\"[^\"]+\")"), //
 				new RegexLeaf("\\s*"), //
 				new RegexLeaf("LABEL", "(?::\\s*(.*))?"), //
 				new RegexLeaf("$"));
@@ -71,10 +72,10 @@ public class CommandExoArrowRight2 extends CommandExoArrowAny2 {
 		final String dressing1 = arg2.get("ARROW_DRESSING1", 0);
 		final String dressing2 = arg2.get("ARROW_DRESSING2", 0);
 		if (dressing1 != null) {
-			return MessageExoType.TO_RIGHT;
+			return MessageExoType.FROM_LEFT;
 		}
 		if (dressing2 != null) {
-			return MessageExoType.FROM_RIGHT;
+			return MessageExoType.TO_LEFT;
 		}
 		throw new IllegalArgumentException();
 	}

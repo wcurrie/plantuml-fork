@@ -66,7 +66,7 @@ public class CommandHideShow extends SingleLineCommand2<ClassDiagram> {
 				new RegexLeaf("COMMAND", "(hide|show)"), //
 				new RegexLeaf("\\s+"), //
 				new RegexLeaf("GENDER",
-						"(?:(class|interface|enum|abstract|[\\p{L}0-9_.]+|\"[^\"]+\"|\\<\\<.*\\>\\>)\\s+)*?"), //
+						"(?:(class|interface|enum|annotation|abstract|[\\p{L}0-9_.]+|\"[^\"]+\"|\\<\\<.*\\>\\>)\\s+)*?"), //
 				new RegexLeaf("EMPTY", "(?:(empty)\\s+)?"), //
 				new RegexLeaf("PORTION", "(members?|attributes?|fields?|methods?|circle\\w*|stereotypes?)"), //
 				new RegexLeaf("$"));
@@ -103,6 +103,8 @@ public class CommandHideShow extends SingleLineCommand2<ClassDiagram> {
 			gender = EntityGenderUtils.byEntityType(LeafType.ENUM);
 		} else if (arg1.equalsIgnoreCase("abstract")) {
 			gender = EntityGenderUtils.byEntityType(LeafType.ABSTRACT_CLASS);
+		} else if (arg1.equalsIgnoreCase("annotation")) {
+			gender = EntityGenderUtils.byEntityType(LeafType.ANNOTATION);
 		} else if (arg1.startsWith("<<")) {
 			gender = EntityGenderUtils.byStereotype(arg1);
 		} else {

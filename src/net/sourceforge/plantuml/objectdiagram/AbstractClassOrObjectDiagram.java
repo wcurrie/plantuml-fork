@@ -164,6 +164,7 @@ public abstract class AbstractClassOrObjectDiagram extends AbstractEntityDiagram
 			entity1ToPoint = new Link(entity1, point, existingLink.getType().getPart2(), existingLink.getLabel(),
 					existingLink.getLength(), existingLink.getQualifier1(), null, existingLink.getLabeldistance(),
 					existingLink.getLabelangle());
+			entity1ToPoint.setLinkArrow(existingLink.getLinkArrow());
 			pointToEntity2 = new Link(point, entity2, existingLink.getType().getPart1(), null,
 					existingLink.getLength(), null, existingLink.getQualifier2(), existingLink.getLabeldistance(),
 					existingLink.getLabelangle());

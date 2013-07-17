@@ -46,6 +46,7 @@ import java.util.regex.Pattern;
 import net.sourceforge.plantuml.ColorParam;
 import net.sourceforge.plantuml.EmptyImageBuilder;
 import net.sourceforge.plantuml.FontParam;
+import net.sourceforge.plantuml.ISkinParam;
 import net.sourceforge.plantuml.LineParam;
 import net.sourceforge.plantuml.Log;
 import net.sourceforge.plantuml.SkinParamForecolored;
@@ -60,6 +61,7 @@ import net.sourceforge.plantuml.cucadiagram.LeafType;
 import net.sourceforge.plantuml.cucadiagram.Link;
 import net.sourceforge.plantuml.cucadiagram.Member;
 import net.sourceforge.plantuml.cucadiagram.MethodsOrFieldsArea;
+import net.sourceforge.plantuml.cucadiagram.PortionShower;
 import net.sourceforge.plantuml.cucadiagram.Stereotype;
 import net.sourceforge.plantuml.cucadiagram.UnparsableGraphvizException;
 import net.sourceforge.plantuml.cucadiagram.dot.DotData;
@@ -153,11 +155,12 @@ public final class CucaDiagramFileMakerSvek2 {
 					// final Group g2 = ((IEntityMutable) link.getEntity2()).getContainerOrEquivalent();
 					lhead = getCluster2((IEntity) link.getEntity2()).getClusterId();
 				}
-				final FontConfiguration labelFont = new FontConfiguration(dotData.getSkinParam().getFont(
-						FontParam.ACTIVITY_ARROW, null), HtmlColorUtils.BLACK);
+				final ISkinParam skinParam = dotData.getSkinParam();
+				final FontConfiguration labelFont = new FontConfiguration(skinParam.getFont(FontParam.GENERIC_ARROW,
+						null), skinParam.getFontHtmlColor(FontParam.GENERIC_ARROW, null));
 
-				final Line line = new Line(shapeUid1, shapeUid2, link, colorSequence, ltail, lhead,
-						dotData.getSkinParam(), stringBounder, labelFont, getBibliotekon());
+				final Line line = new Line(shapeUid1, shapeUid2, link, colorSequence, ltail, lhead, skinParam,
+						stringBounder, labelFont, getBibliotekon());
 				// if (OptionFlags.PIC_LINE && link.getLabel() != null && link.getLabel().startsWith("@")) {
 				// final Group container1 = link.getEntity1().getContainer();
 				// if (container1 != null) {
@@ -204,9 +207,9 @@ public final class CucaDiagramFileMakerSvek2 {
 			}
 			final HtmlColor border;
 			if (dotData.getUmlDiagramType() == UmlDiagramType.STATE) {
-				border = getColor(ColorParam.stateBorder, null);
+				border = getColor(ColorParam.stateBorder, null, dotData.getSkinParam());
 			} else {
-				border = getColor(ColorParam.packageBorder, null);
+				border = getColor(ColorParam.packageBorder, null, dotData.getSkinParam());
 			}
 			final SvekResult result = new SvekResult(position, dotData, dotStringFactory, border, hasVerticalLine);
 			result.moveSvek(6 - minX, -minY);
@@ -243,9 +246,9 @@ public final class CucaDiagramFileMakerSvek2 {
 		return nb == 1;
 	}
 
-	private HtmlColor getColor(ColorParam colorParam, Stereotype stereo) {
+	private static HtmlColor getColor(ColorParam colorParam, Stereotype stereo, ISkinParam skinParam) {
 		final String s = stereo == null ? null : stereo.getLabel();
-		return new Rose().getHtmlColor(dotData.getSkinParam(), colorParam, s);
+		return new Rose().getHtmlColor(skinParam, colorParam, s);
 	}
 
 	private Cluster getCluster(IEntity g) {
@@ -307,7 +310,7 @@ public final class CucaDiagramFileMakerSvek2 {
 		if (ent.isRemoved()) {
 			throw new IllegalStateException();
 		}
-		final IEntityImage image = printEntity(ent, dotData);
+		final IEntityImage image = printEntityInternal(ent);
 		final Dimension2D dim = image.calculateDimension(stringBounder);
 		final Shape shape = new Shape(image, image.getShapeType(), dim.getWidth(), dim.getHeight(), colorSequence,
 				ent.isTop(), image.getShield(), ent.getUrls(), ent.getEntityPosition());
@@ -315,122 +318,125 @@ public final class CucaDiagramFileMakerSvek2 {
 		getBibliotekon().putShape(ent, shape);
 	}
 
-	private IEntityImage printEntity(ILeaf ent, DotData dotData) {
+	private IEntityImage printEntityInternal(ILeaf ent) {
 		if (ent.isRemoved()) {
 			throw new IllegalStateException();
 		}
 		if (ent.getSvekImage() == null) {
-			return createEntityImageBlock(dotData, ent);
+			return createEntityImageBlock(ent, dotData.getSkinParam(), dotData.isHideEmptyDescriptionForState(),
+					dotData, getBibliotekon());
 		}
 		return ent.getSvekImage();
 	}
 
-	private IEntityImage createEntityImageBlock(DotData dotData, ILeaf leaf) {
+	public static IEntityImage createEntityImageBlock(ILeaf leaf, ISkinParam skinParam,
+			boolean isHideEmptyDescriptionForState, PortionShower portionShower, Bibliotekon bibliotekon) {
 		if (leaf.isRemoved()) {
 			throw new IllegalStateException();
 		}
-		if (leaf.getEntityType() == LeafType.CLASS || leaf.getEntityType() == LeafType.ABSTRACT_CLASS
-				|| leaf.getEntityType() == LeafType.INTERFACE || leaf.getEntityType() == LeafType.ENUM) {
-			return new EntityImageClass((ILeaf) leaf, dotData.getSkinParam(), dotData);
+		if (leaf.getEntityType() == LeafType.CLASS || leaf.getEntityType() == LeafType.ANNOTATION
+				|| leaf.getEntityType() == LeafType.ABSTRACT_CLASS || leaf.getEntityType() == LeafType.INTERFACE
+				|| leaf.getEntityType() == LeafType.ENUM) {
+			return new EntityImageClass((ILeaf) leaf, skinParam, portionShower);
 		}
 		if (leaf.getEntityType() == LeafType.NOTE) {
-			return new EntityImageNote(leaf, dotData.getSkinParam());
+			return new EntityImageNote(leaf, skinParam);
 		}
 		if (leaf.getEntityType() == LeafType.ACTIVITY) {
-			return new EntityImageActivity(leaf, dotData.getSkinParam());
+			return new EntityImageActivity(leaf, skinParam);
 		}
 		if (leaf.getEntityType() == LeafType.STATE) {
 			if (leaf.getEntityPosition() != EntityPosition.NORMAL) {
-				final Cluster stateParent = getBibliotekon().getCluster(leaf.getParentContainer());
-				return new EntityImageStateBorder(leaf, dotData.getSkinParam(), stateParent, getBibliotekon());
+				final Cluster stateParent = bibliotekon.getCluster(leaf.getParentContainer());
+				return new EntityImageStateBorder(leaf, skinParam, stateParent, bibliotekon);
 			}
-			if (dotData.isHideEmptyDescriptionForState() && leaf.getFieldsToDisplay().size() == 0) {
-				return new EntityImageStateEmptyDescription(leaf, dotData.getSkinParam());
+			if (isHideEmptyDescriptionForState && leaf.getFieldsToDisplay().size() == 0) {
+				return new EntityImageStateEmptyDescription(leaf, skinParam);
 			}
-			return new EntityImageState(leaf, dotData.getSkinParam());
+			return new EntityImageState(leaf, skinParam);
 		}
 		if (leaf.getEntityType() == LeafType.CIRCLE_START) {
-			return new EntityImageCircleStart(leaf, dotData.getSkinParam());
+			return new EntityImageCircleStart(leaf, skinParam);
 		}
 		if (leaf.getEntityType() == LeafType.CIRCLE_END) {
-			return new EntityImageCircleEnd(leaf, dotData.getSkinParam());
+			return new EntityImageCircleEnd(leaf, skinParam);
 		}
 		if (leaf.getEntityType() == LeafType.USECASE) {
-			return new EntityImageUseCase(leaf, dotData.getSkinParam());
+			return new EntityImageUseCase(leaf, skinParam);
 		}
 		if (leaf.getEntityType() == LeafType.BRANCH || leaf.getEntityType() == LeafType.STATE_CHOICE) {
-			return new EntityImageBranch(leaf, dotData.getSkinParam());
+			return new EntityImageBranch(leaf, skinParam);
 		}
 		if (leaf.getEntityType() == LeafType.LOLLIPOP) {
-			return new EntityImageLollipopInterface(leaf, dotData.getSkinParam());
+			return new EntityImageLollipopInterface(leaf, skinParam);
 		}
 		if (leaf.getEntityType() == LeafType.ACTOR) {
-			final TextBlock stickman = new StickMan(getColor(ColorParam.usecaseActorBackground, leaf.getStereotype()),
-					getColor(ColorParam.usecaseActorBorder, leaf.getStereotype()),
-					dotData.getSkinParam().shadowing() ? 4.0 : 0.0);
-			return new EntityImageActor2(leaf, dotData.getSkinParam(), FontParam.USECASE_ACTOR_STEREOTYPE,
-					FontParam.USECASE_ACTOR, stickman);
+			final TextBlock stickman = new StickMan(getColor(ColorParam.usecaseActorBackground, leaf.getStereotype(),
+					skinParam), getColor(ColorParam.usecaseActorBorder, leaf.getStereotype(), skinParam),
+					skinParam.shadowing() ? 4.0 : 0.0);
+			return new EntityImageActor2(leaf, skinParam, FontParam.USECASE_ACTOR_STEREOTYPE, FontParam.USECASE_ACTOR,
+					stickman);
 		}
 		if (leaf.getEntityType() == LeafType.BOUNDARY) {
-			final TextBlock stickman = new Boundary(getColor(ColorParam.usecaseActorBackground, leaf.getStereotype()),
-					getColor(ColorParam.usecaseActorBorder, leaf.getStereotype()),
-					dotData.getSkinParam().shadowing() ? 4.0 : 0.0, Rose.getStroke(dotData.getSkinParam(),
-							LineParam.sequenceActorBorder, 2).getThickness());
-			return new EntityImageActor2(leaf, dotData.getSkinParam(), FontParam.USECASE_ACTOR_STEREOTYPE,
-					FontParam.USECASE_ACTOR, stickman);
+			final TextBlock stickman = new Boundary(getColor(ColorParam.usecaseActorBackground, leaf.getStereotype(),
+					skinParam), getColor(ColorParam.usecaseActorBorder, leaf.getStereotype(), skinParam),
+					skinParam.shadowing() ? 4.0 : 0.0, Rose.getStroke(skinParam, LineParam.sequenceActorBorder, 2)
+							.getThickness());
+			return new EntityImageActor2(leaf, skinParam, FontParam.USECASE_ACTOR_STEREOTYPE, FontParam.USECASE_ACTOR,
+					stickman);
 		}
 		if (leaf.getEntityType() == LeafType.CONTROL) {
-			final TextBlock stickman = new Control(getColor(ColorParam.usecaseActorBackground, leaf.getStereotype()),
-					getColor(ColorParam.usecaseActorBorder, leaf.getStereotype()),
-					dotData.getSkinParam().shadowing() ? 4.0 : 0.0, Rose.getStroke(dotData.getSkinParam(),
-							LineParam.sequenceActorBorder, 2).getThickness());
-			return new EntityImageActor2(leaf, dotData.getSkinParam(), FontParam.USECASE_ACTOR_STEREOTYPE,
-					FontParam.USECASE_ACTOR, stickman);
+			final TextBlock stickman = new Control(getColor(ColorParam.usecaseActorBackground, leaf.getStereotype(),
+					skinParam), getColor(ColorParam.usecaseActorBorder, leaf.getStereotype(), skinParam),
+					skinParam.shadowing() ? 4.0 : 0.0, Rose.getStroke(skinParam, LineParam.sequenceActorBorder, 2)
+							.getThickness());
+			return new EntityImageActor2(leaf, skinParam, FontParam.USECASE_ACTOR_STEREOTYPE, FontParam.USECASE_ACTOR,
+					stickman);
 		}
 		if (leaf.getEntityType() == LeafType.ENTITY_DOMAIN) {
 			final TextBlock stickman = new EntityDomain(getColor(ColorParam.usecaseActorBackground,
-					leaf.getStereotype()), getColor(ColorParam.usecaseActorBorder, leaf.getStereotype()), dotData
-					.getSkinParam().shadowing() ? 4.0 : 0.0, Rose.getStroke(dotData.getSkinParam(),
+					leaf.getStereotype(), skinParam), getColor(ColorParam.usecaseActorBorder, leaf.getStereotype(),
+					skinParam), skinParam.shadowing() ? 4.0 : 0.0, Rose.getStroke(skinParam,
 					LineParam.sequenceActorBorder, 2).getThickness());
-			return new EntityImageActor2(leaf, dotData.getSkinParam(), FontParam.USECASE_ACTOR_STEREOTYPE,
-					FontParam.USECASE_ACTOR, stickman);
+			return new EntityImageActor2(leaf, skinParam, FontParam.USECASE_ACTOR_STEREOTYPE, FontParam.USECASE_ACTOR,
+					stickman);
 		}
 		if (leaf.getEntityType() == LeafType.COMPONENT) {
-			return new EntityImageComponent(leaf, dotData.getSkinParam());
+			return new EntityImageComponent(leaf, skinParam);
 		}
 		if (leaf.getEntityType() == LeafType.COMPONENT2) {
-			return new EntityImageComponentForDescriptionDiagram(leaf, dotData.getSkinParam());
+			return new EntityImageComponentForDescriptionDiagram(leaf, skinParam);
 		}
 		if (leaf.getEntityType() == LeafType.OBJECT) {
-			return new EntityImageObject(leaf, dotData.getSkinParam());
+			return new EntityImageObject(leaf, skinParam);
 		}
 		if (leaf.getEntityType() == LeafType.SYNCHRO_BAR || leaf.getEntityType() == LeafType.STATE_FORK_JOIN) {
-			return new EntityImageSynchroBar(leaf, dotData.getSkinParam());
+			return new EntityImageSynchroBar(leaf, skinParam);
 		}
 		if (leaf.getEntityType() == LeafType.CIRCLE_INTERFACE) {
-			return new EntityImageCircleInterface(leaf, dotData.getSkinParam());
+			return new EntityImageCircleInterface(leaf, skinParam);
 		}
 		if (leaf.getEntityType() == LeafType.ARC_CIRCLE) {
-			return new EntityImageArcCircle(leaf, dotData.getSkinParam());
+			return new EntityImageArcCircle(leaf, skinParam);
 		}
 		if (leaf.getEntityType() == LeafType.POINT_FOR_ASSOCIATION) {
-			return new EntityImageAssociationPoint(leaf, dotData.getSkinParam());
+			return new EntityImageAssociationPoint(leaf, skinParam);
 		}
 		if (leaf.isGroup()) {
-			return new EntityImageGroup(leaf, dotData.getSkinParam());
+			return new EntityImageGroup(leaf, skinParam);
 		}
 		if (leaf.getEntityType() == LeafType.EMPTY_PACKAGE) {
 			if (leaf.getUSymbol() != null) {
-				return new EntityImageComponentForDescriptionDiagram(leaf, new SkinParamForecolored(
-						dotData.getSkinParam(), HtmlColorUtils.BLACK));
+				return new EntityImageComponentForDescriptionDiagram(leaf, new SkinParamForecolored(skinParam,
+						HtmlColorUtils.BLACK));
 			}
-			return new EntityImageEmptyPackage2(leaf, dotData.getSkinParam());
+			return new EntityImageEmptyPackage2(leaf, skinParam);
 		}
 		if (leaf.getEntityType() == LeafType.ASSOCIATION) {
-			return new EntityImageAssociation(leaf, dotData.getSkinParam());
+			return new EntityImageAssociation(leaf, skinParam);
 		}
 		if (leaf.getEntityType() == LeafType.PSEUDO_STATE) {
-			return new EntityImagePseudoState(leaf, dotData.getSkinParam());
+			return new EntityImagePseudoState(leaf, skinParam);
 		}
 		throw new UnsupportedOperationException(leaf.getEntityType().toString());
 	}
