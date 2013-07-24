@@ -33,6 +33,7 @@
  */
 package net.sourceforge.plantuml.hector;
 
+import java.awt.geom.Point2D;
 import java.util.List;
 
 import net.sourceforge.plantuml.geom.LineSegmentDouble;
@@ -61,6 +62,10 @@ class SmartConnection {
 		this.forbidden = forbidden;
 	}
 
+	public SmartConnection(Point2D p1, Point2D p2, List<Box2D> b) {
+		this(p1.getX(), p1.getY(), p2.getX(), p2.getY(), b);
+	}
+
 	public void draw(UGraphic ug, HtmlColor color) {
 		final LineSegmentDouble seg = new LineSegmentDouble(x1, y1, x2, y2);
 		boolean clash = intersect(seg);
@@ -69,8 +74,7 @@ class SmartConnection {
 		} else {
 			ug = ug.apply(new UChangeColor(color)).apply(new UStroke(1.5));
 		}
-		ug = ug.apply(new UTranslate(x1, y1));
-		ug.draw(new ULine(x2 - x1, y2 - y1));
+		seg.draw(ug);
 	}
 
 	private boolean intersect(LineSegmentDouble seg) {

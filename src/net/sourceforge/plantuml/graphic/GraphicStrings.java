@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 11153 $
+ * Revision $Revision: 11297 $
  *
  */
 package net.sourceforge.plantuml.graphic;
@@ -140,11 +140,11 @@ public class GraphicStrings implements IEntityImage {
 		}
 	}
 
-	public ImageData exportDiagram1317(OutputStream os, FileFormatOption fileFormatOption) throws IOException {
-		return exportDiagram1317(os, null, fileFormatOption);
+	public ImageData exportDiagram(OutputStream os, FileFormatOption fileFormatOption) throws IOException {
+		return exportDiagram(os, null, fileFormatOption);
 	}
 
-	public ImageData exportDiagram1317(OutputStream os, String metadata, FileFormatOption fileFormatOption)
+	public ImageData exportDiagram(OutputStream os, String metadata, FileFormatOption fileFormatOption)
 			throws IOException {
 		final FileFormat fileFormat = fileFormatOption.getFileFormat();
 		if (fileFormat == FileFormat.PNG) {
@@ -200,19 +200,22 @@ public class GraphicStrings implements IEntityImage {
 		return dim;
 	}
 
-	Dimension2D drawAndGetSize(final UGraphic ug) {
-		final TextBlock textBlock = TextBlockUtils.create(new Display(strings), new FontConfiguration(font, green),
+	private Dimension2D drawAndGetSize(final UGraphic ug) {
+		TextBlock textBlock = TextBlockUtils.create(new Display(strings), new FontConfiguration(font, green),
 				HorizontalAlignment.LEFT, new SpriteContainerEmpty());
+		textBlock = DateEventUtils.addEvent(textBlock, green);
+
 		Dimension2D size = getSizeWithMin(textBlock.calculateDimension(ug.getStringBounder()));
 		textBlock.drawU(ug);
 
 		if (image != null) {
 			if (position == GraphicPosition.BOTTOM) {
-				ug.apply(new UTranslate((size.getWidth() - image.getWidth()) / 2, size.getHeight())).draw(new UImage(image));
+				ug.apply(new UTranslate((size.getWidth() - image.getWidth()) / 2, size.getHeight())).draw(
+						new UImage(image));
 				size = new Dimension2DDouble(size.getWidth(), size.getHeight() + image.getHeight());
 			} else if (position == GraphicPosition.BACKGROUND_CORNER) {
-				ug.apply(new UTranslate(size.getWidth() - image.getWidth(), size.getHeight() - image.getHeight())).draw(new UImage(
-				image));
+				ug.apply(new UTranslate(size.getWidth() - image.getWidth(), size.getHeight() - image.getHeight()))
+						.draw(new UImage(image));
 			}
 		}
 		return size;
@@ -221,7 +224,6 @@ public class GraphicStrings implements IEntityImage {
 	public void drawU(UGraphic ug) {
 		drawAndGetSize(ug);
 	}
-
 
 	public Dimension2D calculateDimension(StringBounder stringBounder) {
 		final TextBlock textBlock = TextBlockUtils.create(new Display(strings), new FontConfiguration(font, green),
@@ -244,10 +246,9 @@ public class GraphicStrings implements IEntityImage {
 	public boolean isHidden() {
 		return false;
 	}
-	
+
 	final public List<Url> getUrls() {
 		return Collections.emptyList();
 	}
-
 
 }

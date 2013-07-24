@@ -56,7 +56,10 @@ import net.sourceforge.plantuml.sequencediagram.SequenceDiagram;
 public final class FactorySequenceNoteCommand implements SingleMultiFactoryCommand<SequenceDiagram> {
 
 	private RegexConcat getRegexConcatMultiLine() {
-		return new RegexConcat(new RegexLeaf("STYLE", "^(note|hnote|rnote)\\s+"), //
+		return new RegexConcat(//
+				new RegexLeaf("^"), //
+				new RegexLeaf("VMERGE", "(/)?\\s*"), //
+				new RegexLeaf("STYLE", "(note|hnote|rnote)\\s+"), //
 				new RegexLeaf("POSITION", "(right|left|over)\\s+"), //
 				new RegexLeaf("PARTICIPANT", "(?:of\\s+)?([\\p{L}0-9_.@]+|\"[^\"]+\")\\s*"), //
 				new RegexLeaf("COLOR", "(#\\w+[-\\\\|/]?\\w+)?"), //
@@ -64,7 +67,10 @@ public final class FactorySequenceNoteCommand implements SingleMultiFactoryComma
 	}
 
 	private RegexConcat getRegexConcatSingleLine() {
-		return new RegexConcat(new RegexLeaf("STYLE", "^(note|hnote|rnote)\\s+"), //
+		return new RegexConcat(//
+				new RegexLeaf("^"), //
+				new RegexLeaf("VMERGE", "(/)?\\s*"), //
+				new RegexLeaf("STYLE", "(note|hnote|rnote)\\s+"), //
 				new RegexLeaf("POSITION", "(right|left|over)\\s+"), //
 				new RegexLeaf("PARTICIPANT", "(?:of\\s+)?([\\p{L}0-9_.@]+|\"[^\"]+\")\\s*"), //
 				new RegexLeaf("COLOR", "(#\\w+[-\\\\|/]?\\w+)?"), //
@@ -74,7 +80,8 @@ public final class FactorySequenceNoteCommand implements SingleMultiFactoryComma
 	}
 
 	public Command<SequenceDiagram> createMultiLine() {
-		return new CommandMultilines2<SequenceDiagram>(getRegexConcatMultiLine(), MultilinesStrategy.KEEP_STARTING_QUOTE) {
+		return new CommandMultilines2<SequenceDiagram>(getRegexConcatMultiLine(),
+				MultilinesStrategy.KEEP_STARTING_QUOTE) {
 
 			@Override
 			public String getPatternEnd() {
@@ -101,18 +108,18 @@ public final class FactorySequenceNoteCommand implements SingleMultiFactoryComma
 		};
 	}
 
-	private CommandExecutionResult executeInternal(SequenceDiagram system, RegexResult arg,
-			final List<String> strings) {
+	private CommandExecutionResult executeInternal(SequenceDiagram system, RegexResult arg, final List<String> strings) {
 		final Participant p = system.getOrCreateParticipant(StringUtils
 				.eventuallyRemoveStartingAndEndingDoubleQuote(arg.get("PARTICIPANT", 0)));
 
 		final NotePosition position = NotePosition.valueOf(arg.get("POSITION", 0).toUpperCase());
 
 		if (strings.size() > 0) {
+			final boolean tryMerge = arg.get("VMERGE", 0) != null;
 			final Note note = new Note(p, position, new Display(strings));
 			note.setSpecificBackcolor(HtmlColorUtils.getColorIfValid(arg.get("COLOR", 0)));
 			note.setStyle(NoteStyle.getNoteStyle(arg.get("STYLE", 0)));
-			system.addNote(note);
+			system.addNote(note, tryMerge);
 		}
 		return CommandExecutionResult.ok();
 	}

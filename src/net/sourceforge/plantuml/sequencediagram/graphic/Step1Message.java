@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 9786 $
+ * Revision $Revision: 11318 $
  *
  */
 package net.sourceforge.plantuml.sequencediagram.graphic;
@@ -216,6 +216,7 @@ class Step1Message extends Step1Abstract {
 	}
 
 	private ArrowConfiguration getSelfArrowType(Message m) {
+//		return m.getArrowConfiguration().self();
 		ArrowConfiguration result = ArrowConfiguration.withDirectionSelf();
 		if (m.getArrowConfiguration().isDotted()) {
 			result = result.withDotted();
@@ -224,6 +225,7 @@ class Step1Message extends Step1Abstract {
 			result = result.withHead(ArrowHead.ASYNC);
 		}
 		result = result.withPart(m.getArrowConfiguration().getPart());
+		result = result.withColor(m.getArrowConfiguration().getColor());
 		return result;
 	}
 

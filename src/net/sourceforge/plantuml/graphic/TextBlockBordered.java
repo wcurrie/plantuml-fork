@@ -28,30 +28,44 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 11319 $
+ * Revision $Revision: 6577 $
  *
  */
-package net.sourceforge.plantuml.version;
+package net.sourceforge.plantuml.graphic;
 
-public class Version {
+import java.awt.geom.Dimension2D;
+import java.util.List;
 
-	public static int version() {
-		return 7973;
+import net.sourceforge.plantuml.Dimension2DDouble;
+import net.sourceforge.plantuml.Url;
+import net.sourceforge.plantuml.ugraphic.UChangeColor;
+import net.sourceforge.plantuml.ugraphic.UGraphic;
+import net.sourceforge.plantuml.ugraphic.URectangle;
+import net.sourceforge.plantuml.ugraphic.UTranslate;
+
+class TextBlockBordered implements TextBlock {
+
+	private final TextBlock textBlock;
+	private final HtmlColor color;
+
+	public TextBlockBordered(TextBlock textBlock, HtmlColor color) {
+		this.textBlock = textBlock;
+		this.color = color;
 	}
 
-	public static String versionString() {
-		if (beta()) {
-			return "" + (version() + 1) + "beta";
-		}
-		return "" + version();
+	public Dimension2D calculateDimension(StringBounder stringBounder) {
+		final Dimension2D dim = textBlock.calculateDimension(stringBounder);
+		return Dimension2DDouble.delta(dim, 1, 1);
 	}
 
-	public static boolean beta() {
-		return false;
+	public void drawU(UGraphic ug) {
+		final Dimension2D dim = textBlock.calculateDimension(ug.getStringBounder());
+		textBlock.drawU(ug.apply(new UTranslate(1, 1)));
+		ug.apply(new UChangeColor(color)).draw(new URectangle(dim.getWidth(), dim.getHeight()));
 	}
 
-	public static long compileTime() {
-		return 1374692112486L;
+	public List<Url> getUrls() {
+		return textBlock.getUrls();
 	}
 
 }

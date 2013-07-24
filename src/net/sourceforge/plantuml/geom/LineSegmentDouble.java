@@ -28,13 +28,17 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 11253 $
+ * Revision $Revision: 11289 $
  *
  */
 package net.sourceforge.plantuml.geom;
 
 import java.awt.geom.Point2D;
 import java.util.Locale;
+
+import net.sourceforge.plantuml.ugraphic.UGraphic;
+import net.sourceforge.plantuml.ugraphic.ULine;
+import net.sourceforge.plantuml.ugraphic.UTranslate;
 
 public class LineSegmentDouble extends AbstractLineSegment {
 
@@ -90,6 +94,16 @@ public class LineSegmentDouble extends AbstractLineSegment {
 	@Override
 	public double getY2() {
 		return p2.getY();
+	}
+
+	public void draw(UGraphic ug) {
+		final double x1 = p1.getX();
+		final double y1 = p1.getY();
+		final double x2 = p2.getX();
+		final double y2 = p2.getY();
+		ug = ug.apply(new UTranslate(x1, y1));
+		ug.draw(new ULine(x2 - x1, y2 - y1));
+		
 	}
 
 }

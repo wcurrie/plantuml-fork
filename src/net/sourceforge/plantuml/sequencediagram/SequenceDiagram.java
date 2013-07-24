@@ -124,7 +124,19 @@ public class SequenceDiagram extends UmlDiagram {
 		return null;
 	}
 
-	public void addNote(Note n) {
+	public void addNote(Note n, boolean tryMerge) {
+		if (tryMerge && events.size() > 0) {
+			final Event last = events.get(events.size() - 1);
+			if (last instanceof Note) {
+				final Notes notes = new Notes((Note) last, n);
+				events.set(events.size() - 1, notes);
+				return;
+			}
+			if (last instanceof Notes) {
+				((Notes) last).add(n);
+				return;
+			}
+		}
 		events.add(n);
 	}
 

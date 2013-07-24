@@ -62,7 +62,8 @@ import net.sourceforge.plantuml.activitydiagram3.command.CommandSplitEnd3;
 import net.sourceforge.plantuml.activitydiagram3.command.CommandStart3;
 import net.sourceforge.plantuml.activitydiagram3.command.CommandStop3;
 import net.sourceforge.plantuml.activitydiagram3.command.CommandStopLegacy1;
-import net.sourceforge.plantuml.activitydiagram3.command.CommandSwimlane3;
+import net.sourceforge.plantuml.activitydiagram3.command.CommandSwimlane;
+import net.sourceforge.plantuml.activitydiagram3.command.CommandSwimlane2;
 import net.sourceforge.plantuml.activitydiagram3.command.CommandWhile3;
 import net.sourceforge.plantuml.activitydiagram3.command.CommandWhileEnd3;
 import net.sourceforge.plantuml.command.Command;
@@ -76,7 +77,8 @@ public class ActivityDiagramFactory3_1317 extends UmlDiagramFactory1317 {
 		final List<Command> cmds = new ArrayList<Command>();
 
 		addCommonCommands(cmds);
-		cmds.add(new CommandSwimlane3());
+		cmds.add(new CommandSwimlane());
+		cmds.add(new CommandSwimlane2());
 		cmds.add(new CommandActivity3());
 		cmds.add(new CommandIf4());
 		cmds.add(new CommandIf2());

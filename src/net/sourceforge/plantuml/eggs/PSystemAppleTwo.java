@@ -68,7 +68,7 @@ public class PSystemAppleTwo extends AbstractPSystem {
 	}
 
 	public ImageData exportDiagram(OutputStream os, int num, FileFormatOption fileFormat) throws IOException {
-		return getGraphicStrings().exportDiagram1317(os, fileFormat);
+		return getGraphicStrings().exportDiagram(os, fileFormat);
 	}
 
 	private GraphicStrings getGraphicStrings() throws IOException {

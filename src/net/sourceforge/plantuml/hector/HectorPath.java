@@ -33,24 +33,38 @@
  */
 package net.sourceforge.plantuml.hector;
 
+import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.List;
 
 import net.sourceforge.plantuml.geom.LineSegmentDouble;
-
+import net.sourceforge.plantuml.graphic.HtmlColor;
+import net.sourceforge.plantuml.ugraphic.UChangeColor;
+import net.sourceforge.plantuml.ugraphic.UGraphic;
+import net.sourceforge.plantuml.ugraphic.UStroke;
 
 public class HectorPath {
-	
+
 	private final List<LineSegmentDouble> segments = new ArrayList<LineSegmentDouble>();
 
 	public void add(LineSegmentDouble seg) {
 		this.segments.add(seg);
 	}
-	
+
+	public void add(Point2D p1, Point2D p2) {
+		add(new LineSegmentDouble(p1, p2));
+	}
+
 	@Override
 	public String toString() {
 		return segments.toString();
 	}
 
+	public void draw(UGraphic ug, HtmlColor color) {
+		ug = ug.apply(new UChangeColor(color)).apply(new UStroke(1.5));
+		for (LineSegmentDouble seg : segments) {
+			seg.draw(ug);
+		}
+	}
 
 }

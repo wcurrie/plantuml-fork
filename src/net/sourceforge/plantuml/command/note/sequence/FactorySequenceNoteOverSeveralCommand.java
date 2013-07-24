@@ -115,7 +115,7 @@ public final class FactorySequenceNoteOverSeveralCommand implements SingleMultiF
 			final Note note = new Note(p1, p2, new Display(strings));
 			note.setSpecificBackcolor(HtmlColorUtils.getColorIfValid(line0.get("COLOR", 0)));
 			note.setStyle(NoteStyle.getNoteStyle(line0.get("STYLE", 0)));
-			system.addNote(note);
+			system.addNote(note, false);
 		}
 		return CommandExecutionResult.ok();
 	}

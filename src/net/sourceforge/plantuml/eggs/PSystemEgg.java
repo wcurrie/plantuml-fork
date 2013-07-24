@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 10459 $
+ * Revision $Revision: 11295 $
  *
  */
 package net.sourceforge.plantuml.eggs;
@@ -60,7 +60,7 @@ public class PSystemEgg extends AbstractPSystem {
 	}
 
 	public ImageData exportDiagram(OutputStream os, int num, FileFormatOption fileFormat) throws IOException {
-		return getGraphicStrings().exportDiagram1317(os, fileFormat);
+		return getGraphicStrings().exportDiagram(os, fileFormat);
 	}
 
 	private GraphicStrings getGraphicStrings() throws IOException {

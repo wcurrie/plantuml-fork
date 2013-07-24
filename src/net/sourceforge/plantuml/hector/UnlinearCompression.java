@@ -35,6 +35,10 @@ package net.sourceforge.plantuml.hector;
 
 class UnlinearCompression {
 
+	static enum Rounding {
+		BORDER_1, CENTRAL, BORDER_2;
+	}
+
 	private final double inner;
 	private final double outer;
 
@@ -53,24 +57,48 @@ class UnlinearCompression {
 		return x - inner + pourInter * outer;
 	}
 
-	public double uncompress(double x) {
+	public double uncompress(double x, Rounding rounding) {
 		final int pourInter = nbOuterBefore(x);
+		final boolean onBorder = equals(x, pourInter * outer);
+		if (onBorder && rounding == Rounding.BORDER_1) {
+			// Nothing
+		} else if (onBorder && rounding == Rounding.CENTRAL) {
+			x += inner / 2.0;
+		} else {
+			x += inner;
+		}
 		x += pourInter * inner;
 		return x;
+	}
+
+	private static boolean equals(double d1, double d2) {
+		return Math.abs(d1 - d2) < .001;
 	}
 
 	private int nbOuterBefore(double x) {
 		final double pour = x / outer;
 		final int pourInter = (int) Math.floor(pour);
-		return pourInter + 1;
+		return pourInter;
 	}
 
 	public double[] encounteredSingularities(double from, double to) {
-		final int outer1 = nbOuterBefore(from);
-		final int outer2 = nbOuterBefore(to);
-		final double result[] = new double[outer2 - outer1];
-		for (int i = 0; i < result.length; i++) {
-			result[i] = (outer1 + i) * outer;
+		final int outer1 = nbOuterBefore(from) + 1;
+		int outer2 = nbOuterBefore(to) + 1;
+		if (equals(to, (outer2 - 1) * outer)) {
+			outer2--;
+		}
+		final double result[];
+		if (from <= to) {
+			result = new double[outer2 - outer1];
+			for (int i = 0; i < result.length; i++) {
+				result[i] = (outer1 + i) * outer;
+			}
+		} else {
+			result = new double[outer1 - outer2];
+			for (int i = 0; i < result.length; i++) {
+				result[i] = (outer1 - 1 - i) * outer;
+			}
+
 		}
 		return result;
 	}

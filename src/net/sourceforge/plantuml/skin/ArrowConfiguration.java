@@ -90,6 +90,11 @@ public class ArrowConfiguration {
 		final ArrowDecoration d2 = dressing2.getDecoration();
 		return new ArrowConfiguration(body, dressing2.withDecoration(d1), dressing1.withDecoration(d2), color);
 	}
+	
+	public ArrowConfiguration self() {
+		return new ArrowConfiguration(body, dressing1, null, color);
+	}
+
 
 	public ArrowConfiguration withDotted() {
 		return new ArrowConfiguration(ArrowBody.DOTTED, dressing1, dressing2, color);
@@ -193,5 +198,6 @@ public class ArrowConfiguration {
 	public ArrowDressing getDressing2() {
 		return dressing2;
 	}
+
 
 }

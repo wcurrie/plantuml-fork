@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 11263 $
+ * Revision $Revision: 11309 $
  *
  */
 package net.sourceforge.plantuml.sequencediagram.graphic;
@@ -57,6 +57,7 @@ import net.sourceforge.plantuml.sequencediagram.MessageExo;
 import net.sourceforge.plantuml.sequencediagram.Newpage;
 import net.sourceforge.plantuml.sequencediagram.Note;
 import net.sourceforge.plantuml.sequencediagram.NoteStyle;
+import net.sourceforge.plantuml.sequencediagram.Notes;
 import net.sourceforge.plantuml.sequencediagram.Participant;
 import net.sourceforge.plantuml.sequencediagram.ParticipantEnglober;
 import net.sourceforge.plantuml.sequencediagram.ParticipantEngloberContexted;
@@ -188,6 +189,8 @@ class DrawableSetInitializer {
 				prepareMessage(stringBounder, (Message) ev, range);
 			} else if (ev instanceof Note) {
 				prepareNote(stringBounder, (Note) ev, range);
+			} else if (ev instanceof Notes) {
+				prepareNotes(stringBounder, (Notes) ev, range);
 			} else if (ev instanceof LifeEvent) {
 				prepareLiveEvent(stringBounder, (LifeEvent) ev);
 			} else if (ev instanceof GroupingLeaf) {
@@ -484,6 +487,14 @@ class DrawableSetInitializer {
 	}
 
 	private void prepareNote(StringBounder stringBounder, Note n, ParticipantRange range) {
+		final NoteBox noteBox = createNoteBox(stringBounder, n, range);
+		inGroupableStack.addElement(noteBox);
+
+		drawableSet.addEvent(n, noteBox);
+		freeY2 = freeY2.add(noteBox.getPreferredHeight(stringBounder), range);
+	}
+
+	private NoteBox createNoteBox(StringBounder stringBounder, Note n, ParticipantRange range) {
 		LivingParticipantBox p1 = drawableSet.getLivingParticipantBox(n.getParticipant());
 		LivingParticipantBox p2;
 		if (n.getParticipant2() == null) {
@@ -500,11 +511,21 @@ class DrawableSetInitializer {
 		final ComponentType type = getNoteComponentType(n.getStyle());
 		final NoteBox noteBox = new NoteBox(freeY2.getFreeY(range), drawableSet.getSkin().createComponent(type, null,
 				skinParam, n.getStrings()), p1, p2, n.getPosition(), n.getUrl());
+		return noteBox;
+	}
 
-		inGroupableStack.addElement(noteBox);
+	private void prepareNotes(StringBounder stringBounder, Notes notes, ParticipantRange range) {
+		final NotesBoxes notesBoxes = new NotesBoxes(freeY2.getFreeY(range));
+		for (Note n : notes) {
+			final NoteBox noteBox = createNoteBox(stringBounder, n, range);
+			final LivingParticipantBox p1 = drawableSet.getLivingParticipantBox(n.getParticipant());
+			notesBoxes.add(noteBox, p1.getParticipantBox());
+		}
+		notesBoxes.ensureConstraints(stringBounder, constraintSet);
+		inGroupableStack.addElement(notesBoxes);
 
-		drawableSet.addEvent(n, noteBox);
-		freeY2 = freeY2.add(noteBox.getPreferredHeight(stringBounder), range);
+		drawableSet.addEvent(notes, notesBoxes);
+		freeY2 = freeY2.add(notesBoxes.getPreferredHeight(stringBounder), range);
 	}
 
 	private ComponentType getNoteComponentType(NoteStyle noteStyle) {

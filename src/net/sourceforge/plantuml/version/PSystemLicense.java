@@ -55,7 +55,7 @@ public class PSystemLicense extends AbstractPSystem {
 	}
 
 	public ImageData exportDiagram(OutputStream os, int num, FileFormatOption fileFormat) throws IOException {
-		return getGraphicStrings().exportDiagram1317(os, fileFormat);
+		return getGraphicStrings().exportDiagram(os, fileFormat);
 	}
 
 	public static PSystemLicense create() throws IOException {

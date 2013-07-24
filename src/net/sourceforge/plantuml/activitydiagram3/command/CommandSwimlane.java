@@ -43,9 +43,9 @@ import net.sourceforge.plantuml.cucadiagram.Display;
 import net.sourceforge.plantuml.graphic.HtmlColor;
 import net.sourceforge.plantuml.graphic.HtmlColorUtils;
 
-public class CommandSwimlane3 extends SingleLineCommand2<ActivityDiagram3> {
+public class CommandSwimlane extends SingleLineCommand2<ActivityDiagram3> {
 
-	public CommandSwimlane3() {
+	public CommandSwimlane() {
 		super(getRegexConcat());
 	}
 

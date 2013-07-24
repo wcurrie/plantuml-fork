@@ -52,8 +52,6 @@ import net.sourceforge.plantuml.cucadiagram.Display;
 import net.sourceforge.plantuml.graphic.FontConfiguration;
 import net.sourceforge.plantuml.graphic.HorizontalAlignment;
 import net.sourceforge.plantuml.graphic.HtmlColor;
-import net.sourceforge.plantuml.graphic.StringBounder;
-import net.sourceforge.plantuml.graphic.StringBounderUtils;
 import net.sourceforge.plantuml.graphic.TextBlock;
 import net.sourceforge.plantuml.graphic.TextBlockCompressed;
 import net.sourceforge.plantuml.graphic.TextBlockRecentred;
@@ -70,13 +68,6 @@ public class ActivityDiagram3 extends UmlDiagram {
 	}
 
 	private SwimlaneStrategy swimlaneStrategy;
-
-	static {
-		final BufferedImage imDummy = new BufferedImage(10, 10, BufferedImage.TYPE_INT_RGB);
-		dummyStringBounder = StringBounderUtils.asStringBounder(imDummy.createGraphics());
-	}
-
-	private static final StringBounder dummyStringBounder;
 
 	private final Swimlanes swinlanes = new Swimlanes(getSkinParam());
 
@@ -153,7 +144,7 @@ public class ActivityDiagram3 extends UmlDiagram {
 		final UGraphic ug = TextBlockUtils.getPrinted(result, fileFormatOption, skinParam.getColorMapper(), dpiFactor,
 				getSkinParam().getBackgroundColor());
 		ug.writeImage(os, getMetadata(), getDpi(fileFormatOption));
-		final Dimension2D dim = TextBlockUtils.getMinMax(result, dummyStringBounder).getDimension();
+		final Dimension2D dim = TextBlockUtils.getMinMax(result).getDimension();
 		return new ImageDataSimple((int) dim.getWidth(), (int) dim.getHeight());
 	}
 

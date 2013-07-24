@@ -34,6 +34,7 @@
 package net.sourceforge.plantuml.hector;
 
 import java.awt.geom.Dimension2D;
+import java.awt.geom.Point2D;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.ArrayList;
@@ -59,8 +60,9 @@ import net.sourceforge.plantuml.svek.IEntityImage;
 import net.sourceforge.plantuml.ugraphic.MinMax;
 import net.sourceforge.plantuml.ugraphic.UChangeBackColor;
 import net.sourceforge.plantuml.ugraphic.UChangeColor;
-import net.sourceforge.plantuml.ugraphic.UEllipse;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
+import net.sourceforge.plantuml.ugraphic.URectangle;
+import net.sourceforge.plantuml.ugraphic.UShape;
 import net.sourceforge.plantuml.ugraphic.UTranslate;
 
 public class CucaDiagramFileMakerHectorB2 implements CucaDiagramFileMaker {
@@ -92,6 +94,10 @@ public class CucaDiagramFileMakerHectorB2 implements CucaDiagramFileMaker {
 
 	private double getY(Pin pin) {
 		return nodeDistanceY * pin.getRow();
+	}
+
+	private Point2D getPoint(Pin pin) {
+		return new Point2D.Double(getX(pin), getY(pin));
 	}
 
 	// private double getCenterX(Pin pin) {
@@ -137,7 +143,8 @@ public class CucaDiagramFileMakerHectorB2 implements CucaDiagramFileMaker {
 
 		MinMax minMax = MinMax.getEmpty(false);
 		for (Pin pin : skeleton.getPins()) {
-			minMax = minMax.addPoint(getX(pin), getY(pin));
+			minMax = minMax.addPoint(unlinarCompressedPlan.uncompress(getX(pin), getY(pin),
+					UnlinearCompression.Rounding.BORDER_2));
 		}
 
 		final double borderMargin = 10;
@@ -161,24 +168,29 @@ public class CucaDiagramFileMakerHectorB2 implements CucaDiagramFileMaker {
 	}
 
 	private void drawPin(UGraphic ug, Pin pin) {
-		final double x = getX(pin);
-		final double y = getY(pin);
-		final UEllipse circle = new UEllipse(6, 6);
-		ug.apply(new UChangeColor(HtmlColorUtils.BLACK)).apply(new UChangeBackColor(HtmlColorUtils.BLACK))
-				.apply(new UTranslate(x - 3, y - 3)).draw(circle);
+		final Point2D pt = unlinarCompressedPlan.uncompress(getPoint(pin), UnlinearCompression.Rounding.BORDER_1);
+
+		final double x = pt.getX();
+		final double y = pt.getY();
+		final UShape rect = new URectangle(unlinarCompressedPlan.getInnerX(), unlinarCompressedPlan.getInnerY());
+		ug.apply(new UChangeColor(HtmlColorUtils.BLACK)).apply(new UChangeBackColor(HtmlColorUtils.BLACK)).apply(
+				new UTranslate(x, y)).draw(rect);
 	}
 
 	private void drawPinLink(UGraphic ug, PinLink pinLink) {
-		final double x1 = getX(pinLink.getPin1());
-		final double y1 = getY(pinLink.getPin1());
-		final double x2 = getX(pinLink.getPin2());
-		final double y2 = getY(pinLink.getPin2());
+		final Point2D pp1 = getPoint(pinLink.getPin1());
+		final Point2D pp2 = getPoint(pinLink.getPin2());
 
 		final Rose rose = new Rose();
 		final HtmlColor color = rose.getHtmlColor(diagram.getSkinParam(), ColorParam.classArrow);
-		final List<Box2D> b = new ArrayList<Box2D>();
-		final SmartConnection connection = new SmartConnection(x1, y1, x2, y2, b);
-		connection.draw(ug, color);
+		
+		final HectorPath path = unlinarCompressedPlan.uncompressSegment(pp1, pp2);
+		path.draw(ug, color);
+
+//		final Point2D p1 = unlinarCompressedPlan.uncompress(pp1, UnlinearCompression.Rounding.CENTRAL);
+//		final Point2D p2 = unlinarCompressedPlan.uncompress(pp2, UnlinearCompression.Rounding.CENTRAL);
+//		final SmartConnection connection = new SmartConnection(p1, p2, new ArrayList<Box2D>());
+//		connection.draw(ug, color);
 	}
 
 	private IEntityImage computeImage(final ILeaf leaf) {

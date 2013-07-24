@@ -34,6 +34,7 @@
 package net.sourceforge.plantuml.ugraphic;
 
 import java.awt.geom.Dimension2D;
+import java.awt.geom.Point2D;
 
 import net.sourceforge.plantuml.Dimension2DDouble;
 import net.sourceforge.plantuml.graphic.HtmlColor;
@@ -67,6 +68,10 @@ public class MinMax {
 		this.minY = minY;
 		this.maxX = maxX;
 		this.maxY = maxY;
+	}
+
+	public MinMax addPoint(Point2D pt) {
+		return addPoint(pt.getX(), pt.getY());
 	}
 
 	public MinMax addPoint(double x, double y) {

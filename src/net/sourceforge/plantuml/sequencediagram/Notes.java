@@ -28,30 +28,52 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 11319 $
+ * Revision $Revision: 9786 $
  *
  */
-package net.sourceforge.plantuml.version;
+package net.sourceforge.plantuml.sequencediagram;
 
-public class Version {
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 
-	public static int version() {
-		return 7973;
+import net.sourceforge.plantuml.Url;
+
+public class Notes implements Event, Iterable<Note> {
+
+	private final List<Note> notes = new ArrayList<Note>();
+
+	public Notes(Note n1, Note n2) {
+		notes.add(n1);
+		notes.add(n2);
 	}
 
-	public static String versionString() {
-		if (beta()) {
-			return "" + (version() + 1) + "beta";
+	public void add(Note n) {
+		notes.add(n);
+	}
+
+	public boolean dealWith(Participant someone) {
+		for (Note n : notes) {
+			if (n.dealWith(someone)) {
+				return true;
+			}
 		}
-		return "" + version();
-	}
-
-	public static boolean beta() {
 		return false;
 	}
 
-	public static long compileTime() {
-		return 1374692112486L;
+	public Url getUrl() {
+		return null;
 	}
 
+//	public Note get(int n) {
+//		return notes.get(n);
+//	}
+//
+//	public int size() {
+//		return notes.size();
+//	}
+
+	public Iterator<Note> iterator() {
+		return notes.iterator();
+	}
 }
