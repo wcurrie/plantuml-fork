@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 10766 $
+ * Revision $Revision: 11325 $
  *
  */
 package net.sourceforge.plantuml.cucadiagram.dot;
@@ -89,7 +89,7 @@ abstract class AbstractGraphviz implements Graphviz {
 		final String cmd[] = getCommandLine();
 		ProcessRunner p = null;
 		try {
-			Log.info("Starting Graphviz process " + cmd);
+			Log.info("Starting Graphviz process " + Arrays.asList(cmd));
 			Log.info("DotString size: " + dotString.length());
 			p = new ProcessRunner(cmd);
 			p.run(dotString.getBytes(), os);

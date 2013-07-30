@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 11154 $
+ * Revision $Revision: 11327 $
  *
  */
 package net.sourceforge.plantuml.skin.rose;
@@ -193,12 +193,7 @@ public class Rose implements Skin {
 					.getHorizontalAlignment(AlignParam.SEQUENCE_MESSAGE_ALIGN);
 			final HorizontalAlignment textHorizontalAlignment = param
 					.getHorizontalAlignment(AlignParam.SEQUENCE_MESSAGETEXT_ALIGN);
-			if (OptionFlags.NEW_ARROW) {
-				return new ComponentRoseArrow2(sequenceArrow, getFontColor(param, FontParam.SEQUENCE_ARROW), fontArrow,
-						stringsToDisplay, config, messageHorizontalAlignment, param, textHorizontalAlignment,
-						param.maxMessageSize(), param.strictUmlStyle() == false);
-			}
-			return new ComponentRoseArrow(sequenceArrow, getFontColor(param, FontParam.SEQUENCE_ARROW), fontArrow,
+			return new ComponentRoseArrow2(sequenceArrow, getFontColor(param, FontParam.SEQUENCE_ARROW), fontArrow,
 					stringsToDisplay, config, messageHorizontalAlignment, param, textHorizontalAlignment,
 					param.maxMessageSize(), param.strictUmlStyle() == false);
 		}

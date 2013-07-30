@@ -28,56 +28,56 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 11254 $
+ * Revision $Revision: 11321 $
  *
  */
 package net.sourceforge.plantuml.graph;
 
 import net.sourceforge.plantuml.cucadiagram.IEntity;
-import net.sourceforge.plantuml.cucadiagram.LeafType;
 
 public class EntityImageFactory {
 
 	public AbstractEntityImage createEntityImage(IEntity entity) {
-		if (entity.getEntityType() == LeafType.CLASS || entity.getEntityType() == LeafType.ANNOTATION
-				|| entity.getEntityType() == LeafType.ABSTRACT_CLASS || entity.getEntityType() == LeafType.INTERFACE
-				|| entity.getEntityType() == LeafType.ENUM) {
-			return new EntityImageClass(entity);
-		}
-		if (entity.getEntityType() == LeafType.ACTIVITY) {
-			return new EntityImageActivity(entity);
-		}
-		if (entity.getEntityType() == LeafType.NOTE) {
-			return new EntityImageNote(entity);
-		}
-		if (entity.getEntityType() == LeafType.POINT_FOR_ASSOCIATION) {
-			return new EntityImageActivityCircle(entity, 4, 4);
-		}
-		if (entity.getEntityType() == LeafType.CIRCLE_START) {
-			return new EntityImageActivityCircle(entity, 18, 18);
-		}
-		if (entity.getEntityType() == LeafType.CIRCLE_END) {
-			return new EntityImageActivityCircle(entity, 18, 11);
-		}
-		if (entity.getEntityType() == LeafType.BRANCH) {
-			return new EntityImageActivityBranch(entity);
-		}
-		if (entity.getEntityType() == LeafType.SYNCHRO_BAR) {
-			return new EntityImageActivityBar(entity);
-		}
-		if (entity.getEntityType() == LeafType.USECASE) {
-			return new EntityImageUsecase(entity);
-		}
-		if (entity.getEntityType() == LeafType.ACTOR) {
-			return new EntityImageActor(entity);
-		}
-		if (entity.getEntityType() == LeafType.CIRCLE_INTERFACE) {
-			return new EntityImageCircleInterface(entity);
-		}
-		if (entity.getEntityType() == LeafType.COMPONENT) {
-			return new EntityImageComponent(entity);
-		}
-		return new EntityImageDefault(entity);
+		throw new UnsupportedOperationException();
+//		if (entity.getEntityType() == LeafType.CLASS || entity.getEntityType() == LeafType.ANNOTATION
+//				|| entity.getEntityType() == LeafType.ABSTRACT_CLASS || entity.getEntityType() == LeafType.INTERFACE
+//				|| entity.getEntityType() == LeafType.ENUM) {
+//			return new EntityImageClass(entity);
+//		}
+//		if (entity.getEntityType() == LeafType.ACTIVITY) {
+//			return new EntityImageActivity(entity);
+//		}
+//		if (entity.getEntityType() == LeafType.NOTE) {
+//			return new EntityImageNote(entity);
+//		}
+//		if (entity.getEntityType() == LeafType.POINT_FOR_ASSOCIATION) {
+//			return new EntityImageActivityCircle(entity, 4, 4);
+//		}
+//		if (entity.getEntityType() == LeafType.CIRCLE_START) {
+//			return new EntityImageActivityCircle(entity, 18, 18);
+//		}
+//		if (entity.getEntityType() == LeafType.CIRCLE_END) {
+//			return new EntityImageActivityCircle(entity, 18, 11);
+//		}
+//		if (entity.getEntityType() == LeafType.BRANCH) {
+//			return new EntityImageActivityBranch(entity);
+//		}
+//		if (entity.getEntityType() == LeafType.SYNCHRO_BAR) {
+//			return new EntityImageActivityBar(entity);
+//		}
+//		if (entity.getEntityType() == LeafType.USECASE) {
+//			return new EntityImageUsecase(entity);
+//		}
+//		if (entity.getEntityType() == LeafType.ACTOR) {
+//			return new EntityImageActor(entity);
+//		}
+//		if (entity.getEntityType() == LeafType.CIRCLE_INTERFACE) {
+//			return new EntityImageCircleInterface(entity);
+//		}
+//		if (entity.getEntityType() == LeafType.COMPONENT) {
+//			return new EntityImageComponent(entity);
+//		}
+//		return new EntityImageDefault(entity);
 	}
 
 }

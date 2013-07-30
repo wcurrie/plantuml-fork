@@ -61,7 +61,7 @@ public class CommandExoArrowRight extends CommandExoArrowAny {
 								new RegexLeaf("ARROW_BODYB1", "(-*)"), //
 								new RegexLeaf("ARROW_STYLE2", CommandArrow.getColorOrStylePattern()), //
 								new RegexLeaf("ARROW_BODYA2", "(-+)"))), //
-				new RegexLeaf("\\]?"), //
+				new RegexLeaf("SHORT", "([?\\]])?"), //
 				new RegexLeaf("\\s*"), //
 				new RegexLeaf("LABEL", "(?::\\s*(.*))?"), //
 				new RegexLeaf("$"));
@@ -79,5 +79,6 @@ public class CommandExoArrowRight extends CommandExoArrowAny {
 		}
 		throw new IllegalArgumentException();
 	}
+
 
 }

@@ -40,13 +40,20 @@ public class MessageExo extends AbstractMessage {
 
 	final private MessageExoType type;
 	final private Participant participant;
+	final private boolean shortArrow;
 
 	public MessageExo(Participant p, MessageExoType type, Display label, ArrowConfiguration arrowConfiguration,
-			String messageNumber) {
+			String messageNumber, boolean shortArrow) {
 		super(label, arrowConfiguration, messageNumber);
 		this.participant = p;
 		this.type = type;
+		this.shortArrow = shortArrow;
 	}
+	
+	public boolean isShortArrow() {
+		return shortArrow;
+	}
+
 
 	@Override
 	protected NotePosition overideNotePosition(NotePosition notePosition) {
@@ -75,5 +82,6 @@ public class MessageExo extends AbstractMessage {
 	public boolean compatibleForCreate(Participant p) {
 		return p == participant;
 	}
+
 
 }

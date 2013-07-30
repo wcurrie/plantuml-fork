@@ -47,7 +47,7 @@ public class CommandExoArrowLeft extends CommandExoArrowAny {
 
 	static RegexConcat getRegexConcat() {
 		return new RegexConcat(new RegexLeaf("^"), //
-				new RegexLeaf("\\[?"), //
+				new RegexLeaf("SHORT", "([?\\[])?"), //
 				new RegexOr( //
 						new RegexConcat( //
 								new RegexLeaf("ARROW_BOTHDRESSING", "(<<?|//?|\\\\\\\\?)?"), //

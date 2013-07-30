@@ -40,6 +40,11 @@ public class Area {
 	private final Dimension2D dimensionToUse;
 	private double deltaX1;
 
+	@Override
+	public String toString() {
+		return dimensionToUse.toString() + " (" + deltaX1 + ")";
+	}
+
 	public Area(Dimension2D dimensionToUse) {
 		this.dimensionToUse = dimensionToUse;
 	}

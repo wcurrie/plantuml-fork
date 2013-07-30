@@ -52,11 +52,14 @@ public class MessageExoArrow extends Arrow {
 
 	private final LivingParticipantBox p;
 	private final MessageExoType type;
+	private final boolean shortArrow;
 
-	public MessageExoArrow(double startingY, Skin skin, Component arrow, LivingParticipantBox p, MessageExoType type, Url url) {
+	public MessageExoArrow(double startingY, Skin skin, Component arrow, LivingParticipantBox p, MessageExoType type,
+			Url url, boolean shortArrow) {
 		super(startingY, skin, arrow, url);
 		this.p = p;
 		this.type = type;
+		this.shortArrow = shortArrow;
 	}
 
 	double getActualWidth(StringBounder stringBounder, double maxX) {
@@ -67,10 +70,12 @@ public class MessageExoArrow extends Arrow {
 
 	private double getLeftStartInternal(StringBounder stringBounder) {
 		if (type == MessageExoType.FROM_LEFT || type == MessageExoType.TO_LEFT) {
-			// return Math.max(0, p.getLiveThicknessAt(stringBounder,
-			// getArrowYStartLevel(stringBounder)).getPos1()
-			// - getPreferredWidth(stringBounder));
-			return 0;
+			if (shortArrow) {
+				return p.getLiveThicknessAt(stringBounder, getArrowYStartLevel(stringBounder)).getSegment().getPos2()
+						- getPreferredWidth(stringBounder);
+			} else {
+				return 0;
+			}
 		}
 		return p.getLiveThicknessAt(stringBounder, getArrowYStartLevel(stringBounder)).getSegment().getPos2();
 	}
@@ -78,6 +83,9 @@ public class MessageExoArrow extends Arrow {
 	private double getRightEndInternal(StringBounder stringBounder, double maxX) {
 		if (type == MessageExoType.FROM_LEFT || type == MessageExoType.TO_LEFT) {
 			return p.getLiveThicknessAt(stringBounder, getArrowYStartLevel(stringBounder)).getSegment().getPos1();
+		}
+		if (shortArrow) {
+			return getLeftStartInternal(stringBounder) + getPreferredWidth(stringBounder);
 		}
 		return Math.max(maxX, getLeftStartInternal(stringBounder) + getPreferredWidth(stringBounder));
 	}

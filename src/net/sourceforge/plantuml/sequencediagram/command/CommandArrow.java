@@ -35,7 +35,6 @@ package net.sourceforge.plantuml.sequencediagram.command;
 
 import java.util.StringTokenizer;
 
-import net.sourceforge.plantuml.OptionFlags;
 import net.sourceforge.plantuml.classdiagram.command.CommandLinkClass;
 import net.sourceforge.plantuml.command.CommandExecutionResult;
 import net.sourceforge.plantuml.command.SingleLineCommand2;
@@ -64,7 +63,6 @@ public class CommandArrow extends SingleLineCommand2<SequenceDiagram> {
 	public static String getColorOrStylePattern() {
 		return "(?:\\[((?:#\\w+|dotted|dashed|bold|hidden)(?:,#\\w+|,dotted|,dashed|,bold|,hidden)*)\\])?";
 	}
-
 
 	static RegexConcat getRegexConcat() {
 		return new RegexConcat(new RegexLeaf("^"), //
@@ -190,20 +188,11 @@ public class CommandArrow extends SingleLineCommand2<SequenceDiagram> {
 			config = config.withDecorationStart(ArrowDecoration.CIRCLE);
 		}
 		if (dressing1.contains("x")) {
-			if (OptionFlags.NEW_ARROW) {
-				config = config.withHead2(ArrowHead.CROSSX);
-			} else {
-				// This line is to be kept until ComponentRoseArrow2 usage
-				config = config.withDecorationEnd(ArrowDecoration.CROSSX_toberemoved);
-			}
+			config = config.withHead2(ArrowHead.CROSSX);
 
 		}
 		if (dressing2.contains("x")) {
-			if (OptionFlags.NEW_ARROW) {
-				config = config.withHead2(ArrowHead.CROSSX);
-			} else {
-				config = config.withDecorationEnd(ArrowDecoration.CROSSX_toberemoved);
-			}
+			config = config.withHead2(ArrowHead.CROSSX);
 		}
 
 		config = applyStyle(arg2.getLazzy("ARROW_STYLE", 0), config);

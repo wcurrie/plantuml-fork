@@ -86,7 +86,7 @@ public class CommandCreateState2 extends SingleLineCommand2<StateDiagram> {
 			final Url url = urlBuilder.getUrl(urlString);
 			ent.addUrl(url);
 		}
-		final String color = arg2.get("STEREOTYPE", 0);
+		final String color = arg2.get("COLOR", 0);
 		if (color != null) {
 			ent.setSpecificBackcolor(HtmlColorUtils.getColorIfValid(color));
 		}

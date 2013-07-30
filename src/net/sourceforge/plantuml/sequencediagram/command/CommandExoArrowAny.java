@@ -69,7 +69,7 @@ abstract class CommandExoArrowAny extends SingleLineCommand2<SequenceDiagram> {
 		} else {
 			labels = Display.getWithNewlines(arg2.get("LABEL", 0));
 		}
-		
+
 		final boolean bothDirection = arg2.get("ARROW_BOTHDRESSING", 0) != null;
 
 		ArrowConfiguration config = bothDirection ? ArrowConfiguration.withDirectionBoth() : ArrowConfiguration
@@ -84,7 +84,7 @@ abstract class CommandExoArrowAny extends SingleLineCommand2<SequenceDiagram> {
 		config = CommandArrow.applyStyle(arg2.getLazzy("ARROW_STYLE", 0), config);
 
 		final String error = sequenceDiagram.addMessage(new MessageExo(p, getMessageExoType(arg2), labels, config,
-				sequenceDiagram.getNextMessageNumber()));
+				sequenceDiagram.getNextMessageNumber(), isShortArrow(arg2)));
 		if (error != null) {
 			return CommandExecutionResult.error(error);
 		}
@@ -102,5 +102,13 @@ abstract class CommandExoArrowAny extends SingleLineCommand2<SequenceDiagram> {
 	}
 
 	abstract MessageExoType getMessageExoType(RegexResult arg2);
+
+	private boolean isShortArrow(RegexResult arg2) {
+		final String s = arg2.getLazzy("SHORT", 0);
+		if (s != null && s.contains("?")) {
+			return true;
+		}
+		return false;
+	}
 
 }

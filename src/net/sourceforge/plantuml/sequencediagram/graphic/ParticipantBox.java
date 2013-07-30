@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 11134 $
+ * Revision $Revision: 11324 $
  *
  */
 package net.sourceforge.plantuml.sequencediagram.graphic;
@@ -152,19 +152,19 @@ public class ParticipantBox implements Pushable {
 		// ug.translate(-outMargin, 0);
 	}
 
-	public void drawLineU(UGraphic ug, double startingY, double endingY, boolean showTail) {
+	public void drawLineU(UGraphic ug, double startingY, double endingY, boolean showTail, double myDelta) {
 		ug = ug.apply(new UTranslate(startingX, 0));
 		if (delays.size() > 0) {
 			final StringBounder stringBounder = ug.getStringBounder();
 			for (GraphicalDelayText delay : delays) {
-				if (delay.getStartingY() >= startingY) {
-					drawLine(ug, startingY, delay.getStartingY(), line);
-					drawLine(ug, delay.getStartingY(), delay.getEndingY(stringBounder), delayLine);
-					startingY = delay.getEndingY(stringBounder);
+				if (delay.getStartingY() - myDelta >= startingY) {
+					drawLine(ug, startingY, delay.getStartingY() - myDelta, line);
+					drawLine(ug, delay.getStartingY() - myDelta, delay.getEndingY(stringBounder) - myDelta, delayLine);
+					startingY = delay.getEndingY(stringBounder) - myDelta;
 				}
 			}
-			if (delays.get(delays.size() - 1).getEndingY(stringBounder) > startingY) {
-				startingY = delays.get(delays.size() - 1).getEndingY(stringBounder);
+			if (delays.get(delays.size() - 1).getEndingY(stringBounder) - myDelta > startingY) {
+				startingY = delays.get(delays.size() - 1).getEndingY(stringBounder) - myDelta;
 			}
 		}
 		drawLine(ug, startingY, endingY, line);

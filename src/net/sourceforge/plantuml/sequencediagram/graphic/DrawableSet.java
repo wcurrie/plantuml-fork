@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 10096 $
+ * Revision $Revision: 11324 $
  *
  */
 package net.sourceforge.plantuml.sequencediagram.graphic;
@@ -242,7 +242,7 @@ class DrawableSet {
 	}
 
 	void drawU(UGraphic ug, final double delta, double width, Page page, boolean showTail) {
-		
+
 		final UGraphic ugOrig = ug;
 
 		final int height = (int) page.getHeight();
@@ -284,7 +284,8 @@ class DrawableSet {
 					start += create - page.getNewpage1() + 2 * box.magicMargin(ug.getStringBounder());
 				}
 			}
-			box.drawLineU(ug, start, endMax, showTail);
+			final double myDelta = page.getNewpage1() - page.getHeaderHeight();
+			box.drawLineU(ug, start, endMax, showTail, myDelta);
 		}
 	}
 

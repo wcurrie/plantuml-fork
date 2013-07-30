@@ -43,7 +43,6 @@ import net.sourceforge.plantuml.sequencediagram.MessageExo;
 import net.sourceforge.plantuml.sequencediagram.MessageExoType;
 import net.sourceforge.plantuml.sequencediagram.MessageNumber;
 import net.sourceforge.plantuml.skin.ArrowConfiguration;
-import net.sourceforge.plantuml.skin.ArrowHead;
 import net.sourceforge.plantuml.skin.ComponentType;
 
 class Step1MessageExo extends Step1Abstract {
@@ -58,7 +57,8 @@ class Step1MessageExo extends Step1Abstract {
 
 		this.messageArrow = new MessageExoArrow(freeY.getFreeY(range), drawingSet.getSkin(), drawingSet.getSkin()
 				.createComponent(ComponentType.ARROW, getConfig(), drawingSet.getSkinParam(),
-						getLabelOfMessage(message)), getLivingParticipantBox(), message.getType(), message.getUrl());
+						getLabelOfMessage(message)), getLivingParticipantBox(), message.getType(), message.getUrl(),
+				message.isShortArrow());
 
 		if (message.getNote() != null) {
 			final ISkinParam skinParam = new SkinParamBackcolored(drawingSet.getSkinParam(),

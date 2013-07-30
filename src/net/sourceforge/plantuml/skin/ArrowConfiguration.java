@@ -83,18 +83,12 @@ public class ArrowConfiguration {
 	}
 
 	public ArrowConfiguration reverse() {
-		if (OptionFlags.NEW_ARROW) {
-			return new ArrowConfiguration(body, dressing2, dressing1, color);
-		}
-		final ArrowDecoration d1 = dressing1.getDecoration();
-		final ArrowDecoration d2 = dressing2.getDecoration();
-		return new ArrowConfiguration(body, dressing2.withDecoration(d1), dressing1.withDecoration(d2), color);
+		return new ArrowConfiguration(body, dressing2, dressing1, color);
 	}
-	
+
 	public ArrowConfiguration self() {
 		return new ArrowConfiguration(body, dressing1, null, color);
 	}
-
 
 	public ArrowConfiguration withDotted() {
 		return new ArrowConfiguration(ArrowBody.DOTTED, dressing1, dressing2, color);
@@ -198,6 +192,5 @@ public class ArrowConfiguration {
 	public ArrowDressing getDressing2() {
 		return dressing2;
 	}
-
 
 }

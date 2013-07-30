@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  *
- * Revision $Revision: 11294 $
+ * Revision $Revision: 11327 $
  *
  */
 package net.sourceforge.plantuml;
@@ -51,7 +51,7 @@ public class OptionFlags {
 	// static public final boolean DESCRIPTION_DIAGRAM = false;
 	static public final boolean HORIZONTAL_LINE_BETWEEN_DIFFERENT_PACKAGE_ALLOWED = false;
 	static public boolean ALLOW_INCLUDE = true;
-	static public final boolean NEW_ARROW = true;
+	// static public final boolean NEW_ARROW = true;
 	static public final boolean USE_HECTOR = false;
 
 	void reset() {
