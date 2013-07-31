@@ -40,6 +40,7 @@ import net.sourceforge.plantuml.Direction;
 import net.sourceforge.plantuml.StringUtils;
 import net.sourceforge.plantuml.Url;
 import net.sourceforge.plantuml.UrlBuilder;
+import net.sourceforge.plantuml.UrlBuilder.ModeUrl;
 import net.sourceforge.plantuml.activitydiagram.ActivityDiagram;
 import net.sourceforge.plantuml.classdiagram.command.CommandLinkClass;
 import net.sourceforge.plantuml.command.CommandExecutionResult;
@@ -122,7 +123,7 @@ public class CommandLinkLongActivity2 extends CommandMultilines2<ActivityDiagram
 		final String desc0 = line0.get("DESC", 0);
 		Url urlActivity = null;
 		if (StringUtils.isNotEmpty(desc0)) {
-			final UrlBuilder urlBuilder = new UrlBuilder(diagram.getSkinParam().getValue("topurl"), true);
+			final UrlBuilder urlBuilder = new UrlBuilder(diagram.getSkinParam().getValue("topurl"), ModeUrl.STRICT);
 			urlActivity = urlBuilder.getUrl(desc0);
 			if (urlActivity == null) {
 				sb.append(desc0);
@@ -131,7 +132,7 @@ public class CommandLinkLongActivity2 extends CommandMultilines2<ActivityDiagram
 		}
 		for (int i = 1; i < lines.size() - 1; i++) {
 			if (i == 1 && urlActivity == null) {
-				final UrlBuilder urlBuilder = new UrlBuilder(diagram.getSkinParam().getValue("topurl"), true);
+				final UrlBuilder urlBuilder = new UrlBuilder(diagram.getSkinParam().getValue("topurl"), ModeUrl.STRICT);
 				urlActivity = urlBuilder.getUrl(lines.get(i));
 				if (urlActivity != null) {
 					continue;
@@ -204,7 +205,7 @@ public class CommandLinkLongActivity2 extends CommandMultilines2<ActivityDiagram
 		}
 
 		if (line0.get("URL", 0) != null) {
-			final UrlBuilder urlBuilder = new UrlBuilder(diagram.getSkinParam().getValue("topurl"), true);
+			final UrlBuilder urlBuilder = new UrlBuilder(diagram.getSkinParam().getValue("topurl"), ModeUrl.STRICT);
 			final Url urlLink = urlBuilder.getUrl(line0.get("URL", 0));
 			link.setUrl(urlLink);
 		}

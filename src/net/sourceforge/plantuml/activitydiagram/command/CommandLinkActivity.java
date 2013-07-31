@@ -37,6 +37,7 @@ import net.sourceforge.plantuml.Direction;
 import net.sourceforge.plantuml.StringUtils;
 import net.sourceforge.plantuml.Url;
 import net.sourceforge.plantuml.UrlBuilder;
+import net.sourceforge.plantuml.UrlBuilder.ModeUrl;
 import net.sourceforge.plantuml.activitydiagram.ActivityDiagram;
 import net.sourceforge.plantuml.command.CommandExecutionResult;
 import net.sourceforge.plantuml.command.SingleLineCommand2;
@@ -143,7 +144,7 @@ public class CommandLinkActivity extends SingleLineCommand2<ActivityDiagram> {
 			link = link.getInv();
 		}
 		if (arg2.get("URL", 0) != null) {
-			final UrlBuilder urlBuilder = new UrlBuilder(diagram.getSkinParam().getValue("topurl"), true);
+			final UrlBuilder urlBuilder = new UrlBuilder(diagram.getSkinParam().getValue("topurl"), ModeUrl.STRICT);
 			final Url urlLink = urlBuilder.getUrl(arg2.get("URL", 0));
 			link.setUrl(urlLink);
 		}

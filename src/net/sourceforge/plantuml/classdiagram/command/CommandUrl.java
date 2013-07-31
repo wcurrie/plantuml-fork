@@ -37,6 +37,7 @@ import java.util.List;
 
 import net.sourceforge.plantuml.Url;
 import net.sourceforge.plantuml.UrlBuilder;
+import net.sourceforge.plantuml.UrlBuilder.ModeUrl;
 import net.sourceforge.plantuml.classdiagram.AbstractEntityDiagram;
 import net.sourceforge.plantuml.command.CommandExecutionResult;
 import net.sourceforge.plantuml.command.SingleLineCommand;
@@ -54,7 +55,7 @@ public class CommandUrl extends SingleLineCommand<AbstractEntityDiagram> {
 		final Code code = Code.of(arg.get(0));
 		final String urlString = arg.get(1);
 		final IEntity entity = diagram.getOrCreateLeaf1(code, null);
-		final UrlBuilder urlBuilder = new UrlBuilder(diagram.getSkinParam().getValue("topurl"), true);
+		final UrlBuilder urlBuilder = new UrlBuilder(diagram.getSkinParam().getValue("topurl"), ModeUrl.STRICT);
 		final Url url = urlBuilder.getUrl(urlString);
 		entity.addUrl(url);
 		return CommandExecutionResult.ok();

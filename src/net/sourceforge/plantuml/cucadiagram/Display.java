@@ -41,6 +41,7 @@ import java.util.List;
 
 import net.sourceforge.plantuml.Url;
 import net.sourceforge.plantuml.UrlBuilder;
+import net.sourceforge.plantuml.UrlBuilder.ModeUrl;
 
 public class Display implements Iterable<CharSequence> {
 
@@ -179,6 +180,9 @@ public class Display implements Iterable<CharSequence> {
 					current.append('\t');
 				} else if (c2 == '\\') {
 					current.append(c2);
+				} else {
+					current.append(c);
+					current.append(c2);
 				}
 			} else {
 				current.append(c);
@@ -192,7 +196,7 @@ public class Display implements Iterable<CharSequence> {
 		if (this.size() == 0) {
 			return null;
 		}
-		final UrlBuilder urlBuilder = new UrlBuilder(null, false);
+		final UrlBuilder urlBuilder = new UrlBuilder(null, ModeUrl.AT_START);
 		return urlBuilder.getUrl(this.get(0).toString().trim());
 	}
 

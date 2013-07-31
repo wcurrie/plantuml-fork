@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 9786 $
+ * Revision $Revision: 11341 $
  *
  */
 package net.sourceforge.plantuml.graphic;
@@ -40,7 +40,7 @@ public class Text implements HtmlCommand {
 	public static final Text NEWLINE = new Text("\\n");
 
 	Text(String text) {
-		this.text = text;
+		this.text = text.replaceAll("\\\\\\[", "[").replaceAll("\\\\\\]", "]");
 		if (text.indexOf('\n') != -1) {
 			throw new IllegalArgumentException();
 		}

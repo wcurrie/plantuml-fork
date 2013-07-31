@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 11318 $
+ * Revision $Revision: 11339 $
  *
  */
 package net.sourceforge.plantuml.sequencediagram.graphic;
@@ -43,6 +43,7 @@ import net.sourceforge.plantuml.sequencediagram.Message;
 import net.sourceforge.plantuml.sequencediagram.NotePosition;
 import net.sourceforge.plantuml.skin.ArrowConfiguration;
 import net.sourceforge.plantuml.skin.ArrowHead;
+import net.sourceforge.plantuml.skin.Component;
 import net.sourceforge.plantuml.skin.ComponentType;
 
 class Step1Message extends Step1Abstract {
@@ -61,10 +62,10 @@ class Step1Message extends Step1Abstract {
 		if (isSelfMessage()) {
 			this.messageArrow = null;
 		} else {
-			this.messageArrow = new MessageArrow(freeY.getFreeY(range), drawingSet.getSkin(), drawingSet.getSkin()
-					.createComponent(ComponentType.ARROW, getConfig(), drawingSet.getSkinParam(),
-							getLabelOfMessage(message)), getLivingParticipantBox1(), getLivingParticipantBox2(),
-					message.getUrl());
+			final Component comp = drawingSet.getSkin().createComponent(ComponentType.ARROW, getConfig(),
+					drawingSet.getSkinParam(), getLabelOfMessage(message));
+			this.messageArrow = new MessageArrow(freeY.getFreeY(range), drawingSet.getSkin(), comp,
+					getLivingParticipantBox1(), getLivingParticipantBox2(), message.getUrl());
 		}
 
 		if (message.getNote() != null) {
@@ -216,7 +217,7 @@ class Step1Message extends Step1Abstract {
 	}
 
 	private ArrowConfiguration getSelfArrowType(Message m) {
-//		return m.getArrowConfiguration().self();
+		// return m.getArrowConfiguration().self();
 		ArrowConfiguration result = ArrowConfiguration.withDirectionSelf();
 		if (m.getArrowConfiguration().isDotted()) {
 			result = result.withDotted();

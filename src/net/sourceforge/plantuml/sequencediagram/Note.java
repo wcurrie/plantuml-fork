@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 9786 $
+ * Revision $Revision: 11337 $
  *
  */
 package net.sourceforge.plantuml.sequencediagram;
@@ -36,6 +36,7 @@ package net.sourceforge.plantuml.sequencediagram;
 import net.sourceforge.plantuml.SpecificBackcolorable;
 import net.sourceforge.plantuml.Url;
 import net.sourceforge.plantuml.UrlBuilder;
+import net.sourceforge.plantuml.UrlBuilder.ModeUrl;
 import net.sourceforge.plantuml.cucadiagram.Display;
 import net.sourceforge.plantuml.graphic.HtmlColor;
 
@@ -64,7 +65,7 @@ public class Note implements Event, SpecificBackcolorable {
 		this.p2 = p2;
 		this.position = position;
 		if (strings != null && strings.size() > 0) {
-			final UrlBuilder urlBuilder = new UrlBuilder(null, true);
+			final UrlBuilder urlBuilder = new UrlBuilder(null, ModeUrl.STRICT);
 			this.url = urlBuilder.getUrl(strings.get(0).toString());
 		} else {
 			this.url = null;

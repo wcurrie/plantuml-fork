@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 10272 $
+ * Revision $Revision: 11337 $
  *
  */
 package net.sourceforge.plantuml.graphic;
@@ -38,6 +38,7 @@ import java.util.regex.Pattern;
 
 import net.sourceforge.plantuml.Url;
 import net.sourceforge.plantuml.UrlBuilder;
+import net.sourceforge.plantuml.UrlBuilder.ModeUrl;
 
 class HtmlCommandFactory {
 
@@ -122,7 +123,7 @@ class HtmlCommandFactory {
 		}
 
 		if (s.matches(Splitter.linkPattern)) {
-			final UrlBuilder urlBuilder = new UrlBuilder(null, true);
+			final UrlBuilder urlBuilder = new UrlBuilder(null, ModeUrl.STRICT);
 			final Url url = urlBuilder.getUrl(s);
 			url.setMember(true);
 			return new TextLink(url);

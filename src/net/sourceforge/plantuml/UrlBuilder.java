@@ -36,24 +36,30 @@ package net.sourceforge.plantuml;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class UrlBuilder  {
-	
+public class UrlBuilder {
+
+	public static enum ModeUrl {
+		STRICT, AT_START
+	}
+
 	private static final String URL_PATTERN = "\\[\\[(\"[^\"]+\"|[^{} \\]\\[]*)(?: *\\{([^{}]+)\\})?(?: *([^\\]\\[]+))?\\]\\]";
 
 	private final String topurl;
-	private boolean strict;
-	
-	public UrlBuilder(String topurl, boolean strict) {
+	private ModeUrl mode;
+
+	public UrlBuilder(String topurl, ModeUrl mode) {
 		this.topurl = topurl;
-		this.strict = strict;
+		this.mode = mode;
 	}
-	
+
 	public Url getUrl(String s) {
 		final Pattern p;
-		if (strict) {
+		if (mode == ModeUrl.STRICT) {
 			p = Pattern.compile("(?i)^" + URL_PATTERN + "$");
+		} else if (mode == ModeUrl.AT_START) {
+			p = Pattern.compile("(?i)^" + URL_PATTERN + ".*");
 		} else {
-			p = Pattern.compile(".*" + URL_PATTERN + ".*");
+			throw new IllegalStateException();
 		}
 		final Matcher m = p.matcher(s.trim());
 		if (m.matches() == false) {
@@ -68,7 +74,7 @@ public class UrlBuilder  {
 		}
 		return new Url(url, m.group(2), m.group(3));
 	}
-	
+
 	public static String getRegexp() {
 		return URL_PATTERN;
 	}
@@ -83,6 +89,5 @@ public class UrlBuilder  {
 		final int x = label.indexOf(url);
 		return label.substring(0, x) + label.substring(x + url.length());
 	}
-
 
 }
