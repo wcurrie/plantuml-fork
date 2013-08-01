@@ -34,7 +34,6 @@
 package net.sourceforge.plantuml.svek;
 
 import java.awt.Color;
-import java.awt.Graphics2D;
 import java.awt.geom.Dimension2D;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
@@ -76,10 +75,7 @@ import net.sourceforge.plantuml.graphic.StringBounderUtils;
 import net.sourceforge.plantuml.graphic.TextBlock;
 import net.sourceforge.plantuml.graphic.TextBlockUtils;
 import net.sourceforge.plantuml.png.PngIO;
-import net.sourceforge.plantuml.ugraphic.UChangeBackColor;
 import net.sourceforge.plantuml.ugraphic.UFont;
-import net.sourceforge.plantuml.ugraphic.UGraphic;
-import net.sourceforge.plantuml.ugraphic.URectangle;
 import net.sourceforge.plantuml.ugraphic.eps.UGraphicEps;
 import net.sourceforge.plantuml.ugraphic.g2d.UGraphicG2d;
 import net.sourceforge.plantuml.ugraphic.svg.UGraphicSvg;
@@ -309,45 +305,6 @@ public final class CucaDiagramFileMakerSvek implements CucaDiagramFileMaker {
 
 	}
 
-	private void createPngOld(OutputStream os, FileFormatOption fileFormatOption, final IEntityImage result,
-			final Dimension2D dim) throws IOException {
-		Color backColor = Color.WHITE;
-		if (result.getBackcolor() instanceof HtmlColorSimple) {
-			backColor = diagram.getSkinParam().getColorMapper().getMappedColor(result.getBackcolor());
-		}
-
-		final double dpiFactor;
-		final Scale scale = diagram.getScale();
-		if (scale == null) {
-			dpiFactor = diagram.getDpiFactor(fileFormatOption);
-		} else {
-			dpiFactor = scale.getScale(dim.getWidth(), dim.getHeight());
-		}
-
-		final EmptyImageBuilder builder;
-		final Graphics2D graphics2D;
-		if (diagram.isRotation()) {
-			builder = new EmptyImageBuilder((int) (dim.getHeight() * dpiFactor), (int) (dim.getWidth() * dpiFactor),
-					backColor);
-			graphics2D = builder.getGraphics2D();
-			graphics2D.rotate(-Math.PI / 2);
-			graphics2D.translate(-builder.getBufferedImage().getHeight(), 0);
-		} else {
-			builder = new EmptyImageBuilder((int) (dim.getWidth() * dpiFactor), (int) (dim.getHeight() * dpiFactor),
-					backColor);
-			graphics2D = builder.getGraphics2D();
-
-		}
-		final UGraphic ug = new UGraphicG2d(diagram.getSkinParam().getColorMapper(), graphics2D, dpiFactor);
-		((UGraphicG2d) ug).setBufferedImage(builder.getBufferedImage());
-		final BufferedImage im = ((UGraphicG2d) ug).getBufferedImage();
-		if (result.getBackcolor() instanceof HtmlColorGradient) {
-			ug.apply(new UChangeBackColor(result.getBackcolor())).draw(new URectangle(im.getWidth(), im.getHeight()));
-		}
-		result.drawU(ug);
-
-		PngIO.write(im, os, diagram.getMetadata(), diagram.getDpi(fileFormatOption));
-	}
 
 	private void createSvg(OutputStream os, FileFormatOption fileFormatOption, final TextBlockBackcolored result,
 			final Dimension2D dim) throws IOException {

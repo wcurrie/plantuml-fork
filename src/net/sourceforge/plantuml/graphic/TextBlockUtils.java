@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 11154 $
+ * Revision $Revision: 11345 $
  *
  */
 package net.sourceforge.plantuml.graphic;
@@ -161,9 +161,8 @@ public class TextBlockUtils {
 	private static final StringBounder dummyStringBounder;
 
 	public static UGraphic getPrinted(TextBlock tb, FileFormatOption fileFormatOption, ColorMapper colorMapper,
-			double dpiFactor, HtmlColor mybackcolor) {
+			double dpiFactor, HtmlColor mybackcolor, double margin) {
 		final MinMax minmax = getMinMax(tb, dummyStringBounder);
-		final double margin = 10;
 		final UGraphic ug = fileFormatOption.createUGraphic(colorMapper, dpiFactor,
 				Dimension2DDouble.delta(minmax.getDimension(), 2 * margin), mybackcolor, false);
 		final double dx = -minmax.getMinX() + margin;

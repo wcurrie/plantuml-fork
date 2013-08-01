@@ -39,9 +39,11 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.util.List;
 
+import net.sourceforge.plantuml.Dimension2DDouble;
 import net.sourceforge.plantuml.FileFormatOption;
 import net.sourceforge.plantuml.FontParam;
 import net.sourceforge.plantuml.ISkinParam;
+import net.sourceforge.plantuml.Scale;
 import net.sourceforge.plantuml.UmlDiagram;
 import net.sourceforge.plantuml.UmlDiagramType;
 import net.sourceforge.plantuml.activitydiagram3.ftile.Swimlanes;
@@ -139,13 +141,26 @@ public class ActivityDiagram3 extends UmlDiagram {
 		result = addTitle(result);
 		result = addHeaderAndFooter(result);
 		final ISkinParam skinParam = getSkinParam();
-		final double dpiFactor = getDpiFactor(fileFormatOption);
+		final Dimension2D dim = TextBlockUtils.getMinMax(result).getDimension();
+		final double margin = 10;
+		final double dpiFactor = getDpiFactor(fileFormatOption, Dimension2DDouble.delta(dim, 2 * margin, 0));
 
 		final UGraphic ug = TextBlockUtils.getPrinted(result, fileFormatOption, skinParam.getColorMapper(), dpiFactor,
-				getSkinParam().getBackgroundColor());
+				getSkinParam().getBackgroundColor(), margin);
+
 		ug.writeImage(os, getMetadata(), getDpi(fileFormatOption));
-		final Dimension2D dim = TextBlockUtils.getMinMax(result).getDimension();
 		return new ImageDataSimple((int) dim.getWidth(), (int) dim.getHeight());
+	}
+
+	private final double getDpiFactor(FileFormatOption fileFormatOption, final Dimension2D dim) {
+		final double dpiFactor;
+		final Scale scale = getScale();
+		if (scale == null) {
+			dpiFactor = getDpiFactor(fileFormatOption);
+		} else {
+			dpiFactor = scale.getScale(dim.getWidth(), dim.getHeight());
+		}
+		return dpiFactor;
 	}
 
 	private TextBlock addTitle(TextBlock original) {
@@ -165,12 +180,10 @@ public class ActivityDiagram3 extends UmlDiagram {
 		if (footer == null && header == null) {
 			return original;
 		}
-		final TextBlock textFooter = footer == null ? null : TextBlockUtils
-				.create(footer, new FontConfiguration(getFont(FontParam.FOOTER), getFontColor(FontParam.FOOTER, null)),
-						getFooterAlignment(), getSkinParam());
-		final TextBlock textHeader = header == null ? null : TextBlockUtils
-				.create(header, new FontConfiguration(getFont(FontParam.HEADER), getFontColor(FontParam.HEADER, null)),
-						getHeaderAlignment(), getSkinParam());
+		final TextBlock textFooter = footer == null ? null : TextBlockUtils.create(footer, new FontConfiguration(
+				getFont(FontParam.FOOTER), getFontColor(FontParam.FOOTER, null)), getFooterAlignment(), getSkinParam());
+		final TextBlock textHeader = header == null ? null : TextBlockUtils.create(header, new FontConfiguration(
+				getFont(FontParam.HEADER), getFontColor(FontParam.HEADER, null)), getHeaderAlignment(), getSkinParam());
 
 		return new DecorateTextBlock(original, textHeader, getHeaderAlignment(), textFooter, getFooterAlignment());
 	}
