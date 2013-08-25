@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 10794 $
+ * Revision $Revision: 11351 $
  *
  */
 package net.sourceforge.plantuml;
@@ -108,6 +108,10 @@ public abstract class AbstractPSystem implements Diagram {
 	public CommandExecutionResult executeCommand(Command cmd, List<String> lines) {
 		cmd = new ProtectedCommand(cmd);
 		return cmd.execute(this, lines);
+	}
+	
+	public boolean hasUrl() {
+		return false;
 	}
 
 }

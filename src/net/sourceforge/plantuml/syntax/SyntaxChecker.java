@@ -77,7 +77,7 @@ public class SyntaxChecker {
 		final SourceStringReader sourceStringReader = new SourceStringReader(new Defines(), source,
 				Collections.<String> emptyList());
 
-		final Diagram system = sourceStringReader.getBlocks().get(0).getSystem();
+		final Diagram system = sourceStringReader.getBlocks().get(0).getDiagram();
 		if (system instanceof UmlDiagram) {
 			result.setUmlDiagramType(((UmlDiagram) system).getUmlDiagramType());
 			result.setDescription(system.getDescription());

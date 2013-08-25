@@ -101,7 +101,7 @@ public class SourceStringReader {
 			return null;
 		}
 		for (BlockUml b : blocks) {
-			final Diagram system = b.getSystem();
+			final Diagram system = b.getDiagram();
 			final int nbInSystem = system.getNbImages();
 			if (numImage < nbInSystem) {
 				//final CMapData cmap = new CMapData();

@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  *
- * Revision $Revision: 10784 $
+ * Revision $Revision: 11350 $
  *
  */
 package net.sourceforge.plantuml;
@@ -231,7 +231,7 @@ public class Run {
 		final SourceStringReader sourceStringReader = new SourceStringReader(new Defines(), source, option.getConfig());
 
 		if (option.isSyntax()) {
-			final Diagram system = sourceStringReader.getBlocks().get(0).getSystem();
+			final Diagram system = sourceStringReader.getBlocks().get(0).getDiagram();
 			if (system instanceof UmlDiagram) {
 				ps.println(((UmlDiagram) system).getUmlDiagramType().name());
 				ps.println(system.getDescription());

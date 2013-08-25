@@ -97,7 +97,7 @@ public class SourceFileReader implements ISourceFileReader {
 
 	public boolean hasError() throws IOException, InterruptedException {
 		for (final BlockUml b : builder.getBlockUmls()) {
-			if (b.getSystem() instanceof PSystemError) {
+			if (b.getDiagram() instanceof PSystemError) {
 				return true;
 			}
 		}
@@ -120,7 +120,7 @@ public class SourceFileReader implements ISourceFileReader {
 			final File suggested = new File(outputDirectory, newName);
 			suggested.getParentFile().mkdirs();
 
-			final Diagram system = blockUml.getSystem();
+			final Diagram system = blockUml.getDiagram();
 			final List<File> exportDiagrams = PSystemUtils.exportDiagrams(system, suggested, fileFormatOption);
 			OptionFlags.getInstance().logData(file, system);
 
@@ -151,7 +151,7 @@ public class SourceFileReader implements ISourceFileReader {
 		final List<String> result = new ArrayList<String>();
 		final Transcoder transcoder = TranscoderUtil.getDefaultTranscoder();
 		for (BlockUml blockUml : builder.getBlockUmls()) {
-			final String source = blockUml.getSystem().getSource().getPlainString();
+			final String source = blockUml.getDiagram().getSource().getPlainString();
 			final String encoded = transcoder.encode(source);
 			result.add(encoded);
 		}

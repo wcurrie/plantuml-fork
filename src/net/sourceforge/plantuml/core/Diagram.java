@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  *
- * Revision $Revision: 10459 $
+ * Revision $Revision: 11351 $
  *
  */
 package net.sourceforge.plantuml.core;
@@ -81,5 +81,13 @@ public interface Diagram {
 	 * @return
 	 */
 	UmlSource getSource();
+	
+	/**
+	 * Check if the Diagram have some links.
+	 * 
+	 * @return
+	 */
+	public boolean hasUrl();
+
 
 }

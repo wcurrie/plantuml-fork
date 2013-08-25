@@ -27,31 +27,29 @@
  * in the United States and other countries.]
  *
  * Original Author:  Arnaud Roques
- * 
- * Revision $Revision: 11354 $
+ *
+ * Revision $Revision: 9786 $
  *
  */
-package net.sourceforge.plantuml.version;
+package net.sourceforge.plantuml.api;
 
-public class Version {
+import java.util.List;
 
-	public static int version() {
-		return 7977;
-	}
+import net.sourceforge.plantuml.BlockUml;
+import net.sourceforge.plantuml.SourceStringReader;
+import net.sourceforge.plantuml.core.Diagram;
 
-	public static String versionString() {
-		if (beta()) {
-			return "" + (version() + 1) + "beta";
+public class PlantumlUtils {
+
+	public static boolean hasCMapData(String uml) {
+		final SourceStringReader reader = new SourceStringReader(uml);
+		final List<BlockUml> blocks = reader.getBlocks();
+		if (blocks.size() == 0) {
+			return false;
 		}
-		return "" + version();
-	}
-
-	public static boolean beta() {
-		return false;
-	}
-
-	public static long compileTime() {
-		return 1377450542317L;
+		final BlockUml block = blocks.get(0);
+		final Diagram diagram = block.getDiagram();
+		return diagram.hasUrl();
 	}
 
 }

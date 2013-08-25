@@ -187,9 +187,13 @@ public class MainWindow2 extends JFrame {
 		final MouseListener mouseListener = new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				if (e.getClickCount() == 2) {
-					final int index = jList1.locationToIndex(e.getPoint());
-					doubleClick((SimpleLine2) jList1.getModel().getElementAt(index), jList1.getModel(), index);
+				try {
+					if (e.getClickCount() == 2) {
+						final int index = jList1.locationToIndex(e.getPoint());
+						doubleClick((SimpleLine2) jList1.getModel().getElementAt(index), jList1.getModel(), index);
+					}
+				} catch (Exception ex) {
+
 				}
 			}
 		};

@@ -82,11 +82,15 @@ public class BlockUml {
 		return result;
 	}
 
-	public Diagram getSystem() {
+	private Diagram getSystem() {
 		if (system == null) {
 			createSystem();
 		}
 		return system;
+	}
+
+	public Diagram getDiagram() {
+		return getSystem();
 	}
 
 	private void createSystem() {
