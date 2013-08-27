@@ -72,7 +72,6 @@ public class DescriptionDiagramFactory1317 extends UmlDiagramFactory1317 {
 
 		cmds.add(new CommandPage());
 		cmds.add(new CommandLinkElement());
-		// addCommand(new CommandLinkComponent2());
 		//
 		cmds.add(new CommandPackageWithUSymbol());
 		cmds.add(new CommandPackage());

@@ -36,6 +36,7 @@ import java.util.regex.Pattern;
 
 import net.sourceforge.plantuml.Direction;
 import net.sourceforge.plantuml.StringUtils;
+import net.sourceforge.plantuml.classdiagram.command.CommandLinkClass;
 import net.sourceforge.plantuml.command.CommandExecutionResult;
 import net.sourceforge.plantuml.command.SingleLineCommand2;
 import net.sourceforge.plantuml.command.regex.RegexConcat;
@@ -62,12 +63,17 @@ public class CommandLinkElement extends SingleLineCommand2<DescriptionDiagram> {
 		return new RegexConcat(
 				new RegexLeaf("^"), //
 				getGroup("ENT1"), //
-				new RegexLeaf("\\s*"),
-				new RegexLeaf("LABEL1", "(?:\"([^\"]+)\")?"),
+				new RegexLeaf("\\s*"), new RegexLeaf("LABEL1", "(?:\"([^\"]+)\")?"),
 				new RegexLeaf("\\s*"),
 				new RegexLeaf("HEAD2", "(0\\)|<<|[<^*+#0)]|<\\|| +o)?"), //
-				new RegexLeaf("BODY",
-						"([-=.~]+)(?:(left|right|up|down|le?|ri?|up?|do?)(?=[-=.~0()]))?(?:(0|\\(0\\)|\\(0|0\\))(?=[-=.~]))?([-=.~]*)"), //
+				new RegexLeaf("BODY1", "([-=.~]+)"), //
+				new RegexLeaf("ARROW_STYLE1",
+						"(?:\\[((?:#\\w+|dotted|dashed|bold|hidden)(?:,#\\w+|,dotted|,dashed|,bold|,hidden)*)\\])?"),
+				new RegexLeaf("DIRECTION", "(?:(left|right|up|down|le?|ri?|up?|do?)(?=[-=.~0()]))?"), //
+				new RegexLeaf("INSIDE", "(?:(0|\\(0\\)|\\(0|0\\))(?=[-=.~]))?"), //
+				new RegexLeaf("ARROW_STYLE2",
+						"(?:\\[((?:#\\w+|dotted|dashed|bold|hidden)(?:,#\\w+|,dotted|,dashed|,bold|,hidden)*)\\])?"),
+				new RegexLeaf("BODY2", "([-=.~]*)"), //
 				new RegexLeaf("HEAD1", "(\\(0|>>|[>^*+#0(]|\\|>|o +)?"), //
 				new RegexLeaf("\\s*"), new RegexLeaf("LABEL2", "(?:\"([^\"]+)\")?"), new RegexLeaf("\\s*"), //
 				getGroup("ENT2"), //
@@ -130,16 +136,16 @@ public class CommandLinkElement extends SingleLineCommand2<DescriptionDiagram> {
 		}
 
 		LinkType result = new LinkType(d1, d2);
-		final String body = trimAndLowerCase(arg.get("BODY", 0));
-		if (body.contains(".")) {
+		final String queue = getQueue(arg);
+		if (queue.contains(".")) {
 			result = result.getDashed();
-		} else if (body.contains("~")) {
+		} else if (queue.contains("~")) {
 			result = result.getDotted();
-		} else if (body.contains("=")) {
+		} else if (queue.contains("=")) {
 			result = result.getBold();
 		}
 
-		final String middle = arg.get("BODY", 2);
+		final String middle = arg.get("INSIDE", 0);
 		if ("0".equals(middle)) {
 			result = result.withMiddleCircle();
 		} else if ("0)".equals(middle)) {
@@ -159,36 +165,17 @@ public class CommandLinkElement extends SingleLineCommand2<DescriptionDiagram> {
 		return s.trim().toLowerCase();
 	}
 
-	// private LinkDecor getDecors1(String head1) {
-	// if (head1 == null) {
-	// return LinkDecor.NONE;
-	// }
-	// if (head1.equals(">")) {
-	// return LinkDecor.ARROW;
-	// }
-	// return LinkDecor.NONE;
-	// }
-	//
-	// private LinkDecor getDecors2(String head2) {
-	// if (head2 == null) {
-	// return LinkDecor.NONE;
-	// }
-	// if (head2.equals("*")) {
-	// return LinkDecor.COMPOSITION;
-	// }
-	// return LinkDecor.NONE;
-	// }
-
 	private Direction getDirection(RegexResult arg) {
-		final String dir = arg.get("BODY", 1);
+		final String dir = arg.get("DIRECTION", 0);
 		if (dir == null) {
-			return Direction.DOWN;
+			return StringUtils.getQueueDirection(getQueue(arg));
+			// return Direction.DOWN;
 		}
 		return StringUtils.getQueueDirection(dir);
 	}
 
 	private String getQueue(RegexResult arg) {
-		return arg.get("BODY", 0).trim() + arg.get("BODY", 3).trim();
+		return arg.get("BODY1", 0) + arg.get("BODY2", 0);
 	}
 
 	private static RegexLeaf getGroup(String name) {
@@ -280,12 +267,13 @@ public class CommandLinkElement extends SingleLineCommand2<DescriptionDiagram> {
 
 		final Labels labels = new Labels(arg);
 
-		Link link = new Link(cl1, cl2, linkType, Display.getWithNewlines(labels.labelLink), queue.length(), labels.firstLabel,
-				labels.secondLabel, diagram.getLabeldistance(), diagram.getLabelangle());
+		Link link = new Link(cl1, cl2, linkType, Display.getWithNewlines(labels.labelLink), queue.length(),
+				labels.firstLabel, labels.secondLabel, diagram.getLabeldistance(), diagram.getLabelangle());
 
 		if (dir == Direction.LEFT || dir == Direction.UP) {
 			link = link.getInv();
 		}
+		CommandLinkClass.applyStyle(arg.getLazzy("ARROW_STYLE", 0), link);
 
 		diagram.addLink(link);
 		return CommandExecutionResult.ok();
@@ -304,8 +292,7 @@ public class CommandLinkElement extends SingleLineCommand2<DescriptionDiagram> {
 		} else if (codeChar == ':') {
 			return diagram.getOrCreateLeaf1(code2.eventuallyRemoveStartingAndEndingDoubleQuote(), LeafType.ACTOR);
 		} else if (codeChar == '[') {
-			return diagram.getOrCreateLeaf1(code2.eventuallyRemoveStartingAndEndingDoubleQuote(),
-					LeafType.COMPONENT);
+			return diagram.getOrCreateLeaf1(code2.eventuallyRemoveStartingAndEndingDoubleQuote(), LeafType.COMPONENT);
 		}
 
 		return diagram.getOrCreateLeaf1(code2, null);
@@ -336,45 +323,5 @@ public class CommandLinkElement extends SingleLineCommand2<DescriptionDiagram> {
 		diagram.addLink(link);
 		return CommandExecutionResult.ok();
 	}
-
-	// private LinkType getLinkTypeNormal(RegexPartialMatch regexPartialMatch) {
-	// final String queue = regexPartialMatch.get(1).trim() + regexPartialMatch.get(3).trim();
-	// final String key = regexPartialMatch.get(4);
-	// return getLinkType(queue, key);
-	// }
-	//
-	// private LinkType getLinkTypeInv(RegexPartialMatch regexPartialMatch) {
-	// final String queue = regexPartialMatch.get(2).trim() + regexPartialMatch.get(4).trim();
-	// final String key = regexPartialMatch.get(1);
-	// return getLinkType(queue, key).getInversed();
-	// }
-
-	// private LinkType getLinkType(String queue, String key) {
-	// if (key != null) {
-	// key = key.trim();
-	// }
-	// LinkType linkType = getLinkTypeFromKey(key);
-	//
-	// if (queue.startsWith(".")) {
-	// linkType = linkType.getDashed();
-	// }
-	// return linkType;
-	// }
-
-	// private LinkType getLinkTypeFromKey(String k) {
-	// if (k == null) {
-	// return new LinkType(LinkDecor.NONE, LinkDecor.NONE);
-	// }
-	// if (k.equals("<") || k.equals(">")) {
-	// return new LinkType(LinkDecor.ARROW, LinkDecor.NONE);
-	// }
-	// if (k.equals("<|") || k.equals("|>")) {
-	// return new LinkType(LinkDecor.EXTENDS, LinkDecor.NONE);
-	// }
-	// if (k.equals("^")) {
-	// return new LinkType(LinkDecor.EXTENDS, LinkDecor.NONE);
-	// }
-	// return null;
-	// }
 
 }

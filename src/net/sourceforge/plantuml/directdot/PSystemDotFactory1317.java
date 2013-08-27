@@ -50,7 +50,7 @@ public class PSystemDotFactory1317 extends PSystemBasicFactory1317<PSystemDot> {
 
 	@Override
 	public PSystemDot executeLine(PSystemDot system, String line) {
-		if (system == null && line.matches("digraph\\s+\\w+\\s+\\{")) {
+		if (system == null && line.matches("(di)?graph\\s+\\w+\\s+\\{")) {
 			data = new StringBuilder(line);
 			data.append("\n");
 			return new PSystemDot(data.toString());

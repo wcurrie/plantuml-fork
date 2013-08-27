@@ -220,20 +220,6 @@ class FtileWhile extends AbstractFtile {
 				final double xDiamond = (dimTotal.getWidth() - 2 * Diamond.diamondHalfSize) / 2;
 				drawDiamond(ug, xDiamond, 0);
 
-				// final Dimension2D dimOut = out.calculateDimension(stringBounder);
-				//
-				// whileBlock.asTextBlock().drawUNewWayINLINED(ug.apply(new UTranslate(dimOut.getWidth(), 0)));
-				//
-				// final Dimension2D dimWhile = whileBlock.asTextBlock().calculateDimension(stringBounder);
-				// ug = ug.apply(new UChangeColor(LinkRendering.getColor(afterEndwhileColor, arrowColor)));
-				// ug = ug.apply(new UChangeColor(LinkRendering.getColor(endInlinkColor, arrowColor)));
-				//
-				// ug = ug.apply(new UChangeColor(LinkRendering.getColor(endInlinkColor, arrowColor)));
-				// ug = ug.apply(new UChangeBackColor(LinkRendering.getColor(endInlinkColor, arrowColor)));
-				//
-				// ug = ug.apply(new UChangeColor(LinkRendering.getColor(afterEndwhileColor, arrowColor)));
-				// ug = ug.apply(new UChangeBackColor(LinkRendering.getColor(afterEndwhileColor, arrowColor)));
-				//
 				final Dimension2D dimLabel = test.calculateDimension(stringBounder);
 				test.drawU(ug.apply(new UTranslate((dimTotal.getWidth() - dimLabel.getWidth()) / 2,
 						2 * Diamond.diamondHalfSize - 5)));

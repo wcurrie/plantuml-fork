@@ -55,7 +55,10 @@ import net.sourceforge.plantuml.sequencediagram.SequenceDiagram;
 public final class FactorySequenceNoteOverSeveralCommand implements SingleMultiFactoryCommand<SequenceDiagram> {
 
 	private RegexConcat getRegexConcatMultiLine() {
-		return new RegexConcat(new RegexLeaf("STYLE", "^(note|hnote|rnote)\\s+over\\s+"), //
+		return new RegexConcat( //
+				new RegexLeaf("^"), //
+				new RegexLeaf("VMERGE", "(/)?\\s*"), //
+				new RegexLeaf("STYLE", "(note|hnote|rnote)\\s+over\\s+"), //
 				new RegexLeaf("P1", "([\\p{L}0-9_.@]+|\"[^\"]+\")\\s*\\,\\s*"), //
 				new RegexLeaf("P2", "([\\p{L}0-9_.@]+|\"[^\"]+\")\\s*"), //
 				new RegexLeaf("COLOR", "(#\\w+[-\\\\|/]?\\w+)?"), //
@@ -64,7 +67,10 @@ public final class FactorySequenceNoteOverSeveralCommand implements SingleMultiF
 	}
 
 	private RegexConcat getRegexConcatSingleLine() {
-		return new RegexConcat(new RegexLeaf("STYLE", "^(note|hnote|rnote)\\s+over\\s+"), //
+		return new RegexConcat( //
+				new RegexLeaf("^"), //
+				new RegexLeaf("VMERGE", "(/)?\\s*"), //
+				new RegexLeaf("STYLE", "(note|hnote|rnote)\\s+over\\s+"), //
 				new RegexLeaf("P1", "([\\p{L}0-9_.@]+|\"[^\"]+\")\\s*\\,\\s*"), //
 				new RegexLeaf("P2", "([\\p{L}0-9_.@]+|\"[^\"]+\")\\s*"), //
 				new RegexLeaf("COLOR", "(#\\w+[-\\\\|/]?\\w+)?"), //
@@ -112,10 +118,11 @@ public final class FactorySequenceNoteOverSeveralCommand implements SingleMultiF
 				.eventuallyRemoveStartingAndEndingDoubleQuote(line0.get("P2", 0)));
 
 		if (strings.size() > 0) {
+			final boolean tryMerge = line0.get("VMERGE", 0) != null;
 			final Note note = new Note(p1, p2, new Display(strings));
 			note.setSpecificBackcolor(HtmlColorUtils.getColorIfValid(line0.get("COLOR", 0)));
 			note.setStyle(NoteStyle.getNoteStyle(line0.get("STYLE", 0)));
-			system.addNote(note, false);
+			system.addNote(note, tryMerge);
 		}
 		return CommandExecutionResult.ok();
 	}
