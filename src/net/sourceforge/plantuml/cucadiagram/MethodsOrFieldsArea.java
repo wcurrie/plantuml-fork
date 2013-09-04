@@ -144,7 +144,7 @@ public class MethodsOrFieldsArea implements TextBlockWidth, TextBlock {
 			}
 		}
 
-		public List<Url> getUrls() {
+		public List<Url> getUrls(StringBounder stringBounder) {
 			if (url != null) {
 				return Collections.singletonList(url);
 			}
@@ -169,7 +169,7 @@ public class MethodsOrFieldsArea implements TextBlockWidth, TextBlock {
 					return new Dimension2DDouble(1, 1);
 				}
 
-				public List<Url> getUrls() {
+				public List<Url> getUrls(StringBounder stringBounder) {
 					return Collections.emptyList();
 				}
 			};
@@ -193,7 +193,7 @@ public class MethodsOrFieldsArea implements TextBlockWidth, TextBlock {
 				return MethodsOrFieldsArea.this.calculateDimension(stringBounder);
 			}
 
-			public List<Url> getUrls() {
+			public List<Url> getUrls(StringBounder stringBounder) {
 				return Collections.emptyList();
 			}
 		};
@@ -230,7 +230,7 @@ public class MethodsOrFieldsArea implements TextBlockWidth, TextBlock {
 	}
 
 
-	public List<Url> getUrls() {
+	public List<Url> getUrls(StringBounder stringBounder) {
 		return Collections.emptyList();
 	}
 

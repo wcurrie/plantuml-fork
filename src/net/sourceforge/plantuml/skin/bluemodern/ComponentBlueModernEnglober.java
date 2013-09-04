@@ -57,7 +57,7 @@ public class ComponentBlueModernEnglober extends AbstractTextualComponent {
 
 	public ComponentBlueModernEnglober(HtmlColor borderColor, HtmlColor backColor, Display strings,
 			HtmlColor fontColor, UFont font, SpriteContainer spriteContainer) {
-		super(strings, fontColor, font, HorizontalAlignment.CENTER, 4, 4, 1, spriteContainer, 0);
+		super(strings, fontColor, font, HorizontalAlignment.CENTER, 4, 4, 1, spriteContainer, 0, false);
 		this.borderColor = borderColor;
 		this.backColor = backColor;
 	}

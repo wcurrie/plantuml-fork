@@ -299,7 +299,7 @@ public class TilesField implements TextBlock {
 		return new Dimension2DDouble(width * dimSingle.getWidth(), height * dimSingle.getHeight());
 	}
 
-	public List<Url> getUrls() {
+	public List<Url> getUrls(StringBounder stringBounder) {
 		return Collections.emptyList();
 	}
 

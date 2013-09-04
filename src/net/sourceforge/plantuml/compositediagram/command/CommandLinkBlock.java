@@ -51,8 +51,8 @@ public class CommandLinkBlock extends SingleLineCommand<CompositeDiagram> {
 
 	@Override
 	protected CommandExecutionResult executeArg(CompositeDiagram diagram, List<String> arg) {
-		final IEntity cl1 = diagram.getOrCreateLeaf1(Code.of(arg.get(0)), null);
-		final IEntity cl2 = diagram.getOrCreateLeaf1(Code.of(arg.get(4)), null);
+		final IEntity cl1 = diagram.getOrCreateLeaf(Code.of(arg.get(0)), null);
+		final IEntity cl2 = diagram.getOrCreateLeaf(Code.of(arg.get(4)), null);
 
 		final String deco1 = arg.get(1);
 		final String deco2 = arg.get(3);

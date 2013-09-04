@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 11345 $
+ * Revision $Revision: 11397 $
  *
  */
 package net.sourceforge.plantuml.graphic;
@@ -129,7 +129,7 @@ public class TextBlockUtils {
 				return new Dimension2DDouble(width, height);
 			}
 
-			public List<Url> getUrls() {
+			public List<Url> getUrls(StringBounder stringBounder) {
 				return Collections.emptyList();
 			}
 		};

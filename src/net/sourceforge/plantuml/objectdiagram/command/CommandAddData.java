@@ -50,7 +50,7 @@ public class CommandAddData extends SingleLineCommand<ObjectDiagram> {
 
 	@Override
 	protected CommandExecutionResult executeArg(ObjectDiagram diagram, List<String> arg) {
-		final IEntity entity = diagram.getOrCreateLeaf1(Code.of(arg.get(0)), null);
+		final IEntity entity = diagram.getOrCreateLeaf(Code.of(arg.get(0)), null);
 
 		final String field = arg.get(1);
 		if (field.length() > 0 && VisibilityModifier.isVisibilityCharacter(field.charAt(0))) {

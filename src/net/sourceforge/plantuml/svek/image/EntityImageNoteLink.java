@@ -90,7 +90,7 @@ public class EntityImageNoteLink implements IEntityImage {
 	}
 
 	
-	final public List<Url> getUrls() {
+	final public List<Url> getUrls(StringBounder stringBounder) {
 		return Collections.emptyList();
 	}
 

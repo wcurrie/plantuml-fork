@@ -101,7 +101,7 @@ class USymbolCloud extends USymbol {
 				return getMargin().addDimension(Dimension2DDouble.mergeTB(dimStereo, dimLabel));
 			}
 
-			public List<Url> getUrls() {
+			public List<Url> getUrls(StringBounder stringBounder) {
 				return Collections.emptyList();
 			}
 		};
@@ -127,7 +127,7 @@ class USymbolCloud extends USymbol {
 				return new Dimension2DDouble(width, height);
 			}
 
-			public List<Url> getUrls() {
+			public List<Url> getUrls(StringBounder stringBounder) {
 				return Collections.emptyList();
 			}
 		};

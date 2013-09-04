@@ -45,18 +45,17 @@ import net.sourceforge.plantuml.FontParam;
 import net.sourceforge.plantuml.ISkinParam;
 import net.sourceforge.plantuml.SkinParamBackcolored;
 import net.sourceforge.plantuml.Url;
+import net.sourceforge.plantuml.cucadiagram.BodyEnhanced2;
 import net.sourceforge.plantuml.cucadiagram.Display;
 import net.sourceforge.plantuml.cucadiagram.IEntity;
 import net.sourceforge.plantuml.cucadiagram.ILeaf;
 import net.sourceforge.plantuml.cucadiagram.Stereotype;
 import net.sourceforge.plantuml.graph2.GeomUtils;
-import net.sourceforge.plantuml.graphic.FontConfiguration;
 import net.sourceforge.plantuml.graphic.HorizontalAlignment;
 import net.sourceforge.plantuml.graphic.HtmlColor;
 import net.sourceforge.plantuml.graphic.StringBounder;
 import net.sourceforge.plantuml.graphic.TextBlock;
 import net.sourceforge.plantuml.graphic.TextBlockEmpty;
-import net.sourceforge.plantuml.graphic.TextBlockUtils;
 import net.sourceforge.plantuml.posimo.DotPath;
 import net.sourceforge.plantuml.skin.rose.Rose;
 import net.sourceforge.plantuml.svek.AbstractEntityImage;
@@ -67,8 +66,10 @@ import net.sourceforge.plantuml.ugraphic.UChangeBackColor;
 import net.sourceforge.plantuml.ugraphic.UChangeColor;
 import net.sourceforge.plantuml.ugraphic.UFont;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
+import net.sourceforge.plantuml.ugraphic.UGraphicHorizontalLine;
 import net.sourceforge.plantuml.ugraphic.ULine;
 import net.sourceforge.plantuml.ugraphic.UPolygon;
+import net.sourceforge.plantuml.ugraphic.UStroke;
 import net.sourceforge.plantuml.ugraphic.UTranslate;
 
 public class EntityImageNote extends AbstractEntityImage {
@@ -80,7 +81,6 @@ public class EntityImageNote extends AbstractEntityImage {
 	private final int marginX2 = 15;
 	private final int marginY = 5;
 	private final boolean withShadow;
-	// final private List<Url> url;
 	private final ISkinParam skinParam;
 
 	private final TextBlock textBlock;
@@ -106,20 +106,16 @@ public class EntityImageNote extends AbstractEntityImage {
 		if (strings.size() == 1 && strings.get(0).length() == 0) {
 			textBlock = new TextBlockEmpty();
 		} else {
-			textBlock = TextBlockUtils.create(strings, new FontConfiguration(fontNote, fontColor),
-					HorizontalAlignment.LEFT, skinParam);
+			textBlock = new BodyEnhanced2(strings, FontParam.NOTE, skinParam, HorizontalAlignment.LEFT, fontNote, fontColor);
 		}
-		// for (Url u : textBlock.getUrls()) {
-		// entity.addUrl(u);
-		// }
 	}
 
 	private boolean urlAdded;
 
-	public List<Url> getUrls() {
+	public List<Url> getUrls(StringBounder stringBounder) {
 		if (urlAdded == false) {
 			urlAdded = true;
-			for (Url u : textBlock.getUrls()) {
+			for (Url u : textBlock.getUrls(stringBounder)) {
 				getEntity().addUrl(u);
 			}
 		}
@@ -185,12 +181,13 @@ public class EntityImageNote extends AbstractEntityImage {
 	}
 
 	final public void drawU(UGraphic ug) {
-		final List<Url> urls = getUrls();
+		final List<Url> urls = getUrls(ug.getStringBounder());
 		if (urls.size() > 0 && urls.get(0).isMember() == false) {
 			ug.startUrl(urls.get(0));
 		}
+		final UGraphic ug2 = new UGraphicHorizontalLine(ug, 0, getPreferredWidth(ug.getStringBounder()), new UStroke());
 		if (opaleLine == null || opaleLine.isOpale() == false) {
-			drawNormal(ug);
+			drawNormal(ug2);
 		} else {
 			final StringBounder stringBounder = ug.getStringBounder();
 			DotPath path = opaleLine.getDotPath();
@@ -210,7 +207,7 @@ public class EntityImageNote extends AbstractEntityImage {
 			final Point2D pp2 = path.getEndPoint();
 			final Opale opale = new Opale(borderColor, noteBackgroundColor, textBlock, skinParam.shadowing());
 			opale.setOpale(strategy, pp1, pp2);
-			opale.drawU(ug);
+			opale.drawU(ug2);
 		}
 		if (urls.size() > 0 && urls.get(0).isMember() == false) {
 			ug.closeAction();
@@ -229,7 +226,6 @@ public class EntityImageNote extends AbstractEntityImage {
 		ug.apply(new UTranslate(getTextWidth(stringBounder) - cornersize, 0)).draw(new ULine(0, cornersize));
 		ug.apply(new UTranslate(getTextWidth(stringBounder), cornersize)).draw(new ULine(-cornersize, 0));
 		getTextBlock().drawU(ug.apply(new UTranslate(marginX1, marginY)));
-
 	}
 
 	private UPolygon getPolygonNormal(final StringBounder stringBounder) {

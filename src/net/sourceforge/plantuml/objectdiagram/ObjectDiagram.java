@@ -40,11 +40,11 @@ import net.sourceforge.plantuml.cucadiagram.LeafType;
 
 public class ObjectDiagram extends AbstractClassOrObjectDiagram {
 
-	public ILeaf getOrCreateLeaf1(Code code, LeafType type) {
+	public ILeaf getOrCreateLeaf(Code code, LeafType type) {
 		if (type == null) {
 			type = LeafType.OBJECT;
 		}
-		return getOrCreateLeaf1Default(code, type);
+		return getOrCreateLeafDefault(code, type);
 	}
 
 	@Override

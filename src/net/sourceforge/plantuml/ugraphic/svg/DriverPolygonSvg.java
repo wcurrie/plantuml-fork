@@ -87,7 +87,7 @@ public class DriverPolygonSvg implements UDriver<SvgGraphics> {
 		}
 
 		svg.setStrokeColor(color);
-		svg.setStrokeWidth("" + param.getStroke().getThickness(), param.getStroke().getDasharraySvg());
+		svg.setStrokeWidth(param.getStroke().getThickness(), param.getStroke().getDasharraySvg());
 
 		svg.svgPolygon(shape.getDeltaShadow(), points);
 	}

@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 10073 $
+ * Revision $Revision: 11416 $
  *
  */
 package net.sourceforge.plantuml.sequencediagram.graphic;
@@ -126,10 +126,6 @@ final class NoteBox extends GraphicalElement implements InGroupable {
 		} else {
 			throw new IllegalStateException();
 		}
-		// if (InGroupableList.NEW_METHOD) {
-		// Log.println("GET STARTING X OF " + this + " " + (xStart +
-		// delta));
-		// }
 		return xStart + delta;
 	}
 

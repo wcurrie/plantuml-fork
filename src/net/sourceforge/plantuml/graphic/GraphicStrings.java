@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 11297 $
+ * Revision $Revision: 11426 $
  *
  */
 package net.sourceforge.plantuml.graphic;
@@ -124,7 +124,7 @@ public class GraphicStrings implements IEntityImage {
 			PngIO.write(im, os, metadata, 96);
 		} else if (fileFormat == FileFormat.SVG) {
 			final UGraphicSvg svg = new UGraphicSvg(colorMapper, StringUtils.getAsHtml(colorMapper
-					.getMappedColor(background)), false);
+					.getMappedColor(background)), false, 1.0);
 			drawAndGetSize(svg);
 			svg.createXml(os);
 		} else if (fileFormat == FileFormat.ATXT || fileFormat == FileFormat.UTXT) {
@@ -152,7 +152,7 @@ public class GraphicStrings implements IEntityImage {
 			PngIO.write(im, os, metadata, 96);
 		} else if (fileFormat == FileFormat.SVG) {
 			final UGraphicSvg svg = new UGraphicSvg(colorMapper, StringUtils.getAsHtml(colorMapper
-					.getMappedColor(background)), false);
+					.getMappedColor(background)), false, 1.0);
 			drawAndGetSize(svg);
 			svg.createXml(os);
 		} else if (fileFormat == FileFormat.ATXT || fileFormat == FileFormat.UTXT) {
@@ -247,7 +247,7 @@ public class GraphicStrings implements IEntityImage {
 		return false;
 	}
 
-	final public List<Url> getUrls() {
+	final public List<Url> getUrls(StringBounder stringBounder) {
 		return Collections.emptyList();
 	}
 

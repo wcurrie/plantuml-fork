@@ -116,7 +116,7 @@ public class SpriteMonochrome implements Sprite {
 				return new Dimension2DDouble(getWidth(), getHeight());
 			}
 
-			public List<Url> getUrls() {
+			public List<Url> getUrls(StringBounder stringBounder) {
 				return Collections.emptyList();
 			}
 		};

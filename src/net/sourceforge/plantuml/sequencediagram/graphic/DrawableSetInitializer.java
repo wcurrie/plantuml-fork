@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 11309 $
+ * Revision $Revision: 11417 $
  *
  */
 package net.sourceforge.plantuml.sequencediagram.graphic;
@@ -518,8 +518,10 @@ class DrawableSetInitializer {
 		final NotesBoxes notesBoxes = new NotesBoxes(freeY2.getFreeY(range));
 		for (Note n : notes) {
 			final NoteBox noteBox = createNoteBox(stringBounder, n, range);
-			final LivingParticipantBox p1 = drawableSet.getLivingParticipantBox(n.getParticipant());
-			notesBoxes.add(noteBox, p1.getParticipantBox());
+			final ParticipantBox p1 = drawableSet.getLivingParticipantBox(n.getParticipant()).getParticipantBox();
+			final ParticipantBox p2 = n.getParticipant2() == null ? null : drawableSet.getLivingParticipantBox(
+					n.getParticipant2()).getParticipantBox();
+			notesBoxes.add(noteBox, p1, p2);
 		}
 		notesBoxes.ensureConstraints(stringBounder, constraintSet);
 		inGroupableStack.addElement(notesBoxes);

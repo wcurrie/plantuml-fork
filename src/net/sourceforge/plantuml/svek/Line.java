@@ -152,11 +152,11 @@ public class Line implements Moveable, Hideable {
 			}
 		}
 
-		public List<Url> getUrls() {
+		public List<Url> getUrls(StringBounder stringBounder) {
 			if (getDirection() == Direction.RIGHT) {
-				return right.getUrls();
+				return right.getUrls(stringBounder);
 			}
-			return left.getUrls();
+			return left.getUrls(stringBounder);
 		}
 
 		public Dimension2D calculateDimension(StringBounder stringBounder) {

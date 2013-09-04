@@ -156,7 +156,7 @@ public class EntityImageClass extends AbstractEntityImage {
 		ug = ug.apply(new UChangeBackColor(backcolor));
 
 		final UStroke stroke = getStroke();
-		ug.apply(stroke).apply(new UTranslate(0, 0)).draw(rect);
+		ug.apply(stroke).draw(rect);
 
 		header.drawU(ug, dimTotal.getWidth(), dimHeader.getHeight());
 

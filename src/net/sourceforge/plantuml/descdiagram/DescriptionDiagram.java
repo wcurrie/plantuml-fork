@@ -44,24 +44,24 @@ import net.sourceforge.plantuml.graphic.USymbol;
 public class DescriptionDiagram extends AbstractEntityDiagram {
 
 	@Override
-	public ILeaf getOrCreateLeaf1(Code code, LeafType type) {
+	public ILeaf getOrCreateLeaf(Code code, LeafType type) {
 		if (type == null) {
 			String code2 = code.getCode();
 			if (code2.startsWith("[") && code2.endsWith("]")) {
-				return getOrCreateLeaf1Default(code.eventuallyRemoveStartingAndEndingDoubleQuote(), LeafType.COMPONENT);
+				return getOrCreateLeafDefault(code.eventuallyRemoveStartingAndEndingDoubleQuote(), LeafType.COMPONENT);
 			}
 			if (code2.startsWith(":") && code2.endsWith(":")) {
-				return getOrCreateLeaf1Default(code.eventuallyRemoveStartingAndEndingDoubleQuote(), LeafType.ACTOR);
+				return getOrCreateLeafDefault(code.eventuallyRemoveStartingAndEndingDoubleQuote(), LeafType.ACTOR);
 			}
 			if (code2.startsWith("()")) {
 				code2 = code2.substring(2).trim();
 				code2 = StringUtils.eventuallyRemoveStartingAndEndingDoubleQuote(code2);
-				return getOrCreateLeaf1Default(Code.of(code2), LeafType.CIRCLE_INTERFACE);
+				return getOrCreateLeafDefault(Code.of(code2), LeafType.CIRCLE_INTERFACE);
 			}
 			code = code.eventuallyRemoveStartingAndEndingDoubleQuote();
-			return getOrCreateLeaf1Default(code, LeafType.STILL_UNKNOWN);
+			return getOrCreateLeafDefault(code, LeafType.STILL_UNKNOWN);
 		}
-		return getOrCreateLeaf1Default(code, type);
+		return getOrCreateLeafDefault(code, type);
 	}
 
 //	@Override

@@ -59,7 +59,7 @@ import net.sourceforge.plantuml.ugraphic.visio.UGraphicVdx;
  * 
  * 
  * @author Arnaud Roques
- *
+ * 
  */
 public class FileFormatOption {
 
@@ -75,6 +75,11 @@ public class FileFormatOption {
 		this.affineTransform = at;
 	}
 
+	@Override
+	public String toString() {
+		return fileFormat.toString() + " " + affineTransform;
+	}
+
 	public final FileFormat getFileFormat() {
 		return fileFormat;
 	}
@@ -87,7 +92,8 @@ public class FileFormatOption {
 	 * Create a UGraphic corresponding to this FileFormatOption
 	 * 
 	 * @param colorMapper
-	 * @param dpiFactor 1.0 for a standard dot per inch 
+	 * @param dpiFactor
+	 *            1.0 for a standard dot per inch
 	 * @param dim
 	 * @param mybackcolor
 	 * @param rotation
@@ -114,7 +120,7 @@ public class FileFormatOption {
 
 	}
 
-	private UGraphic createUGraphicSVG(ColorMapper colorMapper, double dpiFactor, Dimension2D dim,
+	private UGraphic createUGraphicSVG(ColorMapper colorMapper, double scale, Dimension2D dim,
 			HtmlColor mybackcolor, boolean rotation) {
 		Color backColor = Color.WHITE;
 		if (mybackcolor instanceof HtmlColorSimple) {
@@ -122,11 +128,11 @@ public class FileFormatOption {
 		}
 		final UGraphicSvg ug;
 		if (mybackcolor instanceof HtmlColorGradient) {
-			ug = new UGraphicSvg(colorMapper, (HtmlColorGradient) mybackcolor, false);
+			ug = new UGraphicSvg(colorMapper, (HtmlColorGradient) mybackcolor, false, scale);
 		} else if (backColor == null || backColor.equals(Color.WHITE)) {
-			ug = new UGraphicSvg(colorMapper, false);
+			ug = new UGraphicSvg(colorMapper, false, scale);
 		} else {
-			ug = new UGraphicSvg(colorMapper, StringUtils.getAsHtml(backColor), false);
+			ug = new UGraphicSvg(colorMapper, StringUtils.getAsHtml(backColor), false, scale);
 		}
 		return ug;
 

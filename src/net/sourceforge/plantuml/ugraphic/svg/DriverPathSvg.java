@@ -67,7 +67,7 @@ public class DriverPathSvg extends DriverShadowedG2d implements UDriver<SvgGraph
 		}
 
 		svg.setStrokeColor(color);
-		svg.setStrokeWidth("" + param.getStroke().getThickness(), param.getStroke().getDasharraySvg());
+		svg.setStrokeWidth(param.getStroke().getThickness(), param.getStroke().getDasharraySvg());
 
 		svg.svgPath(x, y, shape, shape.getDeltaShadow());
 

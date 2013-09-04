@@ -74,7 +74,7 @@ public class CommandCreateState2 extends SingleLineCommand2<StateDiagram> {
 	protected CommandExecutionResult executeArg(StateDiagram system, RegexResult arg2) {
 		final Code code = Code.of(arg2.get("CODE", 0));
 		final String display = arg2.get("DISPLAY", 0);
-		final IEntity ent = system.getOrCreateLeaf1(code, null);
+		final IEntity ent = system.getOrCreateLeaf(code, null);
 		ent.setDisplay(Display.getWithNewlines(display));
 
 		final String stereotype = arg2.get("STEREOTYPE", 0);

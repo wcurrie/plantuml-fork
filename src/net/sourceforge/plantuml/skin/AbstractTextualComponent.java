@@ -28,14 +28,16 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 11158 $
+ * Revision $Revision: 11407 $
  *
  */
 package net.sourceforge.plantuml.skin;
 
 import java.awt.geom.Dimension2D;
 
+import net.sourceforge.plantuml.FontParam;
 import net.sourceforge.plantuml.SpriteContainer;
+import net.sourceforge.plantuml.cucadiagram.BodyEnhanced2;
 import net.sourceforge.plantuml.cucadiagram.Display;
 import net.sourceforge.plantuml.graphic.FontConfiguration;
 import net.sourceforge.plantuml.graphic.HorizontalAlignment;
@@ -62,13 +64,13 @@ public abstract class AbstractTextualComponent extends AbstractComponent {
 	public AbstractTextualComponent(CharSequence label, HtmlColor fontColor, UFont font,
 			HorizontalAlignment horizontalAlignment, int marginX1, int marginX2, int marginY,
 			SpriteContainer spriteContainer, double maxMessageSize) {
-		this(Display.getWithNewlines(label == null ? "" : label.toString()), fontColor, font, horizontalAlignment, marginX1, marginX2,
-				marginY, spriteContainer, maxMessageSize);
+		this(Display.getWithNewlines(label == null ? "" : label.toString()), fontColor, font, horizontalAlignment,
+				marginX1, marginX2, marginY, spriteContainer, maxMessageSize, false);
 	}
 
 	public AbstractTextualComponent(Display strings, HtmlColor fontColor, UFont font,
 			HorizontalAlignment horizontalAlignment, int marginX1, int marginX2, int marginY,
-			SpriteContainer spriteContainer, double maxMessageSize) {
+			SpriteContainer spriteContainer, double maxMessageSize, boolean enhanced) {
 		this.font = font;
 		this.fontColor = fontColor;
 		this.marginX1 = marginX1;
@@ -78,6 +80,9 @@ public abstract class AbstractTextualComponent extends AbstractComponent {
 
 		if (strings.size() == 1 && strings.get(0).length() == 0) {
 			textBlock = new TextBlockEmpty();
+		} else if (enhanced) {
+			textBlock = new BodyEnhanced2(strings, FontParam.NOTE, spriteContainer, HorizontalAlignment.LEFT, font,
+					fontColor);
 		} else {
 			textBlock = TextBlockUtils.create(strings, new FontConfiguration(font, fontColor), horizontalAlignment,
 					spriteContainer, maxMessageSize);

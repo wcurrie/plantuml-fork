@@ -85,7 +85,7 @@ class USymbolComponent2 extends USymbol {
 				return getMargin().addDimension(dim);
 			}
 
-			public List<Url> getUrls() {
+			public List<Url> getUrls(StringBounder stringBounder) {
 				return Collections.emptyList();
 			}
 		};
@@ -106,7 +106,7 @@ class USymbolComponent2 extends USymbol {
 				return new Dimension2DDouble(width, height);
 			}
 
-			public List<Url> getUrls() {
+			public List<Url> getUrls(StringBounder stringBounder) {
 				return Collections.emptyList();
 			}
 		};

@@ -99,7 +99,7 @@ public class Tile implements TextBlock {
 		return new Dimension2DDouble(SIZE, SIZE);
 	}
 
-	public List<Url> getUrls() {
+	public List<Url> getUrls(StringBounder stringBounder) {
 		return Collections.emptyList();
 	}
 }

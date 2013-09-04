@@ -103,6 +103,8 @@ public class LimitFinder implements UGraphic {
 		} else if (shape instanceof TextBlockable) {
 			final TextBlock tb = ((TextBlockable) shape).asTextBlock();
 			tb.drawU(this);
+		} else if (shape instanceof UCenteredCharacter) {
+			// To be done
 		} else {
 			throw new UnsupportedOperationException(shape.getClass().getName());
 		}

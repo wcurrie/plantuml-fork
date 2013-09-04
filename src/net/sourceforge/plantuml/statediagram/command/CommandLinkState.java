@@ -172,9 +172,9 @@ public class CommandLinkState extends SingleLineCommand2<StateDiagram> {
 		}
 		if (code.startsWith("=") && code.endsWith("=")) {
 			code = removeEquals(code);
-			return system.getOrCreateLeaf1(Code.of(code), LeafType.SYNCHRO_BAR);
+			return system.getOrCreateLeaf(Code.of(code), LeafType.SYNCHRO_BAR);
 		}
-		return system.getOrCreateLeaf1(Code.of(code), null);
+		return system.getOrCreateLeaf(Code.of(code), null);
 	}
 
 	private String removeEquals(String code) {
@@ -196,9 +196,9 @@ public class CommandLinkState extends SingleLineCommand2<StateDiagram> {
 		}
 		if (code.startsWith("=") && code.endsWith("=")) {
 			code = removeEquals(code);
-			return system.getOrCreateLeaf1(Code.of(code), LeafType.SYNCHRO_BAR);
+			return system.getOrCreateLeaf(Code.of(code), LeafType.SYNCHRO_BAR);
 		}
-		return system.getOrCreateLeaf1(Code.of(code), null);
+		return system.getOrCreateLeaf(Code.of(code), null);
 	}
 
 }

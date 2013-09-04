@@ -108,7 +108,7 @@ class EmbededSystemLine implements Line {
 
 	}
 
-	public List<Url> getUrls() {
+	public List<Url> getUrls(StringBounder stringBounder) {
 		return Collections.emptyList();
 	}
 

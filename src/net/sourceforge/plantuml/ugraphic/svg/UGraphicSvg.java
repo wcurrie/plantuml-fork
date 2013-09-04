@@ -77,16 +77,16 @@ public class UGraphicSvg extends AbstractUGraphic<SvgGraphics> implements ClipCo
 		register();
 	}
 
-	public UGraphicSvg(ColorMapper colorMapper, String backcolor, boolean textAsPath) {
-		this(colorMapper, new SvgGraphics(backcolor), textAsPath);
+	public UGraphicSvg(ColorMapper colorMapper, String backcolor, boolean textAsPath, double scale) {
+		this(colorMapper, new SvgGraphics(backcolor, scale), textAsPath);
 	}
 
-	public UGraphicSvg(ColorMapper colorMapper, boolean textAsPath) {
-		this(colorMapper, new SvgGraphics(), textAsPath);
+	public UGraphicSvg(ColorMapper colorMapper, boolean textAsPath, double scale) {
+		this(colorMapper, new SvgGraphics(scale), textAsPath);
 	}
 
-	public UGraphicSvg(ColorMapper mapper, HtmlColorGradient gr, boolean textAsPath) {
-		this(mapper, new SvgGraphics(), textAsPath);
+	public UGraphicSvg(ColorMapper mapper, HtmlColorGradient gr, boolean textAsPath, double scale) {
+		this(mapper, new SvgGraphics(scale), textAsPath);
 
 		final SvgGraphics svg = getGraphicObject();
 		svg.paintBackcolorGradient(mapper, gr);

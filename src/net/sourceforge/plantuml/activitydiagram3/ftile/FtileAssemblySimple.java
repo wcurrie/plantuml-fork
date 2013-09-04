@@ -110,7 +110,7 @@ public class FtileAssemblySimple implements Ftile {
 				return Dimension2DDouble.mergeTB(dim1, dim2);
 			}
 
-			public List<Url> getUrls() {
+			public List<Url> getUrls(StringBounder stringBounder) {
 				throw new UnsupportedOperationException();
 			}
 

@@ -72,7 +72,7 @@ public class TextBlockCompressed implements TextBlock {
 		return new Dimension2DDouble(dim.getWidth(), compressionTransform.transform(dim.getHeight()));
 	}
 
-	public List<Url> getUrls() {
+	public List<Url> getUrls(StringBounder stringBounder) {
 		throw new UnsupportedOperationException();
 	}
 

@@ -98,7 +98,7 @@ public class Control implements TextBlock {
 		return new Dimension2DDouble(radius * 2 + 2 * margin, radius * 2 + 2 * margin);
 	}
 
-	public List<Url> getUrls() {
+	public List<Url> getUrls(StringBounder stringBounder) {
 		return Collections.emptyList();
 	}
 

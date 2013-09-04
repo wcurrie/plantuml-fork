@@ -48,8 +48,8 @@ public class DriverEllipseSvg implements UDriver<SvgGraphics> {
 		final double width = shape.getWidth();
 		final double height = shape.getHeight();
 
-		final String color = StringUtils.getAsSvg(mapper, param.getColor()); 
-		
+		final String color = StringUtils.getAsSvg(mapper, param.getColor());
+
 		final HtmlColor back = param.getBackcolor();
 		if (back instanceof HtmlColorGradient) {
 			final HtmlColorGradient gr = (HtmlColorGradient) back;
@@ -63,7 +63,7 @@ public class DriverEllipseSvg implements UDriver<SvgGraphics> {
 			svg.setStrokeColor(color);
 		}
 
-		svg.setStrokeWidth("" + param.getStroke().getThickness(), param.getStroke().getDasharraySvg());
+		svg.setStrokeWidth(param.getStroke().getThickness(), param.getStroke().getDasharraySvg());
 
 		double start = shape.getStart();
 		final double extend = shape.getExtend();

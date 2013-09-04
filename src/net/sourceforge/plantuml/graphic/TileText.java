@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 10930 $
+ * Revision $Revision: 11397 $
  *
  */
 package net.sourceforge.plantuml.graphic;
@@ -132,7 +132,7 @@ class TileText implements TextBlock {
 		return x;
 	}
 
-	public List<Url> getUrls() {
+	public List<Url> getUrls(StringBounder stringBounder) {
 		if (url != null) {
 			return Collections.singletonList(url);
 		}

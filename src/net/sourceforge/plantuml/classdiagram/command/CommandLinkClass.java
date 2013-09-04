@@ -127,23 +127,24 @@ final public class CommandLinkClass extends SingleLineCommand2<AbstractClassOrOb
 		if (diagram.isGroup(ent1) && diagram.isGroup(ent2)) {
 			return executePackageLink(diagram, arg);
 		}
-		if (diagram.isGroup(ent1) || diagram.isGroup(ent2)) {
-			return CommandExecutionResult.error("Package can be only linked to other package");
-		}
 
-		final ILeaf cl1 = (ILeaf) diagram.getOrCreateLeaf1(ent1, null);
-		final ILeaf cl2 = (ILeaf) diagram.getOrCreateLeaf1(ent2, null);
+		final IEntity cl1 = diagram.isGroup(ent1) ? diagram.getGroup(Code.of(StringUtils
+				.eventuallyRemoveStartingAndEndingDoubleQuote(arg.get("ENT1", 1)))) : diagram.getOrCreateLeaf(ent1,
+				null);
+		final IEntity cl2 = diagram.isGroup(ent2) ? diagram.getGroup(Code.of(StringUtils
+				.eventuallyRemoveStartingAndEndingDoubleQuote(arg.get("ENT2", 1)))) : diagram.getOrCreateLeaf(ent2,
+				null);
 
 		if (arg.get("ENT1", 0) != null) {
 			final LeafType type = LeafType.getLeafType(arg.get("ENT1", 0));
 			if (type != LeafType.OBJECT) {
-				cl1.muteToType(type);
+				((ILeaf) cl1).muteToType(type);
 			}
 		}
 		if (arg.get("ENT2", 0) != null) {
 			final LeafType type = LeafType.getLeafType(arg.get("ENT2", 0));
 			if (type != LeafType.OBJECT) {
-				cl2.muteToType(type);
+				((ILeaf) cl2).muteToType(type);
 			}
 		}
 		if (arg.get("ENT1", 2) != null) {
@@ -163,9 +164,6 @@ final public class CommandLinkClass extends SingleLineCommand2<AbstractClassOrOb
 		} else {
 			queue = getQueueLength(arg);
 		}
-		// if (dir != null && linkType.isExtendsOrAgregationOrCompositionOrPlus()) {
-		// dir = dir.getInv();
-		// }
 
 		String firstLabel = arg.get("FIRST_LABEL", 0);
 		String secondLabel = arg.get("SECOND_LABEL", 0);
@@ -261,10 +259,10 @@ final public class CommandLinkClass extends SingleLineCommand2<AbstractClassOrOb
 	}
 
 	private CommandExecutionResult executePackageLink(AbstractClassOrObjectDiagram diagram, RegexResult arg) {
-		final String ent1 = StringUtils.eventuallyRemoveStartingAndEndingDoubleQuote(arg.get("ENT1", 1));
-		final String ent2 = StringUtils.eventuallyRemoveStartingAndEndingDoubleQuote(arg.get("ENT2", 1));
-		final IEntity cl1 = diagram.getGroup(Code.of(ent1));
-		final IEntity cl2 = diagram.getGroup(Code.of(ent2));
+		final IEntity cl1 = diagram.getGroup(Code.of(StringUtils.eventuallyRemoveStartingAndEndingDoubleQuote(arg.get(
+				"ENT1", 1))));
+		final IEntity cl2 = diagram.getGroup(Code.of(StringUtils.eventuallyRemoveStartingAndEndingDoubleQuote(arg.get(
+				"ENT2", 1))));
 
 		final LinkType linkType = getLinkType(arg);
 		final Direction dir = getDirection(arg);
@@ -280,9 +278,6 @@ final public class CommandLinkClass extends SingleLineCommand2<AbstractClassOrOb
 		final String secondLabel = arg.get("SECOND_LABEL", 0);
 		final Link link = new Link(cl1, cl2, linkType, labelLink, queue, firstLabel, secondLabel,
 				diagram.getLabeldistance(), diagram.getLabelangle());
-		// if (dir == Direction.LEFT || dir == Direction.UP) {
-		// link = link.getInv();
-		// }
 
 		diagram.resetPragmaLabel();
 		addLink(diagram, link, arg.get("HEADER", 0));
@@ -300,7 +295,7 @@ final public class CommandLinkClass extends SingleLineCommand2<AbstractClassOrOb
 		}
 
 		final Code ent2 = Code.of(StringUtils.eventuallyRemoveStartingAndEndingDoubleQuote(arg.get("ENT2", 1)));
-		final IEntity cl2 = diagram.getOrCreateLeaf1(ent2, null);
+		final IEntity cl2 = diagram.getOrCreateLeaf(ent2, null);
 
 		final LinkType linkType = getLinkType(arg);
 		final Display label = Display.getWithNewlines(arg.get("LABEL_LINK", 0));
@@ -326,7 +321,7 @@ final public class CommandLinkClass extends SingleLineCommand2<AbstractClassOrOb
 		}
 
 		final Code ent1 = Code.of(StringUtils.eventuallyRemoveStartingAndEndingDoubleQuote(arg.get("ENT1", 1)));
-		final IEntity cl1 = diagram.getOrCreateLeaf1(ent1, null);
+		final IEntity cl1 = diagram.getOrCreateLeaf(ent1, null);
 
 		final LinkType linkType = getLinkType(arg);
 		final Display label = Display.getWithNewlines(arg.get("LABEL_LINK", 0));

@@ -211,8 +211,8 @@ public class Opale implements TextBlock {
 		return polygon;
 	}
 
-	public List<Url> getUrls() {
-		return textBlock.getUrls();
+	public List<Url> getUrls(StringBounder stringBounder) {
+		return textBlock.getUrls(stringBounder);
 	}
 
 }

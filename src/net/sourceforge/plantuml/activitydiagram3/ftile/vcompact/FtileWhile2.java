@@ -35,7 +35,6 @@ package net.sourceforge.plantuml.activitydiagram3.ftile.vcompact;
 
 import java.awt.geom.Dimension2D;
 import java.awt.geom.Point2D;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -46,12 +45,12 @@ import net.sourceforge.plantuml.activitydiagram3.LinkRendering;
 import net.sourceforge.plantuml.activitydiagram3.ftile.AbstractConnection;
 import net.sourceforge.plantuml.activitydiagram3.ftile.AbstractFtile;
 import net.sourceforge.plantuml.activitydiagram3.ftile.Arrows;
-import net.sourceforge.plantuml.activitydiagram3.ftile.Connection;
 import net.sourceforge.plantuml.activitydiagram3.ftile.Diamond;
 import net.sourceforge.plantuml.activitydiagram3.ftile.Ftile;
-import net.sourceforge.plantuml.activitydiagram3.ftile.FtileUtils;
+import net.sourceforge.plantuml.activitydiagram3.ftile.FtileAssemblySimple;
 import net.sourceforge.plantuml.activitydiagram3.ftile.Snake;
 import net.sourceforge.plantuml.activitydiagram3.ftile.Swimlane;
+import net.sourceforge.plantuml.activitydiagram3.ftile.vertical.FtileDiamond;
 import net.sourceforge.plantuml.cucadiagram.Display;
 import net.sourceforge.plantuml.graphic.FontConfiguration;
 import net.sourceforge.plantuml.graphic.HorizontalAlignment;
@@ -65,10 +64,9 @@ import net.sourceforge.plantuml.ugraphic.UChangeColor;
 import net.sourceforge.plantuml.ugraphic.UEmpty;
 import net.sourceforge.plantuml.ugraphic.UFont;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
-import net.sourceforge.plantuml.ugraphic.UStroke;
 import net.sourceforge.plantuml.ugraphic.UTranslate;
 
-class FtileWhile extends AbstractFtile {
+class FtileWhile2 extends AbstractFtile {
 
 	private final Ftile whileBlock;
 
@@ -93,7 +91,7 @@ class FtileWhile extends AbstractFtile {
 		return getSwimlaneIn();
 	}
 
-	private FtileWhile(Ftile whileBlock, Display test, HtmlColor borderColor, HtmlColor backColor,
+	private FtileWhile2(Ftile whileBlock, Display test, HtmlColor borderColor, HtmlColor backColor,
 			HtmlColor arrowColor, Display yes, Display out, UFont font, HtmlColor endInlinkColor) {
 		super(whileBlock.shadowing());
 		this.arrowColor = arrowColor;
@@ -118,18 +116,20 @@ class FtileWhile extends AbstractFtile {
 	public static Ftile create(Ftile whileBlock, Display test, HtmlColor borderColor, HtmlColor backColor,
 			HtmlColor arrowColor, Display yes, Display out, UFont font, HtmlColor endInlinkColor,
 			LinkRendering afterEndwhile) {
-		final FtileWhile result = new FtileWhile(whileBlock, test, borderColor, backColor, arrowColor, yes, out, font,
+		final FtileWhile2 result = new FtileWhile2(whileBlock, test, borderColor, backColor, arrowColor, yes, out, font,
 				endInlinkColor);
-		final List<Connection> conns = new ArrayList<Connection>();
-		conns.add(result.new ConnectionIn());
-		conns.add(result.new ConnectionBack());
-		HtmlColor afterEndwhileColor = arrowColor;
-		if (afterEndwhile != null && afterEndwhile.getColor() != null) {
-			afterEndwhileColor = afterEndwhile.getColor();
-		}
-
-		conns.add(result.new ConnectionOut(afterEndwhileColor));
-		return FtileUtils.addConnection(result, conns);
+//		final List<Connection> conns = new ArrayList<Connection>();
+//		conns.add(result.new ConnectionIn());
+//		conns.add(result.new ConnectionBack());
+//		HtmlColor afterEndwhileColor = arrowColor;
+//		if (afterEndwhile != null && afterEndwhile.getColor() != null) {
+//			afterEndwhileColor = afterEndwhile.getColor();
+//		}
+//
+//		conns.add(result.new ConnectionOut(afterEndwhileColor));
+//		return FtileUtils.addConnection(result, conns);
+		final Ftile diamond = new FtileDiamond(result.shadowing(), backColor, borderColor, null);
+		return new FtileAssemblySimple(diamond, result);
 	}
 
 	class ConnectionIn extends AbstractConnection {
@@ -218,7 +218,7 @@ class FtileWhile extends AbstractFtile {
 				ug.apply(getTranslate(stringBounder)).draw(whileBlock);
 
 				final double xDiamond = (dimTotal.getWidth() - 2 * Diamond.diamondHalfSize) / 2;
-				drawDiamond(ug, xDiamond, 0);
+				// drawDiamond(ug, xDiamond, 0);
 
 				final Dimension2D dimLabel = test.calculateDimension(stringBounder);
 				test.drawU(ug.apply(new UTranslate((dimTotal.getWidth() - dimLabel.getWidth()) / 2,
@@ -236,10 +236,10 @@ class FtileWhile extends AbstractFtile {
 		};
 	}
 
-	private void drawDiamond(UGraphic ug, double xTheoricalPosition, double yTheoricalPosition) {
-		ug.apply(new UChangeColor(borderColor)).apply(new UStroke(1.5)).apply(new UChangeBackColor(backColor))
-				.apply(new UTranslate(xTheoricalPosition, yTheoricalPosition)).draw(Diamond.asPolygon(shadowing()));
-	}
+//	private void drawDiamond(UGraphic ug, double xTheoricalPosition, double yTheoricalPosition) {
+//		ug.apply(new UChangeColor(borderColor)).apply(new UStroke(1.5)).apply(new UChangeBackColor(backColor))
+//				.apply(new UTranslate(xTheoricalPosition, yTheoricalPosition)).draw(Diamond.asPolygon(shadowing()));
+//	}
 
 	public boolean isKilled() {
 		return false;

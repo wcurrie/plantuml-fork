@@ -76,7 +76,7 @@ abstract class USymbolSimpleAbstract extends USymbol {
 				return Dimension2DDouble.mergeLayoutT12B3(dimStereo, dimActor, dimName);
 			}
 
-			public List<Url> getUrls() {
+			public List<Url> getUrls(StringBounder stringBounder) {
 				return Collections.emptyList();
 			}
 		};

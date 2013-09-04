@@ -93,7 +93,7 @@ public enum VisibilityModifier {
 				// ug.setTranslate(tx, ty);
 			}
 
-			public List<Url> getUrls() {
+			public List<Url> getUrls(StringBounder stringBounder) {
 				return Collections.emptyList();
 			}
 		};

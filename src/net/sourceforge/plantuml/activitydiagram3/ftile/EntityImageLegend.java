@@ -128,7 +128,7 @@ public class EntityImageLegend implements TextBlock {
 		return polygon;
 	}
 
-	public List<Url> getUrls() {
+	public List<Url> getUrls(StringBounder stringBounder) {
 		return Collections.emptyList();
 	}
 

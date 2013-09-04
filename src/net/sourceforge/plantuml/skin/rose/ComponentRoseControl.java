@@ -57,7 +57,7 @@ public class ComponentRoseControl extends AbstractTextualComponent {
 	public ComponentRoseControl(HtmlColor yellow, HtmlColor red, HtmlColor fontColor, UFont font,
 			Display stringsToDisplay, boolean head, SpriteContainer spriteContainer,
 			double deltaShadow, UStroke stroke) {
-		super(stringsToDisplay, fontColor, font, HorizontalAlignment.CENTER, 3, 3, 0, spriteContainer, 0);
+		super(stringsToDisplay, fontColor, font, HorizontalAlignment.CENTER, 3, 3, 0, spriteContainer, 0, false);
 		this.head = head;
 		this.stickman = new Control(yellow, red, deltaShadow, stroke.getThickness());
 	}

@@ -134,8 +134,8 @@ public class DecorateTextBlock implements TextBlock {
 		return deltaY;
 	}
 
-	public List<Url> getUrls() {
-		return original.getUrls();
+	public List<Url> getUrls(StringBounder stringBounder) {
+		return original.getUrls(stringBounder);
 	}
 
 }

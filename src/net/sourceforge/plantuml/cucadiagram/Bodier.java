@@ -82,7 +82,7 @@ public class Bodier {
 		return new BlockMember() {
 			public TextBlock asTextBlock(FontParam fontParam, ISkinParam skinParam) {
 				final BodyEnhanced result = new BodyEnhanced(rawBody, fontParam, skinParam, manageModifier);
-				urls = result.getUrls();
+				urls = result.getUrls(null);
 				return result;
 			}
 		};

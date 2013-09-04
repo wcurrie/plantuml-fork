@@ -62,7 +62,7 @@ public class TextBlockWidthAdapter implements TextBlock {
 		return textBlockWidth.calculateDimension(stringBounder);
 	}
 
-	public List<Url> getUrls() {
+	public List<Url> getUrls(StringBounder stringBounder) {
 		return Collections.emptyList();
 	}
 

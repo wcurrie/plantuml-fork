@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 10930 $
+ * Revision $Revision: 11397 $
  *
  */
 package net.sourceforge.plantuml.skin;
@@ -124,7 +124,7 @@ public class StickMan implements TextBlock {
 		return new Dimension2DDouble(getPreferredWidth(), getPreferredHeight());
 	}
 
-	public List<Url> getUrls() {
+	public List<Url> getUrls(StringBounder stringBounder) {
 		return Collections.emptyList();
 	}
 }

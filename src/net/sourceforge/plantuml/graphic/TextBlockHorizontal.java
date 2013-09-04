@@ -74,8 +74,8 @@ class TextBlockHorizontal implements TextBlock {
 		}
 	}
 
-	public List<Url> getUrls() {
-		return StringUtils.merge(b1.getUrls(), b2.getUrls());
+	public List<Url> getUrls(StringBounder stringBounder) {
+		return StringUtils.merge(b1.getUrls(stringBounder), b2.getUrls(stringBounder));
 	}
 
 }

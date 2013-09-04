@@ -51,7 +51,7 @@ public class ComponentBlueModernDelayText extends AbstractTextualComponent {
 
 	public ComponentBlueModernDelayText(HtmlColor fontColor, UFont font, Display stringsToDisplay,
 			SpriteContainer spriteContainer) {
-		super(stringsToDisplay, fontColor, font, HorizontalAlignment.CENTER, 4, 4, 4, spriteContainer, 0);
+		super(stringsToDisplay, fontColor, font, HorizontalAlignment.CENTER, 4, 4, 4, spriteContainer, 0, false);
 	}
 
 	@Override

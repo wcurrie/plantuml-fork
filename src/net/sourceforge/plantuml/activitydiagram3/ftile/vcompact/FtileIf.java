@@ -347,7 +347,7 @@ class FtileIf extends AbstractFtile {
 				return calculateDimensionInternal(stringBounder);
 			}
 
-			public List<Url> getUrls() {
+			public List<Url> getUrls(StringBounder stringBounder) {
 				throw new UnsupportedOperationException();
 			}
 		};

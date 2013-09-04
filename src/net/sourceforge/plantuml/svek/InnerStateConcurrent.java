@@ -90,7 +90,7 @@ public final class InnerStateConcurrent implements IEntityImage {
 		return im.isHidden();
 	}
 
-	final public List<Url> getUrls() {
+	final public List<Url> getUrls(StringBounder stringBounder) {
 		return Collections.emptyList();
 	}
 

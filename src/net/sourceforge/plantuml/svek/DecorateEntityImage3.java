@@ -56,8 +56,8 @@ public class DecorateEntityImage3 implements TextBlockBackcolored {
 		return original.calculateDimension(stringBounder);
 	}
 
-	public List<Url> getUrls() {
-		return original.getUrls();
+	public List<Url> getUrls(StringBounder stringBounder) {
+		return original.getUrls(stringBounder);
 	}
 
 	public void drawU(UGraphic ug) {

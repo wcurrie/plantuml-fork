@@ -61,7 +61,7 @@ public class ComponentBlueModernDivider extends AbstractTextualComponent {
 
 	public ComponentBlueModernDivider(HtmlColor fontColor, UFont font, HtmlColor background1, HtmlColor background2,
 			HtmlColor borderColor, Display stringsToDisplay, SpriteContainer spriteContainer) {
-		super(stringsToDisplay, fontColor, font, HorizontalAlignment.CENTER, 4, 4, 4, spriteContainer, 0);
+		super(stringsToDisplay, fontColor, font, HorizontalAlignment.CENTER, 4, 4, 4, spriteContainer, 0, false);
 		this.background1 = background1;
 		this.background2 = background2;
 		this.borderColor = borderColor;

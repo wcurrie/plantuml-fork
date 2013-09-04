@@ -136,7 +136,7 @@ public class EntityImageNote2 implements TextBlock {
 		return polygon;
 	}
 
-	public List<Url> getUrls() {
+	public List<Url> getUrls(StringBounder stringBounder) {
 		return Collections.emptyList();
 	}
 

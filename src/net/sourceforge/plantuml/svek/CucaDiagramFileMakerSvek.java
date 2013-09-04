@@ -118,7 +118,8 @@ public final class CucaDiagramFileMakerSvek implements CucaDiagramFileMaker {
 
 		final DotData dotData = new DotData(diagram.getEntityFactory().getRootGroup(), getOrderedLinks(), diagram
 				.getLeafs().values(), diagram.getUmlDiagramType(), diagram.getSkinParam(), diagram.getRankdir(),
-				diagram, diagram, diagram.getColorMapper(), diagram.getEntityFactory(), diagram.isHideEmptyDescriptionForState());
+				diagram, diagram, diagram.getColorMapper(), diagram.getEntityFactory(),
+				diagram.isHideEmptyDescriptionForState());
 		final CucaDiagramFileMakerSvek2 svek2 = new CucaDiagramFileMakerSvek2(dotData, diagram.getEntityFactory(),
 				false);
 
@@ -247,11 +248,11 @@ public final class CucaDiagramFileMakerSvek implements CucaDiagramFileMaker {
 			return original;
 		}
 		final TextBlock textFooter = footer == null ? null : TextBlockUtils.create(footer, new FontConfiguration(
-				getFont(FontParam.FOOTER), getFontColor(FontParam.FOOTER, null)), diagram.getFooterAlignment(),
-				diagram.getSkinParam());
+				getFont(FontParam.FOOTER), getFontColor(FontParam.FOOTER, null)), diagram.getFooterAlignment(), diagram
+				.getSkinParam());
 		final TextBlock textHeader = header == null ? null : TextBlockUtils.create(header, new FontConfiguration(
-				getFont(FontParam.HEADER), getFontColor(FontParam.HEADER, null)), diagram.getHeaderAlignment(),
-				diagram.getSkinParam());
+				getFont(FontParam.HEADER), getFontColor(FontParam.HEADER, null)), diagram.getHeaderAlignment(), diagram
+				.getSkinParam());
 
 		return new DecorateEntityImage(original, textHeader, diagram.getHeaderAlignment(), textFooter,
 				diagram.getFooterAlignment());
@@ -290,24 +291,29 @@ public final class CucaDiagramFileMakerSvek implements CucaDiagramFileMaker {
 
 	private void createPng(OutputStream os, FileFormatOption fileFormatOption, final TextBlockBackcolored result,
 			final Dimension2D dim) throws IOException {
-		final double dpiFactor;
-		final Scale scale = diagram.getScale();
-		if (scale == null) {
-			dpiFactor = diagram.getDpiFactor(fileFormatOption);
-		} else {
-			dpiFactor = scale.getScale(dim.getWidth(), dim.getHeight());
-		}
+		final double scale = getScale(fileFormatOption, dim);
 		final UGraphicG2d ug = (UGraphicG2d) fileFormatOption.createUGraphic(diagram.getSkinParam().getColorMapper(),
-				dpiFactor, dim, result.getBackcolor(), diagram.isRotation());
+				scale, dim, result.getBackcolor(), diagram.isRotation());
 		result.drawU(ug);
 
 		PngIO.write(ug.getBufferedImage(), os, diagram.getMetadata(), diagram.getDpi(fileFormatOption));
 
 	}
 
+	private double getScale(FileFormatOption fileFormatOption, final Dimension2D dim) {
+		final double scale;
+		final Scale diagScale = diagram.getScale();
+		if (diagScale == null) {
+			scale = diagram.getDpiFactor(fileFormatOption);
+		} else {
+			scale = diagScale.getScale(dim.getWidth(), dim.getHeight());
+		}
+		return scale;
+	}
 
 	private void createSvg(OutputStream os, FileFormatOption fileFormatOption, final TextBlockBackcolored result,
 			final Dimension2D dim) throws IOException {
+		final double scale = getScale(fileFormatOption, dim);
 
 		Color backColor = Color.WHITE;
 		if (result.getBackcolor() instanceof HtmlColorSimple) {
@@ -316,11 +322,12 @@ public final class CucaDiagramFileMakerSvek implements CucaDiagramFileMaker {
 		final UGraphicSvg ug;
 		if (result.getBackcolor() instanceof HtmlColorGradient) {
 			ug = new UGraphicSvg(diagram.getSkinParam().getColorMapper(), (HtmlColorGradient) result.getBackcolor(),
-					false);
+					false, scale);
 		} else if (backColor == null || backColor.equals(Color.WHITE)) {
-			ug = new UGraphicSvg(diagram.getSkinParam().getColorMapper(), false);
+			ug = new UGraphicSvg(diagram.getSkinParam().getColorMapper(), false, scale);
 		} else {
-			ug = new UGraphicSvg(diagram.getSkinParam().getColorMapper(), StringUtils.getAsHtml(backColor), false);
+			ug = new UGraphicSvg(diagram.getSkinParam().getColorMapper(), StringUtils.getAsHtml(backColor), false,
+					scale);
 		}
 		// ug.getParam().setSprites(diagram.getSprites());
 

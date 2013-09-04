@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 11153 $
+ * Revision $Revision: 11394 $
  *
  */
 package net.sourceforge.plantuml.skin.rose;
@@ -50,7 +50,7 @@ public class ComponentRoseTitle extends AbstractTextualComponent {
 	private final int outMargin = 5;
 
 	public ComponentRoseTitle(HtmlColor fontColor, UFont font, Display stringsToDisplay, SpriteContainer spriteContainer) {
-		super(stringsToDisplay, fontColor, font, HorizontalAlignment.CENTER, 7, 7, 7, spriteContainer, 0);
+		super(stringsToDisplay, fontColor, font, HorizontalAlignment.CENTER, 7, 7, 7, spriteContainer, 0, false);
 	}
 
 	@Override

@@ -90,7 +90,7 @@ public class FtileMarged extends AbstractFtile {
 				return Dimension2DDouble.delta(tile.asTextBlock().calculateDimension(stringBounder), 2 * marge, 0);
 			}
 
-			public List<Url> getUrls() {
+			public List<Url> getUrls(StringBounder stringBounder) {
 				throw new UnsupportedOperationException();
 			}
 		};

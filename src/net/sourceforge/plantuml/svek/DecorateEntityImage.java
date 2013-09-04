@@ -143,7 +143,7 @@ public class DecorateEntityImage implements TextBlockBackcolored {
 		return deltaY;
 	}
 
-	final public List<Url> getUrls() {
+	final public List<Url> getUrls(StringBounder stringBounder) {
 		return Collections.emptyList();
 	}
 

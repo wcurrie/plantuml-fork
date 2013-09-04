@@ -147,7 +147,7 @@ public final class FactoryNoteOnEntityCommand implements SingleMultiFactoryComma
 				return CommandExecutionResult.error("Nothing to note to");
 			}
 		} else {
-			cl1 = system.getOrCreateLeaf1(code, null);
+			cl1 = system.getOrCreateLeaf(code, null);
 		}
 
 		final IEntity note = system.createLeaf(UniqueSequence.getCode("GMN"), new Display(s), LeafType.NOTE);

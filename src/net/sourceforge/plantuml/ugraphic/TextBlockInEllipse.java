@@ -82,8 +82,8 @@ public class TextBlockInEllipse implements TextBlock {
 		return getUEllipse().getDimension();
 	}
 
-	public List<Url> getUrls() {
-		return text.getUrls();
+	public List<Url> getUrls(StringBounder stringBounder) {
+		return text.getUrls(stringBounder);
 	}
 
 	public void setDeltaShadow(double deltaShadow) {

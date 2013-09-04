@@ -109,7 +109,7 @@ class USymbolDatabase extends USymbol {
 
 			public void drawU(UGraphic ug) {
 				final Dimension2D dim = calculateDimension(ug.getStringBounder());
-				ug = symbolContext.apply(ug).apply(new UTranslate(0, 0));
+				ug = symbolContext.apply(ug);
 				drawDatabase(ug, dim.getWidth(), dim.getHeight(), symbolContext.isShadowing());
 				final Margin margin = getMargin();
 				final TextBlock tb = TextBlockUtils.mergeTB(stereotype, label, HorizontalAlignment.CENTER);
@@ -123,7 +123,7 @@ class USymbolDatabase extends USymbol {
 				return getMargin().addDimension(Dimension2DDouble.mergeTB(dimStereo, dimLabel));
 			}
 
-			public List<Url> getUrls() {
+			public List<Url> getUrls(StringBounder stringBounder) {
 				return Collections.emptyList();
 			}
 		};
@@ -150,7 +150,7 @@ class USymbolDatabase extends USymbol {
 				return new Dimension2DDouble(width, height);
 			}
 
-			public List<Url> getUrls() {
+			public List<Url> getUrls(StringBounder stringBounder) {
 				return Collections.emptyList();
 			}
 		};

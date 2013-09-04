@@ -56,7 +56,7 @@ public class ComponentRoseEntity extends AbstractTextualComponent {
 
 	public ComponentRoseEntity(HtmlColor yellow, HtmlColor red, HtmlColor fontColor, UFont font,
 			Display stringsToDisplay, boolean head, SpriteContainer spriteContainer, double deltaShadow, UStroke stroke) {
-		super(stringsToDisplay, fontColor, font, HorizontalAlignment.CENTER, 3, 3, 0, spriteContainer, 0);
+		super(stringsToDisplay, fontColor, font, HorizontalAlignment.CENTER, 3, 3, 0, spriteContainer, 0, false);
 		this.head = head;
 		this.stickman = new EntityDomain(yellow, red, deltaShadow, stroke.getThickness());
 	}

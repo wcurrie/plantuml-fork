@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 11154 $
+ * Revision $Revision: 11397 $
  *
  */
 package net.sourceforge.plantuml.graphic;
@@ -139,10 +139,10 @@ class SingleLine implements Line {
 		return horizontalAlignment;
 	}
 
-	public List<Url> getUrls() {
+	public List<Url> getUrls(StringBounder stringBounder) {
 		final List<Url> result = new ArrayList<Url>();
 		for (TextBlock b : blocs) {
-			result.addAll(b.getUrls());
+			result.addAll(b.getUrls(stringBounder));
 		}
 		return Collections.unmodifiableList(result);
 	}

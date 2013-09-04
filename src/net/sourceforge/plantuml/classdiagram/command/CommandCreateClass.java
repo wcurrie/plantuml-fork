@@ -102,7 +102,7 @@ public class CommandCreateClass extends SingleLineCommand2<ClassDiagram> {
 		final String generic = arg.get("GENERIC", 0);
 		final ILeaf entity;
 		if (diagram.leafExist(code)) {
-			entity = diagram.getOrCreateLeaf1(code, type);
+			entity = diagram.getOrCreateLeaf(code, type);
 			entity.muteToType(type);
 		} else {
 			entity = diagram.createLeaf(code, Display.getWithNewlines(display), type);
@@ -139,7 +139,7 @@ public class CommandCreateClass extends SingleLineCommand2<ClassDiagram> {
 			if (mode == Mode.EXTENDS && entity.getEntityType() == LeafType.INTERFACE) {
 				type2 = LeafType.INTERFACE;
 			}
-			final IEntity cl2 = system.getOrCreateLeaf1(other, type2);
+			final IEntity cl2 = system.getOrCreateLeaf(other, type2);
 			LinkType typeLink = new LinkType(LinkDecor.NONE, LinkDecor.EXTENDS);
 			if (type2 == LeafType.INTERFACE && entity.getEntityType() != LeafType.INTERFACE) {
 				typeLink = typeLink.getDashed();

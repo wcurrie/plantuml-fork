@@ -247,7 +247,7 @@ public class Swimlanes implements TextBlock {
 		return TextBlockUtils.getMinMax(this, stringBounder).getDimension();
 	}
 
-	public List<Url> getUrls() {
+	public List<Url> getUrls(StringBounder stringBounder) {
 		throw new UnsupportedOperationException();
 	}
 

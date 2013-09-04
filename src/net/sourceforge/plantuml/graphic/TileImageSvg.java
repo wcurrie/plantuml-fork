@@ -73,7 +73,7 @@ class TileImageSvg implements TextBlock {
 		ug.draw(svg);
 	}
 
-	public List<Url> getUrls() {
+	public List<Url> getUrls(StringBounder stringBounder) {
 		return Collections.emptyList();
 	}
 

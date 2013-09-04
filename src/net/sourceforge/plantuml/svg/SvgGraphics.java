@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 10277 $
+ * Revision $Revision: 11423 $
  *
  */
 package net.sourceforge.plantuml.svg;
@@ -89,12 +89,14 @@ public class SvgGraphics {
 
 	private String fill = "black";
 	private String stroke = "black";
-	private String strokeWidth = "1";
+	private String strokeWidth;
 	private String strokeDasharray = null;
 	private final String backcolor;
 
 	private int maxX = 10;
 	private int maxY = 10;
+
+	private final double scale;
 
 	final protected void ensureVisible(double x, double y) {
 		if (x > maxX) {
@@ -105,12 +107,13 @@ public class SvgGraphics {
 		}
 	}
 
-	public SvgGraphics() {
-		this(null);
+	public SvgGraphics(double scale) {
+		this(null, scale);
 	}
 
-	public SvgGraphics(String backcolor) {
+	public SvgGraphics(String backcolor, double scale) {
 		try {
+			this.scale = scale;
 			this.document = getDocument();
 			this.backcolor = backcolor;
 
@@ -120,6 +123,7 @@ public class SvgGraphics {
 			// for a pair of linear gradient definitions.
 			defs = simpleElement("defs");
 			gRoot = simpleElement("g");
+			strokeWidth = "" + scale;
 		} catch (ParserConfigurationException e) {
 			e.printStackTrace();
 			throw new IllegalStateException(e);
@@ -260,8 +264,8 @@ public class SvgGraphics {
 		this.stroke = stroke;
 	}
 
-	public final void setStrokeWidth(String strokeWidth, String strokeDasharray) {
-		this.strokeWidth = strokeWidth;
+	public final void setStrokeWidth(double strokeWidth, String strokeDasharray) {
+		this.strokeWidth = "" + (scale * strokeWidth);
 		this.strokeDasharray = strokeDasharray;
 	}
 
@@ -470,14 +474,16 @@ public class SvgGraphics {
 		// Document object
 		final DOMSource source = new DOMSource(document);
 
-		String style = "width:" + maxX + "px;height:" + maxY + "px;";
+		final int maxXscaled = (int) (maxX * scale);
+		final int maxYscaled = (int) (maxY * scale);
+		String style = "width:" + maxXscaled + "px;height:" + maxYscaled + "px;";
 		if (backcolor != null) {
 			style += "background:" + backcolor + ";";
 		}
 		root.setAttribute("style", style);
 		root.setAttribute("width", format(maxX) + "pt");
 		root.setAttribute("height", format(maxY) + "pt");
-		root.setAttribute("viewBox", "0 0 " + maxX + " " + maxY);
+		root.setAttribute("viewBox", "0 0 " + maxXscaled + " " + maxYscaled);
 
 		if (pendingBackground != null) {
 			pendingBackground.setAttribute("width", format(maxX));
@@ -572,8 +578,8 @@ public class SvgGraphics {
 		ensureVisible(x2, y2);
 	}
 
-	private static String format(double x) {
-		return EpsGraphics.format(x);
+	private String format(double x) {
+		return EpsGraphics.format(x * scale);
 	}
 
 	public void fill(int windingRule) {
@@ -611,9 +617,9 @@ public class SvgGraphics {
 		if (hidden == false) {
 			final String pos = "<svg x=\"" + format(x) + "\" y=\"" + format(y) + "\">";
 			svg = pos + svg.substring(5);
-			System.err.println("svg=" + svg);
-			System.err.println("x=" + x);
-			System.err.println("y=" + y);
+			// System.err.println("svg=" + svg);
+			// System.err.println("x=" + x);
+			// System.err.println("y=" + y);
 			final String key = "imagesvginlined" + images.size();
 			final Element elt = (Element) document.createElement(key);
 			getG().appendChild(elt);
@@ -643,10 +649,11 @@ public class SvgGraphics {
 				filter.setAttribute("y", "-1");
 				filter.setAttribute("width", "300%");
 				filter.setAttribute("height", "300%");
-				addFilter(filter, "feGaussianBlur", "result", "blurOut", "stdDeviation", "2");
+				addFilter(filter, "feGaussianBlur", "result", "blurOut", "stdDeviation", "" + (2 * scale));
 				addFilter(filter, "feColorMatrix", "type", "matrix", "in", "blurOut", "result", "blurOut2", "values",
 						"0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 .4 0");
-				addFilter(filter, "feOffset", "result", "blurOut3", "in", "blurOut2", "dx", "4", "dy", "4");
+				addFilter(filter, "feOffset", "result", "blurOut3", "in", "blurOut2", "dx", "" + (4 * scale), "dy", ""
+						+ (4 * scale));
 				addFilter(filter, "feBlend", "in", "SourceGraphic", "in2", "blurOut3", "mode", "normal");
 				defs.appendChild(filter);
 

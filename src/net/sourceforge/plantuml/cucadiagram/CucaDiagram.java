@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 11351 $
+ * Revision $Revision: 11432 $
  *
  */
 package net.sourceforge.plantuml.cucadiagram;
@@ -77,7 +77,7 @@ public abstract class CucaDiagram extends UmlDiagram implements GroupHierarchy, 
 
 	private boolean visibilityModifierPresent;
 
-	public abstract IEntity getOrCreateLeaf1(Code code, LeafType type);
+	public abstract IEntity getOrCreateLeaf(Code code, LeafType type);
 
 	@Override
 	public boolean hasUrl() {
@@ -103,7 +103,7 @@ public abstract class CucaDiagram extends UmlDiagram implements GroupHierarchy, 
 	// return getOrCreateLeaf1Default(code, type);
 	// }
 
-	final protected ILeaf getOrCreateLeaf1Default(Code code, LeafType type) {
+	final protected ILeaf getOrCreateLeafDefault(Code code, LeafType type) {
 		if (type == null) {
 			throw new IllegalArgumentException();
 		}

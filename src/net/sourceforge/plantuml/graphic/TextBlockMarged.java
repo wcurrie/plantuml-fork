@@ -66,8 +66,8 @@ class TextBlockMarged implements TextBlock {
 		textBlock.drawU(ug.apply(new UTranslate(x1, y1)));
 	}
 
-	public List<Url> getUrls() {
-		return textBlock.getUrls();
+	public List<Url> getUrls(StringBounder stringBounder) {
+		return textBlock.getUrls(stringBounder);
 	}
 
 }

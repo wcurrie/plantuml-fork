@@ -194,7 +194,7 @@ public class CommandCreateElementFull extends SingleLineCommand2<DescriptionDiag
 		}
 		display = StringUtils.eventuallyRemoveStartingAndEndingDoubleQuote(display);
 		final String stereotype = arg.getLazzy("STEREOTYPE", 0);
-		final IEntity entity = system.getOrCreateLeaf1(code, type);
+		final IEntity entity = system.getOrCreateLeaf(code, type);
 		entity.setDisplay(Display.getWithNewlines(display));
 		entity.setUSymbol(usymbol);
 		if (stereotype != null) {

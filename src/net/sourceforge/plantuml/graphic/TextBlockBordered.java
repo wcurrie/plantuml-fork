@@ -64,8 +64,8 @@ class TextBlockBordered implements TextBlock {
 		ug.apply(new UChangeColor(color)).draw(new URectangle(dim.getWidth(), dim.getHeight()));
 	}
 
-	public List<Url> getUrls() {
-		return textBlock.getUrls();
+	public List<Url> getUrls(StringBounder stringBounder) {
+		return textBlock.getUrls(stringBounder);
 	}
 
 }

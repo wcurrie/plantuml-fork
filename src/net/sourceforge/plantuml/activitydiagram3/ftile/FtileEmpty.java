@@ -75,7 +75,7 @@ public class FtileEmpty extends AbstractFtile {
 				return new Dimension2DDouble(width, height);
 			}
 
-			public List<Url> getUrls() {
+			public List<Url> getUrls(StringBounder stringBounder) {
 				return Collections.emptyList();
 			}
 		};

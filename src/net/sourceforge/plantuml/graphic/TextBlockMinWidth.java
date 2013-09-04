@@ -70,8 +70,8 @@ class TextBlockMinWidth implements TextBlock {
 		}
 	}
 
-	public List<Url> getUrls() {
-		return textBlock.getUrls();
+	public List<Url> getUrls(StringBounder stringBounder) {
+		return textBlock.getUrls(stringBounder);
 	}
 
 }

@@ -109,8 +109,8 @@ class FtileWithConnection implements Ftile {
 				}
 			}
 
-			public List<Url> getUrls() {
-				return original.getUrls();
+			public List<Url> getUrls(StringBounder stringBounder) {
+				return original.getUrls(stringBounder);
 			}
 
 			public Dimension2D calculateDimension(StringBounder stringBounder) {

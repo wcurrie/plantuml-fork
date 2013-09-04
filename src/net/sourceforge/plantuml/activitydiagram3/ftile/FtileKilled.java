@@ -81,8 +81,8 @@ public class FtileKilled extends AbstractFtile {
 				return tile.asTextBlock().calculateDimension(stringBounder);
 			}
 
-			public List<Url> getUrls() {
-				return tile.asTextBlock().getUrls();
+			public List<Url> getUrls(StringBounder stringBounder) {
+				return tile.asTextBlock().getUrls(stringBounder);
 			}
 
 			public void drawU(UGraphic ug) {

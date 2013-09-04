@@ -44,29 +44,40 @@ import net.sourceforge.plantuml.ugraphic.UGraphic;
 final class NotesBoxes extends GraphicalElement implements InGroupable {
 
 	private final List<NoteBox> notes = new ArrayList<NoteBox>();
-	private final List<ParticipantBox> participants = new ArrayList<ParticipantBox>();
+	private final List<ParticipantBox> participants1 = new ArrayList<ParticipantBox>();
+	private final List<ParticipantBox> participants2 = new ArrayList<ParticipantBox>();
 
 	NotesBoxes(double startingY) {
 		super(startingY);
 	}
 
-	public void add(NoteBox noteBox, ParticipantBox participantBox) {
+	public void add(NoteBox noteBox, ParticipantBox participantBox1, ParticipantBox participantBox2) {
 		notes.add(noteBox);
-		participants.add(participantBox);
+		participants1.add(participantBox1);
+		if (participantBox2 == null) {
+			participants2.add(participantBox1);
+		} else {
+			participants2.add(participantBox2);
+		}
 	}
 
 	public void ensureConstraints(StringBounder stringBounder, ConstraintSet constraintSet) {
 		for (int i = 0; i < notes.size(); i++) {
 			final NoteBox noteBox = notes.get(i);
-			final ParticipantBox participantBox = participants.get(i);
+			final ParticipantBox participantBox1 = participants1.get(i);
+			final ParticipantBox participantBox2 = participants2.get(i);
 			final double width = noteBox.getPreferredWidth(stringBounder);
-			constraintSet.getConstraintAfter(participantBox).ensureValue(width / 2);
-			constraintSet.getConstraintBefore(participantBox).ensureValue(width / 2);
+			// System.err.println("i=" + i);
+			// System.err.println("width=" + width);
+			// System.err.println("participantBox1=" + participantBox1);
+			// System.err.println("participantBox2=" + participantBox2);
+			constraintSet.getConstraintBefore(participantBox1).ensureValue(width / 2);
+			constraintSet.getConstraintAfter(participantBox2).ensureValue(width / 2);
 			for (int j = i + 1; j < notes.size(); j++) {
 				final NoteBox noteBox2 = notes.get(j);
-				final ParticipantBox participantBox2 = participants.get(j);
+				final ParticipantBox otherParticipantBox1 = participants1.get(j);
 				final double width2 = noteBox2.getPreferredWidth(stringBounder);
-				constraintSet.getConstraint(participantBox, participantBox2).ensureValue((width + width2) / 2);
+				constraintSet.getConstraint(participantBox2, otherParticipantBox1).ensureValue((width + width2) / 2);
 			}
 		}
 	}

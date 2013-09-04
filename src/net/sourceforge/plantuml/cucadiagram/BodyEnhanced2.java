@@ -39,61 +39,38 @@ import java.util.Collections;
 import java.util.List;
 
 import net.sourceforge.plantuml.FontParam;
-import net.sourceforge.plantuml.ISkinParam;
 import net.sourceforge.plantuml.SpriteContainer;
-import net.sourceforge.plantuml.StringUtils;
 import net.sourceforge.plantuml.Url;
 import net.sourceforge.plantuml.graphic.FontConfiguration;
 import net.sourceforge.plantuml.graphic.HorizontalAlignment;
+import net.sourceforge.plantuml.graphic.HtmlColor;
 import net.sourceforge.plantuml.graphic.StringBounder;
 import net.sourceforge.plantuml.graphic.TextBlock;
 import net.sourceforge.plantuml.graphic.TextBlockLineBefore2;
 import net.sourceforge.plantuml.graphic.TextBlockUtils;
 import net.sourceforge.plantuml.graphic.TextBlockVertical2;
-import net.sourceforge.plantuml.skin.rose.Rose;
+import net.sourceforge.plantuml.ugraphic.UFont;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
 
-public class BodyEnhanced implements TextBlock {
+public class BodyEnhanced2 implements TextBlock {
 
 	private TextBlock area2;
 	private final FontConfiguration titleConfig;
-	private final List<String> rawBody;
-	private final FontParam fontParam;
-	private final ISkinParam skinParam;
-	private final boolean lineFirst;
+	private final Display rawBody2;
+	private final SpriteContainer spriteContainer;
+
 	private final HorizontalAlignment align;
-	private final boolean manageHorizontalLine;
-	private final boolean manageModifier;
+
 	private final List<Url> urls = new ArrayList<Url>();
 
-	public BodyEnhanced(List<String> rawBody, FontParam fontParam, ISkinParam skinParam, boolean manageModifier) {
-		this.rawBody = new ArrayList<String>(rawBody);
-		this.fontParam = fontParam;
-		this.skinParam = skinParam;
+	public BodyEnhanced2(Display rawBody, FontParam fontParam, SpriteContainer spriteContainer,
+			HorizontalAlignment align, UFont fontNote, HtmlColor fontColor) {
+		this.rawBody2 = rawBody;
+		// this.fontParam = fontParam;
+		this.spriteContainer = spriteContainer;
 
-		this.titleConfig = new FontConfiguration(skinParam.getFont(fontParam, null), new Rose().getFontColor(skinParam,
-				fontParam));
-		this.lineFirst = true;
-		this.align = HorizontalAlignment.LEFT;
-		this.manageHorizontalLine = true;
-		this.manageModifier = manageModifier;
-	}
-
-	public BodyEnhanced(Display display, FontParam fontParam, ISkinParam skinParam, HorizontalAlignment align,
-			Stereotype stereotype, boolean manageHorizontalLine, boolean manageModifier) {
-		this.rawBody = new ArrayList<String>();
-		for (CharSequence s : display) {
-			this.rawBody.add(s.toString());
-		}
-		this.fontParam = fontParam;
-		this.skinParam = skinParam;
-
-		this.titleConfig = new FontConfiguration(skinParam, fontParam, stereotype);
-		this.lineFirst = false;
+		this.titleConfig = new FontConfiguration(fontNote, fontColor);
 		this.align = align;
-		this.manageHorizontalLine = manageHorizontalLine;
-		this.manageModifier = manageModifier;
-
 	}
 
 	private TextBlock decorate(StringBounder stringBounder, TextBlock b, char separator, TextBlock title) {
@@ -101,10 +78,10 @@ public class BodyEnhanced implements TextBlock {
 			return b;
 		}
 		if (title == null) {
-			return new TextBlockLineBefore2(TextBlockUtils.withMargin(b, 6, 4), separator);
+			return new TextBlockLineBefore2(TextBlockUtils.withMargin(b, 0, 4), separator);
 		}
 		final Dimension2D dimTitle = title.calculateDimension(stringBounder);
-		final TextBlock raw = new TextBlockLineBefore2(TextBlockUtils.withMargin(b, 6, 6, dimTitle.getHeight() / 2, 4),
+		final TextBlock raw = new TextBlockLineBefore2(TextBlockUtils.withMargin(b, 0, 6, dimTitle.getHeight() / 2, 4),
 				separator, title);
 		return TextBlockUtils.withMargin(raw, 0, 0, dimTitle.getHeight() / 2, 0);
 	}
@@ -120,26 +97,20 @@ public class BodyEnhanced implements TextBlock {
 		urls.clear();
 		final List<TextBlock> blocks = new ArrayList<TextBlock>();
 
-		char separator = lineFirst ? '_' : 0;
+		char separator = 0;
 		TextBlock title = null;
-		List<Member> members = new ArrayList<Member>();
-		for (String s : rawBody) {
-			if (manageHorizontalLine && isBlockSeparator(s)) {
-				blocks.add(decorate(stringBounder, new MethodsOrFieldsArea(members, fontParam, skinParam, align),
-						separator, title));
+		Display members2 = new Display();
+		for (CharSequence s : rawBody2) {
+			if (isBlockSeparator(s.toString())) {
+				blocks.add(decorate(stringBounder, getTextBlock(members2, stringBounder), separator, title));
 				separator = s.charAt(0);
-				title = getTitle(s, skinParam);
-				members = new ArrayList<Member>();
+				title = getTitle(s.toString(), spriteContainer);
+				members2 = new Display();
 			} else {
-				final Member m = new MemberImpl(s, StringUtils.isMethod(s), manageModifier);
-				members.add(m);
-				if (m.getUrl() != null) {
-					urls.add(m.getUrl());
-				}
+				members2 = members2.add(s);
 			}
 		}
-		blocks.add(decorate(stringBounder, new MethodsOrFieldsArea(members, fontParam, skinParam, align), separator,
-				title));
+		blocks.add(decorate(stringBounder, getTextBlock(members2, stringBounder), separator, title));
 
 		if (blocks.size() == 1) {
 			this.area2 = blocks.get(0);
@@ -148,6 +119,12 @@ public class BodyEnhanced implements TextBlock {
 		}
 
 		return area2;
+	}
+
+	private TextBlock getTextBlock(Display members2, StringBounder stringBounder) {
+		final TextBlock result = TextBlockUtils.create(members2, titleConfig, align, spriteContainer);
+		urls.addAll(result.getUrls(stringBounder));
+		return result;
 	}
 
 	public static boolean isBlockSeparator(String s) {
@@ -171,8 +148,8 @@ public class BodyEnhanced implements TextBlock {
 			return null;
 		}
 		s = s.substring(2, s.length() - 2).trim();
-		return TextBlockUtils.create(Display.getWithNewlines(s), titleConfig, HorizontalAlignment.LEFT,
-				spriteContainer);
+		return TextBlockUtils
+				.create(Display.getWithNewlines(s), titleConfig, HorizontalAlignment.LEFT, spriteContainer);
 	}
 
 	public void drawU(UGraphic ug) {

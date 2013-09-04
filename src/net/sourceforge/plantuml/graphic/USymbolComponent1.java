@@ -85,7 +85,7 @@ class USymbolComponent1 extends USymbol {
 				return getMargin().addDimension(Dimension2DDouble.mergeTB(dimStereo, dimLabel));
 			}
 
-			public List<Url> getUrls() {
+			public List<Url> getUrls(StringBounder stringBounder) {
 				return Collections.emptyList();
 			}
 		};

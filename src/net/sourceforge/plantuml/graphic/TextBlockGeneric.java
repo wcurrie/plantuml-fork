@@ -69,8 +69,8 @@ public class TextBlockGeneric implements TextBlock {
 		textBlock.drawU(ug);
 	}
 
-	public List<Url> getUrls() {
-		return textBlock.getUrls();
+	public List<Url> getUrls(StringBounder stringBounder) {
+		return textBlock.getUrls(stringBounder);
 	}
 
 }

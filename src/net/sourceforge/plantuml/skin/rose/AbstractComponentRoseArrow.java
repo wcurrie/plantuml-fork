@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 11154 $
+ * Revision $Revision: 11394 $
  *
  */
 package net.sourceforge.plantuml.skin.rose;
@@ -52,7 +52,7 @@ public abstract class AbstractComponentRoseArrow extends AbstractTextualComponen
 	public AbstractComponentRoseArrow(HtmlColor foregroundColor, HtmlColor fontColor, UFont font,
 			Display stringsToDisplay, ArrowConfiguration arrowConfiguration, SpriteContainer spriteContainer,
 			HorizontalAlignment textHorizontalAlignment, double maxMessageSize) {
-		super(stringsToDisplay, fontColor, font, textHorizontalAlignment, 7, 7, 1, spriteContainer, maxMessageSize);
+		super(stringsToDisplay, fontColor, font, textHorizontalAlignment, 7, 7, 1, spriteContainer, maxMessageSize, false);
 		this.arrowConfiguration = arrowConfiguration;
 		this.foregroundColor = foregroundColor;
 	}

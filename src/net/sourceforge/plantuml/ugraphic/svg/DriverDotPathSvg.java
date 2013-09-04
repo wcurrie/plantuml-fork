@@ -51,7 +51,7 @@ public class DriverDotPathSvg implements UDriver<SvgGraphics> {
 			final String color = StringUtils.getAsSvg(mapper, param.getColor());
 			svg.setStrokeColor(color);
 			svg.setFillColor(null);
-			svg.setStrokeWidth("" + param.getStroke().getThickness(), param.getStroke().getDasharraySvg());
+			svg.setStrokeWidth(param.getStroke().getThickness(), param.getStroke().getDasharraySvg());
 
 			svg.svgPath(x, y, shape.toUPath(), 0);
 		}

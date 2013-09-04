@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 11153 $
+ * Revision $Revision: 11408 $
  *
  */
 package net.sourceforge.plantuml.skin.rose;
@@ -44,6 +44,7 @@ import net.sourceforge.plantuml.ugraphic.UChangeBackColor;
 import net.sourceforge.plantuml.ugraphic.UChangeColor;
 import net.sourceforge.plantuml.ugraphic.UFont;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
+import net.sourceforge.plantuml.ugraphic.UGraphicHorizontalLine;
 import net.sourceforge.plantuml.ugraphic.ULine;
 import net.sourceforge.plantuml.ugraphic.UPolygon;
 import net.sourceforge.plantuml.ugraphic.UStroke;
@@ -62,7 +63,7 @@ final public class ComponentRoseNote extends AbstractTextualComponent {
 	public ComponentRoseNote(HtmlColor back, HtmlColor foregroundColor, HtmlColor fontColor, UFont font,
 			Display strings, double paddingX, double paddingY, SpriteContainer spriteContainer, double deltaShadow,
 			UStroke stroke) {
-		super(strings, fontColor, font, HorizontalAlignment.LEFT, 6, 15, 5, spriteContainer, 0);
+		super(strings, fontColor, font, HorizontalAlignment.LEFT, 6, 15, 5, spriteContainer, 0, true);
 		this.back = back;
 		this.foregroundColor = foregroundColor;
 		this.paddingX = paddingX;
@@ -122,9 +123,10 @@ final public class ComponentRoseNote extends AbstractTextualComponent {
 
 		ug.apply(new UTranslate(x2 - cornersize, 0)).draw(new ULine(0, cornersize));
 		ug.apply(new UTranslate(x2, cornersize)).draw(new ULine(-cornersize, 0));
-		ug = ug.apply(new UStroke());
+		UGraphic ug2 = new UGraphicHorizontalLine(ug, 0, getTextWidth(ug.getStringBounder()), new UStroke());
+		ug2 = ug2.apply(new UTranslate(getMarginX1() + diffX / 2, getMarginY()));
 
-		getTextBlock().drawU(ug.apply(new UTranslate((getMarginX1() + diffX / 2), getMarginY())));
+		getTextBlock().drawU(ug2);
 
 	}
 

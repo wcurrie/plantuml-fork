@@ -87,7 +87,7 @@ public class TextBlockVertical2 implements TextBlock {
 		}
 	}
 
-	public List<Url> getUrls() {
+	public List<Url> getUrls(StringBounder stringBounder) {
 		return Collections.emptyList();
 	}
 

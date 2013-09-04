@@ -110,7 +110,7 @@ public class TextBlockArrow implements TextBlock {
 		return new Dimension2DDouble(size, size);
 	}
 
-	public List<Url> getUrls() {
+	public List<Url> getUrls(StringBounder stringBounder) {
 		return Collections.emptyList();
 	}
 

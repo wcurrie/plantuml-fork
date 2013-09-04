@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  *
- * Revision $Revision: 9786 $
+ * Revision $Revision: 11432 $
  *
  */
 package net.sourceforge.plantuml.activitydiagram;
@@ -53,8 +53,8 @@ public class ActivityDiagram extends CucaDiagram {
 	private IEntity lastEntityBrancheConsulted;
 	private ConditionalContext currentContext;
 
-	public ILeaf getOrCreateLeaf1(Code code, LeafType type) {
-		return getOrCreateLeaf1Default(code, type);
+	public ILeaf getOrCreateLeaf(Code code, LeafType type) {
+		return getOrCreateLeafDefault(code, type);
 	}
 
 	private String getAutoBranch() {
@@ -64,7 +64,7 @@ public class ActivityDiagram extends CucaDiagram {
 	public IEntity getOrCreate(Code code, Display display, LeafType type) {
 		final IEntity result;
 		if (leafExist(code)) {
-			result = getOrCreateLeaf1Default(code, type);
+			result = getOrCreateLeafDefault(code, type);
 			if (result.getEntityType() != type) {
 				// throw new IllegalArgumentException("Already known: " + code + " " + result.getType() + " " + type);
 				return null;

@@ -63,7 +63,7 @@ public class SpriteImage implements Sprite {
 				return new Dimension2DDouble(img.getWidth(), img.getHeight());
 			}
 
-			public List<Url> getUrls() {
+			public List<Url> getUrls(StringBounder stringBounder) {
 				return Collections.emptyList();
 			}
 		};

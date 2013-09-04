@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 11153 $
+ * Revision $Revision: 11394 $
  *
  */
 package net.sourceforge.plantuml.skin.bluemodern;
@@ -54,7 +54,7 @@ public class ComponentBlueModernActor extends AbstractTextualComponent {
 
 	public ComponentBlueModernActor(HtmlColor backgroundColor, HtmlColor foregroundColor, HtmlColor fontColor,
 			UFont font, Display stringsToDisplay, boolean head, SpriteContainer spriteContainer) {
-		super(stringsToDisplay, fontColor, font, HorizontalAlignment.CENTER, 3, 3, 0, spriteContainer, 0);
+		super(stringsToDisplay, fontColor, font, HorizontalAlignment.CENTER, 3, 3, 0, spriteContainer, 0, false);
 		this.head = head;
 		stickman = new StickMan(backgroundColor, foregroundColor);
 	}

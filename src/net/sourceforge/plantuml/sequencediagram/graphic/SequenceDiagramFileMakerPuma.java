@@ -246,16 +246,14 @@ public class SequenceDiagramFileMakerPuma implements FileMaker {
 		}
 		final Dimension2D dimLegend = TextBlockUtils.getDimension(legendBlock);
 
+		final double scale = getScale(area.getWidth(), area.getHeight());
 		UGraphic ug;
 		if (fileFormat == FileFormat.PNG) {
 			double imageHeight = getImageHeight(area, page, diagram.isRotation(), 1);
 			if (imageHeight == 0) {
 				imageHeight = 1;
 			}
-			double flashCodeHeight = 0;
-			if (flashcodes != null) {
-				flashCodeHeight = flashcodes.get(0).getHeight();
-			}
+			final double flashCodeHeight = flashcodes == null ? 0 : flashcodes.get(0).getHeight();
 
 			final Dimension2D dim;
 			final double imageWidthWithDpi = getImageWidth(area, diagram.isRotation(), 1, dimLegend.getWidth());
@@ -271,17 +269,17 @@ public class SequenceDiagramFileMakerPuma implements FileMaker {
 			if (flashcodes != null) {
 				((UGraphicG2d) ug).getGraphics2D().drawImage(flashcodes.get(0), null, 0, (int) imageHeight);
 			}
-			final AffineTransform scale = ((UGraphicG2d) ug).getGraphics2D().getTransform();
-			scale.scale(getScale(area.getWidth(), area.getHeight()), getScale(area.getWidth(), area.getHeight()));
-			((UGraphicG2d) ug).getGraphics2D().setTransform(scale);
+			final AffineTransform scaleAt = ((UGraphicG2d) ug).getGraphics2D().getTransform();
+			scaleAt.scale(scale, scale);
+			((UGraphicG2d) ug).getGraphics2D().setTransform(scaleAt);
 		} else if (fileFormat == FileFormat.SVG) {
 			if (diagram.getSkinParam().getBackgroundColor() instanceof HtmlColorGradient) {
 				ug = new UGraphicSvg(diagram.getSkinParam().getColorMapper(), (HtmlColorGradient) diagram
-						.getSkinParam().getBackgroundColor(), false);
+						.getSkinParam().getBackgroundColor(), false, scale);
 			} else if (backColor == null || backColor.equals(Color.WHITE)) {
-				ug = new UGraphicSvg(diagram.getSkinParam().getColorMapper(), false);
+				ug = new UGraphicSvg(diagram.getSkinParam().getColorMapper(), false, scale);
 			} else {
-				ug = new UGraphicSvg(diagram.getSkinParam().getColorMapper(), StringUtils.getAsHtml(backColor), false);
+				ug = new UGraphicSvg(diagram.getSkinParam().getColorMapper(), StringUtils.getAsHtml(backColor), false, scale);
 			}
 		} else if (fileFormat == FileFormat.EPS) {
 			ug = new UGraphicEps(diagram.getSkinParam().getColorMapper(), EpsStrategy.getDefault2());

@@ -62,7 +62,7 @@ public class TextBlockEmpty implements TextBlockWidth, TextBlock {
 	public void drawU(UGraphic ug) {
 	}
 
-	public List<Url> getUrls() {
+	public List<Url> getUrls(StringBounder stringBounder) {
 		return Collections.emptyList();
 	}
 
@@ -76,8 +76,8 @@ public class TextBlockEmpty implements TextBlockWidth, TextBlock {
 				return TextBlockEmpty.this.calculateDimension(stringBounder);
 			}
 
-			public List<Url> getUrls() {
-				return TextBlockEmpty.this.getUrls();
+			public List<Url> getUrls(StringBounder stringBounder) {
+				return TextBlockEmpty.this.getUrls(null);
 			}
 		};
 	}

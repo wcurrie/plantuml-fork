@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 11154 $
+ * Revision $Revision: 11397 $
  *
  */
 package net.sourceforge.plantuml.graphic;
@@ -142,10 +142,10 @@ class TextBlockSimple implements TextBlock {
 		return line.calculateDimension(stringBounder).getWidth();
 	}
 
-	public List<Url> getUrls() {
+	public List<Url> getUrls(StringBounder stringBounder) {
 		final List<Url> result = new ArrayList<Url>();
-		for (Line line : getLines(null)) {
-			result.addAll(line.getUrls());
+		for (Line line : getLines(stringBounder)) {
+			result.addAll(line.getUrls(stringBounder));
 		}
 		return Collections.unmodifiableList(result);
 	}

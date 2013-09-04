@@ -31,14 +31,19 @@
  * Revision $Revision: 5183 $
  *
  */
-package net.sourceforge.plantuml.svek;
+package net.sourceforge.plantuml.activitydiagram3.ftile.vertical;
 
 import java.awt.geom.Dimension2D;
+import java.awt.geom.Point2D;
 import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 
 import net.sourceforge.plantuml.Dimension2DDouble;
 import net.sourceforge.plantuml.Url;
+import net.sourceforge.plantuml.activitydiagram3.ftile.AbstractFtile;
+import net.sourceforge.plantuml.activitydiagram3.ftile.Diamond;
+import net.sourceforge.plantuml.activitydiagram3.ftile.Swimlane;
 import net.sourceforge.plantuml.graphic.HtmlColor;
 import net.sourceforge.plantuml.graphic.StringBounder;
 import net.sourceforge.plantuml.graphic.TextBlock;
@@ -49,42 +54,68 @@ import net.sourceforge.plantuml.ugraphic.UGraphic;
 import net.sourceforge.plantuml.ugraphic.UStroke;
 import net.sourceforge.plantuml.ugraphic.UTranslate;
 
-public class CircleInterface2 implements TextBlock {
+public class FtileDiamond extends AbstractFtile {
 
-	private final double margin = 4;
+	private static final int SIZE = 20;
 
-	private final double radius = 8;
+	private final HtmlColor backColor;
+	private final HtmlColor borderColor;
+	private final Swimlane swimlane;
 
-	private final HtmlColor backgroundColor;
-	private final HtmlColor foregroundColor;
-	private final float thickness = 2;
-
-	private final double deltaShadow;
-
-	public CircleInterface2(HtmlColor backgroundColor, HtmlColor foregroundColor, double deltaShadow) {
-		this.backgroundColor = backgroundColor;
-		this.foregroundColor = foregroundColor;
-		this.deltaShadow = deltaShadow;
+	public FtileDiamond(boolean shadowing, HtmlColor backColor, HtmlColor borderColor, Swimlane swimlane) {
+		super(shadowing);
+		this.backColor = backColor;
+		this.swimlane = swimlane;
+		this.borderColor = borderColor;
 	}
 
-	public void drawU(UGraphic ug) {
-		double x = 0;
-		double y = 0;
-		x += margin;
-		y += margin;
-		ug = ug.apply(new UStroke(thickness)).apply(new UChangeBackColor(backgroundColor))
-				.apply(new UChangeColor(foregroundColor));
-		final UEllipse circle = new UEllipse(radius * 2, radius * 2);
-		circle.setDeltaShadow(deltaShadow);
-		ug.apply(new UTranslate(x, y)).draw(circle);
+	public Set<Swimlane> getSwimlanes() {
+		if (swimlane == null) {
+			return Collections.emptySet();
+		}
+		return Collections.singleton(swimlane);
 	}
 
-	public Dimension2D calculateDimension(StringBounder stringBounder) {
-		return new Dimension2DDouble(radius * 2 + 2 * margin, radius * 2 + 2 * margin);
+	public Swimlane getSwimlaneIn() {
+		return swimlane;
 	}
 
-	public List<Url> getUrls(StringBounder stringBounder) {
-		return Collections.emptyList();
+	public Swimlane getSwimlaneOut() {
+		return swimlane;
+	}
+
+	public TextBlock asTextBlock() {
+		return new TextBlock() {
+
+			public void drawU(UGraphic ug) {
+				final UEllipse circle = new UEllipse(SIZE, SIZE);
+				if (shadowing()) {
+					circle.setDeltaShadow(3);
+				}
+				ug.apply(new UChangeColor(borderColor)).apply(new UStroke(1.5)).apply(new UChangeBackColor(backColor))
+						.draw(Diamond.asPolygon(shadowing()));
+			}
+
+			public Dimension2D calculateDimension(StringBounder stringBounder) {
+				return new Dimension2DDouble(SIZE, SIZE);
+			}
+
+			public List<Url> getUrls(StringBounder stringBounder) {
+				return Collections.emptyList();
+			}
+		};
+	}
+
+	public boolean isKilled() {
+		return false;
+	}
+
+	public Point2D getPointIn(StringBounder stringBounder) {
+		return new Point2D.Double(SIZE / 2, 0);
+	}
+
+	public Point2D getPointOut(StringBounder stringBounder) {
+		return new Point2D.Double(SIZE / 2, SIZE);
 	}
 
 }

@@ -59,7 +59,7 @@ public class TextBlockRecentred implements TextBlock {
 		return minMax.getDimension();
 	}
 
-	public List<Url> getUrls() {
+	public List<Url> getUrls(StringBounder stringBounder) {
 		throw new UnsupportedOperationException();
 	}
 

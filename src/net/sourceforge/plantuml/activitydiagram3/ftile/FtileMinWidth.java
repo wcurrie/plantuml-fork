@@ -75,7 +75,7 @@ public class FtileMinWidth implements Ftile {
 				return getDimensionInternal(stringBounder);
 			}
 
-			public List<Url> getUrls() {
+			public List<Url> getUrls(StringBounder stringBounder) {
 				throw new UnsupportedOperationException();
 			}
 		};

@@ -110,7 +110,7 @@ public class FtileCircleStop extends AbstractFtile {
 				return new Dimension2DDouble(SIZE, SIZE);
 			}
 
-			public List<Url> getUrls() {
+			public List<Url> getUrls(StringBounder stringBounder) {
 				return Collections.emptyList();
 			}
 		};

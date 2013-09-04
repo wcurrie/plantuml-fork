@@ -100,7 +100,7 @@ public class FtileHeightFixed extends AbstractFtile {
 				return new Dimension2DDouble(dim.getWidth(), fixedHeight);
 			}
 
-			public List<Url> getUrls() {
+			public List<Url> getUrls(StringBounder stringBounder) {
 				throw new UnsupportedOperationException();
 			}
 		};

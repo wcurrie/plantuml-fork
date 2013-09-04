@@ -148,7 +148,7 @@ public class CommandCreateClassMultilines extends CommandMultilines2<ClassDiagra
 			if (mode == Mode.EXTENDS && entity.getEntityType() == LeafType.INTERFACE) {
 				type2 = LeafType.INTERFACE;
 			}
-			final IEntity cl2 = system.getOrCreateLeaf1(other, type2);
+			final IEntity cl2 = system.getOrCreateLeaf(other, type2);
 			LinkType typeLink = new LinkType(LinkDecor.NONE, LinkDecor.EXTENDS);
 			if (type2 == LeafType.INTERFACE && entity.getEntityType() != LeafType.INTERFACE) {
 				typeLink = typeLink.getDashed();
@@ -171,7 +171,7 @@ public class CommandCreateClassMultilines extends CommandMultilines2<ClassDiagra
 
 		final ILeaf result;
 		if (diagram.leafExist(code)) {
-			result = diagram.getOrCreateLeaf1(code, null);
+			result = diagram.getOrCreateLeaf(code, null);
 			result.muteToType(type);
 		} else {
 			result = diagram.createLeaf(code, Display.getWithNewlines(display), type);

@@ -54,7 +54,7 @@ public class CommandUrl extends SingleLineCommand<AbstractEntityDiagram> {
 	protected CommandExecutionResult executeArg(AbstractEntityDiagram diagram, List<String> arg) {
 		final Code code = Code.of(arg.get(0));
 		final String urlString = arg.get(1);
-		final IEntity entity = diagram.getOrCreateLeaf1(code, null);
+		final IEntity entity = diagram.getOrCreateLeaf(code, null);
 		final UrlBuilder urlBuilder = new UrlBuilder(diagram.getSkinParam().getValue("topurl"), ModeUrl.STRICT);
 		final Url url = urlBuilder.getUrl(urlString);
 		entity.addUrl(url);

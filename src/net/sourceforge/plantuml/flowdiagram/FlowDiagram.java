@@ -204,7 +204,7 @@ public class FlowDiagram extends UmlDiagram implements TextBlock {
 		return new Dimension2DDouble(minMax.getWidth() * SINGLE_SIZE_X, minMax.getHeight() * SINGLE_SIZE_Y);
 	}
 
-	public List<Url> getUrls() {
+	public List<Url> getUrls(StringBounder stringBounder) {
 		return Collections.emptyList();
 	}
 

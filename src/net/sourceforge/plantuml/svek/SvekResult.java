@@ -169,7 +169,7 @@ public final class SvekResult implements IEntityImage, Moveable {
 		return false;
 	}
 
-	final public List<Url> getUrls() {
+	final public List<Url> getUrls(StringBounder stringBounder) {
 		return Collections.emptyList();
 	}
 

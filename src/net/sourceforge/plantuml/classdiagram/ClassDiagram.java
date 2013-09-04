@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  *
- * Revision $Revision: 11254 $
+ * Revision $Revision: 11432 $
  *
  */
 package net.sourceforge.plantuml.classdiagram;
@@ -48,25 +48,25 @@ public class ClassDiagram extends AbstractClassOrObjectDiagram {
 	private String namespaceSeparator = ".";
 
 	@Override
-	public ILeaf getOrCreateLeaf1(Code code, LeafType type) {
+	public ILeaf getOrCreateLeaf(Code code, LeafType type) {
 		if (type == null) {
 			code = code.eventuallyRemoveStartingAndEndingDoubleQuote();
 			if (getNamespaceSeparator() == null) {
-				return getOrCreateLeaf1Default(code, LeafType.CLASS);
+				return getOrCreateLeafDefault(code, LeafType.CLASS);
 			}
 			code = code.getFullyQualifiedCode(getCurrentGroup(), getNamespaceSeparator());
 			if (super.leafExist(code)) {
-				return getOrCreateLeaf1Default(code, LeafType.CLASS);
+				return getOrCreateLeafDefault(code, LeafType.CLASS);
 			}
 			return createEntityWithNamespace(code,
 					Display.getWithNewlines(code.getShortName(getLeafs(), getNamespaceSeparator())), LeafType.CLASS);
 		}
 		if (getNamespaceSeparator() == null) {
-			return getOrCreateLeaf1Default(code, LeafType.CLASS);
+			return getOrCreateLeafDefault(code, LeafType.CLASS);
 		}
 		code = code.getFullyQualifiedCode(getCurrentGroup(), getNamespaceSeparator());
 		if (super.leafExist(code)) {
-			return getOrCreateLeaf1Default(code, type);
+			return getOrCreateLeafDefault(code, type);
 		}
 		return createEntityWithNamespace(code,
 				Display.getWithNewlines(code.getShortName(getLeafs(), getNamespaceSeparator())), type);

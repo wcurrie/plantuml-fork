@@ -137,8 +137,8 @@ public class FtileBox extends AbstractFtile {
 				return Dimension2DDouble.delta(dim, 2 * MARGIN, 2 * MARGIN);
 			}
 
-			public List<Url> getUrls() {
-				return tb.getUrls();
+			public List<Url> getUrls(StringBounder stringBounder) {
+				return tb.getUrls(stringBounder);
 			}
 		};
 	}
