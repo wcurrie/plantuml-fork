@@ -46,6 +46,7 @@ import net.sourceforge.plantuml.ISkinParam;
 import net.sourceforge.plantuml.Scale;
 import net.sourceforge.plantuml.UmlDiagram;
 import net.sourceforge.plantuml.UmlDiagramType;
+import net.sourceforge.plantuml.activitydiagram3.ftile.BoxStyle;
 import net.sourceforge.plantuml.activitydiagram3.ftile.Swimlanes;
 import net.sourceforge.plantuml.api.ImageDataSimple;
 import net.sourceforge.plantuml.command.CommandExecutionResult;
@@ -107,9 +108,9 @@ public class ActivityDiagram3 extends UmlDiagram {
 		swinlanes.setNextLinkRenderer(link);
 	}
 
-	public void addActivity(Display activity, HtmlColor color) {
+	public void addActivity(Display activity, HtmlColor color, BoxStyle style) {
 		manageSwimlaneStrategy();
-		current().add(new InstructionSimple(activity, color, nextLinkRenderer(), swinlanes.getCurrentSwimlane()));
+		current().add(new InstructionSimple(activity, color, nextLinkRenderer(), swinlanes.getCurrentSwimlane(), style));
 		setNextLinkRenderer(null);
 	}
 

@@ -34,6 +34,7 @@
 package net.sourceforge.plantuml.activitydiagram3.command;
 
 import net.sourceforge.plantuml.activitydiagram3.ActivityDiagram3;
+import net.sourceforge.plantuml.activitydiagram3.ftile.BoxStyle;
 import net.sourceforge.plantuml.command.CommandExecutionResult;
 import net.sourceforge.plantuml.command.SingleLineCommand2;
 import net.sourceforge.plantuml.command.regex.RegexConcat;
@@ -54,14 +55,15 @@ public class CommandActivity3 extends SingleLineCommand2<ActivityDiagram3> {
 				new RegexLeaf(":"), //
 				new RegexLeaf("COLOR", "(?:(#\\w+[-\\\\|/]?\\w+):)?"), //
 				new RegexLeaf("LABEL", "(.*)"), //
-				new RegexLeaf(";"), //
+				new RegexLeaf("STYLE", "([/;|<>}\\]])"), //
 				new RegexLeaf("$"));
 	}
 
 	@Override
 	protected CommandExecutionResult executeArg(ActivityDiagram3 diagram, RegexResult arg) {
 		final HtmlColor color = HtmlColorUtils.getColorIfValid(arg.get("COLOR", 0));
-		diagram.addActivity(Display.getWithNewlines(arg.get("LABEL", 0)), color);
+		final BoxStyle style = BoxStyle.fromChar(arg.get("STYLE", 0).charAt(0));
+		diagram.addActivity(Display.getWithNewlines(arg.get("LABEL", 0)), color, style);
 		return CommandExecutionResult.ok();
 	}
 

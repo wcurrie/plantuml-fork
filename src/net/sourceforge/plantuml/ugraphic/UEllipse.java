@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 11025 $
+ * Revision $Revision: 11437 $
  *
  */
 package net.sourceforge.plantuml.ugraphic;
@@ -36,7 +36,6 @@ package net.sourceforge.plantuml.ugraphic;
 import java.awt.geom.Dimension2D;
 
 import net.sourceforge.plantuml.Dimension2DDouble;
-import net.sourceforge.plantuml.graphic.StringBounder;
 
 public class UEllipse extends AbstractShadowable {
 

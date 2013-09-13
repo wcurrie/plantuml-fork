@@ -74,8 +74,8 @@ public class FtileFactoryDelegator implements FtileFactory {
 		return factory.stop(swimlane);
 	}
 
-	public Ftile activity(Display label, HtmlColor color, Swimlane swimlane) {
-		return factory.activity(label, color, swimlane);
+	public Ftile activity(Display label, HtmlColor color, Swimlane swimlane, BoxStyle style) {
+		return factory.activity(label, color, swimlane, style);
 	}
 
 	public Ftile addNote(Ftile ftile, Display note, NotePosition notePosition) {

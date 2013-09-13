@@ -33,77 +33,20 @@
  */
 package net.sourceforge.plantuml.activitydiagram3.ftile.vertical;
 
-import java.awt.geom.Point2D;
-import java.util.Collection;
-import java.util.Set;
-
 import net.sourceforge.plantuml.activitydiagram3.LinkRendering;
-import net.sourceforge.plantuml.activitydiagram3.ftile.Connection;
 import net.sourceforge.plantuml.activitydiagram3.ftile.Ftile;
-import net.sourceforge.plantuml.activitydiagram3.ftile.Swimlane;
-import net.sourceforge.plantuml.graphic.StringBounder;
-import net.sourceforge.plantuml.graphic.TextBlock;
-import net.sourceforge.plantuml.ugraphic.UTranslate;
 
-public class FtileDecorateIn implements Ftile {
+public class FtileDecorateIn extends FtileDecorate {
 
-	final private Ftile ftile;
 	final private LinkRendering linkRendering;
 
 	public FtileDecorateIn(final Ftile ftile, final LinkRendering linkRendering) {
-		this.ftile = ftile;
+		super(ftile);
 		this.linkRendering = linkRendering;
-	}
-
-	public boolean isKilled() {
-		return ftile.isKilled();
 	}
 
 	public LinkRendering getInLinkRendering() {
 		return linkRendering;
 	}
-
-	public LinkRendering getOutLinkRendering() {
-		return ftile.getOutLinkRendering();
-	}
-
-	public TextBlock asTextBlock() {
-		return ftile.asTextBlock();
-	}
-
-	public Point2D getPointIn(StringBounder stringBounder) {
-		return ftile.getPointIn(stringBounder);
-	}
-
-	public Point2D getPointOut(StringBounder stringBounder) {
-		return ftile.getPointOut(stringBounder);
-	}
-
-	public Collection<Connection> getInnerConnections() {
-		return ftile.getInnerConnections();
-	}
-
-	public UTranslate getTranslateFor(Ftile child, StringBounder stringBounder) {
-		return ftile.getTranslateFor(child, stringBounder);
-	}
-	
-	public Set<Swimlane> getSwimlanes() {
-		return ftile.getSwimlanes();
-	}
-	
-	public Swimlane getSwimlaneIn() {
-		return ftile.getSwimlaneIn();
-	}
-
-	public Swimlane getSwimlaneOut() {
-		return ftile.getSwimlaneOut();
-	}
-	
-	public boolean shadowing() {
-		return ftile.shadowing();
-	}
-
-
-
 
 }

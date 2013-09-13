@@ -40,6 +40,7 @@ import net.sourceforge.plantuml.ColorParam;
 import net.sourceforge.plantuml.FontParam;
 import net.sourceforge.plantuml.ISkinParam;
 import net.sourceforge.plantuml.activitydiagram3.LinkRendering;
+import net.sourceforge.plantuml.activitydiagram3.ftile.BoxStyle;
 import net.sourceforge.plantuml.activitydiagram3.ftile.Ftile;
 import net.sourceforge.plantuml.activitydiagram3.ftile.FtileAssemblySimple;
 import net.sourceforge.plantuml.activitydiagram3.ftile.FtileFactory;
@@ -81,12 +82,12 @@ public class VCompactFactory implements FtileFactory {
 		return new FtileCircleStop(shadowing(), color, swimlane);
 	}
 
-	public Ftile activity(Display label, final HtmlColor color, Swimlane swimlane) {
+	public Ftile activity(Display label, final HtmlColor color, Swimlane swimlane, BoxStyle style) {
 		final HtmlColor borderColor = rose.getHtmlColor(skinParam, ColorParam.activityBorder);
 		final HtmlColor backColor = color == null ? rose.getHtmlColor(skinParam, ColorParam.activityBackground) : color;
 		final UFont font = skinParam.getFont(FontParam.ACTIVITY2, null);
 		final HtmlColor arrowColor = rose.getHtmlColor(skinParam, ColorParam.activityArrow);
-		return new FtileBox(shadowing(), label, borderColor, backColor, font, arrowColor, swimlane);
+		return new FtileBox(shadowing(), label, borderColor, backColor, font, arrowColor, swimlane, style);
 	}
 
 	public Ftile addNote(Ftile ftile, Display note, NotePosition notePosition) {

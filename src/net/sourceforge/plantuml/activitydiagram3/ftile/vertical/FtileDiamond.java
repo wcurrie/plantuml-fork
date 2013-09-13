@@ -52,11 +52,8 @@ import net.sourceforge.plantuml.ugraphic.UChangeColor;
 import net.sourceforge.plantuml.ugraphic.UEllipse;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
 import net.sourceforge.plantuml.ugraphic.UStroke;
-import net.sourceforge.plantuml.ugraphic.UTranslate;
 
 public class FtileDiamond extends AbstractFtile {
-
-	private static final int SIZE = 20;
 
 	private final HtmlColor backColor;
 	private final HtmlColor borderColor;
@@ -88,16 +85,12 @@ public class FtileDiamond extends AbstractFtile {
 		return new TextBlock() {
 
 			public void drawU(UGraphic ug) {
-				final UEllipse circle = new UEllipse(SIZE, SIZE);
-				if (shadowing()) {
-					circle.setDeltaShadow(3);
-				}
 				ug.apply(new UChangeColor(borderColor)).apply(new UStroke(1.5)).apply(new UChangeBackColor(backColor))
 						.draw(Diamond.asPolygon(shadowing()));
 			}
 
 			public Dimension2D calculateDimension(StringBounder stringBounder) {
-				return new Dimension2DDouble(SIZE, SIZE);
+				return new Dimension2DDouble(Diamond.diamondHalfSize * 2, Diamond.diamondHalfSize * 2);
 			}
 
 			public List<Url> getUrls(StringBounder stringBounder) {
@@ -111,11 +104,11 @@ public class FtileDiamond extends AbstractFtile {
 	}
 
 	public Point2D getPointIn(StringBounder stringBounder) {
-		return new Point2D.Double(SIZE / 2, 0);
+		return new Point2D.Double(Diamond.diamondHalfSize, 0);
 	}
 
 	public Point2D getPointOut(StringBounder stringBounder) {
-		return new Point2D.Double(SIZE / 2, SIZE);
+		return new Point2D.Double(Diamond.diamondHalfSize, Diamond.diamondHalfSize * 2);
 	}
 
 }

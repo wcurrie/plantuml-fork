@@ -36,6 +36,7 @@ package net.sourceforge.plantuml.activitydiagram3.command;
 import java.util.List;
 
 import net.sourceforge.plantuml.activitydiagram3.ActivityDiagram3;
+import net.sourceforge.plantuml.activitydiagram3.ftile.BoxStyle;
 import net.sourceforge.plantuml.command.CommandExecutionResult;
 import net.sourceforge.plantuml.command.CommandMultilines2;
 import net.sourceforge.plantuml.command.MultilinesStrategy;
@@ -70,7 +71,7 @@ public class CommandActivityLong3 extends CommandMultilines2<ActivityDiagram3> {
 		final HtmlColor color = HtmlColorUtils.getColorIfValid(line0.get("COLOR", 0));
 		removeStarting(lines, line0.get("DATA", 0));
 		removeEnding(lines);
-		diagram.addActivity(new Display(lines), color);
+		diagram.addActivity(new Display(lines), color, BoxStyle.PLAIN);
 		return CommandExecutionResult.ok();
 	}
 

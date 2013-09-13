@@ -34,37 +34,33 @@
 package net.sourceforge.plantuml.activitydiagram3.ftile;
 
 import java.awt.geom.Dimension2D;
-import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
-import java.util.Set;
 
 import net.sourceforge.plantuml.Url;
-import net.sourceforge.plantuml.activitydiagram3.LinkRendering;
+import net.sourceforge.plantuml.activitydiagram3.ftile.vertical.FtileDecorate;
 import net.sourceforge.plantuml.graphic.StringBounder;
 import net.sourceforge.plantuml.graphic.TextBlock;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
-import net.sourceforge.plantuml.ugraphic.UTranslate;
 
-class FtileWithConnection implements Ftile {
+class FtileWithConnection extends FtileDecorate {
 
-	private final Ftile ftile;
 	private final List<Connection> connections = new ArrayList<Connection>();
 
 	FtileWithConnection(Ftile ftile, Collection<Connection> connections) {
+		super(ftile);
 		if (connections == null || connections.size() == 0) {
 			throw new IllegalArgumentException();
 		}
-		this.ftile = ftile;
 		this.connections.addAll(connections);
 	}
 
 	@Override
 	public String toString() {
-		return "FtileWithConnection " + ftile + " " + connections;
+		return super.toString() + " " + connections;
 	}
 
 	public FtileWithConnection(Ftile ftile, Connection connection) {
@@ -74,32 +70,8 @@ class FtileWithConnection implements Ftile {
 		}
 	}
 
-	public UTranslate getTranslateFor(Ftile child, StringBounder stringBounder) {
-		return this.ftile.getTranslateFor(child, stringBounder);
-	}
-
-	public boolean isKilled() {
-		return ftile.isKilled();
-	}
-
-	public LinkRendering getInLinkRendering() {
-		return ftile.getInLinkRendering();
-	}
-
-	public LinkRendering getOutLinkRendering() {
-		return ftile.getOutLinkRendering();
-	}
-
-	public Point2D getPointIn(StringBounder stringBounder) {
-		return ftile.getPointIn(stringBounder);
-	}
-
-	public Point2D getPointOut(StringBounder stringBounder) {
-		return ftile.getPointOut(stringBounder);
-	}
-
 	public TextBlock asTextBlock() {
-		final TextBlock original = ftile.asTextBlock();
+		final TextBlock original = super.asTextBlock();
 		return new TextBlock() {
 
 			public void drawU(UGraphic ug) {
@@ -120,26 +92,9 @@ class FtileWithConnection implements Ftile {
 	}
 
 	public Collection<Connection> getInnerConnections() {
-		final List<Connection> result = new ArrayList<Connection>(ftile.getInnerConnections());
+		final List<Connection> result = new ArrayList<Connection>(super.getInnerConnections());
 		result.addAll(connections);
 		return Collections.unmodifiableList(connections);
 	}
-
-	public Set<Swimlane> getSwimlanes() {
-		return ftile.getSwimlanes();
-	}
-	
-	public Swimlane getSwimlaneIn() {
-		return ftile.getSwimlaneIn();
-	}
-
-	public Swimlane getSwimlaneOut() {
-		return ftile.getSwimlaneOut();
-	}
-
-	public boolean shadowing() {
-		return ftile.shadowing();
-	}
-
 
 }

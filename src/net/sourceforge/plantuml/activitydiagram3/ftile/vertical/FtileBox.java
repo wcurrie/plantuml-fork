@@ -44,6 +44,7 @@ import net.sourceforge.plantuml.SpriteContainerEmpty;
 import net.sourceforge.plantuml.Url;
 import net.sourceforge.plantuml.activitydiagram3.LinkRendering;
 import net.sourceforge.plantuml.activitydiagram3.ftile.AbstractFtile;
+import net.sourceforge.plantuml.activitydiagram3.ftile.BoxStyle;
 import net.sourceforge.plantuml.activitydiagram3.ftile.Swimlane;
 import net.sourceforge.plantuml.cucadiagram.Display;
 import net.sourceforge.plantuml.graphic.FontConfiguration;
@@ -53,18 +54,17 @@ import net.sourceforge.plantuml.graphic.HtmlColorUtils;
 import net.sourceforge.plantuml.graphic.StringBounder;
 import net.sourceforge.plantuml.graphic.TextBlock;
 import net.sourceforge.plantuml.graphic.TextBlockUtils;
+import net.sourceforge.plantuml.graphic.UDrawable;
 import net.sourceforge.plantuml.ugraphic.Shadowable;
 import net.sourceforge.plantuml.ugraphic.UChangeBackColor;
 import net.sourceforge.plantuml.ugraphic.UChangeColor;
 import net.sourceforge.plantuml.ugraphic.UFont;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
-import net.sourceforge.plantuml.ugraphic.URectangle;
 import net.sourceforge.plantuml.ugraphic.UStroke;
 import net.sourceforge.plantuml.ugraphic.UTranslate;
 
 public class FtileBox extends AbstractFtile {
 
-	private static final int CORNER = 25;
 	private static final int MARGIN = 10;
 
 	private final TextBlock tb;
@@ -73,6 +73,7 @@ public class FtileBox extends AbstractFtile {
 	private final HtmlColor backColor;
 	private final LinkRendering inRenreding;
 	private final Swimlane swimlane;
+	private final BoxStyle style;
 
 	final public LinkRendering getInLinkRendering() {
 		return inRenreding;
@@ -94,8 +95,9 @@ public class FtileBox extends AbstractFtile {
 	}
 
 	public FtileBox(boolean shadowing, Display label, HtmlColor color, HtmlColor backColor, UFont font,
-			HtmlColor arrowColor, Swimlane swimlane) {
+			HtmlColor arrowColor, Swimlane swimlane, BoxStyle style) {
 		super(shadowing);
+		this.style = style;
 		this.color = color;
 		this.swimlane = swimlane;
 		this.backColor = backColor;
@@ -117,17 +119,12 @@ public class FtileBox extends AbstractFtile {
 
 			public void drawU(UGraphic ug) {
 				final Dimension2D dimTotal = calculateDimension(ug.getStringBounder());
-				// final Dimension2D dimDesc =
-				// tb.calculateDimension(ug.getStringBounder());
-
 				final double widthTotal = dimTotal.getWidth();
 				final double heightTotal = dimTotal.getHeight();
-				final Shadowable rect = new URectangle(widthTotal, heightTotal, CORNER, CORNER);
-				if (shadowing()) {
-					rect.setDeltaShadow(3);
-				}
-				ug.apply(new UChangeColor(color)).apply(new UChangeBackColor(backColor)).apply(new UStroke(1.5))
-						.draw(rect);
+				final UDrawable rect = style.getUDrawable(widthTotal, heightTotal, shadowing());
+
+				ug = ug.apply(new UChangeColor(color)).apply(new UChangeBackColor(backColor)).apply(new UStroke(1.5));
+				rect.drawU(ug);
 
 				tb.drawU(ug.apply(new UTranslate(MARGIN, MARGIN)));
 			}

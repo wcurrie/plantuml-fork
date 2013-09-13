@@ -35,31 +35,23 @@ package net.sourceforge.plantuml.activitydiagram3.ftile;
 
 import java.awt.geom.Dimension2D;
 import java.awt.geom.Point2D;
-import java.util.Collection;
 import java.util.List;
-import java.util.Set;
 
 import net.sourceforge.plantuml.Dimension2DDouble;
 import net.sourceforge.plantuml.Url;
-import net.sourceforge.plantuml.activitydiagram3.LinkRendering;
+import net.sourceforge.plantuml.activitydiagram3.ftile.vertical.FtileDecorate;
 import net.sourceforge.plantuml.graphic.StringBounder;
 import net.sourceforge.plantuml.graphic.TextBlock;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
 import net.sourceforge.plantuml.ugraphic.UTranslate;
 
-public class FtileMinWidth implements Ftile {
+public class FtileMinWidth extends FtileDecorate {
 
-	private final Ftile ftile;
 	private final double minWidth;
 
 	public FtileMinWidth(Ftile tile, double minWidth) {
-		this.ftile = tile;
+		super(tile);
 		this.minWidth = minWidth;
-	}
-
-	@Override
-	public String toString() {
-		return "FtileMinWidth:" + ftile;
 	}
 
 	public TextBlock asTextBlock() {
@@ -68,7 +60,7 @@ public class FtileMinWidth implements Ftile {
 			public void drawU(UGraphic ug) {
 				final StringBounder stringBounder = ug.getStringBounder();
 				final UTranslate change = getUTranslateInternal(stringBounder);
-				ug.apply(change).draw(ftile);
+				FtileMinWidth.super.asTextBlock().drawU(ug.apply(change));
 			}
 
 			public Dimension2D calculateDimension(StringBounder stringBounder) {
@@ -97,26 +89,14 @@ public class FtileMinWidth implements Ftile {
 	}
 
 	public UTranslate getTranslateFor(Ftile child, StringBounder stringBounder) {
-		if (child == ftile) {
+		if (child == getFtileDelegated()) {
 			return getUTranslateInternal(stringBounder);
 		}
 		return null;
 	}
 
-	public boolean isKilled() {
-		return ftile.isKilled();
-	}
-
-	public LinkRendering getInLinkRendering() {
-		return ftile.getInLinkRendering();
-	}
-
-	public LinkRendering getOutLinkRendering() {
-		return null;
-	}
-
 	private Dimension2D getDimension(StringBounder stringBounder) {
-		return ftile.asTextBlock().calculateDimension(stringBounder);
+		return super.asTextBlock().calculateDimension(stringBounder);
 	}
 
 	private Point2D getPoint(Point2D pt, StringBounder stringBounder) {
@@ -129,32 +109,11 @@ public class FtileMinWidth implements Ftile {
 	}
 
 	public Point2D getPointIn(StringBounder stringBounder) {
-		return getPoint(ftile.getPointIn(stringBounder), stringBounder);
+		return getPoint(super.getPointIn(stringBounder), stringBounder);
 	}
 
 	public Point2D getPointOut(StringBounder stringBounder) {
-		return getPoint(ftile.getPointOut(stringBounder), stringBounder);
-	}
-
-	public Collection<Connection> getInnerConnections() {
-		// return ftile.getInnerConnections();
-		throw new UnsupportedOperationException();
-	}
-
-	public Set<Swimlane> getSwimlanes() {
-		return ftile.getSwimlanes();
-	}
-
-	public Swimlane getSwimlaneIn() {
-		return ftile.getSwimlaneIn();
-	}
-
-	public Swimlane getSwimlaneOut() {
-		return ftile.getSwimlaneOut();
-	}
-
-	public boolean shadowing() {
-		return ftile.shadowing();
+		return getPoint(super.getPointOut(stringBounder), stringBounder);
 	}
 
 }

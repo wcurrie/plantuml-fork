@@ -46,23 +46,24 @@ public class LinkRendering {
 	public HtmlColor getColor() {
 		return color;
 	}
-	
+
+	@Override
+	public String toString() {
+		return super.toString() + " " + color;
+	}
+
 	public static HtmlColor getColor(LinkRendering inLinkRendering, HtmlColor defaultColor) {
 		if (inLinkRendering == null || inLinkRendering.getColor() == null) {
 			return defaultColor;
 		}
 		return inLinkRendering.getColor();
 	}
-	
+
 	public static HtmlColor getColor(HtmlColor col, HtmlColor defaultColor) {
 		if (col == null) {
 			return defaultColor;
 		}
 		return col;
 	}
-
-
-
-
 
 }

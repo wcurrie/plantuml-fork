@@ -27,31 +27,31 @@
  * in the United States and other countries.]
  *
  * Original Author:  Arnaud Roques
- * 
- * Revision $Revision: 11456 $
+ *
+ * Revision $Revision: 8475 $
  *
  */
-package net.sourceforge.plantuml.version;
+package net.sourceforge.plantuml.activitydiagram3.ftile.vertical;
 
-public class Version {
+import java.awt.geom.Point2D;
 
-	public static int version() {
-		return 7979;
+import net.sourceforge.plantuml.activitydiagram3.ftile.Ftile;
+import net.sourceforge.plantuml.graphic.StringBounder;
+
+public class FtileDecoratePointOut extends FtileDecorate {
+
+	final private double dx;
+	final private double dy;
+
+	public FtileDecoratePointOut(final Ftile ftile, final double dx, double dy) {
+		super(ftile);
+		this.dx = dx;
+		this.dy = dy;
 	}
 
-	public static String versionString() {
-		if (beta()) {
-			return "" + (version() + 1) + "beta";
-		}
-		return "" + version();
-	}
-
-	public static boolean beta() {
-		return true;
-	}
-
-	public static long compileTime() {
-		return 1378311445235L;
+	public Point2D getPointOut(StringBounder stringBounder) {
+		final Point2D pt = super.getPointOut(stringBounder);
+		return new Point2D.Double(pt.getX() + dx, pt.getY() + dy);
 	}
 
 }

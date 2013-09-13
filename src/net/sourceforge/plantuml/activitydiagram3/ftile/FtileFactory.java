@@ -51,7 +51,7 @@ public interface FtileFactory {
 
 	public Ftile stop(Swimlane swimlane);
 
-	public Ftile activity(Display label, HtmlColor color, Swimlane swimlane);
+	public Ftile activity(Display label, HtmlColor color, Swimlane swimlane, BoxStyle style);
 
 	public Ftile addNote(Ftile ftile, Display note, NotePosition notePosition);
 

@@ -36,6 +36,7 @@ package net.sourceforge.plantuml.activitydiagram3;
 import java.util.Collections;
 import java.util.Set;
 
+import net.sourceforge.plantuml.activitydiagram3.ftile.BoxStyle;
 import net.sourceforge.plantuml.activitydiagram3.ftile.Ftile;
 import net.sourceforge.plantuml.activitydiagram3.ftile.FtileFactory;
 import net.sourceforge.plantuml.activitydiagram3.ftile.Swimlane;
@@ -51,8 +52,10 @@ public class InstructionSimple implements Instruction {
 	private Display note;
 	private NotePosition notePosition;
 	private final Swimlane swimlane;
+	private final BoxStyle style;
 
-	public InstructionSimple(Display label, HtmlColor color, LinkRendering inlinkRendering, Swimlane swimlane) {
+	public InstructionSimple(Display label, HtmlColor color, LinkRendering inlinkRendering, Swimlane swimlane, BoxStyle style) {
+		this.style = style;
 		this.label = label;
 		this.color = color;
 		this.inlinkRendering = inlinkRendering;
@@ -60,7 +63,7 @@ public class InstructionSimple implements Instruction {
 	}
 
 	public Ftile createFtile(FtileFactory factory) {
-		final Ftile result = factory.activity(label, color, swimlane);
+		final Ftile result = factory.activity(label, color, swimlane, style);
 		if (note == null) {
 			return result;
 		}
