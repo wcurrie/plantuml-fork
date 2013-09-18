@@ -50,7 +50,7 @@ public class VisioRectangle implements VisioShape {
 
 	private VisioRectangle(int id, double x, double y, double width, double height) {
 		if (x < 0 || y < 0 || width < 0 || height < 0) {
-			throw new IllegalArgumentException();
+			// throw new IllegalArgumentException();
 		}
 		this.id = id;
 		this.x = x;
@@ -60,10 +60,8 @@ public class VisioRectangle implements VisioShape {
 	}
 
 	public VisioShape yReverse(double maxY) {
-		// final double y1 = maxY - y;
 		final double y2 = maxY - (y + height);
 		return new VisioRectangle(id, x, y2, width, height);
-		// return this;
 	}
 
 	private static double toInches(double val) {

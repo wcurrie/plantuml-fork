@@ -110,6 +110,21 @@ public class VisioGraphics {
 		shapes.add(rect);
 	}
 
+	public void text(String text, double x, double y, String family, int fontSize, double width, double height,
+			Map<String, String> attributes) {
+		// System.err.println("x=" + x);
+		// System.err.println("y=" + y);
+		// System.err.println("text=" + text);
+		// System.err.println("family=" + family);
+		// System.err.println("fontSize=" + fontSize);
+		// System.err.println("width=" + width);
+		// System.err.println("attributes=" + attributes);
+		ensureVisible(x, y);
+		final VisioText txt = VisioText.createInches(shapes.size() + 1, text, fontSize, x, y, width, height);
+		shapes.add(txt);
+
+	}
+
 	public void line(double x1, double y1, double x2, double y2) {
 		ensureVisible(x1, y1);
 		if (x1 == x2 && y1 == y2) {
@@ -166,12 +181,6 @@ public class VisioGraphics {
 			}
 			last = pt;
 		}
-	}
-
-	public void text(String text, double x, double y, String family, int size, double width,
-			Map<String, String> attributes) {
-		// TODO Auto-generated method stub
-
 	}
 
 }

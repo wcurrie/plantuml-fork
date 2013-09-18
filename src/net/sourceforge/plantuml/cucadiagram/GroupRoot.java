@@ -254,4 +254,8 @@ public class GroupRoot implements IGroup {
 		throw new UnsupportedOperationException();
 	}
 
+	public boolean hasUrl() {
+		return false;
+	}
+
 }

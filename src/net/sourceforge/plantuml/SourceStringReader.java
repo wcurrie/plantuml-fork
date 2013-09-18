@@ -97,7 +97,7 @@ public class SourceStringReader {
 	public String generateImage(OutputStream os, int numImage, FileFormatOption fileFormatOption) throws IOException {
 		if (blocks.size() == 0) {
 			final GraphicStrings error = new GraphicStrings(Arrays.asList("No @startuml found"));
-			error.writeImage(os, fileFormatOption);
+			error.writeImage(os, fileFormatOption, null);
 			return null;
 		}
 		for (BlockUml b : blocks) {

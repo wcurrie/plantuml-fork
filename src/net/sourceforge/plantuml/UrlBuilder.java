@@ -39,7 +39,7 @@ import java.util.regex.Pattern;
 public class UrlBuilder {
 
 	public static enum ModeUrl {
-		STRICT, AT_START
+		STRICT, AT_START, ANYWHERE
 	}
 
 	private static final String URL_PATTERN = "\\[\\[(\"[^\"]+\"|[^{} \\]\\[]*)(?: *\\{([^{}]+)\\})?(?: *([^\\]\\[]+))?\\]\\]";
@@ -58,6 +58,8 @@ public class UrlBuilder {
 			p = Pattern.compile("(?i)^" + URL_PATTERN + "$");
 		} else if (mode == ModeUrl.AT_START) {
 			p = Pattern.compile("(?i)^" + URL_PATTERN + ".*");
+		} else if (mode == ModeUrl.ANYWHERE) {
+			p = Pattern.compile("(?i).*" + URL_PATTERN + ".*");
 		} else {
 			throw new IllegalStateException();
 		}

@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  *
- * Revision $Revision: 11153 $
+ * Revision $Revision: 11462 $
  *
  */
 package net.sourceforge.plantuml;
@@ -224,17 +224,17 @@ public abstract class UmlDiagram extends AbstractPSystem implements Diagram {
 			return imageData;
 		} catch (UnparsableGraphvizException e) {
 			e.printStackTrace();
-			exportDiagramError(os, e.getCause(), fileFormatOption, e.getGraphvizVersion());
+			exportDiagramError(os, e.getCause(), fileFormatOption, e.getGraphvizVersion(), e.getDebugData());
 		} catch (Exception e) {
 			e.printStackTrace();
-			exportDiagramError(os, e, fileFormatOption, null);
+			exportDiagramError(os, e, fileFormatOption, null, null);
 		}
 		return new ImageDataSimple();
 
 	}
 
 	private void exportDiagramError(OutputStream os, Throwable exception, FileFormatOption fileFormat,
-			String graphvizVersion) throws IOException {
+			String graphvizVersion, String svg) throws IOException {
 		final UFont font = new UFont("SansSerif", Font.PLAIN, 12);
 		final List<String> strings = new ArrayList<String>();
 		strings.add("An error has occured : " + exception);
@@ -264,44 +264,9 @@ public abstract class UmlDiagram extends AbstractPSystem implements Diagram {
 		}
 		final GraphicStrings graphicStrings = new GraphicStrings(strings, font, HtmlColorUtils.BLACK,
 				HtmlColorUtils.WHITE, UAntiAliasing.ANTI_ALIASING_ON);
-		graphicStrings.writeImage(os, fileFormat);
+		graphicStrings.writeImage(os, fileFormat, svg);
 	}
 
-	private void exportDiagramErrorOld(OutputStream os, Throwable exception, FileFormatOption fileFormat,
-			String graphvizVersion) throws IOException {
-		final UFont font = new UFont("SansSerif", Font.PLAIN, 12);
-
-		final List<String> stack = new ArrayList<String>();
-		for (StackTraceElement ste : exception.getStackTrace()) {
-			stack.add("  " + ste.toString());
-		}
-
-		final List<String> strings = new ArrayList<String>();
-		strings.add("An error has occured : " + exception);
-		strings.add(" ");
-		strings.add("PlantUML (" + Version.versionString() + ") cannot parse result from dot/GraphViz.");
-		if (exception instanceof EmptySvgException) {
-			strings.add("Because dot/GraphViz returns an empty string.");
-		}
-		if (graphvizVersion != null) {
-			strings.add(" ");
-			strings.add("GraphViz version used : " + graphvizVersion);
-		}
-		strings.add(" ");
-		strings.add("This may be caused by :");
-		strings.add(" - a bug in PlantUML");
-		strings.add(" - a problem in GraphViz");
-		strings.add(" ");
-		strings.add("You should send this diagram and this image to <b>plantuml@gmail.com</b> to solve this issue.");
-		strings.add("You can try to turn arround this issue by simplifing your diagram.");
-		strings.add(" ");
-		strings.add(exception.toString());
-		strings.addAll(stack);
-
-		final GraphicStrings graphicStrings = new GraphicStrings(strings, font, HtmlColorUtils.BLACK,
-				HtmlColorUtils.WHITE, UAntiAliasing.ANTI_ALIASING_ON);
-		graphicStrings.writeImage(os, fileFormat);
-	}
 
 	private FlashCodeUtils getFlashCodeUtils() {
 		return FlashCodeFactory.getFlashCodeUtils();

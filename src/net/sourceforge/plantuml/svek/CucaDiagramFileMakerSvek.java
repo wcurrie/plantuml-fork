@@ -41,7 +41,9 @@ import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import net.sourceforge.plantuml.CMapData;
 import net.sourceforge.plantuml.Dimension2DDouble;
@@ -121,7 +123,7 @@ public final class CucaDiagramFileMakerSvek implements CucaDiagramFileMaker {
 				diagram, diagram, diagram.getColorMapper(), diagram.getEntityFactory(),
 				diagram.isHideEmptyDescriptionForState());
 		final CucaDiagramFileMakerSvek2 svek2 = new CucaDiagramFileMakerSvek2(dotData, diagram.getEntityFactory(),
-				false);
+				false, diagram.getSource());
 
 		TextBlockBackcolored result = svek2.createFile(diagram.getDotStringSkek());
 		result = addLegend(result);
@@ -133,8 +135,9 @@ public final class CucaDiagramFileMakerSvek implements CucaDiagramFileMaker {
 		final Dimension2D dim = result.calculateDimension(stringBounder);
 
 		final FileFormat fileFormat = fileFormatOption.getFileFormat();
+		Set<Url> allUrlEncountered = null;
 		if (fileFormat == FileFormat.PNG) {
-			createPng(os, fileFormatOption, result, dim);
+			allUrlEncountered = createPng(os, fileFormatOption, result, dim);
 		} else if (fileFormat == FileFormat.SVG) {
 			createSvg(os, fileFormatOption, result, dim);
 		} else if (fileFormat == FileFormat.VDX) {
@@ -156,7 +159,7 @@ public final class CucaDiagramFileMakerSvek implements CucaDiagramFileMaker {
 
 		CMapData cmap = null;
 		if (diagram.hasUrl() && fileFormatOption.getFileFormat() == FileFormat.PNG) {
-			cmap = cmapString(svek2);
+			cmap = cmapString(svek2, allUrlEncountered);
 		}
 
 		final String widthwarning = diagram.getSkinParam().getValue("widthwarning");
@@ -202,28 +205,38 @@ public final class CucaDiagramFileMakerSvek implements CucaDiagramFileMaker {
 		return warningOrError;
 	}
 
-	private CMapData cmapString(CucaDiagramFileMakerSvek2 svek2) {
+	private CMapData cmapString(CucaDiagramFileMakerSvek2 svek2, Set<Url> allUrlEncountered) {
 		final CMapData cmapdata = new CMapData();
 		final Collection<IEntity> all = new ArrayList<IEntity>(diagram.getLeafs().values());
 		all.addAll(diagram.getGroups(false));
 		int seq = 1;
+		final Set<Url> done = new HashSet<Url>();
 		for (IEntity ent : all) {
 			final List<Url> rev = new ArrayList<Url>(ent.getUrls());
 			// For zlevel order
 			Collections.reverse(rev);
 			for (Url url : rev) {
 				appendUrl(cmapdata, seq, url);
+				done.add(url);
 				seq++;
 			}
 		}
-		for (Link link : diagram.getLinks()) {
-			final Url url = link.getUrl();
-			if (url == null) {
+		for (Url u : allUrlEncountered) {
+			if (done.contains(u)) {
 				continue;
 			}
-			appendUrl(cmapdata, seq, url);
+			appendUrl(cmapdata, seq, u);
 			seq++;
 		}
+		// for (Link link : diagram.getLinks()) {
+		// final Url url = link.getUrl();
+		// System.err.println("url2=" + url);
+		// if (url == null) {
+		// continue;
+		// }
+		// appendUrl(cmapdata, seq, url);
+		// seq++;
+		// }
 		return cmapdata;
 	}
 
@@ -289,7 +302,7 @@ public final class CucaDiagramFileMakerSvek implements CucaDiagramFileMaker {
 		return skinParam.getFontHtmlColor(fontParam, stereo);
 	}
 
-	private void createPng(OutputStream os, FileFormatOption fileFormatOption, final TextBlockBackcolored result,
+	private Set<Url> createPng(OutputStream os, FileFormatOption fileFormatOption, final TextBlockBackcolored result,
 			final Dimension2D dim) throws IOException {
 		final double scale = getScale(fileFormatOption, dim);
 		final UGraphicG2d ug = (UGraphicG2d) fileFormatOption.createUGraphic(diagram.getSkinParam().getColorMapper(),
@@ -297,6 +310,7 @@ public final class CucaDiagramFileMakerSvek implements CucaDiagramFileMaker {
 		result.drawU(ug);
 
 		PngIO.write(ug.getBufferedImage(), os, diagram.getMetadata(), diagram.getDpi(fileFormatOption));
+		return ug.getAllUrlsEncountered();
 
 	}
 

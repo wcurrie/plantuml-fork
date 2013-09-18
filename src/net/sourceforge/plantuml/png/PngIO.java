@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 9786 $
+ * Revision $Revision: 11461 $
  *
  */
 package net.sourceforge.plantuml.png;
@@ -75,8 +75,12 @@ public class PngIO {
 	}
 
 	public static void write(RenderedImage image, OutputStream os, String metadata, int dpi) throws IOException {
+		write(image, os, metadata, dpi, null);
+	}
+
+	public static void write(RenderedImage image, OutputStream os, String metadata, int dpi, String debugData) throws IOException {
 		if (checkPNGMetadata()) {
-			PngIOMetadata.writeWithMetadata(image, os, metadata, dpi);
+			PngIOMetadata.writeWithMetadata(image, os, metadata, dpi, debugData);
 		} else {
 			ImageIO.write(image, "png", os);
 		}

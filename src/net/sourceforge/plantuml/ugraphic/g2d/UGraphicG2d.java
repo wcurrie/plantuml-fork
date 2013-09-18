@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 10226 $
+ * Revision $Revision: 11479 $
  *
  */
 package net.sourceforge.plantuml.ugraphic.g2d;
@@ -41,7 +41,10 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import net.sourceforge.plantuml.EnsureVisible;
 import net.sourceforge.plantuml.Url;
@@ -75,6 +78,11 @@ public class UGraphicG2d extends AbstractUGraphic<Graphics2D> implements EnsureV
 	private UAntiAliasing antiAliasing = UAntiAliasing.ANTI_ALIASING_ON;
 
 	private/* final */List<Url> urls = new ArrayList<Url>();
+	private Set<Url> allUrls = new HashSet<Url>();
+
+	public final Set<Url> getAllUrlsEncountered() {
+		return Collections.unmodifiableSet(allUrls);
+	}
 
 	@Override
 	public UGraphic apply(UChange change) {
@@ -95,6 +103,7 @@ public class UGraphicG2d extends AbstractUGraphic<Graphics2D> implements EnsureV
 		this.dpiFactor = other.dpiFactor;
 		this.bufferedImage = other.bufferedImage;
 		this.urls = other.urls;
+		this.allUrls = other.allUrls;
 		this.antiAliasing = other.antiAliasing;
 		register(dpiFactor);
 	}
@@ -156,6 +165,7 @@ public class UGraphicG2d extends AbstractUGraphic<Graphics2D> implements EnsureV
 
 	public void startUrl(Url url) {
 		urls.add(url);
+		allUrls.add(url);
 	}
 
 	public void closeAction() {

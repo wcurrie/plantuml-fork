@@ -75,7 +75,7 @@ public class Url implements EnsureVisible {
 
 	@Override
 	public String toString() {
-		return url;
+		return super.toString() + " " + url + " " + visible.getCoords();
 	}
 
 	public String getCoords() {

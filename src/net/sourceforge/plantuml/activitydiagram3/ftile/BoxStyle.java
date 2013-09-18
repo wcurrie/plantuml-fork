@@ -45,7 +45,88 @@ import net.sourceforge.plantuml.ugraphic.UTranslate;
 
 // Created from Luc Trudeau original work
 public enum BoxStyle {
-	PLAIN, SDL_INPUT('<'), SDL_OUTPUT('>'), SDL_PROCEDURE('|'), SDL_SAVE('/'), SDL_CONTINUOUS('}'), SDL_TASK(']');
+	PLAIN {
+		@Override
+		protected Shadowable getShape(double width, double height) {
+			return new URectangle(width, height, CORNER, CORNER);
+		}
+	},
+	SDL_INPUT('<') {
+		@Override
+		protected Shadowable getShape(double width, double height) {
+			final UPolygon result = new UPolygon();
+			result.addPoint(0, 0);
+			result.addPoint(width + DELTA_INPUT_OUTPUT, 0);
+			result.addPoint(width, height / 2);
+			result.addPoint(width + DELTA_INPUT_OUTPUT, height);
+			result.addPoint(0, height);
+			return result;
+		}
+	},
+	SDL_OUTPUT('>') {
+		@Override
+		protected Shadowable getShape(double width, double height) {
+			final UPolygon result = new UPolygon();
+			result.addPoint(0.0, 0.0);
+			result.addPoint(width, 0.0);
+			result.addPoint(width + DELTA_INPUT_OUTPUT, height / 2);
+			result.addPoint(width, height);
+			result.addPoint(0.0, height);
+			return result;
+		}
+	},
+	SDL_PROCEDURE('|') {
+		@Override
+		protected void drawInternal(UGraphic ug, double width, double height, boolean shadowing) {
+			final URectangle rect = new URectangle(width, height);
+			if (shadowing) {
+				rect.setDeltaShadow(3);
+			}
+			ug.draw(rect);
+			final ULine vline = new ULine(0, height);
+			ug.apply(new UTranslate(PADDING, 0)).draw(vline);
+			ug.apply(new UTranslate(width - PADDING, 0)).draw(vline);
+		}
+	},
+	SDL_SAVE('/') {
+		@Override
+		protected Shadowable getShape(double width, double height) {
+			final UPolygon result = new UPolygon();
+			result.addPoint(0.0, 0.0);
+			result.addPoint(width - DELTA_INPUT_OUTPUT, 0.0);
+			result.addPoint(width, height);
+			result.addPoint(DELTA_INPUT_OUTPUT, height);
+			return result;
+		}
+	},
+	SDL_CONTINUOUS('}') {
+		@Override
+		protected Shadowable getShape(double width, double height) {
+			final UPath result = new UPath();
+			final double c1[] = { DELTA_CONTINUOUS, 0 };
+			final double c2[] = { 0, height / 2 };
+			final double c3[] = { DELTA_CONTINUOUS, height };
+
+			result.add(c1, USegmentType.SEG_MOVETO);
+			result.add(c2, USegmentType.SEG_LINETO);
+			result.add(c3, USegmentType.SEG_LINETO);
+
+			final double c4[] = { width - DELTA_CONTINUOUS, 0 };
+			final double c5[] = { width, height / 2 };
+			final double c6[] = { width - DELTA_CONTINUOUS, height };
+
+			result.add(c4, USegmentType.SEG_MOVETO);
+			result.add(c5, USegmentType.SEG_LINETO);
+			result.add(c6, USegmentType.SEG_LINETO);
+			return result;
+		}
+	},
+	SDL_TASK(']') {
+		@Override
+		protected Shadowable getShape(double width, double height) {
+			return new URectangle(width, height);
+		}
+	};
 
 	private static final int CORNER = 25;
 	private final char style;
@@ -70,108 +151,25 @@ public enum BoxStyle {
 		return PLAIN;
 	}
 
-	public UDrawable getUDrawable(final double width, final double height, final boolean shadowing) {
+	public final UDrawable getUDrawable(final double width, final double height, final boolean shadowing) {
 		return new UDrawable() {
 			public void drawU(UGraphic ug) {
-				if (BoxStyle.this == SDL_PROCEDURE) {
-					drawSdlProcedure(ug, width, height, shadowing);
-					return;
-				}
-				final Shadowable s = getShape(width, height, shadowing);
-				ug.draw(s);
+				drawInternal(ug, width, height, shadowing);
 			}
 		};
 	}
 
-	private void drawSdlProcedure(UGraphic ug, double width, double height, boolean shadowing) {
-		final URectangle rect = new URectangle(width, height);
+	protected Shadowable getShape(double width, double height) {
+		return null;
+	}
+
+	protected void drawInternal(UGraphic ug, double width, double height, boolean shadowing) {
+		final Shadowable s = getShape(width, height);
 		if (shadowing) {
-			rect.setDeltaShadow(3);
+			s.setDeltaShadow(3);
 		}
-		ug.draw(rect);
-		final ULine vline = new ULine(0, height);
-		ug.apply(new UTranslate(PADDING, 0)).draw(vline);
-		ug.apply(new UTranslate(width - PADDING, 0)).draw(vline);
-	}
+		ug.draw(s);
 
-	private Shadowable getShape(double width, double height, boolean shadowing) {
-		final Shadowable rect = getShapeInternal(width, height);
-		if (shadowing) {
-			rect.setDeltaShadow(3);
-		}
-		return rect;
-	}
-
-	private Shadowable getShapeInternal(double width, double height) {
-		if (this == SDL_INPUT) {
-			return getShapeSdlInput(width, height);
-		} else if (this == SDL_OUTPUT) {
-			return getShapeSdlOutput(width, height);
-		} else if (this == SDL_SAVE) {
-			return getShapeSdlSave(width, height);
-		} else if (this == SDL_CONTINUOUS) {
-			return getShapeSdlContinuous(width, height);
-		} else if (this == SDL_TASK) {
-			return getShapeTask(width, height);
-		}
-		return getShapePlain(width, height);
-	}
-
-	private Shadowable getShapePlain(double width, double height) {
-		return new URectangle(width, height, CORNER, CORNER);
-	}
-
-	private Shadowable getShapeTask(double width, double height) {
-		return new URectangle(width, height);
-	}
-
-	private Shadowable getShapeSdlContinuous(double width, double height) {
-		final UPath result = new UPath();
-		final double c1[] = { DELTA_CONTINUOUS, 0 };
-		final double c2[] = { 0, height / 2 };
-		final double c3[] = { DELTA_CONTINUOUS, height };
-
-		result.add(c1, USegmentType.SEG_MOVETO);
-		result.add(c2, USegmentType.SEG_LINETO);
-		result.add(c3, USegmentType.SEG_LINETO);
-
-		final double c4[] = { width - DELTA_CONTINUOUS, 0 };
-		final double c5[] = { width, height / 2 };
-		final double c6[] = { width - DELTA_CONTINUOUS, height };
-
-		result.add(c4, USegmentType.SEG_MOVETO);
-		result.add(c5, USegmentType.SEG_LINETO);
-		result.add(c6, USegmentType.SEG_LINETO);
-		return result;
-	}
-
-	private Shadowable getShapeSdlInput(double width, double height) {
-		final UPolygon result = new UPolygon();
-		result.addPoint(0, 0);
-		result.addPoint(width + DELTA_INPUT_OUTPUT, 0);
-		result.addPoint(width, height / 2);
-		result.addPoint(width + DELTA_INPUT_OUTPUT, height);
-		result.addPoint(0, height);
-		return result;
-	}
-
-	private Shadowable getShapeSdlSave(double width, double height) {
-		final UPolygon result = new UPolygon();
-		result.addPoint(0.0, 0.0);
-		result.addPoint(width - DELTA_INPUT_OUTPUT, 0.0);
-		result.addPoint(width, height);
-		result.addPoint(DELTA_INPUT_OUTPUT, height);
-		return result;
-	}
-
-	private Shadowable getShapeSdlOutput(double width, double height) {
-		final UPolygon result = new UPolygon();
-		result.addPoint(0.0, 0.0);
-		result.addPoint(width, 0.0);
-		result.addPoint(width + DELTA_INPUT_OUTPUT, height / 2);
-		result.addPoint(width, height);
-		result.addPoint(0.0, height);
-		return result;
 	}
 
 }

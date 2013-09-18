@@ -110,7 +110,7 @@ public final class GroupPngMakerActivity {
 				skinParam, group.zgetRankdir(), new InnerGroupHierarchy(), diagram.getColorMapper(),
 				diagram.getEntityFactory(), false);
 
-		final CucaDiagramFileMakerSvek2 svek2 = new CucaDiagramFileMakerSvek2(dotData, diagram.getEntityFactory(), false);
+		final CucaDiagramFileMakerSvek2 svek2 = new CucaDiagramFileMakerSvek2(dotData, diagram.getEntityFactory(), false, diagram.getSource());
 
 		if (group.zgetGroupType() == GroupType.INNER_ACTIVITY) {
 			final Stereotype stereo = group.getStereotype();

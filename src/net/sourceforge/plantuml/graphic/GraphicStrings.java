@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 11426 $
+ * Revision $Revision: 11461 $
  *
  */
 package net.sourceforge.plantuml.graphic;
@@ -113,15 +113,11 @@ public class GraphicStrings implements IEntityImage {
 		this.antiAliasing = antiAliasing;
 	}
 
-	public void writeImage(OutputStream os, FileFormatOption fileFormat) throws IOException {
-		writeImage(os, null, fileFormat);
-	}
-
-	private void writeImage(OutputStream os, String metadata, FileFormatOption fileFormatOption) throws IOException {
+	public void writeImage(OutputStream os, FileFormatOption fileFormatOption, String debugData) throws IOException {
 		final FileFormat fileFormat = fileFormatOption.getFileFormat();
 		if (fileFormat == FileFormat.PNG) {
 			final BufferedImage im = createImage();
-			PngIO.write(im, os, metadata, 96);
+			PngIO.write(im, os, null, 96, debugData);
 		} else if (fileFormat == FileFormat.SVG) {
 			final UGraphicSvg svg = new UGraphicSvg(colorMapper, StringUtils.getAsHtml(colorMapper
 					.getMappedColor(background)), false, 1.0);

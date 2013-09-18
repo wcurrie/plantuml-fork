@@ -68,7 +68,7 @@ public class DriverTextVdx implements UDriver<VisioGraphics> {
 
 		text = text.trim();
 		final Dimension2D dim = stringBounder.calculateDimension(font, text);
-		visio.text(text, x, y, font.getFamily(UFontContext.SVG), font.getSize(), dim.getWidth(),
+		visio.text(text, x, y, font.getFamily(UFontContext.SVG), font.getSize(), dim.getWidth(), dim.getHeight(),
 				fontConfiguration.getAttributes());
 
 	}

@@ -116,6 +116,7 @@ final public class UmlSource {
 		final StringBuilder sb = new StringBuilder();
 		for (String s : source) {
 			sb.append(s);
+			sb.append('\r');
 			sb.append('\n');
 		}
 		return sb.toString();

@@ -44,10 +44,12 @@ import net.sourceforge.plantuml.Url;
 import net.sourceforge.plantuml.graphic.StringBounder;
 import net.sourceforge.plantuml.graphic.UDrawable;
 import net.sourceforge.plantuml.ugraphic.ColorMapper;
+import net.sourceforge.plantuml.ugraphic.ColorMapperIdentity;
 import net.sourceforge.plantuml.ugraphic.UChange;
 import net.sourceforge.plantuml.ugraphic.UChangeColor;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
 import net.sourceforge.plantuml.ugraphic.UHorizontalLine;
+import net.sourceforge.plantuml.ugraphic.UImage;
 import net.sourceforge.plantuml.ugraphic.ULine;
 import net.sourceforge.plantuml.ugraphic.UParam;
 import net.sourceforge.plantuml.ugraphic.UParamNull;
@@ -105,13 +107,15 @@ public class Footprint {
 				// Definitively a Horizontal line
 			} else if (shape instanceof ULine) {
 				// Probably a Horizontal line
+			} else if (shape instanceof UImage) {
+				drawImage(x, y, (UImage) shape);
 			} else {
 				throw new UnsupportedOperationException(shape.getClass().toString());
 			}
 		}
 
 		public ColorMapper getColorMapper() {
-			throw new UnsupportedOperationException();
+			return new ColorMapperIdentity();
 		}
 
 		public void startUrl(Url url) {
@@ -136,6 +140,13 @@ public class Footprint {
 			addPoint(x, y + dim.getHeight());
 			addPoint(x + dim.getWidth(), y);
 			addPoint(x + dim.getWidth(), y + dim.getHeight());
+		}
+
+		private void drawImage(double x, double y, UImage image) {
+			addPoint(x, y);
+			addPoint(x, y + image.getHeight());
+			addPoint(x + image.getWidth(), y);
+			addPoint(x + image.getWidth(), y + image.getHeight());
 		}
 
 	}

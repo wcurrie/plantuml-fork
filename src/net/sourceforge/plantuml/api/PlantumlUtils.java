@@ -42,10 +42,13 @@ import net.sourceforge.plantuml.core.Diagram;
 public class PlantumlUtils {
 
 	public static boolean hasCMapData(String uml) {
-		final SourceStringReader reader = new SourceStringReader(uml);
-		final List<BlockUml> blocks = reader.getBlocks();
+		List<BlockUml> blocks = new SourceStringReader(uml).getBlocks();
 		if (blocks.size() == 0) {
-			return false;
+			uml = "@startuml\n" + uml + "\n@enduml";
+			blocks = new SourceStringReader(uml).getBlocks();
+			if (blocks.size() == 0) {
+				return false;
+			}
 		}
 		final BlockUml block = blocks.get(0);
 		final Diagram diagram = block.getDiagram();

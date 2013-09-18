@@ -222,7 +222,7 @@ class EntityImpl implements ILeaf, IGroup {
 		final List<Url> result = new ArrayList<Url>(urls);
 		if (bodier != null && bodier.isBodyEnhanced()) {
 			result.addAll(bodier.getUrls());
-		} else {
+		} else if (leafType != null && leafType.isLikeClass()) {
 			for (Member m : getFieldsToDisplay()) {
 				final Url u = m.getUrl();
 				if (u != null) {
@@ -237,6 +237,13 @@ class EntityImpl implements ILeaf, IGroup {
 			}
 		}
 		return Collections.unmodifiableList(result);
+	}
+
+	public boolean hasUrl() {
+		if (display != null && display.hasUrl()) {
+			return true;
+		}
+		return getUrls().size() > 0;
 	}
 
 	public final void addUrl(Url url) {

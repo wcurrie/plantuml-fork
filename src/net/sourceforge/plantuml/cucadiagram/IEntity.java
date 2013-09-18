@@ -82,4 +82,6 @@ public interface IEntity extends SpecificBackcolorable, Hideable, Removeable, Li
 
 	public boolean isGroup();
 
+	public boolean hasUrl();
+
 }

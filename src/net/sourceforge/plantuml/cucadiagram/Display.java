@@ -208,7 +208,16 @@ public class Display implements Iterable<CharSequence> {
 		result.display.add(UrlBuilder.purgeUrl(this.get(0).toString()));
 		result.display.addAll(this.subList(1, this.size()).display);
 		return result;
+	}
 
+	public boolean hasUrl() {
+		final UrlBuilder urlBuilder = new UrlBuilder(null, ModeUrl.ANYWHERE);
+		for (CharSequence s : this) {
+			if (urlBuilder.getUrl(s.toString()) != null) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 }

@@ -51,6 +51,7 @@ import net.sourceforge.plantuml.LineParam;
 import net.sourceforge.plantuml.Log;
 import net.sourceforge.plantuml.SkinParamForecolored;
 import net.sourceforge.plantuml.UmlDiagramType;
+import net.sourceforge.plantuml.core.UmlSource;
 import net.sourceforge.plantuml.cucadiagram.Display;
 import net.sourceforge.plantuml.cucadiagram.EntityPosition;
 import net.sourceforge.plantuml.cucadiagram.GroupType;
@@ -110,6 +111,7 @@ public final class CucaDiagramFileMakerSvek2 {
 	private final DotData dotData;
 	private final EntityFactory entityFactory;
 	private final boolean hasVerticalLine;
+	private final UmlSource source;
 
 	static private final StringBounder stringBounder;
 
@@ -118,10 +120,11 @@ public final class CucaDiagramFileMakerSvek2 {
 		stringBounder = StringBounderUtils.asStringBounder(builder.getGraphics2D());
 	}
 
-	public CucaDiagramFileMakerSvek2(DotData dotData, EntityFactory entityFactory, boolean hasVerticalLine) {
+	public CucaDiagramFileMakerSvek2(DotData dotData, EntityFactory entityFactory, boolean hasVerticalLine, UmlSource source) {
 		this.dotData = dotData;
 		this.entityFactory = entityFactory;
 		this.hasVerticalLine = hasVerticalLine;
+		this.source = source;
 	}
 
 	private DotStringFactory dotStringFactory;
@@ -216,7 +219,7 @@ public final class CucaDiagramFileMakerSvek2 {
 			return result;
 		} catch (Exception e) {
 			Log.error("Exception " + e);
-			throw new UnparsableGraphvizException(e, graphvizVersion);
+			throw new UnparsableGraphvizException(e, graphvizVersion, svg, source.getPlainString());
 		}
 
 	}
