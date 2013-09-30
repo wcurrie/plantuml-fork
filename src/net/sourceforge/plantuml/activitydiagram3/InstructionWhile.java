@@ -100,5 +100,14 @@ public class InstructionWhile implements Instruction {
 		return repeatList.getSwimlanes();
 	}
 
+	public Swimlane getSwimlaneIn() {
+		return parent.getSwimlaneOut();
+	}
+
+	public Swimlane getSwimlaneOut() {
+		return getSwimlaneIn();
+	}
+
+
 
 }

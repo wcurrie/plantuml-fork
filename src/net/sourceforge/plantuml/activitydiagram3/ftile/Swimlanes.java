@@ -206,7 +206,9 @@ public class Swimlanes implements TextBlock {
 					new SpriteContainerEmpty());
 
 			final LimitFinder limitFinder = new LimitFinder(stringBounder, false);
-			full.drawU(new UGraphicInterceptorOneSwimlane(limitFinder, swimlane));
+			final UGraphicLineMerger ugLineMerger1 = new UGraphicLineMerger(limitFinder);
+			full.drawU(new UGraphicInterceptorOneSwimlane(ugLineMerger1, swimlane));
+			ugLineMerger1.draw(new ULineFlush());
 			final MinMax minMax = limitFinder.getMinMax();
 			// System.err.println("minMax=" + minMax);
 
@@ -229,9 +231,10 @@ public class Swimlanes implements TextBlock {
 
 			drawSeparation(ug.apply(new UTranslate(x, 0)), dimensionFull.getHeight() + titlesHeight);
 
-			final UGraphic ugOneSwimlane = new UGraphicInterceptorOneSwimlane(ug, swimlane);
-
+			final UGraphicLineMerger ugLineMerger2 = new UGraphicLineMerger(ug);
+			final UGraphic ugOneSwimlane = new UGraphicInterceptorOneSwimlane(ugLineMerger2, swimlane);
 			full.drawU(ugOneSwimlane.apply(translate).apply(titleHeightTranslate));
+			ugLineMerger2.draw(new ULineFlush());
 
 			x += totalWidth;
 		}

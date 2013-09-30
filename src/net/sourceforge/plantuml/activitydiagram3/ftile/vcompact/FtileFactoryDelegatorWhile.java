@@ -50,8 +50,6 @@ public class FtileFactoryDelegatorWhile extends FtileFactoryDelegator {
 		super(factory, skinParam);
 	}
 
-	private final static boolean USE_NEW = false;
-
 	@Override
 	public Ftile createWhile(Ftile whileBlock, Display test, Display yes, Display out, LinkRendering afterEndwhile) {
 		final HtmlColor borderColor = getRose().getHtmlColor(getSkinParam(), ColorParam.activityBorder);
@@ -60,13 +58,8 @@ public class FtileFactoryDelegatorWhile extends FtileFactoryDelegator {
 		final UFont font = getSkinParam().getFont(FontParam.ACTIVITY_ARROW2, null);
 		final LinkRendering endInlinkRendering = whileBlock.getOutLinkRendering();
 		final HtmlColor endInlinkColor = endInlinkRendering == null ? arrowColor : endInlinkRendering.getColor();
-		if (USE_NEW) {
-			return FtileWhile3.create(whileBlock, test, borderColor, backColor, arrowColor, yes, out, font,
-					endInlinkColor, afterEndwhile, getFactory());
-		} else {
-			return FtileWhile.create(whileBlock, test, borderColor, backColor, arrowColor, yes, out, font,
-					endInlinkColor, afterEndwhile);
-		}
+		return FtileWhile.create(whileBlock, test, borderColor, backColor, arrowColor, yes, out, font, endInlinkColor,
+				afterEndwhile, getFactory());
 	}
 
 }

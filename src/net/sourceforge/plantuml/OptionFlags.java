@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  *
- * Revision $Revision: 11327 $
+ * Revision $Revision: 11520 $
  *
  */
 package net.sourceforge.plantuml;
@@ -273,5 +273,5 @@ public class OptionFlags {
 	public final void setEncodesprite(boolean encodesprite) {
 		this.encodesprite = encodesprite;
 	}
-
+	
 }

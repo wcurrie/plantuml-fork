@@ -33,15 +33,13 @@
  */
 package net.sourceforge.plantuml.activitydiagram3;
 
-import java.util.Set;
-
 import net.sourceforge.plantuml.activitydiagram3.ftile.Ftile;
 import net.sourceforge.plantuml.activitydiagram3.ftile.FtileFactory;
-import net.sourceforge.plantuml.activitydiagram3.ftile.Swimlane;
+import net.sourceforge.plantuml.activitydiagram3.ftile.Swimable;
 import net.sourceforge.plantuml.cucadiagram.Display;
 import net.sourceforge.plantuml.sequencediagram.NotePosition;
 
-public interface Instruction {
+public interface Instruction extends Swimable {
 
 	public Ftile createFtile(FtileFactory factory);
 
@@ -52,7 +50,5 @@ public interface Instruction {
 	public LinkRendering getInLinkRendering();
 
 	public void addNote(Display note, NotePosition position);
-
-	public Set<Swimlane> getSwimlanes();
 
 }

@@ -49,7 +49,14 @@ import net.sourceforge.plantuml.Log;
 public class SvekUtils {
 
 	static public void traceSvgString(String svg) throws IOException {
-		final File f = new File("svek.svg");
+		traceString(new File("svek.svg"), svg);
+	}
+
+	static public void traceDotString(String dot) throws IOException {
+		traceString(new File("svek.dot"), dot);
+	}
+
+	static private void traceString(final File f, String svg) throws IOException {
 		PrintWriter pw = null;
 		try {
 			pw = new PrintWriter(new FileWriter(f));

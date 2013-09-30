@@ -46,6 +46,7 @@ import net.sourceforge.plantuml.compositediagram.CompositeDiagramFactory1317;
 import net.sourceforge.plantuml.core.Diagram;
 import net.sourceforge.plantuml.core.DiagramType;
 import net.sourceforge.plantuml.core.UmlSource;
+import net.sourceforge.plantuml.creole.PSystemCreoleFactory1317;
 import net.sourceforge.plantuml.descdiagram.DescriptionDiagramFactory1317;
 import net.sourceforge.plantuml.directdot.PSystemDotFactory1317;
 import net.sourceforge.plantuml.ditaa.PSystemDitaaFactory1317;
@@ -132,6 +133,7 @@ public class PSystemBuilder1317 {
 			factories.add(new PSystemSudokuFactory1317());
 			factories.add(new PSystemTuringFactory1317());
 		}
+		factories.add(new PSystemCreoleFactory1317());
 		factories.add(new PSystemEggFactory1317());
 		factories.add(new PSystemAppleTwoFactory1317());
 		factories.add(new PSystemRIPFactory1317());

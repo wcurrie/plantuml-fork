@@ -45,7 +45,6 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import net.sourceforge.plantuml.Log;
-import net.sourceforge.plantuml.OptionFlags;
 import net.sourceforge.plantuml.StringUtils;
 import net.sourceforge.plantuml.UmlDiagramType;
 import net.sourceforge.plantuml.cucadiagram.IGroup;
@@ -53,6 +52,8 @@ import net.sourceforge.plantuml.cucadiagram.Rankdir;
 import net.sourceforge.plantuml.cucadiagram.dot.DotData;
 import net.sourceforge.plantuml.cucadiagram.dot.Graphviz;
 import net.sourceforge.plantuml.cucadiagram.dot.GraphvizUtils;
+import net.sourceforge.plantuml.cucadiagram.dot.GraphvizVersion;
+import net.sourceforge.plantuml.cucadiagram.dot.GraphvizVersions;
 import net.sourceforge.plantuml.graphic.StringBounder;
 import net.sourceforge.plantuml.graphic.TextBlock;
 import net.sourceforge.plantuml.posimo.Moveable;
@@ -233,11 +234,19 @@ public class DotStringFactory implements Moveable {
 		}
 		return 35;
 	}
+	
+	public GraphvizVersion getGraphvizVersion() {
+		final Graphviz graphviz = GraphvizUtils.create("foo;", "svg");
+		final File f = graphviz.getDotExe();
+		return GraphvizVersions.getInstance().getVersion(f);
+	}
 
-	String getSVG(String... dotStrings) throws IOException, InterruptedException {
+	public String getSvg(boolean trace, String... dotStrings) throws IOException, InterruptedException {
 		final String dotString = createDotString(dotStrings);
-		if (OptionFlags.TRACE_DOT) {
-			Log.println("dotString=" + dotString);
+
+		if (trace) {
+			Log.info("Creating temporary file svek.dot");
+			SvekUtils.traceDotString(dotString);
 		}
 
 		final Graphviz graphviz = GraphvizUtils.create(dotString, "svg");
@@ -247,7 +256,7 @@ public class DotStringFactory implements Moveable {
 		final byte[] result = baos.toByteArray();
 		final String s = new String(result, "UTF-8");
 
-		if (OptionFlags.getInstance().isKeepTmpFiles() || OptionFlags.TRACE_DOT) {
+		if (trace) {
 			Log.info("Creating temporary file svek.svg");
 			SvekUtils.traceSvgString(s);
 		}
@@ -264,10 +273,6 @@ public class DotStringFactory implements Moveable {
 	public File getDotExe() {
 		final Graphviz graphviz = GraphvizUtils.create(null, "svg");
 		return graphviz.getDotExe();
-	}
-
-	public String getSvg(String... dotStrings) throws IOException, InterruptedException {
-		return getSVG(dotStrings);
 	}
 
 	public ClusterPosition solve(String svg) throws IOException, InterruptedException {

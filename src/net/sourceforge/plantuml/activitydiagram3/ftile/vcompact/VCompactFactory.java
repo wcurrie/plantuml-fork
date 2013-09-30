@@ -98,7 +98,7 @@ public class VCompactFactory implements FtileFactory {
 		return new FtileAssemblySimple(tile1, tile2);
 	}
 
-	public Ftile repeat(Ftile repeat, Display test) {
+	public Ftile repeat(Swimlane swimlane, Ftile repeat, Display test) {
 		return repeat;
 	}
 
@@ -106,7 +106,7 @@ public class VCompactFactory implements FtileFactory {
 		return whileBlock;
 	}
 
-	public Ftile createIf(Ftile tile1, Ftile tile2, Display labelTest, Display label1, Display label2) {
+	public Ftile createIf(Swimlane swimlane, Ftile tile1, Ftile tile2, Display labelTest, Display label1, Display label2) {
 		return new FtileForkInner(Arrays.asList(tile1, tile2));
 	}
 

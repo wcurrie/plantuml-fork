@@ -45,4 +45,8 @@ public class FtileUtils {
 		return new FtileWithConnection(ftile, connections);
 	}
 
+	public static Ftile withSwimlaneOut(Ftile ftile, Swimlane out) {
+		return new FtileWithSwimlanes(ftile, ftile.getSwimlaneIn(), out);
+	}
+
 }

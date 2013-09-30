@@ -33,7 +33,6 @@
  */
 package net.sourceforge.plantuml.activitydiagram3.ftile;
 
-import net.sourceforge.plantuml.activitydiagram3.ftile.vcompact.ConnectionVerticalDown;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
 
 public class ConnectionCross extends AbstractConnection {
@@ -46,10 +45,16 @@ public class ConnectionCross extends AbstractConnection {
 	}
 
 	public void drawU(UGraphic ug) {
-		if (connection instanceof ConnectionVerticalDown) {
+		if (connection instanceof ConnectionTranslatable) {
 			final Swimlane swimlane1 = getFtile1().getSwimlaneOut();
 			final Swimlane swimlane2 = getFtile2().getSwimlaneIn();
-			((ConnectionVerticalDown) connection).drawTranslate(ug, swimlane1.getTranslate(), swimlane2.getTranslate());
+			if (swimlane1 == null) {
+				throw new IllegalStateException("" + getFtile1().getClass());
+			}
+			if (swimlane2 == null) {
+				throw new IllegalStateException("" + getFtile2().getClass());
+			}
+			((ConnectionTranslatable) connection).drawTranslate(ug, swimlane1.getTranslate(), swimlane2.getTranslate());
 		}
 	}
 }

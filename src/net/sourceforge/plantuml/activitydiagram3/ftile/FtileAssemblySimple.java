@@ -118,7 +118,7 @@ public class FtileAssemblySimple implements Ftile {
 	}
 
 	public boolean isKilled() {
-		return tile2.isKilled();
+		return tile1.isKilled() || tile2.isKilled();
 	}
 
 	public LinkRendering getInLinkRendering() {

@@ -56,7 +56,7 @@ public class InstructionSplit implements Instruction {
 	private InstructionList getLast() {
 		return splits.get(splits.size() - 1);
 	}
-
+	
 	public void add(Instruction ins) {
 		getLast().add(ins);
 	}
@@ -90,7 +90,15 @@ public class InstructionSplit implements Instruction {
 	}
 
 	public Set<Swimlane> getSwimlanes() {
-		return InstructionList.getSwimlanes(splits);
+		return InstructionList.getSwimlanes2(splits);
+	}
+
+	public Swimlane getSwimlaneIn() {
+		return parent.getSwimlaneOut();
+	}
+
+	public Swimlane getSwimlaneOut() {
+		return getLast().getSwimlaneOut();
 	}
 
 }

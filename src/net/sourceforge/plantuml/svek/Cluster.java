@@ -508,6 +508,29 @@ public class Cluster implements Moveable {
 	public boolean printCluster2(StringBuilder sb, Collection<Line> lines, StringBounder stringBounder) {
 		// Log.println("Cluster::printCluster " + this);
 
+		boolean added = false;
+		for (Shape sh : getShapesOrderedWithoutTop(lines)) {
+			sh.appendShape(sb);
+			added = true;
+		}
+
+		appendRankSame(sb, lines);
+
+		for (Cluster child : getChildren()) {
+			child.printInternal(sb, lines, stringBounder);
+		}
+
+		return added;
+	}
+
+	private void appendRankSame(StringBuilder sb, Collection<Line> lines) {
+		for (String same : getRankSame(lines)) {
+			sb.append(same);
+			SvekUtils.println(sb);
+		}
+	}
+
+	private Set<String> getRankSame(Collection<Line> lines) {
 		final Set<String> rankSame = new HashSet<String>();
 		for (Line l : lines) {
 			if (l.hasEntryPoint()) {
@@ -522,23 +545,7 @@ public class Cluster implements Moveable {
 				}
 			}
 		}
-
-		boolean added = false;
-		for (Shape sh : getShapesOrderedWithoutTop(lines)) {
-			sh.appendShape(sb);
-			added = true;
-		}
-
-		for (String same : rankSame) {
-			sb.append(same);
-			SvekUtils.println(sb);
-		}
-
-		for (Cluster child : getChildren()) {
-			child.printInternal(sb, lines, stringBounder);
-		}
-
-		return added;
+		return rankSame;
 	}
 
 	public void fillRankMin(Set<String> rankMin) {

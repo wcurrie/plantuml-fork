@@ -39,7 +39,6 @@ import java.util.List;
 
 import net.sourceforge.plantuml.activitydiagram3.ftile.ULineFlush;
 import net.sourceforge.plantuml.activitydiagram3.ftile.ULineMergeable;
-import net.sourceforge.plantuml.graphic.HtmlColorUtils;
 import net.sourceforge.plantuml.graphic.UGraphicDelegator;
 import net.sourceforge.plantuml.ugraphic.UChange;
 import net.sourceforge.plantuml.ugraphic.UChangeColor;
@@ -47,7 +46,6 @@ import net.sourceforge.plantuml.ugraphic.UGraphic;
 import net.sourceforge.plantuml.ugraphic.ULine;
 import net.sourceforge.plantuml.ugraphic.UParam;
 import net.sourceforge.plantuml.ugraphic.UShape;
-import net.sourceforge.plantuml.ugraphic.UStroke;
 import net.sourceforge.plantuml.ugraphic.UTranslate;
 
 public class UGraphicLineMerger extends UGraphicDelegator {

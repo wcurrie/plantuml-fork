@@ -42,7 +42,7 @@ import net.sourceforge.plantuml.graphic.StringBounder;
 import net.sourceforge.plantuml.graphic.TextBlockable;
 import net.sourceforge.plantuml.ugraphic.UTranslate;
 
-public interface Ftile extends TextBlockable {
+public interface Ftile extends TextBlockable, Swimable {
 
 	public boolean shadowing();
 
@@ -59,11 +59,5 @@ public interface Ftile extends TextBlockable {
 	public UTranslate getTranslateFor(Ftile child, StringBounder stringBounder);
 
 	public Collection<Connection> getInnerConnections();
-
-	public Set<Swimlane> getSwimlanes();
-
-	public Swimlane getSwimlaneIn();
-
-	public Swimlane getSwimlaneOut();
 
 }

@@ -51,7 +51,7 @@ public class CommandIf2 extends SingleLineCommand2<ActivityDiagram3> {
 		return new RegexConcat(new RegexLeaf("^"), //
 				new RegexLeaf("if"), //
 				new RegexLeaf("\\s*"), //
-				new RegexLeaf("TEST", "\\((.+?)\\)"), //
+				new RegexLeaf("TEST", "\\((.*?)\\)"), //
 				new RegexLeaf("\\s*"), //
 				new RegexLeaf("WHEN", "(?:then\\s*(?:\\((.+?)\\))?)?"), //
 				new RegexLeaf(";?$"));
@@ -60,7 +60,12 @@ public class CommandIf2 extends SingleLineCommand2<ActivityDiagram3> {
 	@Override
 	protected CommandExecutionResult executeArg(ActivityDiagram3 diagram, RegexResult arg) {
 
-		diagram.startIf(Display.getWithNewlines(arg.get("TEST", 0)), Display.getWithNewlines(arg.get("WHEN", 0)));
+		String test = arg.get("TEST", 0);
+		if (test.length() == 0) {
+			test = null;
+		}
+
+		diagram.startIf(Display.getWithNewlines(test), Display.getWithNewlines(arg.get("WHEN", 0)));
 
 		return CommandExecutionResult.ok();
 	}

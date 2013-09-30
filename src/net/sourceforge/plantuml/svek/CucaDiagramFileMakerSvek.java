@@ -123,7 +123,7 @@ public final class CucaDiagramFileMakerSvek implements CucaDiagramFileMaker {
 				diagram, diagram, diagram.getColorMapper(), diagram.getEntityFactory(),
 				diagram.isHideEmptyDescriptionForState());
 		final CucaDiagramFileMakerSvek2 svek2 = new CucaDiagramFileMakerSvek2(dotData, diagram.getEntityFactory(),
-				false, diagram.getSource());
+				false, diagram.getSource(), diagram.getPragma());
 
 		TextBlockBackcolored result = svek2.createFile(diagram.getDotStringSkek());
 		result = addLegend(result);

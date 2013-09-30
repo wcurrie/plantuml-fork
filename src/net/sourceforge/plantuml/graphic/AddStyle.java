@@ -28,18 +28,18 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 9786 $
+ * Revision $Revision: 11535 $
  *
  */
 package net.sourceforge.plantuml.graphic;
 
 
-class AddStyle implements FontChange {
+public class AddStyle implements FontChange {
 
 	private final FontStyle style;
 	private final HtmlColor extendedColor;
 
-	AddStyle(FontStyle style, HtmlColor extendedColor) {
+	public AddStyle(FontStyle style, HtmlColor extendedColor) {
 		this.style = style;
 		this.extendedColor = extendedColor;
 	}

@@ -52,6 +52,7 @@ public class InstructionGroup implements Instruction {
 		this.parent = parent;
 		this.test = test;
 	}
+	
 
 	public void add(Instruction ins) {
 		list.add(ins);
@@ -79,6 +80,15 @@ public class InstructionGroup implements Instruction {
 	
 	public Set<Swimlane> getSwimlanes() {
 		return list.getSwimlanes();
+	}
+
+	public Swimlane getSwimlaneIn() {
+		return list.getSwimlaneIn();
+	}
+
+
+	public Swimlane getSwimlaneOut() {
+		return list.getSwimlaneOut();
 	}
 
 

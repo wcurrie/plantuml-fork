@@ -49,20 +49,34 @@ public class FtileEmpty extends AbstractFtile {
 
 	private final double width;
 	private final double height;
+	private final Swimlane swimlaneIn;
+	private final Swimlane swimlaneOut;
 
 	public FtileEmpty(boolean shadowing, double width, double height) {
+		this(shadowing, width, height, null, null);
+	}
+
+	public FtileEmpty(boolean shadowing, double width, double height, Swimlane swimlaneIn, Swimlane swimlaneOut) {
 		super(shadowing);
 		this.width = width;
 		this.height = height;
+		this.swimlaneIn = swimlaneIn;
+		this.swimlaneOut = swimlaneOut;
+
 	}
+	
+	public FtileEmpty(boolean shadowing) {
+		this(shadowing, 0, 0, null, null);
+	}
+
+	public FtileEmpty(boolean shadowing, Swimlane swimlane) {
+		this(shadowing, 0, 0, swimlane, swimlane);
+	}
+
 
 	@Override
 	public String toString() {
 		return "FtileEmpty";
-	}
-
-	public FtileEmpty(boolean shadowing) {
-		this(shadowing, 0, 0);
 	}
 
 	public TextBlock asTextBlock() {
@@ -82,11 +96,11 @@ public class FtileEmpty extends AbstractFtile {
 	}
 
 	public Point2D getPointIn(StringBounder stringBounder) {
-		return new Point2D.Double(width / 2, height / 2);
+		return new Point2D.Double(width / 2, 0);
 	}
 
 	public Point2D getPointOut(StringBounder stringBounder) {
-		return new Point2D.Double(width / 2, height / 2);
+		return new Point2D.Double(width / 2, height);
 	}
 
 	public boolean isKilled() {
@@ -94,16 +108,15 @@ public class FtileEmpty extends AbstractFtile {
 	}
 
 	public Swimlane getSwimlaneIn() {
-		return null;
+		return swimlaneIn;
 	}
 
 	public Swimlane getSwimlaneOut() {
-		return null;
+		return swimlaneOut;
 	}
 
 	public Set<Swimlane> getSwimlanes() {
 		return Collections.emptySet();
 	}
-
 
 }

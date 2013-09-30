@@ -55,7 +55,7 @@ public class CommandActivityLong3 extends CommandMultilines2<ActivityDiagram3> {
 
 	@Override
 	public String getPatternEnd() {
-		return "^(.*);$";
+		return "^(.*)" + CommandActivity3.ENDING_GROUP + "$";
 	}
 
 	static RegexConcat getRegexConcat() {
@@ -69,10 +69,16 @@ public class CommandActivityLong3 extends CommandMultilines2<ActivityDiagram3> {
 	public CommandExecutionResult executeNow(ActivityDiagram3 diagram, List<String> lines) {
 		final RegexResult line0 = getStartingPattern().matcher(lines.get(0).trim());
 		final HtmlColor color = HtmlColorUtils.getColorIfValid(line0.get("COLOR", 0));
+		final BoxStyle style = BoxStyle.fromChar(getLastChar(lines));
 		removeStarting(lines, line0.get("DATA", 0));
 		removeEnding(lines);
-		diagram.addActivity(new Display(lines), color, BoxStyle.PLAIN);
+		diagram.addActivity(new Display(lines), color, style);
 		return CommandExecutionResult.ok();
+	}
+
+	private char getLastChar(List<String> lines) {
+		final String s = lines.get(lines.size() - 1);
+		return s.charAt(s.length() - 1);
 	}
 
 	private void removeStarting(List<String> lines, String data) {

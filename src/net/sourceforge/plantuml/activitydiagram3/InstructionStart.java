@@ -33,30 +33,20 @@
  */
 package net.sourceforge.plantuml.activitydiagram3;
 
-import java.util.Collections;
-import java.util.Set;
-
 import net.sourceforge.plantuml.activitydiagram3.ftile.Ftile;
 import net.sourceforge.plantuml.activitydiagram3.ftile.FtileFactory;
 import net.sourceforge.plantuml.activitydiagram3.ftile.Swimlane;
 import net.sourceforge.plantuml.cucadiagram.Display;
 import net.sourceforge.plantuml.sequencediagram.NotePosition;
 
-public class InstructionStart implements Instruction {
-
-	private final Swimlane swimlane;
+public class InstructionStart extends MonoSwimable implements Instruction {
 
 	public InstructionStart(Swimlane swimlane) {
-		this.swimlane = swimlane;
-	}
-
-	public Set<Swimlane> getSwimlanes() {
-		return swimlane == null ? Collections.<Swimlane> emptySet() : Collections
-				.<Swimlane> singleton(swimlane);
+		super(swimlane);
 	}
 
 	public Ftile createFtile(FtileFactory factory) {
-		return factory.start(swimlane);
+		return factory.start(getSwimlaneIn());
 	}
 
 	public void add(Instruction other) {

@@ -58,11 +58,7 @@ public class Pragma {
 	}
 
 	public String getValue(String name) {
-		final String result = values.get(name);
-		if (result == null) {
-			throw new IllegalArgumentException();
-		}
-		return result;
+		return values.get(name);
 	}
 
 	protected Set<Map.Entry<String, String>> entrySet() {

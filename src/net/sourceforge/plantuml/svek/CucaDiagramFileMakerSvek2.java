@@ -49,6 +49,8 @@ import net.sourceforge.plantuml.FontParam;
 import net.sourceforge.plantuml.ISkinParam;
 import net.sourceforge.plantuml.LineParam;
 import net.sourceforge.plantuml.Log;
+import net.sourceforge.plantuml.OptionFlags;
+import net.sourceforge.plantuml.Pragma;
 import net.sourceforge.plantuml.SkinParamForecolored;
 import net.sourceforge.plantuml.UmlDiagramType;
 import net.sourceforge.plantuml.core.UmlSource;
@@ -112,6 +114,7 @@ public final class CucaDiagramFileMakerSvek2 {
 	private final EntityFactory entityFactory;
 	private final boolean hasVerticalLine;
 	private final UmlSource source;
+	private final Pragma pragma;
 
 	static private final StringBounder stringBounder;
 
@@ -120,11 +123,13 @@ public final class CucaDiagramFileMakerSvek2 {
 		stringBounder = StringBounderUtils.asStringBounder(builder.getGraphics2D());
 	}
 
-	public CucaDiagramFileMakerSvek2(DotData dotData, EntityFactory entityFactory, boolean hasVerticalLine, UmlSource source) {
+	public CucaDiagramFileMakerSvek2(DotData dotData, EntityFactory entityFactory, boolean hasVerticalLine,
+			UmlSource source, Pragma pragma) {
 		this.dotData = dotData;
 		this.entityFactory = entityFactory;
 		this.hasVerticalLine = hasVerticalLine;
 		this.source = source;
+		this.pragma = pragma;
 	}
 
 	private DotStringFactory dotStringFactory;
@@ -150,12 +155,14 @@ public final class CucaDiagramFileMakerSvek2 {
 
 				String ltail = null;
 				if (shapeUid1.startsWith(Cluster.CENTER_ID)) {
-					// final Group g1 = ((IEntityMutable) link.getEntity1()).getContainerOrEquivalent();
+					// final Group g1 = ((IEntityMutable)
+					// link.getEntity1()).getContainerOrEquivalent();
 					ltail = getCluster2((IEntity) link.getEntity1()).getClusterId();
 				}
 				String lhead = null;
 				if (shapeUid2.startsWith(Cluster.CENTER_ID)) {
-					// final Group g2 = ((IEntityMutable) link.getEntity2()).getContainerOrEquivalent();
+					// final Group g2 = ((IEntityMutable)
+					// link.getEntity2()).getContainerOrEquivalent();
 					lhead = getCluster2((IEntity) link.getEntity2()).getClusterId();
 				}
 				final ISkinParam skinParam = dotData.getSkinParam();
@@ -163,19 +170,23 @@ public final class CucaDiagramFileMakerSvek2 {
 						null), skinParam.getFontHtmlColor(FontParam.GENERIC_ARROW, null));
 
 				final Line line = new Line(shapeUid1, shapeUid2, link, colorSequence, ltail, lhead, skinParam,
-						stringBounder, labelFont, getBibliotekon());
-				// if (OptionFlags.PIC_LINE && link.getLabel() != null && link.getLabel().startsWith("@")) {
+						stringBounder, labelFont, getBibliotekon(), dotStringFactory.getGraphvizVersion() );
+				// if (OptionFlags.PIC_LINE && link.getLabel() != null &&
+				// link.getLabel().startsWith("@")) {
 				// final Group container1 = link.getEntity1().getContainer();
 				// if (container1 != null) {
-				// line.setPicLine1(getBibliotekon().getCluster((IEntity) container1));
+				// line.setPicLine1(getBibliotekon().getCluster((IEntity)
+				// container1));
 				// }
 				// final Group container2 = link.getEntity2().getContainer();
 				// if (container2 != null) {
-				// line.setPicLine2(getBibliotekon().getCluster((IEntity) container2));
+				// line.setPicLine2(getBibliotekon().getCluster((IEntity)
+				// container2));
 				// }
 				// }
 				// if (link.getEntryPoint() != null) {
-				// line.setPicLine2(getBibliotekon().getCluster((IEntity) link.getEntryPoint()));
+				// line.setPicLine2(getBibliotekon().getCluster((IEntity)
+				// link.getEntryPoint()));
 				// }
 				getBibliotekon().addLine(line);
 
@@ -199,7 +210,9 @@ public final class CucaDiagramFileMakerSvek2 {
 			return error(dotStringFactory.getDotExe());
 		}
 
-		final String svg = dotStringFactory.getSvg(dotStrings);
+		final boolean trace = OptionFlags.getInstance().isKeepTmpFiles() || OptionFlags.TRACE_DOT || isSvekTrace();
+
+		final String svg = dotStringFactory.getSvg(trace, dotStrings);
 		final String graphvizVersion = extractGraphvizVersion(svg);
 		try {
 			final ClusterPosition position = dotStringFactory.solve(svg).delta(10, 10);
@@ -222,6 +235,11 @@ public final class CucaDiagramFileMakerSvek2 {
 			throw new UnparsableGraphvizException(e, graphvizVersion, svg, source.getPlainString());
 		}
 
+	}
+
+	private boolean isSvekTrace() {
+		final String value = pragma.getValue("svek_trace");
+		return "true".equalsIgnoreCase(value) || "on".equalsIgnoreCase(value);
 	}
 
 	private String extractGraphvizVersion(String svg) {
@@ -315,8 +333,8 @@ public final class CucaDiagramFileMakerSvek2 {
 		}
 		final IEntityImage image = printEntityInternal(ent);
 		final Dimension2D dim = image.calculateDimension(stringBounder);
-		final Shape shape = new Shape(image, image.getShapeType(), dim.getWidth(), dim.getHeight(), colorSequence,
-				ent.isTop(), image.getShield(), ent.getUrls(), ent.getEntityPosition());
+		final Shape shape = new Shape(image, image.getShapeType(), dim.getWidth(), dim.getHeight(), colorSequence, ent
+				.isTop(), image.getShield(), ent.getUrls(), ent.getEntityPosition());
 		dotStringFactory.addShape(shape);
 		getBibliotekon().putShape(ent, shape);
 	}
@@ -375,30 +393,30 @@ public final class CucaDiagramFileMakerSvek2 {
 		}
 		if (leaf.getEntityType() == LeafType.ACTOR) {
 			final TextBlock stickman = new StickMan(getColor(ColorParam.usecaseActorBackground, leaf.getStereotype(),
-					skinParam), getColor(ColorParam.usecaseActorBorder, leaf.getStereotype(), skinParam),
-					skinParam.shadowing() ? 4.0 : 0.0);
+					skinParam), getColor(ColorParam.usecaseActorBorder, leaf.getStereotype(), skinParam), skinParam
+					.shadowing() ? 4.0 : 0.0);
 			return new EntityImageActor2(leaf, skinParam, FontParam.USECASE_ACTOR_STEREOTYPE, FontParam.USECASE_ACTOR,
 					stickman);
 		}
 		if (leaf.getEntityType() == LeafType.BOUNDARY) {
 			final TextBlock stickman = new Boundary(getColor(ColorParam.usecaseActorBackground, leaf.getStereotype(),
-					skinParam), getColor(ColorParam.usecaseActorBorder, leaf.getStereotype(), skinParam),
-					skinParam.shadowing() ? 4.0 : 0.0, Rose.getStroke(skinParam, LineParam.sequenceActorBorder, 2)
-							.getThickness());
+					skinParam), getColor(ColorParam.usecaseActorBorder, leaf.getStereotype(), skinParam), skinParam
+					.shadowing() ? 4.0 : 0.0, Rose.getStroke(skinParam, LineParam.sequenceActorBorder, 2)
+					.getThickness());
 			return new EntityImageActor2(leaf, skinParam, FontParam.USECASE_ACTOR_STEREOTYPE, FontParam.USECASE_ACTOR,
 					stickman);
 		}
 		if (leaf.getEntityType() == LeafType.CONTROL) {
 			final TextBlock stickman = new Control(getColor(ColorParam.usecaseActorBackground, leaf.getStereotype(),
-					skinParam), getColor(ColorParam.usecaseActorBorder, leaf.getStereotype(), skinParam),
-					skinParam.shadowing() ? 4.0 : 0.0, Rose.getStroke(skinParam, LineParam.sequenceActorBorder, 2)
-							.getThickness());
+					skinParam), getColor(ColorParam.usecaseActorBorder, leaf.getStereotype(), skinParam), skinParam
+					.shadowing() ? 4.0 : 0.0, Rose.getStroke(skinParam, LineParam.sequenceActorBorder, 2)
+					.getThickness());
 			return new EntityImageActor2(leaf, skinParam, FontParam.USECASE_ACTOR_STEREOTYPE, FontParam.USECASE_ACTOR,
 					stickman);
 		}
 		if (leaf.getEntityType() == LeafType.ENTITY_DOMAIN) {
-			final TextBlock stickman = new EntityDomain(getColor(ColorParam.usecaseActorBackground,
-					leaf.getStereotype(), skinParam), getColor(ColorParam.usecaseActorBorder, leaf.getStereotype(),
+			final TextBlock stickman = new EntityDomain(getColor(ColorParam.usecaseActorBackground, leaf
+					.getStereotype(), skinParam), getColor(ColorParam.usecaseActorBorder, leaf.getStereotype(),
 					skinParam), skinParam.shadowing() ? 4.0 : 0.0, Rose.getStroke(skinParam,
 					LineParam.sequenceActorBorder, 2).getThickness());
 			return new EntityImageActor2(leaf, skinParam, FontParam.USECASE_ACTOR_STEREOTYPE, FontParam.USECASE_ACTOR,
@@ -460,8 +478,8 @@ public final class CucaDiagramFileMakerSvek2 {
 				continue;
 			}
 			if (dotData.isEmpty(g) && g.zgetGroupType() == GroupType.PACKAGE) {
-				final ILeaf folder = entityFactory.createLeaf(g.getCode(), g.getDisplay(), LeafType.EMPTY_PACKAGE,
-						g.getParentContainer(), null);
+				final ILeaf folder = entityFactory.createLeaf(g.getCode(), g.getDisplay(), LeafType.EMPTY_PACKAGE, g
+						.getParentContainer(), null);
 				folder.setUSymbol(g.getUSymbol());
 				if (g.getSpecificBackColor() == null) {
 					folder.setSpecificBackcolor(dotData.getSkinParam().getBackgroundColor());
@@ -536,9 +554,9 @@ public final class CucaDiagramFileMakerSvek2 {
 		final String stereo = g.getStereotype().getLabel();
 
 		final FontParam fontParam = FontParam.COMPONENT_STEREOTYPE;
-		return TextBlockUtils.create(new Display(stereos),
-				new FontConfiguration(dotData.getSkinParam().getFont(fontParam, stereo), dotData.getSkinParam()
-						.getFontHtmlColor(fontParam, stereo)), HorizontalAlignment.CENTER, dotData.getSkinParam());
+		return TextBlockUtils.create(new Display(stereos), new FontConfiguration(dotData.getSkinParam().getFont(
+				fontParam, stereo), dotData.getSkinParam().getFontHtmlColor(fontParam, stereo)),
+				HorizontalAlignment.CENTER, dotData.getSkinParam());
 	}
 
 }

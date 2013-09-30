@@ -45,23 +45,29 @@ import net.sourceforge.plantuml.sequencediagram.NotePosition;
 
 public class InstructionIf implements Instruction {
 
-	private final InstructionList thenList = new InstructionList();
-	private final InstructionList elseList = new InstructionList();
+	private final InstructionList thenList;
+	private final InstructionList elseList;
 	private final Instruction parent;
 	private final Display labelTest;
 	private final Display whenThen;
 	private Display whenElse;
-	private InstructionList current = thenList;
+	private InstructionList current;
 	private final LinkRendering inlinkRendering;
 	private LinkRendering endThenInlinkRendering;
 	private LinkRendering elseThenInlinkRendering;
 	private boolean isThereElse = false;
+	private final Swimlane swimlane;
 
-	public InstructionIf(Instruction parent, Display labelTest, Display whenThen, LinkRendering inlinkRendering) {
+	public InstructionIf(Swimlane swimlane, Instruction parent, Display labelTest, Display whenThen,
+			LinkRendering inlinkRendering) {
 		this.parent = parent;
 		this.labelTest = labelTest;
 		this.whenThen = whenThen;
 		this.inlinkRendering = inlinkRendering;
+		this.swimlane = swimlane;
+		this.thenList = new InstructionList(swimlane);
+		this.elseList = new InstructionList(swimlane);
+		this.current = thenList;
 	}
 
 	public void add(Instruction ins) {
@@ -69,7 +75,7 @@ public class InstructionIf implements Instruction {
 	}
 
 	public Ftile createFtile(FtileFactory factory) {
-		return factory.createIf(factory.decorateOut(thenList.createFtile(factory), endThenInlinkRendering),
+		return factory.createIf(swimlane, factory.decorateOut(thenList.createFtile(factory), endThenInlinkRendering),
 				factory.decorateOut(elseList.createFtile(factory), elseThenInlinkRendering), labelTest, whenThen,
 				whenElse);
 	}
@@ -107,9 +113,20 @@ public class InstructionIf implements Instruction {
 
 	public Set<Swimlane> getSwimlanes() {
 		final Set<Swimlane> result = new HashSet<Swimlane>();
+		if (swimlane != null) {
+			result.add(swimlane);
+		}
 		result.addAll(thenList.getSwimlanes());
 		result.addAll(elseList.getSwimlanes());
 		return Collections.unmodifiableSet(result);
+	}
+
+	public Swimlane getSwimlaneIn() {
+		return swimlane;
+	}
+
+	public Swimlane getSwimlaneOut() {
+		return swimlane;
 	}
 
 }

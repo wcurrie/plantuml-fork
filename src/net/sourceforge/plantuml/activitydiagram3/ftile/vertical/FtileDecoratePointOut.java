@@ -37,6 +37,8 @@ import java.awt.geom.Point2D;
 
 import net.sourceforge.plantuml.activitydiagram3.ftile.Ftile;
 import net.sourceforge.plantuml.graphic.StringBounder;
+import net.sourceforge.plantuml.graphic.TextBlock;
+import net.sourceforge.plantuml.graphic.TextBlockUtils;
 
 public class FtileDecoratePointOut extends FtileDecorate {
 
@@ -49,9 +51,16 @@ public class FtileDecoratePointOut extends FtileDecorate {
 		this.dy = dy;
 	}
 
+	@Override
 	public Point2D getPointOut(StringBounder stringBounder) {
 		final Point2D pt = super.getPointOut(stringBounder);
 		return new Point2D.Double(pt.getX() + dx, pt.getY() + dy);
+	}
+	
+	@Override
+	public TextBlock asTextBlock() {
+		final TextBlock result = super.asTextBlock();
+		return TextBlockUtils.withMargin(result, 0, 0, dx, dy);
 	}
 
 }

@@ -61,11 +61,11 @@ public interface FtileFactory {
 
 	public Ftile assembly(Ftile tile1, Ftile tile2);
 
-	public Ftile repeat(Ftile repeat, Display test);
+	public Ftile repeat(Swimlane swimlane, Ftile repeat, Display test);
 
 	public Ftile createWhile(Ftile whileBlock, Display test, Display yes, Display out, LinkRendering afterEndwhile);
 
-	public Ftile createIf(Ftile tile1, Ftile tile2, Display labelTest, Display label1, Display label2);
+	public Ftile createIf(Swimlane swimlane, Ftile tile1, Ftile tile2, Display labelTest, Display label1, Display label2);
 
 	public Ftile createFork(List<Ftile> all);
 

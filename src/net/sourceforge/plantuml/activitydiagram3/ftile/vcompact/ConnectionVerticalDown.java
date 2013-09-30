@@ -37,13 +37,14 @@ import java.awt.geom.Point2D;
 
 import net.sourceforge.plantuml.activitydiagram3.ftile.AbstractConnection;
 import net.sourceforge.plantuml.activitydiagram3.ftile.Arrows;
+import net.sourceforge.plantuml.activitydiagram3.ftile.ConnectionTranslatable;
 import net.sourceforge.plantuml.activitydiagram3.ftile.Ftile;
 import net.sourceforge.plantuml.activitydiagram3.ftile.Snake;
 import net.sourceforge.plantuml.graphic.HtmlColor;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
 import net.sourceforge.plantuml.ugraphic.UTranslate;
 
-public class ConnectionVerticalDown extends AbstractConnection {
+public class ConnectionVerticalDown extends AbstractConnection implements ConnectionTranslatable {
 
 	private final Point2D p1;
 	private final Point2D p2;

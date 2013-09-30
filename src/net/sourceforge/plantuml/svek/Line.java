@@ -43,6 +43,7 @@ import net.sourceforge.plantuml.Hideable;
 import net.sourceforge.plantuml.ISkinParam;
 import net.sourceforge.plantuml.Log;
 import net.sourceforge.plantuml.OptionFlags;
+import net.sourceforge.plantuml.Pragma;
 import net.sourceforge.plantuml.StringUtils;
 import net.sourceforge.plantuml.Url;
 import net.sourceforge.plantuml.command.Position;
@@ -54,6 +55,7 @@ import net.sourceforge.plantuml.cucadiagram.LinkArrow;
 import net.sourceforge.plantuml.cucadiagram.LinkDecor;
 import net.sourceforge.plantuml.cucadiagram.LinkHat;
 import net.sourceforge.plantuml.cucadiagram.LinkMiddleDecor;
+import net.sourceforge.plantuml.cucadiagram.dot.GraphvizVersion;
 import net.sourceforge.plantuml.graphic.FontConfiguration;
 import net.sourceforge.plantuml.graphic.HorizontalAlignment;
 import net.sourceforge.plantuml.graphic.HtmlColor;
@@ -114,6 +116,25 @@ public class Line implements Moveable, Hideable {
 
 	private boolean opale;
 	private Cluster projectionCluster;
+	private final GraphvizVersion graphvizVersion;
+
+//	private GraphvizVersion getGraphvizVersion() {
+//		if (pragma.isDefine("graphviz")==false) {
+//			return GraphvizVersion.COMMON;
+//		}
+//		final String value = pragma.getValue("graphviz");
+//		if ("2.34".equals(value)) {
+//			return GraphvizVersion.V2_34_0;
+//		}
+//		return GraphvizVersion.COMMON;
+//	}
+
+	
+	
+	@Override
+	public String toString() {
+		return super.toString() + " color=" + lineColor;
+	}
 
 	class DirectionalTextBlock implements TextBlock {
 
@@ -187,10 +208,11 @@ public class Line implements Moveable, Hideable {
 	// }
 
 	public Line(String startUid, String endUid, Link link, ColorSequence colorSequence, String ltail, String lhead,
-			ISkinParam skinParam, StringBounder stringBounder, FontConfiguration labelFont, Bibliotekon bibliotekon) {
+			ISkinParam skinParam, StringBounder stringBounder, FontConfiguration labelFont, Bibliotekon bibliotekon, GraphvizVersion graphvizVersion) {
 		if (startUid == null || endUid == null || link == null) {
 			throw new IllegalArgumentException();
 		}
+		this.graphvizVersion = graphvizVersion;
 		this.bibliotekon = bibliotekon;
 		this.stringBounder = stringBounder;
 		this.link = link;
@@ -217,9 +239,8 @@ public class Line implements Moveable, Hideable {
 			}
 		} else {
 			final double marginLabel = startUid.equals(endUid) ? 6 : 1;
-			final TextBlock label = TextBlockUtils.withMargin(
-					TextBlockUtils.create(link.getLabel(), labelFont, HorizontalAlignment.CENTER, skinParam),
-					marginLabel, marginLabel);
+			final TextBlock label = TextBlockUtils.withMargin(TextBlockUtils.create(link.getLabel(), labelFont,
+					HorizontalAlignment.CENTER, skinParam), marginLabel, marginLabel);
 			if (getLinkArrow() == LinkArrow.NONE) {
 				labelOnly = label;
 			} else {
@@ -302,8 +323,12 @@ public class Line implements Moveable, Hideable {
 		}
 		sb.append(decoration);
 
-		if (OptionFlags.HORIZONTAL_LINE_BETWEEN_DIFFERENT_PACKAGE_ALLOWED || link.getLength() != 1) {
-			sb.append("minlen=" + (link.getLength() - 1));
+		int length = link.getLength();
+//		if (graphvizVersion == GraphvizVersion.V2_34_0 && length == 1) {
+//			length = 2;
+//		}
+		if (OptionFlags.HORIZONTAL_LINE_BETWEEN_DIFFERENT_PACKAGE_ALLOWED || length != 1) {
+			sb.append("minlen=" + (length - 1));
 			sb.append(",");
 		}
 		sb.append("color=\"" + StringUtils.getAsHtml(lineColor) + "\"");
@@ -362,11 +387,15 @@ public class Line implements Moveable, Hideable {
 	}
 
 	public String rankSame() {
+//		if (graphvizVersion == GraphvizVersion.V2_34_0) {
+//			return null;
+//		}
 		if (OptionFlags.HORIZONTAL_LINE_BETWEEN_DIFFERENT_PACKAGE_ALLOWED == false && link.getLength() == 1) {
 			return "{rank=same; " + getStartUid() + "; " + getEndUid() + "}";
 		}
 		return null;
 	}
+
 
 	public static void appendTable(StringBuilder sb, Dimension2D dim, int col) {
 		final int w = (int) dim.getWidth();
@@ -430,6 +459,10 @@ public class Line implements Moveable, Hideable {
 		}
 
 		int idx = getIndexFromColor(svg, this.lineColor);
+		if (idx == -1) {
+			return;
+			// throw new IllegalStateException();
+		}
 		idx = svg.indexOf("d=\"", idx);
 		if (idx == -1) {
 			throw new IllegalStateException();
@@ -555,18 +588,28 @@ public class Line implements Moveable, Hideable {
 			copy.forceEndPoint(proj.getX(), proj.getY());
 			ug.apply(new UTranslate(x, y)).draw(copy);
 		} else {
+			if (dotPath == null) {
+				Log.info("DotPath is null for " + this);
+				return;
+			}
 			ug.apply(new UTranslate(x, y)).draw(dotPath);
 		}
 
 		// if (picLine1 != null) {
-		// final ClusterPosition clusterPosition = picLine1.getClusterPosition();
-		// final PointDirected inters = dotPath.getIntersection(clusterPosition);
-		// ExtremityStateLine1 extr1 = new ExtremityStateLine1(inters.getAngle(), inters.getPoint2D());
+		// final ClusterPosition clusterPosition =
+		// picLine1.getClusterPosition();
+		// final PointDirected inters =
+		// dotPath.getIntersection(clusterPosition);
+		// ExtremityStateLine1 extr1 = new
+		// ExtremityStateLine1(inters.getAngle(), inters.getPoint2D());
 		// extr1.drawU(ug, x, y);
 		// } else if (picLine2 != null) {
-		// final ClusterPosition clusterPosition = picLine2.getClusterPosition();
-		// final PointDirected inters = dotPath.getIntersection(clusterPosition);
-		// ExtremityStateLine2 extr2 = new ExtremityStateLine2(inters.getAngle(), inters.getPoint2D());
+		// final ClusterPosition clusterPosition =
+		// picLine2.getClusterPosition();
+		// final PointDirected inters =
+		// dotPath.getIntersection(clusterPosition);
+		// ExtremityStateLine2 extr2 = new
+		// ExtremityStateLine2(inters.getAngle(), inters.getPoint2D());
 		// extr2.drawU(ug, x, y);
 		// }
 
@@ -593,8 +636,8 @@ public class Line implements Moveable, Hideable {
 					+ this.noteLabelXY.getPosition().getY())));
 		}
 		if (this.startTailText != null) {
-			this.startTailText.drawU(ug.apply(new UTranslate(x
-					+ this.startTailLabelXY.getPosition().getX(), y + this.startTailLabelXY.getPosition().getY())));
+			this.startTailText.drawU(ug.apply(new UTranslate(x + this.startTailLabelXY.getPosition().getX(), y
+					+ this.startTailLabelXY.getPosition().getY())));
 		}
 		if (this.endHeadText != null) {
 			this.endHeadText.drawU(ug.apply(new UTranslate(x + this.endHeadLabelXY.getPosition().getX(), y

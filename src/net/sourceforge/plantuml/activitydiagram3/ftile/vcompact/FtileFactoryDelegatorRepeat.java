@@ -40,6 +40,7 @@ import net.sourceforge.plantuml.activitydiagram3.LinkRendering;
 import net.sourceforge.plantuml.activitydiagram3.ftile.Ftile;
 import net.sourceforge.plantuml.activitydiagram3.ftile.FtileFactory;
 import net.sourceforge.plantuml.activitydiagram3.ftile.FtileFactoryDelegator;
+import net.sourceforge.plantuml.activitydiagram3.ftile.Swimlane;
 import net.sourceforge.plantuml.cucadiagram.Display;
 import net.sourceforge.plantuml.graphic.HtmlColor;
 import net.sourceforge.plantuml.ugraphic.UFont;
@@ -50,10 +51,12 @@ public class FtileFactoryDelegatorRepeat extends FtileFactoryDelegator {
 		super(factory, skinParam);
 	}
 
+	private static boolean NEW = false;
+
 	@Override
-	public Ftile repeat(Ftile repeat, Display test) {
+	public Ftile repeat(Swimlane swimlane, Ftile repeat, Display test) {
 		final UFont font = getSkinParam().getFont(FontParam.ACTIVITY_ARROW2, null);
-		
+
 		final HtmlColor borderColor = getRose().getHtmlColor(getSkinParam(), ColorParam.activityBorder);
 		final HtmlColor backColor = getRose().getHtmlColor(getSkinParam(), ColorParam.activityBackground);
 		final HtmlColor arrowColor = getRose().getHtmlColor(getSkinParam(), ColorParam.activityArrow);
@@ -61,6 +64,9 @@ public class FtileFactoryDelegatorRepeat extends FtileFactoryDelegator {
 		final LinkRendering endRepeatLinkRendering = repeat.getOutLinkRendering();
 		final HtmlColor endRepeatLinkColor = endRepeatLinkRendering == null ? null : endRepeatLinkRendering.getColor();
 
+		if (NEW) {
+			return FtileRepeat2.create(swimlane, repeat, test, borderColor, backColor, font, arrowColor, endRepeatLinkColor);
+		}
 		return FtileRepeat.create(repeat, test, borderColor, backColor, font, arrowColor, endRepeatLinkColor);
 	}
 

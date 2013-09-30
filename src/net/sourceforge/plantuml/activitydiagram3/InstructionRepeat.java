@@ -46,12 +46,14 @@ public class InstructionRepeat implements Instruction {
 	private final InstructionList repeatList = new InstructionList();
 	private final Instruction parent;
 	private final LinkRendering nextLinkRenderer;
+	private final Swimlane swimlane;
 
 	private Display test;
 	private LinkRendering endRepeatLinkRendering;
 
-	public InstructionRepeat(Instruction parent, LinkRendering nextLinkRenderer) {
+	public InstructionRepeat(Swimlane swimlane, Instruction parent, LinkRendering nextLinkRenderer) {
 		this.parent = parent;
+		this.swimlane = swimlane;
 		this.nextLinkRenderer = nextLinkRenderer;
 	}
 
@@ -60,7 +62,7 @@ public class InstructionRepeat implements Instruction {
 	}
 
 	public Ftile createFtile(FtileFactory factory) {
-		return factory.repeat(factory.decorateOut(repeatList.createFtile(factory), endRepeatLinkRendering), test);
+		return factory.repeat(swimlane, factory.decorateOut(repeatList.createFtile(factory), endRepeatLinkRendering), test);
 	}
 
 	public Instruction getParent() {
@@ -86,6 +88,14 @@ public class InstructionRepeat implements Instruction {
 	
 	public Set<Swimlane> getSwimlanes() {
 		return repeatList.getSwimlanes();
+	}
+
+	public Swimlane getSwimlaneIn() {
+		return parent.getSwimlaneOut();
+	}
+
+	public Swimlane getSwimlaneOut() {
+		return repeatList.getSwimlaneOut();
 	}
 
 

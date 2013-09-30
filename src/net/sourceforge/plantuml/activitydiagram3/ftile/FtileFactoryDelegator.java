@@ -94,16 +94,16 @@ public class FtileFactoryDelegator implements FtileFactory {
 		return factory.assembly(tile1, tile2);
 	}
 
-	public Ftile repeat(Ftile repeat, Display test) {
-		return factory.repeat(repeat, test);
+	public Ftile repeat(Swimlane swimlane, Ftile repeat, Display test) {
+		return factory.repeat(swimlane, repeat, test);
 	}
 
 	public Ftile createWhile(Ftile whileBlock, Display test, Display yes, Display out, LinkRendering afterEndwhile) {
 		return factory.createWhile(whileBlock, test, yes, out, afterEndwhile);
 	}
 
-	public Ftile createIf(Ftile tile1, Ftile tile2, Display labelTest, Display label1, Display label2) {
-		return factory.createIf(tile1, tile2, labelTest, label1, label2);
+	public Ftile createIf(Swimlane swimlane, Ftile tile1, Ftile tile2, Display labelTest, Display label1, Display label2) {
+		return factory.createIf(swimlane, tile1, tile2, labelTest, label1, label2);
 	}
 
 	public Ftile createFork(List<Ftile> all) {

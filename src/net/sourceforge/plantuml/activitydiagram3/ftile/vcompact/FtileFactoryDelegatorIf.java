@@ -40,6 +40,7 @@ import net.sourceforge.plantuml.activitydiagram3.LinkRendering;
 import net.sourceforge.plantuml.activitydiagram3.ftile.Ftile;
 import net.sourceforge.plantuml.activitydiagram3.ftile.FtileFactory;
 import net.sourceforge.plantuml.activitydiagram3.ftile.FtileFactoryDelegator;
+import net.sourceforge.plantuml.activitydiagram3.ftile.Swimlane;
 import net.sourceforge.plantuml.cucadiagram.Display;
 import net.sourceforge.plantuml.graphic.HtmlColor;
 import net.sourceforge.plantuml.ugraphic.UFont;
@@ -50,8 +51,10 @@ public class FtileFactoryDelegatorIf extends FtileFactoryDelegator {
 		super(factory, skinParam);
 	}
 
+	private static boolean NEW = true;
+
 	@Override
-	public Ftile createIf(final Ftile tile1, final Ftile tile2, Display labelTest, Display label1, Display label2) {
+	public Ftile createIf(Swimlane swimlane, final Ftile tile1, final Ftile tile2, Display labelTest, Display label1, Display label2) {
 
 		final UFont font = getSkinParam().getFont(FontParam.ACTIVITY_ARROW2, null);
 
@@ -63,9 +66,12 @@ public class FtileFactoryDelegatorIf extends FtileFactoryDelegator {
 		final HtmlColor endThenInlinkColor = endThenInlinkRendering == null ? null : endThenInlinkRendering.getColor();
 		final HtmlColor endElseInlinkColor = endElseInlinkRendering == null ? null : endElseInlinkRendering.getColor();
 
-		final Ftile result = FtileIf.create(tile1, tile2, borderColor, backColor, labelTest, label1, label2, font,
-				arrowColor, endThenInlinkColor, endElseInlinkColor);
-		return result;
+		if (NEW) {
+			return FtileIf4.create(swimlane, tile1, tile2, borderColor, backColor, labelTest, label1, label2, font, arrowColor,
+					endThenInlinkColor, endElseInlinkColor, getFactory());
+		}
+		return FtileIf.create(tile1, tile2, borderColor, backColor, labelTest, label1, label2, font, arrowColor,
+				endThenInlinkColor, endElseInlinkColor);
 	}
 
 }

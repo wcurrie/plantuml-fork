@@ -44,26 +44,25 @@ import net.sourceforge.plantuml.cucadiagram.Display;
 import net.sourceforge.plantuml.graphic.HtmlColor;
 import net.sourceforge.plantuml.sequencediagram.NotePosition;
 
-public class InstructionSimple implements Instruction {
+public class InstructionSimple extends MonoSwimable implements Instruction {
 
 	private final Display label;
 	private final HtmlColor color;
 	private final LinkRendering inlinkRendering;
 	private Display note;
 	private NotePosition notePosition;
-	private final Swimlane swimlane;
 	private final BoxStyle style;
 
 	public InstructionSimple(Display label, HtmlColor color, LinkRendering inlinkRendering, Swimlane swimlane, BoxStyle style) {
+		super(swimlane);
 		this.style = style;
 		this.label = label;
 		this.color = color;
 		this.inlinkRendering = inlinkRendering;
-		this.swimlane = swimlane;
 	}
-
+	
 	public Ftile createFtile(FtileFactory factory) {
-		final Ftile result = factory.activity(label, color, swimlane, style);
+		final Ftile result = factory.activity(label, color, getSwimlaneIn(), style);
 		if (note == null) {
 			return result;
 		}
@@ -85,11 +84,6 @@ public class InstructionSimple implements Instruction {
 	public void addNote(Display note, NotePosition position) {
 		this.note = note;
 		this.notePosition = position;
-	}
-
-	public Set<Swimlane> getSwimlanes() {
-		return swimlane == null ? Collections.<Swimlane> emptySet() : Collections
-				.<Swimlane> singleton(swimlane);
 	}
 
 }

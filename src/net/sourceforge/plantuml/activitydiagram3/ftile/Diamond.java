@@ -55,4 +55,22 @@ public class Diamond {
 		return diams;
 	}
 
+	public static UPolygon asPolygon(boolean shadowing, double width, double height) {
+		final UPolygon diams = new UPolygon();
+
+		diams.addPoint(diamondHalfSize, 0);
+		diams.addPoint(width - diamondHalfSize, 0);
+		diams.addPoint(width, height / 2);
+		diams.addPoint(width - diamondHalfSize, height);
+		diams.addPoint(diamondHalfSize, height);
+		diams.addPoint(0, height / 2);
+		diams.addPoint(diamondHalfSize, 0);
+
+		if (shadowing) {
+			diams.setDeltaShadow(3);
+		}
+
+		return diams;
+	}
+
 }

@@ -56,6 +56,7 @@ public class InstructionFork implements Instruction {
 	private InstructionList getLast() {
 		return forks.get(forks.size() - 1);
 	}
+	
 
 	public void add(Instruction ins) {
 		getLast().add(ins);
@@ -90,7 +91,15 @@ public class InstructionFork implements Instruction {
 	}
 	
 	public Set<Swimlane> getSwimlanes() {
-		return InstructionList.getSwimlanes(forks);
+		return InstructionList.getSwimlanes2(forks);
+	}
+
+	public Swimlane getSwimlaneIn() {
+		return parent.getSwimlaneOut();
+	}
+
+	public Swimlane getSwimlaneOut() {
+		return getLast().getSwimlaneOut();
 	}
 
 

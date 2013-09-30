@@ -46,6 +46,8 @@ import net.sourceforge.plantuml.graphic.HtmlColorUtils;
 
 public class CommandActivity3 extends SingleLineCommand2<ActivityDiagram3> {
 
+	public static final String ENDING_GROUP = "([/;|<>}\\]])";
+
 	public CommandActivity3() {
 		super(getRegexConcat());
 	}
@@ -55,7 +57,7 @@ public class CommandActivity3 extends SingleLineCommand2<ActivityDiagram3> {
 				new RegexLeaf(":"), //
 				new RegexLeaf("COLOR", "(?:(#\\w+[-\\\\|/]?\\w+):)?"), //
 				new RegexLeaf("LABEL", "(.*)"), //
-				new RegexLeaf("STYLE", "([/;|<>}\\]])"), //
+				new RegexLeaf("STYLE", ENDING_GROUP), //
 				new RegexLeaf("$"));
 	}
 

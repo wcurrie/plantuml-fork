@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 9786 $
+ * Revision $Revision: 11543 $
  *
  */
 package net.sourceforge.plantuml.graphic;
@@ -73,6 +73,16 @@ public enum FontStyle {
 			return "\\<(?:s|S|strike|STRIKE|del|DEL)(?::(#[0-9a-fA-F]{6}|\\w+))?\\>";
 		}
 		return null;
+	}
+
+	public String getCreoleSyntax() {
+		if (this == ITALIC) {
+			return "//";
+		}
+		if (this == BOLD) {
+			return "\\*\\*";
+		}
+		throw new UnsupportedOperationException();
 	}
 
 	HtmlColor getExtendedColor(String s) {

@@ -130,7 +130,7 @@ public final class GroupPngMakerState {
 			}
 		}
 		final CucaDiagramFileMakerSvek2 svek2 = new CucaDiagramFileMakerSvek2(dotData, diagram.getEntityFactory(),
-				hasVerticalLine, diagram.getSource());
+				hasVerticalLine, diagram.getSource(), diagram.getPragma());
 
 		if (group.zgetGroupType() == GroupType.CONCURRENT_STATE) {
 			// return new InnerStateConcurrent(svek2.createFile());

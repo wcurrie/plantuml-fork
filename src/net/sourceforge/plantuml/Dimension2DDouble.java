@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  *
- * Revision $Revision: 9786 $
+ * Revision $Revision: 11564 $
  *
  */
 package net.sourceforge.plantuml;
@@ -95,6 +95,10 @@ public class Dimension2DDouble extends Dimension2D {
 		final double width = MathUtils.max(top1.getWidth(), top2.getWidth(), bottom.getWidth());
 		final double height = top1.getHeight() + top2.getHeight() + bottom.getHeight();
 		return new Dimension2DDouble(width, height);
+	}
+	
+	public static Dimension2D max(Dimension2D dim1, Dimension2D dim2) {
+		return atLeast(dim1, dim2.getWidth(), dim2.getHeight());
 	}
 
 	public static Dimension2D atLeast(Dimension2D dim, double minWidth, double minHeight) {

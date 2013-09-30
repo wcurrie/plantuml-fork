@@ -245,7 +245,7 @@ public class ActivityDiagram3 extends UmlDiagram {
 
 	public void startIf(Display test, Display whenThen) {
 		manageSwimlaneStrategy();
-		final InstructionIf instructionIf = new InstructionIf(current(), test, whenThen, nextLinkRenderer());
+		final InstructionIf instructionIf = new InstructionIf(swinlanes.getCurrentSwimlane(), current(), test, whenThen, nextLinkRenderer());
 		current().add(instructionIf);
 		setCurrent(instructionIf);
 	}
@@ -271,7 +271,7 @@ public class ActivityDiagram3 extends UmlDiagram {
 
 	public void startRepeat() {
 		manageSwimlaneStrategy();
-		final InstructionRepeat instructionRepeat = new InstructionRepeat(current(), nextLinkRenderer());
+		final InstructionRepeat instructionRepeat = new InstructionRepeat(swinlanes.getCurrentSwimlane(), current(), nextLinkRenderer());
 		current().add(instructionRepeat);
 		setCurrent(instructionRepeat);
 

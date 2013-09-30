@@ -51,6 +51,15 @@ public class InstructionList implements Instruction {
 
 	private final List<Instruction> all = new ArrayList<Instruction>();
 	private boolean killed = false;
+	private final Swimlane defaultSwimlane;
+
+	public InstructionList() {
+		this(null);
+	}
+
+	public InstructionList(Swimlane defaultSwimlane) {
+		this.defaultSwimlane = defaultSwimlane;
+	}
 
 	public void add(Instruction ins) {
 		if (killed == false) {
@@ -60,7 +69,7 @@ public class InstructionList implements Instruction {
 
 	public Ftile createFtile(FtileFactory factory) {
 		if (all.size() == 0) {
-			return new FtileEmpty(factory.shadowing());
+			return new FtileEmpty(factory.shadowing(), defaultSwimlane);
 		}
 		Ftile result = null;
 		for (Instruction ins : all) {
@@ -102,10 +111,19 @@ public class InstructionList implements Instruction {
 	}
 
 	public Set<Swimlane> getSwimlanes() {
-		return getSwimlanes(all);
+		return getSwimlanes2(all);
+	}
+	
+	public Swimlane getSwimlaneIn() {
+		return all.get(0).getSwimlaneIn();
 	}
 
-	public static Set<Swimlane> getSwimlanes(List<? extends Instruction> list) {
+	public Swimlane getSwimlaneOut() {
+		return getLast().getSwimlaneOut();
+	}
+
+
+	public static Set<Swimlane> getSwimlanes2(List<? extends Instruction> list) {
 		final Set<Swimlane> result = new HashSet<Swimlane>();
 		for (Instruction ins : list) {
 			result.addAll(ins.getSwimlanes());
