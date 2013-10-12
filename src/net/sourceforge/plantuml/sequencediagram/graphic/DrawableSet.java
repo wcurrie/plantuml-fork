@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 11324 $
+ * Revision $Revision: 11658 $
  *
  */
 package net.sourceforge.plantuml.sequencediagram.graphic;
@@ -397,7 +397,7 @@ class DrawableSet {
 		this.topStartingY = topStartingY;
 	}
 
-	public void appendCmap(CMapData cmap, int offsetX, int offsetY, StringBounder stringBounder, SequenceDiagram diagram) {
+	public void appendCmap(CMapData cmap, int offsetX, int offsetY, StringBounder stringBounder, SequenceDiagram diagram, double scale) {
 		// cmap.append("<map id=\"sequence\" name=\"sequence\">\n");
 		// cmap.appendHeader(diagram);
 		for (Map.Entry<Participant, LivingParticipantBox> entry : participants.entrySet()) {
@@ -417,7 +417,7 @@ class DrawableSet {
 				final double y2 = offsetY + topStartingY - box.magicMargin(stringBounder);
 				final double y1 = y2 - height;
 				final String id = p.getCode();
-				appendArea(cmap, id, url, x1, x2, y2, y1);
+				appendArea(cmap, id, url, x1, x2, y2, y1, scale);
 			}
 		}
 
@@ -432,7 +432,7 @@ class DrawableSet {
 			final double x2 = ((InGroupable) gra).getMaxX(stringBounder);
 			final double y1 = gra.getStartingY() + offsetY;
 			final double y2 = y1 + gra.getPreferredHeight(stringBounder);
-			appendArea(cmap, ev.toString(), url, x1, x2, y2, y1);
+			appendArea(cmap, ev.toString(), url, x1, x2, y2, y1, scale);
 
 		}
 
@@ -440,7 +440,7 @@ class DrawableSet {
 	}
 
 	private void appendArea(CMapData cmap, final String id, final Url url, final double x1, final double x2,
-			final double y2, final double y1) {
+			final double y2, final double y1, double scale) {
 		cmap.appendString("<area shape=\"rect\" id=\"");
 		cmap.appendString(id);
 		cmap.appendString("\" href=\"");
@@ -448,13 +448,13 @@ class DrawableSet {
 		cmap.appendString("\" title=\"");
 		cmap.appendString(url.getTooltip());
 		cmap.appendString("\" coords=\"");
-		cmap.appendLong(Math.round(x1));
+		cmap.appendLong(Math.round(x1 * scale));
 		cmap.appendString(",");
-		cmap.appendLong(Math.round(y1));
+		cmap.appendLong(Math.round(y1 * scale));
 		cmap.appendString(",");
-		cmap.appendLong(Math.round(x2));
+		cmap.appendLong(Math.round(x2 * scale));
 		cmap.appendString(",");
-		cmap.appendLong(Math.round(y2));
+		cmap.appendLong(Math.round(y2 * scale));
 		cmap.appendString("\"/>\n");
 	}
 

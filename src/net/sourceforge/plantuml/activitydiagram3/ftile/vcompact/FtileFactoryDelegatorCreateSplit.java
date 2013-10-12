@@ -91,8 +91,9 @@ public class FtileFactoryDelegatorCreateSplit extends FtileFactoryDelegator {
 			conns.add(new ConnectionOut(tmp, x, arrowColor, height1));
 			x += dim.getWidth();
 		}
-		conns.add(new ConnectionHline(arrowColor, 0, list));
-		conns.add(new ConnectionHline(arrowColor, height1, list));
+		final double totalWidth = inner.asTextBlock().calculateDimension(getStringBounder()).getWidth();
+		conns.add(new ConnectionHline(arrowColor, 0, list, totalWidth));
+		conns.add(new ConnectionHline(arrowColor, height1, list, totalWidth));
 
 		inner = FtileUtils.addConnection(inner, conns);
 		return inner;
@@ -103,12 +104,14 @@ public class FtileFactoryDelegatorCreateSplit extends FtileFactoryDelegator {
 		private final double y;
 		private final HtmlColor arrowColor;
 		private final List<Ftile> list;
+		private final double totalWidth;
 
-		public ConnectionHline(HtmlColor arrowColor, double y, List<Ftile> list) {
+		public ConnectionHline(HtmlColor arrowColor, double y, List<Ftile> list, double totalWidth) {
 			super(null, null);
 			this.y = y;
 			this.arrowColor = arrowColor;
 			this.list = list;
+			this.totalWidth = totalWidth;
 		}
 
 		public void drawU(UGraphic ug) {
@@ -117,6 +120,9 @@ public class FtileFactoryDelegatorCreateSplit extends FtileFactoryDelegator {
 			double minX = 0;
 			double maxX = 0;
 			for (Ftile tmp : list) {
+				if (y > 0 && tmp.isKilled()) {
+					continue;
+				}
 				final Dimension2D dim = tmp.asTextBlock().calculateDimension(getStringBounder());
 				if (x == 0) {
 					minX = dim.getWidth() / 2;
@@ -124,11 +130,17 @@ public class FtileFactoryDelegatorCreateSplit extends FtileFactoryDelegator {
 				maxX = x + dim.getWidth() / 2;
 				x += dim.getWidth();
 			}
+			if (minX > totalWidth / 2) {
+				minX = totalWidth / 2;
+			}
+			if (maxX < totalWidth / 2) {
+				maxX = totalWidth / 2;
+			}
 
 			final Snake s = new Snake(arrowColor);
 			s.addPoint(minX, y);
 			s.addPoint(maxX, y);
-			s.drawU(ug);
+			ug.draw(s);
 		}
 	}
 
@@ -149,7 +161,7 @@ public class FtileFactoryDelegatorCreateSplit extends FtileFactoryDelegator {
 			final Snake s = new Snake(arrowColor, Arrows.asToDown());
 			s.addPoint(p.getX(), 0);
 			s.addPoint(p.getX(), p.getY());
-			s.drawU(ug);
+			ug.draw(s);
 		}
 	}
 
@@ -175,7 +187,7 @@ public class FtileFactoryDelegatorCreateSplit extends FtileFactoryDelegator {
 			final Snake s = new Snake(arrowColor, Arrows.asToDown());
 			s.addPoint(p.getX(), p.getY());
 			s.addPoint(p.getX(), height);
-			s.drawU(ug);
+			ug.draw(s);
 		}
 	}
 

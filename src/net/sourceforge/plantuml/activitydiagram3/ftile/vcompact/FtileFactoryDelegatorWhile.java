@@ -40,8 +40,10 @@ import net.sourceforge.plantuml.activitydiagram3.LinkRendering;
 import net.sourceforge.plantuml.activitydiagram3.ftile.Ftile;
 import net.sourceforge.plantuml.activitydiagram3.ftile.FtileFactory;
 import net.sourceforge.plantuml.activitydiagram3.ftile.FtileFactoryDelegator;
+import net.sourceforge.plantuml.activitydiagram3.ftile.Swimlane;
 import net.sourceforge.plantuml.cucadiagram.Display;
 import net.sourceforge.plantuml.graphic.HtmlColor;
+import net.sourceforge.plantuml.svek.ConditionStyle;
 import net.sourceforge.plantuml.ugraphic.UFont;
 
 public class FtileFactoryDelegatorWhile extends FtileFactoryDelegator {
@@ -50,14 +52,21 @@ public class FtileFactoryDelegatorWhile extends FtileFactoryDelegator {
 		super(factory, skinParam);
 	}
 
+	private static boolean NEW = true;
+
 	@Override
-	public Ftile createWhile(Ftile whileBlock, Display test, Display yes, Display out, LinkRendering afterEndwhile) {
+	public Ftile createWhile(Swimlane swimlane, Ftile whileBlock, Display test, Display yes, Display out, LinkRendering afterEndwhile) {
 		final HtmlColor borderColor = getRose().getHtmlColor(getSkinParam(), ColorParam.activityBorder);
 		final HtmlColor backColor = getRose().getHtmlColor(getSkinParam(), ColorParam.activityBackground);
 		final HtmlColor arrowColor = getRose().getHtmlColor(getSkinParam(), ColorParam.activityArrow);
 		final UFont font = getSkinParam().getFont(FontParam.ACTIVITY_ARROW2, null);
 		final LinkRendering endInlinkRendering = whileBlock.getOutLinkRendering();
 		final HtmlColor endInlinkColor = endInlinkRendering == null ? arrowColor : endInlinkRendering.getColor();
+		if (NEW) {
+			final ConditionStyle conditionStyle = getSkinParam().getConditionStyle();
+			return FtileWhile2.create(swimlane, whileBlock, test, borderColor, backColor, arrowColor, yes, out, font,
+					endInlinkColor, afterEndwhile, getFactory(), conditionStyle);
+		}
 		return FtileWhile.create(whileBlock, test, borderColor, backColor, arrowColor, yes, out, font, endInlinkColor,
 				afterEndwhile, getFactory());
 	}

@@ -43,6 +43,7 @@ import net.sourceforge.plantuml.activitydiagram3.ftile.FtileFactoryDelegator;
 import net.sourceforge.plantuml.activitydiagram3.ftile.Swimlane;
 import net.sourceforge.plantuml.cucadiagram.Display;
 import net.sourceforge.plantuml.graphic.HtmlColor;
+import net.sourceforge.plantuml.svek.ConditionStyle;
 import net.sourceforge.plantuml.ugraphic.UFont;
 
 public class FtileFactoryDelegatorRepeat extends FtileFactoryDelegator {
@@ -51,7 +52,7 @@ public class FtileFactoryDelegatorRepeat extends FtileFactoryDelegator {
 		super(factory, skinParam);
 	}
 
-	private static boolean NEW = false;
+	private static boolean NEW = true;
 
 	@Override
 	public Ftile repeat(Swimlane swimlane, Ftile repeat, Display test) {
@@ -65,7 +66,8 @@ public class FtileFactoryDelegatorRepeat extends FtileFactoryDelegator {
 		final HtmlColor endRepeatLinkColor = endRepeatLinkRendering == null ? null : endRepeatLinkRendering.getColor();
 
 		if (NEW) {
-			return FtileRepeat2.create(swimlane, repeat, test, borderColor, backColor, font, arrowColor, endRepeatLinkColor);
+			final ConditionStyle conditionStyle = getSkinParam().getConditionStyle();
+			return FtileRepeat2.create(swimlane, repeat, test, borderColor, backColor, font, arrowColor, endRepeatLinkColor, conditionStyle);
 		}
 		return FtileRepeat.create(repeat, test, borderColor, backColor, font, arrowColor, endRepeatLinkColor);
 	}

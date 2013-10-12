@@ -54,7 +54,7 @@ import net.sourceforge.plantuml.ugraphic.UGraphic;
 import net.sourceforge.plantuml.ugraphic.UStroke;
 import net.sourceforge.plantuml.ugraphic.UTranslate;
 
-public class FtileDiamond2 extends AbstractFtile {
+public class FtileDiamondFoo1 extends AbstractFtile {
 
 	private final HtmlColor backColor;
 	private final HtmlColor borderColor;
@@ -62,23 +62,28 @@ public class FtileDiamond2 extends AbstractFtile {
 	private final TextBlock label;
 	private final TextBlock west;
 	private final TextBlock east;
+	private final TextBlock north;
 
-	public FtileDiamond2(boolean shadowing, HtmlColor backColor, HtmlColor borderColor, Swimlane swimlane,
+	public FtileDiamondFoo1(boolean shadowing, HtmlColor backColor, HtmlColor borderColor, Swimlane swimlane,
 			TextBlock label) {
 		this(shadowing, backColor, borderColor, swimlane, label, TextBlockUtils.empty(0, 0),
-				TextBlockUtils.empty(0, 0));
+				TextBlockUtils.empty(0, 0), TextBlockUtils.empty(0, 0));
 	}
 
-	public FtileDiamond2 withWest(TextBlock west) {
-		return new FtileDiamond2(shadowing(), backColor, borderColor, swimlane, label, west, east);
+	public FtileDiamondFoo1 withNorth(TextBlock north) {
+		return new FtileDiamondFoo1(shadowing(), backColor, borderColor, swimlane, label, north, west, east);
 	}
 
-	public FtileDiamond2 withEast(TextBlock east) {
-		return new FtileDiamond2(shadowing(), backColor, borderColor, swimlane, label, west, east);
+	public FtileDiamondFoo1 withWest(TextBlock west) {
+		return new FtileDiamondFoo1(shadowing(), backColor, borderColor, swimlane, label, north, west, east);
 	}
 
-	private FtileDiamond2(boolean shadowing, HtmlColor backColor, HtmlColor borderColor, Swimlane swimlane,
-			TextBlock label, TextBlock west, TextBlock east) {
+	public FtileDiamondFoo1 withEast(TextBlock east) {
+		return new FtileDiamondFoo1(shadowing(), backColor, borderColor, swimlane, label, north, west, east);
+	}
+
+	private FtileDiamondFoo1(boolean shadowing, HtmlColor backColor, HtmlColor borderColor, Swimlane swimlane,
+			TextBlock label, TextBlock north, TextBlock west, TextBlock east) {
 		super(shadowing);
 		this.backColor = backColor;
 		this.swimlane = swimlane;
@@ -86,6 +91,7 @@ public class FtileDiamond2 extends AbstractFtile {
 		this.label = label;
 		this.west = west;
 		this.east = east;
+		this.north = north;
 	}
 
 	public Set<Swimlane> getSwimlanes() {
@@ -112,7 +118,9 @@ public class FtileDiamond2 extends AbstractFtile {
 				final Dimension2D dimTotal = calculateDimensionInternal(stringBounder);
 				ug = ug.apply(new UChangeColor(borderColor)).apply(new UStroke(1.5))
 						.apply(new UChangeBackColor(backColor));
-				ug.draw(Diamond.asPolygon(shadowing(), dimTotal.getWidth(), dimTotal.getHeight()));
+				ug.draw(Diamond.asPolygonFoo1(shadowing(), dimTotal.getWidth(), dimTotal.getHeight()));
+
+				north.drawU(ug.apply(new UTranslate(4 + dimTotal.getWidth() / 2, dimTotal.getHeight())));
 
 				final double lx = (dimTotal.getWidth() - dimLabel.getWidth()) / 2;
 				final double ly = (dimTotal.getHeight() - dimLabel.getHeight()) / 2;
@@ -121,7 +129,7 @@ public class FtileDiamond2 extends AbstractFtile {
 				final Dimension2D dimWeat = west.calculateDimension(stringBounder);
 				west.drawU(ug.apply(new UTranslate(-dimWeat.getWidth(), -dimWeat.getHeight() + Diamond.diamondHalfSize)));
 
-				final Dimension2D dimEast = west.calculateDimension(stringBounder);
+				final Dimension2D dimEast = east.calculateDimension(stringBounder);
 				east.drawU(ug.apply(new UTranslate(dimTotal.getWidth(), -dimEast.getHeight() + Diamond.diamondHalfSize)));
 
 			}
@@ -141,9 +149,9 @@ public class FtileDiamond2 extends AbstractFtile {
 		if (dimLabel.getWidth() == 0 || dimLabel.getHeight() == 0) {
 			return new Dimension2DDouble(Diamond.diamondHalfSize * 2, Diamond.diamondHalfSize * 2);
 		}
-		Dimension2D result = Dimension2DDouble.atLeast(dimLabel, Diamond.diamondHalfSize * 2,
-				Diamond.diamondHalfSize * 2);
-		result = Dimension2DDouble.delta(result, Diamond.diamondHalfSize * 2, 0);
+		Dimension2D result = dimLabel;// Dimension2DDouble.atLeast(dimLabel, Diamond.diamondHalfSize * 2,
+										// Diamond.diamondHalfSize * 2);
+		result = Dimension2DDouble.delta(result, Diamond.diamondHalfSize * 2, Diamond.diamondHalfSize * 2);
 		return result;
 	}
 
@@ -156,7 +164,8 @@ public class FtileDiamond2 extends AbstractFtile {
 	}
 
 	public Point2D getPointOut(StringBounder stringBounder) {
-		return new Point2D.Double(calculateDimensionInternal(stringBounder).getWidth() / 2, Diamond.diamondHalfSize * 2);
+		final Dimension2D dim = calculateDimensionInternal(stringBounder);
+		return new Point2D.Double(dim.getWidth() / 2, dim.getHeight());
 	}
 
 	// private double getDeltaX(StringBounder stringBounder) {

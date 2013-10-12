@@ -63,7 +63,7 @@ public interface FtileFactory {
 
 	public Ftile repeat(Swimlane swimlane, Ftile repeat, Display test);
 
-	public Ftile createWhile(Ftile whileBlock, Display test, Display yes, Display out, LinkRendering afterEndwhile);
+	public Ftile createWhile(Swimlane swimlane, Ftile whileBlock, Display test, Display yes, Display out, LinkRendering afterEndwhile);
 
 	public Ftile createIf(Swimlane swimlane, Ftile tile1, Ftile tile2, Display labelTest, Display label1, Display label2);
 

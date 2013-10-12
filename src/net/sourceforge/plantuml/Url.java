@@ -75,11 +75,11 @@ public class Url implements EnsureVisible {
 
 	@Override
 	public String toString() {
-		return super.toString() + " " + url + " " + visible.getCoords();
+		return super.toString() + " " + url + " " + visible.getCoords(1.0);
 	}
 
-	public String getCoords() {
-		return visible.getCoords();
+	public String getCoords(double scale) {
+		return visible.getCoords(scale);
 	}
 
 	public void setMember(boolean member) {

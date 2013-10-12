@@ -121,7 +121,7 @@ public class FtileFactoryDelegatorCreateFork extends FtileFactoryDelegator {
 			final Snake s = new Snake(arrowColor, Arrows.asToDown());
 			s.addPoint(p.getX(), 0);
 			s.addPoint(p.getX(), p.getY());
-			s.drawU(ug);
+			ug.draw(s);
 		}
 	}
 
@@ -147,7 +147,7 @@ public class FtileFactoryDelegatorCreateFork extends FtileFactoryDelegator {
 			final Snake s = new Snake(arrowColor, Arrows.asToDown());
 			s.addPoint(p.getX(), p.getY());
 			s.addPoint(p.getX(), height);
-			s.drawU(ug);
+			ug.draw(s);
 		}
 	}
 

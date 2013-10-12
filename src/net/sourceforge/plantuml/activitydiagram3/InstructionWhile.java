@@ -52,12 +52,14 @@ public class InstructionWhile implements Instruction {
 	private Display out;
 	private LinkRendering endInlinkRendering;
 	private LinkRendering afterEndwhile;
+	private final Swimlane swimlane;
 
-	public InstructionWhile(Instruction parent, Display test, LinkRendering nextLinkRenderer, Display yes) {
+	public InstructionWhile(Swimlane swimlane, Instruction parent, Display test, LinkRendering nextLinkRenderer, Display yes) {
 		this.parent = parent;
 		this.test = test;
 		this.nextLinkRenderer = nextLinkRenderer;
 		this.yes = yes;
+		this.swimlane = swimlane;
 	}
 
 	public void add(Instruction ins) {
@@ -66,7 +68,7 @@ public class InstructionWhile implements Instruction {
 
 	public Ftile createFtile(FtileFactory factory) {
 		Ftile tmp = factory.decorateOut(repeatList.createFtile(factory), endInlinkRendering);
-		tmp = factory.createWhile(tmp, test, yes, out, afterEndwhile);
+		tmp = factory.createWhile(swimlane, tmp, test, yes, out, afterEndwhile);
 		// tmp = factory.decorateOut(tmp, afterEndwhile);
 		return tmp;
 	}

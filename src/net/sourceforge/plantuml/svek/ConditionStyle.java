@@ -27,40 +27,27 @@
  * in the United States and other countries.]
  *
  * Original Author:  Arnaud Roques
- * 
- * Revision $Revision: 11025 $
+ * Modified by : Arno Peterson
  *
+ * Revision $Revision: 4236 $
+ * 
  */
-package net.sourceforge.plantuml.activitydiagram3.ftile;
+package net.sourceforge.plantuml.svek;
 
-import net.sourceforge.plantuml.ugraphic.ULine;
-import net.sourceforge.plantuml.ugraphic.UShape;
+import java.util.EnumSet;
 
-public class ULineMergeable implements UShape {
+public enum ConditionStyle {
 
-	private final double dx;
-	private final double dy;
-
-	public ULineMergeable(double dx, double dy) {
-		this.dx = dx;
-		this.dy = dy;
+	DIAMOND, INSIDE, FOO1;
+	
+	public static ConditionStyle fromString(String value) {
+		for (ConditionStyle p : EnumSet.allOf(ConditionStyle.class)) {
+			if (p.toString().equalsIgnoreCase(value)) {
+				return p;
+			}
+		}
+		return null;
 	}
 
-	public ULine toLine() {
-		return new ULine(dx, dy);
-	}
-
-	@Override
-	public String toString() {
-		return "ULineMergeable dx=" + dx + " dy=" + dy;
-	}
-
-	public double getDX() {
-		return dx;
-	}
-
-	public double getDY() {
-		return dy;
-	}
 
 }

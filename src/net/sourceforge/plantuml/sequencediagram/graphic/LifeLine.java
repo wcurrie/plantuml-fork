@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 10077 $
+ * Revision $Revision: 11635 $
  *
  */
 package net.sourceforge.plantuml.sequencediagram.graphic;
@@ -221,10 +221,10 @@ class LifeLine {
 					type = type == ComponentType.ALIVE_BOX_CLOSE_OPEN ? ComponentType.ALIVE_BOX_CLOSE_CLOSE
 							: ComponentType.ALIVE_BOX_OPEN_CLOSE;
 				}
-				final Component comp = skin.createComponent(type, null, skinParam2, null);
+				final Component compAliveBox = skin.createComponent(type, null, skinParam2, null);
 				type = ComponentType.ALIVE_BOX_OPEN_OPEN;
 				final int currentLevel = getLevel(seg.getSegment().getPos1());
-				seg.drawU(ug, comp, currentLevel);
+				seg.drawU(ug, compAliveBox, currentLevel);
 			}
 		}
 	}

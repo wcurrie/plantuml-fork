@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 10070 $
+ * Revision $Revision: 11635 $
  *
  */
 package net.sourceforge.plantuml.sequencediagram.graphic;
@@ -83,12 +83,12 @@ class SegmentColored {
 		return this.segment.toString();
 	}
 
-	public void drawU(UGraphic ug, Component comp, int level) {
+	public void drawU(UGraphic ug, Component compAliveBox, int level) {
 		final StringBounder stringBounder = ug.getStringBounder();
-		ug = ug.apply(new UTranslate((level - 1) * comp.getPreferredWidth(stringBounder) / 2, segment.getPos1()));
-		final Dimension2D dim = new Dimension2DDouble(comp.getPreferredWidth(stringBounder), segment.getPos2()
+		ug = ug.apply(new UTranslate((level - 1) * compAliveBox.getPreferredWidth(stringBounder) / 2, segment.getPos1()));
+		final Dimension2D dim = new Dimension2DDouble(compAliveBox.getPreferredWidth(stringBounder), segment.getPos2()
 				- segment.getPos1());
-		comp.drawU(ug, new Area(dim), new SimpleContext2D(false));
+		compAliveBox.drawU(ug, new Area(dim), new SimpleContext2D(false));
 	}
 
 	public Collection<SegmentColored> cutSegmentIfNeed(Collection<Segment> allDelays) {

@@ -27,14 +27,25 @@
  * in the United States and other countries.]
  *
  * Original Author:  Arnaud Roques
- * 
- * Revision $Revision: 11025 $
+ *
+ * Revision $Revision: 8475 $
  *
  */
 package net.sourceforge.plantuml.activitydiagram3.ftile;
 
-import net.sourceforge.plantuml.ugraphic.UShape;
+import java.awt.geom.Point2D;
 
-public class ULineFlush implements UShape {
+public enum SnakeDirection {
+	VERTICAL_THEN_HORIZONTAL, HORIZONTAL_THEN_VERTICAL;
+
+	public static SnakeDirection getDirection(Point2D pt1, Point2D pt2) {
+		if (pt1.getX() == pt2.getX()) {
+			return VERTICAL_THEN_HORIZONTAL;
+		}
+		if (pt1.getY() == pt2.getY()) {
+			return HORIZONTAL_THEN_VERTICAL;
+		}
+		throw new IllegalArgumentException();
+	}
 
 }

@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 10925 $
+ * Revision $Revision: 11681 $
  *
  */
 package net.sourceforge.plantuml.ugraphic;
@@ -86,5 +86,5 @@ public abstract class AbstractUGraphic<O> extends AbstractCommonUGraphic {
 
 	protected void afterDraw() {
 	}
-
+	
 }

@@ -98,6 +98,8 @@ public class SequenceDiagramFileMakerPuma implements FileMaker {
 	private final FileFormatOption fileFormatOption;
 	private final List<BufferedImage> flashcodes;
 
+	private double scale;
+
 	private int offsetX;
 	private int offsetY;
 
@@ -246,7 +248,7 @@ public class SequenceDiagramFileMakerPuma implements FileMaker {
 		}
 		final Dimension2D dimLegend = TextBlockUtils.getDimension(legendBlock);
 
-		final double scale = getScale(area.getWidth(), area.getHeight());
+		scale = getScale(area.getWidth(), area.getHeight());
 		UGraphic ug;
 		if (fileFormat == FileFormat.PNG) {
 			double imageHeight = getImageHeight(area, page, diagram.isRotation(), 1);
@@ -279,7 +281,8 @@ public class SequenceDiagramFileMakerPuma implements FileMaker {
 			} else if (backColor == null || backColor.equals(Color.WHITE)) {
 				ug = new UGraphicSvg(diagram.getSkinParam().getColorMapper(), false, scale);
 			} else {
-				ug = new UGraphicSvg(diagram.getSkinParam().getColorMapper(), StringUtils.getAsHtml(backColor), false, scale);
+				ug = new UGraphicSvg(diagram.getSkinParam().getColorMapper(), StringUtils.getAsHtml(backColor), false,
+						scale);
 			}
 		} else if (fileFormat == FileFormat.EPS) {
 			ug = new UGraphicEps(diagram.getSkinParam().getColorMapper(), EpsStrategy.getDefault2());
@@ -379,7 +382,10 @@ public class SequenceDiagramFileMakerPuma implements FileMaker {
 	}
 
 	public void appendCmap(CMapData cmap) {
-		drawableSet.appendCmap(cmap, offsetX, offsetY, dummyStringBounder, diagram);
+		if (scale == 0) {
+			throw new IllegalStateException();
+		}
+		drawableSet.appendCmap(cmap, offsetX, offsetY, dummyStringBounder, diagram, scale);
 	}
 
 }

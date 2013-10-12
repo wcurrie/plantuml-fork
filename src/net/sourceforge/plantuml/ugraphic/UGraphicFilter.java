@@ -33,56 +33,28 @@
  */
 package net.sourceforge.plantuml.ugraphic;
 
-import java.io.IOException;
-import java.io.OutputStream;
 import java.util.Arrays;
 import java.util.Collection;
 
-import net.sourceforge.plantuml.Url;
-import net.sourceforge.plantuml.graphic.StringBounder;
+import net.sourceforge.plantuml.graphic.UGraphicDelegator;
 
-public class UGraphicFilter implements UGraphic {
+public class UGraphicFilter extends UGraphicDelegator {
 
 	public UGraphic apply(UChange translate) {
 		throw new UnsupportedOperationException();
 	}
 
-	private final UGraphic ug;
 	private final Collection<Class<? extends UShape>> toprint;
 
 	public UGraphicFilter(UGraphic ug, Class<? extends UShape>... toprint) {
-		this.ug = ug;
+		super(ug);
 		this.toprint = Arrays.asList(toprint);
-	}
-
-	public StringBounder getStringBounder() {
-		return ug.getStringBounder();
-	}
-
-	public UParam getParam() {
-		return ug.getParam();
 	}
 
 	public void draw(UShape shape) {
 		if (toprint.contains(shape.getClass())) {
-			ug.draw(shape);
+			getUg().draw(shape);
 		}
-	}
-
-	public void writeImage(OutputStream os, String metadata, int dpi) throws IOException {
-		ug.writeImage(os, metadata, dpi);
-	}
-
-	public ColorMapper getColorMapper() {
-		return ug.getColorMapper();
-	}
-
-	public void startUrl(Url url) {
-		ug.startUrl(url);
-	}
-
-	public void closeAction() {
-		ug.closeAction();
 	}
 
 }

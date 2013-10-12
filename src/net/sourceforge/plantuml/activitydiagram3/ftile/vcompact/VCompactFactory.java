@@ -102,7 +102,7 @@ public class VCompactFactory implements FtileFactory {
 		return repeat;
 	}
 
-	public Ftile createWhile(Ftile whileBlock, Display test, Display yes, Display out, LinkRendering afterEndwhile) {
+	public Ftile createWhile(Swimlane swimlane, Ftile whileBlock, Display test, Display yes, Display out, LinkRendering afterEndwhile) {
 		return whileBlock;
 	}
 

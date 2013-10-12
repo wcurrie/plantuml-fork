@@ -66,7 +66,7 @@ import net.sourceforge.plantuml.graphic.TextBlock;
 import net.sourceforge.plantuml.graphic.TextBlockInterceptorTextBlockable;
 import net.sourceforge.plantuml.graphic.TextBlockUtils;
 import net.sourceforge.plantuml.graphic.UGraphicDelegator;
-import net.sourceforge.plantuml.svek.UGraphicLineMerger;
+import net.sourceforge.plantuml.svek.UGraphicForSnake;
 import net.sourceforge.plantuml.ugraphic.LimitFinder;
 import net.sourceforge.plantuml.ugraphic.MinMax;
 import net.sourceforge.plantuml.ugraphic.UChange;
@@ -171,16 +171,16 @@ public class Swimlanes implements TextBlock {
 
 	}
 
-	public void drawU(final UGraphic ug) {
+	public void drawU(UGraphic ug) {
 		final FtileFactory factory = getFtileFactory();
 		TextBlock full = root.createFtile(factory).asTextBlock();
+		ug = new UGraphicForSnake(ug);
 		if (swinlanes.size() <= 1) {
 			full = new TextBlockInterceptorTextBlockable(full);
 			// BUG42
 			// full.drawU(ug);
-			final UGraphicLineMerger ugLineMerger = new UGraphicLineMerger(ug);
-			full.drawU(ugLineMerger);
-			ugLineMerger.draw(new ULineFlush());
+			full.drawU(ug);
+			ug.flush();
 			return;
 		}
 
@@ -206,9 +206,10 @@ public class Swimlanes implements TextBlock {
 					new SpriteContainerEmpty());
 
 			final LimitFinder limitFinder = new LimitFinder(stringBounder, false);
-			final UGraphicLineMerger ugLineMerger1 = new UGraphicLineMerger(limitFinder);
-			full.drawU(new UGraphicInterceptorOneSwimlane(ugLineMerger1, swimlane));
-			ugLineMerger1.draw(new ULineFlush());
+			final UGraphicInterceptorOneSwimlane interceptor = new UGraphicInterceptorOneSwimlane(new UGraphicForSnake(
+					limitFinder), swimlane);
+			full.drawU(interceptor);
+			interceptor.flush();
 			final MinMax minMax = limitFinder.getMinMax();
 			// System.err.println("minMax=" + minMax);
 
@@ -231,15 +232,16 @@ public class Swimlanes implements TextBlock {
 
 			drawSeparation(ug.apply(new UTranslate(x, 0)), dimensionFull.getHeight() + titlesHeight);
 
-			final UGraphicLineMerger ugLineMerger2 = new UGraphicLineMerger(ug);
-			final UGraphic ugOneSwimlane = new UGraphicInterceptorOneSwimlane(ugLineMerger2, swimlane);
+			final UGraphic ugOneSwimlane = new UGraphicInterceptorOneSwimlane(ug, swimlane);
 			full.drawU(ugOneSwimlane.apply(translate).apply(titleHeightTranslate));
-			ugLineMerger2.draw(new ULineFlush());
+			// ugOneSwimlane.flush();
 
 			x += totalWidth;
 		}
 		drawSeparation(ug.apply(new UTranslate(x, 0)), dimensionFull.getHeight() + titlesHeight);
-		full.drawU(new Cross(ug.apply(titleHeightTranslate)));
+		final Cross cross = new Cross(ug.apply(titleHeightTranslate));
+		full.drawU(cross);
+		cross.flush();
 	}
 
 	private void drawSeparation(UGraphic ug, double height) {

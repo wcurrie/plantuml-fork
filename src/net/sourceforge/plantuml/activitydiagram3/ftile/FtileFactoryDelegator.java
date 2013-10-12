@@ -98,8 +98,8 @@ public class FtileFactoryDelegator implements FtileFactory {
 		return factory.repeat(swimlane, repeat, test);
 	}
 
-	public Ftile createWhile(Ftile whileBlock, Display test, Display yes, Display out, LinkRendering afterEndwhile) {
-		return factory.createWhile(whileBlock, test, yes, out, afterEndwhile);
+	public Ftile createWhile(Swimlane swimlane, Ftile whileBlock, Display test, Display yes, Display out, LinkRendering afterEndwhile) {
+		return factory.createWhile(swimlane, whileBlock, test, yes, out, afterEndwhile);
 	}
 
 	public Ftile createIf(Swimlane swimlane, Ftile tile1, Ftile tile2, Display labelTest, Display label1, Display label2) {

@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  *
- * Revision $Revision: 11264 $
+ * Revision $Revision: 11661 $
  *
  */
 package net.sourceforge.plantuml;
@@ -49,6 +49,7 @@ import net.sourceforge.plantuml.cucadiagram.dot.GraphvizLayoutStrategy;
 import net.sourceforge.plantuml.graphic.HorizontalAlignment;
 import net.sourceforge.plantuml.graphic.HtmlColor;
 import net.sourceforge.plantuml.graphic.HtmlColorUtils;
+import net.sourceforge.plantuml.svek.ConditionStyle;
 import net.sourceforge.plantuml.svek.PackageStyle;
 import net.sourceforge.plantuml.ugraphic.ColorMapper;
 import net.sourceforge.plantuml.ugraphic.ColorMapperIdentity;
@@ -484,6 +485,15 @@ public class SkinParam implements ISkinParam {
 			return true;
 		}
 		return false;
+	}
+
+	public ConditionStyle getConditionStyle() {
+		final String value = getValue("conditionStyle");
+		final ConditionStyle p = ConditionStyle.fromString(value);
+		if (p == null) {
+			return ConditionStyle.INSIDE;
+		}
+		return p;
 	}
 
 }

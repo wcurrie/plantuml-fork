@@ -136,4 +136,7 @@ public class SlotFinder implements UGraphic {
 		return yslot;
 	}
 
+	public void flush() {
+	}
+
 }

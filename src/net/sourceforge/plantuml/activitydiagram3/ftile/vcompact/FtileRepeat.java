@@ -125,7 +125,7 @@ class FtileRepeat extends AbstractFtile {
 			snake.addPoint(dimTotal.getWidth() / 2, 2 * Diamond.diamondHalfSize);
 			snake.addPoint(pIn.getX(), pIn.getY());
 
-			snake.drawU(ug);
+			ug.draw(snake);
 		}
 	}
 
@@ -152,7 +152,7 @@ class FtileRepeat extends AbstractFtile {
 			ug = ug.apply(new UChangeColor(arrowColor)).apply(new UChangeBackColor(arrowColor));
 			ug.apply(new UTranslate(dimTotal.getWidth() - Diamond.diamondHalfSize, dimTotal.getHeight() / 2)).draw(
 					Arrows.asToUp());
-			snake.drawU(ug.apply(new UStroke(1.5)));
+			ug.apply(new UStroke(1.5)).draw(snake);
 		}
 	}
 
@@ -174,7 +174,7 @@ class FtileRepeat extends AbstractFtile {
 			snake.addPoint(pIn.getX(), pIn.getY());
 			snake.addPoint(dimTotal.getWidth() / 2, dimTotal.getHeight() - 2 * Diamond.diamondHalfSize);
 
-			snake.drawU(ug);
+			ug.draw(snake);
 		}
 	}
 

@@ -85,7 +85,9 @@ public class QuoteUtils {
 			"Hey, what do you want? Miracles?", //
 			"1.21 gigawatts! 1.21 gigawatts. Great Scott! ", //
 			"What the hell is a gigawatt?", //
-			"I need a vacation." //
+			"I need a vacation.", //
+			"On devrait jamais quitter Montauban.", //
+			"My force is a platform that you can climb on..."
 	);
 
 	private QuoteUtils() {

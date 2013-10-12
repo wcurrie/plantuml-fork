@@ -55,14 +55,14 @@ public class BasicEnsureVisible implements EnsureVisible {
 		}
 	}
 
-	public String getCoords() {
+	public String getCoords(double scale) {
 		if (minX == Double.MAX_VALUE) {
 			return "0,0,0,0";
 		}
-		final int x1 = (int) minX;
-		final int y1 = (int) minY;
-		final int x2 = (int) maxX;
-		final int y2 = (int) maxY;
+		final int x1 = (int) (minX * scale);
+		final int y1 = (int) (minY * scale);
+		final int x2 = (int) (maxX * scale);
+		final int y2 = (int) (maxY * scale);
 		return "" + x1 + "," + y1 + "," + x2 + "," + y2;
 	}
 

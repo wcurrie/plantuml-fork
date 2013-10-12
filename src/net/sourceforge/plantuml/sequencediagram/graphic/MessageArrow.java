@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 10067 $
+ * Revision $Revision: 11635 $
  *
  */
 package net.sourceforge.plantuml.sequencediagram.graphic;
@@ -51,8 +51,10 @@ class MessageArrow extends Arrow {
 
 	private final LivingParticipantBox p1;
 	private final LivingParticipantBox p2;
+	private final Component compAliveBox;
 
-	public MessageArrow(double startingY, Skin skin, Component arrow, LivingParticipantBox p1, LivingParticipantBox p2, Url url) {
+	public MessageArrow(double startingY, Skin skin, Component arrow, LivingParticipantBox p1, LivingParticipantBox p2,
+			Url url, Component compAliveBox) {
 		super(startingY, skin, arrow, url);
 
 		if (p1 == p2) {
@@ -63,6 +65,7 @@ class MessageArrow extends Arrow {
 		}
 		this.p1 = p1;
 		this.p2 = p2;
+		this.compAliveBox = compAliveBox;
 	}
 
 	@Override
@@ -73,13 +76,24 @@ class MessageArrow extends Arrow {
 	}
 
 	private double getLeftStartInternal(StringBounder stringBounder) {
-		return getParticipantAt(stringBounder, NotePosition.LEFT).getLiveThicknessAt(stringBounder,
-				getArrowYStartLevel(stringBounder)).getSegment().getPos2();
+		return getParticipantAt(stringBounder, NotePosition.LEFT)
+				.getLiveThicknessAt(stringBounder, getArrowYStartLevel(stringBounder)).getSegment().getPos2();
 	}
-
-	private double getRightEndInternal(StringBounder stringBounder) {
+	
+	private double getRightEndInternalOld(StringBounder stringBounder) {
 		return getParticipantAt(stringBounder, NotePosition.RIGHT).getLiveThicknessAt(stringBounder,
 				getArrowYStartLevel(stringBounder)).getSegment().getPos1();
+	}
+
+
+	private double getRightEndInternal(StringBounder stringBounder) {
+		final Segment segment = getParticipantAt(stringBounder, NotePosition.RIGHT).getLiveThicknessAt(stringBounder,
+				getArrowYStartLevel(stringBounder)).getSegment();
+		if (segment.getLength() == 0) {
+			return segment.getPos1();
+		}
+		final double rectWidth = compAliveBox.getPreferredWidth(stringBounder);
+		return segment.getPos2() - rectWidth;
 	}
 
 	@Override

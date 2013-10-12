@@ -37,6 +37,7 @@ import net.sourceforge.plantuml.cucadiagram.dot.DotSplines;
 import net.sourceforge.plantuml.cucadiagram.dot.GraphvizLayoutStrategy;
 import net.sourceforge.plantuml.graphic.HorizontalAlignment;
 import net.sourceforge.plantuml.graphic.HtmlColor;
+import net.sourceforge.plantuml.svek.ConditionStyle;
 import net.sourceforge.plantuml.svek.PackageStyle;
 import net.sourceforge.plantuml.ugraphic.ColorMapper;
 import net.sourceforge.plantuml.ugraphic.UFont;
@@ -51,7 +52,7 @@ public interface ISkinParam extends SpriteContainer {
 	public HtmlColor getHtmlColor(ColorParam param, String stereotype, boolean clickable);
 
 	public HtmlColor getFontHtmlColor(FontParam param, String stereotype);
-	
+
 	public UStroke getThickness(LineParam param);
 
 	public UFont getFont(FontParam fontParam, String stereotype);
@@ -73,23 +74,25 @@ public interface ISkinParam extends SpriteContainer {
 	public boolean shadowing();
 
 	public PackageStyle getPackageStyle();
-	
+
 	public boolean useUml2ForComponent();
-	
+
 	public boolean stereotypePositionTop();
-	
+
 	public boolean useSwimlanes();
-	
+
 	public double getNodesep();
-	
+
 	public double getRanksep();
-	
+
 	public double getRoundCorner();
-	
+
 	public double maxMessageSize();
-	
+
 	public boolean strictUmlStyle();
-	
+
 	public boolean forceSequenceParticipantUnderlined();
+
+	public ConditionStyle getConditionStyle();
 
 }

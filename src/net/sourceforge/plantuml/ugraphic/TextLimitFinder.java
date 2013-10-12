@@ -128,4 +128,7 @@ public class TextLimitFinder implements UGraphic {
 		return minmax.getMinY();
 	}
 
+	public void flush() {
+	}
+
 }

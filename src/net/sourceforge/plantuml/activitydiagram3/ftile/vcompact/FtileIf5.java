@@ -42,6 +42,7 @@ import java.util.List;
 import java.util.Set;
 
 import net.sourceforge.plantuml.Dimension2DDouble;
+import net.sourceforge.plantuml.Direction;
 import net.sourceforge.plantuml.SpriteContainerEmpty;
 import net.sourceforge.plantuml.Url;
 import net.sourceforge.plantuml.activitydiagram3.LinkRendering;
@@ -74,7 +75,7 @@ import net.sourceforge.plantuml.ugraphic.UGraphic;
 import net.sourceforge.plantuml.ugraphic.UPolygon;
 import net.sourceforge.plantuml.ugraphic.UTranslate;
 
-class FtileIf4 extends AbstractFtile {
+class FtileIf5 extends AbstractFtile {
 
 	private final Ftile tile1;
 	private final Ftile tile2;
@@ -83,7 +84,7 @@ class FtileIf4 extends AbstractFtile {
 
 	private final HtmlColor arrowColor;
 
-	private FtileIf4(Ftile diamond1, Ftile tile1, Ftile tile2, Ftile diamond2, HtmlColor arrowColor) {
+	private FtileIf5(Ftile diamond1, Ftile tile1, Ftile tile2, Ftile diamond2, HtmlColor arrowColor) {
 		super(tile1.shadowing() || tile2.shadowing());
 		this.diamond1 = diamond1;
 		this.diamond2 = diamond2;
@@ -144,7 +145,7 @@ class FtileIf4 extends AbstractFtile {
 		} else {
 			diamond2 = new FtileDiamond(tile1.shadowing(), backColor, borderColor, swimlane);
 		}
-		final FtileIf4 result = new FtileIf4(diamond1, tile1, tile2, diamond2, arrowColor);
+		final FtileIf5 result = new FtileIf5(diamond1, tile1, tile2, diamond2, arrowColor);
 
 		final List<Connection> conns = new ArrayList<Connection>();
 		conns.add(result.new ConnectionHorizontalThenVertical(tile1));
@@ -189,10 +190,21 @@ class FtileIf4 extends AbstractFtile {
 			final StringBounder stringBounder = ug.getStringBounder();
 			Point2D p1 = getP1(stringBounder);
 			Point2D p2 = getP2(stringBounder);
-			final LinkRendering linkIn = getFtile2().getInLinkRendering();
-			final Snake snake = new Snake(linkIn == null ? arrowColor : linkIn.getColor(), Arrows.asToDown(), true);
+			final Direction originalDirection = Direction.leftOrRight(p1, p2);
 			p1 = translate1.getTranslated(p1);
 			p2 = translate2.getTranslated(p2);
+			final Direction newDirection = Direction.leftOrRight(p1, p2);
+			final LinkRendering linkIn = getFtile2().getInLinkRendering();
+			if (originalDirection != newDirection) {
+				final Dimension2D dimDiamond1 = diamond1.asTextBlock().calculateDimension(stringBounder);
+				final Snake small = new Snake(linkIn == null ? arrowColor : linkIn.getColor(), false);
+				small.addPoint(p1);
+				small.addPoint(p1.getX() - Diamond.diamondHalfSize, p1.getY());
+				small.addPoint(p1.getX() - Diamond.diamondHalfSize, p1.getY() + dimDiamond1.getHeight());
+				ug.draw(small);
+				p1 = small.getLast();
+			}
+			final Snake snake = new Snake(linkIn == null ? arrowColor : linkIn.getColor(), Arrows.asToDown(), true);
 			snake.addPoint(p1);
 			snake.addPoint(p2.getX(), p1.getY());
 			snake.addPoint(p2);
@@ -268,20 +280,46 @@ class FtileIf4 extends AbstractFtile {
 			if (pointOut == null) {
 				return;
 			}
-			final Point2D p1 = translate(stringBounder).getTranslated(pointOut);
 			final Point2D p2 = getP2(stringBounder);
+			final Point2D p1 = translate(stringBounder).getTranslated(pointOut);
+			final Direction originalDirection = Direction.leftOrRight(p1, p2);
+
 			final double x1 = p1.getX();
 			final double x2 = p2.getX();
-			final UPolygon arrow = x2 > x1 ? Arrows.asToRight() : Arrows.asToLeft();
-			final Snake snake = new Snake(myArrowColor, arrow, true);
 			final Point2D mp1a = translate1.getTranslated(p1);
 			final Point2D mp2b = translate2.getTranslated(p2);
-			final double middle = (mp1a.getY() + mp2b.getY()) / 2.0;
-			snake.addPoint(mp1a);
-			snake.addPoint(mp1a.getX(), middle);
-			snake.addPoint(mp2b.getX(), middle);
-			snake.addPoint(mp2b);
-			ug.draw(snake);
+			final Direction newDirection = Direction.leftOrRight(mp1a, mp2b);
+			final UPolygon arrow = x2 > x1 ? Arrows.asToRight() : Arrows.asToLeft();
+			if (originalDirection == newDirection) {
+				final double delta = (x2 > x1 ? -1 : 1) * 1.5 * Diamond.diamondHalfSize;
+				final Point2D mp2bc = new Point2D.Double(mp2b.getX() + delta, mp2b.getY());
+				final Snake snake = new Snake(myArrowColor, true);
+				final double middle = (mp1a.getY() + mp2b.getY()) / 2.0;
+				snake.addPoint(mp1a);
+				snake.addPoint(mp1a.getX(), middle);
+				snake.addPoint(mp2bc.getX(), middle);
+				snake.addPoint(mp2bc);
+				ug.draw(snake);
+				final Snake small = new Snake(myArrowColor, arrow);
+				small.addPoint(mp2bc);
+				small.addPoint(mp2bc.getX(), mp2b.getY());
+				small.addPoint(mp2b);
+				ug.draw(small);
+			} else {
+				final double delta = (x2 > x1 ? -1 : 1) * 1.5 * Diamond.diamondHalfSize;
+				final Point2D mp2bb = new Point2D.Double(mp2b.getX() + delta, mp2b.getY() - 3 * Diamond.diamondHalfSize);
+				final Snake snake = new Snake(myArrowColor, true);
+				snake.addPoint(mp1a);
+				snake.addPoint(mp1a.getX(), mp2bb.getY());
+				snake.addPoint(mp2bb);
+				ug.draw(snake);
+				final Snake small = new Snake(myArrowColor, arrow);
+				small.addPoint(mp2bb);
+				small.addPoint(mp2bb.getX(), mp2b.getY());
+				small.addPoint(mp2b);
+				ug.draw(small);
+
+			}
 
 		}
 
@@ -450,7 +488,7 @@ class FtileIf4 extends AbstractFtile {
 		final double widthA = dim12.getWidth();
 		final double widthB = Math.max(dim1.getWidth(), dim2.getWidth()) + dimDiamond1.getWidth();
 		final double width = Math.max(widthA, widthB);
-		return new Dimension2DDouble(width + 30, dim12.getHeight() + dimDiamond1.getHeight() * 2 + 25);
+		return new Dimension2DDouble(width + 30, dim12.getHeight() + dimDiamond1.getHeight() * 3 + 40);
 	}
 
 	public Point2D getPointIn(StringBounder stringBounder) {

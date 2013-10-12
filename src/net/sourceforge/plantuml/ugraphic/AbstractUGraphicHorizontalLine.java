@@ -36,21 +36,19 @@ package net.sourceforge.plantuml.ugraphic;
 import java.io.IOException;
 import java.io.OutputStream;
 
-import net.sourceforge.plantuml.Url;
-import net.sourceforge.plantuml.graphic.StringBounder;
+import net.sourceforge.plantuml.graphic.UGraphicDelegator;
 
-public abstract class AbstractUGraphicHorizontalLine implements UGraphic {
+public abstract class AbstractUGraphicHorizontalLine extends UGraphicDelegator {
 
-	private UGraphic ug;
 	private UTranslate translate = new UTranslate();
 
 	public UGraphic apply(UChange change) {
 		final AbstractUGraphicHorizontalLine result;
 		if (change instanceof UTranslate) {
-			result = copy(ug);
+			result = copy(getUg());
 			result.translate = this.translate.compose((UTranslate) change);
 		} else {
-			result = copy(ug.apply(change));
+			result = copy(getUg().apply(change));
 			result.translate = this.translate;
 		}
 		return result;
@@ -59,37 +57,17 @@ public abstract class AbstractUGraphicHorizontalLine implements UGraphic {
 	protected abstract AbstractUGraphicHorizontalLine copy(UGraphic ug);
 
 	protected AbstractUGraphicHorizontalLine(UGraphic ug) {
-		this.ug = ug;
-	}
-
-	public StringBounder getStringBounder() {
-		return ug.getStringBounder();
-	}
-
-	public UParam getParam() {
-		return ug.getParam();
+		super(ug);
 	}
 
 	protected abstract void drawHline(UGraphic ug, UHorizontalLine line, UTranslate translate);
 
 	public void draw(UShape shape) {
 		if (shape instanceof UHorizontalLine) {
-			drawHline(ug, (UHorizontalLine) shape, new UTranslate(0, translate.getDy()));
+			drawHline(getUg(), (UHorizontalLine) shape, new UTranslate(0, translate.getDy()));
 		} else {
-			ug.apply(translate).draw(shape);
+			getUg().apply(translate).draw(shape);
 		}
-	}
-
-	public ColorMapper getColorMapper() {
-		return ug.getColorMapper();
-	}
-
-	public void startUrl(Url url) {
-		ug.startUrl(url);
-	}
-
-	public void closeAction() {
-		ug.closeAction();
 	}
 
 	public void writeImage(OutputStream os, String metadata, int dpi) throws IOException {

@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 11339 $
+ * Revision $Revision: 11635 $
  *
  */
 package net.sourceforge.plantuml.sequencediagram.graphic;
@@ -64,8 +64,11 @@ class Step1Message extends Step1Abstract {
 		} else {
 			final Component comp = drawingSet.getSkin().createComponent(ComponentType.ARROW, getConfig(),
 					drawingSet.getSkinParam(), getLabelOfMessage(message));
+			final Component compAliveBox = drawingSet.getSkin().createComponent(ComponentType.ALIVE_BOX_OPEN_OPEN,
+					null, drawingSet.getSkinParam(), null);
+
 			this.messageArrow = new MessageArrow(freeY.getFreeY(range), drawingSet.getSkin(), comp,
-					getLivingParticipantBox1(), getLivingParticipantBox2(), message.getUrl());
+					getLivingParticipantBox1(), getLivingParticipantBox2(), message.getUrl(), compAliveBox);
 		}
 
 		if (message.getNote() != null) {

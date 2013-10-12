@@ -33,6 +33,8 @@
  */
 package net.sourceforge.plantuml;
 
+import java.awt.geom.Point2D;
+
 public enum Direction {
 	RIGHT, LEFT, DOWN, UP;
 
@@ -79,5 +81,15 @@ public enum Direction {
 			return RIGHT;
 		}
 		throw new IllegalStateException();
+	}
+
+	public static Direction leftOrRight(Point2D p1, Point2D p2) {
+		if (p1.getX() < p2.getX()) {
+			return Direction.LEFT;
+		}
+		if (p1.getX() > p2.getX()) {
+			return Direction.RIGHT;
+		}
+		throw new IllegalArgumentException();
 	}
 }

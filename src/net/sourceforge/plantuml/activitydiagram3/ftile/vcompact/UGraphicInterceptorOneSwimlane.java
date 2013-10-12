@@ -33,37 +33,23 @@
  */
 package net.sourceforge.plantuml.activitydiagram3.ftile.vcompact;
 
-import java.io.IOException;
-import java.io.OutputStream;
 import java.util.Set;
 
-import net.sourceforge.plantuml.Url;
 import net.sourceforge.plantuml.activitydiagram3.ftile.Connection;
 import net.sourceforge.plantuml.activitydiagram3.ftile.Ftile;
 import net.sourceforge.plantuml.activitydiagram3.ftile.Swimlane;
-import net.sourceforge.plantuml.graphic.StringBounder;
-import net.sourceforge.plantuml.ugraphic.ColorMapper;
+import net.sourceforge.plantuml.graphic.UGraphicDelegator;
 import net.sourceforge.plantuml.ugraphic.UChange;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
-import net.sourceforge.plantuml.ugraphic.UParam;
 import net.sourceforge.plantuml.ugraphic.UShape;
 
-public class UGraphicInterceptorOneSwimlane implements UGraphic {
+public class UGraphicInterceptorOneSwimlane extends UGraphicDelegator {
 
-	final private UGraphic ug;
 	private final Swimlane swimlane;
 
 	public UGraphicInterceptorOneSwimlane(UGraphic ug, Swimlane swimlane) {
-		this.ug = ug;
+		super(ug);
 		this.swimlane = swimlane;
-	}
-
-	public StringBounder getStringBounder() {
-		return ug.getStringBounder();
-	}
-
-	public UParam getParam() {
-		return ug.getParam();
 	}
 
 	public void draw(UShape shape) {
@@ -87,30 +73,15 @@ public class UGraphicInterceptorOneSwimlane implements UGraphic {
 				connection.drawU(this);
 			}
 		} else {
-			ug.draw(shape);
+			getUg().draw(shape);
 			// System.err.println("Drawing " + shape);
 		}
 
 	}
 
 	public UGraphic apply(UChange change) {
-		return new UGraphicInterceptorOneSwimlane(ug.apply(change), swimlane);
+		return new UGraphicInterceptorOneSwimlane(getUg().apply(change), swimlane);
 	}
 
-	public ColorMapper getColorMapper() {
-		return ug.getColorMapper();
-	}
-
-	public void startUrl(Url url) {
-		ug.startUrl(url);
-	}
-
-	public void closeAction() {
-		ug.closeAction();
-	}
-
-	public void writeImage(OutputStream os, String metadata, int dpi) throws IOException {
-		ug.writeImage(os, metadata, dpi);
-	}
 
 }

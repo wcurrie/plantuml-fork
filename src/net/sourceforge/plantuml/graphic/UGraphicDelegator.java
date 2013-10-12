@@ -81,5 +81,9 @@ public abstract class UGraphicDelegator implements UGraphic {
 	protected UGraphic getUg() {
 		return ug;
 	}
+	
+	public void flush() {
+		ug.flush();
+	}
 
 }

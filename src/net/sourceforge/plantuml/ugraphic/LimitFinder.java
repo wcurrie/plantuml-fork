@@ -183,4 +183,7 @@ public class LimitFinder implements UGraphic {
 		return MinMax.fromMutable(minmax);
 	}
 
+	public void flush() {
+	}
+
 }

@@ -37,6 +37,7 @@ import net.sourceforge.plantuml.cucadiagram.dot.DotSplines;
 import net.sourceforge.plantuml.cucadiagram.dot.GraphvizLayoutStrategy;
 import net.sourceforge.plantuml.graphic.HorizontalAlignment;
 import net.sourceforge.plantuml.graphic.HtmlColor;
+import net.sourceforge.plantuml.svek.ConditionStyle;
 import net.sourceforge.plantuml.svek.PackageStyle;
 import net.sourceforge.plantuml.ugraphic.ColorMapper;
 import net.sourceforge.plantuml.ugraphic.Sprite;
@@ -177,6 +178,10 @@ public class SkinParamBackcolored implements ISkinParam {
 
 	public boolean forceSequenceParticipantUnderlined() {
 		return skinParam.forceSequenceParticipantUnderlined();
+	}
+
+	public ConditionStyle getConditionStyle() {
+		return skinParam.getConditionStyle();
 	}
 
 }

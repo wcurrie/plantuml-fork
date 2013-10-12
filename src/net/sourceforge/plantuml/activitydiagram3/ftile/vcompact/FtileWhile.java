@@ -156,7 +156,7 @@ class FtileWhile extends AbstractFtile {
 
 			ug = ug.apply(new UChangeColor(endInlinkColor)).apply(new UChangeBackColor(endInlinkColor));
 			ug.apply(new UTranslate(posX, posY2 + (posY1 - posY2) / 2)).draw(Arrows.asToUp());
-			snake.drawU(ug);
+			ug.draw(snake);
 
 			ug.apply(new UTranslate(dimTotal.getWidth() / 2, posY1 + Diamond.diamondHalfSize)).draw(
 					new UEmpty(5, Diamond.diamondHalfSize));
@@ -188,7 +188,7 @@ class FtileWhile extends AbstractFtile {
 
 			ug = ug.apply(new UChangeColor(afterEndwhileColor)).apply(new UChangeBackColor(afterEndwhileColor));
 			ug.apply(new UTranslate(posX, posY1 + (posY2 - posY1) / 2)).draw(Arrows.asToDown());
-			snake.drawU(ug);
+			ug.draw(snake);
 		}
 	}
 

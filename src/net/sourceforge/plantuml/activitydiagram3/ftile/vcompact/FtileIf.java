@@ -80,7 +80,7 @@ class FtileIf extends AbstractFtile {
 
 	private final HtmlColor arrowColor;
 
-	private final TextBlock label;
+	private final TextBlock label9;
 	private final TextBlock label1;
 	private final TextBlock label2;
 
@@ -96,7 +96,7 @@ class FtileIf extends AbstractFtile {
 
 		final FontConfiguration fc = new FontConfiguration(font, HtmlColorUtils.BLACK);
 
-		this.label = TextBlockUtils.create(labelTest, fc, HorizontalAlignment.LEFT, new SpriteContainerEmpty());
+		this.label9 = TextBlockUtils.create(labelTest, fc, HorizontalAlignment.LEFT, new SpriteContainerEmpty());
 		this.label1 = TextBlockUtils.create(label1, fc, HorizontalAlignment.LEFT, new SpriteContainerEmpty());
 		this.label2 = TextBlockUtils.create(label2, fc, HorizontalAlignment.LEFT, new SpriteContainerEmpty());
 
@@ -161,7 +161,7 @@ class FtileIf extends AbstractFtile {
 			snake.addPoint(x2, y1);
 			snake.addPoint(x2, y2);
 
-			snake.drawU(ug);
+			ug.draw(snake);
 		}
 
 		private double getDX() {
@@ -216,7 +216,7 @@ class FtileIf extends AbstractFtile {
 			snake.addPoint(x1, y2);
 			snake.addPoint(x2, y2);
 
-			snake.drawU(ug);
+			ug.draw(snake);
 		}
 
 		private double getDX() {
@@ -271,7 +271,7 @@ class FtileIf extends AbstractFtile {
 			snake.addPoint(x2, y2);
 			snake.addPoint(x2, dimTotal.getHeight());
 
-			snake.drawU(ug);
+			ug.draw(snake);
 		}
 
 		private UTranslate translate(StringBounder stringBounder) {
@@ -331,8 +331,8 @@ class FtileIf extends AbstractFtile {
 					drawDiamond(ug, xDiamond, dimTotal.getHeight() - 2 * Diamond.diamondHalfSize);
 				}
 
-				final Dimension2D dimLabel = label.calculateDimension(stringBounder);
-				label.drawU(ug.apply(new UTranslate(dimTotal.getWidth() / 2 + 5, -dimLabel.getHeight() - 7)));
+				final Dimension2D dimLabel = label9.calculateDimension(stringBounder);
+				label9.drawU(ug.apply(new UTranslate(dimTotal.getWidth() / 2 + 5, -dimLabel.getHeight() - 7)));
 
 				final Dimension2D dimLabel1 = label1.calculateDimension(stringBounder);
 				label1.drawU(ug.apply(new UTranslate(xDiamond - dimLabel1.getWidth(), -dimLabel1.getHeight()

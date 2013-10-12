@@ -292,7 +292,7 @@ public class ActivityDiagram3 extends UmlDiagram {
 
 	public void doWhile(Display test, Display yes) {
 		manageSwimlaneStrategy();
-		final InstructionWhile instructionWhile = new InstructionWhile(current(), test, nextLinkRenderer(), yes);
+		final InstructionWhile instructionWhile = new InstructionWhile(swinlanes.getCurrentSwimlane(), current(), test, nextLinkRenderer(), yes);
 		current().add(instructionWhile);
 		setCurrent(instructionWhile);
 	}

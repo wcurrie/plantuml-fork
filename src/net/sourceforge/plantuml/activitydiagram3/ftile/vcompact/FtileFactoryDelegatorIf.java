@@ -43,6 +43,7 @@ import net.sourceforge.plantuml.activitydiagram3.ftile.FtileFactoryDelegator;
 import net.sourceforge.plantuml.activitydiagram3.ftile.Swimlane;
 import net.sourceforge.plantuml.cucadiagram.Display;
 import net.sourceforge.plantuml.graphic.HtmlColor;
+import net.sourceforge.plantuml.svek.ConditionStyle;
 import net.sourceforge.plantuml.ugraphic.UFont;
 
 public class FtileFactoryDelegatorIf extends FtileFactoryDelegator {
@@ -67,8 +68,9 @@ public class FtileFactoryDelegatorIf extends FtileFactoryDelegator {
 		final HtmlColor endElseInlinkColor = endElseInlinkRendering == null ? null : endElseInlinkRendering.getColor();
 
 		if (NEW) {
-			return FtileIf4.create(swimlane, tile1, tile2, borderColor, backColor, labelTest, label1, label2, font, arrowColor,
-					endThenInlinkColor, endElseInlinkColor, getFactory());
+			final ConditionStyle conditionStyle = getSkinParam().getConditionStyle();
+			return FtileIf5.create(swimlane, tile1, tile2, borderColor, backColor, labelTest, label1, label2, font, arrowColor,
+					endThenInlinkColor, endElseInlinkColor, getFactory(), conditionStyle);
 		}
 		return FtileIf.create(tile1, tile2, borderColor, backColor, labelTest, label1, label2, font, arrowColor,
 				endThenInlinkColor, endElseInlinkColor);

@@ -73,4 +73,19 @@ public class Diamond {
 		return diams;
 	}
 
+	public static UPolygon asPolygonFoo1(boolean shadowing, double width, double height) {
+		final UPolygon diams = new UPolygon();
+
+		diams.addPoint(width / 2, 0);
+		diams.addPoint(width, height / 2);
+		diams.addPoint(width / 2, height);
+		diams.addPoint(0, height / 2);
+
+		if (shadowing) {
+			diams.setDeltaShadow(3);
+		}
+
+		return diams;
+	}
+
 }
