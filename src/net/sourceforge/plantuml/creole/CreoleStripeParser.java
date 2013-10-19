@@ -35,18 +35,94 @@ package net.sourceforge.plantuml.creole;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import net.sourceforge.plantuml.graphic.FontConfiguration;
 
 public class CreoleStripeParser {
 
-	private String line;
-	private final List<Command> commands = new ArrayList<Command>();
+	final private String line;
+	final private StripeStyle style;
 
-	public CreoleStripeParser(String line) {
+	private final List<Command> commands = new ArrayList<Command>();
+	private final FontConfiguration fontConfiguration;
+
+	public CreoleStripeParser(String line, FontConfiguration fontConfiguration) {
+		this.fontConfiguration = fontConfiguration;
+
+		final Pattern p4 = Pattern.compile("^--([^-]+)--$");
+		final Matcher m4 = p4.matcher(line);
+		if (m4.find()) {
+			this.line = m4.group(1);
+			this.style = new StripeStyle(StripeStyleType.HORIZONTAL_LINE, 0, '-');
+			return;
+		}
+
+		final Pattern p5 = Pattern.compile("^==([^=]+)==$");
+		final Matcher m5 = p5.matcher(line);
+		if (m5.find()) {
+			this.line = m5.group(1);
+			this.style = new StripeStyle(StripeStyleType.HORIZONTAL_LINE, 0, '=');
+			return;
+		}
+
+		final Pattern p6 = Pattern.compile("^__([^_]+)__$");
+		final Matcher m6 = p6.matcher(line);
+		if (m6.find()) {
+			this.line = m6.group(1);
+			this.style = new StripeStyle(StripeStyleType.HORIZONTAL_LINE, 0, '_');
+			return;
+		}
+
+		final Pattern p7 = Pattern.compile("^\\.\\.([^\\.]+)\\.\\.$");
+		final Matcher m7 = p7.matcher(line);
+		if (m7.find()) {
+			this.line = m7.group(1);
+			this.style = new StripeStyle(StripeStyleType.HORIZONTAL_LINE, 0, '.');
+			return;
+		}
+
+		if (line.equals("----")) {
+			this.line = "";
+			this.style = new StripeStyle(StripeStyleType.HORIZONTAL_LINE, 0, '-');
+			return;
+		}
+
+		final Pattern p1 = Pattern.compile("^(\\*+)([^*]+)$");
+		final Matcher m1 = p1.matcher(line);
+		if (m1.find()) {
+			this.line = m1.group(2).trim();
+			final int order = m1.group(1).length() - 1;
+			this.style = new StripeStyle(StripeStyleType.LIST_WITHOUT_NUMBER, order, '\0');
+			return;
+		}
+
+		final Pattern p2 = Pattern.compile("^(#+)([^*]+)$");
+		final Matcher m2 = p2.matcher(line);
+		if (m2.find()) {
+			this.line = m2.group(2).trim();
+			final int order = m2.group(1).length() - 1;
+			this.style = new StripeStyle(StripeStyleType.LIST_WITH_NUMBER, order, '\0');
+			return;
+		}
+
+		final Pattern p3 = Pattern.compile("^(=+)([^*]+)$");
+		final Matcher m3 = p3.matcher(line);
+		if (m3.find()) {
+			this.line = m3.group(2).trim();
+			final int order = m3.group(1).length() - 1;
+			this.style = new StripeStyle(StripeStyleType.HEADING, order, '\0');
+			return;
+		}
+
 		this.line = line;
+		this.style = new StripeStyle(StripeStyleType.NORMAL, 0, '\0');
+
 	}
 
-	Stripe createStripe() {
-		final Stripe result = new Stripe();
+	Stripe createStripe(CreoleContext context) {
+		final Stripe result = new Stripe(fontConfiguration, style, context);
 		result.analyzeAndAdd(line);
 		return result;
 	}

@@ -33,13 +33,11 @@
  */
 package net.sourceforge.plantuml.creole;
 
-import java.awt.Font;
 import java.util.ArrayList;
 import java.util.List;
 
 import net.sourceforge.plantuml.graphic.FontConfiguration;
-import net.sourceforge.plantuml.graphic.HtmlColorUtils;
-import net.sourceforge.plantuml.ugraphic.UFont;
+import net.sourceforge.plantuml.graphic.ImgValign;
 
 public class Stripe {
 
@@ -47,11 +45,17 @@ public class Stripe {
 
 	private FontConfiguration fontConfiguration;
 
-	private StripeStyleType style = StripeStyleType.LIST_WITHOUT_NUMBER;
+	final private StripeStyle style;
 
-	public Stripe() {
-		final UFont font = new UFont("Serif", Font.PLAIN, 14);
-		fontConfiguration = new FontConfiguration(font, HtmlColorUtils.BLACK);
+	public Stripe(FontConfiguration fontConfiguration, StripeStyle style, CreoleContext context) {
+		this.fontConfiguration = fontConfiguration;
+		this.style = style;
+
+		final Atom header = style.getHeader(fontConfiguration, context);
+
+		if (header != null) {
+			atoms.add(header);
+		}
 	}
 
 	// public void add(Atom atom) {
@@ -71,18 +75,27 @@ public class Stripe {
 	}
 
 	public void analyzeAndAdd(String line) {
-		new CreoleStyleParser().modifyStripe(line, this);
+		if (line == null) {
+			throw new IllegalArgumentException();
+		}
+		if (style.getType() == StripeStyleType.HEADING) {
+			atoms.add(AtomText.createHeading(line, fontConfiguration, style.getOrder()));
+		} else if (style.getType() == StripeStyleType.HORIZONTAL_LINE) {
+			atoms.add(CreoleHorizontalLine.create(fontConfiguration, line, style.getStyle()));
+		} else {
+			new StyleParser().modifyStripe(line, this);
+		}
+	}
+
+	public void addImage(String src) {
+		atoms.add(AtomImg.create(src, ImgValign.TOP, 0));
 	}
 
 	public void addRawText(String s) {
-		atoms.add(Text.create(s, fontConfiguration));
+		atoms.add(AtomText.create(s, fontConfiguration));
 	}
 
-	public final StripeStyleType getStyle() {
+	private final StripeStyle getStyle() {
 		return style;
-	}
-
-	public final void setStyle(StripeStyleType style) {
-		this.style = style;
 	}
 }

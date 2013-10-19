@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 10611 $
+ * Revision $Revision: 11788 $
  *
  */
 package net.sourceforge.plantuml.graphic;
@@ -57,7 +57,7 @@ public class Img implements HtmlCommand {
 
 	private final TextBlock tileImage;
 
-	private Img(TextBlock image) throws IOException {
+	private Img(TextBlock image) {
 		this.tileImage = image;
 	}
 

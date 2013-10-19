@@ -59,4 +59,14 @@ public enum FontPosition {
 		return font.deriveSize((float) size);
 	}
 
+	public String getHtmlTag() {
+		if (this == EXPOSANT) {
+			return "sup";
+		}
+		if (this == INDICE) {
+			return "sub";
+		}
+		throw new UnsupportedOperationException();
+	}
+
 }

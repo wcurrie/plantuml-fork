@@ -46,7 +46,7 @@ import net.sourceforge.plantuml.Url;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
 import net.sourceforge.plantuml.ugraphic.UImageSvg;
 
-class TileImageSvg implements TextBlock {
+public class TileImageSvg implements TextBlock {
 
 	private final UImageSvg svg;
 

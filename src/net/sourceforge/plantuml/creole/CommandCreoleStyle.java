@@ -63,7 +63,7 @@ public class CommandCreoleStyle implements Command {
 		this.style = style;
 	}
 
-	public String executeAndGetRemaining(String line, Stripe stripe) {
+	public String executeAndGetRemaining(final String line, Stripe stripe) {
 		final Matcher m = p.matcher(line);
 		if (m.find() == false) {
 			throw new IllegalStateException();
@@ -71,8 +71,8 @@ public class CommandCreoleStyle implements Command {
 		final FontConfiguration fc1 = stripe.getActualFontConfiguration();
 		final FontConfiguration fc2 = new AddStyle(style, null).apply(fc1);
 		stripe.setActualFontConfiguration(fc2);
-		// final Text text = Text.create(m.group(2), fc);
-		stripe.analyzeAndAdd(m.group(2));
+		final int groupCount = m.groupCount();
+		stripe.analyzeAndAdd(m.group(groupCount));
 		stripe.setActualFontConfiguration(fc1);
 		return line.substring(m.group(1).length());
 	}

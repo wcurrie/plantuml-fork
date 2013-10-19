@@ -54,7 +54,15 @@ public class CommandUrl extends SingleLineCommand<AbstractEntityDiagram> {
 	protected CommandExecutionResult executeArg(AbstractEntityDiagram diagram, List<String> arg) {
 		final Code code = Code.of(arg.get(0));
 		final String urlString = arg.get(1);
-		final IEntity entity = diagram.getOrCreateLeaf(code, null);
+		final IEntity entity;
+		if (diagram.leafExist(code)) {
+			entity = diagram.getOrCreateLeaf(code, null);
+		} else if (diagram.isGroup(code)) {
+			entity = diagram.getGroup(code);
+		} else {
+			return CommandExecutionResult.error(code + " does not exist");
+		}
+		// final IEntity entity = diagram.getOrCreateLeaf(code, null);
 		final UrlBuilder urlBuilder = new UrlBuilder(diagram.getSkinParam().getValue("topurl"), ModeUrl.STRICT);
 		final Url url = urlBuilder.getUrl(urlString);
 		entity.addUrl(url);

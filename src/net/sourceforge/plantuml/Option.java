@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  *
- * Revision $Revision: 10759 $
+ * Revision $Revision: 11786 $
  *
  */
 package net.sourceforge.plantuml;
@@ -111,6 +111,8 @@ public class Option {
 				setFileFormat(FileFormat.VDX);
 			} else if (s.equalsIgnoreCase("-pdf") || s.equalsIgnoreCase("-tpdf")) {
 				setFileFormat(FileFormat.PDF);
+			} else if (s.equalsIgnoreCase("-overwrite")) {
+				OptionFlags.getInstance().setOverwrite(true);
 			} else if (s.equalsIgnoreCase("-output") || s.equalsIgnoreCase("-o")) {
 				i++;
 				if (i == arg.length) {

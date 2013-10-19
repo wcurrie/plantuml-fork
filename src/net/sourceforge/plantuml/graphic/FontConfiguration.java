@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 9786 $
+ * Revision $Revision: 11799 $
  *
  */
 package net.sourceforge.plantuml.graphic;
@@ -56,10 +56,10 @@ public class FontConfiguration {
 	public FontConfiguration(UFont font, HtmlColor color) {
 		this(getStyles(font), font, color, font, color, null, FontPosition.NORMAL, new SvgAttributes());
 	}
-	
+
 	public FontConfiguration(ISkinParam skinParam, FontParam fontParam, Stereotype stereo) {
-		this(SkinParamUtils.getFont(skinParam, fontParam, stereo),
-				SkinParamUtils.getFontColor(skinParam, fontParam, stereo));
+		this(SkinParamUtils.getFont(skinParam, fontParam, stereo), SkinParamUtils.getFontColor(skinParam, fontParam,
+				stereo));
 	}
 
 	private static EnumSet<FontStyle> getStyles(UFont font) {
@@ -99,7 +99,7 @@ public class FontConfiguration {
 				fontPosition, svgAttributes.add(toBeAdded));
 	}
 
-	FontConfiguration changeColor(HtmlColor htmlColor) {
+	public FontConfiguration changeColor(HtmlColor htmlColor) {
 		return new FontConfiguration(styles, motherFont, motherColor, currentFont, htmlColor, extendedColor,
 				fontPosition, svgAttributes);
 	}
@@ -109,17 +109,21 @@ public class FontConfiguration {
 				fontPosition, svgAttributes);
 	}
 
-	FontConfiguration changeSize(float size) {
+	public FontConfiguration changeSize(float size) {
 		return new FontConfiguration(styles, motherFont, motherColor, currentFont.deriveSize(size), currentColor,
 				extendedColor, fontPosition, svgAttributes);
 	}
 
-	FontConfiguration changeFontPosition(FontPosition fontPosition) {
+	public FontConfiguration bigger(double delta) {
+		return changeSize((float) (currentFont.getSize() + delta));
+	}
+
+	public FontConfiguration changeFontPosition(FontPosition fontPosition) {
 		return new FontConfiguration(styles, motherFont, motherColor, currentFont, currentColor, extendedColor,
 				fontPosition, svgAttributes);
 	}
 
-	FontConfiguration changeFamily(String family) {
+	public FontConfiguration changeFamily(String family) {
 		return new FontConfiguration(styles, motherFont, motherColor, new UFont(family, currentFont.getStyle(),
 				currentFont.getSize()), currentColor, extendedColor, fontPosition, svgAttributes);
 	}
@@ -138,6 +142,10 @@ public class FontConfiguration {
 
 	public FontConfiguration italic() {
 		return add(FontStyle.ITALIC);
+	}
+
+	public FontConfiguration bold() {
+		return add(FontStyle.BOLD);
 	}
 
 	public FontConfiguration underline() {

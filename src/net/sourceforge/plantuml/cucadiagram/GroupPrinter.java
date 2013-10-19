@@ -63,10 +63,10 @@ public class GroupPrinter {
 		}
 		pw.println("</td>");
 		pw.println("</tr>");
-		if (group.zgetChildren().size() > 0) {
+		if (group.getChildren().size() > 0) {
 			pw.println("<tr>");
 			pw.println("<td>");
-			for (IGroup g : group.zgetChildren()) {
+			for (IGroup g : group.getChildren()) {
 				pw.println("<br>");
 				printGroup(g);
 				pw.println("<br>");

@@ -118,19 +118,17 @@ public class Line implements Moveable, Hideable {
 	private Cluster projectionCluster;
 	private final GraphvizVersion graphvizVersion;
 
-//	private GraphvizVersion getGraphvizVersion() {
-//		if (pragma.isDefine("graphviz")==false) {
-//			return GraphvizVersion.COMMON;
-//		}
-//		final String value = pragma.getValue("graphviz");
-//		if ("2.34".equals(value)) {
-//			return GraphvizVersion.V2_34_0;
-//		}
-//		return GraphvizVersion.COMMON;
-//	}
+	// private GraphvizVersion getGraphvizVersion() {
+	// if (pragma.isDefine("graphviz")==false) {
+	// return GraphvizVersion.COMMON;
+	// }
+	// final String value = pragma.getValue("graphviz");
+	// if ("2.34".equals(value)) {
+	// return GraphvizVersion.V2_34_0;
+	// }
+	// return GraphvizVersion.COMMON;
+	// }
 
-	
-	
 	@Override
 	public String toString() {
 		return super.toString() + " color=" + lineColor;
@@ -208,7 +206,8 @@ public class Line implements Moveable, Hideable {
 	// }
 
 	public Line(String startUid, String endUid, Link link, ColorSequence colorSequence, String ltail, String lhead,
-			ISkinParam skinParam, StringBounder stringBounder, FontConfiguration labelFont, Bibliotekon bibliotekon, GraphvizVersion graphvizVersion) {
+			ISkinParam skinParam, StringBounder stringBounder, FontConfiguration labelFont, Bibliotekon bibliotekon,
+			GraphvizVersion graphvizVersion) {
 		if (startUid == null || endUid == null || link == null) {
 			throw new IllegalArgumentException();
 		}
@@ -239,8 +238,9 @@ public class Line implements Moveable, Hideable {
 			}
 		} else {
 			final double marginLabel = startUid.equals(endUid) ? 6 : 1;
-			final TextBlock label = TextBlockUtils.withMargin(TextBlockUtils.create(link.getLabel(), labelFont,
-					HorizontalAlignment.CENTER, skinParam), marginLabel, marginLabel);
+			final TextBlock label = TextBlockUtils.withMargin(
+					TextBlockUtils.create(link.getLabel(), labelFont, HorizontalAlignment.CENTER, skinParam),
+					marginLabel, marginLabel);
 			if (getLinkArrow() == LinkArrow.NONE) {
 				labelOnly = label;
 			} else {
@@ -324,10 +324,10 @@ public class Line implements Moveable, Hideable {
 		sb.append(decoration);
 
 		int length = link.getLength();
-//		if (graphvizVersion == GraphvizVersion.V2_34_0 && length == 1) {
-//			length = 2;
-//		}
-		if (OptionFlags.HORIZONTAL_LINE_BETWEEN_DIFFERENT_PACKAGE_ALLOWED || length != 1) {
+		// if (graphvizVersion == GraphvizVersion.V2_34_0 && length == 1) {
+		// length = 2;
+		// }
+		if (OptionFlags.HORIZONTAL_LINE_BETWEEN_DIFFERENT_PACKAGE_ALLOWED || link.isInvis() || length != 1) {
 			sb.append("minlen=" + (length - 1));
 			sb.append(",");
 		}
@@ -387,15 +387,14 @@ public class Line implements Moveable, Hideable {
 	}
 
 	public String rankSame() {
-//		if (graphvizVersion == GraphvizVersion.V2_34_0) {
-//			return null;
-//		}
+		// if (graphvizVersion == GraphvizVersion.V2_34_0) {
+		// return null;
+		// }
 		if (OptionFlags.HORIZONTAL_LINE_BETWEEN_DIFFERENT_PACKAGE_ALLOWED == false && link.getLength() == 1) {
 			return "{rank=same; " + getStartUid() + "; " + getEndUid() + "}";
 		}
 		return null;
 	}
-
 
 	public static void appendTable(StringBuilder sb, Dimension2D dim, int col) {
 		final int w = (int) dim.getWidth();

@@ -98,6 +98,8 @@ public class LimitFinder implements UGraphic {
 			drawUPath(x, y, (UPath) shape);
 		} else if (shape instanceof URectangle) {
 			drawRectangle(x, y, (URectangle) shape);
+		} else if (shape instanceof UImage) {
+			drawImage(x, y, (UImage) shape);
 		} else if (shape instanceof UEmpty) {
 			drawEmpty(x, y, (UEmpty) shape);
 		} else if (shape instanceof TextBlockable) {
@@ -131,6 +133,11 @@ public class LimitFinder implements UGraphic {
 	}
 
 	private void drawRectangle(double x, double y, URectangle shape) {
+		minmax.addPoint(x, y);
+		minmax.addPoint(x + shape.getWidth(), y + shape.getHeight());
+	}
+
+	private void drawImage(double x, double y, UImage shape) {
 		minmax.addPoint(x, y);
 		minmax.addPoint(x + shape.getWidth(), y + shape.getHeight());
 	}

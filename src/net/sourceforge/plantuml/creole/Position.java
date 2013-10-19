@@ -35,8 +35,12 @@ package net.sourceforge.plantuml.creole;
 
 import java.awt.geom.Dimension2D;
 
+import net.sourceforge.plantuml.graphic.HtmlColorUtils;
 import net.sourceforge.plantuml.ugraphic.MinMax;
+import net.sourceforge.plantuml.ugraphic.UChangeBackColor;
+import net.sourceforge.plantuml.ugraphic.UChangeColor;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
+import net.sourceforge.plantuml.ugraphic.URectangle;
 import net.sourceforge.plantuml.ugraphic.UTranslate;
 
 public class Position {
@@ -49,6 +53,11 @@ public class Position {
 		this.x = x;
 		this.y = y;
 		this.dim = dim;
+	}
+
+	@Override
+	public String toString() {
+		return "x=" + x + " y=" + y + " dim=" + dim;
 	}
 
 	// public final double getX() {
@@ -67,8 +76,23 @@ public class Position {
 		return ug.apply(new UTranslate(x, y));
 	}
 
+	public Position translateY(double dy) {
+		return new Position(x, y + dy, dim);
+	}
+
 	public MinMax update(MinMax minMax) {
 		return minMax.addPoint(x + dim.getWidth(), y + dim.getHeight());
+	}
+
+	public void drawDebug(UGraphic ug) {
+		// ug = ug.apply(new UChangeColor(HtmlColorUtils.BLACK)).apply(new UChangeBackColor(HtmlColorUtils.LIGHT_GRAY));
+		ug = ug.apply(new UChangeColor(HtmlColorUtils.BLACK)).apply(new UChangeBackColor(null));
+		ug = ug.apply(new UTranslate(x, y));
+		ug.draw(new URectangle(dim));
+	}
+
+	public double getHeight() {
+		return dim.getHeight();
 	}
 
 }

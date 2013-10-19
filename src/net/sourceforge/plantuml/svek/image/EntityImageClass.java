@@ -92,7 +92,10 @@ public class EntityImageClass extends AbstractEntityImage {
 	public Dimension2D calculateDimension(StringBounder stringBounder) {
 		final Dimension2D dimHeader = header.calculateDimension(stringBounder);
 		final Dimension2D dimBody = body == null ? new Dimension2DDouble(0, 0) : body.calculateDimension(stringBounder);
-		final double width = Math.max(dimBody.getWidth(), dimHeader.getWidth());
+		double width = Math.max(dimBody.getWidth(), dimHeader.getWidth());
+		if (width < getSkinParam().minClassWidth()) {
+			width = getSkinParam().minClassWidth();
+		}
 		final double height = dimBody.getHeight() + dimHeader.getHeight();
 		return new Dimension2DDouble(width, height);
 	}
@@ -103,28 +106,29 @@ public class EntityImageClass extends AbstractEntityImage {
 		}
 		drawInternal(ug);
 		if (mouseOver != null) {
-//			final UGroup g = ug.createGroup();
-//			ug = ug.apply(new UChangeBackColor(SkinParamUtils.getColor(getSkinParam(), ColorParam.classBackground,
-//					getStereo())));
-//			final Dimension2D dim = mouseOver.calculateDimension(ug.getStringBounder());
-//			final Shadowable rect = new URectangle(dim.getWidth(), dim.getHeight());
-//			if (getSkinParam().shadowing()) {
-//				rect.setDeltaShadow(4);
-//			}
-//
-//			final HtmlColor classBorder = SkinParamUtils.getColor(getSkinParam(), ColorParam.classBorder, getStereo());
-//			ug = ug.apply(
-//					new UChangeBackColor(SkinParamUtils.getColor(getSkinParam(), ColorParam.classBackground,
-//							getStereo()))).apply(new UChangeColor(classBorder));
-//
-//			final double x = 30;
-//			final double y = 30;
-//			// ug.getParam().setStroke(new UStroke(1.5));
-//			// g.draw(x, y, rect);
-//			// ug.getParam().resetStroke();
-//			final UGraphic ug2 = new UGraphicHorizontalLine(ug, x, x + dim.getWidth(), getStroke());
-//			mouseOver.drawUNewWayINLINED(ug2.apply(new UTranslate(x, y)));
-//			g.close();
+			// final UGroup g = ug.createGroup();
+			// ug = ug.apply(new UChangeBackColor(SkinParamUtils.getColor(getSkinParam(), ColorParam.classBackground,
+			// getStereo())));
+			// final Dimension2D dim = mouseOver.calculateDimension(ug.getStringBounder());
+			// final Shadowable rect = new URectangle(dim.getWidth(), dim.getHeight());
+			// if (getSkinParam().shadowing()) {
+			// rect.setDeltaShadow(4);
+			// }
+			//
+			// final HtmlColor classBorder = SkinParamUtils.getColor(getSkinParam(), ColorParam.classBorder,
+			// getStereo());
+			// ug = ug.apply(
+			// new UChangeBackColor(SkinParamUtils.getColor(getSkinParam(), ColorParam.classBackground,
+			// getStereo()))).apply(new UChangeColor(classBorder));
+			//
+			// final double x = 30;
+			// final double y = 30;
+			// // ug.getParam().setStroke(new UStroke(1.5));
+			// // g.draw(x, y, rect);
+			// // ug.getParam().resetStroke();
+			// final UGraphic ug2 = new UGraphicHorizontalLine(ug, x, x + dim.getWidth(), getStroke());
+			// mouseOver.drawUNewWayINLINED(ug2.apply(new UTranslate(x, y)));
+			// g.close();
 		}
 
 		if (url.size() > 0 && url.get(0).isMember() == false) {

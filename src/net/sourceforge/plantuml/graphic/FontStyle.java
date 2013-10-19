@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 11543 $
+ * Revision $Revision: 11760 $
  *
  */
 package net.sourceforge.plantuml.graphic;
@@ -81,6 +81,15 @@ public enum FontStyle {
 		}
 		if (this == BOLD) {
 			return "\\*\\*";
+		}
+		if (this == UNDERLINE) {
+			return "__";
+		}
+		if (this == WAVE) {
+			return "~~";
+		}
+		if (this == STRIKE) {
+			return "--";
 		}
 		throw new UnsupportedOperationException();
 	}

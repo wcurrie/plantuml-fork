@@ -53,6 +53,6 @@ public class UGraphicHorizontalLine extends AbstractUGraphicHorizontalLine {
 
 	@Override
 	protected void drawHline(UGraphic ug, UHorizontalLine line, UTranslate translate) {
-		line.drawLine(ug.apply(translate), startingX, endingX, 0, defaultStroke);
+		line.drawLineInternal(ug.apply(translate), startingX, endingX, 0, defaultStroke);
 	}
 }

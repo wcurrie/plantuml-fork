@@ -218,7 +218,7 @@ public final class CucaDiagramFileMakerSvek implements CucaDiagramFileMaker {
 			// For zlevel order
 			Collections.reverse(rev);
 			for (Url url : rev) {
-				appendUrl(cmapdata, seq, url, scale);
+				cmapdata.appendUrl(seq, url, scale);
 				done.add(url);
 				seq++;
 			}
@@ -227,7 +227,7 @@ public final class CucaDiagramFileMakerSvek implements CucaDiagramFileMaker {
 			if (done.contains(u)) {
 				continue;
 			}
-			appendUrl(cmapdata, seq, u, scale);
+			cmapdata.appendUrl(seq, u, scale);
 			seq++;
 		}
 		// for (Link link : diagram.getLinks()) {
@@ -240,20 +240,6 @@ public final class CucaDiagramFileMakerSvek implements CucaDiagramFileMaker {
 		// seq++;
 		// }
 		return cmapdata;
-	}
-
-	private void appendUrl(final CMapData cmapdata, int seq, Url url, double scale) {
-		cmapdata.appendString("<area shape=\"rect\" id=\"id");
-		cmapdata.appendLong(seq);
-		cmapdata.appendString("\" href=\"");
-		cmapdata.appendString(url.getUrl());
-		cmapdata.appendString("\" title=\"");
-		cmapdata.appendString(url.getTooltip());
-		cmapdata.appendString("\" alt=\"\" coords=\"");
-		cmapdata.appendString(url.getCoords(scale));
-		cmapdata.appendString("\"/>");
-
-		cmapdata.appendString("\n");
 	}
 
 	private TextBlockBackcolored addHeaderAndFooter(TextBlockBackcolored original) {

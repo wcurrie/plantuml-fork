@@ -36,19 +36,41 @@ package net.sourceforge.plantuml.creole;
 import java.util.ArrayList;
 import java.util.List;
 
+import net.sourceforge.plantuml.graphic.FontPosition;
 import net.sourceforge.plantuml.graphic.FontStyle;
 
-public class CreoleStyleParser {
+class StyleParser {
 
 	private final List<Command> commands = new ArrayList<Command>();
 
-	public CreoleStyleParser() {
+	StyleParser() {
+		// class Splitter
 		this.commands.add(CommandCreoleStyle.createCreole(FontStyle.BOLD));
 		this.commands.add(CommandCreoleStyle.createLegacy(FontStyle.BOLD));
 		this.commands.add(CommandCreoleStyle.createLegacyEol(FontStyle.BOLD));
 		this.commands.add(CommandCreoleStyle.createCreole(FontStyle.ITALIC));
 		this.commands.add(CommandCreoleStyle.createLegacy(FontStyle.ITALIC));
 		this.commands.add(CommandCreoleStyle.createLegacyEol(FontStyle.ITALIC));
+		this.commands.add(CommandCreoleStyle.createCreole(FontStyle.UNDERLINE));
+		this.commands.add(CommandCreoleStyle.createLegacy(FontStyle.UNDERLINE));
+		this.commands.add(CommandCreoleStyle.createLegacyEol(FontStyle.UNDERLINE));
+		this.commands.add(CommandCreoleStyle.createCreole(FontStyle.STRIKE));
+		this.commands.add(CommandCreoleStyle.createLegacy(FontStyle.STRIKE));
+		this.commands.add(CommandCreoleStyle.createLegacyEol(FontStyle.STRIKE));
+		this.commands.add(CommandCreoleStyle.createCreole(FontStyle.WAVE));
+		this.commands.add(CommandCreoleStyle.createLegacy(FontStyle.WAVE));
+		this.commands.add(CommandCreoleStyle.createLegacyEol(FontStyle.WAVE));
+		this.commands.add(CommandCreoleSizeChange.create());
+		this.commands.add(CommandCreoleSizeChange.createEol());
+		this.commands.add(CommandCreoleColorChange.create());
+		this.commands.add(CommandCreoleColorAndSizeChange.create());
+		this.commands.add(CommandCreoleColorAndSizeChange.createEol());
+		this.commands.add(CommandCreoleExposantChange.create(FontPosition.EXPOSANT));
+		this.commands.add(CommandCreoleExposantChange.create(FontPosition.INDICE));
+		this.commands.add(CommandCreoleImg.create());
+		this.commands.add(CommandCreoleFontFamilyChange.create());
+		this.commands.add(CommandCreoleFontFamilyChange.createEol());
+		this.commands.add(CommandCreoleMonospaced.create());
 	}
 
 	public void modifyStripe(String line, Stripe stripe) {

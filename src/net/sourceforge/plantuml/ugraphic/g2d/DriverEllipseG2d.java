@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 11188 $
+ * Revision $Revision: 11740 $
  *
  */
 package net.sourceforge.plantuml.ugraphic.g2d;
@@ -47,7 +47,6 @@ import net.sourceforge.plantuml.ugraphic.ColorMapper;
 import net.sourceforge.plantuml.ugraphic.UDriver;
 import net.sourceforge.plantuml.ugraphic.UEllipse;
 import net.sourceforge.plantuml.ugraphic.UParam;
-import net.sourceforge.plantuml.ugraphic.URectangle;
 import net.sourceforge.plantuml.ugraphic.UShape;
 
 public class DriverEllipseG2d extends DriverShadowedG2d implements UDriver<Graphics2D> {

@@ -66,7 +66,7 @@ public final class CucaDiagramSimplifierState {
 						urls.addAll(ent.getUrls());
 					}
 					g.overideImage(img, urls,
-							g.zgetGroupType() == GroupType.CONCURRENT_STATE ? LeafType.STATE_CONCURRENT
+							g.getGroupType() == GroupType.CONCURRENT_STATE ? LeafType.STATE_CONCURRENT
 									: LeafType.STATE);
 
 					changed = true;
@@ -79,7 +79,7 @@ public final class CucaDiagramSimplifierState {
 		final List<IGroup> result = new ArrayList<IGroup>();
 		final List<IGroup> end = new ArrayList<IGroup>();
 		for (IGroup g : groups) {
-			if (g.zgetGroupType() == GroupType.CONCURRENT_STATE) {
+			if (g.getGroupType() == GroupType.CONCURRENT_STATE) {
 				end.add(g);
 			} else {
 				result.add(g);

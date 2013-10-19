@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 11432 $
+ * Revision $Revision: 11713 $
  *
  */
 package net.sourceforge.plantuml.statediagram;
@@ -95,13 +95,13 @@ public class StateDiagram extends AbstractEntityDiagram {
 	public boolean concurrentState() {
 		final IGroup cur = getCurrentGroup();
 		// printlink("BEFORE");
-		if (EntityUtils.groupRoot(cur) == false && cur.zgetGroupType() == GroupType.CONCURRENT_STATE) {
+		if (EntityUtils.groupRoot(cur) == false && cur.getGroupType() == GroupType.CONCURRENT_STATE) {
 			super.endGroup();
 		}
 		final IGroup conc1 = getOrCreateGroup(UniqueSequence.getCode("CONC"), Display.asList(""), null,
 				GroupType.CONCURRENT_STATE, getCurrentGroup());
-		if (EntityUtils.groupRoot(cur) == false && cur.zgetGroupType() == GroupType.STATE) {
-			cur.zmoveEntitiesTo(conc1);
+		if (EntityUtils.groupRoot(cur) == false && cur.getGroupType() == GroupType.STATE) {
+			cur.moveEntitiesTo(conc1);
 			super.endGroup();
 			getOrCreateGroup(UniqueSequence.getCode("CONC"), Display.asList(""), null, GroupType.CONCURRENT_STATE,
 					getCurrentGroup());
@@ -120,7 +120,7 @@ public class StateDiagram extends AbstractEntityDiagram {
 	@Override
 	public void endGroup() {
 		final IGroup cur = getCurrentGroup();
-		if (EntityUtils.groupRoot(cur) == false && cur.zgetGroupType() == GroupType.CONCURRENT_STATE) {
+		if (EntityUtils.groupRoot(cur) == false && cur.getGroupType() == GroupType.CONCURRENT_STATE) {
 			super.endGroup();
 		}
 		super.endGroup();

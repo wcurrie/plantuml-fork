@@ -43,43 +43,50 @@ public class UHorizontalLine implements UShape {
 	private final double skipAtEnd;
 	private final TextBlock title;
 	private final boolean blankTitle;
-	private final UStroke stroke;
+	private final char style;
 
-	private UHorizontalLine(double skipAtStart, double skipAtEnd, TextBlock title, boolean blankTitle, UStroke stroke) {
+	private UHorizontalLine(double skipAtStart, double skipAtEnd, TextBlock title, boolean blankTitle, char style) {
 		this.skipAtEnd = skipAtEnd;
 		this.skipAtStart = skipAtStart;
 		this.title = title;
 		this.blankTitle = blankTitle;
-		this.stroke = stroke;
+		this.style = style;
 	}
 
-	public static UHorizontalLine infinite(double skipAtStart, double skipAtEnd, UStroke stroke) {
-		return new UHorizontalLine(skipAtStart, skipAtEnd, null, false, stroke);
+	public static UHorizontalLine infinite(double skipAtStart, double skipAtEnd, char style) {
+		return new UHorizontalLine(skipAtStart, skipAtEnd, null, false, style);
 	}
 
-	public static UHorizontalLine infinite(double skipAtStart, double skipAtEnd, TextBlock title, UStroke stroke) {
-		return new UHorizontalLine(skipAtStart, skipAtEnd, title, false, stroke);
+	public static UHorizontalLine infinite(double skipAtStart, double skipAtEnd, TextBlock title, char style) {
+		return new UHorizontalLine(skipAtStart, skipAtEnd, title, false, style);
 	}
 
-	static public UHorizontalLine infinite(UStroke stroke) {
-		return new UHorizontalLine(0, 0, null, false, stroke);
-	}
+	// static public UHorizontalLine infinite(UStroke stroke) {
+	// return new UHorizontalLine(0, 0, null, false, stroke);
+	// }
 
-	public void drawLine(UGraphic ug, double startingX, double endingX, double y, UStroke defaultStroke) {
+	public void drawLineInternal(final UGraphic ug, double startingX, double endingX, double y, UStroke defaultStroke) {
+		startingX = startingX + skipAtStart;
+		endingX = endingX - skipAtEnd;
 		final double widthToUse = endingX - startingX;
-		final UStroke strokeToUse = stroke == null ? defaultStroke : stroke;
+		final UStroke strokeToUse = style == '\0' ? defaultStroke : getStroke();
+		final UGraphic ug2 = ug.apply(strokeToUse).apply(new UTranslate(startingX, y));
 		if (title == null) {
-			ug.apply(strokeToUse).apply(new UTranslate(startingX + skipAtStart, y)).draw(new ULine(widthToUse - skipAtStart - skipAtEnd, 0));
+			drawHline(ug2, 0, widthToUse);
 			return;
 		}
 		final Dimension2D dimTitle = title.calculateDimension(ug.getStringBounder());
 		final double space = (widthToUse - dimTitle.getWidth()) / 2;
-		ug.apply(strokeToUse).apply(new UTranslate(startingX + skipAtStart - 1, y)).draw(new ULine(space - skipAtEnd - skipAtEnd, 0));
-		drawTitle(ug, startingX, endingX, y, false);
-		ug.apply(strokeToUse).apply(new UTranslate(startingX + skipAtStart + widthToUse - space, y)).draw(new ULine(space - skipAtStart - skipAtEnd, 0));
+		drawHline(ug2, 0, space);
+		drawTitleInternal(ug, startingX, endingX, y, false);
+		drawHline(ug2, widthToUse - space, space);
 	}
 
-	public void drawTitle(UGraphic ug, double startingX, double endingX, double y, boolean clearArea) {
+	private static void drawHline(UGraphic ug, double startX, double len) {
+		ug.apply(new UTranslate(startX, 0)).draw(new ULine(len, 0));
+	}
+
+	public void drawTitleInternal(UGraphic ug, double startingX, double endingX, double y, boolean clearArea) {
 		if (title == null || blankTitle) {
 			return;
 		}
@@ -88,18 +95,39 @@ public class UHorizontalLine implements UShape {
 		final double space = (widthToUse - dimTitle.getWidth()) / 2;
 		final double x1 = startingX + space;
 		final double y1 = y - dimTitle.getHeight() / 2 - 0.5;
+		ug = ug.apply(new UTranslate(x1, y1));
 		if (clearArea) {
-			ug.apply(stroke).apply(new UTranslate(x1, y1)).draw(new URectangle(dimTitle.getWidth(), dimTitle.getHeight()));
+			ug.apply(getStroke()).draw(new URectangle(dimTitle));
 		}
-		title.drawU(ug.apply(new UTranslate(x1, y1)));
+		title.drawU(ug);
 	}
 
-	public UHorizontalLine blankTitle() {
-		return new UHorizontalLine(skipAtStart, skipAtEnd, title, true, stroke);
+	private UHorizontalLine blankTitle() {
+		return new UHorizontalLine(skipAtStart, skipAtEnd, title, true, style);
+	}
+
+	public void drawMe(UGraphic ug) {
+		if (style == '=') {
+			ug.draw(this);
+			ug.apply(new UTranslate(0, 2)).draw(blankTitle());
+		} else {
+			ug.draw(this);
+		}
 	}
 
 	public UStroke getStroke() {
-		return stroke;
+		if (style == '\0') {
+			throw new IllegalStateException();
+			// return null;
+		} else if (style == '=') {
+			return new UStroke();
+		} else if (style == '.') {
+			return new UStroke(1, 2, 1);
+		} else if (style == '-') {
+			return new UStroke();
+		} else {
+			return new UStroke(1.5);
+		}
 	}
 
 }

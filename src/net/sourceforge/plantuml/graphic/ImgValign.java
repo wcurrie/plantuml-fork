@@ -28,11 +28,11 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 9786 $
+ * Revision $Revision: 11788 $
  *
  */
 package net.sourceforge.plantuml.graphic;
 
-enum ImgValign {
+public enum ImgValign {
 	TOP, BOTTOM, MIDDLE
 }

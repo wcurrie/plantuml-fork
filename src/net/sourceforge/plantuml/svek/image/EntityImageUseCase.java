@@ -171,7 +171,7 @@ public class EntityImageUseCase extends AbstractEntityImage {
 		@Override
 		protected void drawHline(UGraphic ug, UHorizontalLine line, UTranslate translate) {
 			final double y = translate.getDy();
-			line.drawLine(ug.apply(translate), getStartingX(y), getEndingX(y), 0, stroke);
+			line.drawLineInternal(ug.apply(translate), getStartingX(y), getEndingX(y), 0, stroke);
 		}
 
 	}

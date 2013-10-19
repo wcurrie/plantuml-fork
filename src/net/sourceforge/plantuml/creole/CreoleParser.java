@@ -34,17 +34,25 @@
 package net.sourceforge.plantuml.creole;
 
 import net.sourceforge.plantuml.cucadiagram.Display;
+import net.sourceforge.plantuml.graphic.FontConfiguration;
 
 public class CreoleParser {
 	
-	Stripe createStripe(String line) {
-		return new CreoleStripeParser(line).createStripe();
+	private final FontConfiguration fontConfiguration;
+
+	public CreoleParser(FontConfiguration fontConfiguration) {
+		this.fontConfiguration = fontConfiguration;
 	}
-	
+
+	private Stripe createStripe(String line, CreoleContext context) {
+		return new CreoleStripeParser(line, fontConfiguration).createStripe(context);
+	}
+
 	public Sheet createSheet(Display display) {
 		final Sheet sheet = new Sheet();
+		final CreoleContext context = new CreoleContext();
 		for (CharSequence cs : display) {
-			final Stripe stripe = createStripe(cs.toString());
+			final Stripe stripe = createStripe(cs.toString(), context);
 			sheet.add(stripe);
 		}
 		return sheet;

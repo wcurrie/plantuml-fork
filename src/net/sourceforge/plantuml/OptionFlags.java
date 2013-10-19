@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  *
- * Revision $Revision: 11520 $
+ * Revision $Revision: 11786 $
  *
  */
 package net.sourceforge.plantuml;
@@ -47,12 +47,12 @@ public class OptionFlags {
 	// static public final boolean PBBACK = false;
 	static public boolean GRAPHVIZCACHE = false;
 	static public final boolean TRACE_DOT = false;
-	// static public final boolean NICE_ARROW = true;
-	// static public final boolean DESCRIPTION_DIAGRAM = false;
+
 	static public final boolean HORIZONTAL_LINE_BETWEEN_DIFFERENT_PACKAGE_ALLOWED = false;
 	static public boolean ALLOW_INCLUDE = true;
-	// static public final boolean NEW_ARROW = true;
+
 	static public final boolean USE_HECTOR = false;
+	static public boolean USE_CREOLE = false;
 
 	void reset() {
 		reset(false);
@@ -94,6 +94,7 @@ public class OptionFlags {
 	private boolean useSuggestEngine;
 	private boolean failOnError;
 	private boolean encodesprite;
+	private boolean overwrite;
 	private File logData;
 
 	private OptionFlags() {
@@ -272,6 +273,14 @@ public class OptionFlags {
 
 	public final void setEncodesprite(boolean encodesprite) {
 		this.encodesprite = encodesprite;
+	}
+
+	public final boolean isOverwrite() {
+		return overwrite;
+	}
+
+	public final void setOverwrite(boolean overwrite) {
+		this.overwrite = overwrite;
 	}
 	
 }

@@ -42,20 +42,21 @@ import java.util.Map;
 import net.sourceforge.plantuml.Url;
 import net.sourceforge.plantuml.graphic.StringBounder;
 import net.sourceforge.plantuml.graphic.TextBlock;
-import net.sourceforge.plantuml.graphic.TileText;
 import net.sourceforge.plantuml.ugraphic.MinMax;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
-import net.sourceforge.plantuml.ugraphic.UTranslate;
+import net.sourceforge.plantuml.ugraphic.UGraphicStencil;
 
 public class SheetBlock implements TextBlock {
 
 	private final Sheet sheet;
+	private final Stencil stencil;
 	private Map<Stripe, Double> heights;
 	private Map<Atom, Position> positions;
 	private MinMax minMax;
 
-	public SheetBlock(Sheet sheet) {
+	public SheetBlock(Sheet sheet, Stencil stencil) {
 		this.sheet = sheet;
+		this.stencil = stencil;
 	}
 
 	private void initMap(StringBounder stringBounder) {
@@ -68,31 +69,40 @@ public class SheetBlock implements TextBlock {
 		double y = 0;
 		for (Stripe stripe : sheet) {
 			double x = 0;
-			double height = 0;
+			final double height = getMaxHeight(stringBounder, stripe.getAtoms());
 			for (Atom atom : stripe.getAtoms()) {
-				final TextBlock tb = atom.asTextBlock();
-				final Dimension2D dim = tb.calculateDimension(stringBounder);
+				final Dimension2D dim = atom.calculateDimension(stringBounder);
 				final Position position = new Position(x, y, dim);
 				minMax = position.update(minMax);
 				positions.put(atom, position);
 				x += dim.getWidth();
-				height = Math.max(0, dim.getHeight());
 			}
 			heights.put(stripe, height);
 			y += height;
 		}
 	}
 
+	private double getMaxHeight(StringBounder stringBounder, List<Atom> atoms) {
+		double height = 0;
+		for (Atom atom : atoms) {
+			final Dimension2D dim = atom.calculateDimension(stringBounder);
+			final double h = dim.getHeight();
+			if (h > height) {
+				height = h;
+			}
+		}
+		return height;
+	}
+
 	private double maxDeltaY(Stripe stripe, StringBounder stringBounder) {
 		double result = 0;
 		final double stripeHeight = heights.get(stripe);
 		for (Atom atom : stripe.getAtoms()) {
-			final TextBlock tb = atom.asTextBlock();
-			if (tb instanceof TileText == false) {
+			if (atom instanceof AtomText == false) {
 				continue;
 			}
-			final Dimension2D dimBloc = tb.calculateDimension(stringBounder);
-			final double deltaY = stripeHeight - dimBloc.getHeight() + ((TileText) tb).getFontSize2D();
+			final Dimension2D dimBloc = atom.calculateDimension(stringBounder);
+			final double deltaY = stripeHeight - dimBloc.getHeight() + ((AtomText) atom).getFontSize2D();
 			result = Math.max(result, deltaY);
 		}
 		return result;
@@ -108,14 +118,24 @@ public class SheetBlock implements TextBlock {
 	}
 
 	public void drawU(UGraphic ug) {
-		initMap(ug.getStringBounder());
+		// final Dimension2D dim = calculateDimension(ug.getStringBounder());
+		if (stencil != null) {
+			// ug = new UGraphicHorizontalLine(ug, 0, dim.getWidth(), new UStroke());
+			ug = new UGraphicStencil(ug, stencil);
+		}
 		for (Stripe stripe : sheet) {
 			final StringBounder stringBounder = ug.getStringBounder();
 			final double deltaY = maxDeltaY(stripe, stringBounder);
 			for (Atom atom : stripe.getAtoms()) {
 				final Position position = positions.get(atom);
-				final TextBlock tb = atom.asTextBlock();
-				tb.drawU(position.translate(ug).apply(new UTranslate(0, deltaY)));
+				if (atom instanceof AtomText) {
+					atom.drawU(position.translate(ug));
+					// position.drawDebug(ug);
+				} else {
+					atom.drawU(position.translate(ug));
+					// position.drawDebug(ug);
+				}
+				// final double dy = stripeHeight - position.getHeight();
 			}
 		}
 	}

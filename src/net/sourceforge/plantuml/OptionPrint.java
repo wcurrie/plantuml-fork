@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  *
- * Revision $Revision: 10607 $
+ * Revision $Revision: 11786 $
  *
  */
 package net.sourceforge.plantuml;
@@ -106,6 +106,7 @@ public class OptionPrint {
 		System.out.println("    -nbthread N\t\tTo use (N) threads for processing");
 		System.out.println("    -nbthread auto\tTo use " + Option.defaultNbThreads() + " threads for processing");
 		System.out.println("    -author[s]\t\tTo print information about PlantUML authors");
+		System.out.println("    -overwrite\t\tTo all to overwrite read only files");
 		System.out.println();
 		System.out.println("If needed, you can setup the environment variable GRAPHVIZ_DOT.");
 		exit();

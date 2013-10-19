@@ -196,11 +196,12 @@ class FtileIf5 extends AbstractFtile {
 			final Direction newDirection = Direction.leftOrRight(p1, p2);
 			final LinkRendering linkIn = getFtile2().getInLinkRendering();
 			if (originalDirection != newDirection) {
+				final double delta = (originalDirection == Direction.RIGHT ? -1 : 1) * Diamond.diamondHalfSize;
 				final Dimension2D dimDiamond1 = diamond1.asTextBlock().calculateDimension(stringBounder);
 				final Snake small = new Snake(linkIn == null ? arrowColor : linkIn.getColor(), false);
 				small.addPoint(p1);
-				small.addPoint(p1.getX() - Diamond.diamondHalfSize, p1.getY());
-				small.addPoint(p1.getX() - Diamond.diamondHalfSize, p1.getY() + dimDiamond1.getHeight());
+				small.addPoint(p1.getX() + delta, p1.getY());
+				small.addPoint(p1.getX() + delta, p1.getY() + dimDiamond1.getHeight());
 				ug.draw(small);
 				p1 = small.getLast();
 			}
@@ -349,7 +350,7 @@ class FtileIf5 extends AbstractFtile {
 		}
 	}
 
-	class ConnectionVerticalThenHorizontalDirect extends AbstractConnection {
+	class ConnectionVerticalThenHorizontalDirect extends AbstractConnection implements ConnectionTranslatable {
 		private final HtmlColor myArrowColor;
 
 		public ConnectionVerticalThenHorizontalDirect(Ftile tile, HtmlColor myArrowColor) {
@@ -393,6 +394,36 @@ class FtileIf5 extends AbstractFtile {
 				return getTranslate2(stringBounder);
 			}
 			throw new IllegalStateException();
+		}
+
+		public void drawTranslate(UGraphic ug, UTranslate translate1, UTranslate translate2) {
+			final StringBounder stringBounder = ug.getStringBounder();
+			final Dimension2D dimTotal = calculateDimensionInternal(stringBounder);
+
+			final Point2D pointOut = getFtile1().getPointOut(stringBounder);
+			if (pointOut == null) {
+				return;
+			}
+			final Point2D p1 = translate(stringBounder).getTranslated(pointOut);
+			final Point2D p2 = new Point2D.Double(dimTotal.getWidth() / 2, dimTotal.getHeight()
+					- Diamond.diamondHalfSize);
+
+			final Point2D mp1a = translate1.getTranslated(p1);
+			final Point2D mp2b = translate2.getTranslated(p2);
+
+			final Snake snake = new Snake(myArrowColor, true);
+			// final Snake snake = new Snake(HtmlColorUtils.BLUE, true);
+
+			final double x1 = mp1a.getX();
+			final double x2 = mp2b.getX();
+			final double y2 = mp2b.getY();
+
+			snake.addPoint(mp1a);
+			snake.addPoint(x1, y2);
+			snake.addPoint(mp2b);
+			snake.addPoint(x2, dimTotal.getHeight());
+
+			ug.draw(snake);
 		}
 	}
 

@@ -111,7 +111,7 @@ public final class GroupPngMakerState {
 		final TextBlock title = TextBlockUtils.create(display, new FontConfiguration(getFont(FontParam.STATE),
 				HtmlColorUtils.BLACK), HorizontalAlignment.CENTER, diagram.getSkinParam());
 
-		if (group.zsize() == 0) {
+		if (group.size() == 0) {
 			return new EntityImageState(group, diagram.getSkinParam());
 		}
 		final List<Link> links = getPureInnerLinks();
@@ -120,7 +120,7 @@ public final class GroupPngMakerState {
 //			skinParam = new SkinParamBackcolored(skinParam, null, group.getSpecificBackColor());
 //		}
 		final DotData dotData = new DotData(group, links, group.getLeafsDirect(), diagram.getUmlDiagramType(),
-				skinParam, group.zgetRankdir(), new InnerGroupHierarchy(), diagram.getColorMapper(),
+				skinParam, group.getRankdir(), new InnerGroupHierarchy(), diagram.getColorMapper(),
 				diagram.getEntityFactory(), diagram.isHideEmptyDescriptionForState());
 
 		boolean hasVerticalLine = false;
@@ -132,10 +132,10 @@ public final class GroupPngMakerState {
 		final CucaDiagramFileMakerSvek2 svek2 = new CucaDiagramFileMakerSvek2(dotData, diagram.getEntityFactory(),
 				hasVerticalLine, diagram.getSource(), diagram.getPragma());
 
-		if (group.zgetGroupType() == GroupType.CONCURRENT_STATE) {
+		if (group.getGroupType() == GroupType.CONCURRENT_STATE) {
 			// return new InnerStateConcurrent(svek2.createFile());
 			return svek2.createFile();
-		} else if (group.zgetGroupType() == GroupType.STATE) {
+		} else if (group.getGroupType() == GroupType.STATE) {
 			final HtmlColor borderColor = getColor(ColorParam.stateBorder, null);
 			final Stereotype stereo = group.getStereotype();
 			final HtmlColor backColor = group.getSpecificBackColor() == null ? getColor(ColorParam.stateBackground,
@@ -158,7 +158,7 @@ public final class GroupPngMakerState {
 					skinParam.shadowing(), subUrls, group.getUrls(), withSymbol);
 		}
 
-		throw new UnsupportedOperationException(group.zgetGroupType().toString());
+		throw new UnsupportedOperationException(group.getGroupType().toString());
 
 	}
 

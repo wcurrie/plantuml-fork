@@ -95,7 +95,7 @@ class USymbolDatabase extends USymbol {
 			final UPath closing = getClosingPath(endingX);
 			ug = ug.apply(translate);
 			ug.apply(line.getStroke()).apply(new UChangeBackColor(null)).apply(new UTranslate(0, -15)).draw(closing);
-			line.drawTitle(ug, 0, endingX, 0, true);
+			line.drawTitleInternal(ug, 0, endingX, 0, true);
 		}
 
 	}

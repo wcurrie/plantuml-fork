@@ -33,7 +33,18 @@
  */
 package net.sourceforge.plantuml.creole;
 
-import net.sourceforge.plantuml.graphic.TextBlockable;
+import java.awt.geom.Dimension2D;
 
-public interface Atom extends TextBlockable {
+import net.sourceforge.plantuml.graphic.StringBounder;
+import net.sourceforge.plantuml.ugraphic.UGraphic;
+import net.sourceforge.plantuml.ugraphic.UShape;
+
+public interface Atom extends UShape {
+
+	public Dimension2D calculateDimension(StringBounder stringBounder);
+
+	public double getH1(StringBounder stringBounder);
+
+	public void drawU(UGraphic ug);
+
 }

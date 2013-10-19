@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  *
- * Revision $Revision: 11661 $
+ * Revision $Revision: 11707 $
  *
  */
 package net.sourceforge.plantuml;
@@ -494,6 +494,18 @@ public class SkinParam implements ISkinParam {
 			return ConditionStyle.INSIDE;
 		}
 		return p;
+	}
+
+	public double minClassWidth() {
+		final String value = getValue("minclasswidth");
+		if (value != null && value.matches("\\d+")) {
+			return Integer.parseInt(value);
+		}
+		return 0;
+	}
+
+	public boolean sameClassWidth() {
+		return "true".equals(getValue("sameclasswidth"));
 	}
 
 }

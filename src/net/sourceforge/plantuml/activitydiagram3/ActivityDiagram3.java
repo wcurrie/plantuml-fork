@@ -38,7 +38,9 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.List;
+import java.util.Set;
 
+import net.sourceforge.plantuml.CMapData;
 import net.sourceforge.plantuml.Dimension2DDouble;
 import net.sourceforge.plantuml.FileFormatOption;
 import net.sourceforge.plantuml.FontParam;
@@ -46,8 +48,10 @@ import net.sourceforge.plantuml.ISkinParam;
 import net.sourceforge.plantuml.Scale;
 import net.sourceforge.plantuml.UmlDiagram;
 import net.sourceforge.plantuml.UmlDiagramType;
+import net.sourceforge.plantuml.Url;
 import net.sourceforge.plantuml.activitydiagram3.ftile.BoxStyle;
 import net.sourceforge.plantuml.activitydiagram3.ftile.Swimlanes;
+import net.sourceforge.plantuml.api.ImageDataComplex;
 import net.sourceforge.plantuml.api.ImageDataSimple;
 import net.sourceforge.plantuml.command.CommandExecutionResult;
 import net.sourceforge.plantuml.core.ImageData;
@@ -63,6 +67,7 @@ import net.sourceforge.plantuml.sequencediagram.NotePosition;
 import net.sourceforge.plantuml.svek.DecorateTextBlock;
 import net.sourceforge.plantuml.ugraphic.UFont;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
+import net.sourceforge.plantuml.ugraphic.g2d.UGraphicG2d;
 
 public class ActivityDiagram3 extends UmlDiagram {
 
@@ -110,8 +115,10 @@ public class ActivityDiagram3 extends UmlDiagram {
 
 	public void addActivity(Display activity, HtmlColor color, BoxStyle style) {
 		manageSwimlaneStrategy();
-		current().add(new InstructionSimple(activity, color, nextLinkRenderer(), swinlanes.getCurrentSwimlane(), style));
+		current()
+				.add(new InstructionSimple(activity, color, nextLinkRenderer(), swinlanes.getCurrentSwimlane(), style));
 		setNextLinkRenderer(null);
+		manageHasUrl(activity);
 	}
 
 	public void start() {
@@ -150,7 +157,27 @@ public class ActivityDiagram3 extends UmlDiagram {
 				getSkinParam().getBackgroundColor(), margin);
 
 		ug.writeImage(os, getMetadata(), getDpi(fileFormatOption));
+
+		if (ug instanceof UGraphicG2d) {
+			final Set<Url> urls = ((UGraphicG2d) ug).getAllUrlsEncountered();
+			if (urls.size() > 0) {
+				final CMapData cmap = cmapString(urls, dpiFactor);
+				return new ImageDataComplex(dim, cmap, getWarningOrError());
+			}
+		}
+
 		return new ImageDataSimple((int) dim.getWidth(), (int) dim.getHeight());
+	}
+
+	private CMapData cmapString(Set<Url> allUrlEncountered, double scale) {
+		final CMapData cmapdata = new CMapData();
+		int seq = 1;
+
+		for (Url u : allUrlEncountered) {
+			cmapdata.appendUrl(seq, u, scale);
+			seq++;
+		}
+		return cmapdata;
 	}
 
 	private final double getDpiFactor(FileFormatOption fileFormatOption, final Dimension2D dim) {
@@ -245,7 +272,8 @@ public class ActivityDiagram3 extends UmlDiagram {
 
 	public void startIf(Display test, Display whenThen) {
 		manageSwimlaneStrategy();
-		final InstructionIf instructionIf = new InstructionIf(swinlanes.getCurrentSwimlane(), current(), test, whenThen, nextLinkRenderer());
+		final InstructionIf instructionIf = new InstructionIf(swinlanes.getCurrentSwimlane(), current(), test,
+				whenThen, nextLinkRenderer());
 		current().add(instructionIf);
 		setCurrent(instructionIf);
 	}
@@ -271,7 +299,8 @@ public class ActivityDiagram3 extends UmlDiagram {
 
 	public void startRepeat() {
 		manageSwimlaneStrategy();
-		final InstructionRepeat instructionRepeat = new InstructionRepeat(swinlanes.getCurrentSwimlane(), current(), nextLinkRenderer());
+		final InstructionRepeat instructionRepeat = new InstructionRepeat(swinlanes.getCurrentSwimlane(), current(),
+				nextLinkRenderer());
 		current().add(instructionRepeat);
 		setCurrent(instructionRepeat);
 
@@ -292,7 +321,8 @@ public class ActivityDiagram3 extends UmlDiagram {
 
 	public void doWhile(Display test, Display yes) {
 		manageSwimlaneStrategy();
-		final InstructionWhile instructionWhile = new InstructionWhile(swinlanes.getCurrentSwimlane(), current(), test, nextLinkRenderer(), yes);
+		final InstructionWhile instructionWhile = new InstructionWhile(swinlanes.getCurrentSwimlane(), current(), test,
+				nextLinkRenderer(), yes);
 		current().add(instructionWhile);
 		setCurrent(instructionWhile);
 	}
@@ -341,7 +371,21 @@ public class ActivityDiagram3 extends UmlDiagram {
 
 	public CommandExecutionResult addNote(Display note, NotePosition position) {
 		current().addNote(note, position);
+		manageHasUrl(note);
 		return CommandExecutionResult.ok();
+	}
+
+	private boolean hasUrl = false;
+
+	private void manageHasUrl(Display display) {
+		if (display.hasUrl()) {
+			hasUrl = true;
+		}
+	}
+
+	@Override
+	public boolean hasUrl() {
+		return hasUrl;
 	}
 
 }

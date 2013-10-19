@@ -41,26 +41,25 @@ import net.sourceforge.plantuml.Url;
 import net.sourceforge.plantuml.ugraphic.UChangeColor;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
 import net.sourceforge.plantuml.ugraphic.UHorizontalLine;
-import net.sourceforge.plantuml.ugraphic.UStroke;
 import net.sourceforge.plantuml.ugraphic.UTranslate;
 
-public class TextBlockLineBefore2 implements TextBlock {
+public class TextBlockLineBefore implements TextBlock {
 
 	private final TextBlock textBlock;
 	private final char separator;
 	private final TextBlock title;
 
-	public TextBlockLineBefore2(TextBlock textBlock, char separator, TextBlock title) {
+	public TextBlockLineBefore(TextBlock textBlock, char separator, TextBlock title) {
 		this.textBlock = textBlock;
 		this.separator = separator;
 		this.title = title;
 	}
 
-	public TextBlockLineBefore2(TextBlock textBlock, char separator) {
+	public TextBlockLineBefore(TextBlock textBlock, char separator) {
 		this(textBlock, separator, null);
 	}
 
-	public TextBlockLineBefore2(TextBlock textBlock) {
+	public TextBlockLineBefore(TextBlock textBlock) {
 		this(textBlock, '\0');
 	}
 
@@ -73,38 +72,15 @@ public class TextBlockLineBefore2 implements TextBlock {
 		return dim;
 	}
 
-	private void drawLine(UGraphic ug, double y, UHorizontalLine line) {
-		if (separator == '=') {
-			ug.apply(new UTranslate(0, y)).draw(line);
-			ug.apply(new UTranslate(0, y + 2)).draw(line.blankTitle());
-		} else {
-			ug.apply(new UTranslate(0, y)).draw(line);
-		}
-	}
-
-	private UStroke getStroke() {
-		if (separator == '\0') {
-			return null;
-		} else if (separator == '=') {
-			return new UStroke();
-		} else if (separator == '.') {
-			return new UStroke(1, 2, 1);
-		} else if (separator == '-') {
-			return new UStroke();
-		} else {
-			return new UStroke(1.5);
-		}
-	}
-
 	public void drawU(UGraphic ug) {
 		final HtmlColor color = ug.getParam().getColor();
 		if (title == null) {
-			drawLine(ug, 0, UHorizontalLine.infinite(1, 1, getStroke()));
+			UHorizontalLine.infinite(1, 1, separator).drawMe(ug);
 		}
 		textBlock.drawU(ug);
 		ug = ug.apply(new UChangeColor(color));
 		if (title != null) {
-			drawLine(ug, 0, UHorizontalLine.infinite(1, 1, title, getStroke()));
+			UHorizontalLine.infinite(1, 1, title, separator).drawMe(ug);
 		}
 	}
 

@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  *
- * Revision $Revision: 10458 $
+ * Revision $Revision: 11786 $
  *
  */
 package net.sourceforge.plantuml.ant;
@@ -343,6 +343,11 @@ public class PlantUmlTask extends Task {
 		final boolean flag = "true".equalsIgnoreCase(s) || "yes".equalsIgnoreCase(s) || "on".equalsIgnoreCase(s);
 		option.setCheckOnly(true);
 		OptionFlags.getInstance().setFailOnError(flag);
+	}
+
+	public void setOverwrite(String s) {
+		final boolean flag = "true".equalsIgnoreCase(s) || "yes".equalsIgnoreCase(s) || "on".equalsIgnoreCase(s);
+		OptionFlags.getInstance().setOverwrite(flag);
 	}
 
 }

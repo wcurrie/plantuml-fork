@@ -94,5 +94,9 @@ public interface ISkinParam extends SpriteContainer {
 	public boolean forceSequenceParticipantUnderlined();
 
 	public ConditionStyle getConditionStyle();
+	
+	public double minClassWidth();
+	
+	public boolean sameClassWidth();
 
 }

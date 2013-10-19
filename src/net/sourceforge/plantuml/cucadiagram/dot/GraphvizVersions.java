@@ -51,6 +51,9 @@ public class GraphvizVersions {
 	}
 
 	public GraphvizVersion getVersion(File f) {
+		if (f == null) {
+			return null;
+		}
 		GraphvizVersion result = map.get(f);
 		if (result != null) {
 			return result;

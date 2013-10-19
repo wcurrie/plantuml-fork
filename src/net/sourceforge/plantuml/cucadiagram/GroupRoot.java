@@ -154,7 +154,7 @@ public class GroupRoot implements IGroup {
 	}
 
 	public IGroup getParentContainer() {
-		throw new UnsupportedOperationException();
+		return null;
 	}
 
 	public boolean containsLeafRecurse(ILeaf entity) {
@@ -162,7 +162,7 @@ public class GroupRoot implements IGroup {
 
 	}
 
-	public Collection<IGroup> zgetChildren() {
+	public Collection<IGroup> getChildren() {
 		final List<IGroup> result = new ArrayList<IGroup>();
 		for (IGroup ent : entityFactory.getGroups().values()) {
 			if (ent.getParentContainer() == this) {
@@ -172,44 +172,44 @@ public class GroupRoot implements IGroup {
 		return Collections.unmodifiableCollection(result);
 	}
 
-	public void zmoveEntitiesTo(IGroup dest) {
+	public void moveEntitiesTo(IGroup dest) {
 		throw new UnsupportedOperationException();
 	}
 
-	public int zsize() {
+	public int size() {
 		throw new UnsupportedOperationException();
 	}
 
-	public GroupType zgetGroupType() {
+	public GroupType getGroupType() {
 		throw new UnsupportedOperationException();
 	}
 
-	public String zgetNamespace() {
-		throw new UnsupportedOperationException();
-
-	}
-
-	public boolean zisAutonom() {
+	public String getNamespace() {
 		throw new UnsupportedOperationException();
 
 	}
 
-	public void zsetAutonom(boolean autonom) {
+	public boolean isAutonom() {
 		throw new UnsupportedOperationException();
 
 	}
 
-	public Rankdir zgetRankdir() {
+	public void setAutonom(boolean autonom) {
 		throw new UnsupportedOperationException();
 
 	}
 
-	public void zsetRankdir(Rankdir rankdir) {
+	public Rankdir getRankdir() {
 		throw new UnsupportedOperationException();
 
 	}
 
-	public PackageStyle zgetPackageStyle() {
+	public void setRankdir(Rankdir rankdir) {
+		throw new UnsupportedOperationException();
+
+	}
+
+	public PackageStyle getPackageStyle() {
 		throw new UnsupportedOperationException();
 
 	}

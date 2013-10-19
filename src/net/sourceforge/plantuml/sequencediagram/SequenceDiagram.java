@@ -207,7 +207,7 @@ public class SequenceDiagram extends UmlDiagram {
 		if (this.hasUrl() && fileFormat.getFileFormat() == FileFormat.PNG) {
 			sequenceDiagramPngMaker.appendCmap(cmap);
 		}
-		return new ImageDataComplex(info, cmap);
+		return new ImageDataComplex(info, cmap, null);
 	}
 
 	// support for CommandReturn

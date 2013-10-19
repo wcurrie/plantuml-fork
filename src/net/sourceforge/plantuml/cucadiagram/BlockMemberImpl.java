@@ -40,7 +40,7 @@ import java.util.List;
 import net.sourceforge.plantuml.FontParam;
 import net.sourceforge.plantuml.ISkinParam;
 import net.sourceforge.plantuml.graphic.TextBlock;
-import net.sourceforge.plantuml.graphic.TextBlockLineBefore2;
+import net.sourceforge.plantuml.graphic.TextBlockLineBefore;
 import net.sourceforge.plantuml.graphic.TextBlockUtils;
 
 public class BlockMemberImpl implements BlockMember {
@@ -56,7 +56,7 @@ public class BlockMemberImpl implements BlockMember {
 	}
 
 	public TextBlock asTextBlock(FontParam fontParam, ISkinParam skinParam) {
-		return new TextBlockLineBefore2(TextBlockUtils.withMargin((TextBlock) new MethodsOrFieldsArea(members,
+		return new TextBlockLineBefore(TextBlockUtils.withMargin((TextBlock) new MethodsOrFieldsArea(members,
 				fontParam, skinParam), 6, 4));
 	}
 

@@ -301,7 +301,7 @@ public class Cluster implements Moveable {
 				drawUState(ug, borderColor, dotData);
 				return;
 			}
-			PackageStyle style = group.zgetPackageStyle();
+			PackageStyle style = group.getPackageStyle();
 			if (style == null) {
 				style = dotData.getSkinParam().getPackageStyle();
 			}

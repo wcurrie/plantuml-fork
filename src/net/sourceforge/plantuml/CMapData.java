@@ -52,5 +52,21 @@ public class CMapData {
 	public void appendLong(long s) {
 		stringBuilder.append(s);
 	}
+	
+	public void appendUrl(int seq, Url url, double scale) {
+		appendString("<area shape=\"rect\" id=\"id");
+		appendLong(seq);
+		appendString("\" href=\"");
+		appendString(url.getUrl());
+		appendString("\" title=\"");
+		appendString(url.getTooltip());
+		appendString("\" alt=\"\" coords=\"");
+		appendString(url.getCoords(scale));
+		appendString("\"/>");
+
+		appendString("\n");
+	}
+
+
 
 }

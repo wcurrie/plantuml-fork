@@ -65,12 +65,7 @@ import net.sourceforge.plantuml.command.note.FactoryNoteCommand;
 import net.sourceforge.plantuml.command.note.FactoryNoteOnEntityCommand;
 import net.sourceforge.plantuml.command.note.FactoryNoteOnLinkCommand;
 import net.sourceforge.plantuml.command.regex.RegexLeaf;
-import net.sourceforge.plantuml.cucadiagram.IEntity;
-import net.sourceforge.plantuml.cucadiagram.IGroup;
-import net.sourceforge.plantuml.cucadiagram.ILeaf;
 import net.sourceforge.plantuml.cucadiagram.Link;
-import net.sourceforge.plantuml.cucadiagram.LinkDecor;
-import net.sourceforge.plantuml.cucadiagram.LinkType;
 
 public class ClassDiagramFactory1317 extends UmlDiagramFactory1317 {
 
@@ -145,49 +140,22 @@ public class ClassDiagramFactory1317 extends UmlDiagramFactory1317 {
 			}
 		}
 
-		for (IGroup g : system.getGroups(true)) {
-			final List<ILeaf> standalones = new ArrayList<ILeaf>();
-			for (ILeaf ent : g.getLeafsDirect()) {
-				if (system.isStandalone(ent)) {
-					standalones.add(ent);
-				}
-			}
-			if (standalones.size() < 3) {
-				continue;
-			}
-			putInSquare(system, standalones);
-		}
+		system.applySingleStrategy();
+
+//		for (IGroup g : system.getGroups(true)) {
+//			final List<ILeaf> standalones = new ArrayList<ILeaf>();
+//			for (ILeaf ent : g.getLeafsDirect()) {
+//				if (system.isStandalone(ent)) {
+//					standalones.add(ent);
+//				}
+//			}
+//			if (standalones.size() < 3) {
+//				continue;
+//			}
+//			final Magma magma = new Magma(system, standalones);
+//			magma.putInSquare();
+//		}
 		return super.checkFinalError(system);
-	}
-
-	private void putInSquare(ClassDiagram system, List<ILeaf> standalones) {
-		final LinkType linkType = new LinkType(LinkDecor.NONE, LinkDecor.NONE).getInvisible();
-		final int branch = computeBranch(standalones.size());
-		int headBranch = 0;
-		for (int i = 1; i < standalones.size(); i++) {
-			final int dist = i - headBranch;
-			final IEntity ent2 = standalones.get(i);
-			final Link link;
-			if (dist == branch) {
-				final IEntity ent1 = standalones.get(headBranch);
-				link = new Link(ent1, ent2, linkType, null, 2);
-				headBranch = i;
-			} else {
-				final IEntity ent1 = standalones.get(i - 1);
-				link = new Link(ent1, ent2, linkType, null, 1);
-			}
-			system.addLink(link);
-		}
-
-	}
-
-	static int computeBranch(int size) {
-		final double sqrt = Math.sqrt(size);
-		final int r = (int) sqrt;
-		if (r * r == size) {
-			return r;
-		}
-		return r + 1;
 	}
 
 }

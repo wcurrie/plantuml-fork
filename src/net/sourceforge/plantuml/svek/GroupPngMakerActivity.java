@@ -98,7 +98,7 @@ public final class GroupPngMakerActivity {
 		// final TextBlock title = TextBlockUtils.create(display, new FontConfiguration(
 		// getFont(FontParam.STATE), HtmlColorUtils.BLACK), HorizontalAlignment.CENTER, diagram.getSkinParam());
 
-		if (group.zsize() == 0) {
+		if (group.size() == 0) {
 			return new EntityImageState(group, diagram.getSkinParam());
 		}
 		final List<Link> links = getPureInnerLinks();
@@ -107,12 +107,12 @@ public final class GroupPngMakerActivity {
 //			skinParam = new SkinParamBackcolored(skinParam, null, group.getSpecificBackColor());
 //		}
 		final DotData dotData = new DotData(group, links, group.getLeafsDirect(), diagram.getUmlDiagramType(),
-				skinParam, group.zgetRankdir(), new InnerGroupHierarchy(), diagram.getColorMapper(),
+				skinParam, group.getRankdir(), new InnerGroupHierarchy(), diagram.getColorMapper(),
 				diagram.getEntityFactory(), false);
 
 		final CucaDiagramFileMakerSvek2 svek2 = new CucaDiagramFileMakerSvek2(dotData, diagram.getEntityFactory(), false, diagram.getSource(), diagram.getPragma());
 
-		if (group.zgetGroupType() == GroupType.INNER_ACTIVITY) {
+		if (group.getGroupType() == GroupType.INNER_ACTIVITY) {
 			final Stereotype stereo = group.getStereotype();
 			final HtmlColor borderColor = getColor(ColorParam.activityBorder, stereo);
 			final HtmlColor backColor = group.getSpecificBackColor() == null ? getColor(ColorParam.background, stereo)
@@ -120,7 +120,7 @@ public final class GroupPngMakerActivity {
 			return new InnerActivity(svek2.createFile(), borderColor, backColor, skinParam.shadowing());
 		}
 
-		throw new UnsupportedOperationException(group.zgetGroupType().toString());
+		throw new UnsupportedOperationException(group.getGroupType().toString());
 
 	}
 

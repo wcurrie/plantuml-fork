@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  *
- * Revision $Revision: 11462 $
+ * Revision $Revision: 11797 $
  *
  */
 package net.sourceforge.plantuml;
@@ -47,6 +47,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import javax.imageio.ImageIO;
@@ -267,7 +268,6 @@ public abstract class UmlDiagram extends AbstractPSystem implements Diagram {
 		graphicStrings.writeImage(os, fileFormat, svg);
 	}
 
-
 	private FlashCodeUtils getFlashCodeUtils() {
 		return FlashCodeFactory.getFlashCodeUtils();
 	}
@@ -314,6 +314,9 @@ public abstract class UmlDiagram extends AbstractPSystem implements Diagram {
 		final File cmapFile = new File(name);
 		PrintWriter pw = null;
 		try {
+			if (PSystemUtils.canFileBeWritten(cmapFile) == false) {
+				return;
+			}
 			pw = new PrintWriter(cmapFile);
 			pw.print(cmapdata.getCMapData(cmapFile.getName().substring(0, cmapFile.getName().length() - 6)));
 			pw.close();

@@ -40,12 +40,17 @@ import java.util.List;
 import java.util.Set;
 
 import net.sourceforge.plantuml.Dimension2DDouble;
+import net.sourceforge.plantuml.OptionFlags;
 import net.sourceforge.plantuml.SpriteContainerEmpty;
 import net.sourceforge.plantuml.Url;
 import net.sourceforge.plantuml.activitydiagram3.LinkRendering;
 import net.sourceforge.plantuml.activitydiagram3.ftile.AbstractFtile;
 import net.sourceforge.plantuml.activitydiagram3.ftile.BoxStyle;
 import net.sourceforge.plantuml.activitydiagram3.ftile.Swimlane;
+import net.sourceforge.plantuml.creole.CreoleParser;
+import net.sourceforge.plantuml.creole.Sheet;
+import net.sourceforge.plantuml.creole.SheetBlock;
+import net.sourceforge.plantuml.creole.Stencil;
 import net.sourceforge.plantuml.cucadiagram.Display;
 import net.sourceforge.plantuml.graphic.FontConfiguration;
 import net.sourceforge.plantuml.graphic.HorizontalAlignment;
@@ -55,11 +60,12 @@ import net.sourceforge.plantuml.graphic.StringBounder;
 import net.sourceforge.plantuml.graphic.TextBlock;
 import net.sourceforge.plantuml.graphic.TextBlockUtils;
 import net.sourceforge.plantuml.graphic.UDrawable;
-import net.sourceforge.plantuml.ugraphic.Shadowable;
 import net.sourceforge.plantuml.ugraphic.UChangeBackColor;
 import net.sourceforge.plantuml.ugraphic.UChangeColor;
 import net.sourceforge.plantuml.ugraphic.UFont;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
+import net.sourceforge.plantuml.ugraphic.UHorizontalLine;
+import net.sourceforge.plantuml.ugraphic.ULine;
 import net.sourceforge.plantuml.ugraphic.UStroke;
 import net.sourceforge.plantuml.ugraphic.UTranslate;
 
@@ -94,6 +100,21 @@ public class FtileBox extends AbstractFtile {
 		return swimlane;
 	}
 
+	class MyStencil implements Stencil {
+
+		public UDrawable convert(final UHorizontalLine line, StringBounder stringBounder) {
+			final Dimension2D dim = asTextBlock().calculateDimension(stringBounder);
+			return new UDrawable() {
+				public void drawU(UGraphic ug) {
+					ug = ug.apply(new UTranslate(-MARGIN, 0));
+					line.drawLineInternal(ug, 0, dim.getWidth(), 0, line.getStroke());
+					// ug.draw(new ULine(dim.getWidth(), 0));
+				}
+			};
+		}
+
+	}
+
 	public FtileBox(boolean shadowing, Display label, HtmlColor color, HtmlColor backColor, UFont font,
 			HtmlColor arrowColor, Swimlane swimlane, BoxStyle style) {
 		super(shadowing);
@@ -103,7 +124,12 @@ public class FtileBox extends AbstractFtile {
 		this.backColor = backColor;
 		this.inRenreding = new LinkRendering(arrowColor);
 		final FontConfiguration fc = new FontConfiguration(font, HtmlColorUtils.BLACK);
-		tb = TextBlockUtils.create(label, fc, HorizontalAlignment.LEFT, new SpriteContainerEmpty());
+		if (OptionFlags.USE_CREOLE) {
+			final Sheet sheet = new CreoleParser(fc).createSheet(label);
+			tb = new SheetBlock(sheet, new MyStencil());
+		} else {
+			tb = TextBlockUtils.create(label, fc, HorizontalAlignment.LEFT, new SpriteContainerEmpty());
+		}
 		this.print = label.toString();
 	}
 

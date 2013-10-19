@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 11476 $
+ * Revision $Revision: 11718 $
  *
  */
 package net.sourceforge.plantuml.cucadiagram;
@@ -61,7 +61,6 @@ import net.sourceforge.plantuml.hector.CucaDiagramFileMakerHectorB2;
 import net.sourceforge.plantuml.skin.VisibilityModifier;
 import net.sourceforge.plantuml.svek.CucaDiagramFileMaker;
 import net.sourceforge.plantuml.svek.CucaDiagramFileMakerSvek;
-import net.sourceforge.plantuml.svek.SingleStrategy;
 import net.sourceforge.plantuml.ugraphic.ColorMapper;
 import net.sourceforge.plantuml.xmi.CucaDiagramXmiMaker;
 
@@ -329,16 +328,16 @@ public abstract class CucaDiagram extends UmlDiagram implements GroupHierarchy, 
 	}
 
 	public boolean isAutarkic(IGroup g) {
-		if (g.zgetGroupType() == GroupType.PACKAGE) {
+		if (g.getGroupType() == GroupType.PACKAGE) {
 			return false;
 		}
-		if (g.zgetGroupType() == GroupType.INNER_ACTIVITY) {
+		if (g.getGroupType() == GroupType.INNER_ACTIVITY) {
 			return true;
 		}
-		if (g.zgetGroupType() == GroupType.CONCURRENT_ACTIVITY) {
+		if (g.getGroupType() == GroupType.CONCURRENT_ACTIVITY) {
 			return true;
 		}
-		if (g.zgetGroupType() == GroupType.CONCURRENT_STATE) {
+		if (g.getGroupType() == GroupType.CONCURRENT_STATE) {
 			return true;
 		}
 		if (getChildrenGroups(g).size() > 0) {
@@ -409,7 +408,7 @@ public abstract class CucaDiagram extends UmlDiagram implements GroupHierarchy, 
 				return false;
 			}
 		}
-		return gToTest.zsize() == 0;
+		return gToTest.size() == 0;
 	}
 
 	public final boolean isVisibilityModifierPresent() {
@@ -518,9 +517,11 @@ public abstract class CucaDiagram extends UmlDiagram implements GroupHierarchy, 
 	}
 
 	public void applySingleStrategy() {
+		final MagmaList magmaList = new MagmaList();
+
 		for (IGroup g : getGroups(true)) {
 			final List<ILeaf> standalones = new ArrayList<ILeaf>();
-			final SingleStrategy singleStrategy = g.getSingleStrategy();
+			// final SingleStrategy singleStrategy = g.getSingleStrategy();
 
 			for (ILeaf ent : g.getLeafsDirect()) {
 				if (isStandalone(ent)) {
@@ -530,10 +531,23 @@ public abstract class CucaDiagram extends UmlDiagram implements GroupHierarchy, 
 			if (standalones.size() < 3) {
 				continue;
 			}
-			for (Link link : singleStrategy.generateLinks(standalones)) {
-				addLink(link);
-			}
+			final Magma magma = new Magma(this, standalones);
+			magma.putInSquare();
+			magmaList.add(magma);
+
+			// for (Link link : singleStrategy.generateLinks(standalones)) {
+			// addLink(link);
+			// }
 		}
+
+		for (IGroup g : getGroups(true)) {
+			final MagmaList magmas = magmaList.getMagmas(g);
+			if (magmas.size() < 3) {
+				continue;
+			}
+			magmas.putInSquare();
+		}
+
 	}
 
 	public boolean isHideEmptyDescriptionForState() {

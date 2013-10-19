@@ -47,25 +47,25 @@ public interface IGroup extends IEntity {
 
 	public Collection<ILeaf> getLeafsDirect();
 
-	public Collection<IGroup> zgetChildren();
+	public Collection<IGroup> getChildren();
 
-	public void zmoveEntitiesTo(IGroup dest);
+	public void moveEntitiesTo(IGroup dest);
 
-	public int zsize();
+	public int size();
 
-	public GroupType zgetGroupType();
+	public GroupType getGroupType();
 
-	public String zgetNamespace();
+	public String getNamespace();
 
-	public boolean zisAutonom();
+	public boolean isAutonom();
 
-	public void zsetAutonom(boolean autonom);
+	public void setAutonom(boolean autonom);
 
-	public Rankdir zgetRankdir();
+	public Rankdir getRankdir();
 
-	public void zsetRankdir(Rankdir rankdir);
+	public void setRankdir(Rankdir rankdir);
 
-	public PackageStyle zgetPackageStyle();
+	public PackageStyle getPackageStyle();
 
 	public void overideImage(IEntityImage img, List<Url> urls, LeafType state);
 

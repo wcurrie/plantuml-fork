@@ -31,7 +31,7 @@
  */
 package net.sourceforge.plantuml.ugraphic;
 
-import net.sourceforge.plantuml.graphic.StringBounder;
+import java.awt.geom.Dimension2D;
 
 public class URectangle extends AbstractShadowable {
 
@@ -55,6 +55,10 @@ public class URectangle extends AbstractShadowable {
 		this.height = height;
 		this.rx = rx;
 		this.ry = ry;
+	}
+
+	public URectangle(Dimension2D dim) {
+		this(dim.getWidth(), dim.getHeight());
 	}
 
 	@Override
@@ -81,6 +85,5 @@ public class URectangle extends AbstractShadowable {
 	public URectangle clip(UClip clip) {
 		return this;
 	}
-
 
 }

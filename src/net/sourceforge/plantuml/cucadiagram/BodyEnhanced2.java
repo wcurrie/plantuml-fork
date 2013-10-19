@@ -46,7 +46,7 @@ import net.sourceforge.plantuml.graphic.HorizontalAlignment;
 import net.sourceforge.plantuml.graphic.HtmlColor;
 import net.sourceforge.plantuml.graphic.StringBounder;
 import net.sourceforge.plantuml.graphic.TextBlock;
-import net.sourceforge.plantuml.graphic.TextBlockLineBefore2;
+import net.sourceforge.plantuml.graphic.TextBlockLineBefore;
 import net.sourceforge.plantuml.graphic.TextBlockUtils;
 import net.sourceforge.plantuml.graphic.TextBlockVertical2;
 import net.sourceforge.plantuml.ugraphic.UFont;
@@ -78,10 +78,10 @@ public class BodyEnhanced2 implements TextBlock {
 			return b;
 		}
 		if (title == null) {
-			return new TextBlockLineBefore2(TextBlockUtils.withMargin(b, 0, 4), separator);
+			return new TextBlockLineBefore(TextBlockUtils.withMargin(b, 0, 4), separator);
 		}
 		final Dimension2D dimTitle = title.calculateDimension(stringBounder);
-		final TextBlock raw = new TextBlockLineBefore2(TextBlockUtils.withMargin(b, 0, 6, dimTitle.getHeight() / 2, 4),
+		final TextBlock raw = new TextBlockLineBefore(TextBlockUtils.withMargin(b, 0, 6, dimTitle.getHeight() / 2, 4),
 				separator, title);
 		return TextBlockUtils.withMargin(raw, 0, 0, dimTitle.getHeight() / 2, 0);
 	}

@@ -406,7 +406,7 @@ class EntityImpl implements ILeaf, IGroup {
 		if (leaf.getParentContainer() == this) {
 			return true;
 		}
-		for (IGroup child : zgetChildren()) {
+		for (IGroup child : getChildren()) {
 			if (child.containsLeafRecurse(leaf)) {
 				return true;
 			}
@@ -428,7 +428,7 @@ class EntityImpl implements ILeaf, IGroup {
 		return Collections.unmodifiableCollection(result);
 	}
 
-	public Collection<IGroup> zgetChildren() {
+	public Collection<IGroup> getChildren() {
 		checkGroup();
 		final Collection<IGroup> result = new ArrayList<IGroup>();
 		for (IGroup g : entityFactory.getGroups().values()) {
@@ -439,7 +439,7 @@ class EntityImpl implements ILeaf, IGroup {
 		return Collections.unmodifiableCollection(result);
 	}
 
-	public void zmoveEntitiesTo(IGroup dest) {
+	public void moveEntitiesTo(IGroup dest) {
 		checkGroup();
 		if (dest.isGroup() == false) {
 			throw new UnsupportedOperationException();
@@ -447,12 +447,12 @@ class EntityImpl implements ILeaf, IGroup {
 		for (ILeaf ent : getLeafsDirect()) {
 			((EntityImpl) ent).parentContainer = dest;
 		}
-		for (IGroup g : dest.zgetChildren()) {
+		for (IGroup g : dest.getChildren()) {
 			// ((EntityImpl) g).parentContainer = dest;
 			throw new IllegalStateException();
 		}
 
-		for (IGroup g : zgetChildren()) {
+		for (IGroup g : getChildren()) {
 			if (g == dest) {
 				continue;
 			}
@@ -461,42 +461,42 @@ class EntityImpl implements ILeaf, IGroup {
 
 	}
 
-	public int zsize() {
+	public int size() {
 		checkGroup();
 		return getLeafsDirect().size();
 	}
 
-	public GroupType zgetGroupType() {
+	public GroupType getGroupType() {
 		checkGroup();
 		return groupType;
 	}
 
-	public String zgetNamespace() {
+	public String getNamespace() {
 		checkGroup();
 		return namespace;
 	}
 
-	public boolean zisAutonom() {
+	public boolean isAutonom() {
 		checkGroup();
 		return autonom;
 	}
 
-	public void zsetAutonom(boolean autonom) {
+	public void setAutonom(boolean autonom) {
 		this.autonom = autonom;
 
 	}
 
-	public Rankdir zgetRankdir() {
+	public Rankdir getRankdir() {
 		checkGroup();
 		return rankdir;
 	}
 
-	public void zsetRankdir(Rankdir rankdir) {
+	public void setRankdir(Rankdir rankdir) {
 		checkGroup();
 		this.rankdir = rankdir;
 	}
 
-	public PackageStyle zgetPackageStyle() {
+	public PackageStyle getPackageStyle() {
 		checkGroup();
 		if (stereotype == null) {
 			return null;
@@ -586,7 +586,7 @@ class EntityImpl implements ILeaf, IGroup {
 					return false;
 				}
 			}
-			for (IGroup g : zgetChildren()) {
+			for (IGroup g : getChildren()) {
 				if (g.isRemoved() == false) {
 					return false;
 				}

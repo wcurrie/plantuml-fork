@@ -128,7 +128,7 @@ public class Code implements Comparable<Code> {
 		if (EntityUtils.groupRoot(g)) {
 			return Code.of(code);
 		}
-		final String namespace = g.zgetNamespace();
+		final String namespace = g.getNamespace();
 		if (namespace == null) {
 			return Code.of(code);
 		}

@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  *
- * Revision $Revision: 11432 $
+ * Revision $Revision: 11713 $
  *
  */
 package net.sourceforge.plantuml.activitydiagram;
@@ -160,15 +160,15 @@ public class ActivityDiagram extends CucaDiagram {
 
 	public void concurrentActivity(String name) {
 		// Log.println("concurrentActivity A name=" + name+" "+getCurrentGroup());
-		if (getCurrentGroup().zgetGroupType() == GroupType.CONCURRENT_ACTIVITY) {
+		if (getCurrentGroup().getGroupType() == GroupType.CONCURRENT_ACTIVITY) {
 			// getCurrentGroup().setRankdir(Rankdir.LEFT_TO_RIGHT);
 			endGroup();
 			// Log.println("endgroup");
 		}
 		// Log.println("concurrentActivity A name=" + name+" "+getCurrentGroup());
 		final Code code = Code.of("##" + UniqueSequence.getValue());
-		if (getCurrentGroup().zgetGroupType() != GroupType.INNER_ACTIVITY) {
-			throw new IllegalStateException("type=" + getCurrentGroup().zgetGroupType());
+		if (getCurrentGroup().getGroupType() != GroupType.INNER_ACTIVITY) {
+			throw new IllegalStateException("type=" + getCurrentGroup().getGroupType());
 		}
 		getOrCreateGroup(code, Display.getWithNewlines("code"), null, GroupType.CONCURRENT_ACTIVITY,
 				getCurrentGroup());

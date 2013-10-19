@@ -33,42 +33,51 @@
  */
 package net.sourceforge.plantuml.creole;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import net.sourceforge.plantuml.graphic.FontConfiguration;
-import net.sourceforge.plantuml.graphic.TextBlock;
-import net.sourceforge.plantuml.graphic.TileText;
+import net.sourceforge.plantuml.graphic.HtmlColor;
+import net.sourceforge.plantuml.graphic.HtmlColorUtils;
+import net.sourceforge.plantuml.graphic.Splitter;
 
-public class Text implements Atom {
+public class CommandCreoleColorChange implements Command {
 
-	private final FontConfiguration fontConfiguration;
-	private final String text;
+	private final Pattern pattern;
 
-	public static Text create(String text, FontConfiguration fontConfiguration) {
-		return new Text(text, fontConfiguration);
+	public static Command create() {
+		return new CommandCreoleColorChange("^(?i)(" + Splitter.fontColorPattern2 + "(.*?)\\</color\\>)");
 	}
 
-	@Override
-	public String toString() {
-		return text + " " + fontConfiguration;
+	public static Command createEol() {
+		return new CommandCreoleColorChange("^(?i)(" + Splitter.fontColorPattern2 + "(.*)$)");
 	}
 
-	// public Text bold() {
-	// return new Text(text, FontStyle.BOLD);
-	// }
+	private CommandCreoleColorChange(String p) {
+		this.pattern = Pattern.compile(p);
 
-	private Text(String text, FontConfiguration style) {
-		this.text = text;
-		this.fontConfiguration = style;
 	}
 
-	public final String getText() {
-		return text;
+	public int matchingSize(String line) {
+		final Matcher m = pattern.matcher(line);
+		if (m.find() == false) {
+			return 0;
+		}
+		return m.group(2).length();
 	}
 
-	public FontConfiguration getFontConfiguration() {
-		return fontConfiguration;
+	public String executeAndGetRemaining(String line, Stripe stripe) {
+		final Matcher m = pattern.matcher(line);
+		if (m.find() == false) {
+			throw new IllegalStateException();
+		}
+		final FontConfiguration fc1 = stripe.getActualFontConfiguration();
+		final HtmlColor color = HtmlColorUtils.getColorIfValid(m.group(2));
+		final FontConfiguration fc2 = fc1.changeColor(color);
+		stripe.setActualFontConfiguration(fc2);
+		stripe.analyzeAndAdd(m.group(3));
+		stripe.setActualFontConfiguration(fc1);
+		return line.substring(m.group(1).length());
 	}
 
-	public TextBlock asTextBlock() {
-		return new TileText(text, fontConfiguration, null);
-	}
 }

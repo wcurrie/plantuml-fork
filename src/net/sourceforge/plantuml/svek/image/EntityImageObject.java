@@ -53,7 +53,7 @@ import net.sourceforge.plantuml.graphic.HtmlColor;
 import net.sourceforge.plantuml.graphic.StringBounder;
 import net.sourceforge.plantuml.graphic.TextBlock;
 import net.sourceforge.plantuml.graphic.TextBlockEmpty;
-import net.sourceforge.plantuml.graphic.TextBlockLineBefore2;
+import net.sourceforge.plantuml.graphic.TextBlockLineBefore;
 import net.sourceforge.plantuml.graphic.TextBlockUtils;
 import net.sourceforge.plantuml.svek.AbstractEntityImage;
 import net.sourceforge.plantuml.svek.ShapeType;
@@ -95,7 +95,7 @@ public class EntityImageObject extends AbstractEntityImage {
 		}
 
 		if (entity.getFieldsToDisplay().size() == 0) {
-			this.fields = new TextBlockLineBefore2(new TextBlockEmpty(10, 16));
+			this.fields = new TextBlockLineBefore(new TextBlockEmpty(10, 16));
 		} else {
 			// this.fields =
 			// entity.getFieldsToDisplay().asTextBlock(FontParam.OBJECT_ATTRIBUTE,
