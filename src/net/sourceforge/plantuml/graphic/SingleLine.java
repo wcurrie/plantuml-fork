@@ -28,14 +28,13 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 11397 $
+ * Revision $Revision: 11873 $
  *
  */
 package net.sourceforge.plantuml.graphic;
 
 import java.awt.geom.Dimension2D;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import net.sourceforge.plantuml.Dimension2DDouble;
@@ -138,13 +137,4 @@ class SingleLine implements Line {
 	public HorizontalAlignment getHorizontalAlignment() {
 		return horizontalAlignment;
 	}
-
-	public List<Url> getUrls(StringBounder stringBounder) {
-		final List<Url> result = new ArrayList<Url>();
-		for (TextBlock b : blocs) {
-			result.addAll(b.getUrls(stringBounder));
-		}
-		return Collections.unmodifiableList(result);
-	}
-
 }

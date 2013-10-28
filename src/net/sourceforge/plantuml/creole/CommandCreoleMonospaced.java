@@ -59,7 +59,7 @@ public class CommandCreoleMonospaced implements Command {
 		return m.group(1).length();
 	}
 
-	public String executeAndGetRemaining(String line, Stripe stripe) {
+	public String executeAndGetRemaining(String line, StripeSimple stripe) {
 		final Matcher m = pattern.matcher(line);
 		if (m.find() == false) {
 			throw new IllegalStateException();

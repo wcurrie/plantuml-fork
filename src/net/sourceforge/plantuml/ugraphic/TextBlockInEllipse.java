@@ -35,9 +35,7 @@ package net.sourceforge.plantuml.ugraphic;
 
 import java.awt.geom.Dimension2D;
 import java.awt.geom.Point2D;
-import java.util.List;
 
-import net.sourceforge.plantuml.Url;
 import net.sourceforge.plantuml.graphic.StringBounder;
 import net.sourceforge.plantuml.graphic.TextBlock;
 import net.sourceforge.plantuml.svek.image.ContainingEllipse;
@@ -80,10 +78,6 @@ public class TextBlockInEllipse implements TextBlock {
 
 	public Dimension2D calculateDimension(StringBounder stringBounder) {
 		return getUEllipse().getDimension();
-	}
-
-	public List<Url> getUrls(StringBounder stringBounder) {
-		return text.getUrls(stringBounder);
 	}
 
 	public void setDeltaShadow(double deltaShadow) {

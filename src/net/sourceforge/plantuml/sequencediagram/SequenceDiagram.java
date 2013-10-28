@@ -31,7 +31,6 @@
  */
 package net.sourceforge.plantuml.sequencediagram;
 
-import java.awt.geom.Dimension2D;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.OutputStream;
@@ -44,12 +43,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Stack;
 
-import net.sourceforge.plantuml.CMapData;
 import net.sourceforge.plantuml.FileFormat;
 import net.sourceforge.plantuml.FileFormatOption;
 import net.sourceforge.plantuml.UmlDiagram;
 import net.sourceforge.plantuml.UmlDiagramType;
-import net.sourceforge.plantuml.api.ImageDataComplex;
 import net.sourceforge.plantuml.core.ImageData;
 import net.sourceforge.plantuml.cucadiagram.Display;
 import net.sourceforge.plantuml.graphic.HtmlColor;
@@ -202,12 +199,7 @@ public class SequenceDiagram extends UmlDiagram {
 	protected ImageData exportDiagramInternal(OutputStream os, int index, FileFormatOption fileFormat,
 			List<BufferedImage> flashcodes) throws IOException {
 		final FileMaker sequenceDiagramPngMaker = getSequenceDiagramPngMaker(fileFormat, flashcodes);
-		final Dimension2D info = sequenceDiagramPngMaker.createOne(os, index);
-		final CMapData cmap = new CMapData();
-		if (this.hasUrl() && fileFormat.getFileFormat() == FileFormat.PNG) {
-			sequenceDiagramPngMaker.appendCmap(cmap);
-		}
-		return new ImageDataComplex(info, cmap, null);
+		return sequenceDiagramPngMaker.createOne(os, index);
 	}
 
 	// support for CommandReturn
@@ -452,6 +444,9 @@ public class SequenceDiagram extends UmlDiagram {
 			if (ev.getUrl() != null) {
 				return true;
 			}
+		}
+		if (getLegend() != null && getLegend().hasUrl()) {
+			return true;
 		}
 		return false;
 	}

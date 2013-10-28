@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 11397 $
+ * Revision $Revision: 11873 $
  *
  */
 package net.sourceforge.plantuml.graphic;
@@ -42,7 +42,6 @@ import java.util.StringTokenizer;
 import net.sourceforge.plantuml.Dimension2DDouble;
 import net.sourceforge.plantuml.EmbededDiagram;
 import net.sourceforge.plantuml.SpriteContainer;
-import net.sourceforge.plantuml.Url;
 import net.sourceforge.plantuml.cucadiagram.Display;
 import net.sourceforge.plantuml.cucadiagram.Stereotype;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
@@ -140,14 +139,6 @@ class TextBlockSimple implements TextBlock {
 	private double getTextWidth(StringBounder stringBounder, String s) {
 		final Line line = new SingleLine(s, fontConfiguration, horizontalAlignment, spriteContainer);
 		return line.calculateDimension(stringBounder).getWidth();
-	}
-
-	public List<Url> getUrls(StringBounder stringBounder) {
-		final List<Url> result = new ArrayList<Url>();
-		for (Line line : getLines(stringBounder)) {
-			result.addAll(line.getUrls(stringBounder));
-		}
-		return Collections.unmodifiableList(result);
 	}
 
 	private List<SingleLine> createLinesForStereotype(FontConfiguration fontConfiguration, Stereotype s,

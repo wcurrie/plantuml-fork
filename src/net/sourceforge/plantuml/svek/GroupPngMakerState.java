@@ -41,7 +41,6 @@ import java.util.List;
 import net.sourceforge.plantuml.ColorParam;
 import net.sourceforge.plantuml.FontParam;
 import net.sourceforge.plantuml.ISkinParam;
-import net.sourceforge.plantuml.Url;
 import net.sourceforge.plantuml.cucadiagram.CucaDiagram;
 import net.sourceforge.plantuml.cucadiagram.Display;
 import net.sourceforge.plantuml.cucadiagram.EntityUtils;
@@ -116,9 +115,9 @@ public final class GroupPngMakerState {
 		}
 		final List<Link> links = getPureInnerLinks();
 		final ISkinParam skinParam = diagram.getSkinParam();
-//		if (OptionFlags.PBBACK && group.getSpecificBackColor() != null) {
-//			skinParam = new SkinParamBackcolored(skinParam, null, group.getSpecificBackColor());
-//		}
+		// if (OptionFlags.PBBACK && group.getSpecificBackColor() != null) {
+		// skinParam = new SkinParamBackcolored(skinParam, null, group.getSpecificBackColor());
+		// }
 		final DotData dotData = new DotData(group, links, group.getLeafsDirect(), diagram.getUmlDiagramType(),
 				skinParam, group.getRankdir(), new InnerGroupHierarchy(), diagram.getColorMapper(),
 				diagram.getEntityFactory(), diagram.isHideEmptyDescriptionForState());
@@ -147,15 +146,12 @@ public final class GroupPngMakerState {
 			} else {
 				attribute = new MethodsOrFieldsArea(members, FontParam.STATE_ATTRIBUTE, diagram.getSkinParam());
 			}
-			final List<Url> subUrls = new ArrayList<Url>();
-			for (IEntity ent : group.getLeafsDirect()) {
-				subUrls.addAll(ent.getUrls());
-			}
+
 			final Stereotype stereotype = group.getStereotype();
 			final boolean withSymbol = stereotype != null && stereotype.isWithOOSymbol();
 
 			return new InnerStateAutonom(svek2.createFile(), title, attribute, borderColor, backColor,
-					skinParam.shadowing(), subUrls, group.getUrls(), withSymbol);
+					skinParam.shadowing(), group.getUrl99(), withSymbol);
 		}
 
 		throw new UnsupportedOperationException(group.getGroupType().toString());

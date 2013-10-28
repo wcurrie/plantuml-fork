@@ -42,7 +42,6 @@ import java.util.List;
 import java.util.Map;
 
 import net.sourceforge.plantuml.Dimension2DDouble;
-import net.sourceforge.plantuml.Url;
 import net.sourceforge.plantuml.graphic.HtmlColorUtils;
 import net.sourceforge.plantuml.graphic.StringBounder;
 import net.sourceforge.plantuml.graphic.TextBlock;
@@ -297,10 +296,6 @@ public class TilesField implements TextBlock {
 		final int height = (ymax - ymin) / 2 + 1;
 		final Dimension2D dimSingle = root.calculateDimension(stringBounder);
 		return new Dimension2DDouble(width * dimSingle.getWidth(), height * dimSingle.getHeight());
-	}
-
-	public List<Url> getUrls(StringBounder stringBounder) {
-		return Collections.emptyList();
 	}
 
 }

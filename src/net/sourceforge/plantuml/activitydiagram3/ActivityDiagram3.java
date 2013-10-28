@@ -161,23 +161,12 @@ public class ActivityDiagram3 extends UmlDiagram {
 		if (ug instanceof UGraphicG2d) {
 			final Set<Url> urls = ((UGraphicG2d) ug).getAllUrlsEncountered();
 			if (urls.size() > 0) {
-				final CMapData cmap = cmapString(urls, dpiFactor);
+				final CMapData cmap = CMapData.cmapString(urls, dpiFactor);
 				return new ImageDataComplex(dim, cmap, getWarningOrError());
 			}
 		}
 
-		return new ImageDataSimple((int) dim.getWidth(), (int) dim.getHeight());
-	}
-
-	private CMapData cmapString(Set<Url> allUrlEncountered, double scale) {
-		final CMapData cmapdata = new CMapData();
-		int seq = 1;
-
-		for (Url u : allUrlEncountered) {
-			cmapdata.appendUrl(seq, u, scale);
-			seq++;
-		}
-		return cmapdata;
+		return new ImageDataSimple(dim);
 	}
 
 	private final double getDpiFactor(FileFormatOption fileFormatOption, final Dimension2D dim) {

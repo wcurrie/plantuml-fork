@@ -28,14 +28,12 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 11536 $
+ * Revision $Revision: 11873 $
  *
  */
 package net.sourceforge.plantuml.graphic;
 
 import java.awt.geom.Dimension2D;
-import java.util.Collections;
-import java.util.List;
 import java.util.StringTokenizer;
 
 import net.sourceforge.plantuml.Dimension2DDouble;
@@ -130,13 +128,6 @@ public class TileText implements TextBlock {
 			}
 		}
 		return x;
-	}
-
-	public List<Url> getUrls(StringBounder stringBounder) {
-		if (url != null) {
-			return Collections.singletonList(url);
-		}
-		return Collections.emptyList();
 	}
 
 }

@@ -57,7 +57,7 @@ public class StripeStyle {
 		}
 		if (type == StripeStyleType.LIST_WITH_NUMBER) {
 			final int localNumber = context.getLocalNumber(order);
-			return new ListNumber(fontConfiguration, order, localNumber);
+			return AtomText.createListNumber(fontConfiguration, order, localNumber);
 		}
 		return null;
 	}

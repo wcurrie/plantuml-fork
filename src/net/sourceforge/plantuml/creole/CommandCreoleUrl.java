@@ -36,23 +36,23 @@ package net.sourceforge.plantuml.creole;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import net.sourceforge.plantuml.graphic.FontConfiguration;
-import net.sourceforge.plantuml.graphic.Splitter;
+import net.sourceforge.plantuml.ISkinParam;
+import net.sourceforge.plantuml.Url;
+import net.sourceforge.plantuml.UrlBuilder;
+import net.sourceforge.plantuml.UrlBuilder.ModeUrl;
 
-public class CommandCreoleFontFamilyChange implements Command {
+public class CommandCreoleUrl implements Command {
 
 	private final Pattern pattern;
+	private final ISkinParam skinParam;
 
-	public static Command create() {
-		return new CommandCreoleFontFamilyChange("^(?i)(" + Splitter.fontFamilyPattern + "(.*?)\\</font\\>)");
+	public static Command create(ISkinParam skinParam) {
+		return new CommandCreoleUrl(skinParam, "^(" + UrlBuilder.getRegexp() + ")");
 	}
 
-	public static Command createEol() {
-		return new CommandCreoleFontFamilyChange("^(?i)(" + Splitter.fontFamilyPattern + "(.*)$)");
-	}
-
-	private CommandCreoleFontFamilyChange(String p) {
+	private CommandCreoleUrl(ISkinParam skinParam, String p) {
 		this.pattern = Pattern.compile(p);
+		this.skinParam = skinParam;
 
 	}
 
@@ -69,13 +69,17 @@ public class CommandCreoleFontFamilyChange implements Command {
 		if (m.find() == false) {
 			throw new IllegalStateException();
 		}
-		final FontConfiguration fc1 = stripe.getActualFontConfiguration();
-		final String family = m.group(2);
-		final FontConfiguration fc2 = fc1.changeFamily(family);
-		stripe.setActualFontConfiguration(fc2);
-		stripe.analyzeAndAdd(m.group(3));
-		stripe.setActualFontConfiguration(fc1);
+		final UrlBuilder urlBuilder = new UrlBuilder(skinParam.getValue("topurl"), ModeUrl.STRICT);
+		final Url url = urlBuilder.getUrl(m.group(1));
+		stripe.addUrl(url);
+
+//		final int size = Integer.parseInt(m.group(2));
+//		final FontConfiguration fc1 = stripe.getActualFontConfiguration();
+//		final FontConfiguration fc2 = fc1.changeSize(size);
+//		// final FontConfiguration fc2 = new AddStyle(style, null).apply(fc1);
+//		stripe.setActualFontConfiguration(fc2);
+		// stripe.analyzeAndAdd("AZERTY");
+//		stripe.setActualFontConfiguration(fc1);
 		return line.substring(m.group(1).length());
 	}
-
 }

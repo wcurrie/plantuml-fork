@@ -34,10 +34,8 @@
 package net.sourceforge.plantuml.graphic;
 
 import java.awt.geom.Dimension2D;
-import java.util.List;
 
 import net.sourceforge.plantuml.Dimension2DDouble;
-import net.sourceforge.plantuml.Url;
 import net.sourceforge.plantuml.ugraphic.UChangeColor;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
 import net.sourceforge.plantuml.ugraphic.URectangle;
@@ -63,9 +61,4 @@ class TextBlockBordered implements TextBlock {
 		textBlock.drawU(ug.apply(new UTranslate(1, 1)));
 		ug.apply(new UChangeColor(color)).draw(new URectangle(dim.getWidth(), dim.getHeight()));
 	}
-
-	public List<Url> getUrls(StringBounder stringBounder) {
-		return textBlock.getUrls(stringBounder);
-	}
-
 }

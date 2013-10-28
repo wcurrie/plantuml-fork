@@ -179,7 +179,7 @@ public class BodyEnhanced implements TextBlock {
 		getArea(ug.getStringBounder()).drawU(ug);
 	}
 
-	public List<Url> getUrls(StringBounder stringBounder) {
+	public List<Url> getUrls() {
 		return Collections.unmodifiableList(urls);
 	}
 

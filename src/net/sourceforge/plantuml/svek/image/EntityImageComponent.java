@@ -35,7 +35,6 @@
 package net.sourceforge.plantuml.svek.image;
 
 import java.awt.geom.Dimension2D;
-import java.util.List;
 
 import net.sourceforge.plantuml.ColorParam;
 import net.sourceforge.plantuml.Dimension2DDouble;
@@ -66,7 +65,7 @@ import net.sourceforge.plantuml.ugraphic.UTranslate;
 public class EntityImageComponent extends AbstractEntityImage {
 
 	final private TextBlock desc;
-	final private List<Url> url;
+	final private Url url;
 
 	private TextBlock stereo = TextBlockUtils.empty(0, 0);;
 	private PackageStyle style;
@@ -92,7 +91,7 @@ public class EntityImageComponent extends AbstractEntityImage {
 			}
 		}
 		this.symbol = getUSymbol();
-		this.url = entity.getUrls();
+		this.url = entity.getUrl99();
 
 	}
 
@@ -184,8 +183,8 @@ public class EntityImageComponent extends AbstractEntityImage {
 	}
 
 	final public void drawU(UGraphic ug) {
-		if (url.size() > 0) {
-			ug.startUrl(url.get(0));
+		if (url != null) {
+			ug.startUrl(url);
 		}
 		HtmlColor backcolor = getEntity().getSpecificBackColor();
 		if (backcolor == null) {
@@ -200,10 +199,9 @@ public class EntityImageComponent extends AbstractEntityImage {
 			final SymbolContext ctx = new SymbolContext(backcolor, SkinParamUtils.getColor(getSkinParam(),
 					ColorParam.componentBorder, getStereo())).withStroke(new UStroke(1.5)).withShadow(
 					getSkinParam().shadowing());
-			symbol.asSmall(TextBlockUtils.mergeTB(desc, stereo, HorizontalAlignment.CENTER), null, ctx)
-					.drawU(ug);
+			symbol.asSmall(TextBlockUtils.mergeTB(desc, stereo, HorizontalAlignment.CENTER), null, ctx).drawU(ug);
 		}
-		if (url.size() > 0) {
+		if (url != null) {
 			ug.closeAction();
 		}
 	}

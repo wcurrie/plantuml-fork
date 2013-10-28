@@ -36,12 +36,15 @@ package net.sourceforge.plantuml.creole;
 import java.awt.geom.Dimension2D;
 
 import net.sourceforge.plantuml.Dimension2DDouble;
+import net.sourceforge.plantuml.ISkinParam;
 import net.sourceforge.plantuml.cucadiagram.Display;
 import net.sourceforge.plantuml.graphic.FontConfiguration;
 import net.sourceforge.plantuml.graphic.StringBounder;
 import net.sourceforge.plantuml.graphic.TextBlock;
+import net.sourceforge.plantuml.graphic.TextBlockUtils;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
 import net.sourceforge.plantuml.ugraphic.UHorizontalLine;
+import net.sourceforge.plantuml.ugraphic.UStroke;
 import net.sourceforge.plantuml.ugraphic.UTranslate;
 
 public class CreoleHorizontalLine implements Atom {
@@ -49,39 +52,55 @@ public class CreoleHorizontalLine implements Atom {
 	private final FontConfiguration fontConfiguration;
 	private final String line;
 	private final char style;
+	private final ISkinParam skinParam;
 
-	public static CreoleHorizontalLine create(FontConfiguration fontConfiguration, String line, char style) {
-		return new CreoleHorizontalLine(fontConfiguration, line, style);
+	public static CreoleHorizontalLine create(FontConfiguration fontConfiguration, String line, char style,
+			ISkinParam skinParam) {
+		return new CreoleHorizontalLine(fontConfiguration, line, style, skinParam);
+	}
+
+	private CreoleHorizontalLine(FontConfiguration fontConfiguration, String line, char style, ISkinParam skinParam) {
+		this.fontConfiguration = fontConfiguration;
+		this.line = line;
+		this.style = style;
+		this.skinParam = skinParam;
 	}
 
 	private UHorizontalLine getHorizontalLine() {
 		if (line.length() == 0) {
 			return UHorizontalLine.infinite(0, 0, style);
 		}
-		final CreoleParser parser = new CreoleParser(fontConfiguration);
-		final Sheet sheet = parser.createSheet(Display.getWithNewlines(line));
-		final TextBlock tb = new SheetBlock(sheet, null);
+		final TextBlock tb = getTitle();
 		return UHorizontalLine.infinite(0, 0, tb, style);
 	}
 
-	private CreoleHorizontalLine(FontConfiguration fontConfiguration, String line, char style) {
-		this.fontConfiguration = fontConfiguration;
-		this.line = line;
-		this.style = style;
+	private TextBlock getTitle() {
+		if (line.length() == 0) {
+			return TextBlockUtils.empty(0, 0);
+		}
+		final CreoleParser parser = new CreoleParser(fontConfiguration, skinParam);
+		final Sheet sheet = parser.createSheet(Display.getWithNewlines(line));
+		final TextBlock tb = new SheetBlock(sheet, null, new UStroke());
+		return tb;
 	}
 
 	public void drawU(UGraphic ug) {
 		// ug = ug.apply(new UChangeColor(fontConfiguration.getColor()));
-		ug = ug.apply(new UTranslate(0, 5));
+		final Dimension2D dim = calculateDimension(ug.getStringBounder());
+		ug = ug.apply(new UTranslate(0, dim.getHeight() / 2));
 		ug.draw(getHorizontalLine());
 	}
 
 	public Dimension2D calculateDimension(StringBounder stringBounder) {
-		return new Dimension2DDouble(10, 10);
+		if (line.length() == 0) {
+			return new Dimension2DDouble(10, 10);
+		}
+		final TextBlock tb = getTitle();
+		return tb.calculateDimension(stringBounder);
 	}
 
-	public double getH1(StringBounder stringBounder) {
-		return 10;
+	public double getStartingAltitude(StringBounder stringBounder) {
+		return 0;
 	}
 
 }

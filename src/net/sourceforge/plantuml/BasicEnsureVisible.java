@@ -66,4 +66,11 @@ public class BasicEnsureVisible implements EnsureVisible {
 		return "" + x1 + "," + y1 + "," + x2 + "," + y2;
 	}
 
+	public double getSurface() {
+		if (minX == Double.MAX_VALUE) {
+			return 0;
+		}
+		return (maxX - minX) * (maxY - minY);
+	}
+
 }

@@ -335,7 +335,7 @@ public final class CucaDiagramFileMakerSvek2 {
 		final IEntityImage image = printEntityInternal(ent);
 		final Dimension2D dim = image.calculateDimension(stringBounder);
 		final Shape shape = new Shape(image, image.getShapeType(), dim.getWidth(), dim.getHeight(), colorSequence,
-				ent.isTop(), image.getShield(), ent.getUrls(), ent.getEntityPosition());
+				ent.isTop(), image.getShield(), ent.getEntityPosition());
 		dotStringFactory.addShape(shape);
 		getBibliotekon().putShape(ent, shape);
 	}

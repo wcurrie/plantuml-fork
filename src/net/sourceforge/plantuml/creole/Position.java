@@ -53,6 +53,12 @@ public class Position {
 		this.x = x;
 		this.y = y;
 		this.dim = dim;
+		if (dim.getHeight() == 0) {
+			throw new IllegalArgumentException();
+		}
+		if (dim.getWidth() == 0) {
+			throw new IllegalArgumentException();
+		}
 	}
 
 	@Override
@@ -60,13 +66,23 @@ public class Position {
 		return "x=" + x + " y=" + y + " dim=" + dim;
 	}
 
+	public Position align(double height) {
+		final double dy = height - dim.getHeight();
+		return translateY(dy);
+	}
+
 	// public final double getX() {
 	// return x;
 	// }
 	//
-	// public final double getY() {
-	// return y;
-	// }
+	public final double getMinY() {
+		return y;
+	}
+
+	public final double getMaxY() {
+		return y + getHeight();
+	}
+
 	//
 	// public final Dimension2D getDim() {
 	// return dim;
@@ -93,6 +109,14 @@ public class Position {
 
 	public double getHeight() {
 		return dim.getHeight();
+	}
+
+	public double getWidth() {
+		return dim.getWidth();
+	}
+
+	public UTranslate getTranslate() {
+		return new UTranslate(x, y);
 	}
 
 }

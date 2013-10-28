@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  *
- * Revision $Revision: 11786 $
+ * Revision $Revision: 11833 $
  *
  */
 package net.sourceforge.plantuml;
@@ -52,7 +52,7 @@ public class OptionFlags {
 	static public boolean ALLOW_INCLUDE = true;
 
 	static public final boolean USE_HECTOR = false;
-	static public boolean USE_CREOLE = false;
+	static public final boolean USE_CREOLE = true;
 
 	void reset() {
 		reset(false);

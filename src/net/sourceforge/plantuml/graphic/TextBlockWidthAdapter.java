@@ -34,10 +34,7 @@
 package net.sourceforge.plantuml.graphic;
 
 import java.awt.geom.Dimension2D;
-import java.util.Collections;
-import java.util.List;
 
-import net.sourceforge.plantuml.Url;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
 
 public class TextBlockWidthAdapter implements TextBlock {
@@ -60,10 +57,6 @@ public class TextBlockWidthAdapter implements TextBlock {
 
 	public Dimension2D calculateDimension(StringBounder stringBounder) {
 		return textBlockWidth.calculateDimension(stringBounder);
-	}
-
-	public List<Url> getUrls(StringBounder stringBounder) {
-		return Collections.emptyList();
 	}
 
 }

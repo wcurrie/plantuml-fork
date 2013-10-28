@@ -34,11 +34,8 @@
 package net.sourceforge.plantuml.project2;
 
 import java.awt.geom.Dimension2D;
-import java.util.Collections;
-import java.util.List;
 
 import net.sourceforge.plantuml.Dimension2DDouble;
-import net.sourceforge.plantuml.Url;
 import net.sourceforge.plantuml.graphic.StringBounder;
 import net.sourceforge.plantuml.graphic.TextBlock;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
@@ -69,10 +66,6 @@ class RowOverwrite implements Row {
 				final double width = getMaxXwithoutHeader(timeConverter) - getMinXwithoutHeader(timeConverter);
 				final double height = getHeight();
 				return new Dimension2DDouble(width, height);
-			}
-
-			public List<Url> getUrls(StringBounder stringBounder) {
-				return Collections.emptyList();
 			}
 		};
 	}

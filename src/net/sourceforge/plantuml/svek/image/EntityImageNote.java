@@ -36,7 +36,6 @@ package net.sourceforge.plantuml.svek.image;
 import java.awt.geom.Dimension2D;
 import java.awt.geom.Line2D;
 import java.awt.geom.Point2D;
-import java.util.List;
 
 import net.sourceforge.plantuml.ColorParam;
 import net.sourceforge.plantuml.Dimension2DDouble;
@@ -45,6 +44,7 @@ import net.sourceforge.plantuml.FontParam;
 import net.sourceforge.plantuml.ISkinParam;
 import net.sourceforge.plantuml.SkinParamBackcolored;
 import net.sourceforge.plantuml.Url;
+import net.sourceforge.plantuml.creole.Stencil;
 import net.sourceforge.plantuml.cucadiagram.BodyEnhanced2;
 import net.sourceforge.plantuml.cucadiagram.Display;
 import net.sourceforge.plantuml.cucadiagram.IEntity;
@@ -66,13 +66,13 @@ import net.sourceforge.plantuml.ugraphic.UChangeBackColor;
 import net.sourceforge.plantuml.ugraphic.UChangeColor;
 import net.sourceforge.plantuml.ugraphic.UFont;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
-import net.sourceforge.plantuml.ugraphic.UGraphicHorizontalLine;
+import net.sourceforge.plantuml.ugraphic.UGraphicStencil;
 import net.sourceforge.plantuml.ugraphic.ULine;
 import net.sourceforge.plantuml.ugraphic.UPolygon;
 import net.sourceforge.plantuml.ugraphic.UStroke;
 import net.sourceforge.plantuml.ugraphic.UTranslate;
 
-public class EntityImageNote extends AbstractEntityImage {
+public class EntityImageNote extends AbstractEntityImage implements Stencil {
 
 	private final int cornersize = 10;
 	private final HtmlColor noteBackgroundColor;
@@ -106,20 +106,9 @@ public class EntityImageNote extends AbstractEntityImage {
 		if (strings.size() == 1 && strings.get(0).length() == 0) {
 			textBlock = new TextBlockEmpty();
 		} else {
-			textBlock = new BodyEnhanced2(strings, FontParam.NOTE, skinParam, HorizontalAlignment.LEFT, fontNote, fontColor);
+			textBlock = new BodyEnhanced2(strings, FontParam.NOTE, skinParam, HorizontalAlignment.LEFT, fontNote,
+					fontColor);
 		}
-	}
-
-	private boolean urlAdded;
-
-	public List<Url> getUrls(StringBounder stringBounder) {
-		if (urlAdded == false) {
-			urlAdded = true;
-			for (Url u : textBlock.getUrls(stringBounder)) {
-				getEntity().addUrl(u);
-			}
-		}
-		return getEntity().getUrls();
 	}
 
 	private static ISkinParam getSkin(ISkinParam skinParam, IEntity entity) {
@@ -181,11 +170,11 @@ public class EntityImageNote extends AbstractEntityImage {
 	}
 
 	final public void drawU(UGraphic ug) {
-		final List<Url> urls = getUrls(ug.getStringBounder());
-		if (urls.size() > 0 && urls.get(0).isMember() == false) {
-			ug.startUrl(urls.get(0));
+		final Url url = getEntity().getUrl99();
+		if (url != null) {
+			ug.startUrl(url);
 		}
-		final UGraphic ug2 = new UGraphicHorizontalLine(ug, 0, getPreferredWidth(ug.getStringBounder()), new UStroke());
+		final UGraphic ug2 = new UGraphicStencil(ug, this, new UStroke());
 		if (opaleLine == null || opaleLine.isOpale() == false) {
 			drawNormal(ug2);
 		} else {
@@ -209,7 +198,7 @@ public class EntityImageNote extends AbstractEntityImage {
 			opale.setOpale(strategy, pp1, pp2);
 			opale.drawU(ug2);
 		}
-		if (urls.size() > 0 && urls.get(0).isMember() == false) {
+		if (url != null) {
 			ug.closeAction();
 		}
 	}
@@ -275,6 +264,14 @@ public class EntityImageNote extends AbstractEntityImage {
 		this.opaleLine = line;
 		this.shape = shape;
 
+	}
+
+	public double getStartingX(StringBounder stringBounder, double y) {
+		return 0;
+	}
+
+	public double getEndingX(StringBounder stringBounder, double y) {
+		return calculateDimension(stringBounder).getWidth();
 	}
 
 }

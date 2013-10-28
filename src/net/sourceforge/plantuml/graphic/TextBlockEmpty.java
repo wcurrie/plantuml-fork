@@ -34,11 +34,8 @@
 package net.sourceforge.plantuml.graphic;
 
 import java.awt.geom.Dimension2D;
-import java.util.Collections;
-import java.util.List;
 
 import net.sourceforge.plantuml.Dimension2DDouble;
-import net.sourceforge.plantuml.Url;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
 
 public class TextBlockEmpty implements TextBlockWidth, TextBlock {
@@ -62,10 +59,6 @@ public class TextBlockEmpty implements TextBlockWidth, TextBlock {
 	public void drawU(UGraphic ug) {
 	}
 
-	public List<Url> getUrls(StringBounder stringBounder) {
-		return Collections.emptyList();
-	}
-
 	public TextBlock asTextBlock(final double widthToUse) {
 		return new TextBlock() {
 
@@ -74,10 +67,6 @@ public class TextBlockEmpty implements TextBlockWidth, TextBlock {
 
 			public Dimension2D calculateDimension(StringBounder stringBounder) {
 				return TextBlockEmpty.this.calculateDimension(stringBounder);
-			}
-
-			public List<Url> getUrls(StringBounder stringBounder) {
-				return TextBlockEmpty.this.getUrls(null);
 			}
 		};
 	}

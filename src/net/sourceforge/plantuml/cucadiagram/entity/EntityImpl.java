@@ -77,7 +77,7 @@ class EntityImpl implements ILeaf, IGroup {
 
 	// Entity
 	private final Code code;
-	private final List<Url> urls = new ArrayList<Url>();
+	private Url url;
 
 	private final Bodier bodier;
 	private final String uid = StringUtils.getUid("cl", UniqueSequence.getValue());
@@ -218,39 +218,19 @@ class EntityImpl implements ILeaf, IGroup {
 		this.specificBackcolor = color;
 	}
 
-	public final List<Url> getUrls() {
-		final List<Url> result = new ArrayList<Url>(urls);
-		if (bodier != null && bodier.isBodyEnhanced()) {
-			result.addAll(bodier.getUrls());
-		} else if (leafType != null && leafType.isLikeClass()) {
-			for (Member m : getFieldsToDisplay()) {
-				final Url u = m.getUrl();
-				if (u != null) {
-					result.add(u);
-				}
-			}
-			for (Member m : getMethodsToDisplay()) {
-				final Url u = m.getUrl();
-				if (u != null) {
-					result.add(u);
-				}
-			}
-		}
-		return Collections.unmodifiableList(result);
+	public final Url getUrl99() {
+		return url;
 	}
 
 	public boolean hasUrl() {
 		if (display != null && display.hasUrl()) {
 			return true;
 		}
-		return getUrls().size() > 0;
+		return url != null;
 	}
 
 	public final void addUrl(Url url) {
-		if (url == null) {
-			throw new UnsupportedOperationException();
-		}
-		this.urls.add(url);
+		this.url = url;
 	}
 
 	public final boolean hasNearDecoration() {
@@ -519,12 +499,10 @@ class EntityImpl implements ILeaf, IGroup {
 
 	// ---- other
 
-	public void overideImage(IEntityImage img, List<Url> url, LeafType leafType) {
+	public void overideImage(IEntityImage img, LeafType leafType) {
 		checkGroup();
-		// this.svekImage = new InnerStateConcurrent(img);
 		this.svekImage = img;
-		this.urls.clear();
-		this.urls.addAll(url);
+		this.url = null;
 
 		for (final Link link : new ArrayList<Link>(entityFactory.getLinks())) {
 			if (EntityUtils.isPureInnerLink12(this, link)) {

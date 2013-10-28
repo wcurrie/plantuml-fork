@@ -33,69 +33,10 @@
  */
 package net.sourceforge.plantuml.creole;
 
-import java.util.ArrayList;
 import java.util.List;
 
-import net.sourceforge.plantuml.graphic.FontConfiguration;
-import net.sourceforge.plantuml.graphic.ImgValign;
+public interface Stripe {
 
-public class Stripe {
+	public List<Atom> getAtoms();
 
-	final private List<Atom> atoms = new ArrayList<Atom>();
-
-	private FontConfiguration fontConfiguration;
-
-	final private StripeStyle style;
-
-	public Stripe(FontConfiguration fontConfiguration, StripeStyle style, CreoleContext context) {
-		this.fontConfiguration = fontConfiguration;
-		this.style = style;
-
-		final Atom header = style.getHeader(fontConfiguration, context);
-
-		if (header != null) {
-			atoms.add(header);
-		}
-	}
-
-	// public void add(Atom atom) {
-	// this.atoms.add(atom);
-	// }
-
-	public List<Atom> getAtoms() {
-		return atoms;
-	}
-
-	public FontConfiguration getActualFontConfiguration() {
-		return fontConfiguration;
-	}
-
-	public void setActualFontConfiguration(FontConfiguration fontConfiguration) {
-		this.fontConfiguration = fontConfiguration;
-	}
-
-	public void analyzeAndAdd(String line) {
-		if (line == null) {
-			throw new IllegalArgumentException();
-		}
-		if (style.getType() == StripeStyleType.HEADING) {
-			atoms.add(AtomText.createHeading(line, fontConfiguration, style.getOrder()));
-		} else if (style.getType() == StripeStyleType.HORIZONTAL_LINE) {
-			atoms.add(CreoleHorizontalLine.create(fontConfiguration, line, style.getStyle()));
-		} else {
-			new StyleParser().modifyStripe(line, this);
-		}
-	}
-
-	public void addImage(String src) {
-		atoms.add(AtomImg.create(src, ImgValign.TOP, 0));
-	}
-
-	public void addRawText(String s) {
-		atoms.add(AtomText.create(s, fontConfiguration));
-	}
-
-	private final StripeStyle getStyle() {
-		return style;
-	}
 }

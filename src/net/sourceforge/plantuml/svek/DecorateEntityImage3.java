@@ -34,9 +34,7 @@
 package net.sourceforge.plantuml.svek;
 
 import java.awt.geom.Dimension2D;
-import java.util.List;
 
-import net.sourceforge.plantuml.Url;
 import net.sourceforge.plantuml.graphic.HtmlColor;
 import net.sourceforge.plantuml.graphic.StringBounder;
 import net.sourceforge.plantuml.graphic.TextBlock;
@@ -54,10 +52,6 @@ public class DecorateEntityImage3 implements TextBlockBackcolored {
 
 	public Dimension2D calculateDimension(StringBounder stringBounder) {
 		return original.calculateDimension(stringBounder);
-	}
-
-	public List<Url> getUrls(StringBounder stringBounder) {
-		return original.getUrls(stringBounder);
 	}
 
 	public void drawU(UGraphic ug) {

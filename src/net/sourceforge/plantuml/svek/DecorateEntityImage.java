@@ -34,11 +34,8 @@
 package net.sourceforge.plantuml.svek;
 
 import java.awt.geom.Dimension2D;
-import java.util.Collections;
-import java.util.List;
 
 import net.sourceforge.plantuml.Dimension2DDouble;
-import net.sourceforge.plantuml.Url;
 import net.sourceforge.plantuml.graphic.HorizontalAlignment;
 import net.sourceforge.plantuml.graphic.HtmlColor;
 import net.sourceforge.plantuml.graphic.StringBounder;
@@ -141,10 +138,6 @@ public class DecorateEntityImage implements TextBlockBackcolored {
 			return deltaY + ((DecorateEntityImage) original).deltaY;
 		}
 		return deltaY;
-	}
-
-	final public List<Url> getUrls(StringBounder stringBounder) {
-		return Collections.emptyList();
 	}
 
 }

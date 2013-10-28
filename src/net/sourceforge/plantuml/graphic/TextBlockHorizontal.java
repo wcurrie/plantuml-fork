@@ -34,11 +34,8 @@
 package net.sourceforge.plantuml.graphic;
 
 import java.awt.geom.Dimension2D;
-import java.util.List;
 
 import net.sourceforge.plantuml.Dimension2DDouble;
-import net.sourceforge.plantuml.StringUtils;
-import net.sourceforge.plantuml.Url;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
 import net.sourceforge.plantuml.ugraphic.UTranslate;
 
@@ -72,10 +69,6 @@ class TextBlockHorizontal implements TextBlock {
 			b1.drawU(ug);
 			b2.drawU(ug.apply(new UTranslate(dim1.getWidth(), 0)));
 		}
-	}
-
-	public List<Url> getUrls(StringBounder stringBounder) {
-		return StringUtils.merge(b1.getUrls(stringBounder), b2.getUrls(stringBounder));
 	}
 
 }

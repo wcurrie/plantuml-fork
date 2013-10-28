@@ -38,7 +38,6 @@ import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.util.Collections;
 import java.util.List;
 
 import javax.imageio.ImageIO;
@@ -48,7 +47,6 @@ import net.sourceforge.plantuml.Dimension2DDouble;
 import net.sourceforge.plantuml.EmbededDiagram;
 import net.sourceforge.plantuml.FileFormat;
 import net.sourceforge.plantuml.FileFormatOption;
-import net.sourceforge.plantuml.Url;
 import net.sourceforge.plantuml.core.Diagram;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
 import net.sourceforge.plantuml.ugraphic.UImage;
@@ -107,9 +105,4 @@ class EmbededSystemLine implements Line {
 		return blockUml.getDiagram();
 
 	}
-
-	public List<Url> getUrls(StringBounder stringBounder) {
-		return Collections.emptyList();
-	}
-
 }

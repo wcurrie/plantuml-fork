@@ -85,8 +85,8 @@ public class Bullet implements Atom {
 		ug.draw(new UEllipse(5, 5));
 	}
 
-	public double getH1(StringBounder stringBounder) {
-		return calculateDimension(stringBounder).getHeight();
+	public double getStartingAltitude(StringBounder stringBounder) {
+		return -5;
 	}
 
 	private Dimension2D calculateDimension0(StringBounder stringBounder) {

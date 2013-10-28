@@ -34,14 +34,11 @@
 package net.sourceforge.plantuml.activitydiagram3.ftile;
 
 import java.awt.geom.Dimension2D;
-import java.util.Collections;
-import java.util.List;
 
 import net.sourceforge.plantuml.ColorParam;
 import net.sourceforge.plantuml.Dimension2DDouble;
 import net.sourceforge.plantuml.FontParam;
 import net.sourceforge.plantuml.ISkinParam;
-import net.sourceforge.plantuml.Url;
 import net.sourceforge.plantuml.cucadiagram.Display;
 import net.sourceforge.plantuml.graphic.FontConfiguration;
 import net.sourceforge.plantuml.graphic.HorizontalAlignment;
@@ -126,10 +123,6 @@ public class EntityImageLegend implements TextBlock {
 		polygon.addPoint(width, 0);
 		polygon.addPoint(0, 0);
 		return polygon;
-	}
-
-	public List<Url> getUrls(StringBounder stringBounder) {
-		return Collections.emptyList();
 	}
 
 }

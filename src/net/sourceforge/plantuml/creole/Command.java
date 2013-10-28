@@ -37,5 +37,5 @@ public interface Command {
 	
 	public int matchingSize(String line);
 	
-	public String executeAndGetRemaining(String line, Stripe stripe);
+	public String executeAndGetRemaining(String line, StripeSimple stripe);
 }

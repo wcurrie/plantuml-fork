@@ -34,7 +34,6 @@
 package net.sourceforge.plantuml.svek.image;
 
 import java.awt.geom.Dimension2D;
-import java.util.List;
 
 import net.sourceforge.plantuml.Dimension2DDouble;
 import net.sourceforge.plantuml.FontParam;
@@ -59,7 +58,7 @@ public class EntityImageActor2 extends AbstractEntityImage {
 	private final TextBlock stickman;
 	private final TextBlock name;
 	private final TextBlock stereo;
-	final private List<Url> url;
+	final private Url url;
 
 	public EntityImageActor2(ILeaf entity, ISkinParam skinParam, FontParam fontStereotype, FontParam fontName,
 			TextBlock stickman) {
@@ -80,7 +79,7 @@ public class EntityImageActor2 extends AbstractEntityImage {
 							SkinParamUtils.getFontColor(getSkinParam(), fontStereotype, null)),
 					HorizontalAlignment.CENTER, skinParam);
 		}
-		this.url = entity.getUrls();
+		this.url = entity.getUrl99();
 
 	}
 
@@ -106,8 +105,8 @@ public class EntityImageActor2 extends AbstractEntityImage {
 		final Dimension2D dimName = name.calculateDimension(stringBounder);
 		final double manX = (dimTotal.getWidth() - dimStickMan.getWidth()) / 2;
 		final double manY = dimStereo.getHeight();
-		if (url.size() > 0) {
-			ug.startUrl(url.get(0));
+		if (url != null) {
+			ug.startUrl(url);
 		}
 		stickman.drawU(ug.apply(new UTranslate(manX, manY)));
 		final double nameX = (dimTotal.getWidth() - dimName.getWidth()) / 2;
@@ -118,7 +117,7 @@ public class EntityImageActor2 extends AbstractEntityImage {
 			final double stereoX = (dimTotal.getWidth() - dimStereo.getWidth()) / 2;
 			stereo.drawU(ug.apply(new UTranslate(stereoX, 0)));
 		}
-		if (url.size() > 0) {
+		if (url != null) {
 			ug.closeAction();
 		}
 	}

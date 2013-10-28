@@ -90,8 +90,8 @@ public class GroupRoot implements IGroup {
 
 	}
 
-	public List<Url> getUrls() {
-		return Collections.emptyList();
+	public Url getUrl99() {
+		return null;
 
 	}
 
@@ -214,7 +214,7 @@ public class GroupRoot implements IGroup {
 
 	}
 
-	public void overideImage(IEntityImage img, List<Url> urls, LeafType state) {
+	public void overideImage(IEntityImage img, LeafType state) {
 		throw new UnsupportedOperationException();
 	}
 

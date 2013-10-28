@@ -28,18 +28,15 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 11788 $
+ * Revision $Revision: 11873 $
  *
  */
 package net.sourceforge.plantuml.graphic;
 
 import java.awt.geom.Dimension2D;
 import java.awt.image.BufferedImage;
-import java.util.Collections;
-import java.util.List;
 
 import net.sourceforge.plantuml.Dimension2DDouble;
-import net.sourceforge.plantuml.Url;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
 import net.sourceforge.plantuml.ugraphic.UImage;
 import net.sourceforge.plantuml.ugraphic.UTranslate;
@@ -63,10 +60,6 @@ public class TileImage implements TextBlock {
 
 	public void drawU(UGraphic ug) {
 		ug.apply(new UTranslate(0, vspace)).draw(new UImage(image));
-	}
-
-	public List<Url> getUrls(StringBounder stringBounder) {
-		return Collections.emptyList();
 	}
 
 }

@@ -35,11 +35,9 @@ package net.sourceforge.plantuml.activitydiagram3.ftile.vcompact;
 
 import java.awt.geom.Dimension2D;
 import java.awt.geom.Point2D;
-import java.util.List;
 import java.util.Set;
 
 import net.sourceforge.plantuml.SpriteContainerEmpty;
-import net.sourceforge.plantuml.Url;
 import net.sourceforge.plantuml.activitydiagram3.LinkRendering;
 import net.sourceforge.plantuml.activitydiagram3.ftile.AbstractConnection;
 import net.sourceforge.plantuml.activitydiagram3.ftile.AbstractFtile;
@@ -201,10 +199,6 @@ class FtileWhile extends AbstractFtile {
 
 			public Dimension2D calculateDimension(StringBounder stringBounder) {
 				return whileBlock.asTextBlock().calculateDimension(stringBounder);
-			}
-
-			public List<Url> getUrls(StringBounder stringBounder) {
-				throw new UnsupportedOperationException();
 			}
 		};
 	}

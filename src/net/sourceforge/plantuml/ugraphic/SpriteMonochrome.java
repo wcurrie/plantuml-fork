@@ -36,11 +36,8 @@ package net.sourceforge.plantuml.ugraphic;
 import java.awt.Color;
 import java.awt.geom.Dimension2D;
 import java.awt.image.BufferedImage;
-import java.util.Collections;
-import java.util.List;
 
 import net.sourceforge.plantuml.Dimension2DDouble;
-import net.sourceforge.plantuml.Url;
 import net.sourceforge.plantuml.graphic.HtmlColor;
 import net.sourceforge.plantuml.graphic.HtmlColorGradient;
 import net.sourceforge.plantuml.graphic.HtmlColorUtils;
@@ -114,10 +111,6 @@ public class SpriteMonochrome implements Sprite {
 
 			public Dimension2D calculateDimension(StringBounder stringBounder) {
 				return new Dimension2DDouble(getWidth(), getHeight());
-			}
-
-			public List<Url> getUrls(StringBounder stringBounder) {
-				return Collections.emptyList();
 			}
 		};
 	}

@@ -48,4 +48,12 @@ public class Sheet implements Iterable<Stripe> {
 	public Iterator<Stripe> iterator() {
 		return stripes.iterator();
 	}
+
+	public Stripe getLastStripe() {
+		final int size = stripes.size();
+		if (size == 0) {
+			return null;
+		}
+		return stripes.get(size - 1);
+	}
 }

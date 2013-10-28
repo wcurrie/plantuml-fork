@@ -28,31 +28,40 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 8033 $
+ * Revision $Revision: 11025 $
  *
  */
-package net.sourceforge.plantuml.ugraphic;
+package net.sourceforge.plantuml.creole;
 
-public class UGraphicHorizontalLine extends AbstractUGraphicHorizontalLine {
+import java.awt.geom.Dimension2D;
 
-	private final double startingX;
-	private final double endingX;
-	private final UStroke defaultStroke;
+import net.sourceforge.plantuml.Dimension2DDouble;
+import net.sourceforge.plantuml.graphic.StringBounder;
+import net.sourceforge.plantuml.ugraphic.UGraphic;
+import net.sourceforge.plantuml.ugraphic.UTranslate;
 
-	public UGraphicHorizontalLine(UGraphic ug, double startingX, double endingX, UStroke defaultStroke) {
-		super(ug);
-		this.startingX = startingX;
-		this.endingX = endingX;
-		this.defaultStroke = defaultStroke;
+class AtomWithMargin implements Atom {
+
+	private final double marginY1;
+	private final double marginY2;
+	private final Atom atom;
+
+	public AtomWithMargin(Atom atom, double marginY1, double marginY2) {
+		this.atom = atom;
+		this.marginY1 = marginY1;
+		this.marginY2 = marginY2;
 	}
 
-	@Override
-	protected AbstractUGraphicHorizontalLine copy(UGraphic ug) {
-		return new UGraphicHorizontalLine(ug, startingX, endingX, defaultStroke);
+	public Dimension2D calculateDimension(StringBounder stringBounder) {
+		return Dimension2DDouble.delta(atom.calculateDimension(stringBounder), 0, marginY1 + marginY2);
 	}
 
-	@Override
-	protected void drawHline(UGraphic ug, UHorizontalLine line, UTranslate translate) {
-		line.drawLineInternal(ug.apply(translate), startingX, endingX, 0, defaultStroke);
+	public double getStartingAltitude(StringBounder stringBounder) {
+		return atom.getStartingAltitude(stringBounder);
 	}
+
+	public void drawU(UGraphic ug) {
+		atom.drawU(ug.apply(new UTranslate(0, marginY1)));
+	}
+
 }

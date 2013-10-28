@@ -34,14 +34,11 @@
 package net.sourceforge.plantuml.graphic;
 
 import java.awt.geom.Dimension2D;
-import java.util.List;
 
 import net.sourceforge.plantuml.Dimension2DDouble;
-import net.sourceforge.plantuml.Url;
 import net.sourceforge.plantuml.ugraphic.UChangeColor;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
 import net.sourceforge.plantuml.ugraphic.UHorizontalLine;
-import net.sourceforge.plantuml.ugraphic.UTranslate;
 
 public class TextBlockLineBefore implements TextBlock {
 
@@ -82,10 +79,6 @@ public class TextBlockLineBefore implements TextBlock {
 		if (title != null) {
 			UHorizontalLine.infinite(1, 1, title, separator).drawMe(ug);
 		}
-	}
-
-	public List<Url> getUrls(StringBounder stringBounder) {
-		return textBlock.getUrls(stringBounder);
 	}
 
 }

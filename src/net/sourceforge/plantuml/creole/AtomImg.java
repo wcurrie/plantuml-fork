@@ -55,7 +55,6 @@ import net.sourceforge.plantuml.graphic.StringBounder;
 import net.sourceforge.plantuml.ugraphic.UFont;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
 import net.sourceforge.plantuml.ugraphic.UImage;
-import net.sourceforge.plantuml.ugraphic.UTranslate;
 
 public class AtomImg implements Atom {
 
@@ -125,8 +124,8 @@ public class AtomImg implements Atom {
 		return new Dimension2DDouble(image.getWidth(), image.getHeight());
 	}
 
-	public double getH1(StringBounder stringBounder) {
-		return image.getWidth();
+	public double getStartingAltitude(StringBounder stringBounder) {
+		return 0;
 	}
 
 	public void drawU(UGraphic ug) {

@@ -35,12 +35,9 @@ package net.sourceforge.plantuml.project2;
 
 import java.awt.Font;
 import java.awt.geom.Dimension2D;
-import java.util.Collections;
-import java.util.List;
 
 import net.sourceforge.plantuml.Dimension2DDouble;
 import net.sourceforge.plantuml.SpriteContainerEmpty;
-import net.sourceforge.plantuml.Url;
 import net.sourceforge.plantuml.cucadiagram.Display;
 import net.sourceforge.plantuml.graphic.FontConfiguration;
 import net.sourceforge.plantuml.graphic.HorizontalAlignment;
@@ -100,9 +97,4 @@ public class TimeHeaderDay implements TextBlock {
 		}
 		return new Dimension2DDouble(n * dayWidth, getHeight());
 	}
-
-	public List<Url> getUrls(StringBounder stringBounder) {
-		return Collections.emptyList();
-	}
-
 }

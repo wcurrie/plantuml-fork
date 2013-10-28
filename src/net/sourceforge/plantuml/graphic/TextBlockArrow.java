@@ -34,12 +34,9 @@
 package net.sourceforge.plantuml.graphic;
 
 import java.awt.geom.Dimension2D;
-import java.util.Collections;
-import java.util.List;
 
 import net.sourceforge.plantuml.Dimension2DDouble;
 import net.sourceforge.plantuml.Direction;
-import net.sourceforge.plantuml.Url;
 import net.sourceforge.plantuml.ugraphic.UChangeBackColor;
 import net.sourceforge.plantuml.ugraphic.UChangeColor;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
@@ -109,9 +106,4 @@ public class TextBlockArrow implements TextBlock {
 	public Dimension2D calculateDimension(StringBounder stringBounder) {
 		return new Dimension2DDouble(size, size);
 	}
-
-	public List<Url> getUrls(StringBounder stringBounder) {
-		return Collections.emptyList();
-	}
-
 }

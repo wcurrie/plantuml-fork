@@ -38,11 +38,9 @@ import java.awt.geom.Point2D;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 import net.sourceforge.plantuml.Dimension2DDouble;
-import net.sourceforge.plantuml.Url;
 import net.sourceforge.plantuml.activitydiagram3.LinkRendering;
 import net.sourceforge.plantuml.graphic.StringBounder;
 import net.sourceforge.plantuml.graphic.TextBlock;
@@ -108,10 +106,6 @@ public class FtileAssemblySimple implements Ftile {
 				final Dimension2D dim1 = tile1.asTextBlock().calculateDimension(stringBounder);
 				final Dimension2D dim2 = tile2.asTextBlock().calculateDimension(stringBounder);
 				return Dimension2DDouble.mergeTB(dim1, dim2);
-			}
-
-			public List<Url> getUrls(StringBounder stringBounder) {
-				throw new UnsupportedOperationException();
 			}
 
 		};

@@ -42,7 +42,6 @@ import java.util.Set;
 import net.sourceforge.plantuml.Dimension2DDouble;
 import net.sourceforge.plantuml.MathUtils;
 import net.sourceforge.plantuml.SpriteContainerEmpty;
-import net.sourceforge.plantuml.Url;
 import net.sourceforge.plantuml.activitydiagram3.LinkRendering;
 import net.sourceforge.plantuml.activitydiagram3.ftile.AbstractConnection;
 import net.sourceforge.plantuml.activitydiagram3.ftile.AbstractFtile;
@@ -238,10 +237,6 @@ class FtileRepeat2 extends AbstractFtile {
 
 			public Dimension2D calculateDimension(StringBounder stringBounder) {
 				return calculateDimensionInternal(stringBounder);
-			}
-
-			public List<Url> getUrls(StringBounder stringBounder) {
-				throw new UnsupportedOperationException();
 			}
 		};
 	}

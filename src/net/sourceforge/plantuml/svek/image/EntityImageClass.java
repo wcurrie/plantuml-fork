@@ -34,7 +34,6 @@
 package net.sourceforge.plantuml.svek.image;
 
 import java.awt.geom.Dimension2D;
-import java.util.List;
 
 import net.sourceforge.plantuml.ColorParam;
 import net.sourceforge.plantuml.Dimension2DDouble;
@@ -43,6 +42,7 @@ import net.sourceforge.plantuml.ISkinParam;
 import net.sourceforge.plantuml.LineConfigurable;
 import net.sourceforge.plantuml.SkinParamUtils;
 import net.sourceforge.plantuml.Url;
+import net.sourceforge.plantuml.creole.Stencil;
 import net.sourceforge.plantuml.cucadiagram.ILeaf;
 import net.sourceforge.plantuml.cucadiagram.PortionShower;
 import net.sourceforge.plantuml.graphic.HtmlColor;
@@ -54,17 +54,17 @@ import net.sourceforge.plantuml.ugraphic.Shadowable;
 import net.sourceforge.plantuml.ugraphic.UChangeBackColor;
 import net.sourceforge.plantuml.ugraphic.UChangeColor;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
-import net.sourceforge.plantuml.ugraphic.UGraphicHorizontalLine;
+import net.sourceforge.plantuml.ugraphic.UGraphicStencil;
 import net.sourceforge.plantuml.ugraphic.URectangle;
 import net.sourceforge.plantuml.ugraphic.UStroke;
 import net.sourceforge.plantuml.ugraphic.UTranslate;
 
-public class EntityImageClass extends AbstractEntityImage {
+public class EntityImageClass extends AbstractEntityImage implements Stencil {
 
 	final private TextBlock body;
 	final private int shield;
 	final private EntityImageClassHeader2 header;
-	final private List<Url> url;
+	final private Url url;
 	final private TextBlock mouseOver;
 	final private double roundCorner;
 
@@ -78,7 +78,7 @@ public class EntityImageClass extends AbstractEntityImage {
 		this.body = entity.getBody(portionShower).asTextBlock(FontParam.CLASS_ATTRIBUTE, skinParam);
 
 		header = new EntityImageClassHeader2(entity, skinParam, portionShower);
-		this.url = entity.getUrls();
+		this.url = entity.getUrl99();
 		if (entity.getMouseOver() == null) {
 			this.mouseOver = null;
 		} else {
@@ -101,8 +101,8 @@ public class EntityImageClass extends AbstractEntityImage {
 	}
 
 	final public void drawU(UGraphic ug) {
-		if (url.size() > 0 && url.get(0).isMember() == false) {
-			ug.startUrl(url.get(0));
+		if (url != null) {
+			ug.startUrl(url);
 		}
 		drawInternal(ug);
 		if (mouseOver != null) {
@@ -131,7 +131,7 @@ public class EntityImageClass extends AbstractEntityImage {
 			// g.close();
 		}
 
-		if (url.size() > 0 && url.get(0).isMember() == false) {
+		if (url != null) {
 			ug.closeAction();
 		}
 	}
@@ -165,7 +165,7 @@ public class EntityImageClass extends AbstractEntityImage {
 		header.drawU(ug, dimTotal.getWidth(), dimHeader.getHeight());
 
 		if (body != null) {
-			final UGraphic ug2 = new UGraphicHorizontalLine(ug, 0, widthTotal, stroke);
+			final UGraphic ug2 = new UGraphicStencil(ug, this, stroke);
 			body.drawU(ug2.apply(new UTranslate(0, dimHeader.getHeight())));
 		}
 	}
@@ -184,6 +184,14 @@ public class EntityImageClass extends AbstractEntityImage {
 
 	public int getShield() {
 		return shield;
+	}
+
+	public double getStartingX(StringBounder stringBounder, double y) {
+		return 0;
+	}
+
+	public double getEndingX(StringBounder stringBounder, double y) {
+		return calculateDimension(stringBounder).getWidth();
 	}
 
 }

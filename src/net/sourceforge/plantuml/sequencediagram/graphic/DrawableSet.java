@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 11658 $
+ * Revision $Revision: 11858 $
  *
  */
 package net.sourceforge.plantuml.sequencediagram.graphic;
@@ -43,19 +43,16 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import net.sourceforge.plantuml.CMapData;
 import net.sourceforge.plantuml.Dimension2DDouble;
 import net.sourceforge.plantuml.ISkinParam;
 import net.sourceforge.plantuml.SkinParamBackcolored;
 import net.sourceforge.plantuml.Url;
 import net.sourceforge.plantuml.graphic.StringBounder;
 import net.sourceforge.plantuml.sequencediagram.Event;
-import net.sourceforge.plantuml.sequencediagram.InGroupable;
 import net.sourceforge.plantuml.sequencediagram.Newpage;
 import net.sourceforge.plantuml.sequencediagram.Participant;
 import net.sourceforge.plantuml.sequencediagram.ParticipantEnglober;
 import net.sourceforge.plantuml.sequencediagram.ParticipantEngloberContexted;
-import net.sourceforge.plantuml.sequencediagram.SequenceDiagram;
 import net.sourceforge.plantuml.skin.Area;
 import net.sourceforge.plantuml.skin.Component;
 import net.sourceforge.plantuml.skin.ComponentType;
@@ -395,67 +392,6 @@ class DrawableSet {
 
 	public void setTopStartingY(double topStartingY) {
 		this.topStartingY = topStartingY;
-	}
-
-	public void appendCmap(CMapData cmap, int offsetX, int offsetY, StringBounder stringBounder, SequenceDiagram diagram, double scale) {
-		// cmap.append("<map id=\"sequence\" name=\"sequence\">\n");
-		// cmap.appendHeader(diagram);
-		for (Map.Entry<Participant, LivingParticipantBox> entry : participants.entrySet()) {
-			final Participant p = entry.getKey();
-			final Url url = p.getUrl();
-			if (url != null) {
-				final ParticipantBox box = entry.getValue().getParticipantBox();
-
-				final double width = box.getPreferredWidth(stringBounder);
-				final double height = box.getHeadHeightOnly(stringBounder);
-
-				final double x1 = offsetX + box.getMinX();
-				final double x2 = x1 + width;
-
-				// final double y1 = sequenceAreaY;
-				// final double y2 = y1 + height;
-				final double y2 = offsetY + topStartingY - box.magicMargin(stringBounder);
-				final double y1 = y2 - height;
-				final String id = p.getCode();
-				appendArea(cmap, id, url, x1, x2, y2, y1, scale);
-			}
-		}
-
-		for (Map.Entry<Event, GraphicalElement> ent : events.entrySet()) {
-			final Event ev = ent.getKey();
-			final Url url = ev.getUrl();
-			if (url == null) {
-				continue;
-			}
-			final GraphicalElement gra = ent.getValue();
-			final double x1 = ((InGroupable) gra).getMinX(stringBounder);
-			final double x2 = ((InGroupable) gra).getMaxX(stringBounder);
-			final double y1 = gra.getStartingY() + offsetY;
-			final double y2 = y1 + gra.getPreferredHeight(stringBounder);
-			appendArea(cmap, ev.toString(), url, x1, x2, y2, y1, scale);
-
-		}
-
-		// cmap.appendString("</map>\n");
-	}
-
-	private void appendArea(CMapData cmap, final String id, final Url url, final double x1, final double x2,
-			final double y2, final double y1, double scale) {
-		cmap.appendString("<area shape=\"rect\" id=\"");
-		cmap.appendString(id);
-		cmap.appendString("\" href=\"");
-		cmap.appendString(url.getUrl());
-		cmap.appendString("\" title=\"");
-		cmap.appendString(url.getTooltip());
-		cmap.appendString("\" coords=\"");
-		cmap.appendLong(Math.round(x1 * scale));
-		cmap.appendString(",");
-		cmap.appendLong(Math.round(y1 * scale));
-		cmap.appendString(",");
-		cmap.appendLong(Math.round(x2 * scale));
-		cmap.appendString(",");
-		cmap.appendLong(Math.round(y2 * scale));
-		cmap.appendString("\"/>\n");
 	}
 
 	Participant getFirst(Collection<Participant> someParticipants) {

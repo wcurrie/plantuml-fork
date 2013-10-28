@@ -67,7 +67,7 @@ public final class CucaDiagramSimplifierActivity {
 //					}
 					
 					final IEntityImage img = computeImage(g);
-					g.overideImage(img, g.getUrls(), LeafType.ACTIVITY);
+					g.overideImage(img, LeafType.ACTIVITY);
 					
 					changed = true;
 				}

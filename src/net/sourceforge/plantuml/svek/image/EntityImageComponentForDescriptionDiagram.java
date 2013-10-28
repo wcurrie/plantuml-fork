@@ -35,7 +35,6 @@
 package net.sourceforge.plantuml.svek.image;
 
 import java.awt.geom.Dimension2D;
-import java.util.List;
 
 import net.sourceforge.plantuml.ColorParam;
 import net.sourceforge.plantuml.FontParam;
@@ -58,11 +57,10 @@ import net.sourceforge.plantuml.svek.AbstractEntityImage;
 import net.sourceforge.plantuml.svek.ShapeType;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
 import net.sourceforge.plantuml.ugraphic.UStroke;
-import net.sourceforge.plantuml.ugraphic.UTranslate;
 
 public class EntityImageComponentForDescriptionDiagram extends AbstractEntityImage {
 
-	final private List<Url> url;
+	final private Url url;
 
 	private final TextBlock asSmall;
 
@@ -82,7 +80,7 @@ public class EntityImageComponentForDescriptionDiagram extends AbstractEntityIma
 		// new FontConfiguration(getFont(getFontParam(symbol), stereotype), getFontColor(getFontParam(symbol),
 		// stereotype)), HorizontalAlignment.CENTER, skinParam);
 
-		this.url = entity.getUrls();
+		this.url = entity.getUrl99();
 
 		HtmlColor backcolor = getEntity().getSpecificBackColor();
 		if (backcolor == null) {
@@ -168,12 +166,12 @@ public class EntityImageComponentForDescriptionDiagram extends AbstractEntityIma
 	}
 
 	final public void drawU(UGraphic ug) {
-		if (url.size() > 0) {
-			ug.startUrl(url.get(0));
+		if (url != null) {
+			ug.startUrl(url);
 		}
 		asSmall.drawU(ug);
 
-		if (url.size() > 0) {
+		if (url != null) {
 			ug.closeAction();
 		}
 	}

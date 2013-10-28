@@ -34,7 +34,6 @@
 package net.sourceforge.plantuml.svek.image;
 
 import java.awt.geom.Dimension2D;
-import java.util.List;
 
 import net.sourceforge.plantuml.ColorParam;
 import net.sourceforge.plantuml.Dimension2DDouble;
@@ -65,7 +64,7 @@ public class EntityImageActivity extends AbstractEntityImage {
 	public static final int CORNER = 25;
 	final private TextBlock desc;
 	final private static int MARGIN = 10;
-	final private List<Url> url;
+	final private Url url;
 
 	public EntityImageActivity(ILeaf entity, ISkinParam skinParam) {
 		super(entity, skinParam);
@@ -75,7 +74,7 @@ public class EntityImageActivity extends AbstractEntityImage {
 				new FontConfiguration(SkinParamUtils.getFont(getSkinParam(), FontParam.ACTIVITY, stereotype),
 						SkinParamUtils.getFontColor(getSkinParam(), FontParam.ACTIVITY, stereotype)),
 				HorizontalAlignment.CENTER, skinParam);
-		this.url = entity.getUrls();
+		this.url = entity.getUrl99();
 	}
 
 	public Dimension2D calculateDimension(StringBounder stringBounder) {
@@ -84,8 +83,8 @@ public class EntityImageActivity extends AbstractEntityImage {
 	}
 
 	final public void drawU(UGraphic ug) {
-		if (url.size() > 0) {
-			ug.startUrl(url.get(0));
+		if (url != null) {
+			ug.startUrl(url);
 		}
 		final StringBounder stringBounder = ug.getStringBounder();
 		final Dimension2D dimTotal = calculateDimension(stringBounder);
@@ -107,7 +106,7 @@ public class EntityImageActivity extends AbstractEntityImage {
 		ug.apply(new UStroke(1.5)).draw(rect);
 
 		desc.drawU(ug.apply(new UTranslate(MARGIN, MARGIN)));
-		if (url.size() > 0) {
+		if (url != null) {
 			ug.closeAction();
 		}
 	}

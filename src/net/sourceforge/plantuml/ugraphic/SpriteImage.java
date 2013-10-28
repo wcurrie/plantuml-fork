@@ -35,11 +35,8 @@ package net.sourceforge.plantuml.ugraphic;
 
 import java.awt.geom.Dimension2D;
 import java.awt.image.BufferedImage;
-import java.util.Collections;
-import java.util.List;
 
 import net.sourceforge.plantuml.Dimension2DDouble;
-import net.sourceforge.plantuml.Url;
 import net.sourceforge.plantuml.graphic.HtmlColor;
 import net.sourceforge.plantuml.graphic.StringBounder;
 import net.sourceforge.plantuml.graphic.TextBlock;
@@ -61,10 +58,6 @@ public class SpriteImage implements Sprite {
 
 			public Dimension2D calculateDimension(StringBounder stringBounder) {
 				return new Dimension2DDouble(img.getWidth(), img.getHeight());
-			}
-
-			public List<Url> getUrls(StringBounder stringBounder) {
-				return Collections.emptyList();
 			}
 		};
 	}

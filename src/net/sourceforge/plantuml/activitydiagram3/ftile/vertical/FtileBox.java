@@ -36,13 +36,12 @@ package net.sourceforge.plantuml.activitydiagram3.ftile.vertical;
 import java.awt.geom.Dimension2D;
 import java.awt.geom.Point2D;
 import java.util.Collections;
-import java.util.List;
 import java.util.Set;
 
 import net.sourceforge.plantuml.Dimension2DDouble;
+import net.sourceforge.plantuml.ISkinParam;
 import net.sourceforge.plantuml.OptionFlags;
 import net.sourceforge.plantuml.SpriteContainerEmpty;
-import net.sourceforge.plantuml.Url;
 import net.sourceforge.plantuml.activitydiagram3.LinkRendering;
 import net.sourceforge.plantuml.activitydiagram3.ftile.AbstractFtile;
 import net.sourceforge.plantuml.activitydiagram3.ftile.BoxStyle;
@@ -64,8 +63,6 @@ import net.sourceforge.plantuml.ugraphic.UChangeBackColor;
 import net.sourceforge.plantuml.ugraphic.UChangeColor;
 import net.sourceforge.plantuml.ugraphic.UFont;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
-import net.sourceforge.plantuml.ugraphic.UHorizontalLine;
-import net.sourceforge.plantuml.ugraphic.ULine;
 import net.sourceforge.plantuml.ugraphic.UStroke;
 import net.sourceforge.plantuml.ugraphic.UTranslate;
 
@@ -102,21 +99,19 @@ public class FtileBox extends AbstractFtile {
 
 	class MyStencil implements Stencil {
 
-		public UDrawable convert(final UHorizontalLine line, StringBounder stringBounder) {
+		public double getStartingX(StringBounder stringBounder, double y) {
+			return -MARGIN;
+		}
+
+		public double getEndingX(StringBounder stringBounder, double y) {
 			final Dimension2D dim = asTextBlock().calculateDimension(stringBounder);
-			return new UDrawable() {
-				public void drawU(UGraphic ug) {
-					ug = ug.apply(new UTranslate(-MARGIN, 0));
-					line.drawLineInternal(ug, 0, dim.getWidth(), 0, line.getStroke());
-					// ug.draw(new ULine(dim.getWidth(), 0));
-				}
-			};
+			return dim.getWidth() - MARGIN;
 		}
 
 	}
 
 	public FtileBox(boolean shadowing, Display label, HtmlColor color, HtmlColor backColor, UFont font,
-			HtmlColor arrowColor, Swimlane swimlane, BoxStyle style) {
+			HtmlColor arrowColor, Swimlane swimlane, BoxStyle style, ISkinParam skinParam) {
 		super(shadowing);
 		this.style = style;
 		this.color = color;
@@ -125,8 +120,8 @@ public class FtileBox extends AbstractFtile {
 		this.inRenreding = new LinkRendering(arrowColor);
 		final FontConfiguration fc = new FontConfiguration(font, HtmlColorUtils.BLACK);
 		if (OptionFlags.USE_CREOLE) {
-			final Sheet sheet = new CreoleParser(fc).createSheet(label);
-			tb = new SheetBlock(sheet, new MyStencil());
+			final Sheet sheet = new CreoleParser(fc, skinParam).createSheet(label);
+			tb = new SheetBlock(sheet, new MyStencil(), new UStroke(1));
 		} else {
 			tb = TextBlockUtils.create(label, fc, HorizontalAlignment.LEFT, new SpriteContainerEmpty());
 		}
@@ -158,10 +153,6 @@ public class FtileBox extends AbstractFtile {
 			public Dimension2D calculateDimension(StringBounder stringBounder) {
 				final Dimension2D dim = tb.calculateDimension(stringBounder);
 				return Dimension2DDouble.delta(dim, 2 * MARGIN, 2 * MARGIN);
-			}
-
-			public List<Url> getUrls(StringBounder stringBounder) {
-				return tb.getUrls(stringBounder);
 			}
 		};
 	}

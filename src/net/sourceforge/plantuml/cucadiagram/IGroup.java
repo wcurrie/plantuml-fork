@@ -34,9 +34,7 @@
 package net.sourceforge.plantuml.cucadiagram;
 
 import java.util.Collection;
-import java.util.List;
 
-import net.sourceforge.plantuml.Url;
 import net.sourceforge.plantuml.svek.IEntityImage;
 import net.sourceforge.plantuml.svek.PackageStyle;
 import net.sourceforge.plantuml.svek.SingleStrategy;
@@ -67,7 +65,7 @@ public interface IGroup extends IEntity {
 
 	public PackageStyle getPackageStyle();
 
-	public void overideImage(IEntityImage img, List<Url> urls, LeafType state);
+	public void overideImage(IEntityImage img, LeafType state);
 
 	public SingleStrategy getSingleStrategy();
 }

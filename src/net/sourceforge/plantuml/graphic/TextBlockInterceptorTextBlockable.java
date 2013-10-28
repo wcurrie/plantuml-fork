@@ -34,9 +34,7 @@
 package net.sourceforge.plantuml.graphic;
 
 import java.awt.geom.Dimension2D;
-import java.util.List;
 
-import net.sourceforge.plantuml.Url;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
 
 public class TextBlockInterceptorTextBlockable implements TextBlock {
@@ -54,10 +52,6 @@ public class TextBlockInterceptorTextBlockable implements TextBlock {
 
 	public Dimension2D calculateDimension(StringBounder stringBounder) {
 		return TextBlockUtils.getMinMax(this, stringBounder).getDimension();
-	}
-
-	public List<Url> getUrls(StringBounder stringBounder) {
-		throw new UnsupportedOperationException();
 	}
 
 }

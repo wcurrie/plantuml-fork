@@ -35,12 +35,10 @@ package net.sourceforge.plantuml.svek.image;
 
 import java.awt.geom.Dimension2D;
 import java.awt.geom.Point2D;
-import java.util.List;
 
 import net.sourceforge.plantuml.Dimension2DDouble;
 import net.sourceforge.plantuml.Direction;
 import net.sourceforge.plantuml.MathUtils;
-import net.sourceforge.plantuml.Url;
 import net.sourceforge.plantuml.graphic.HtmlColor;
 import net.sourceforge.plantuml.graphic.StringBounder;
 import net.sourceforge.plantuml.graphic.TextBlock;
@@ -211,8 +209,8 @@ public class Opale implements TextBlock {
 		return polygon;
 	}
 
-	public List<Url> getUrls(StringBounder stringBounder) {
-		return textBlock.getUrls(stringBounder);
+	public final int getMarginX1() {
+		return marginX1;
 	}
 
 }

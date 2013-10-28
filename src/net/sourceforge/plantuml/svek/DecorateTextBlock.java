@@ -34,10 +34,8 @@
 package net.sourceforge.plantuml.svek;
 
 import java.awt.geom.Dimension2D;
-import java.util.List;
 
 import net.sourceforge.plantuml.Dimension2DDouble;
-import net.sourceforge.plantuml.Url;
 import net.sourceforge.plantuml.graphic.HorizontalAlignment;
 import net.sourceforge.plantuml.graphic.StringBounder;
 import net.sourceforge.plantuml.graphic.TextBlock;
@@ -132,10 +130,6 @@ public class DecorateTextBlock implements TextBlock {
 			return deltaY + ((DecorateTextBlock) original).deltaY;
 		}
 		return deltaY;
-	}
-
-	public List<Url> getUrls(StringBounder stringBounder) {
-		return original.getUrls(stringBounder);
 	}
 
 }

@@ -35,10 +35,8 @@ package net.sourceforge.plantuml.activitydiagram3.ftile;
 
 import java.awt.geom.Dimension2D;
 import java.awt.geom.Point2D;
-import java.util.List;
 import java.util.Set;
 
-import net.sourceforge.plantuml.Url;
 import net.sourceforge.plantuml.graphic.StringBounder;
 import net.sourceforge.plantuml.graphic.TextBlock;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
@@ -79,10 +77,6 @@ public class FtileKilled extends AbstractFtile {
 
 			public Dimension2D calculateDimension(StringBounder stringBounder) {
 				return tile.asTextBlock().calculateDimension(stringBounder);
-			}
-
-			public List<Url> getUrls(StringBounder stringBounder) {
-				return tile.asTextBlock().getUrls(stringBounder);
 			}
 
 			public void drawU(UGraphic ug) {

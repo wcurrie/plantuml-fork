@@ -34,10 +34,8 @@
 package net.sourceforge.plantuml.graphic;
 
 import java.awt.geom.Dimension2D;
-import java.util.List;
 
 import net.sourceforge.plantuml.Dimension2DDouble;
-import net.sourceforge.plantuml.Url;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
 import net.sourceforge.plantuml.ugraphic.UTranslate;
 
@@ -64,10 +62,6 @@ class TextBlockMarged implements TextBlock {
 
 	public void drawU(UGraphic ug) {
 		textBlock.drawU(ug.apply(new UTranslate(x1, y1)));
-	}
-
-	public List<Url> getUrls(StringBounder stringBounder) {
-		return textBlock.getUrls(stringBounder);
 	}
 
 }

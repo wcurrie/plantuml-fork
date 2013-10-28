@@ -33,27 +33,39 @@
  */
 package net.sourceforge.plantuml.creole;
 
+import net.sourceforge.plantuml.ISkinParam;
 import net.sourceforge.plantuml.cucadiagram.Display;
 import net.sourceforge.plantuml.graphic.FontConfiguration;
 
 public class CreoleParser {
-	
-	private final FontConfiguration fontConfiguration;
 
-	public CreoleParser(FontConfiguration fontConfiguration) {
+	private final FontConfiguration fontConfiguration;
+	private final ISkinParam skinParam;
+
+	public CreoleParser(FontConfiguration fontConfiguration, ISkinParam skinParam) {
 		this.fontConfiguration = fontConfiguration;
+		this.skinParam = skinParam;
 	}
 
-	private Stripe createStripe(String line, CreoleContext context) {
-		return new CreoleStripeParser(line, fontConfiguration).createStripe(context);
+	private Stripe createStripe(String line, CreoleContext context, Stripe lastStripe) {
+		if (lastStripe instanceof StripeTable && line.startsWith("|") && line.endsWith("|")) {
+			final StripeTable table = (StripeTable) lastStripe;
+			table.analyzeAndAddNormal(line);
+			return null;
+		} else if (line.startsWith("|=") && line.endsWith("|")) {
+			return new StripeTable(fontConfiguration, skinParam, line);
+		}
+		return new CreoleStripeSimpleParser(line, fontConfiguration, skinParam).createStripe(context);
 	}
 
 	public Sheet createSheet(Display display) {
 		final Sheet sheet = new Sheet();
 		final CreoleContext context = new CreoleContext();
 		for (CharSequence cs : display) {
-			final Stripe stripe = createStripe(cs.toString(), context);
-			sheet.add(stripe);
+			final Stripe stripe = createStripe(cs.toString(), context, sheet.getLastStripe());
+			if (stripe != null) {
+				sheet.add(stripe);
+			}
 		}
 		return sheet;
 	}

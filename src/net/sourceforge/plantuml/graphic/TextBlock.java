@@ -28,20 +28,17 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 11397 $
+ * Revision $Revision: 11863 $
  *
  */
 package net.sourceforge.plantuml.graphic;
 
 import java.awt.geom.Dimension2D;
-import java.util.List;
-
-import net.sourceforge.plantuml.Url;
 
 public interface TextBlock extends UDrawable {
 
 	public abstract Dimension2D calculateDimension(StringBounder stringBounder);
 
-	public abstract List<Url> getUrls(StringBounder stringBounder);
+	// public abstract List<Url> getUrlsTOBEREMOVED(StringBounder stringBounder);
 
 }

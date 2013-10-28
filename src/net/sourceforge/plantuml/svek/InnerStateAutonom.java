@@ -34,8 +34,6 @@
 package net.sourceforge.plantuml.svek;
 
 import java.awt.geom.Dimension2D;
-import java.util.Collections;
-import java.util.List;
 
 import net.sourceforge.plantuml.Dimension2DDouble;
 import net.sourceforge.plantuml.Url;
@@ -56,13 +54,11 @@ public final class InnerStateAutonom implements IEntityImage {
 	private final HtmlColor borderColor;
 	private final HtmlColor backColor;
 	private final boolean shadowing;
-	private final List<Url> url;
-	private final List<Url> suburl;
+	private final Url url;
 	private final boolean withSymbol;
 
 	public InnerStateAutonom(final IEntityImage im, final TextBlock title, TextBlockWidth attribute,
-			HtmlColor borderColor, HtmlColor backColor, boolean shadowing, List<Url> suburl, List<Url> url,
-			boolean withSymbol) {
+			HtmlColor borderColor, HtmlColor backColor, boolean shadowing, Url url, boolean withSymbol) {
 		this.im = im;
 		this.withSymbol = withSymbol;
 		this.title = title;
@@ -71,7 +67,6 @@ public final class InnerStateAutonom implements IEntityImage {
 		this.shadowing = shadowing;
 		this.attribute = attribute;
 		this.url = url;
-		this.suburl = suburl;
 	}
 
 	public final static double THICKNESS_BORDER = 1.5;
@@ -86,8 +81,8 @@ public final class InnerStateAutonom implements IEntityImage {
 		final RoundedContainer r = new RoundedContainer(total, titreHeight, attr.getHeight() + marginForFields,
 				borderColor, backColor, im.getBackcolor());
 
-		if (url.size() > 0) {
-			ug.startUrl(url.get(0));
+		if (url != null) {
+			ug.startUrl(url);
 		}
 
 		r.drawU(ug, shadowing);
@@ -104,7 +99,7 @@ public final class InnerStateAutonom implements IEntityImage {
 
 		}
 
-		if (url.size() > 0) {
+		if (url != null) {
 			ug.closeAction();
 		}
 	}
@@ -146,10 +141,6 @@ public final class InnerStateAutonom implements IEntityImage {
 
 	public boolean isHidden() {
 		return im.isHidden();
-	}
-
-	final public List<Url> getUrls(StringBounder stringBounder) {
-		return Collections.emptyList();
 	}
 
 }

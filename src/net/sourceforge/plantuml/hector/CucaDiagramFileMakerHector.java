@@ -93,7 +93,7 @@ public class CucaDiagramFileMakerHector implements CucaDiagramFileMaker {
 		}
 
 		ug.writeImage(os, null, diagram.getDpi(fileFormatOption));
-		return new ImageDataSimple((int) dim.getWidth(), (int) dim.getHeight());
+		return new ImageDataSimple(dim);
 	}
 
 	private IEntityImage computeImage(final ILeaf leaf) {

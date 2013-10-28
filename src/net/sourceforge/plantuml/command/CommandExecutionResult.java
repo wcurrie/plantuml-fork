@@ -45,6 +45,11 @@ public class CommandExecutionResult {
 		this.newDiagram = newDiagram;
 	}
 
+	@Override
+	public String toString() {
+		return super.toString() + " " + error;
+	}
+
 	public static CommandExecutionResult newDiagram(AbstractPSystem result) {
 		return new CommandExecutionResult(null, result);
 	}

@@ -36,7 +36,6 @@ package net.sourceforge.plantuml.svek;
 import java.awt.geom.Dimension2D;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
@@ -44,7 +43,6 @@ import java.util.TreeSet;
 
 import net.sourceforge.plantuml.ColorParam;
 import net.sourceforge.plantuml.UmlDiagramType;
-import net.sourceforge.plantuml.Url;
 import net.sourceforge.plantuml.cucadiagram.dot.DotData;
 import net.sourceforge.plantuml.graphic.HtmlColor;
 import net.sourceforge.plantuml.graphic.StringBounder;
@@ -167,10 +165,6 @@ public final class SvekResult implements IEntityImage, Moveable {
 
 	public boolean isHidden() {
 		return false;
-	}
-
-	final public List<Url> getUrls(StringBounder stringBounder) {
-		return Collections.emptyList();
 	}
 
 }

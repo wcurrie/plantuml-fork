@@ -34,13 +34,13 @@
 package net.sourceforge.plantuml.svek.image;
 
 import java.awt.geom.Dimension2D;
-import java.util.List;
 
 import net.sourceforge.plantuml.ColorParam;
 import net.sourceforge.plantuml.FontParam;
 import net.sourceforge.plantuml.ISkinParam;
 import net.sourceforge.plantuml.SkinParamUtils;
 import net.sourceforge.plantuml.Url;
+import net.sourceforge.plantuml.creole.Stencil;
 import net.sourceforge.plantuml.cucadiagram.BodyEnhanced;
 import net.sourceforge.plantuml.cucadiagram.Display;
 import net.sourceforge.plantuml.cucadiagram.ILeaf;
@@ -67,7 +67,7 @@ public class EntityImageUseCase extends AbstractEntityImage {
 
 	final private TextBlock desc;
 
-	final private List<Url> url;
+	final private Url url;
 
 	static private final UStroke stroke = new UStroke(1.5);
 
@@ -88,7 +88,7 @@ public class EntityImageUseCase extends AbstractEntityImage {
 							FontParam.USECASE_ACTOR_STEREOTYPE, null)), HorizontalAlignment.CENTER, skinParam);
 			this.desc = TextBlockUtils.mergeTB(stereo, tmp, HorizontalAlignment.CENTER);
 		}
-		this.url = entity.getUrls();
+		this.url = entity.getUrl99();
 
 	}
 
@@ -103,8 +103,8 @@ public class EntityImageUseCase extends AbstractEntityImage {
 			ellipse.setDeltaShadow(3);
 		}
 
-		if (url.size() > 0) {
-			ug.startUrl(url.get(0));
+		if (url != null) {
+			ug.startUrl(url);
 		}
 
 		ug = ug.apply(stroke).apply(
@@ -118,7 +118,7 @@ public class EntityImageUseCase extends AbstractEntityImage {
 
 		ellipse.drawU(ug2);
 
-		if (url.size() > 0) {
+		if (url != null) {
 			ug.closeAction();
 		}
 	}
@@ -160,18 +160,31 @@ public class EntityImageUseCase extends AbstractEntityImage {
 			return y;
 		}
 
-		private double getStartingX(double y) {
+		private double getStartingXInternal(double y) {
 			return startingX + ellipse.getStartingX(getNormalized(y));
 		}
 
-		private double getEndingX(double y) {
+		private double getEndingXInternal(double y) {
 			return startingX + ellipse.getEndingX(getNormalized(y));
+		}
+
+		private Stencil getStencil2(UTranslate translate) {
+			final double dy = translate.getDy();
+			return new Stencil() {
+
+				public double getStartingX(StringBounder stringBounder, double y) {
+					return getStartingXInternal(y + dy);
+				}
+
+				public double getEndingX(StringBounder stringBounder, double y) {
+					return getEndingXInternal(y + dy);
+				}
+			};
 		}
 
 		@Override
 		protected void drawHline(UGraphic ug, UHorizontalLine line, UTranslate translate) {
-			final double y = translate.getDy();
-			line.drawLineInternal(ug.apply(translate), getStartingX(y), getEndingX(y), 0, stroke);
+			line.drawLineInternal(ug.apply(translate), getStencil2(translate), 0, stroke);
 		}
 
 	}

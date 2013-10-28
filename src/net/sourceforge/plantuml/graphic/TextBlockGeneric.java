@@ -34,9 +34,7 @@
 package net.sourceforge.plantuml.graphic;
 
 import java.awt.geom.Dimension2D;
-import java.util.List;
 
-import net.sourceforge.plantuml.Url;
 import net.sourceforge.plantuml.ugraphic.UChangeBackColor;
 import net.sourceforge.plantuml.ugraphic.UChangeColor;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
@@ -67,10 +65,6 @@ public class TextBlockGeneric implements TextBlock {
 		ug.apply(new UStroke(2, 2, 1)).draw(new URectangle(dim.getWidth(), dim.getHeight()));
 		
 		textBlock.drawU(ug);
-	}
-
-	public List<Url> getUrls(StringBounder stringBounder) {
-		return textBlock.getUrls(stringBounder);
 	}
 
 }

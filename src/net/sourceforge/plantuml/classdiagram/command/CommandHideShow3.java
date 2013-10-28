@@ -37,6 +37,7 @@ import java.util.EnumSet;
 import java.util.Set;
 import java.util.StringTokenizer;
 
+import net.sourceforge.plantuml.UmlDiagram;
 import net.sourceforge.plantuml.classdiagram.ClassDiagram;
 import net.sourceforge.plantuml.command.CommandExecutionResult;
 import net.sourceforge.plantuml.command.SingleLineCommand2;
@@ -46,7 +47,7 @@ import net.sourceforge.plantuml.command.regex.RegexResult;
 import net.sourceforge.plantuml.cucadiagram.EntityPortion;
 import net.sourceforge.plantuml.skin.VisibilityModifier;
 
-public class CommandHideShow3 extends SingleLineCommand2<ClassDiagram> {
+public class CommandHideShow3 extends SingleLineCommand2<UmlDiagram> {
 
 	private static final EnumSet<EntityPortion> PORTION_METHOD = EnumSet.<EntityPortion> of(EntityPortion.METHOD);
 	private static final EnumSet<EntityPortion> PORTION_MEMBER = EnumSet.<EntityPortion> of(EntityPortion.FIELD,
@@ -67,9 +68,18 @@ public class CommandHideShow3 extends SingleLineCommand2<ClassDiagram> {
 				new RegexLeaf("PORTION", "(members?|attributes?|fields?|methods?)"), //
 				new RegexLeaf("$"));
 	}
-
+	
 	@Override
-	protected CommandExecutionResult executeArg(ClassDiagram classDiagram, RegexResult arg) {
+	protected CommandExecutionResult executeArg(UmlDiagram classDiagram, RegexResult arg) {
+		if (classDiagram instanceof ClassDiagram) {
+			return executeArgClass((ClassDiagram) classDiagram, arg);
+		}
+		// Just ignored
+		return CommandExecutionResult.ok();
+	}
+
+
+	private CommandExecutionResult executeArgClass(ClassDiagram classDiagram, RegexResult arg) {
 
 		final Set<EntityPortion> portion = getEntityPortion(arg.get("PORTION", 0));
 

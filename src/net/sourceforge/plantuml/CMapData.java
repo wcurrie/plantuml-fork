@@ -33,6 +33,11 @@
  */
 package net.sourceforge.plantuml;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Set;
+
 public class CMapData {
 
 	private final StringBuilder stringBuilder = new StringBuilder();
@@ -52,7 +57,7 @@ public class CMapData {
 	public void appendLong(long s) {
 		stringBuilder.append(s);
 	}
-	
+
 	public void appendUrl(int seq, Url url, double scale) {
 		appendString("<area shape=\"rect\" id=\"id");
 		appendLong(seq);
@@ -67,6 +72,21 @@ public class CMapData {
 		appendString("\n");
 	}
 
+	// private CMapData() {
+	// }
 
+	public static CMapData cmapString(Set<Url> allUrlEncountered, double scale) {
+		final CMapData cmapdata = new CMapData();
+
+		final List<Url> all = new ArrayList<Url>(allUrlEncountered);
+		Collections.sort(all, Url.SURFACE_COMPARATOR);
+
+		int seq = 1;
+		for (Url u : all) {
+			cmapdata.appendUrl(seq, u, scale);
+			seq++;
+		}
+		return cmapdata;
+	}
 
 }

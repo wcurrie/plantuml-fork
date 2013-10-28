@@ -34,11 +34,8 @@
 package net.sourceforge.plantuml.graphic;
 
 import java.awt.geom.Dimension2D;
-import java.util.Collections;
-import java.util.List;
 
 import net.sourceforge.plantuml.Dimension2DDouble;
-import net.sourceforge.plantuml.Url;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
 import net.sourceforge.plantuml.ugraphic.ULine;
 import net.sourceforge.plantuml.ugraphic.UPath;
@@ -90,10 +87,6 @@ class USymbolNode extends USymbol {
 				final Dimension2D dimStereo = stereotype.calculateDimension(stringBounder);
 				return getMargin().addDimension(Dimension2DDouble.mergeTB(dimStereo, dimLabel));
 			}
-
-			public List<Url> getUrls(StringBounder stringBounder) {
-				return Collections.emptyList();
-			}
 		};
 	}
 
@@ -115,10 +108,6 @@ class USymbolNode extends USymbol {
 
 			public Dimension2D calculateDimension(StringBounder stringBounder) {
 				return new Dimension2DDouble(width, height);
-			}
-
-			public List<Url> getUrls(StringBounder stringBounder) {
-				return Collections.emptyList();
 			}
 		};
 	}

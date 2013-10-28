@@ -35,10 +35,8 @@ package net.sourceforge.plantuml.activitydiagram3.ftile;
 
 import java.awt.geom.Dimension2D;
 import java.awt.geom.Point2D;
-import java.util.List;
 
 import net.sourceforge.plantuml.Dimension2DDouble;
-import net.sourceforge.plantuml.Url;
 import net.sourceforge.plantuml.activitydiagram3.ftile.vertical.FtileDecorate;
 import net.sourceforge.plantuml.graphic.StringBounder;
 import net.sourceforge.plantuml.graphic.TextBlock;
@@ -65,10 +63,6 @@ public class FtileMinWidth extends FtileDecorate {
 
 			public Dimension2D calculateDimension(StringBounder stringBounder) {
 				return getDimensionInternal(stringBounder);
-			}
-
-			public List<Url> getUrls(StringBounder stringBounder) {
-				throw new UnsupportedOperationException();
 			}
 		};
 	}

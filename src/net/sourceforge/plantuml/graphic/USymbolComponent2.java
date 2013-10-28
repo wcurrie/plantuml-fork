@@ -34,11 +34,8 @@
 package net.sourceforge.plantuml.graphic;
 
 import java.awt.geom.Dimension2D;
-import java.util.Collections;
-import java.util.List;
 
 import net.sourceforge.plantuml.Dimension2DDouble;
-import net.sourceforge.plantuml.Url;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
 import net.sourceforge.plantuml.ugraphic.URectangle;
 import net.sourceforge.plantuml.ugraphic.UShape;
@@ -84,10 +81,6 @@ class USymbolComponent2 extends USymbol {
 				final Dimension2D dim = label.calculateDimension(stringBounder);
 				return getMargin().addDimension(dim);
 			}
-
-			public List<Url> getUrls(StringBounder stringBounder) {
-				return Collections.emptyList();
-			}
 		};
 	}
 
@@ -106,9 +99,6 @@ class USymbolComponent2 extends USymbol {
 				return new Dimension2DDouble(width, height);
 			}
 
-			public List<Url> getUrls(StringBounder stringBounder) {
-				return Collections.emptyList();
-			}
 		};
 	}
 

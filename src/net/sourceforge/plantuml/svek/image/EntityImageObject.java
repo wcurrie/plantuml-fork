@@ -34,7 +34,6 @@
 package net.sourceforge.plantuml.svek.image;
 
 import java.awt.geom.Dimension2D;
-import java.util.List;
 
 import net.sourceforge.plantuml.ColorParam;
 import net.sourceforge.plantuml.Dimension2DDouble;
@@ -42,6 +41,7 @@ import net.sourceforge.plantuml.FontParam;
 import net.sourceforge.plantuml.ISkinParam;
 import net.sourceforge.plantuml.SkinParamUtils;
 import net.sourceforge.plantuml.Url;
+import net.sourceforge.plantuml.creole.Stencil;
 import net.sourceforge.plantuml.cucadiagram.Display;
 import net.sourceforge.plantuml.cucadiagram.EntityPortion;
 import net.sourceforge.plantuml.cucadiagram.ILeaf;
@@ -62,18 +62,18 @@ import net.sourceforge.plantuml.ugraphic.Shadowable;
 import net.sourceforge.plantuml.ugraphic.UChangeBackColor;
 import net.sourceforge.plantuml.ugraphic.UChangeColor;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
-import net.sourceforge.plantuml.ugraphic.UGraphicHorizontalLine;
+import net.sourceforge.plantuml.ugraphic.UGraphicStencil;
 import net.sourceforge.plantuml.ugraphic.ULayoutGroup;
 import net.sourceforge.plantuml.ugraphic.URectangle;
 import net.sourceforge.plantuml.ugraphic.UStroke;
 import net.sourceforge.plantuml.ugraphic.UTranslate;
 
-public class EntityImageObject extends AbstractEntityImage {
+public class EntityImageObject extends AbstractEntityImage implements Stencil {
 
 	final private TextBlock name;
 	final private TextBlock stereo;
 	final private TextBlock fields;
-	final private List<Url> url;
+	final private Url url;
 	final private double roundCorner;
 
 	public EntityImageObject(ILeaf entity, ISkinParam skinParam) {
@@ -107,7 +107,7 @@ public class EntityImageObject extends AbstractEntityImage {
 			}).asTextBlock(FontParam.OBJECT_ATTRIBUTE, skinParam);
 
 		}
-		this.url = entity.getUrls();
+		this.url = entity.getUrl99();
 
 	}
 
@@ -140,8 +140,8 @@ public class EntityImageObject extends AbstractEntityImage {
 			backcolor = SkinParamUtils.getColor(getSkinParam(), ColorParam.objectBackground, getStereo());
 		}
 		ug = ug.apply(new UChangeBackColor(backcolor));
-		if (url.size() > 0) {
-			ug.startUrl(url.get(0));
+		if (url != null) {
+			ug.startUrl(url);
 		}
 
 		final UStroke stroke = new UStroke(1.5);
@@ -154,10 +154,10 @@ public class EntityImageObject extends AbstractEntityImage {
 		header.add(name);
 		header.drawU(ug, 0, 0, dimTotal.getWidth(), dimTitle.getHeight());
 
-		final UGraphic ug2 = new UGraphicHorizontalLine(ug, 0, widthTotal, stroke);
+		final UGraphic ug2 = new UGraphicStencil(ug, this, stroke);
 		fields.drawU(ug2.apply(new UTranslate(0, dimTitle.getHeight())));
 
-		if (url.size() > 0) {
+		if (url != null) {
 			ug.closeAction();
 		}
 	}
@@ -191,6 +191,14 @@ public class EntityImageObject extends AbstractEntityImage {
 
 	public int getShield() {
 		return 0;
+	}
+
+	public double getStartingX(StringBounder stringBounder, double y) {
+		return 0;
+	}
+
+	public double getEndingX(StringBounder stringBounder, double y) {
+		return calculateDimension(stringBounder).getWidth();
 	}
 
 }

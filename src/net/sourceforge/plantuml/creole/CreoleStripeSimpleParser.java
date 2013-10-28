@@ -33,25 +33,25 @@
  */
 package net.sourceforge.plantuml.creole;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import net.sourceforge.plantuml.ISkinParam;
 import net.sourceforge.plantuml.graphic.FontConfiguration;
 
-public class CreoleStripeParser {
+public class CreoleStripeSimpleParser {
 
 	final private String line;
 	final private StripeStyle style;
 
-	private final List<Command> commands = new ArrayList<Command>();
 	private final FontConfiguration fontConfiguration;
+	private final ISkinParam skinParam;
 
-	public CreoleStripeParser(String line, FontConfiguration fontConfiguration) {
+	public CreoleStripeSimpleParser(String line, FontConfiguration fontConfiguration, ISkinParam skinParam) {
 		this.fontConfiguration = fontConfiguration;
+		this.skinParam = skinParam;
 
-		final Pattern p4 = Pattern.compile("^--([^-]+)--$");
+		final Pattern p4 = Pattern.compile("^--([^-]*)--$");
 		final Matcher m4 = p4.matcher(line);
 		if (m4.find()) {
 			this.line = m4.group(1);
@@ -59,7 +59,7 @@ public class CreoleStripeParser {
 			return;
 		}
 
-		final Pattern p5 = Pattern.compile("^==([^=]+)==$");
+		final Pattern p5 = Pattern.compile("^==([^=]*)==$");
 		final Matcher m5 = p5.matcher(line);
 		if (m5.find()) {
 			this.line = m5.group(1);
@@ -67,7 +67,7 @@ public class CreoleStripeParser {
 			return;
 		}
 
-		final Pattern p6 = Pattern.compile("^__([^_]+)__$");
+		final Pattern p6 = Pattern.compile("^__([^_]*)__$");
 		final Matcher m6 = p6.matcher(line);
 		if (m6.find()) {
 			this.line = m6.group(1);
@@ -75,17 +75,11 @@ public class CreoleStripeParser {
 			return;
 		}
 
-		final Pattern p7 = Pattern.compile("^\\.\\.([^\\.]+)\\.\\.$");
+		final Pattern p7 = Pattern.compile("^\\.\\.([^\\.]*)\\.\\.$");
 		final Matcher m7 = p7.matcher(line);
 		if (m7.find()) {
 			this.line = m7.group(1);
 			this.style = new StripeStyle(StripeStyleType.HORIZONTAL_LINE, 0, '.');
-			return;
-		}
-
-		if (line.equals("----")) {
-			this.line = "";
-			this.style = new StripeStyle(StripeStyleType.HORIZONTAL_LINE, 0, '-');
 			return;
 		}
 
@@ -121,19 +115,10 @@ public class CreoleStripeParser {
 
 	}
 
-	Stripe createStripe(CreoleContext context) {
-		final Stripe result = new Stripe(fontConfiguration, style, context);
+	public Stripe createStripe(CreoleContext context) {
+		final StripeSimple result = new StripeSimple(fontConfiguration, style, context, skinParam);
 		result.analyzeAndAdd(line);
 		return result;
 	}
 
-	private Command searchCommand() {
-		for (Command cmd : commands) {
-			final int i = cmd.matchingSize(line);
-			if (i != 0) {
-				return cmd;
-			}
-		}
-		return null;
-	}
 }

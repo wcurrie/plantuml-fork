@@ -42,9 +42,7 @@ import net.sourceforge.plantuml.classdiagram.command.CommandAddMethod;
 import net.sourceforge.plantuml.classdiagram.command.CommandCreateClass;
 import net.sourceforge.plantuml.classdiagram.command.CommandCreateClassMultilines;
 import net.sourceforge.plantuml.classdiagram.command.CommandDiamondAssociation;
-import net.sourceforge.plantuml.classdiagram.command.CommandHideShow;
-import net.sourceforge.plantuml.classdiagram.command.CommandHideShow3;
-import net.sourceforge.plantuml.classdiagram.command.CommandHideShow4;
+import net.sourceforge.plantuml.classdiagram.command.CommandHideShowSpecificClass;
 import net.sourceforge.plantuml.classdiagram.command.CommandImport;
 import net.sourceforge.plantuml.classdiagram.command.CommandLinkClass;
 import net.sourceforge.plantuml.classdiagram.command.CommandLinkLollipop;
@@ -116,9 +114,7 @@ public class ClassDiagramFactory1317 extends UmlDiagramFactory1317 {
 		cmds.add(new CommandDiamondAssociation());
 		cmds.add(new CommandMouseOver());
 
-		cmds.add(new CommandHideShow3());
-		cmds.add(new CommandHideShow());
-		cmds.add(new CommandHideShow4());
+		cmds.add(new CommandHideShowSpecificClass());
 
 		cmds.add(new CommandNamespaceSeparator());
 

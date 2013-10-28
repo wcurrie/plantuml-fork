@@ -33,13 +33,16 @@
  */
 package net.sourceforge.plantuml.creole;
 
+import java.awt.font.LineMetrics;
 import java.awt.geom.Dimension2D;
 import java.util.StringTokenizer;
 
 import net.sourceforge.plantuml.Dimension2DDouble;
 import net.sourceforge.plantuml.Log;
+import net.sourceforge.plantuml.Url;
 import net.sourceforge.plantuml.graphic.FontConfiguration;
 import net.sourceforge.plantuml.graphic.StringBounder;
+import net.sourceforge.plantuml.graphic.TextBlockUtils;
 import net.sourceforge.plantuml.ugraphic.UChangeColor;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
 import net.sourceforge.plantuml.ugraphic.UText;
@@ -47,11 +50,28 @@ import net.sourceforge.plantuml.ugraphic.UTranslate;
 
 public class AtomText implements Atom {
 
+	interface DelayedDouble {
+		public double getDouble(StringBounder stringBounder);
+	}
+
+	private static DelayedDouble ZERO = new DelayedDouble() {
+		public double getDouble(StringBounder stringBounder) {
+			return 0;
+		}
+	};
+
 	private final FontConfiguration fontConfiguration;
 	private final String text;
+	private final DelayedDouble marginLeft;
+	private final DelayedDouble marginRight;
+	private final Url url;
 
 	public static AtomText create(String text, FontConfiguration fontConfiguration) {
-		return new AtomText(text, fontConfiguration);
+		return new AtomText(text, fontConfiguration, null, ZERO, ZERO);
+	}
+
+	public static Atom createUrl(Url url, FontConfiguration fontConfiguration) {
+		return new AtomText(url.getLabel(), fontConfiguration, url, ZERO, ZERO);
 	}
 
 	public static AtomText createHeading(String text, FontConfiguration fontConfiguration, int order) {
@@ -64,7 +84,23 @@ public class AtomText implements Atom {
 		} else {
 			fontConfiguration = fontConfiguration.italic();
 		}
-		return new AtomText(text, fontConfiguration);
+		return new AtomText(text, fontConfiguration, null, ZERO, ZERO);
+	}
+
+	public static Atom createListNumber(final FontConfiguration fontConfiguration, final int order, int localNumber) {
+		final DelayedDouble left = new DelayedDouble() {
+			public double getDouble(StringBounder stringBounder) {
+				final Dimension2D dim = stringBounder.calculateDimension(fontConfiguration.getFont(), "9. ");
+				return dim.getWidth() * order;
+			}
+		};
+		final DelayedDouble right = new DelayedDouble() {
+			public double getDouble(StringBounder stringBounder) {
+				final Dimension2D dim = stringBounder.calculateDimension(fontConfiguration.getFont(), ".");
+				return dim.getWidth();
+			}
+		};
+		return new AtomText("" + (localNumber + 1) + ".", fontConfiguration, null, left, right);
 	}
 
 	@Override
@@ -72,13 +108,12 @@ public class AtomText implements Atom {
 		return text + " " + fontConfiguration;
 	}
 
-	// public Text bold() {
-	// return new Text(text, FontStyle.BOLD);
-	// }
-
-	private AtomText(String text, FontConfiguration style) {
+	private AtomText(String text, FontConfiguration style, Url url, DelayedDouble marginLeft, DelayedDouble marginRight) {
+		this.marginLeft = marginLeft;
+		this.marginRight = marginRight;
 		this.text = text;
 		this.fontConfiguration = style;
+		this.url = url;
 	}
 
 	public final String getText() {
@@ -91,7 +126,6 @@ public class AtomText implements Atom {
 
 	public Dimension2D calculateDimension(StringBounder stringBounder) {
 		final Dimension2D rect = stringBounder.calculateDimension(fontConfiguration.getFont(), text);
-		final int spaceBottom = Math.abs(fontConfiguration.getSpace());
 		Log.debug("g2d=" + rect);
 		Log.debug("Size for " + text + " is " + rect);
 		double h = rect.getHeight();
@@ -99,15 +133,24 @@ public class AtomText implements Atom {
 			h = 10;
 		}
 		final double width = text.indexOf('\t') == -1 ? rect.getWidth() : getWidth(stringBounder);
-		return new Dimension2DDouble(width, h + spaceBottom);
+		final double left = marginLeft.getDouble(stringBounder);
+		final double right = marginRight.getDouble(stringBounder);
+
+		return new Dimension2DDouble(width + left + right, h);
+	}
+
+	private double getDescent() {
+		final LineMetrics fm = TextBlockUtils.getLineMetrics(fontConfiguration.getFont(), text);
+		final double descent = fm.getDescent();
+		return descent;
 	}
 
 	public double getFontSize2D() {
 		return fontConfiguration.getFont().getSize2D();
 	}
 
-	public double getH1(StringBounder stringBounder) {
-		return getFontSize2D();
+	public double getStartingAltitude(StringBounder stringBounder) {
+		return fontConfiguration.getSpace();
 	}
 
 	double getTabSize(StringBounder stringBounder) {
@@ -115,17 +158,21 @@ public class AtomText implements Atom {
 	}
 
 	public void drawU(UGraphic ug) {
-		// if (url != null) {
-		// ug.startUrl(url);
-		// }
+		if (url != null) {
+			ug.startUrl(url);
+		}
 		ug = ug.apply(new UChangeColor(fontConfiguration.getColor()));
+		if (marginLeft != ZERO) {
+			ug = ug.apply(new UTranslate(marginLeft.getDouble(ug.getStringBounder()), 0));
+		}
 
 		final StringTokenizer tokenizer = new StringTokenizer(text, "\t", true);
 
 		double x = 0;
 		// final int ypos = fontConfiguration.getSpace();
 		final Dimension2D rect = ug.getStringBounder().calculateDimension(fontConfiguration.getFont(), text);
-		final double ypos = rect.getHeight();
+		final double descent = getDescent();
+		final double ypos = rect.getHeight() - descent;
 		if (tokenizer.hasMoreTokens()) {
 			final double tabSize = getTabSize(ug.getStringBounder());
 			while (tokenizer.hasMoreTokens()) {
@@ -141,9 +188,9 @@ public class AtomText implements Atom {
 				}
 			}
 		}
-		// if (url != null) {
-		// ug.closeAction();
-		// }
+		if (url != null) {
+			ug.closeAction();
+		}
 	}
 
 	double getWidth(StringBounder stringBounder) {

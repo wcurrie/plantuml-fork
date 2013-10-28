@@ -36,11 +36,9 @@ package net.sourceforge.plantuml.activitydiagram3.ftile;
 import java.awt.geom.Dimension2D;
 import java.awt.geom.Point2D;
 import java.util.Collections;
-import java.util.List;
 import java.util.Set;
 
 import net.sourceforge.plantuml.Dimension2DDouble;
-import net.sourceforge.plantuml.Url;
 import net.sourceforge.plantuml.graphic.StringBounder;
 import net.sourceforge.plantuml.graphic.TextBlock;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
@@ -87,10 +85,6 @@ public class FtileEmpty extends AbstractFtile {
 
 			public Dimension2D calculateDimension(StringBounder stringBounder) {
 				return new Dimension2DDouble(width, height);
-			}
-
-			public List<Url> getUrls(StringBounder stringBounder) {
-				return Collections.emptyList();
 			}
 		};
 	}

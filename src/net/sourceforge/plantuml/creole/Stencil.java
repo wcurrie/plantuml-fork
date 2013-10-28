@@ -34,11 +34,11 @@
 package net.sourceforge.plantuml.creole;
 
 import net.sourceforge.plantuml.graphic.StringBounder;
-import net.sourceforge.plantuml.graphic.UDrawable;
-import net.sourceforge.plantuml.ugraphic.UHorizontalLine;
 
 public interface Stencil {
 
-	public UDrawable convert(UHorizontalLine line, StringBounder stringBounder);
+	public double getStartingX(StringBounder stringBounder, double y);
+
+	public double getEndingX(StringBounder stringBounder, double y);
 
 }

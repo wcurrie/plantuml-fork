@@ -39,8 +39,6 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -61,7 +59,6 @@ import net.sourceforge.plantuml.api.ImageDataComplex;
 import net.sourceforge.plantuml.core.ImageData;
 import net.sourceforge.plantuml.cucadiagram.CucaDiagram;
 import net.sourceforge.plantuml.cucadiagram.Display;
-import net.sourceforge.plantuml.cucadiagram.IEntity;
 import net.sourceforge.plantuml.cucadiagram.Link;
 import net.sourceforge.plantuml.cucadiagram.dot.CucaDiagramSimplifierActivity;
 import net.sourceforge.plantuml.cucadiagram.dot.CucaDiagramSimplifierState;
@@ -161,7 +158,8 @@ public final class CucaDiagramFileMakerSvek implements CucaDiagramFileMaker {
 
 		CMapData cmap = null;
 		if (diagram.hasUrl() && fileFormatOption.getFileFormat() == FileFormat.PNG) {
-			cmap = cmapString(svek2, allUrlEncountered, scale);
+			cmap = CMapData.cmapString(allUrlEncountered, scale);
+			// cmap = cmapString(svek2, allUrlEncountered, scale);
 		}
 
 		final String widthwarning = diagram.getSkinParam().getValue("widthwarning");
@@ -207,40 +205,6 @@ public final class CucaDiagramFileMakerSvek implements CucaDiagramFileMaker {
 		return warningOrError;
 	}
 
-	private CMapData cmapString(CucaDiagramFileMakerSvek2 svek2, Set<Url> allUrlEncountered, double scale) {
-		final CMapData cmapdata = new CMapData();
-		final Collection<IEntity> all = new ArrayList<IEntity>(diagram.getLeafs().values());
-		all.addAll(diagram.getGroups(false));
-		int seq = 1;
-		final Set<Url> done = new HashSet<Url>();
-		for (IEntity ent : all) {
-			final List<Url> rev = new ArrayList<Url>(ent.getUrls());
-			// For zlevel order
-			Collections.reverse(rev);
-			for (Url url : rev) {
-				cmapdata.appendUrl(seq, url, scale);
-				done.add(url);
-				seq++;
-			}
-		}
-		for (Url u : allUrlEncountered) {
-			if (done.contains(u)) {
-				continue;
-			}
-			cmapdata.appendUrl(seq, u, scale);
-			seq++;
-		}
-		// for (Link link : diagram.getLinks()) {
-		// final Url url = link.getUrl();
-		// System.err.println("url2=" + url);
-		// if (url == null) {
-		// continue;
-		// }
-		// appendUrl(cmapdata, seq, url);
-		// seq++;
-		// }
-		return cmapdata;
-	}
 
 	private TextBlockBackcolored addHeaderAndFooter(TextBlockBackcolored original) {
 		final Display footer = diagram.getFooter();

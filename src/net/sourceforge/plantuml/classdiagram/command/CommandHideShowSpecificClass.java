@@ -42,9 +42,9 @@ import net.sourceforge.plantuml.command.regex.RegexResult;
 import net.sourceforge.plantuml.cucadiagram.Code;
 import net.sourceforge.plantuml.cucadiagram.ILeaf;
 
-public class CommandHideShow4 extends SingleLineCommand2<ClassDiagram> {
+public class CommandHideShowSpecificClass extends SingleLineCommand2<ClassDiagram> {
 
-	public CommandHideShow4() {
+	public CommandHideShowSpecificClass() {
 		super(getRegexConcat());
 	}
 

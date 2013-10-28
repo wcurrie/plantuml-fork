@@ -134,7 +134,7 @@ public class CucaDiagramFileMakerHectorB1 implements CucaDiagramFileMaker {
 		}
 
 		ug.writeImage(os, null, diagram.getDpi(fileFormatOption));
-		return new ImageDataSimple((int) dimTotal.getWidth(), (int) dimTotal.getHeight());
+		return new ImageDataSimple(dimTotal);
 	}
 
 	private void drawPin(UGraphic ug, Pin pin) {

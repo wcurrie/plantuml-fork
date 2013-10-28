@@ -34,7 +34,6 @@
 package net.sourceforge.plantuml.svek.image;
 
 import java.awt.geom.Dimension2D;
-import java.util.List;
 
 import net.sourceforge.plantuml.ColorParam;
 import net.sourceforge.plantuml.Dimension2DDouble;
@@ -68,7 +67,7 @@ public class EntityImageState extends AbstractEntityImage {
 
 	final private TextBlock desc;
 	final private TextBlock fields;
-	final private List<Url> url;
+	final private Url url;
 
 	final private static int MIN_WIDTH = 50;
 	final private static int MIN_HEIGHT = 50;
@@ -95,7 +94,7 @@ public class EntityImageState extends AbstractEntityImage {
 			list = list.addAll(Display.getWithNewlines(att.getDisplay(true)));
 		}
 
-		this.url = entity.getUrls();
+		this.url = entity.getUrl99();
 
 		this.fields = TextBlockUtils.create(list,
 				new FontConfiguration(SkinParamUtils.getFont(getSkinParam(), FontParam.STATE_ATTRIBUTE, stereotype),
@@ -116,8 +115,8 @@ public class EntityImageState extends AbstractEntityImage {
 	}
 
 	final public void drawU(UGraphic ug) {
-		if (url.size() > 0) {
-			ug.startUrl(url.get(0));
+		if (url != null) {
+			ug.startUrl(url);
 		}
 		final StringBounder stringBounder = ug.getStringBounder();
 		final Dimension2D dimTotal = calculateDimension(stringBounder);
@@ -159,7 +158,7 @@ public class EntityImageState extends AbstractEntityImage {
 		final double yFields = yLine + MARGIN_LINE;
 		fields.drawU(ug.apply(new UTranslate(xFields, yFields)));
 
-		if (url.size() > 0) {
+		if (url != null) {
 			ug.closeAction();
 		}
 	}

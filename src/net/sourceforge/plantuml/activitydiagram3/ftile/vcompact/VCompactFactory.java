@@ -87,7 +87,7 @@ public class VCompactFactory implements FtileFactory {
 		final HtmlColor backColor = color == null ? rose.getHtmlColor(skinParam, ColorParam.activityBackground) : color;
 		final UFont font = skinParam.getFont(FontParam.ACTIVITY2, null);
 		final HtmlColor arrowColor = rose.getHtmlColor(skinParam, ColorParam.activityArrow);
-		return new FtileBox(shadowing(), label, borderColor, backColor, font, arrowColor, swimlane, style);
+		return new FtileBox(shadowing(), label, borderColor, backColor, font, arrowColor, swimlane, style, skinParam);
 	}
 
 	public Ftile addNote(Ftile ftile, Display note, NotePosition notePosition) {

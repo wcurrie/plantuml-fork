@@ -35,11 +35,9 @@ package net.sourceforge.plantuml.flowdiagram;
 
 import java.awt.Font;
 import java.awt.geom.Dimension2D;
-import java.util.List;
 
 import net.sourceforge.plantuml.Dimension2DDouble;
 import net.sourceforge.plantuml.SpriteContainerEmpty;
-import net.sourceforge.plantuml.Url;
 import net.sourceforge.plantuml.cucadiagram.Display;
 import net.sourceforge.plantuml.golem.Tile;
 import net.sourceforge.plantuml.graphic.FontConfiguration;
@@ -106,10 +104,6 @@ public class ActivityBox implements TextBlock {
 		final Dimension2D dim = tb.calculateDimension(stringBounder);
 
 		return Dimension2DDouble.delta(dim, 2 * MARGIN, 2 * MARGIN);
-	}
-
-	public List<Url> getUrls(StringBounder stringBounder) {
-		return tb.getUrls(stringBounder);
 	}
 
 }

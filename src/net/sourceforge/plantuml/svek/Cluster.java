@@ -63,7 +63,6 @@ import net.sourceforge.plantuml.cucadiagram.Stereotype;
 import net.sourceforge.plantuml.cucadiagram.dot.DotData;
 import net.sourceforge.plantuml.graphic.HtmlColor;
 import net.sourceforge.plantuml.graphic.HtmlColorTransparent;
-import net.sourceforge.plantuml.graphic.HtmlColorUtils;
 import net.sourceforge.plantuml.graphic.StringBounder;
 import net.sourceforge.plantuml.graphic.TextBlock;
 import net.sourceforge.plantuml.graphic.TextBlockEmpty;
@@ -284,9 +283,9 @@ public class Cluster implements Moveable {
 	}
 
 	public void drawU(UGraphic ug, HtmlColor borderColor, DotData dotData) {
-		final List<Url> url = group.getUrls();
-		if (url.size() > 0 && url.get(0).isMember() == false) {
-			ug.startUrl(url.get(0));
+		final Url url = group.getUrl99();
+		if (url != null) {
+			ug.startUrl(url);
 		}
 		try {
 			if (hasEntryOrExitPoint()) {
@@ -323,7 +322,7 @@ public class Cluster implements Moveable {
 			ug.apply(new UStroke(2)).apply(new UTranslate(minX, minY)).draw(rect);
 
 		} finally {
-			if (url.size() > 0 && url.get(0).isMember() == false) {
+			if (url != null) {
 				ug.closeAction();
 			}
 		}
@@ -762,7 +761,7 @@ public class Cluster implements Moveable {
 		if (stateBack == null) {
 			stateBack = skinParam.getHtmlColor(ColorParam.background, stereotype, false);
 		}
-		if (stateBack == null /*|| stateBack instanceof HtmlColorTransparent*/) {
+		if (stateBack == null /* || stateBack instanceof HtmlColorTransparent */) {
 			stateBack = new HtmlColorTransparent();
 		}
 		return stateBack;

@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 11760 $
+ * Revision $Revision: 11838 $
  *
  */
 package net.sourceforge.plantuml.graphic;
@@ -74,6 +74,23 @@ public enum FontStyle {
 		}
 		return null;
 	}
+	
+	public boolean canHaveExtendedColor() {
+		if (this == UNDERLINE) {
+			return true;
+		}
+		if (this == WAVE) {
+			return true;
+		}
+		if (this == BACKCOLOR) {
+			return true;
+		}
+		if (this == STRIKE) {
+			return true;
+		}
+		return false;
+	}
+
 
 	public String getCreoleSyntax() {
 		if (this == ITALIC) {
@@ -94,7 +111,7 @@ public enum FontStyle {
 		throw new UnsupportedOperationException();
 	}
 
-	HtmlColor getExtendedColor(String s) {
+	public HtmlColor getExtendedColor(String s) {
 		final Matcher m = Pattern.compile(getActivationPattern()).matcher(s);
 		if (m.find() == false || m.groupCount() != 1) {
 			return null;
@@ -139,5 +156,6 @@ public enum FontStyle {
 		}
 		throw new IllegalArgumentException(line);
 	}
+
 
 }

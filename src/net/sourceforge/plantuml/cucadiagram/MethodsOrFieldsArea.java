@@ -35,7 +35,6 @@ package net.sourceforge.plantuml.cucadiagram;
 
 import java.awt.geom.Dimension2D;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import net.sourceforge.plantuml.Dimension2DDouble;
@@ -144,13 +143,6 @@ public class MethodsOrFieldsArea implements TextBlockWidth, TextBlock {
 			}
 		}
 
-		public List<Url> getUrls(StringBounder stringBounder) {
-			if (url != null) {
-				return Collections.singletonList(url);
-			}
-			return Collections.emptyList();
-		}
-
 		public Dimension2D calculateDimension(StringBounder stringBounder) {
 			final Dimension2D dim = bloc.calculateDimension(stringBounder);
 			return dim;
@@ -167,10 +159,6 @@ public class MethodsOrFieldsArea implements TextBlockWidth, TextBlock {
 
 				public Dimension2D calculateDimension(StringBounder stringBounder) {
 					return new Dimension2DDouble(1, 1);
-				}
-
-				public List<Url> getUrls(StringBounder stringBounder) {
-					return Collections.emptyList();
 				}
 			};
 		}
@@ -191,10 +179,6 @@ public class MethodsOrFieldsArea implements TextBlockWidth, TextBlock {
 
 			public Dimension2D calculateDimension(StringBounder stringBounder) {
 				return MethodsOrFieldsArea.this.calculateDimension(stringBounder);
-			}
-
-			public List<Url> getUrls(StringBounder stringBounder) {
-				return Collections.emptyList();
 			}
 		};
 	}
@@ -228,10 +212,4 @@ public class MethodsOrFieldsArea implements TextBlockWidth, TextBlock {
 		}
 		group.drawU(ug, 0, 0, dim.getWidth(), dim.getHeight());
 	}
-
-
-	public List<Url> getUrls(StringBounder stringBounder) {
-		return Collections.emptyList();
-	}
-
 }

@@ -34,9 +34,7 @@
 package net.sourceforge.plantuml.graphic;
 
 import java.awt.geom.Dimension2D;
-import java.util.List;
 
-import net.sourceforge.plantuml.Url;
 import net.sourceforge.plantuml.ugraphic.MinMax;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
 import net.sourceforge.plantuml.ugraphic.UTranslate;
@@ -57,10 +55,6 @@ public class TextBlockRecentred implements TextBlock {
 	public Dimension2D calculateDimension(StringBounder stringBounder) {
 		final MinMax minMax = TextBlockUtils.getMinMax(textBlock);
 		return minMax.getDimension();
-	}
-
-	public List<Url> getUrls(StringBounder stringBounder) {
-		throw new UnsupportedOperationException();
 	}
 
 }

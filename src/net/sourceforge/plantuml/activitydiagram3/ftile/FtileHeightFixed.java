@@ -35,11 +35,9 @@ package net.sourceforge.plantuml.activitydiagram3.ftile;
 
 import java.awt.geom.Dimension2D;
 import java.awt.geom.Point2D;
-import java.util.List;
 import java.util.Set;
 
 import net.sourceforge.plantuml.Dimension2DDouble;
-import net.sourceforge.plantuml.Url;
 import net.sourceforge.plantuml.graphic.StringBounder;
 import net.sourceforge.plantuml.graphic.TextBlock;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
@@ -98,10 +96,6 @@ public class FtileHeightFixed extends AbstractFtile {
 			public Dimension2D calculateDimension(StringBounder stringBounder) {
 				final Dimension2D dim = tile.asTextBlock().calculateDimension(stringBounder);
 				return new Dimension2DDouble(dim.getWidth(), fixedHeight);
-			}
-
-			public List<Url> getUrls(StringBounder stringBounder) {
-				throw new UnsupportedOperationException();
 			}
 		};
 	}

@@ -38,10 +38,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import net.sourceforge.plantuml.Url;
 import net.sourceforge.plantuml.cucadiagram.CucaDiagram;
 import net.sourceforge.plantuml.cucadiagram.GroupType;
-import net.sourceforge.plantuml.cucadiagram.IEntity;
 import net.sourceforge.plantuml.cucadiagram.IGroup;
 import net.sourceforge.plantuml.cucadiagram.LeafType;
 import net.sourceforge.plantuml.svek.GroupPngMakerState;
@@ -61,13 +59,12 @@ public final class CucaDiagramSimplifierState {
 			for (IGroup g : groups) {
 				if (diagram.isAutarkic(g)) {
 					final IEntityImage img = computeImage(g);
-					final List<Url> urls = new ArrayList<Url>(g.getUrls());
-					for (IEntity ent : g.getLeafsDirect()) {
-						urls.addAll(ent.getUrls());
-					}
-					g.overideImage(img, urls,
-							g.getGroupType() == GroupType.CONCURRENT_STATE ? LeafType.STATE_CONCURRENT
-									: LeafType.STATE);
+					// final List<Url> urls = new ArrayList<Url>(g.getUrlsTOBEREMOVED());
+					// for (IEntity ent : g.getLeafsDirect()) {
+					// urls.addAll(ent.getUrlsTOBEREMOVED());
+					// }
+					g.overideImage(img, g.getGroupType() == GroupType.CONCURRENT_STATE ? LeafType.STATE_CONCURRENT
+							: LeafType.STATE);
 
 					changed = true;
 				}

@@ -28,21 +28,20 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 11397 $
+ * Revision $Revision: 11873 $
  *
  */
 package net.sourceforge.plantuml.graphic;
 
+import java.awt.Graphics2D;
+import java.awt.font.LineMetrics;
 import java.awt.geom.Dimension2D;
 import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
-import java.util.Collections;
-import java.util.List;
 
 import net.sourceforge.plantuml.Dimension2DDouble;
 import net.sourceforge.plantuml.FileFormatOption;
 import net.sourceforge.plantuml.SpriteContainer;
-import net.sourceforge.plantuml.Url;
 import net.sourceforge.plantuml.cucadiagram.Display;
 import net.sourceforge.plantuml.cucadiagram.Stereotype;
 import net.sourceforge.plantuml.posimo.Positionable;
@@ -51,6 +50,7 @@ import net.sourceforge.plantuml.sequencediagram.MessageNumber;
 import net.sourceforge.plantuml.ugraphic.ColorMapper;
 import net.sourceforge.plantuml.ugraphic.LimitFinder;
 import net.sourceforge.plantuml.ugraphic.MinMax;
+import net.sourceforge.plantuml.ugraphic.UFont;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
 import net.sourceforge.plantuml.ugraphic.UTranslate;
 
@@ -128,10 +128,6 @@ public class TextBlockUtils {
 			public Dimension2D calculateDimension(StringBounder stringBounder) {
 				return new Dimension2DDouble(width, height);
 			}
-
-			public List<Url> getUrls(StringBounder stringBounder) {
-				return Collections.emptyList();
-			}
 		};
 	}
 
@@ -153,12 +149,14 @@ public class TextBlockUtils {
 		return limitFinder.getMinMax();
 	}
 
+	private static final Graphics2D gg;
+	private static final StringBounder dummyStringBounder;
+
 	static {
 		final BufferedImage imDummy = new BufferedImage(10, 10, BufferedImage.TYPE_INT_RGB);
-		dummyStringBounder = StringBounderUtils.asStringBounder(imDummy.createGraphics());
+		gg = imDummy.createGraphics();
+		dummyStringBounder = StringBounderUtils.asStringBounder(gg);
 	}
-
-	private static final StringBounder dummyStringBounder;
 
 	public static UGraphic getPrinted(TextBlock tb, FileFormatOption fileFormatOption, ColorMapper colorMapper,
 			double dpiFactor, HtmlColor mybackcolor, double margin) {
@@ -177,6 +175,10 @@ public class TextBlockUtils {
 
 	public static Dimension2D getDimension(TextBlock tb) {
 		return tb.calculateDimension(dummyStringBounder);
+	}
+
+	public static LineMetrics getLineMetrics(UFont font, String text) {
+		return font.getLineMetrics(gg, text);
 	}
 
 }

@@ -43,7 +43,6 @@ import java.util.Set;
 import net.sourceforge.plantuml.Dimension2DDouble;
 import net.sourceforge.plantuml.MathUtils;
 import net.sourceforge.plantuml.SpriteContainerEmpty;
-import net.sourceforge.plantuml.Url;
 import net.sourceforge.plantuml.activitydiagram3.LinkRendering;
 import net.sourceforge.plantuml.activitydiagram3.ftile.AbstractConnection;
 import net.sourceforge.plantuml.activitydiagram3.ftile.AbstractFtile;
@@ -218,6 +217,9 @@ class FtileWhile2 extends AbstractFtile {
 			final Snake snake = new Snake(endInlinkColor, Arrows.asToLeft());
 			final Dimension2D dimTotal = calculateDimensionInternal(stringBounder);
 			final Point2D p1 = getP1(stringBounder);
+			if (p1 == null) {
+				return;
+			}
 			final Point2D p2 = getP2(stringBounder);
 			final Dimension2D dimDiamond1 = diamond1.asTextBlock().calculateDimension(stringBounder);
 
@@ -315,7 +317,7 @@ class FtileWhile2 extends AbstractFtile {
 			ug.draw(snake);
 			ug = ug.apply(new UChangeColor(afterEndwhileColor)).apply(new UChangeBackColor(afterEndwhileColor));
 			ug.apply(new UTranslate(Diamond.diamondHalfSize, (y1 + y2) / 2)).draw(Arrows.asToDown());
-			
+
 			final Snake snake2 = new Snake(afterEndwhileColor, true);
 			snake2.addPoint(Diamond.diamondHalfSize, y2);
 			snake2.addPoint(x2, y2);
@@ -335,10 +337,6 @@ class FtileWhile2 extends AbstractFtile {
 
 			public Dimension2D calculateDimension(StringBounder stringBounder) {
 				return calculateDimensionInternal(stringBounder);
-			}
-
-			public List<Url> getUrls(StringBounder stringBounder) {
-				throw new UnsupportedOperationException();
 			}
 		};
 	}

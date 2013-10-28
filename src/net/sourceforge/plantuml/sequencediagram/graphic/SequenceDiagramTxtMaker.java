@@ -38,10 +38,11 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.io.PrintStream;
 
-import net.sourceforge.plantuml.CMapData;
 import net.sourceforge.plantuml.FileFormat;
+import net.sourceforge.plantuml.api.ImageDataSimple;
 import net.sourceforge.plantuml.asciiart.TextSkin;
 import net.sourceforge.plantuml.asciiart.TextStringBounder;
+import net.sourceforge.plantuml.core.ImageData;
 import net.sourceforge.plantuml.graphic.StringBounder;
 import net.sourceforge.plantuml.sequencediagram.Event;
 import net.sourceforge.plantuml.sequencediagram.LifeEvent;
@@ -112,7 +113,7 @@ public class SequenceDiagramTxtMaker implements FileMaker {
 	// return Collections.singletonList(suggestedFile);
 	// }
 
-	public Dimension2D createOne(OutputStream os, int index) throws IOException {
+	public ImageData createOne(OutputStream os, int index) throws IOException {
 		if (fileFormat == FileFormat.UTXT) {
 			final PrintStream ps = new PrintStream(os, true, "UTF-8");
 			ug.getCharArea().print(ps);
@@ -120,14 +121,10 @@ public class SequenceDiagramTxtMaker implements FileMaker {
 			final PrintStream ps = new PrintStream(os);
 			ug.getCharArea().print(ps);
 		}
-		return ug.getDimension();
+		return new ImageDataSimple(1, 1);
 	}
 
 	public int getNbPages() {
 		return 1;
 	}
-
-	public void appendCmap(CMapData cmap) {
-	}
-
 }

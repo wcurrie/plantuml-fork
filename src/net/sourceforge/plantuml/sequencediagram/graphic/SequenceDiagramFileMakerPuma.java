@@ -43,6 +43,7 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import net.sourceforge.plantuml.CMapData;
 import net.sourceforge.plantuml.Dimension2DDouble;
@@ -50,7 +51,11 @@ import net.sourceforge.plantuml.FileFormat;
 import net.sourceforge.plantuml.FileFormatOption;
 import net.sourceforge.plantuml.FontParam;
 import net.sourceforge.plantuml.StringUtils;
+import net.sourceforge.plantuml.Url;
 import net.sourceforge.plantuml.activitydiagram3.ftile.EntityImageLegend;
+import net.sourceforge.plantuml.api.ImageDataComplex;
+import net.sourceforge.plantuml.api.ImageDataSimple;
+import net.sourceforge.plantuml.core.ImageData;
 import net.sourceforge.plantuml.cucadiagram.Display;
 import net.sourceforge.plantuml.eps.EpsStrategy;
 import net.sourceforge.plantuml.graphic.HorizontalAlignment;
@@ -164,10 +169,23 @@ public class SequenceDiagramFileMakerPuma implements FileMaker {
 				newpageHeight, title);
 	}
 
-	public Dimension2D createOne(OutputStream os, int index) throws IOException {
-		final UGraphic createImage = createImage((int) fullDimension.getWidth(), pages.get(index), index);
-		createImage.writeImage(os, diagram.getMetadata(), diagram.getDpi(fileFormatOption));
-		return new Dimension2DDouble(fullDimension.getWidth(), fullDimension.getHeight());
+	public ImageData createOne(OutputStream os, int index) throws IOException {
+		final UGraphic ug = createImage((int) fullDimension.getWidth(), pages.get(index), index);
+
+		ug.writeImage(os, diagram.getMetadata(), diagram.getDpi(fileFormatOption));
+		final Dimension2D info = new Dimension2DDouble(fullDimension.getWidth(), fullDimension.getHeight());
+
+		if (fileFormatOption.getFileFormat() == FileFormat.PNG && ug instanceof UGraphicG2d) {
+			final Set<Url> urls = ((UGraphicG2d) ug).getAllUrlsEncountered();
+			if (urls.size() > 0) {
+				if (scale == 0) {
+					throw new IllegalStateException();
+				}
+				final CMapData cmap = CMapData.cmapString(urls, scale);
+				return new ImageDataComplex(info, cmap, null);
+			}
+		}
+		return new ImageDataSimple(info);
 	}
 
 	private double getImageWidth(SequenceDiagramArea area, boolean rotate, double dpiFactor, double legendWidth) {
@@ -323,7 +341,6 @@ public class SequenceDiagramFileMakerPuma implements FileMaker {
 			}
 			legendBlock.drawU(ug.apply(new UTranslate(delta2, area.getHeight())));
 		}
-
 		return ug;
 	}
 
@@ -379,13 +396,6 @@ public class SequenceDiagramFileMakerPuma implements FileMaker {
 
 	public static StringBounder getDummystringbounder() {
 		return dummyStringBounder;
-	}
-
-	public void appendCmap(CMapData cmap) {
-		if (scale == 0) {
-			throw new IllegalStateException();
-		}
-		drawableSet.appendCmap(cmap, offsetX, offsetY, dummyStringBounder, diagram, scale);
 	}
 
 }

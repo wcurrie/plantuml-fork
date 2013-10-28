@@ -35,20 +35,22 @@ package net.sourceforge.plantuml.activitydiagram3.ftile.vcompact;
 
 import java.awt.geom.Dimension2D;
 import java.awt.geom.Point2D;
-import java.util.List;
 import java.util.Set;
 
 import net.sourceforge.plantuml.ColorParam;
 import net.sourceforge.plantuml.Dimension2DDouble;
 import net.sourceforge.plantuml.Direction;
 import net.sourceforge.plantuml.FontParam;
-import net.sourceforge.plantuml.ISkinParam;
+import net.sourceforge.plantuml.OptionFlags;
 import net.sourceforge.plantuml.SkinParam;
 import net.sourceforge.plantuml.UmlDiagramType;
-import net.sourceforge.plantuml.Url;
 import net.sourceforge.plantuml.activitydiagram3.ftile.AbstractFtile;
 import net.sourceforge.plantuml.activitydiagram3.ftile.Ftile;
 import net.sourceforge.plantuml.activitydiagram3.ftile.Swimlane;
+import net.sourceforge.plantuml.creole.CreoleParser;
+import net.sourceforge.plantuml.creole.Sheet;
+import net.sourceforge.plantuml.creole.SheetBlock;
+import net.sourceforge.plantuml.creole.Stencil;
 import net.sourceforge.plantuml.cucadiagram.Display;
 import net.sourceforge.plantuml.graphic.FontConfiguration;
 import net.sourceforge.plantuml.graphic.HorizontalAlignment;
@@ -61,9 +63,10 @@ import net.sourceforge.plantuml.skin.rose.Rose;
 import net.sourceforge.plantuml.svek.image.Opale;
 import net.sourceforge.plantuml.ugraphic.UFont;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
+import net.sourceforge.plantuml.ugraphic.UStroke;
 import net.sourceforge.plantuml.ugraphic.UTranslate;
 
-public class FtileWithNoteOpale extends AbstractFtile {
+public class FtileWithNoteOpale extends AbstractFtile implements Stencil {
 
 	private final Ftile tile;
 	private final Opale opale;
@@ -102,8 +105,14 @@ public class FtileWithNoteOpale extends AbstractFtile {
 		final HtmlColor noteBackgroundColor = rose.getHtmlColor(skinParam, ColorParam.noteBackground);
 		final HtmlColor borderColor = rose.getHtmlColor(skinParam, ColorParam.noteBorder);
 
-		final TextBlock text = TextBlockUtils.create(note, new FontConfiguration(fontNote, fontColor),
-				HorizontalAlignment.LEFT, skinParam);
+		final FontConfiguration fc = new FontConfiguration(fontNote, fontColor);
+		final TextBlock text;
+		if (OptionFlags.USE_CREOLE) {
+			final Sheet sheet = new CreoleParser(fc, skinParam).createSheet(note);
+			text = new SheetBlock(sheet, this, new UStroke(1));
+		} else {
+			text = TextBlockUtils.create(note, fc, HorizontalAlignment.LEFT, skinParam);
+		}
 		opale = new Opale(borderColor, noteBackgroundColor, text, skinParam.shadowing());
 
 	}
@@ -158,10 +167,6 @@ public class FtileWithNoteOpale extends AbstractFtile {
 			public Dimension2D calculateDimension(StringBounder stringBounder) {
 				return calculateDimensionInternal(stringBounder);
 			}
-
-			public List<Url> getUrls(StringBounder stringBounder) {
-				throw new UnsupportedOperationException();
-			}
 		};
 	}
 
@@ -174,6 +179,15 @@ public class FtileWithNoteOpale extends AbstractFtile {
 		final Dimension2D dimTile = tile.asTextBlock().calculateDimension(stringBounder);
 		final double height = Math.max(dimNote.getHeight(), dimTile.getHeight());
 		return new Dimension2DDouble(dimTile.getWidth() + 2 * dimNote.getWidth() + halfSuppSpace * 2, height);
+	}
+
+	public double getStartingX(StringBounder stringBounder, double y) {
+		return -opale.getMarginX1();
+	}
+
+	public double getEndingX(StringBounder stringBounder, double y) {
+		return opale.calculateDimension(stringBounder).getWidth() - opale.getMarginX1();
+		// return calculateDimensionInternal(stringBounder).getWidth();
 	}
 
 }

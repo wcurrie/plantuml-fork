@@ -35,6 +35,8 @@ package net.sourceforge.plantuml.ugraphic;
 
 import java.awt.geom.Dimension2D;
 
+import net.sourceforge.plantuml.creole.Stencil;
+import net.sourceforge.plantuml.graphic.StringBounder;
 import net.sourceforge.plantuml.graphic.TextBlock;
 
 public class UHorizontalLine implements UShape {
@@ -65,25 +67,75 @@ public class UHorizontalLine implements UShape {
 	// return new UHorizontalLine(0, 0, null, false, stroke);
 	// }
 
-	public void drawLineInternal(final UGraphic ug, double startingX, double endingX, double y, UStroke defaultStroke) {
-		startingX = startingX + skipAtStart;
-		endingX = endingX - skipAtEnd;
-		final double widthToUse = endingX - startingX;
+	public void drawLineInternal(final UGraphic ug, Stencil stencil, double y, UStroke defaultStroke) {
+		stencil = addSkip(stencil);
 		final UStroke strokeToUse = style == '\0' ? defaultStroke : getStroke();
-		final UGraphic ug2 = ug.apply(strokeToUse).apply(new UTranslate(startingX, y));
+		final UGraphic ugStroke = ug.apply(strokeToUse);
 		if (title == null) {
-			drawHline(ug2, 0, widthToUse);
+			drawHLine(stencil, y, ugStroke);
 			return;
 		}
 		final Dimension2D dimTitle = title.calculateDimension(ug.getStringBounder());
-		final double space = (widthToUse - dimTitle.getWidth()) / 2;
-		drawHline(ug2, 0, space);
+		drawHLine(firstHalf(stencil, dimTitle.getWidth()), y, ugStroke);
+		final double startingX = stencil.getStartingX(ug.getStringBounder(), y);
+		final double endingX = stencil.getEndingX(ug.getStringBounder(), y);
 		drawTitleInternal(ug, startingX, endingX, y, false);
-		drawHline(ug2, widthToUse - space, space);
+		drawHLine(secondHalf(stencil, dimTitle.getWidth()), y, ugStroke);
 	}
 
-	private static void drawHline(UGraphic ug, double startX, double len) {
-		ug.apply(new UTranslate(startX, 0)).draw(new ULine(len, 0));
+	private Stencil addSkip(final Stencil stencil) {
+		return new Stencil() {
+			public double getStartingX(StringBounder stringBounder, double y) {
+				return stencil.getStartingX(stringBounder, y) + skipAtStart;
+			}
+
+			public double getEndingX(StringBounder stringBounder, double y) {
+				return stencil.getEndingX(stringBounder, y) - skipAtEnd;
+			}
+		};
+	}
+
+	private static Stencil firstHalf(final Stencil stencil, final double widthTitle) {
+		return new Stencil() {
+			public double getStartingX(StringBounder stringBounder, double y) {
+				return stencil.getStartingX(stringBounder, y);
+			}
+
+			public double getEndingX(StringBounder stringBounder, double y) {
+				final double start = stencil.getStartingX(stringBounder, y);
+				final double end = stencil.getEndingX(stringBounder, y);
+				final double len = (end - start - widthTitle) / 2;
+				return start + len;
+			}
+		};
+	}
+
+	private static Stencil secondHalf(final Stencil stencil, final double widthTitle) {
+		return new Stencil() {
+			public double getStartingX(StringBounder stringBounder, double y) {
+				final double start = stencil.getStartingX(stringBounder, y);
+				final double end = stencil.getEndingX(stringBounder, y);
+				final double len = (end - start - widthTitle) / 2;
+				return end - len;
+			}
+
+			public double getEndingX(StringBounder stringBounder, double y) {
+				return stencil.getEndingX(stringBounder, y);
+			}
+		};
+	}
+
+	private void drawHLine(Stencil stencil, double y, final UGraphic ug) {
+		drawSimpleHline(ug, stencil, y);
+		if (style == '=') {
+			drawSimpleHline(ug, stencil, y + 2);
+		}
+	}
+
+	private static void drawSimpleHline(UGraphic ug, Stencil stencil, double y) {
+		final double startingX = stencil.getStartingX(ug.getStringBounder(), y);
+		final double endingX = stencil.getEndingX(ug.getStringBounder(), y);
+		ug.apply(new UTranslate(startingX, y)).draw(new ULine(endingX - startingX, 0));
 	}
 
 	public void drawTitleInternal(UGraphic ug, double startingX, double endingX, double y, boolean clearArea) {
@@ -102,17 +154,8 @@ public class UHorizontalLine implements UShape {
 		title.drawU(ug);
 	}
 
-	private UHorizontalLine blankTitle() {
-		return new UHorizontalLine(skipAtStart, skipAtEnd, title, true, style);
-	}
-
 	public void drawMe(UGraphic ug) {
-		if (style == '=') {
-			ug.draw(this);
-			ug.apply(new UTranslate(0, 2)).draw(blankTitle());
-		} else {
-			ug.draw(this);
-		}
+		ug.draw(this);
 	}
 
 	public UStroke getStroke() {

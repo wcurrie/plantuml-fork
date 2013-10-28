@@ -36,6 +36,7 @@ package net.sourceforge.plantuml.classdiagram.command;
 import java.util.EnumSet;
 import java.util.Set;
 
+import net.sourceforge.plantuml.UmlDiagram;
 import net.sourceforge.plantuml.classdiagram.ClassDiagram;
 import net.sourceforge.plantuml.command.CommandExecutionResult;
 import net.sourceforge.plantuml.command.SingleLineCommand2;
@@ -50,7 +51,7 @@ import net.sourceforge.plantuml.cucadiagram.EntityUtils;
 import net.sourceforge.plantuml.cucadiagram.IEntity;
 import net.sourceforge.plantuml.cucadiagram.LeafType;
 
-public class CommandHideShow extends SingleLineCommand2<ClassDiagram> {
+public class CommandHideShow extends SingleLineCommand2<UmlDiagram> {
 
 	private static final EnumSet<EntityPortion> PORTION_METHOD = EnumSet.<EntityPortion> of(EntityPortion.METHOD);
 	private static final EnumSet<EntityPortion> PORTION_MEMBER = EnumSet.<EntityPortion> of(EntityPortion.FIELD,
@@ -62,7 +63,7 @@ public class CommandHideShow extends SingleLineCommand2<ClassDiagram> {
 	}
 
 	static RegexConcat getRegexConcat() {
-		return new RegexConcat(new RegexLeaf("^"), // 
+		return new RegexConcat(new RegexLeaf("^"), //
 				new RegexLeaf("COMMAND", "(hide|show)"), //
 				new RegexLeaf("\\s+"), //
 				new RegexLeaf("GENDER",
@@ -86,7 +87,15 @@ public class CommandHideShow extends SingleLineCommand2<ClassDiagram> {
 	}
 
 	@Override
-	protected CommandExecutionResult executeArg(ClassDiagram classDiagram, RegexResult arg) {
+	protected CommandExecutionResult executeArg(UmlDiagram classDiagram, RegexResult arg) {
+		if (classDiagram instanceof ClassDiagram) {
+			return executeArgClass((ClassDiagram) classDiagram, arg);
+		}
+		// Just ignored
+		return CommandExecutionResult.ok();
+	}
+
+	private CommandExecutionResult executeArgClass(ClassDiagram classDiagram, RegexResult arg) {
 
 		final Set<EntityPortion> portion = getEntityPortion(arg.get("PORTION", 0));
 		EntityGender gender = null;
@@ -116,7 +125,7 @@ public class CommandHideShow extends SingleLineCommand2<ClassDiagram> {
 			if (empty == true) {
 				gender = EntityGenderUtils.and(gender, emptyByGender(portion));
 			}
-			if (EntityUtils.groupRoot(classDiagram.getCurrentGroup())==false) {
+			if (EntityUtils.groupRoot(classDiagram.getCurrentGroup()) == false) {
 				gender = EntityGenderUtils.and(gender, EntityGenderUtils.byPackage(classDiagram.getCurrentGroup()));
 			}
 			classDiagram.hideOrShow(gender, portion, arg.get("COMMAND", 0).equalsIgnoreCase("show"));

@@ -35,6 +35,8 @@ package net.sourceforge.plantuml.ugraphic;
 
 import java.awt.Font;
 import java.awt.Graphics2D;
+import java.awt.font.FontRenderContext;
+import java.awt.font.LineMetrics;
 
 public class UFont {
 
@@ -81,7 +83,7 @@ public class UFont {
 	public boolean isItalic() {
 		return font.isItalic();
 	}
-
+	
 	public String getFamily(UFontContext context) {
 		if (context == UFontContext.EPS) {
 			if (family == null) {
@@ -118,5 +120,10 @@ public class UFont {
 	@Deprecated
 	public static UFont getCurrentFont(Graphics2D g2d) {
 		return new UFont(g2d.getFont(), g2d.getFont().getFontName());
+	}
+
+	public LineMetrics getLineMetrics(Graphics2D gg, String text) {
+		final FontRenderContext frc = gg.getFontRenderContext();
+		return font.getLineMetrics(text, frc);
 	}
 }

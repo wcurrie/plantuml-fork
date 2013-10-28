@@ -58,7 +58,7 @@ public interface IEntity extends SpecificBackcolorable, Hideable, Removeable, Li
 
 	public String getUid();
 
-	public List<Url> getUrls();
+	public Url getUrl99();
 
 	public Stereotype getStereotype();
 

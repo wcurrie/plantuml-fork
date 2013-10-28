@@ -35,13 +35,10 @@ package net.sourceforge.plantuml.svek;
 
 import java.awt.geom.Dimension2D;
 import java.awt.geom.Point2D;
-import java.util.ArrayList;
-import java.util.List;
 
 import net.sourceforge.plantuml.Dimension2DDouble;
 import net.sourceforge.plantuml.Hideable;
 import net.sourceforge.plantuml.StringUtils;
-import net.sourceforge.plantuml.Url;
 import net.sourceforge.plantuml.cucadiagram.EntityPosition;
 import net.sourceforge.plantuml.graphic.StringBounder;
 import net.sourceforge.plantuml.posimo.Positionable;
@@ -59,11 +56,9 @@ public class Shape implements Positionable, IShapePseudo, Hideable {
 	private double minX;
 	private double minY;
 	private final int shield;
-	private final List<Url> urls = new ArrayList<Url>();
 
 	private final EntityPosition entityPosition;
 	private final IEntityImage image;
-
 
 	public EntityPosition getEntityPosition() {
 		return entityPosition;
@@ -82,7 +77,7 @@ public class Shape implements Positionable, IShapePseudo, Hideable {
 	}
 
 	public Shape(IEntityImage image, ShapeType type, double width, double height, ColorSequence colorSequence,
-			boolean top, int shield, List<Url> urls, EntityPosition entityPosition) {
+			boolean top, int shield, EntityPosition entityPosition) {
 		this.entityPosition = entityPosition;
 		this.image = image;
 		this.top = top;
@@ -92,7 +87,6 @@ public class Shape implements Positionable, IShapePseudo, Hideable {
 		this.color = colorSequence.getValue();
 		this.uid = String.format("sh%04d", color);
 		this.shield = shield;
-		this.urls.addAll(urls);
 		if (shield > 0 && type != ShapeType.RECTANGLE) {
 			throw new IllegalArgumentException();
 		}

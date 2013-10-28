@@ -34,10 +34,8 @@
 package net.sourceforge.plantuml.graphic;
 
 import java.awt.geom.Dimension2D;
-import java.util.List;
 
 import net.sourceforge.plantuml.Dimension2DDouble;
-import net.sourceforge.plantuml.Url;
 import net.sourceforge.plantuml.ugraphic.CompressionTransform;
 import net.sourceforge.plantuml.ugraphic.SlotFinder;
 import net.sourceforge.plantuml.ugraphic.SlotSet;
@@ -71,9 +69,4 @@ public class TextBlockCompressed implements TextBlock {
 		final Dimension2D dim = textBlock.calculateDimension(stringBounder);
 		return new Dimension2DDouble(dim.getWidth(), compressionTransform.transform(dim.getHeight()));
 	}
-
-	public List<Url> getUrls(StringBounder stringBounder) {
-		throw new UnsupportedOperationException();
-	}
-
 }

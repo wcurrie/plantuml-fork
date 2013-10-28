@@ -33,6 +33,8 @@
  */
 package net.sourceforge.plantuml.api;
 
+import java.awt.geom.Dimension2D;
+
 import net.sourceforge.plantuml.core.ImageData;
 
 public class ImageDataSimple implements ImageData {
@@ -47,6 +49,10 @@ public class ImageDataSimple implements ImageData {
 
 	public ImageDataSimple() {
 		this(0, 0);
+	}
+
+	public ImageDataSimple(Dimension2D dim) {
+		this((int) dim.getWidth(), (int) dim.getHeight());
 	}
 
 	public int getWidth() {
@@ -64,10 +70,9 @@ public class ImageDataSimple implements ImageData {
 	public String getCMapData(String nameId) {
 		throw new UnsupportedOperationException();
 	}
-	
+
 	public String getWarningOrError() {
 		return null;
 	}
-
 
 }

@@ -33,15 +33,10 @@
  */
 package net.sourceforge.plantuml.svek;
 
-import java.util.Collections;
-import java.util.List;
-
 import net.sourceforge.plantuml.ISkinParam;
-import net.sourceforge.plantuml.Url;
 import net.sourceforge.plantuml.cucadiagram.IEntity;
 import net.sourceforge.plantuml.cucadiagram.Stereotype;
 import net.sourceforge.plantuml.graphic.HtmlColor;
-import net.sourceforge.plantuml.graphic.StringBounder;
 
 public abstract class AbstractEntityImage implements IEntityImage {
 
@@ -74,10 +69,6 @@ public abstract class AbstractEntityImage implements IEntityImage {
 
 	protected final Stereotype getStereo() {
 		return entity.getStereotype();
-	}
-
-	public List<Url> getUrls(StringBounder stringBounder) {
-		return Collections.emptyList();
 	}
 
 }

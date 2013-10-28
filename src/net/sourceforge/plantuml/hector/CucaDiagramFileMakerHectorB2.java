@@ -37,7 +37,6 @@ import java.awt.geom.Dimension2D;
 import java.awt.geom.Point2D;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -164,7 +163,7 @@ public class CucaDiagramFileMakerHectorB2 implements CucaDiagramFileMaker {
 		}
 
 		ug.writeImage(os, null, diagram.getDpi(fileFormatOption));
-		return new ImageDataSimple((int) dimTotal.getWidth(), (int) dimTotal.getHeight());
+		return new ImageDataSimple(dimTotal);
 	}
 
 	private void drawPin(UGraphic ug, Pin pin) {

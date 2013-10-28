@@ -33,9 +33,6 @@
  */
 package net.sourceforge.plantuml.activitydiagram3;
 
-import java.util.Collections;
-import java.util.Set;
-
 import net.sourceforge.plantuml.activitydiagram3.ftile.BoxStyle;
 import net.sourceforge.plantuml.activitydiagram3.ftile.Ftile;
 import net.sourceforge.plantuml.activitydiagram3.ftile.FtileFactory;

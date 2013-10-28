@@ -28,23 +28,19 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 11151 $
+ * Revision $Revision: 11855 $
  *
  */
 package net.sourceforge.plantuml.sequencediagram.graphic;
 
-import java.awt.geom.Dimension2D;
 import java.io.IOException;
 import java.io.OutputStream;
 
-import net.sourceforge.plantuml.CMapData;
+import net.sourceforge.plantuml.core.ImageData;
 
 public interface FileMaker {
 
-	Dimension2D createOne(OutputStream os, int index) throws IOException;
+	ImageData createOne(OutputStream os, int index) throws IOException;
 
 	public int getNbPages();
-
-	void appendCmap(CMapData cmap);
-
 }

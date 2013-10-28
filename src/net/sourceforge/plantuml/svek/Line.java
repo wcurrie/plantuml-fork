@@ -43,7 +43,6 @@ import net.sourceforge.plantuml.Hideable;
 import net.sourceforge.plantuml.ISkinParam;
 import net.sourceforge.plantuml.Log;
 import net.sourceforge.plantuml.OptionFlags;
-import net.sourceforge.plantuml.Pragma;
 import net.sourceforge.plantuml.StringUtils;
 import net.sourceforge.plantuml.Url;
 import net.sourceforge.plantuml.command.Position;
@@ -169,13 +168,6 @@ public class Line implements Moveable, Hideable {
 			default:
 				throw new UnsupportedOperationException();
 			}
-		}
-
-		public List<Url> getUrls(StringBounder stringBounder) {
-			if (getDirection() == Direction.RIGHT) {
-				return right.getUrls(stringBounder);
-			}
-			return left.getUrls(stringBounder);
 		}
 
 		public Dimension2D calculateDimension(StringBounder stringBounder) {

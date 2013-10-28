@@ -33,7 +33,6 @@
  */
 package net.sourceforge.plantuml.skin;
 
-import net.sourceforge.plantuml.OptionFlags;
 import net.sourceforge.plantuml.graphic.HtmlColor;
 
 public class ArrowConfiguration {

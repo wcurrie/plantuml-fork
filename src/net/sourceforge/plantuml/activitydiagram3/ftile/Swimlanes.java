@@ -41,7 +41,6 @@ import java.util.List;
 import net.sourceforge.plantuml.FontParam;
 import net.sourceforge.plantuml.ISkinParam;
 import net.sourceforge.plantuml.SpriteContainerEmpty;
-import net.sourceforge.plantuml.Url;
 import net.sourceforge.plantuml.activitydiagram3.Instruction;
 import net.sourceforge.plantuml.activitydiagram3.InstructionList;
 import net.sourceforge.plantuml.activitydiagram3.LinkRendering;
@@ -250,10 +249,6 @@ public class Swimlanes implements TextBlock {
 
 	public Dimension2D calculateDimension(StringBounder stringBounder) {
 		return TextBlockUtils.getMinMax(this, stringBounder).getDimension();
-	}
-
-	public List<Url> getUrls(StringBounder stringBounder) {
-		throw new UnsupportedOperationException();
 	}
 
 	public Instruction getCurrent() {

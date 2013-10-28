@@ -35,12 +35,10 @@ package net.sourceforge.plantuml.cucadiagram;
 
 import java.awt.geom.Dimension2D;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import net.sourceforge.plantuml.FontParam;
 import net.sourceforge.plantuml.SpriteContainer;
-import net.sourceforge.plantuml.Url;
 import net.sourceforge.plantuml.graphic.FontConfiguration;
 import net.sourceforge.plantuml.graphic.HorizontalAlignment;
 import net.sourceforge.plantuml.graphic.HtmlColor;
@@ -61,7 +59,7 @@ public class BodyEnhanced2 implements TextBlock {
 
 	private final HorizontalAlignment align;
 
-	private final List<Url> urls = new ArrayList<Url>();
+	// private final List<Url> urls = new ArrayList<Url>();
 
 	public BodyEnhanced2(Display rawBody, FontParam fontParam, SpriteContainer spriteContainer,
 			HorizontalAlignment align, UFont fontNote, HtmlColor fontColor) {
@@ -94,7 +92,7 @@ public class BodyEnhanced2 implements TextBlock {
 		if (area2 != null) {
 			return area2;
 		}
-		urls.clear();
+		// urls.clear();
 		final List<TextBlock> blocks = new ArrayList<TextBlock>();
 
 		char separator = 0;
@@ -123,7 +121,6 @@ public class BodyEnhanced2 implements TextBlock {
 
 	private TextBlock getTextBlock(Display members2, StringBounder stringBounder) {
 		final TextBlock result = TextBlockUtils.create(members2, titleConfig, align, spriteContainer);
-		urls.addAll(result.getUrls(stringBounder));
 		return result;
 	}
 
@@ -154,10 +151,6 @@ public class BodyEnhanced2 implements TextBlock {
 
 	public void drawU(UGraphic ug) {
 		getArea(ug.getStringBounder()).drawU(ug);
-	}
-
-	public List<Url> getUrls(StringBounder stringBounder) {
-		return Collections.unmodifiableList(urls);
 	}
 
 }

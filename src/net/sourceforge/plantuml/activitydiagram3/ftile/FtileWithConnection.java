@@ -40,7 +40,6 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
-import net.sourceforge.plantuml.Url;
 import net.sourceforge.plantuml.activitydiagram3.ftile.vertical.FtileDecorate;
 import net.sourceforge.plantuml.graphic.StringBounder;
 import net.sourceforge.plantuml.graphic.TextBlock;
@@ -79,10 +78,6 @@ class FtileWithConnection extends FtileDecorate {
 				for (Connection c : connections) {
 					ug.draw(c);
 				}
-			}
-
-			public List<Url> getUrls(StringBounder stringBounder) {
-				return original.getUrls(stringBounder);
 			}
 
 			public Dimension2D calculateDimension(StringBounder stringBounder) {
