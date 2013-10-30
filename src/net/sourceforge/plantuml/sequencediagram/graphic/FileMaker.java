@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 11855 $
+ * Revision $Revision: 11914 $
  *
  */
 package net.sourceforge.plantuml.sequencediagram.graphic;
@@ -40,7 +40,7 @@ import net.sourceforge.plantuml.core.ImageData;
 
 public interface FileMaker {
 
-	ImageData createOne(OutputStream os, int index) throws IOException;
+	ImageData createOne(OutputStream os, int index, boolean isWithMetadata) throws IOException;
 
 	public int getNbPages();
 }

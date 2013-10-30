@@ -69,6 +69,10 @@ public class Snake implements UShape {
 		return result;
 	}
 
+	public Snake translate(UTranslate translate) {
+		return move(translate.getDx(), translate.getDy());
+	}
+
 	@Override
 	public String toString() {
 		return points.toString();
@@ -115,11 +119,7 @@ public class Snake implements UShape {
 
 	public void drawInternal(UGraphic ug) {
 		ug = ug.apply(new UChangeColor(color));
-		// ug = ug.apply(new UChangeColor(mergeable ? HtmlColorUtils.GREEN : color));
 		ug = ug.apply(new UStroke(1.5));
-		// for (Line2D line : getLines()) {
-		// drawLine(ug, line);
-		// }
 		for (int i = 0; i < points.size() - 1; i++) {
 			final Line2D line = new Line2D.Double(points.get(i), points.get(i + 1));
 			drawLine(ug, line);
@@ -131,24 +131,19 @@ public class Snake implements UShape {
 		}
 	}
 
-	// private List<Line2D> getLines() {
-	// final List<Line2D> result = new ArrayList<Line2D>();
-	// for (int i = 0; i < points.size() - 1; i++) {
-	// final Line2D line1 = new Line2D.Double(points.get(i), points.get(i + 1));
-	// result.add(line1);
-	// }
-	// return result;
-	// }
+	public List<Line2D> getHorizontalLines() {
+		final List<Line2D> result = new ArrayList<Line2D>();
+		for (int i = 0; i < points.size() - 1; i++) {
+			final Point2D pt1 = points.get(i);
+			final Point2D pt2 = points.get(i + 1);
+			if (pt1.getY() == pt2.getY()) {
+				final Line2D line = new Line2D.Double(pt1, pt2);
+				result.add(line);
+			}
+		}
+		return result;
 
-	// private Line2D merge(Line2D a, Line2D b) {
-	// if (a.getX1() == b.getX1() && a.getY1() == b.getY1()) {
-	// return new Line2D.Double(a.getX2(), a.getY2(), b.getX2(), b.getY2());
-	// }
-	// if (a.getX1() == b.getX2() && a.getY1() == b.getY2()) {
-	// return new Line2D.Double(a.getX2(), a.getY2(), b.getX1(), b.getY1());
-	// }
-	// return null;
-	// }
+	}
 
 	private Point2D getFirst() {
 		return points.get(0);

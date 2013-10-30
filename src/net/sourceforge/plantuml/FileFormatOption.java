@@ -65,14 +65,28 @@ public class FileFormatOption {
 
 	private final FileFormat fileFormat;
 	private final AffineTransform affineTransform;
+	private final boolean withMetadata;
 
 	public FileFormatOption(FileFormat fileFormat) {
-		this(fileFormat, null);
+		this(fileFormat, null, true);
+	}
+	
+	public final boolean isWithMetadata() {
+		return withMetadata;
+	}
+
+	public FileFormatOption(FileFormat fileFormat, boolean withMetadata) {
+		this(fileFormat, null, false);
 	}
 
 	public FileFormatOption(FileFormat fileFormat, AffineTransform at) {
+		this(fileFormat, at, true);
+	}
+
+	public FileFormatOption(FileFormat fileFormat, AffineTransform at, boolean withMetadata) {
 		this.fileFormat = fileFormat;
 		this.affineTransform = at;
+		this.withMetadata = withMetadata;
 	}
 
 	@Override
@@ -170,4 +184,5 @@ public class FileFormatOption {
 
 		return ug;
 	}
+
 }

@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 10459 $
+ * Revision $Revision: 11919 $
  *
  */
 package net.sourceforge.plantuml.sudoku;
@@ -45,7 +45,7 @@ public class PSystemSudoku extends AbstractPSystem {
 	final private ISudoku sudoku;
 
 	public ImageData exportDiagram(OutputStream os, int num, FileFormatOption fileFormat) throws IOException {
-		return new GraphicsSudoku(sudoku).writeImage1317(os);
+		return new GraphicsSudoku(sudoku).writeImage(os);
 	}
 
 

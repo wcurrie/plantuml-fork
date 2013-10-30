@@ -118,7 +118,7 @@ public class UGraphicForSnake extends UGraphicDelegator {
 	}
 
 	@Override
-	public void flush() {
+	public void flushUg() {
 		for (PendingSnake snake : snakes) {
 			snake.drawInternal();
 		}

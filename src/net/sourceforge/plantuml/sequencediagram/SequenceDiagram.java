@@ -199,7 +199,7 @@ public class SequenceDiagram extends UmlDiagram {
 	protected ImageData exportDiagramInternal(OutputStream os, int index, FileFormatOption fileFormat,
 			List<BufferedImage> flashcodes) throws IOException {
 		final FileMaker sequenceDiagramPngMaker = getSequenceDiagramPngMaker(fileFormat, flashcodes);
-		return sequenceDiagramPngMaker.createOne(os, index);
+		return sequenceDiagramPngMaker.createOne(os, index, fileFormat.isWithMetadata());
 	}
 
 	// support for CommandReturn

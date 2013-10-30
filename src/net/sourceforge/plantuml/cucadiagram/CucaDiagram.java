@@ -28,13 +28,12 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 11842 $
+ * Revision $Revision: 11914 $
  *
  */
 package net.sourceforge.plantuml.cucadiagram;
 
 import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.PrintStream;
@@ -54,7 +53,6 @@ import net.sourceforge.plantuml.UmlDiagram;
 import net.sourceforge.plantuml.UmlDiagramType;
 import net.sourceforge.plantuml.api.ImageDataSimple;
 import net.sourceforge.plantuml.core.ImageData;
-import net.sourceforge.plantuml.cucadiagram.dot.CucaDiagramPngMaker3;
 import net.sourceforge.plantuml.cucadiagram.dot.CucaDiagramTxtMaker;
 import net.sourceforge.plantuml.cucadiagram.entity.EntityFactory;
 import net.sourceforge.plantuml.hector.CucaDiagramFileMakerHectorB2;
@@ -239,15 +237,15 @@ public abstract class CucaDiagram extends UmlDiagram implements GroupHierarchy, 
 		this.verticalPages = verticalPages;
 	}
 
-	final public List<File> createPng2(File pngFile) throws IOException, InterruptedException {
-		final CucaDiagramPngMaker3 maker = new CucaDiagramPngMaker3(this);
-		return maker.createPng(pngFile);
-	}
-
-	final public void createPng2(OutputStream os) throws IOException {
-		final CucaDiagramPngMaker3 maker = new CucaDiagramPngMaker3(this);
-		maker.createPng(os);
-	}
+//	final public List<File> createPng2(File pngFile) throws IOException, InterruptedException {
+//		final CucaDiagramPngMaker3 maker = new CucaDiagramPngMaker3(this);
+//		return maker.createPng(pngFile);
+//	}
+//
+//	final public void createPng2(OutputStream os) throws IOException {
+//		final CucaDiagramPngMaker3 maker = new CucaDiagramPngMaker3(this);
+//		maker.createPng(os);
+//	}
 
 	abstract protected List<String> getDotStrings();
 

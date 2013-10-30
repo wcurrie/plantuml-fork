@@ -169,10 +169,10 @@ public class SequenceDiagramFileMakerPuma implements FileMaker {
 				newpageHeight, title);
 	}
 
-	public ImageData createOne(OutputStream os, int index) throws IOException {
+	public ImageData createOne(OutputStream os, int index, boolean isWithMetadata) throws IOException {
 		final UGraphic ug = createImage((int) fullDimension.getWidth(), pages.get(index), index);
 
-		ug.writeImage(os, diagram.getMetadata(), diagram.getDpi(fileFormatOption));
+		ug.writeImage(os, isWithMetadata ? diagram.getMetadata() : null, diagram.getDpi(fileFormatOption));
 		final Dimension2D info = new Dimension2DDouble(fullDimension.getWidth(), fullDimension.getHeight());
 
 		if (fileFormatOption.getFileFormat() == FileFormat.PNG && ug instanceof UGraphicG2d) {

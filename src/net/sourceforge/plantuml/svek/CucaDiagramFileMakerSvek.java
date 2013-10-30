@@ -136,7 +136,7 @@ public final class CucaDiagramFileMakerSvek implements CucaDiagramFileMaker {
 		double scale = 0;
 		if (fileFormat == FileFormat.PNG) {
 			allUrlEncountered = new HashSet<Url>();
-			scale = createPng(os, fileFormatOption, result, dim, allUrlEncountered);
+			scale = createPng(os, fileFormatOption, result, dim, allUrlEncountered, fileFormatOption.isWithMetadata());
 		} else if (fileFormat == FileFormat.SVG) {
 			createSvg(os, fileFormatOption, result, dim);
 		} else if (fileFormat == FileFormat.VDX) {
@@ -205,7 +205,6 @@ public final class CucaDiagramFileMakerSvek implements CucaDiagramFileMaker {
 		return warningOrError;
 	}
 
-
 	private TextBlockBackcolored addHeaderAndFooter(TextBlockBackcolored original) {
 		final Display footer = diagram.getFooter();
 		final Display header = diagram.getHeader();
@@ -255,13 +254,14 @@ public final class CucaDiagramFileMakerSvek implements CucaDiagramFileMaker {
 	}
 
 	private double createPng(OutputStream os, FileFormatOption fileFormatOption, final TextBlockBackcolored result,
-			final Dimension2D dim, Set<Url> allUrlEncountered) throws IOException {
+			final Dimension2D dim, Set<Url> allUrlEncountered, boolean isWithMetadata) throws IOException {
 		final double scale = getScale(fileFormatOption, dim);
 		final UGraphicG2d ug = (UGraphicG2d) fileFormatOption.createUGraphic(diagram.getSkinParam().getColorMapper(),
 				scale, dim, result.getBackcolor(), diagram.isRotation());
 		result.drawU(ug);
 
-		PngIO.write(ug.getBufferedImage(), os, diagram.getMetadata(), diagram.getDpi(fileFormatOption));
+		PngIO.write(ug.getBufferedImage(), os, isWithMetadata ? diagram.getMetadata() : null,
+				diagram.getDpi(fileFormatOption));
 		allUrlEncountered.addAll(ug.getAllUrlsEncountered());
 		return scale;
 

@@ -37,16 +37,16 @@ import net.sourceforge.plantuml.AbstractPSystem;
 import net.sourceforge.plantuml.NewpagedDiagram;
 import net.sourceforge.plantuml.command.CommandExecutionResult;
 import net.sourceforge.plantuml.command.SingleLineCommand2;
-import net.sourceforge.plantuml.command.UmlDiagramFactory1317;
+import net.sourceforge.plantuml.command.UmlDiagramFactory;
 import net.sourceforge.plantuml.command.regex.RegexConcat;
 import net.sourceforge.plantuml.command.regex.RegexLeaf;
 import net.sourceforge.plantuml.command.regex.RegexResult;
 
 public class CommandNewpage extends SingleLineCommand2<AbstractPSystem> {
 
-	private final UmlDiagramFactory1317 factory;
+	private final UmlDiagramFactory factory;
 
-	public CommandNewpage(UmlDiagramFactory1317 factory) {
+	public CommandNewpage(UmlDiagramFactory factory) {
 		super(getRegexConcat());
 		this.factory = factory;
 	}

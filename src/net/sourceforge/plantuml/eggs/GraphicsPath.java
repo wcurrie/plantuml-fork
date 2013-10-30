@@ -54,20 +54,12 @@ public class GraphicsPath {
 	private final String path;
 	private final ColorMapper colorMapper;
 
-	// private final Font numberFont = new Font("SansSerif", Font.BOLD, 20);
-	// private final Font font = new Font("SansSerif", Font.PLAIN, 11);
-
 	public GraphicsPath(ColorMapper colorMapper, String path) {
 		this.path = path;
 		this.colorMapper = colorMapper;
 	}
 
-	public void writeImage(OutputStream os) throws IOException {
-		final BufferedImage im = createImage();
-		PngIO.write(im, os, 96);
-	}
-
-	public ImageData writeImage1317(OutputStream os) throws IOException {
+	public ImageData writeImage(OutputStream os) throws IOException {
 		final BufferedImage im = createImage();
 		PngIO.write(im, os, 96);
 		return new ImageDataSimple(im.getWidth(), im.getHeight());

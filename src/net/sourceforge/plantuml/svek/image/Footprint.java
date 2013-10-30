@@ -149,7 +149,7 @@ public class Footprint {
 			addPoint(x + image.getWidth(), y + image.getHeight());
 		}
 
-		public void flush() {
+		public void flushUg() {
 		}
 
 	}

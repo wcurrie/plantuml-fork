@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 11681 $
+ * Revision $Revision: 11888 $
  *
  */
 package net.sourceforge.plantuml.ugraphic;
@@ -57,5 +57,5 @@ public interface UGraphic {
 
 	public void writeImage(OutputStream os, String metadata, int dpi) throws IOException;
 	
-	public void flush();
+	public void flushUg();
 }

@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 10458 $
+ * Revision $Revision: 11914 $
  *
  */
 package net.sourceforge.plantuml.png;
@@ -49,18 +49,19 @@ import net.sourceforge.plantuml.Log;
 public class PngSplitter {
 
 	private final List<File> files = new ArrayList<File>();
-	
+
 	public static void main(String[] args) throws IOException {
 		final File f = new File(args[0]);
 		final int x = Integer.parseInt(args[1]);
 		final int y = Integer.parseInt(args[2]);
 		final File cp = new File(f.getParent(), f.getName().replaceAll("\\.png$", "_000.png"));
 		FileUtils.copyToFile(f, cp);
-		new PngSplitter(cp, x, y, "", 96);
-		
+		new PngSplitter(cp, x, y, "", 96, false);
+
 	}
 
-	public PngSplitter(File pngFile, int horizontalPages, int verticalPages, String source, int dpi) throws IOException {
+	public PngSplitter(File pngFile, int horizontalPages, int verticalPages, String source, int dpi,
+			boolean isWithMetadata) throws IOException {
 		if (horizontalPages == 1 && verticalPages == 1) {
 			this.files.add(pngFile);
 			return;
@@ -91,7 +92,7 @@ public class PngSplitter {
 				final BufferedImage imPiece = im.getSubimage(horizontalSegment.getStart(i),
 						verticalSegment.getStart(j), horizontalSegment.getLen(i), verticalSegment.getLen(j));
 				Thread.yield();
-				PngIO.write(imPiece, f, source, dpi);
+				PngIO.write(imPiece, f, isWithMetadata ? source : null, dpi);
 				Thread.yield();
 			}
 		}

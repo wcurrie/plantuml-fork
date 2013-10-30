@@ -48,7 +48,7 @@ public class CommandActivity3 extends SingleLineCommand2<ActivityDiagram3> {
 
 	
 	//public static final String ENDING_GROUP = "([/;|<>}\\]])";
-	public static final String ENDING_GROUP = "((?<![/;|<>}\\]])(?:[/;<}\\]])|(?<!\\</?\\w{1,5})(?<!\\<img[^>]{1,999})(?:\\>)|(?<!\\|.{1,999})(?:\\|))";
+	public static final String ENDING_GROUP = "(;|(?<![/|<>}\\]])(?:[/<}\\]])|(?<!\\</?\\w{1,5})(?<!\\<img[^>]{1,999})(?:\\>)|(?<!\\|.{1,999})(?:\\|))";
 
 	public CommandActivity3() {
 		super(getRegexConcat());

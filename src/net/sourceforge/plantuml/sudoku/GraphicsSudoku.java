@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 11153 $
+ * Revision $Revision: 11919 $
  *
  */
 package net.sourceforge.plantuml.sudoku;
@@ -72,12 +72,7 @@ public class GraphicsSudoku {
 		this.sudoku = sudoku;
 	}
 
-	public void writeImage(OutputStream os) throws IOException {
-		final BufferedImage im = createImage();
-		PngIO.write(im, os, 96);
-	}
-
-	public ImageData writeImage1317(OutputStream os) throws IOException {
+	public ImageData writeImage(OutputStream os) throws IOException {
 		final BufferedImage im = createImage();
 		PngIO.write(im, os, 96);
 		return new ImageDataSimple(im.getWidth(), im.getHeight());

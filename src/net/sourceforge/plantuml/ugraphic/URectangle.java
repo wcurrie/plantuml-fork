@@ -86,4 +86,8 @@ public class URectangle extends AbstractShadowable {
 		return this;
 	}
 
+	public MinMax getMinMax() {
+		return MinMax.fromMax(width, height);
+	}
+
 }

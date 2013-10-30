@@ -73,7 +73,7 @@ public class PSystemProject2 extends AbstractPSystem {
 		final FileFormat fileFormat = fileFormatOption.getFileFormat();
 		if (fileFormat == FileFormat.PNG) {
 			final BufferedImage im = createImage(diagram);
-			PngIO.write(im, os, getMetadata(), 96);
+			PngIO.write(im, os, fileFormatOption.isWithMetadata() ? getMetadata() : null, 96);
 		} else if (fileFormat == FileFormat.SVG) {
 			final UGraphicSvg svg = new UGraphicSvg(colorMapper, StringUtils.getAsHtml(background), false, 1.0);
 			diagram.draw(svg, 0, 0);
@@ -91,7 +91,6 @@ public class PSystemProject2 extends AbstractPSystem {
 		}
 		return new ImageDataSimple();
 	}
-
 
 	private BufferedImage createImage(GanttDiagram2 diagram) {
 		EmptyImageBuilder builder = new EmptyImageBuilder(10, 10, background);
@@ -117,6 +116,5 @@ public class PSystemProject2 extends AbstractPSystem {
 	public final Project2 getProject() {
 		return project;
 	}
-
 
 }

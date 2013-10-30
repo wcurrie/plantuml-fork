@@ -47,7 +47,7 @@ public class TextBlockInterceptorTextBlockable implements TextBlock {
 
 	public void drawU(UGraphic ug) {
 		textBlock.drawU(new UGraphicInterceptorTextBlockable(ug));
-		ug.flush();
+		ug.flushUg();
 	}
 
 	public Dimension2D calculateDimension(StringBounder stringBounder) {

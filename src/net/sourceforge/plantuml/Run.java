@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  *
- * Revision $Revision: 11350 $
+ * Revision $Revision: 11919 $
  *
  */
 package net.sourceforge.plantuml;
@@ -50,19 +50,19 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import javax.imageio.ImageIO;
 import javax.swing.UIManager;
 
-import net.sourceforge.plantuml.activitydiagram.ActivityDiagramFactory1317;
-import net.sourceforge.plantuml.classdiagram.ClassDiagramFactory1317;
+import net.sourceforge.plantuml.activitydiagram.ActivityDiagramFactory;
+import net.sourceforge.plantuml.classdiagram.ClassDiagramFactory;
 import net.sourceforge.plantuml.code.Transcoder;
 import net.sourceforge.plantuml.code.TranscoderUtil;
-import net.sourceforge.plantuml.command.UmlDiagramFactory1317;
+import net.sourceforge.plantuml.command.UmlDiagramFactory;
 import net.sourceforge.plantuml.core.Diagram;
-import net.sourceforge.plantuml.descdiagram.DescriptionDiagramFactory1317;
+import net.sourceforge.plantuml.descdiagram.DescriptionDiagramFactory;
 import net.sourceforge.plantuml.ftp.FtpServer;
-import net.sourceforge.plantuml.objectdiagram.ObjectDiagramFactory1317;
+import net.sourceforge.plantuml.objectdiagram.ObjectDiagramFactory;
 import net.sourceforge.plantuml.png.MetadataTag;
 import net.sourceforge.plantuml.preproc.Defines;
-import net.sourceforge.plantuml.sequencediagram.SequenceDiagramFactory1317;
-import net.sourceforge.plantuml.statediagram.StateDiagramFactory1317;
+import net.sourceforge.plantuml.sequencediagram.SequenceDiagramFactory;
+import net.sourceforge.plantuml.statediagram.StateDiagramFactory;
 import net.sourceforge.plantuml.swing.MainWindow2;
 import net.sourceforge.plantuml.ugraphic.SpriteGrayLevel;
 import net.sourceforge.plantuml.ugraphic.SpriteUtils;
@@ -188,16 +188,16 @@ public class Run {
 	}
 
 	private static void managePattern() {
-		printPattern(new SequenceDiagramFactory1317());
-		printPattern(new ClassDiagramFactory1317());
-		printPattern(new ActivityDiagramFactory1317());
-		printPattern(new DescriptionDiagramFactory1317());
+		printPattern(new SequenceDiagramFactory());
+		printPattern(new ClassDiagramFactory());
+		printPattern(new ActivityDiagramFactory());
+		printPattern(new DescriptionDiagramFactory());
 		// printPattern(new ComponentDiagramFactory());
-		printPattern(new StateDiagramFactory1317());
-		printPattern(new ObjectDiagramFactory1317());
+		printPattern(new StateDiagramFactory());
+		printPattern(new ObjectDiagramFactory());
 	}
 
-	private static void printPattern(UmlDiagramFactory1317 factory) {
+	private static void printPattern(UmlDiagramFactory factory) {
 		System.out.println();
 		System.out.println(factory.getClass().getSimpleName().replaceAll("Factory", ""));
 		final List<String> descriptions = factory.getDescription();

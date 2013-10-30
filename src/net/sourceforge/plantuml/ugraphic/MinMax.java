@@ -119,7 +119,12 @@ public class MinMax {
 		ug = ug.apply(new UChangeColor(color)).apply(new UChangeBackColor(color));
 		ug = ug.apply(new UTranslate(minX, minY));
 		ug.draw(new URectangle(getWidth(), getHeight()));
+	}
 
+	public MinMax translate(UTranslate translate) {
+		final double dx = translate.getDx();
+		final double dy = translate.getDy();
+		return new MinMax(minX + dx, minY + dy, maxX + dx, maxY + dy);
 	}
 
 }

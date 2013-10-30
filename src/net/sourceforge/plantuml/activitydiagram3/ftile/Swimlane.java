@@ -45,6 +45,7 @@ public class Swimlane implements SpecificBackcolorable {
 	private Display display;
 
 	private UTranslate translate = new UTranslate();
+	private double totalWidth;
 
 	public Swimlane(String name) {
 		this.name = name;
@@ -73,8 +74,9 @@ public class Swimlane implements SpecificBackcolorable {
 		return translate;
 	}
 
-	public final void setTranslate(UTranslate translate) {
+	public final void setTranslateAndWidth(UTranslate translate, double totalWidth) {
 		this.translate = translate;
+		this.totalWidth = totalWidth;
 	}
 
 	public HtmlColor getSpecificBackColor() {
@@ -83,6 +85,10 @@ public class Swimlane implements SpecificBackcolorable {
 
 	public void setSpecificBackcolor(HtmlColor specificBackcolor) {
 		this.color = specificBackcolor;
+	}
+
+	public final double getTotalWidth() {
+		return totalWidth;
 	}
 
 }

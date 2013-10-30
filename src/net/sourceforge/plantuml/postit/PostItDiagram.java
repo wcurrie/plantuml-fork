@@ -76,7 +76,7 @@ public class PostItDiagram extends UmlDiagram {
 		drawU(ug);
 		if (ug instanceof UGraphicG2d) {
 			final BufferedImage im = ((UGraphicG2d) ug).getBufferedImage();
-			PngIO.write(im, os, this.getMetadata(), this.getDpi(fileFormatOption));
+			PngIO.write(im, os, fileFormatOption.isWithMetadata() ? getMetadata() : null, this.getDpi(fileFormatOption));
 		} else if (ug instanceof UGraphicSvg) {
 			final UGraphicSvg svg = (UGraphicSvg) ug;
 			svg.createXml(os);

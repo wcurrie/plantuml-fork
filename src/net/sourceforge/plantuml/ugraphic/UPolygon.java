@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 10992 $
+ * Revision $Revision: 11889 $
  *
  */
 package net.sourceforge.plantuml.ugraphic;
@@ -110,6 +110,10 @@ public class UPolygon extends AbstractShadowable {
 
 	public double getMaxY() {
 		return minmax.getMaxY();
+	}
+
+	public MinMax getMinMax() {
+		return minmax;
 	}
 
 }

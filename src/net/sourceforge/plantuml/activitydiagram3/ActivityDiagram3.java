@@ -156,7 +156,7 @@ public class ActivityDiagram3 extends UmlDiagram {
 		final UGraphic ug = TextBlockUtils.getPrinted(result, fileFormatOption, skinParam.getColorMapper(), dpiFactor,
 				getSkinParam().getBackgroundColor(), margin);
 
-		ug.writeImage(os, getMetadata(), getDpi(fileFormatOption));
+		ug.writeImage(os, fileFormatOption.isWithMetadata() ? getMetadata() : null, getDpi(fileFormatOption));
 
 		if (ug instanceof UGraphicG2d) {
 			final Set<Url> urls = ((UGraphicG2d) ug).getAllUrlsEncountered();

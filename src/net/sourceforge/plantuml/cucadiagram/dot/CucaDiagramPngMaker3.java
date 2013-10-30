@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 9786 $
+ * Revision $Revision: 11914 $
  *
  */
 package net.sourceforge.plantuml.cucadiagram.dot;
@@ -37,9 +37,6 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Dimension2D;
-import java.io.BufferedOutputStream;
-import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.ArrayList;
@@ -61,7 +58,6 @@ import net.sourceforge.plantuml.graph.BoardExplorer;
 import net.sourceforge.plantuml.graph.Graph5;
 import net.sourceforge.plantuml.graph.Heap;
 import net.sourceforge.plantuml.graph.Zoda2;
-import net.sourceforge.plantuml.png.PngSplitter;
 
 public final class CucaDiagramPngMaker3 {
 
@@ -146,18 +142,18 @@ public final class CucaDiagramPngMaker3 {
 		return result;
 	}
 
-	public List<File> createPng(File pngFile) throws IOException {
-		OutputStream os = null;
-		try {
-			os = new BufferedOutputStream(new FileOutputStream(pngFile));
-			createPng(os);
-		} finally {
-			if (os != null) {
-				os.close();
-			}
-		}
-
-		return new PngSplitter(pngFile, diagram.getHorizontalPages(), diagram.getVerticalPages(), diagram.getMetadata(), 96)
-				.getFiles();
-	}
+//	public List<File> createPng(File pngFile) throws IOException {
+//		OutputStream os = null;
+//		try {
+//			os = new BufferedOutputStream(new FileOutputStream(pngFile));
+//			createPng(os);
+//		} finally {
+//			if (os != null) {
+//				os.close();
+//			}
+//		}
+//
+//		return new PngSplitter(pngFile, diagram.getHorizontalPages(), diagram.getVerticalPages(), diagram.getMetadata(), 96)
+//				.getFiles();
+//	}
 }

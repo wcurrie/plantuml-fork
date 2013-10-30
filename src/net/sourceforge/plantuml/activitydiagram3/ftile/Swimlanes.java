@@ -91,6 +91,7 @@ public class Swimlanes implements TextBlock {
 	private final ISkinParam skinParam;;
 
 	private final List<Swimlane> swinlanes = new ArrayList<Swimlane>();
+	private final FontConfiguration fontConfiguration;
 	private Swimlane currentSwimlane = null;
 
 	private final Instruction root = new InstructionList();
@@ -100,6 +101,9 @@ public class Swimlanes implements TextBlock {
 
 	public Swimlanes(ISkinParam skinParam) {
 		this.skinParam = skinParam;
+		final UFont font = skinParam.getFont(FontParam.TITLE, null);
+		this.fontConfiguration = new FontConfiguration(font, HtmlColorUtils.BLACK);
+
 	}
 
 	private FtileFactory getFtileFactory() {
@@ -170,6 +174,8 @@ public class Swimlanes implements TextBlock {
 
 	}
 
+	static final double separationMargin = 10;
+
 	public void drawU(UGraphic ug) {
 		final FtileFactory factory = getFtileFactory();
 		TextBlock full = root.createFtile(factory).asTextBlock();
@@ -179,68 +185,103 @@ public class Swimlanes implements TextBlock {
 			// BUG42
 			// full.drawU(ug);
 			full.drawU(ug);
-			ug.flush();
+			ug.flushUg();
 			return;
 		}
 
 		final StringBounder stringBounder = ug.getStringBounder();
 		final Dimension2D dimensionFull = full.calculateDimension(stringBounder);
 
-		final UFont font = skinParam.getFont(FontParam.TITLE, null);
-		final FontConfiguration fc = new FontConfiguration(font, HtmlColorUtils.BLACK);
+		final UTranslate titleHeightTranslate = getTitleHeightTranslate(stringBounder);
 
-		double titlesHeight = 0;
+		computeSize(ug, full);
+
+		double x2 = 0;
 		for (Swimlane swimlane : swinlanes) {
-			final TextBlock swTitle = TextBlockUtils.create(swimlane.getDisplay(), fc, HorizontalAlignment.LEFT,
-					new SpriteContainerEmpty());
+			if (swimlane.getSpecificBackColor() != null) {
+				final UGraphic background = ug.apply(new UChangeBackColor(swimlane.getSpecificBackColor()))
+						.apply(new UChangeColor(swimlane.getSpecificBackColor())).apply(new UTranslate(x2, 0));
+				background.draw(new URectangle(swimlane.getTotalWidth(), dimensionFull.getHeight()
+						+ titleHeightTranslate.getDy()));
+			}
 
-			titlesHeight = Math.max(titlesHeight, swTitle.calculateDimension(stringBounder).getHeight());
+			final TextBlock swTitle = TextBlockUtils.create(swimlane.getDisplay(), fontConfiguration,
+					HorizontalAlignment.LEFT, new SpriteContainerEmpty());
+			final double titleWidth = swTitle.calculateDimension(stringBounder).getWidth();
+			final double posTitle = x2 + (swimlane.getTotalWidth() - titleWidth) / 2;
+			swTitle.drawU(ug.apply(new UTranslate(posTitle, 0)));
+
+			drawSeparation(ug.apply(new UTranslate(x2, 0)), dimensionFull.getHeight() + titleHeightTranslate.getDy());
+
+			full.drawU(new UGraphicInterceptorOneSwimlane(ug, swimlane).apply(swimlane.getTranslate()).apply(
+					titleHeightTranslate));
+			x2 += swimlane.getTotalWidth();
+
 		}
-		double x = 0;
-		final double separationMargin = 10;
+		drawSeparation(ug.apply(new UTranslate(x2, 0)), dimensionFull.getHeight() + titleHeightTranslate.getDy());
+		final Cross cross = new Cross(ug.apply(titleHeightTranslate));
+		full.drawU(cross);
+		cross.flushUg();
 
-		final UTranslate titleHeightTranslate = new UTranslate(0, titlesHeight);
+		// getCollisionDetector(ug, titleHeightTranslate).drawDebug(ug);
+	}
+
+	private void computeSize(UGraphic ug, TextBlock full) {
+		double x1 = 0;
+		final StringBounder stringBounder = ug.getStringBounder();
 		for (Swimlane swimlane : swinlanes) {
-			final TextBlock swTitle = TextBlockUtils.create(swimlane.getDisplay(), fc, HorizontalAlignment.LEFT,
-					new SpriteContainerEmpty());
 
 			final LimitFinder limitFinder = new LimitFinder(stringBounder, false);
 			final UGraphicInterceptorOneSwimlane interceptor = new UGraphicInterceptorOneSwimlane(new UGraphicForSnake(
 					limitFinder), swimlane);
 			full.drawU(interceptor);
-			interceptor.flush();
+			interceptor.flushUg();
 			final MinMax minMax = limitFinder.getMinMax();
-			// System.err.println("minMax=" + minMax);
 
 			final double drawingWidth = minMax.getWidth() + 2 * separationMargin;
+			final TextBlock swTitle = TextBlockUtils.create(swimlane.getDisplay(), fontConfiguration,
+					HorizontalAlignment.LEFT, new SpriteContainerEmpty());
 			final double titleWidth = swTitle.calculateDimension(stringBounder).getWidth();
 			final double totalWidth = Math.max(drawingWidth, titleWidth + 2 * separationMargin);
 
-			if (swimlane.getSpecificBackColor() != null) {
-				final UGraphic background = ug.apply(new UChangeBackColor(swimlane.getSpecificBackColor()))
-						.apply(new UChangeColor(swimlane.getSpecificBackColor())).apply(new UTranslate(x, 0));
-				background.draw(new URectangle(totalWidth, dimensionFull.getHeight() + titlesHeight));
-			}
-
-			final UTranslate translate = new UTranslate(x - minMax.getMinX() + separationMargin
+			final UTranslate translate = new UTranslate(x1 - minMax.getMinX() + separationMargin
 					+ (totalWidth - drawingWidth) / 2.0, 0);
-			swimlane.setTranslate(translate);
+			swimlane.setTranslateAndWidth(translate, totalWidth);
 
-			final double posTitle = x + (totalWidth - titleWidth) / 2;
-			swTitle.drawU(ug.apply(new UTranslate(posTitle, 0)));
-
-			drawSeparation(ug.apply(new UTranslate(x, 0)), dimensionFull.getHeight() + titlesHeight);
-
-			final UGraphic ugOneSwimlane = new UGraphicInterceptorOneSwimlane(ug, swimlane);
-			full.drawU(ugOneSwimlane.apply(translate).apply(titleHeightTranslate));
-			// ugOneSwimlane.flush();
-
-			x += totalWidth;
+			x1 += totalWidth;
 		}
-		drawSeparation(ug.apply(new UTranslate(x, 0)), dimensionFull.getHeight() + titlesHeight);
-		final Cross cross = new Cross(ug.apply(titleHeightTranslate));
+	}
+
+	private UTranslate getTitleHeightTranslate(final StringBounder stringBounder) {
+		double titlesHeight = 0;
+		for (Swimlane swimlane : swinlanes) {
+			final TextBlock swTitle = TextBlockUtils.create(swimlane.getDisplay(), fontConfiguration,
+					HorizontalAlignment.LEFT, new SpriteContainerEmpty());
+
+			titlesHeight = Math.max(titlesHeight, swTitle.calculateDimension(stringBounder).getHeight());
+		}
+		final UTranslate titleHeightTranslate = new UTranslate(0, titlesHeight);
+		return titleHeightTranslate;
+	}
+
+	private CollisionDetector getCollisionDetector(UGraphic ug, final UTranslate titleHeightTranslate) {
+		final FtileFactory factory = getFtileFactory();
+		final TextBlock full = root.createFtile(factory).asTextBlock();
+		ug = new UGraphicForSnake(ug);
+
+		final CollisionDetector collisionDetector = new CollisionDetector(ug.getStringBounder());
+
+		for (Swimlane swimlane : swinlanes) {
+			full.drawU(new UGraphicInterceptorOneSwimlane(collisionDetector, swimlane).apply(swimlane.getTranslate())
+					.apply(titleHeightTranslate));
+		}
+
+		collisionDetector.setManageSnakes(true);
+		final Cross cross = new Cross(collisionDetector.apply(titleHeightTranslate));
 		full.drawU(cross);
-		cross.flush();
+		cross.flushUg();
+
+		return collisionDetector;
 	}
 
 	private void drawSeparation(UGraphic ug, double height) {

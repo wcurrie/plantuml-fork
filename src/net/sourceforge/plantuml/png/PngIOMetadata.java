@@ -52,11 +52,6 @@ public class PngIOMetadata {
 
 	public static void writeWithMetadata(RenderedImage image, OutputStream os, String metadata, int dpi, String debugData) throws IOException {
 
-		final ImageWriter imagewriter = getImageWriter();
-		Log.debug("PngIOMetadata imagewriter=" + imagewriter);
-
-		imagewriter.setOutput(ImageIO.createImageOutputStream(os));
-
 		// Create & populate metadata
 		final PNGMetadata pngMetadata = new PNGMetadata();
 
@@ -93,10 +88,19 @@ public class PngIOMetadata {
 		final IIOImage iioImage = new IIOImage(image, null, pngMetadata);
 		Log.debug("PngIOMetadata iioImage=" + iioImage);
 		// Attach the metadata
-		imagewriter.write(null, iioImage, null);
-		Log.debug("PngIOMetadata before flush");
-		os.flush();
-		Log.debug("PngIOMetadata after flush");
+		final ImageWriter imagewriter = getImageWriter();
+		Log.debug("PngIOMetadata imagewriter=" + imagewriter);
+
+		synchronized (imagewriter) {
+			imagewriter.setOutput(ImageIO.createImageOutputStream(os));
+			imagewriter.write(null, iioImage, null);
+			os.flush();
+			imagewriter.reset();
+			imagewriter.dispose();
+		}
+//		Log.debug("PngIOMetadata before flush");
+//		os.flush();
+//		Log.debug("PngIOMetadata after flush");
 	}
 
 	private static ImageWriter getImageWriter() {

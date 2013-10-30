@@ -51,7 +51,7 @@ public class PSystemPath extends AbstractPSystem {
 
 
 	public ImageData exportDiagram(OutputStream os, int num, FileFormatOption fileFormat) throws IOException {
-		return path.writeImage1317(os);
+		return path.writeImage(os);
 	}
 
 	public String getDescription() {

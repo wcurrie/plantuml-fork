@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 11873 $
+ * Revision $Revision: 11914 $
  *
  */
 package net.sourceforge.plantuml.graphic;
@@ -143,7 +143,7 @@ public class GraphicStrings implements IEntityImage {
 		final FileFormat fileFormat = fileFormatOption.getFileFormat();
 		if (fileFormat == FileFormat.PNG) {
 			final BufferedImage im = createImage();
-			PngIO.write(im, os, metadata, 96);
+			PngIO.write(im, os, fileFormatOption.isWithMetadata() ? metadata : null, 96);
 		} else if (fileFormat == FileFormat.SVG) {
 			final UGraphicSvg svg = new UGraphicSvg(colorMapper, StringUtils.getAsHtml(colorMapper
 					.getMappedColor(background)), false, 1.0);

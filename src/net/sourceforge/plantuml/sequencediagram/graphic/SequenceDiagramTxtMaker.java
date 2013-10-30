@@ -113,7 +113,7 @@ public class SequenceDiagramTxtMaker implements FileMaker {
 	// return Collections.singletonList(suggestedFile);
 	// }
 
-	public ImageData createOne(OutputStream os, int index) throws IOException {
+	public ImageData createOne(OutputStream os, int index, boolean isWithMetadata) throws IOException {
 		if (fileFormat == FileFormat.UTXT) {
 			final PrintStream ps = new PrintStream(os, true, "UTF-8");
 			ug.getCharArea().print(ps);
