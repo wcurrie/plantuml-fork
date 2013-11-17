@@ -69,10 +69,6 @@ public class FtileFactoryDelegatorCreateFork extends FtileFactoryDelegator {
 		super(factory, skinParam);
 	}
 
-	private Ftile createForkDefault(List<Ftile> all) {
-		return new FtileForkInner(all);
-	}
-
 	@Override
 	public Ftile createFork(List<Ftile> all) {
 		final HtmlColor colorBar = rose.getHtmlColor(getSkinParam(), ColorParam.activityBar);

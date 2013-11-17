@@ -46,9 +46,8 @@ import net.sourceforge.plantuml.ugraphic.UFont;
 
 public class DateEventUtils {
 
-	private static DateFormat dateFormat = new SimpleDateFormat("MM-dd");
-
 	public static TextBlock addEvent(TextBlock textBlock, HtmlColor color) {
+		final DateFormat dateFormat = new SimpleDateFormat("MM-dd");
 		final String today = dateFormat.format(new Date());
 
 		if ("11-05".equals(today)) {

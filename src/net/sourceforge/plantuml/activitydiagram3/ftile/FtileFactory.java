@@ -35,6 +35,7 @@ package net.sourceforge.plantuml.activitydiagram3.ftile;
 
 import java.util.List;
 
+import net.sourceforge.plantuml.activitydiagram3.Branch;
 import net.sourceforge.plantuml.activitydiagram3.LinkRendering;
 import net.sourceforge.plantuml.cucadiagram.Display;
 import net.sourceforge.plantuml.graphic.HtmlColor;
@@ -46,7 +47,7 @@ public interface FtileFactory {
 	public StringBounder getStringBounder();
 
 	public boolean shadowing();
-	
+
 	public Ftile start(Swimlane swimlane);
 
 	public Ftile stop(Swimlane swimlane);
@@ -63,9 +64,10 @@ public interface FtileFactory {
 
 	public Ftile repeat(Swimlane swimlane, Ftile repeat, Display test);
 
-	public Ftile createWhile(Swimlane swimlane, Ftile whileBlock, Display test, Display yes, Display out, LinkRendering afterEndwhile);
+	public Ftile createWhile(Swimlane swimlane, Ftile whileBlock, Display test, Display yes, Display out,
+			LinkRendering afterEndwhile);
 
-	public Ftile createIf(Swimlane swimlane, Ftile tile1, Ftile tile2, Display labelTest, Display label1, Display label2);
+	public Ftile createIf(Swimlane swimlane, List<Branch> thens, Branch elseBranch);
 
 	public Ftile createFork(List<Ftile> all);
 

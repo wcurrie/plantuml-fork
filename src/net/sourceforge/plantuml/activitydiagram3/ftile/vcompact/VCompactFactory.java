@@ -33,12 +33,13 @@
  */
 package net.sourceforge.plantuml.activitydiagram3.ftile.vcompact;
 
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.List;
 
 import net.sourceforge.plantuml.ColorParam;
 import net.sourceforge.plantuml.FontParam;
 import net.sourceforge.plantuml.ISkinParam;
+import net.sourceforge.plantuml.activitydiagram3.Branch;
 import net.sourceforge.plantuml.activitydiagram3.LinkRendering;
 import net.sourceforge.plantuml.activitydiagram3.ftile.BoxStyle;
 import net.sourceforge.plantuml.activitydiagram3.ftile.Ftile;
@@ -102,12 +103,18 @@ public class VCompactFactory implements FtileFactory {
 		return repeat;
 	}
 
-	public Ftile createWhile(Swimlane swimlane, Ftile whileBlock, Display test, Display yes, Display out, LinkRendering afterEndwhile) {
+	public Ftile createWhile(Swimlane swimlane, Ftile whileBlock, Display test, Display yes, Display out,
+			LinkRendering afterEndwhile) {
 		return whileBlock;
 	}
 
-	public Ftile createIf(Swimlane swimlane, Ftile tile1, Ftile tile2, Display labelTest, Display label1, Display label2) {
-		return new FtileForkInner(Arrays.asList(tile1, tile2));
+	public Ftile createIf(Swimlane swimlane, List<Branch> thens, Branch elseBranch) {
+		final List<Ftile> ftiles = new ArrayList<Ftile>();
+		for (Branch branch : thens) {
+			ftiles.add(branch.getFtile());
+		}
+		ftiles.add(elseBranch.getFtile());
+		return new FtileForkInner(ftiles);
 	}
 
 	public Ftile createFork(List<Ftile> all) {

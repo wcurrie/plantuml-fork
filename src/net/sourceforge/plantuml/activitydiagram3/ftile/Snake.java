@@ -33,17 +33,22 @@
  */
 package net.sourceforge.plantuml.activitydiagram3.ftile;
 
+import java.awt.geom.Dimension2D;
 import java.awt.geom.Line2D;
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.List;
 
 import net.sourceforge.plantuml.graphic.HtmlColor;
+import net.sourceforge.plantuml.graphic.HtmlColorUtils;
+import net.sourceforge.plantuml.graphic.StringBounder;
+import net.sourceforge.plantuml.graphic.TextBlock;
 import net.sourceforge.plantuml.ugraphic.UChangeBackColor;
 import net.sourceforge.plantuml.ugraphic.UChangeColor;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
 import net.sourceforge.plantuml.ugraphic.ULine;
 import net.sourceforge.plantuml.ugraphic.UPolygon;
+import net.sourceforge.plantuml.ugraphic.URectangle;
 import net.sourceforge.plantuml.ugraphic.UShape;
 import net.sourceforge.plantuml.ugraphic.UStroke;
 import net.sourceforge.plantuml.ugraphic.UTranslate;
@@ -54,6 +59,7 @@ public class Snake implements UShape {
 	private final UPolygon endDecoration;
 	private final HtmlColor color;
 	private final boolean mergeable;
+	private TextBlock textBlock;
 
 	public Snake(HtmlColor color, UPolygon endDecoration, boolean mergeable) {
 		this.endDecoration = endDecoration;
@@ -61,11 +67,16 @@ public class Snake implements UShape {
 		this.mergeable = mergeable;
 	}
 
+	public void setLabel(TextBlock label) {
+		this.textBlock = label;
+	}
+
 	public Snake move(double dx, double dy) {
 		final Snake result = new Snake(color, endDecoration, mergeable);
 		for (Point2D pt : points) {
 			result.addPoint(pt.getX() + dx, pt.getY() + dy);
 		}
+		result.textBlock = this.textBlock;
 		return result;
 	}
 
@@ -129,6 +140,34 @@ public class Snake implements UShape {
 			final Point2D end = points.get(points.size() - 1);
 			ug.apply(new UTranslate(end)).apply(new UStroke()).draw(endDecoration);
 		}
+		if (textBlock != null) {
+			final Point2D position = getTextBlockPosition(ug.getStringBounder());
+			// double max = getMaxX(ug.getStringBounder());
+			// ug.apply(new UChangeBackColor(HtmlColorUtils.LIGHT_GRAY)).apply(new UTranslate(0,
+			// position.getY())).draw(new URectangle(max, 10));
+			textBlock.drawU(ug.apply(new UTranslate(position)));
+		}
+	}
+
+	public double getMaxX(StringBounder stringBounder) {
+		double result = -Double.MAX_VALUE;
+		for (Point2D pt : points) {
+			result = Math.max(result, pt.getX());
+		}
+		if (textBlock != null) {
+			final Point2D position = getTextBlockPosition(stringBounder);
+			final Dimension2D dim = textBlock.calculateDimension(stringBounder);
+			result = Math.max(result, position.getX() + dim.getWidth());
+		}
+		return result;
+	}
+
+	private Point2D getTextBlockPosition(StringBounder stringBounder) {
+		final Point2D pt1 = points.get(0);
+		final Point2D pt2 = points.get(1);
+		final Dimension2D dim = textBlock.calculateDimension(stringBounder);
+		final double y = (pt1.getY() + pt2.getY()) / 2 - dim.getHeight() / 2;
+		return new Point2D.Double(Math.max(pt1.getX(), pt2.getX()) + 4, y);
 	}
 
 	public List<Line2D> getHorizontalLines() {
@@ -163,6 +202,7 @@ public class Snake implements UShape {
 			result.addPoint(getFirst());
 			result.addPoint(getFirst().getX(), other.getLast().getY());
 			result.addPoint(other.getLast());
+			result.textBlock = this.textBlock;
 			return result;
 		}
 		if (same(this.getFirst(), other.getLast())) {

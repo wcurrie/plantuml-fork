@@ -32,7 +32,6 @@
 package net.sourceforge.plantuml.ugraphic.eps;
 
 import java.awt.FontMetrics;
-import java.awt.Graphics2D;
 import java.awt.font.FontRenderContext;
 import java.awt.font.TextLayout;
 import java.awt.geom.Dimension2D;
@@ -45,7 +44,7 @@ import net.sourceforge.plantuml.graphic.FontConfiguration;
 import net.sourceforge.plantuml.graphic.FontStyle;
 import net.sourceforge.plantuml.graphic.HtmlColor;
 import net.sourceforge.plantuml.graphic.StringBounder;
-import net.sourceforge.plantuml.graphic.StringBounderUtils;
+import net.sourceforge.plantuml.graphic.TextBlockUtils;
 import net.sourceforge.plantuml.ugraphic.ClipContainer;
 import net.sourceforge.plantuml.ugraphic.ColorMapper;
 import net.sourceforge.plantuml.ugraphic.UClip;
@@ -61,14 +60,12 @@ public class DriverTextEps implements UDriver<EpsGraphics> {
 	private final StringBounder stringBounder;
 	private final ClipContainer clipContainer;
 	private final FontRenderContext fontRenderContext;
-	private final Graphics2D g2dummy;
 	private final EpsStrategy strategy;
 
-	public DriverTextEps(Graphics2D g2dummy, ClipContainer clipContainer, EpsStrategy strategy) {
-		this.stringBounder = StringBounderUtils.asStringBounder(g2dummy);
+	public DriverTextEps(ClipContainer clipContainer, EpsStrategy strategy) {
+		this.stringBounder = TextBlockUtils.getDummyStringBounder();
 		this.clipContainer = clipContainer;
-		this.fontRenderContext = g2dummy.getFontRenderContext();
-		this.g2dummy = g2dummy;
+		this.fontRenderContext = TextBlockUtils.getFontRenderContext();
 		this.strategy = strategy;
 	}
 
@@ -123,7 +120,7 @@ public class DriverTextEps implements UDriver<EpsGraphics> {
 				eps.setStrokeColor(mapper.getMappedColor(extended));
 			}
 			final Dimension2D dim = DriverTextG2d.calculateDimension(stringBounder, font, shape.getText());
-			final FontMetrics fm = g2dummy.getFontMetrics(font.getFont());
+			final FontMetrics fm = font.getFontMetrics();
 			final int ypos = (int) (y - fm.getDescent() - 0.5);
 			eps.setStrokeWidth("1.3", 0, 0);
 			eps.epsLine(x, ypos, x + dim.getWidth(), ypos);

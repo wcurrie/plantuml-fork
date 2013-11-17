@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  *
- * Revision $Revision: 11786 $
+ * Revision $Revision: 12022 $
  *
  */
 package net.sourceforge.plantuml;
@@ -294,7 +294,7 @@ public class Option {
 	}
 
 	public final static String getPattern() {
-		return "(?i)^.*\\.(txt|tex|java|htm|html|c|h|cpp|apt)$";
+		return "(?i)^.*\\.(txt|tex|java|htm|html|c|h|cpp|apt|pu)$";
 	}
 
 	public void setOutputDir(File f) {

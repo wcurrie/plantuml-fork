@@ -28,12 +28,14 @@
  *
  * Original Author:  Arnaud Roques
  *
- * Revision $Revision: 9786 $
+ * Revision $Revision: 12012 $
  *
  */
 package net.sourceforge.plantuml.asciiart;
 
 import java.util.Collection;
+
+import net.sourceforge.plantuml.ugraphic.ClipContainer;
 
 public class UmlCharAreaImpl extends BasicCharAreaImpl implements UmlCharArea {
 
@@ -70,7 +72,7 @@ public class UmlCharAreaImpl extends BasicCharAreaImpl implements UmlCharArea {
 		this.drawStringLR(" | ", x, y++);
 		this.drawStringLR("/ \\", x, y++);
 	}
-	
+
 	public void drawStickManUnicode(int x, int y) {
 		this.drawStringLR("\u250c\u2500\u2510", x, y++);
 		this.drawStringLR("\u2551\"\u2502", x, y++);

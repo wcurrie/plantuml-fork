@@ -104,7 +104,7 @@ public class SourceFileReader implements ISourceFileReader {
 		return false;
 	}
 
-	public List<GeneratedImage> getGeneratedImages() throws IOException, InterruptedException {
+	public List<GeneratedImage> getGeneratedImages() throws IOException {
 		Log.info("Reading file: " + file);
 
 		int cpt = 0;

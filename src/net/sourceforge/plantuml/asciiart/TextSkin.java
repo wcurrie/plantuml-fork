@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  *
- * Revision $Revision: 10458 $
+ * Revision $Revision: 12001 $
  *
  */
 package net.sourceforge.plantuml.asciiart;
@@ -59,7 +59,8 @@ public class TextSkin implements Skin {
 		if (type == ComponentType.ACTOR_HEAD || type == ComponentType.ACTOR_TAIL) {
 			return new ComponentTextActor(type, stringsToDisplay, fileFormat);
 		}
-		if (type.isArrow() && ((config.getArrowDirection() == ArrowDirection.LEFT_TO_RIGHT_NORMAL) || (config.getArrowDirection() == ArrowDirection.RIGHT_TO_LEFT_REVERSE))) {
+		if (type.isArrow()
+				&& ((config.getArrowDirection() == ArrowDirection.LEFT_TO_RIGHT_NORMAL) || (config.getArrowDirection() == ArrowDirection.RIGHT_TO_LEFT_REVERSE))) {
 			return new ComponentTextArrow(type, config, stringsToDisplay, fileFormat);
 		}
 		if (type.isArrow() && config.isSelfArrow()) {
@@ -100,6 +101,9 @@ public class TextSkin implements Skin {
 		}
 		if (type == ComponentType.GROUPING_ELSE) {
 			return new ComponentTextGroupingElse(type, stringsToDisplay, fileFormat);
+		}
+		if (type == ComponentType.NEWPAGE) {
+			return new ComponentTextNewpage(fileFormat);
 		}
 		throw new UnsupportedOperationException(type.toString());
 	}

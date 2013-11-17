@@ -35,15 +35,23 @@ package net.sourceforge.plantuml.activitydiagram3.ftile.vcompact;
 
 import java.awt.geom.Point2D;
 
+import net.sourceforge.plantuml.FontParam;
 import net.sourceforge.plantuml.ISkinParam;
-import net.sourceforge.plantuml.activitydiagram3.ftile.Connection;
 import net.sourceforge.plantuml.activitydiagram3.ftile.Ftile;
 import net.sourceforge.plantuml.activitydiagram3.ftile.FtileEmpty;
 import net.sourceforge.plantuml.activitydiagram3.ftile.FtileFactory;
 import net.sourceforge.plantuml.activitydiagram3.ftile.FtileFactoryDelegator;
+import net.sourceforge.plantuml.activitydiagram3.ftile.FtileMinWidth;
 import net.sourceforge.plantuml.activitydiagram3.ftile.FtileUtils;
+import net.sourceforge.plantuml.cucadiagram.Display;
+import net.sourceforge.plantuml.graphic.FontConfiguration;
+import net.sourceforge.plantuml.graphic.HorizontalAlignment;
 import net.sourceforge.plantuml.graphic.HtmlColor;
 import net.sourceforge.plantuml.graphic.StringBounder;
+import net.sourceforge.plantuml.graphic.TextBlock;
+import net.sourceforge.plantuml.graphic.TextBlockUtils;
+import net.sourceforge.plantuml.skin.rose.Rose;
+import net.sourceforge.plantuml.ugraphic.UFont;
 import net.sourceforge.plantuml.ugraphic.UTranslate;
 
 public class FtileFactoryDelegatorAssembly extends FtileFactoryDelegator {
@@ -54,10 +62,15 @@ public class FtileFactoryDelegatorAssembly extends FtileFactoryDelegator {
 
 	@Override
 	public Ftile assembly(final Ftile tile1, final Ftile tile2) {
-		final Ftile space = new FtileEmpty(getFactory().shadowing(), 1, 35);
-		final Ftile tile1andSpace = super.assembly(tile1, space);
-		final Ftile result = super.assembly(tile1andSpace, tile2);
+		double height = 35;
+		final TextBlock textBlock = getTextBlock(getInLinkRenderingDisplay(tile2));
 		final StringBounder stringBounder = getStringBounder();
+		if (textBlock != null) {
+			height += textBlock.calculateDimension(stringBounder).getHeight();
+		}
+		final Ftile space = new FtileEmpty(getFactory().shadowing(), 1, height);
+		final Ftile tile1andSpace = super.assembly(tile1, space);
+		Ftile result = super.assembly(tile1andSpace, tile2);
 		final UTranslate translate1 = result.getTranslateFor(tile1, stringBounder);
 		final Point2D pointOut = tile1.getPointOut(stringBounder);
 		if (pointOut == null) {
@@ -69,7 +82,31 @@ public class FtileFactoryDelegatorAssembly extends FtileFactoryDelegator {
 
 		final HtmlColor color = getInLinkRenderingColor(tile2);
 
-		final Connection connection = new ConnectionVerticalDown(tile1, tile2, p1, p2, color);
-		return FtileUtils.addConnection(result, connection);
+		final ConnectionVerticalDown connection = new ConnectionVerticalDown(tile1, tile2, p1, p2, color, textBlock);
+		result = FtileUtils.addConnection(result, connection);
+		if (textBlock != null) {
+			final double width = result.asTextBlock().calculateDimension(stringBounder).getWidth();
+			// System.err.println("width=" + width);
+			// System.err.println("p1=" + p1);
+			// System.err.println("p2=" + p2);
+			final double maxX = connection.getMaxX(stringBounder);
+			// System.err.println("maxX=" + maxX);
+			final double needed = (maxX - width) * 2;
+			result = new FtileMinWidth(result, needed);
+		}
+		return result;
+	}
+
+	private final Rose rose = new Rose();
+
+	private TextBlock getTextBlock(Display display) {
+		if (display == null) {
+			return null;
+		}
+		final ISkinParam skinParam = getSkinParam();
+		final UFont font = skinParam.getFont(FontParam.ACTIVITY_ARROW2, null);
+		final HtmlColor color = rose.getFontColor(skinParam, FontParam.ACTIVITY_ARROW2);
+		final FontConfiguration fontConfiguration = new FontConfiguration(font, color);
+		return TextBlockUtils.create(display, fontConfiguration, HorizontalAlignment.LEFT, null);
 	}
 }

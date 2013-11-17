@@ -34,6 +34,7 @@ package net.sourceforge.plantuml.ugraphic.eps;
 import java.awt.font.TextLayout;
 
 import net.sourceforge.plantuml.eps.EpsGraphics;
+import net.sourceforge.plantuml.graphic.TextBlockUtils;
 import net.sourceforge.plantuml.graphic.UnusedSpace;
 import net.sourceforge.plantuml.ugraphic.ColorMapper;
 import net.sourceforge.plantuml.ugraphic.UCenteredCharacter;
@@ -53,7 +54,7 @@ public class DriverCenteredCharacterEps implements UDriver<EpsGraphics> {
 		final double xpos = x - unusedSpace.getCenterX() - 0.5;
 		final double ypos = y - unusedSpace.getCenterY() - 0.5;
 
-		final TextLayout t = new TextLayout("" + c, font.getFont(), UGraphicEps.imDummy.getFontRenderContext());
+		final TextLayout t = new TextLayout("" + c, font.getFont(), TextBlockUtils.getFontRenderContext());
 		eps.setStrokeColor(mapper.getMappedColor(param.getColor()));
 		DriverTextEps.drawPathIterator(eps, xpos, ypos, t.getOutline(null).getPathIterator(null));
 

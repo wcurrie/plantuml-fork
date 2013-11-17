@@ -50,8 +50,8 @@ import net.sourceforge.plantuml.UmlDiagramType;
 import net.sourceforge.plantuml.api.ImageDataSimple;
 import net.sourceforge.plantuml.core.ImageData;
 import net.sourceforge.plantuml.cucadiagram.Display;
+import net.sourceforge.plantuml.graphic.TextBlockUtils;
 import net.sourceforge.plantuml.png.PngIO;
-import net.sourceforge.plantuml.sequencediagram.graphic.SequenceDiagramFileMakerPuma;
 import net.sourceforge.plantuml.ugraphic.ColorMapperIdentity;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
 import net.sourceforge.plantuml.ugraphic.eps.UGraphicEps;
@@ -118,8 +118,7 @@ public class PostItDiagram extends UmlDiagram {
 				.getMappedColor(this.getSkinParam().getBackgroundColor());
 		final FileFormat fileFormat = fileFormatOption.getFileFormat();
 		if (fileFormat == FileFormat.PNG) {
-			final double height = getDefaultArea().heightWhenWidthIs(width,
-					SequenceDiagramFileMakerPuma.getDummystringbounder());
+			final double height = getDefaultArea().heightWhenWidthIs(width, TextBlockUtils.getDummyStringBounder());
 			final EmptyImageBuilder builder = new EmptyImageBuilder(width, height, backColor);
 
 			final Graphics2D graphics2D = builder.getGraphics2D();

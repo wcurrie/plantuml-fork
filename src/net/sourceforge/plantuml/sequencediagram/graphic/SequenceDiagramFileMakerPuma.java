@@ -63,7 +63,6 @@ import net.sourceforge.plantuml.graphic.HtmlColor;
 import net.sourceforge.plantuml.graphic.HtmlColorGradient;
 import net.sourceforge.plantuml.graphic.HtmlColorSimple;
 import net.sourceforge.plantuml.graphic.StringBounder;
-import net.sourceforge.plantuml.graphic.StringBounderUtils;
 import net.sourceforge.plantuml.graphic.TextBlock;
 import net.sourceforge.plantuml.graphic.TextBlockUtils;
 import net.sourceforge.plantuml.png.PngTitler;
@@ -89,12 +88,7 @@ import net.sourceforge.plantuml.ugraphic.visio.UGraphicVdx;
 
 public class SequenceDiagramFileMakerPuma implements FileMaker {
 
-	private static final StringBounder dummyStringBounder;
-
-	static {
-		final BufferedImage imDummy = new BufferedImage(10, 10, BufferedImage.TYPE_INT_RGB);
-		dummyStringBounder = StringBounderUtils.asStringBounder(imDummy.createGraphics());
-	}
+	private static final StringBounder dummyStringBounder = TextBlockUtils.getDummyStringBounder();
 
 	private final SequenceDiagram diagram;
 	private final DrawableSet drawableSet;
@@ -392,10 +386,6 @@ public class SequenceDiagramFileMakerPuma implements FileMaker {
 			return;
 		}
 		text.drawU(ug.apply(new UTranslate(area.getHeaderX(diagram.getHeaderAlignment()), area.getHeaderY())));
-	}
-
-	public static StringBounder getDummystringbounder() {
-		return dummyStringBounder;
 	}
 
 }

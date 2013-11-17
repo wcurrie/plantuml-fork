@@ -34,9 +34,12 @@
 package net.sourceforge.plantuml.ugraphic;
 
 import java.awt.Font;
+import java.awt.FontMetrics;
 import java.awt.Graphics2D;
 import java.awt.font.FontRenderContext;
 import java.awt.font.LineMetrics;
+
+import net.sourceforge.plantuml.graphic.TextBlockUtils;
 
 public class UFont {
 
@@ -125,5 +128,9 @@ public class UFont {
 	public LineMetrics getLineMetrics(Graphics2D gg, String text) {
 		final FontRenderContext frc = gg.getFontRenderContext();
 		return font.getLineMetrics(text, frc);
+	}
+	
+	public FontMetrics getFontMetrics() {
+		return TextBlockUtils.getFontMetrics(getFont());
 	}
 }

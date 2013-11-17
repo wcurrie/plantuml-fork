@@ -51,6 +51,7 @@ import net.sourceforge.plantuml.activitydiagram3.ftile.FtileMarged;
 import net.sourceforge.plantuml.activitydiagram3.ftile.FtileUtils;
 import net.sourceforge.plantuml.activitydiagram3.ftile.Snake;
 import net.sourceforge.plantuml.graphic.HtmlColor;
+import net.sourceforge.plantuml.graphic.StringBounder;
 import net.sourceforge.plantuml.skin.rose.Rose;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
 import net.sourceforge.plantuml.ugraphic.UTranslate;
@@ -69,7 +70,7 @@ public class FtileFactoryDelegatorCreateSplit extends FtileFactoryDelegator {
 
 	@Override
 	public Ftile createSplit(List<Ftile> all) {
-		final HtmlColor colorBar = rose.getHtmlColor(getSkinParam(), ColorParam.activityBar);
+		// final HtmlColor colorBar = rose.getHtmlColor(getSkinParam(), ColorParam.activityBar);
 		final HtmlColor arrowColor = rose.getHtmlColor(getSkinParam(), ColorParam.activityArrow);
 
 		final Dimension2D dimSuper = super.createSplit(all).asTextBlock().calculateDimension(getStringBounder());
@@ -92,22 +93,24 @@ public class FtileFactoryDelegatorCreateSplit extends FtileFactoryDelegator {
 			x += dim.getWidth();
 		}
 		final double totalWidth = inner.asTextBlock().calculateDimension(getStringBounder()).getWidth();
-		conns.add(new ConnectionHline(arrowColor, 0, list, totalWidth));
-		conns.add(new ConnectionHline(arrowColor, height1, list, totalWidth));
+		conns.add(new ConnectionHline2(inner, arrowColor, 0, list, totalWidth));
+		conns.add(new ConnectionHline2(inner, arrowColor, height1, list, totalWidth));
 
 		inner = FtileUtils.addConnection(inner, conns);
 		return inner;
 	}
 
-	class ConnectionHline extends AbstractConnection {
+	static class ConnectionHline2 extends AbstractConnection {
 
+		private final Ftile inner;
 		private final double y;
 		private final HtmlColor arrowColor;
 		private final List<Ftile> list;
 		private final double totalWidth;
 
-		public ConnectionHline(HtmlColor arrowColor, double y, List<Ftile> list, double totalWidth) {
+		public ConnectionHline2(Ftile inner, HtmlColor arrowColor, double y, List<Ftile> list, double totalWidth) {
 			super(null, null);
+			this.inner = inner;
 			this.y = y;
 			this.arrowColor = arrowColor;
 			this.list = list;
@@ -115,20 +118,17 @@ public class FtileFactoryDelegatorCreateSplit extends FtileFactoryDelegator {
 		}
 
 		public void drawU(UGraphic ug) {
-
-			double x = 0;
-			double minX = 0;
+			double minX = Double.MAX_VALUE;
 			double maxX = 0;
+			final StringBounder stringBounder = ug.getStringBounder();
 			for (Ftile tmp : list) {
 				if (y > 0 && tmp.isKilled()) {
 					continue;
 				}
-				final Dimension2D dim = tmp.asTextBlock().calculateDimension(getStringBounder());
-				if (x == 0) {
-					minX = dim.getWidth() / 2;
-				}
-				maxX = x + dim.getWidth() / 2;
-				x += dim.getWidth();
+				final UTranslate ut = inner.getTranslateFor(tmp, stringBounder);
+				final double middle = ut.getTranslated(tmp.getPointIn(stringBounder)).getX();
+				minX = Math.min(minX, middle);
+				maxX = Math.max(maxX, middle);
 			}
 			if (minX > totalWidth / 2) {
 				minX = totalWidth / 2;
@@ -144,7 +144,7 @@ public class FtileFactoryDelegatorCreateSplit extends FtileFactoryDelegator {
 		}
 	}
 
-	class ConnectionIn extends AbstractConnection {
+	static class ConnectionIn extends AbstractConnection {
 
 		private final double x;
 		private final HtmlColor arrowColor;
@@ -157,7 +157,7 @@ public class FtileFactoryDelegatorCreateSplit extends FtileFactoryDelegator {
 
 		public void drawU(UGraphic ug) {
 			ug = ug.apply(new UTranslate(x, 0));
-			final Point2D p = getFtile2().getPointIn(getStringBounder());
+			final Point2D p = getFtile2().getPointIn(ug.getStringBounder());
 			final Snake s = new Snake(arrowColor, Arrows.asToDown());
 			s.addPoint(p.getX(), 0);
 			s.addPoint(p.getX(), p.getY());
@@ -165,7 +165,7 @@ public class FtileFactoryDelegatorCreateSplit extends FtileFactoryDelegator {
 		}
 	}
 
-	class ConnectionOut extends AbstractConnection {
+	static class ConnectionOut extends AbstractConnection {
 
 		private final double x;
 		private final HtmlColor arrowColor;
@@ -180,7 +180,7 @@ public class FtileFactoryDelegatorCreateSplit extends FtileFactoryDelegator {
 
 		public void drawU(UGraphic ug) {
 			ug = ug.apply(new UTranslate(x, 0));
-			final Point2D p = getFtile1().getPointOut(getStringBounder());
+			final Point2D p = getFtile1().getPointOut(ug.getStringBounder());
 			if (p == null) {
 				return;
 			}

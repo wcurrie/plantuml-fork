@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  *
- * Revision $Revision: 11919 $
+ * Revision $Revision: 12023 $
  *
  */
 package net.sourceforge.plantuml;
@@ -80,6 +80,12 @@ public class Run {
 		if (OptionFlags.getInstance().isVerbose()) {
 			Log.info("PlantUML Version " + Version.versionString());
 			Log.info("GraphicsEnvironment.isHeadless() " + GraphicsEnvironment.isHeadless());
+		}
+		if (GraphicsEnvironment.isHeadless()) {
+			Log.info("Forcing -Djava.awt.headless=true");
+			System.setProperty("java.awt.headless", "true");
+			Log.info("java.awt.headless set as true");
+			
 		}
 		if (OptionFlags.getInstance().isPrintFonts()) {
 			printFonts();

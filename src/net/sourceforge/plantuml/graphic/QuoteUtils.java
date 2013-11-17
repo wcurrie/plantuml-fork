@@ -38,7 +38,7 @@ import java.util.List;
 
 public class QuoteUtils {
 
-	private static final List<String> quotes = Arrays.asList( //
+	private static final List<String> quotes = Arrays.asList(//
 			"He's dead, Jim.", //
 			"By Grabthar's hammer, by the sons of Worvan, you shall be avenged.", //
 			"Roads? Where we're going, we don't need roads.", //
@@ -87,8 +87,21 @@ public class QuoteUtils {
 			"What the hell is a gigawatt?", //
 			"I need a vacation.", //
 			"On devrait jamais quitter Montauban.", //
-			"My force is a platform that you can climb on..."
-	);
+			"My force is a platform that you can climb on...", //
+			"There's something weird, and it don't look good...", //
+			"Et rien vraiment ne change mais tout est different", //
+			"Beam me up, Scotty.", //
+			"There is no spoon.", //
+			"Follow the white rabbit.", //
+			"Never send a human to do a machine's job.", //
+			"Guru meditation. Press left mouse button to continue.", //
+			"I don't think we're in Kansas anymore.", //
+			"Luke, I am your father.", //
+			"Blood, Sweat and Tears", //
+			"Houston, we have a problem.", //
+			"Boot failure, press any key to continue", //
+			"Big mistake!");
+	// Creativity : how many?
 
 	private QuoteUtils() {
 	}

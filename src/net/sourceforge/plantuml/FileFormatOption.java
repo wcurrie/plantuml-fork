@@ -45,6 +45,7 @@ import net.sourceforge.plantuml.graphic.HtmlColorGradient;
 import net.sourceforge.plantuml.graphic.HtmlColorSimple;
 import net.sourceforge.plantuml.graphic.HtmlColorTransparent;
 import net.sourceforge.plantuml.ugraphic.ColorMapper;
+import net.sourceforge.plantuml.ugraphic.ColorMapperIdentity;
 import net.sourceforge.plantuml.ugraphic.UChangeBackColor;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
 import net.sourceforge.plantuml.ugraphic.URectangle;
@@ -70,7 +71,7 @@ public class FileFormatOption {
 	public FileFormatOption(FileFormat fileFormat) {
 		this(fileFormat, null, true);
 	}
-	
+
 	public final boolean isWithMetadata() {
 		return withMetadata;
 	}
@@ -131,11 +132,14 @@ public class FileFormatOption {
 		default:
 			throw new UnsupportedOperationException(fileFormat.toString());
 		}
-
 	}
 
-	private UGraphic createUGraphicSVG(ColorMapper colorMapper, double scale, Dimension2D dim,
-			HtmlColor mybackcolor, boolean rotation) {
+	public UGraphic createUGraphic(final Dimension2D dim) {
+		return createUGraphic(new ColorMapperIdentity(), 1.0, dim, null, false);
+	}
+
+	private UGraphic createUGraphicSVG(ColorMapper colorMapper, double scale, Dimension2D dim, HtmlColor mybackcolor,
+			boolean rotation) {
 		Color backColor = Color.WHITE;
 		if (mybackcolor instanceof HtmlColorSimple) {
 			backColor = colorMapper.getMappedColor(mybackcolor);

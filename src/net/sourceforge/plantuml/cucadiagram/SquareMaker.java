@@ -55,7 +55,7 @@ class SquareMaker<O extends Object> {
 
 	}
 
-	static int computeBranch(int size) {
+	static int computeBranch(final int size) {
 		final double sqrt = Math.sqrt(size);
 		final int r = (int) sqrt;
 		if (r * r == size) {
@@ -63,5 +63,20 @@ class SquareMaker<O extends Object> {
 		}
 		return r + 1;
 	}
+
+	static int getBottomLeft(final int size) {
+		final int s = computeBranch(size);
+		final int line = (size - 1) / s;
+		return line * s;
+	}
+
+	// static int getBottomLeft(final int size) {
+	// final int s = computeBranch(size);
+	// int result = s * (s - 1);
+	// while (result >= size) {
+	// result -= s;
+	// }
+	// return result;
+	// }
 
 }

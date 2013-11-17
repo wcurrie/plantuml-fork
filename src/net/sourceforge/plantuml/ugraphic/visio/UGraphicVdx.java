@@ -31,14 +31,12 @@
  */
 package net.sourceforge.plantuml.ugraphic.visio;
 
-import java.awt.Graphics2D;
-import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.OutputStream;
 
 import net.sourceforge.plantuml.Url;
 import net.sourceforge.plantuml.graphic.StringBounder;
-import net.sourceforge.plantuml.graphic.StringBounderUtils;
+import net.sourceforge.plantuml.graphic.TextBlockUtils;
 import net.sourceforge.plantuml.posimo.DotPath;
 import net.sourceforge.plantuml.ugraphic.AbstractCommonUGraphic;
 import net.sourceforge.plantuml.ugraphic.AbstractUGraphic;
@@ -56,13 +54,11 @@ import net.sourceforge.plantuml.ugraphic.UText;
 
 public class UGraphicVdx extends AbstractUGraphic<VisioGraphics> implements ClipContainer {
 
-	final static Graphics2D imDummy = new BufferedImage(10, 10, BufferedImage.TYPE_INT_RGB).createGraphics();
-
 	private final StringBounder stringBounder;
 
 	private UGraphicVdx(ColorMapper colorMapper, VisioGraphics visio) {
 		super(colorMapper, visio);
-		this.stringBounder = StringBounderUtils.asStringBounder(imDummy);
+		this.stringBounder = TextBlockUtils.getDummyStringBounder();
 		register();
 
 	}

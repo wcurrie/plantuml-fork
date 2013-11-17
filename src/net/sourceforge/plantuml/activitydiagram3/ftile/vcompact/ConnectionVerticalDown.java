@@ -41,6 +41,8 @@ import net.sourceforge.plantuml.activitydiagram3.ftile.ConnectionTranslatable;
 import net.sourceforge.plantuml.activitydiagram3.ftile.Ftile;
 import net.sourceforge.plantuml.activitydiagram3.ftile.Snake;
 import net.sourceforge.plantuml.graphic.HtmlColor;
+import net.sourceforge.plantuml.graphic.StringBounder;
+import net.sourceforge.plantuml.graphic.TextBlock;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
 import net.sourceforge.plantuml.ugraphic.UTranslate;
 
@@ -49,19 +51,31 @@ public class ConnectionVerticalDown extends AbstractConnection implements Connec
 	private final Point2D p1;
 	private final Point2D p2;
 	private final HtmlColor color;
+	private final TextBlock textBlock;
 
-	public ConnectionVerticalDown(Ftile ftile1, Ftile ftile2, Point2D p1, Point2D p2, HtmlColor color) {
+	public ConnectionVerticalDown(Ftile ftile1, Ftile ftile2, Point2D p1, Point2D p2, HtmlColor color,
+			TextBlock textBlock) {
 		super(ftile1, ftile2);
 		this.p1 = p1;
 		this.p2 = p2;
 		this.color = color;
+		this.textBlock = textBlock;
 	}
 
 	public void drawU(UGraphic ug) {
+		ug.draw(getSimpleSnake());
+	}
+
+	public double getMaxX(StringBounder stringBounder) {
+		return getSimpleSnake().getMaxX(stringBounder);
+	}
+
+	private Snake getSimpleSnake() {
 		final Snake snake = new Snake(color, Arrows.asToDown());
+		snake.setLabel(textBlock);
 		snake.addPoint(p1);
 		snake.addPoint(p2);
-		ug.draw(snake);
+		return snake;
 	}
 
 	public void drawTranslate(UGraphic ug, UTranslate translate1, UTranslate translate2) {
@@ -74,12 +88,11 @@ public class ConnectionVerticalDown extends AbstractConnection implements Connec
 		snake.addPoint(mp2b.getX(), middle);
 		// snake.addPoint(mp2b);
 		ug.draw(snake);
-		
+
 		final Snake small = new Snake(color, Arrows.asToDown());
 		small.addPoint(mp2b.getX(), middle);
 		small.addPoint(mp2b);
 		ug.draw(small);
-		
 
 	}
 

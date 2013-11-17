@@ -31,8 +31,6 @@
  */
 package net.sourceforge.plantuml.ugraphic.eps;
 
-import java.awt.Graphics2D;
-import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
@@ -42,7 +40,7 @@ import net.sourceforge.plantuml.Url;
 import net.sourceforge.plantuml.eps.EpsGraphics;
 import net.sourceforge.plantuml.eps.EpsStrategy;
 import net.sourceforge.plantuml.graphic.StringBounder;
-import net.sourceforge.plantuml.graphic.StringBounderUtils;
+import net.sourceforge.plantuml.graphic.TextBlockUtils;
 import net.sourceforge.plantuml.graphic.UDrawable;
 import net.sourceforge.plantuml.posimo.DotPath;
 import net.sourceforge.plantuml.ugraphic.AbstractCommonUGraphic;
@@ -59,8 +57,6 @@ import net.sourceforge.plantuml.ugraphic.URectangle;
 import net.sourceforge.plantuml.ugraphic.UText;
 
 public class UGraphicEps extends AbstractUGraphic<EpsGraphics> implements ClipContainer {
-
-	final static Graphics2D imDummy = new BufferedImage(10, 10, BufferedImage.TYPE_INT_RGB).createGraphics();
 
 	private final StringBounder stringBounder;
 
@@ -85,13 +81,13 @@ public class UGraphicEps extends AbstractUGraphic<EpsGraphics> implements ClipCo
 	private UGraphicEps(ColorMapper colorMapper, EpsStrategy strategy, EpsGraphics eps) {
 		super(colorMapper, eps);
 		this.strategyTOBEREMOVED = strategy;
-		this.stringBounder = StringBounderUtils.asStringBounder(imDummy);
+		this.stringBounder = TextBlockUtils.getDummyStringBounder();
 		register(strategy);
 	}
 
 	private void register(EpsStrategy strategy) {
 		registerDriver(URectangle.class, new DriverRectangleEps(this));
-		registerDriver(UText.class, new DriverTextEps(imDummy, this, strategy));
+		registerDriver(UText.class, new DriverTextEps(this, strategy));
 		registerDriver(ULine.class, new DriverLineEps(this));
 		registerDriver(UPolygon.class, new DriverPolygonEps(this));
 		registerDriver(UEllipse.class, new DriverEllipseEps());

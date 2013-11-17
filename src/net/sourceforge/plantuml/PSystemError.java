@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  *
- * Revision $Revision: 11296 $
+ * Revision $Revision: 11977 $
  */
 package net.sourceforge.plantuml;
 
@@ -188,7 +188,7 @@ public class PSystemError extends AbstractPSystem {
 		return "(Error)";
 	}
 
-	public void print(PrintStream ps) {
+	private void print(PrintStream ps) {
 		synchronized (ps) {
 			for (String s : plainStrings) {
 				ps.println(StringUtils.showComparatorCharacters(s));

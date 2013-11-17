@@ -84,8 +84,8 @@ class Magma {
 	}
 
 	private ILeaf getBottomLeft() {
-		final int s = squareSize();
-		return standalones.get(s * (s - 1));
+		int result = SquareMaker.getBottomLeft(standalones.size());
+		return standalones.get(result);
 	}
 
 	private ILeaf getTopRight() {

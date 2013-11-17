@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  *
- * Revision $Revision: 9786 $
+ * Revision $Revision: 12012 $
  *
  */
 package net.sourceforge.plantuml.asciiart;
@@ -49,7 +49,7 @@ public class BasicCharAreaImpl implements BasicCharArea {
 	private char chars[][];
 
 	public BasicCharAreaImpl() {
-		chars = new char[charSize1][charSize2];
+		this.chars = new char[charSize1][charSize2];
 		for (int i = 0; i < charSize1; i++) {
 			for (int j = 0; j < charSize2; j++) {
 				chars[i][j] = ' ';

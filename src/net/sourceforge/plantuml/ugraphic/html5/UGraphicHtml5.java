@@ -31,14 +31,12 @@
  */
 package net.sourceforge.plantuml.ugraphic.html5;
 
-import java.awt.Graphics2D;
-import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.OutputStream;
 
 import net.sourceforge.plantuml.Url;
 import net.sourceforge.plantuml.graphic.StringBounder;
-import net.sourceforge.plantuml.graphic.StringBounderUtils;
+import net.sourceforge.plantuml.graphic.TextBlockUtils;
 import net.sourceforge.plantuml.ugraphic.AbstractCommonUGraphic;
 import net.sourceforge.plantuml.ugraphic.AbstractUGraphic;
 import net.sourceforge.plantuml.ugraphic.ClipContainer;
@@ -50,8 +48,6 @@ import net.sourceforge.plantuml.ugraphic.UText;
 
 public class UGraphicHtml5 extends AbstractUGraphic<Html5Drawer> implements ClipContainer {
 
-	final static Graphics2D imDummy = new BufferedImage(10, 10, BufferedImage.TYPE_INT_RGB).createGraphics();
-
 	private final StringBounder stringBounder;
 
 	@Override
@@ -61,7 +57,7 @@ public class UGraphicHtml5 extends AbstractUGraphic<Html5Drawer> implements Clip
 
 	public UGraphicHtml5(ColorMapper colorMapper) {
 		super(colorMapper, new Html5Drawer());
-		stringBounder = StringBounderUtils.asStringBounder(imDummy);
+		stringBounder = TextBlockUtils.getDummyStringBounder();
 		registerDriver(URectangle.class, new DriverRectangleHtml5(this));
 		// registerDriver(UText.class, new DriverTextEps(imDummy, this, strategy));
 		registerDriver(UText.class, new DriverNopHtml5());

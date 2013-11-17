@@ -44,11 +44,13 @@ import net.sourceforge.plantuml.asciiart.UmlCharAreaImpl;
 import net.sourceforge.plantuml.graphic.FontStyle;
 import net.sourceforge.plantuml.graphic.StringBounder;
 import net.sourceforge.plantuml.ugraphic.AbstractCommonUGraphic;
+import net.sourceforge.plantuml.ugraphic.ClipContainer;
 import net.sourceforge.plantuml.ugraphic.ColorMapperIdentity;
+import net.sourceforge.plantuml.ugraphic.UClip;
 import net.sourceforge.plantuml.ugraphic.UShape;
 import net.sourceforge.plantuml.ugraphic.UText;
 
-public class UGraphicTxt extends AbstractCommonUGraphic {
+public class UGraphicTxt extends AbstractCommonUGraphic implements ClipContainer {
 
 	private final UmlCharArea charArea;
 
@@ -72,6 +74,7 @@ public class UGraphicTxt extends AbstractCommonUGraphic {
 	}
 
 	public void draw(UShape shape) {
+		final UClip clip = getClip();
 		if (shape instanceof UText) {
 			final UText txt = (UText) shape;
 			final int y = getDy() / 10 - 1;

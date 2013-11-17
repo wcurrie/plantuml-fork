@@ -37,6 +37,7 @@ import java.util.List;
 
 import net.sourceforge.plantuml.ColorParam;
 import net.sourceforge.plantuml.ISkinParam;
+import net.sourceforge.plantuml.activitydiagram3.Branch;
 import net.sourceforge.plantuml.activitydiagram3.LinkRendering;
 import net.sourceforge.plantuml.cucadiagram.Display;
 import net.sourceforge.plantuml.graphic.HtmlColor;
@@ -59,6 +60,14 @@ public class FtileFactoryDelegator implements FtileFactory {
 			color = linkRendering.getColor();
 		}
 		return color;
+	}
+
+	protected Display getInLinkRenderingDisplay(Ftile tile) {
+		final LinkRendering linkRendering = tile.getInLinkRendering();
+		if (linkRendering == null || linkRendering.getDisplay() == null) {
+			return null;
+		}
+		return linkRendering.getDisplay();
 	}
 
 	public FtileFactoryDelegator(FtileFactory factory, ISkinParam skinParam) {
@@ -98,12 +107,13 @@ public class FtileFactoryDelegator implements FtileFactory {
 		return factory.repeat(swimlane, repeat, test);
 	}
 
-	public Ftile createWhile(Swimlane swimlane, Ftile whileBlock, Display test, Display yes, Display out, LinkRendering afterEndwhile) {
+	public Ftile createWhile(Swimlane swimlane, Ftile whileBlock, Display test, Display yes, Display out,
+			LinkRendering afterEndwhile) {
 		return factory.createWhile(swimlane, whileBlock, test, yes, out, afterEndwhile);
 	}
 
-	public Ftile createIf(Swimlane swimlane, Ftile tile1, Ftile tile2, Display labelTest, Display label1, Display label2) {
-		return factory.createIf(swimlane, tile1, tile2, labelTest, label1, label2);
+	public Ftile createIf(Swimlane swimlane, List<Branch> thens, Branch elseBranch) {
+		return factory.createIf(swimlane, thens, elseBranch);
 	}
 
 	public Ftile createFork(List<Ftile> all) {

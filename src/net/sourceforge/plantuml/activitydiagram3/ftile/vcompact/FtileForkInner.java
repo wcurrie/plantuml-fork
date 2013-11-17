@@ -60,7 +60,7 @@ class FtileForkInner extends AbstractFtile {
 			this.forks.add(ftile);
 		}
 	}
-	
+
 	public Swimlane getSwimlaneIn() {
 		return forks.get(0).getSwimlaneIn();
 	}
@@ -68,7 +68,6 @@ class FtileForkInner extends AbstractFtile {
 	public Swimlane getSwimlaneOut() {
 		return getSwimlaneIn();
 	}
-
 
 	public Set<Swimlane> getSwimlanes() {
 		return mergeSwimlanes(forks);
@@ -130,8 +129,16 @@ class FtileForkInner extends AbstractFtile {
 		return new Point2D.Double(dimTotal.getWidth() / 2, dimTotal.getHeight());
 	}
 
-	public UTranslate getTranslateFor(Ftile ftile, StringBounder stringBounder) {
-		throw new UnsupportedOperationException();
+	public UTranslate getTranslateFor(Ftile searched, StringBounder stringBounder) {
+		double xpos = 0;
+		for (Ftile ftile : forks) {
+			if (ftile == searched) {
+				return new UTranslate(xpos, 0);
+			}
+			final Dimension2D dim = ftile.asTextBlock().calculateDimension(stringBounder);
+			xpos += dim.getWidth();
+		}
+		throw new IllegalArgumentException();
 	}
 
 }

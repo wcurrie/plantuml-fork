@@ -28,12 +28,15 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 11873 $
+ * Revision $Revision: 11995 $
  *
  */
 package net.sourceforge.plantuml.graphic;
 
+import java.awt.Font;
+import java.awt.FontMetrics;
 import java.awt.Graphics2D;
+import java.awt.font.FontRenderContext;
 import java.awt.font.LineMetrics;
 import java.awt.geom.Dimension2D;
 import java.awt.geom.Point2D;
@@ -158,6 +161,14 @@ public class TextBlockUtils {
 		dummyStringBounder = StringBounderUtils.asStringBounder(gg);
 	}
 
+	public static StringBounder getDummyStringBounder() {
+		return dummyStringBounder;
+	}
+
+	public static FontRenderContext getFontRenderContext() {
+		return gg.getFontRenderContext();
+	}
+
 	public static UGraphic getPrinted(TextBlock tb, FileFormatOption fileFormatOption, ColorMapper colorMapper,
 			double dpiFactor, HtmlColor mybackcolor, double margin) {
 		final MinMax minmax = getMinMax(tb, dummyStringBounder);
@@ -179,6 +190,10 @@ public class TextBlockUtils {
 
 	public static LineMetrics getLineMetrics(UFont font, String text) {
 		return font.getLineMetrics(gg, text);
+	}
+
+	public static FontMetrics getFontMetrics(Font font) {
+		return gg.getFontMetrics(font);
 	}
 
 }

@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  *
- * Revision $Revision: 10670 $
+ * Revision $Revision: 11949 $
  *
  */
 package net.sourceforge.plantuml;
@@ -357,7 +357,7 @@ public class StringUtils {
 		do {
 			removeFirstColumn(result);
 		} while (firstColumnRemovable(result));
-		return Collections.unmodifiableList(result);
+		return result;
 	}
 
 	public static void trim(List<String> data, boolean removeEmptyLines) {

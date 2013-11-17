@@ -34,7 +34,6 @@
 package net.sourceforge.plantuml.activitydiagram3.command;
 
 import net.sourceforge.plantuml.activitydiagram3.ActivityDiagram3;
-import net.sourceforge.plantuml.activitydiagram3.LinkRendering;
 import net.sourceforge.plantuml.command.CommandExecutionResult;
 import net.sourceforge.plantuml.command.SingleLineCommand2;
 import net.sourceforge.plantuml.command.regex.RegexConcat;
@@ -61,8 +60,7 @@ public class CommandLink3 extends SingleLineCommand2<ActivityDiagram3> {
 	protected CommandExecutionResult executeArg(ActivityDiagram3 diagram, RegexResult arg) {
 		final HtmlColor color = HtmlColorUtils.getColorIfValid(arg.get("COLOR", 0));
 		if (color != null) {
-			final LinkRendering link = new LinkRendering(color);
-			diagram.setNextLink(link);
+			diagram.setColorNextArrow(color);
 		}
 		return CommandExecutionResult.ok();
 	}

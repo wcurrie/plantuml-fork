@@ -33,15 +33,16 @@
  */
 package net.sourceforge.plantuml.activitydiagram3.ftile.vcompact;
 
+import java.util.List;
+
 import net.sourceforge.plantuml.ColorParam;
 import net.sourceforge.plantuml.FontParam;
 import net.sourceforge.plantuml.ISkinParam;
-import net.sourceforge.plantuml.activitydiagram3.LinkRendering;
+import net.sourceforge.plantuml.activitydiagram3.Branch;
 import net.sourceforge.plantuml.activitydiagram3.ftile.Ftile;
 import net.sourceforge.plantuml.activitydiagram3.ftile.FtileFactory;
 import net.sourceforge.plantuml.activitydiagram3.ftile.FtileFactoryDelegator;
 import net.sourceforge.plantuml.activitydiagram3.ftile.Swimlane;
-import net.sourceforge.plantuml.cucadiagram.Display;
 import net.sourceforge.plantuml.graphic.HtmlColor;
 import net.sourceforge.plantuml.svek.ConditionStyle;
 import net.sourceforge.plantuml.ugraphic.UFont;
@@ -52,28 +53,22 @@ public class FtileFactoryDelegatorIf extends FtileFactoryDelegator {
 		super(factory, skinParam);
 	}
 
-	private static boolean NEW = true;
-
 	@Override
-	public Ftile createIf(Swimlane swimlane, final Ftile tile1, final Ftile tile2, Display labelTest, Display label1, Display label2) {
+	public Ftile createIf(Swimlane swimlane, List<Branch> thens, Branch elseBranch) {
 
 		final UFont font = getSkinParam().getFont(FontParam.ACTIVITY_ARROW2, null);
 
 		final HtmlColor borderColor = getRose().getHtmlColor(getSkinParam(), ColorParam.activityBorder);
 		final HtmlColor backColor = getRose().getHtmlColor(getSkinParam(), ColorParam.activityBackground);
 		final HtmlColor arrowColor = getRose().getHtmlColor(getSkinParam(), ColorParam.activityArrow);
-		final LinkRendering endThenInlinkRendering = tile1.getOutLinkRendering();
-		final LinkRendering endElseInlinkRendering = tile2.getOutLinkRendering();
-		final HtmlColor endThenInlinkColor = endThenInlinkRendering == null ? null : endThenInlinkRendering.getColor();
-		final HtmlColor endElseInlinkColor = endElseInlinkRendering == null ? null : endElseInlinkRendering.getColor();
 
-		if (NEW) {
-			final ConditionStyle conditionStyle = getSkinParam().getConditionStyle();
-			return FtileIf5.create(swimlane, tile1, tile2, borderColor, backColor, labelTest, label1, label2, font, arrowColor,
-					endThenInlinkColor, endElseInlinkColor, getFactory(), conditionStyle);
+		final ConditionStyle conditionStyle = getSkinParam().getConditionStyle();
+		if (thens.size() > 1) {
+			return FtileIf2.create(swimlane, borderColor, backColor, font, arrowColor, getFactory(), conditionStyle,
+					thens, elseBranch);
 		}
-		return FtileIf.create(tile1, tile2, borderColor, backColor, labelTest, label1, label2, font, arrowColor,
-				endThenInlinkColor, endElseInlinkColor);
+		return FtileIf.create(swimlane, borderColor, backColor, font, arrowColor, getFactory(), conditionStyle,
+				thens.get(0), elseBranch);
 	}
 
 }

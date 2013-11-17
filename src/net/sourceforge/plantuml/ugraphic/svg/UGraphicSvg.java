@@ -31,8 +31,6 @@
  */
 package net.sourceforge.plantuml.ugraphic.svg;
 
-import java.awt.Graphics2D;
-import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.OutputStream;
 
@@ -41,7 +39,7 @@ import javax.xml.transform.TransformerException;
 import net.sourceforge.plantuml.Url;
 import net.sourceforge.plantuml.graphic.HtmlColorGradient;
 import net.sourceforge.plantuml.graphic.StringBounder;
-import net.sourceforge.plantuml.graphic.StringBounderUtils;
+import net.sourceforge.plantuml.graphic.TextBlockUtils;
 import net.sourceforge.plantuml.posimo.DotPath;
 import net.sourceforge.plantuml.svg.SvgGraphics;
 import net.sourceforge.plantuml.ugraphic.AbstractCommonUGraphic;
@@ -59,8 +57,6 @@ import net.sourceforge.plantuml.ugraphic.URectangle;
 import net.sourceforge.plantuml.ugraphic.UText;
 
 public class UGraphicSvg extends AbstractUGraphic<SvgGraphics> implements ClipContainer {
-
-	final static Graphics2D imDummy = new BufferedImage(10, 10, BufferedImage.TYPE_INT_RGB).createGraphics();
 
 	private final StringBounder stringBounder;
 	private final boolean textAsPath2;
@@ -109,7 +105,7 @@ public class UGraphicSvg extends AbstractUGraphic<SvgGraphics> implements ClipCo
 
 	private UGraphicSvg(ColorMapper colorMapper, SvgGraphics svg, boolean textAsPath) {
 		super(colorMapper, svg);
-		stringBounder = StringBounderUtils.asStringBounder(imDummy);
+		stringBounder = TextBlockUtils.getDummyStringBounder();
 		this.textAsPath2 = textAsPath;
 		register();
 	}
@@ -117,7 +113,7 @@ public class UGraphicSvg extends AbstractUGraphic<SvgGraphics> implements ClipCo
 	private void register() {
 		registerDriver(URectangle.class, new DriverRectangleSvg(this));
 		if (textAsPath2) {
-			registerDriver(UText.class, new DriverTextAsPathSvg(imDummy.getFontRenderContext(), this));
+			registerDriver(UText.class, new DriverTextAsPathSvg(TextBlockUtils.getFontRenderContext(), this));
 		} else {
 			registerDriver(UText.class, new DriverTextSvg(getStringBounder(), this));
 		}

@@ -97,9 +97,9 @@ public class PSystemBuilder {
 		}
 
 		final PSystemError err = merge(errors);
-		if (OptionFlags.getInstance().isQuiet() == false) {
-			err.print(System.err);
-		}
+//		if (OptionFlags.getInstance().isQuiet() == false) {
+//			err.print(System.err);
+//		}
 		return err;
 
 	}

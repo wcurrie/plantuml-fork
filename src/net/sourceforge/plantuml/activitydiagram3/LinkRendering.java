@@ -33,14 +33,24 @@
  */
 package net.sourceforge.plantuml.activitydiagram3;
 
+import net.sourceforge.plantuml.cucadiagram.Display;
 import net.sourceforge.plantuml.graphic.HtmlColor;
 
 public class LinkRendering {
 
 	private final HtmlColor color;
+	private Display display;
 
 	public LinkRendering(HtmlColor color) {
 		this.color = color;
+	}
+
+	public void setDisplay(Display display) {
+		this.display = display;
+	}
+
+	public Display getDisplay() {
+		return display;
 	}
 
 	public HtmlColor getColor() {

@@ -329,11 +329,6 @@ public class SequenceDiagram extends UmlDiagram {
 		return UmlDiagramType.SEQUENCE;
 	}
 
-	// private Participant boxStart;
-	// private List<String> boxStartComment;
-	// private HtmlColor boxColor;
-	// private boolean boxPending = false;
-
 	private ParticipantEnglober participantEnglober;
 
 	public void boxStart(Display comment, HtmlColor color) {
@@ -354,31 +349,6 @@ public class SequenceDiagram extends UmlDiagram {
 		return participantEnglober != null;
 	}
 
-	// private Participant next(Participant p) {
-	// if (p == null) {
-	// return participants.values().iterator().next();
-	// }
-	// for (final Iterator<Participant> it = participants.values().iterator();
-	// it.hasNext();) {
-	// final Participant current = it.next();
-	// if (current == p && it.hasNext()) {
-	// return it.next();
-	// }
-	// }
-	// throw new IllegalArgumentException("p=" + p.getCode());
-	// }
-	//
-	// private Participant getLastParticipant() {
-	// Participant result = null;
-	// for (Participant p : participants.values()) {
-	// result = p;
-	// }
-	// return result;
-	// }
-	//
-	// public final List<ParticipantEnglober> getParticipantEnglobers() {
-	// return Collections.unmodifiableList(participantEnglobers);
-	// }
 
 	@Override
 	public int getNbImages() {

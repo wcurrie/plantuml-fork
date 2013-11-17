@@ -34,7 +34,6 @@
 package net.sourceforge.plantuml.activitydiagram3.ftile;
 
 import java.awt.geom.Dimension2D;
-import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -60,7 +59,6 @@ import net.sourceforge.plantuml.graphic.HorizontalAlignment;
 import net.sourceforge.plantuml.graphic.HtmlColor;
 import net.sourceforge.plantuml.graphic.HtmlColorUtils;
 import net.sourceforge.plantuml.graphic.StringBounder;
-import net.sourceforge.plantuml.graphic.StringBounderUtils;
 import net.sourceforge.plantuml.graphic.TextBlock;
 import net.sourceforge.plantuml.graphic.TextBlockInterceptorTextBlockable;
 import net.sourceforge.plantuml.graphic.TextBlockUtils;
@@ -81,13 +79,6 @@ import net.sourceforge.plantuml.ugraphic.UTranslate;
 
 public class Swimlanes implements TextBlock {
 
-	private static final StringBounder dummyStringBounder;
-
-	static {
-		final BufferedImage imDummy = new BufferedImage(10, 10, BufferedImage.TYPE_INT_RGB);
-		dummyStringBounder = StringBounderUtils.asStringBounder(imDummy.createGraphics());
-	}
-
 	private final ISkinParam skinParam;;
 
 	private final List<Swimlane> swinlanes = new ArrayList<Swimlane>();
@@ -107,7 +98,7 @@ public class Swimlanes implements TextBlock {
 	}
 
 	private FtileFactory getFtileFactory() {
-		FtileFactory factory = new VCompactFactory(skinParam, dummyStringBounder);
+		FtileFactory factory = new VCompactFactory(skinParam, TextBlockUtils.getDummyStringBounder());
 		factory = new FtileFactoryDelegatorAssembly(factory, skinParam);
 		factory = new FtileFactoryDelegatorIf(factory, skinParam);
 		factory = new FtileFactoryDelegatorWhile(factory, skinParam);
