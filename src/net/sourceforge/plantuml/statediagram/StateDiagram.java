@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 11713 $
+ * Revision $Revision: 12075 $
  *
  */
 package net.sourceforge.plantuml.statediagram;
@@ -46,7 +46,26 @@ import net.sourceforge.plantuml.cucadiagram.LeafType;
 
 public class StateDiagram extends AbstractEntityDiagram {
 
+	public boolean checkConcurrentStateOk(Code code) {
+		if (leafExist(code) == false) {
+			return true;
+		}
+		final IEntity existing = this.getLeafs().get(code);
+		if (getCurrentGroup().getGroupType() == GroupType.CONCURRENT_STATE
+				&& getCurrentGroup() != existing.getParentContainer()) {
+			return false;
+		}
+		if (existing.getParentContainer().getGroupType() == GroupType.CONCURRENT_STATE
+				&& getCurrentGroup() != existing.getParentContainer()) {
+			return false;
+		}
+		return true;
+	}
+
 	public IEntity getOrCreateLeaf(Code code, LeafType type) {
+		if (checkConcurrentStateOk(code) == false) {
+			throw new IllegalStateException("Concurrent State " + code);
+		}
 		if (type == null) {
 			if (code.getCode().startsWith("[*]")) {
 				throw new IllegalArgumentException();
@@ -58,7 +77,6 @@ public class StateDiagram extends AbstractEntityDiagram {
 		}
 		return getOrCreateLeafDefault(code, type);
 	}
-
 
 	public IEntity getStart() {
 		final IGroup g = getCurrentGroup();

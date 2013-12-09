@@ -49,6 +49,8 @@ import net.sourceforge.plantuml.Dimension2DDouble;
 import net.sourceforge.plantuml.EmptyImageBuilder;
 import net.sourceforge.plantuml.FileFormatOption;
 import net.sourceforge.plantuml.api.ImageDataSimple;
+import net.sourceforge.plantuml.core.DiagramDescription;
+import net.sourceforge.plantuml.core.DiagramDescriptionImpl;
 import net.sourceforge.plantuml.core.ImageData;
 import net.sourceforge.plantuml.graphic.HtmlColorUtils;
 import net.sourceforge.plantuml.salt.element.Element;
@@ -101,8 +103,8 @@ public class PSystemSalt extends AbstractPSystem {
 		return new ImageDataSimple(im.getWidth(), im.getHeight());
 	}
 
-	public String getDescription() {
-		return "(Salt)";
+	public DiagramDescription getDescription() {
+		return new DiagramDescriptionImpl("(Salt)", getClass());
 	}
 
 }

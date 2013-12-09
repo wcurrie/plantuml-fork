@@ -172,23 +172,7 @@ public final class CucaDiagramFileMakerSvek2 {
 
 				final Line line = new Line(shapeUid1, shapeUid2, link, colorSequence, ltail, lhead, skinParam,
 						stringBounder, labelFont, getBibliotekon(), dotStringFactory.getGraphvizVersion());
-				// if (OptionFlags.PIC_LINE && link.getLabel() != null &&
-				// link.getLabel().startsWith("@")) {
-				// final Group container1 = link.getEntity1().getContainer();
-				// if (container1 != null) {
-				// line.setPicLine1(getBibliotekon().getCluster((IEntity)
-				// container1));
-				// }
-				// final Group container2 = link.getEntity2().getContainer();
-				// if (container2 != null) {
-				// line.setPicLine2(getBibliotekon().getCluster((IEntity)
-				// container2));
-				// }
-				// }
-				// if (link.getEntryPoint() != null) {
-				// line.setPicLine2(getBibliotekon().getCluster((IEntity)
-				// link.getEntryPoint()));
-				// }
+
 				getBibliotekon().addLine(line);
 
 				if (link.getEntity1().isGroup() == false && link.getEntity1().getEntityType() == LeafType.NOTE
@@ -214,6 +198,9 @@ public final class CucaDiagramFileMakerSvek2 {
 		final boolean trace = OptionFlags.getInstance().isKeepTmpFiles() || OptionFlags.TRACE_DOT || isSvekTrace();
 
 		final String svg = dotStringFactory.getSvg(trace, dotStrings);
+		if (svg.length() == 0) {
+			return new GraphvizCrash();
+		}
 		final String graphvizVersion = extractGraphvizVersion(svg);
 		try {
 			final ClusterPosition position = dotStringFactory.solve(svg).delta(10, 10);

@@ -504,7 +504,7 @@ public class Cluster implements Moveable {
 		}
 	}
 
-	public boolean printCluster2(StringBuilder sb, Collection<Line> lines, StringBounder stringBounder) {
+	public boolean printCluster2(StringBuilder sb, Collection<Line> lines, StringBounder stringBounder, DotMode dotMode) {
 		// Log.println("Cluster::printCluster " + this);
 
 		boolean added = false;
@@ -513,10 +513,12 @@ public class Cluster implements Moveable {
 			added = true;
 		}
 
-		appendRankSame(sb, lines);
+		if (dotMode != DotMode.NO_LEFT_RIGHT) {
+			appendRankSame(sb, lines);
+		}
 
 		for (Cluster child : getChildren()) {
-			child.printInternal(sb, lines, stringBounder);
+			child.printInternal(sb, lines, stringBounder, dotMode);
 		}
 
 		return added;
@@ -620,7 +622,7 @@ public class Cluster implements Moveable {
 		return null;
 	}
 
-	private void printInternal(StringBuilder sb, Collection<Line> lines, StringBounder stringBounder) {
+	private void printInternal(StringBuilder sb, Collection<Line> lines, StringBounder stringBounder, DotMode dotMode) {
 		final boolean thereALinkFromOrToGroup = isThereALinkFromOrToGroup(lines);
 		if (thereALinkFromOrToGroup) {
 			subgraphCluster(sb, "a");
@@ -693,7 +695,7 @@ public class Cluster implements Moveable {
 		}
 		SvekUtils.println(sb);
 		printCluster1(sb, lines);
-		final boolean added = printCluster2(sb, lines, stringBounder);
+		final boolean added = printCluster2(sb, lines, stringBounder, dotMode);
 		if (hasEntryOrExitPoint && added == false) {
 			final String empty = "empty" + color;
 			sb.append(empty + " [shape=point,width=.01,label=\"\"];");

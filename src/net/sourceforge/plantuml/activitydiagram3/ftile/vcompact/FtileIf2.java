@@ -125,9 +125,9 @@ class FtileIf2 extends AbstractFtile {
 		final List<Connection> conns = new ArrayList<Connection>();
 		for (Branch branch : thens) {
 			final TextBlock tb1 = TextBlockUtils.create(branch.getLabelPositive(), fc, HorizontalAlignment.LEFT,
-					new SpriteContainerEmpty());
+					ftileFactory);
 			final TextBlock tbTest = TextBlockUtils.create(branch.getLabelTest(), fc, HorizontalAlignment.LEFT,
-					new SpriteContainerEmpty());
+					ftileFactory);
 			FtileDiamondInside diamond = new FtileDiamondInside(branch.shadowing(), backColor, borderColor, swimlane,
 					tbTest);
 			diamond = diamond.withNorth(tb1);
@@ -135,7 +135,7 @@ class FtileIf2 extends AbstractFtile {
 		}
 
 		final TextBlock tb2 = TextBlockUtils.create(branch2.getLabelPositive(), fc, HorizontalAlignment.LEFT,
-				new SpriteContainerEmpty());
+				ftileFactory);
 		final int last = diamonds.size() - 1;
 		diamonds.set(last, ((FtileDiamondInside) diamonds.get(last)).withEast(tb2));
 
@@ -317,6 +317,9 @@ class FtileIf2 extends AbstractFtile {
 			final StringBounder stringBounder = ug.getStringBounder();
 			final double totalHeight = calculateDimensionInternal(stringBounder).getHeight();
 			final Point2D p1 = getP1(stringBounder);
+			if (p1 == null) {
+				return;
+			}
 			final Point2D p2 = new Point2D.Double(p1.getX(), totalHeight);
 
 			final Snake snake = new Snake(color, Arrows.asToDown());

@@ -50,6 +50,10 @@ public class ReadLineReader implements ReadLine {
 		if (s != null && s.startsWith("\uFEFF")) {
 			s = s.substring(1);
 		}
+		if (s != null) {
+			s = s.replace('\u2013', '-');
+			s = s.replace('\u00A0', ' ');
+		}
 		return s;
 	}
 

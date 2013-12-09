@@ -197,7 +197,7 @@ public class Swimlanes implements TextBlock {
 			}
 
 			final TextBlock swTitle = TextBlockUtils.create(swimlane.getDisplay(), fontConfiguration,
-					HorizontalAlignment.LEFT, new SpriteContainerEmpty());
+					HorizontalAlignment.LEFT, skinParam);
 			final double titleWidth = swTitle.calculateDimension(stringBounder).getWidth();
 			final double posTitle = x2 + (swimlane.getTotalWidth() - titleWidth) / 2;
 			swTitle.drawU(ug.apply(new UTranslate(posTitle, 0)));
@@ -231,7 +231,7 @@ public class Swimlanes implements TextBlock {
 
 			final double drawingWidth = minMax.getWidth() + 2 * separationMargin;
 			final TextBlock swTitle = TextBlockUtils.create(swimlane.getDisplay(), fontConfiguration,
-					HorizontalAlignment.LEFT, new SpriteContainerEmpty());
+					HorizontalAlignment.LEFT, skinParam);
 			final double titleWidth = swTitle.calculateDimension(stringBounder).getWidth();
 			final double totalWidth = Math.max(drawingWidth, titleWidth + 2 * separationMargin);
 
@@ -247,7 +247,7 @@ public class Swimlanes implements TextBlock {
 		double titlesHeight = 0;
 		for (Swimlane swimlane : swinlanes) {
 			final TextBlock swTitle = TextBlockUtils.create(swimlane.getDisplay(), fontConfiguration,
-					HorizontalAlignment.LEFT, new SpriteContainerEmpty());
+					HorizontalAlignment.LEFT, skinParam);
 
 			titlesHeight = Math.max(titlesHeight, swTitle.calculateDimension(stringBounder).getHeight());
 		}

@@ -115,12 +115,6 @@ public final class GroupPngMakerState {
 		}
 		final List<Link> links = getPureInnerLinks();
 		final ISkinParam skinParam = diagram.getSkinParam();
-		// if (OptionFlags.PBBACK && group.getSpecificBackColor() != null) {
-		// skinParam = new SkinParamBackcolored(skinParam, null, group.getSpecificBackColor());
-		// }
-		final DotData dotData = new DotData(group, links, group.getLeafsDirect(), diagram.getUmlDiagramType(),
-				skinParam, group.getRankdir(), new InnerGroupHierarchy(), diagram.getColorMapper(),
-				diagram.getEntityFactory(), diagram.isHideEmptyDescriptionForState());
 
 		boolean hasVerticalLine = false;
 		for (ILeaf leaf : group.getLeafsDirect()) {
@@ -128,6 +122,11 @@ public final class GroupPngMakerState {
 				hasVerticalLine = true;
 			}
 		}
+
+		final DotData dotData = new DotData(group, links, group.getLeafsDirect(), diagram.getUmlDiagramType(),
+				skinParam, group.getRankdir(), new InnerGroupHierarchy(), diagram.getColorMapper(),
+				diagram.getEntityFactory(), diagram.isHideEmptyDescriptionForState(), DotMode.NORMAL);
+
 		final CucaDiagramFileMakerSvek2 svek2 = new CucaDiagramFileMakerSvek2(dotData, diagram.getEntityFactory(),
 				hasVerticalLine, diagram.getSource(), diagram.getPragma());
 

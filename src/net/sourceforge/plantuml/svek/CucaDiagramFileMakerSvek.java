@@ -107,6 +107,17 @@ public final class CucaDiagramFileMakerSvek implements CucaDiagramFileMaker {
 		}
 	}
 
+	private CucaDiagramFileMakerSvek2 buildCucaDiagramFileMakerSvek2(DotMode dotMode) {
+		final DotData dotData = new DotData(diagram.getEntityFactory().getRootGroup(), getOrderedLinks(), diagram
+				.getLeafs().values(), diagram.getUmlDiagramType(), diagram.getSkinParam(), diagram.getRankdir(),
+				diagram, diagram, diagram.getColorMapper(), diagram.getEntityFactory(),
+				diagram.isHideEmptyDescriptionForState(), dotMode);
+		final CucaDiagramFileMakerSvek2 svek2 = new CucaDiagramFileMakerSvek2(dotData, diagram.getEntityFactory(),
+				false, diagram.getSource(), diagram.getPragma());
+		return svek2;
+
+	}
+
 	private ImageData createFileInternal(OutputStream os, List<String> dotStrings, FileFormatOption fileFormatOption)
 			throws IOException, InterruptedException {
 		if (diagram.getUmlDiagramType() == UmlDiagramType.ACTIVITY) {
@@ -115,20 +126,16 @@ public final class CucaDiagramFileMakerSvek implements CucaDiagramFileMaker {
 			new CucaDiagramSimplifierState(diagram, dotStrings);
 		}
 
-		final DotData dotData = new DotData(diagram.getEntityFactory().getRootGroup(), getOrderedLinks(), diagram
-				.getLeafs().values(), diagram.getUmlDiagramType(), diagram.getSkinParam(), diagram.getRankdir(),
-				diagram, diagram, diagram.getColorMapper(), diagram.getEntityFactory(),
-				diagram.isHideEmptyDescriptionForState());
-		final CucaDiagramFileMakerSvek2 svek2 = new CucaDiagramFileMakerSvek2(dotData, diagram.getEntityFactory(),
-				false, diagram.getSource(), diagram.getPragma());
-
+		CucaDiagramFileMakerSvek2 svek2 = buildCucaDiagramFileMakerSvek2(DotMode.NORMAL);
 		TextBlockBackcolored result = svek2.createFile(diagram.getDotStringSkek());
+		if (result instanceof GraphvizCrash) {
+			svek2 = buildCucaDiagramFileMakerSvek2(DotMode.NO_LEFT_RIGHT);
+			result = svek2.createFile(diagram.getDotStringSkek());
+		}
 		result = addLegend(result);
 		result = addTitle(result);
 		result = addHeaderAndFooter(result);
 
-		// final Dimension2D dim =
-		// Dimension2DDouble.delta(result.getDimension(stringBounder), 10);
 		final Dimension2D dim = result.calculateDimension(stringBounder);
 
 		final FileFormat fileFormat = fileFormatOption.getFileFormat();
@@ -159,7 +166,6 @@ public final class CucaDiagramFileMakerSvek implements CucaDiagramFileMaker {
 		CMapData cmap = null;
 		if (diagram.hasUrl() && fileFormatOption.getFileFormat() == FileFormat.PNG) {
 			cmap = CMapData.cmapString(allUrlEncountered, scale);
-			// cmap = cmapString(svek2, allUrlEncountered, scale);
 		}
 
 		final String widthwarning = diagram.getSkinParam().getValue("widthwarning");
@@ -178,7 +184,6 @@ public final class CucaDiagramFileMakerSvek implements CucaDiagramFileMaker {
 			addLinkNew(result, l);
 		}
 		return result;
-		// return diagram.getLinks();
 	}
 
 	private void addLinkNew(List<Link> result, Link link) {
@@ -296,34 +301,25 @@ public final class CucaDiagramFileMakerSvek implements CucaDiagramFileMaker {
 			ug = new UGraphicSvg(diagram.getSkinParam().getColorMapper(), StringUtils.getAsHtml(backColor), false,
 					scale);
 		}
-		// ug.getParam().setSprites(diagram.getSprites());
-
 		result.drawU(ug);
-
 		ug.createXml(os);
-
 	}
 
 	private void createVdx(OutputStream os, FileFormatOption fileFormatOption, final TextBlockBackcolored result,
 			final Dimension2D dim) throws IOException {
 
 		final UGraphicVdx ug = new UGraphicVdx(diagram.getSkinParam().getColorMapper());
-
 		result.drawU(ug);
-
 		ug.createVsd(os);
-
 	}
 
 	private void createEps(OutputStream os, FileFormatOption fileFormatOption, final TextBlockBackcolored result,
 			final Dimension2D dim) throws IOException {
 
 		final UGraphicEps ug = new UGraphicEps(diagram.getSkinParam().getColorMapper(), EpsStrategy.getDefault2());
-		// ug.getParam().setSprites(diagram.getSprites());
 
 		result.drawU(ug);
 		os.write(ug.getEPSCode().getBytes());
-
 	}
 
 }

@@ -47,6 +47,8 @@ import net.sourceforge.plantuml.FileFormat;
 import net.sourceforge.plantuml.FileFormatOption;
 import net.sourceforge.plantuml.UmlDiagram;
 import net.sourceforge.plantuml.UmlDiagramType;
+import net.sourceforge.plantuml.core.DiagramDescription;
+import net.sourceforge.plantuml.core.DiagramDescriptionImpl;
 import net.sourceforge.plantuml.core.ImageData;
 import net.sourceforge.plantuml.cucadiagram.Display;
 import net.sourceforge.plantuml.graphic.HtmlColor;
@@ -265,8 +267,8 @@ public class SequenceDiagram extends UmlDiagram {
 		return true;
 	}
 
-	public String getDescription() {
-		return "(" + participants.size() + " participants)";
+	public DiagramDescription getDescription() {
+		return new DiagramDescriptionImpl("(" + participants.size() + " participants)", getClass());
 	}
 
 	public boolean changeSkin(String className) {
@@ -411,7 +413,7 @@ public class SequenceDiagram extends UmlDiagram {
 			}
 		}
 		for (Event ev : events) {
-			if (ev.getUrl() != null) {
+			if (ev.hasUrl()) {
 				return true;
 			}
 		}

@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 11873 $
+ * Revision $Revision: 12064 $
  *
  */
 package net.sourceforge.plantuml.cucadiagram.dot;
@@ -60,9 +60,9 @@ public class GraphvizUtils {
 		} else {
 			result = new GraphvizLinux(dotString, type);
 		}
-//		if (OptionFlags.GRAPHVIZCACHE) {
-//			return new GraphvizCached(result);
-//		}
+		// if (OptionFlags.GRAPHVIZCACHE) {
+		// return new GraphvizCached(result);
+		// }
 		return result;
 	}
 
@@ -191,10 +191,14 @@ public class GraphvizUtils {
 		return Collections.unmodifiableList(result);
 	}
 
-	static String getTestCreateSimpleFile() throws IOException, InterruptedException {
+	static String getTestCreateSimpleFile() throws IOException {
 		final Graphviz graphviz2 = GraphvizUtils.create("digraph foo { test; }", "svg");
 		final ByteArrayOutputStream baos = new ByteArrayOutputStream();
-		graphviz2.createFile(baos);
+		final ProcessState state = graphviz2.createFile3(baos);
+		if (state != ProcessState.TERMINATED_OK) {
+			return "Error: timeout " + state;
+		}
+
 		final byte data[] = baos.toByteArray();
 
 		if (data.length == 0) {

@@ -58,4 +58,9 @@ public class HSpace implements Event {
 	public Url getUrl() {
 		return null;
 	}
+	
+	public boolean hasUrl() {
+		return false;
+	}
+
 }

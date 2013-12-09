@@ -93,26 +93,24 @@ public final class CucaDiagramTxtMaker {
 		}
 
 		final GraphvizSolverB solver = new GraphvizSolverB();
-		try {
-			final Collection<Path> paths = new ArrayList<Path>();
-			for (Link link : diagram.getLinks()) {
-				final Block b1 = blocks.get(link.getEntity1());
-				final Block b2 = blocks.get(link.getEntity2());
-				paths.add(new Path(b1, b2, null, link.getLength()));
-			}
-			solver.solve(root, paths);
-			for (Path p : paths) {
-				p.getDotPath().draw(globalUg.getCharArea(), getXPixelPerChar(), getYPixelPerChar());
-			}
-			for (IEntity ent : diagram.getLeafs().values()) {
-				final Block b = blocks.get(ent);
-				final Point2D p = b.getPosition();
-				printClass(ent, (UGraphicTxt) globalUg.apply(new UTranslate(p.getX() / getXPixelPerChar(), p.getY() / getYPixelPerChar())));
-			}
 
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		final Collection<Path> paths = new ArrayList<Path>();
+		for (Link link : diagram.getLinks()) {
+			final Block b1 = blocks.get(link.getEntity1());
+			final Block b2 = blocks.get(link.getEntity2());
+			paths.add(new Path(b1, b2, null, link.getLength()));
+		}
+		solver.solve(root, paths);
+		for (Path p : paths) {
+			p.getDotPath().draw(globalUg.getCharArea(), getXPixelPerChar(), getYPixelPerChar());
+		}
+		for (IEntity ent : diagram.getLeafs().values()) {
+			final Block b = blocks.get(ent);
+			final Point2D p = b.getPosition();
+			printClass(
+					ent,
+					(UGraphicTxt) globalUg.apply(new UTranslate(p.getX() / getXPixelPerChar(), p.getY()
+							/ getYPixelPerChar())));
 		}
 
 	}

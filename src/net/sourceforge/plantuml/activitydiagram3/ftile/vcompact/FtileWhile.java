@@ -37,7 +37,7 @@ import java.awt.geom.Dimension2D;
 import java.awt.geom.Point2D;
 import java.util.Set;
 
-import net.sourceforge.plantuml.SpriteContainerEmpty;
+import net.sourceforge.plantuml.SpriteContainer;
 import net.sourceforge.plantuml.activitydiagram3.LinkRendering;
 import net.sourceforge.plantuml.activitydiagram3.ftile.AbstractConnection;
 import net.sourceforge.plantuml.activitydiagram3.ftile.AbstractFtile;
@@ -89,14 +89,13 @@ class FtileWhile extends AbstractFtile {
 
 	}
 
-	private static TextBlock createLabel1(Display test, Display yes, UFont font) {
+	private static TextBlock createLabel1(Display test, Display yes, UFont font, SpriteContainer spriteContainer) {
 		final FontConfiguration fc = new FontConfiguration(font, HtmlColorUtils.BLACK);
-		final TextBlock tmpb = TextBlockUtils.create(yes, fc, HorizontalAlignment.LEFT, new SpriteContainerEmpty());
+		final TextBlock tmpb = TextBlockUtils.create(yes, fc, HorizontalAlignment.LEFT, spriteContainer);
 		if (test == null) {
 			return tmpb;
 		}
-		return TextBlockUtils.mergeTB(
-				TextBlockUtils.create(test, fc, HorizontalAlignment.LEFT, new SpriteContainerEmpty()), tmpb,
+		return TextBlockUtils.mergeTB(TextBlockUtils.create(test, fc, HorizontalAlignment.LEFT, spriteContainer), tmpb,
 				HorizontalAlignment.CENTER);
 	}
 
@@ -104,9 +103,9 @@ class FtileWhile extends AbstractFtile {
 			HtmlColor arrowColor, Display yes, Display out2, UFont font, HtmlColor endInlinkColor,
 			LinkRendering afterEndwhile, FtileFactory ftileFactory) {
 
-		final TextBlock label1 = createLabel1(test, yes, font);
+		final TextBlock label1 = createLabel1(test, yes, font, ftileFactory);
 		final FontConfiguration fc = new FontConfiguration(font, HtmlColorUtils.BLACK);
-		final TextBlock out = TextBlockUtils.create(out2, fc, HorizontalAlignment.LEFT, new SpriteContainerEmpty());
+		final TextBlock out = TextBlockUtils.create(out2, fc, HorizontalAlignment.LEFT, ftileFactory);
 
 		final Ftile diamond = new FtileDiamond(whileBlock.shadowing(), backColor, borderColor,
 				whileBlock.getSwimlaneOut()).withNorth(label1).withWest(out);

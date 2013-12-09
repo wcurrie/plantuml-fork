@@ -43,6 +43,8 @@ import java.util.List;
 import net.sourceforge.plantuml.AbstractPSystem;
 import net.sourceforge.plantuml.FileFormatOption;
 import net.sourceforge.plantuml.api.ImageDataSimple;
+import net.sourceforge.plantuml.core.DiagramDescription;
+import net.sourceforge.plantuml.core.DiagramDescriptionImpl;
 import net.sourceforge.plantuml.core.ImageData;
 import net.sourceforge.plantuml.cucadiagram.Display;
 import net.sourceforge.plantuml.graphic.FontConfiguration;
@@ -60,8 +62,8 @@ public class PSystemCreole extends AbstractPSystem {
 	public PSystemCreole() {
 	}
 
-	public String getDescription() {
-		return "(Creole)";
+	public DiagramDescription getDescription() {
+		return new DiagramDescriptionImpl("(Creole)", getClass());
 	}
 
 	public void doCommandLine(String line) {

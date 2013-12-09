@@ -123,7 +123,7 @@ public class SlotFinder implements UGraphic {
 	}
 
 	public ColorMapper getColorMapper() {
-		throw new UnsupportedOperationException();
+		return new ColorMapperIdentity();
 	}
 
 	public void startUrl(Url url) {

@@ -62,14 +62,15 @@ public class CommandLinkState extends SingleLineCommand2<StateDiagram> {
 		return new RegexConcat(new RegexLeaf("^"), //
 				getStatePattern("ENT1"), //
 				new RegexLeaf("\\s*"), //
-				new RegexConcat(//
+				new RegexConcat(
+						//
 						new RegexLeaf("ARROW_CROSS_START", "(x)?"), //
 						new RegexLeaf("ARROW_BODY1", "(-+)"), //
 						new RegexLeaf("ARROW_STYLE1",
-						"(?:\\[((?:#\\w+|dotted|dashed|bold|hidden)(?:,#\\w+|,dotted|,dashed|,bold|,hidden)*)\\])?"), //
+								"(?:\\[((?:#\\w+|dotted|dashed|bold|hidden)(?:,#\\w+|,dotted|,dashed|,bold|,hidden)*)\\])?"), //
 						new RegexLeaf("ARROW_DIRECTION", "(left|right|up|down|le?|ri?|up?|do?)?"), //
 						new RegexLeaf("ARROW_STYLE2",
-						"(?:\\[((?:#\\w+|dotted|dashed|bold|hidden)(?:,#\\w+|,dotted|,dashed|,bold|,hidden)*)\\])?"), //
+								"(?:\\[((?:#\\w+|dotted|dashed|bold|hidden)(?:,#\\w+|,dotted|,dashed|,bold|,hidden)*)\\])?"), //
 						new RegexLeaf("ARROW_BODY2", "(-*)"), //
 						new RegexLeaf("\\>"), //
 						new RegexLeaf("ARROW_CIRCLE_END", "(o\\s+)?")), //
@@ -92,7 +93,15 @@ public class CommandLinkState extends SingleLineCommand2<StateDiagram> {
 		final String ent2 = arg.get("ENT2", 0);
 
 		final IEntity cl1 = getEntityStart(system, ent1);
+		if (cl1 == null) {
+			return CommandExecutionResult.error("The state " + ent1
+					+ " has been created in a concurrent state : it cannot be used here.");
+		}
 		final IEntity cl2 = getEntityEnd(system, ent2);
+		if (cl2 == null) {
+			return CommandExecutionResult.error("The state " + ent2
+					+ " has been created in a concurrent state : it cannot be used here.");
+		}
 
 		if (arg.get("ENT1", 1) != null) {
 			cl1.setStereotype(new Stereotype(arg.get("ENT1", 1)));
@@ -131,26 +140,26 @@ public class CommandLinkState extends SingleLineCommand2<StateDiagram> {
 		return CommandExecutionResult.ok();
 	}
 
-//	public static void applyStyle(String arrowStyle, Link link) {
-//		if (arrowStyle == null) {
-//			return;
-//		}
-//		final StringTokenizer st = new StringTokenizer(arrowStyle, ",");
-//		while (st.hasMoreTokens()) {
-//			final String s = st.nextToken();
-//			if (s.equalsIgnoreCase("dashed")) {
-//				link.goDashed();
-//			} else if (s.equalsIgnoreCase("bold")) {
-//				link.goBold();
-//			} else if (s.equalsIgnoreCase("dotted")) {
-//				link.goDotted();
-//			} else if (s.equalsIgnoreCase("hidden")) {
-//				link.goHidden();
-//			} else {
-//				link.setSpecificColor(s);
-//			}
-//		}
-//	}
+	// public static void applyStyle(String arrowStyle, Link link) {
+	// if (arrowStyle == null) {
+	// return;
+	// }
+	// final StringTokenizer st = new StringTokenizer(arrowStyle, ",");
+	// while (st.hasMoreTokens()) {
+	// final String s = st.nextToken();
+	// if (s.equalsIgnoreCase("dashed")) {
+	// link.goDashed();
+	// } else if (s.equalsIgnoreCase("bold")) {
+	// link.goBold();
+	// } else if (s.equalsIgnoreCase("dotted")) {
+	// link.goDotted();
+	// } else if (s.equalsIgnoreCase("hidden")) {
+	// link.goHidden();
+	// } else {
+	// link.setSpecificColor(s);
+	// }
+	// }
+	// }
 
 	private Direction getDirection(RegexResult arg) {
 		final String arrowDirection = arg.get("ARROW_DIRECTION", 0);
@@ -173,6 +182,9 @@ public class CommandLinkState extends SingleLineCommand2<StateDiagram> {
 		if (code.startsWith("=") && code.endsWith("=")) {
 			code = removeEquals(code);
 			return system.getOrCreateLeaf(Code.of(code), LeafType.SYNCHRO_BAR);
+		}
+		if (system.checkConcurrentStateOk(Code.of(code)) == false) {
+			return null;
 		}
 		return system.getOrCreateLeaf(Code.of(code), null);
 	}
@@ -197,6 +209,9 @@ public class CommandLinkState extends SingleLineCommand2<StateDiagram> {
 		if (code.startsWith("=") && code.endsWith("=")) {
 			code = removeEquals(code);
 			return system.getOrCreateLeaf(Code.of(code), LeafType.SYNCHRO_BAR);
+		}
+		if (system.checkConcurrentStateOk(Code.of(code)) == false) {
+			return null;
 		}
 		return system.getOrCreateLeaf(Code.of(code), null);
 	}

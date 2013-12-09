@@ -46,6 +46,8 @@ import javax.imageio.ImageIO;
 
 import net.sourceforge.plantuml.AbstractPSystem;
 import net.sourceforge.plantuml.FileFormatOption;
+import net.sourceforge.plantuml.core.DiagramDescription;
+import net.sourceforge.plantuml.core.DiagramDescriptionImpl;
 import net.sourceforge.plantuml.core.ImageData;
 import net.sourceforge.plantuml.graphic.GraphicPosition;
 import net.sourceforge.plantuml.graphic.GraphicStrings;
@@ -79,8 +81,8 @@ public class PSystemAppleTwo extends AbstractPSystem {
 		return result;
 	}
 
-	public String getDescription() {
-		return "(Apple //e)";
+	public DiagramDescription getDescription() {
+		return new DiagramDescriptionImpl("(Apple //e)", getClass());
 	}
 
 	private static final byte imm[] = new byte[] { (byte) 255, (byte) 216, (byte) 255, (byte) 224, (byte) 0, (byte) 16,

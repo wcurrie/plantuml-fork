@@ -42,7 +42,7 @@ import java.util.Set;
 
 import net.sourceforge.plantuml.Dimension2DDouble;
 import net.sourceforge.plantuml.MathUtils;
-import net.sourceforge.plantuml.SpriteContainerEmpty;
+import net.sourceforge.plantuml.SpriteContainer;
 import net.sourceforge.plantuml.activitydiagram3.LinkRendering;
 import net.sourceforge.plantuml.activitydiagram3.ftile.AbstractConnection;
 import net.sourceforge.plantuml.activitydiagram3.ftile.AbstractFtile;
@@ -101,14 +101,13 @@ class FtileWhile2 extends AbstractFtile {
 		this.supplementarySouthText = supplementarySouthText;
 	}
 
-	private static TextBlock createLabel1(Display test, Display yes, UFont font) {
+	private static TextBlock createLabel1(Display test, Display yes, UFont font, SpriteContainer spriteContainer) {
 		final FontConfiguration fc = new FontConfiguration(font, HtmlColorUtils.BLACK);
-		final TextBlock tmpb = TextBlockUtils.create(yes, fc, HorizontalAlignment.LEFT, new SpriteContainerEmpty());
+		final TextBlock tmpb = TextBlockUtils.create(yes, fc, HorizontalAlignment.LEFT, spriteContainer);
 		if (test == null) {
 			return tmpb;
 		}
-		return TextBlockUtils.mergeTB(
-				TextBlockUtils.create(test, fc, HorizontalAlignment.LEFT, new SpriteContainerEmpty()), tmpb,
+		return TextBlockUtils.mergeTB(TextBlockUtils.create(test, fc, HorizontalAlignment.LEFT, spriteContainer), tmpb,
 				HorizontalAlignment.CENTER);
 	}
 
@@ -118,9 +117,9 @@ class FtileWhile2 extends AbstractFtile {
 
 		// final TextBlock label1 = createLabel1(test, yes, font);
 		final FontConfiguration fc = new FontConfiguration(font, HtmlColorUtils.BLACK);
-		final TextBlock yesTb = TextBlockUtils.create(yes, fc, HorizontalAlignment.LEFT, new SpriteContainerEmpty());
-		final TextBlock testTb = TextBlockUtils.create(test, fc, HorizontalAlignment.LEFT, new SpriteContainerEmpty());
-		final TextBlock out = TextBlockUtils.create(out2, fc, HorizontalAlignment.LEFT, new SpriteContainerEmpty());
+		final TextBlock yesTb = TextBlockUtils.create(yes, fc, HorizontalAlignment.LEFT, ftileFactory);
+		final TextBlock testTb = TextBlockUtils.create(test, fc, HorizontalAlignment.LEFT, ftileFactory);
+		final TextBlock out = TextBlockUtils.create(out2, fc, HorizontalAlignment.LEFT, ftileFactory);
 
 		final Ftile diamond1;
 		final TextBlock supplementarySouthText;
@@ -133,7 +132,7 @@ class FtileWhile2 extends AbstractFtile {
 			diamond1 = new FtileDiamondFoo1(whileBlock.shadowing(), backColor, borderColor, swimlane, testTb)
 					.withNorth(yesTb).withWest(out);
 		} else if (conditionStyle == ConditionStyle.DIAMOND) {
-			supplementarySouthText = createLabel1(test, yes, font);
+			supplementarySouthText = createLabel1(test, yes, font, ftileFactory);
 			diamond1 = new FtileDiamond(whileBlock.shadowing(), backColor, borderColor, swimlane).withWest(out)
 					.withSouth(supplementarySouthText);
 		} else {

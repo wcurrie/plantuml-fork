@@ -64,14 +64,10 @@ public class Notes implements Event, Iterable<Note> {
 	public Url getUrl() {
 		return null;
 	}
-
-//	public Note get(int n) {
-//		return notes.get(n);
-//	}
-//
-//	public int size() {
-//		return notes.size();
-//	}
+	
+	public boolean hasUrl() {
+		return false;
+	}
 
 	public Iterator<Note> iterator() {
 		return notes.iterator();

@@ -54,6 +54,7 @@ import net.sourceforge.plantuml.cucadiagram.dot.Graphviz;
 import net.sourceforge.plantuml.cucadiagram.dot.GraphvizUtils;
 import net.sourceforge.plantuml.cucadiagram.dot.GraphvizVersion;
 import net.sourceforge.plantuml.cucadiagram.dot.GraphvizVersions;
+import net.sourceforge.plantuml.cucadiagram.dot.ProcessState;
 import net.sourceforge.plantuml.graphic.StringBounder;
 import net.sourceforge.plantuml.graphic.TextBlock;
 import net.sourceforge.plantuml.posimo.Moveable;
@@ -172,7 +173,7 @@ public class DotStringFactory implements Moveable {
 			line.appendLine(sb);
 		}
 		root.fillRankMin(rankMin);
-		root.printCluster2(sb, bibliotekon.allLines(), stringBounder);
+		root.printCluster2(sb, bibliotekon.allLines(), stringBounder, dotData.getDotMode());
 		printMinRanking(sb);
 
 		for (Line line : bibliotekon.lines1()) {
@@ -234,14 +235,14 @@ public class DotStringFactory implements Moveable {
 		}
 		return 35;
 	}
-	
+
 	public GraphvizVersion getGraphvizVersion() {
 		final Graphviz graphviz = GraphvizUtils.create("foo;", "svg");
 		final File f = graphviz.getDotExe();
 		return GraphvizVersions.getInstance().getVersion(f);
 	}
 
-	public String getSvg(boolean trace, String... dotStrings) throws IOException, InterruptedException {
+	public String getSvg(boolean trace, String... dotStrings) throws IOException {
 		final String dotString = createDotString(dotStrings);
 
 		if (trace) {
@@ -251,8 +252,11 @@ public class DotStringFactory implements Moveable {
 
 		final Graphviz graphviz = GraphvizUtils.create(dotString, "svg");
 		final ByteArrayOutputStream baos = new ByteArrayOutputStream();
-		graphviz.createFile(baos);
+		final ProcessState state = graphviz.createFile3(baos);
 		baos.close();
+		if (state != ProcessState.TERMINATED_OK) {
+			throw new IllegalStateException("Timeout4 " + state);
+		}
 		final byte[] result = baos.toByteArray();
 		final String s = new String(result, "UTF-8");
 

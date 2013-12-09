@@ -56,6 +56,7 @@ import net.sourceforge.plantuml.OptionFlags;
 import net.sourceforge.plantuml.UniqueSequence;
 import net.sourceforge.plantuml.cucadiagram.dot.Graphviz;
 import net.sourceforge.plantuml.cucadiagram.dot.GraphvizUtils;
+import net.sourceforge.plantuml.cucadiagram.dot.ProcessState;
 import net.sourceforge.plantuml.svek.MinFinder;
 
 public class GraphvizSolverB {
@@ -88,7 +89,7 @@ public class GraphvizSolverB {
 		}
 	}
 
-	public Dimension2D solve(Cluster root, Collection<Path> paths) throws IOException, InterruptedException {
+	public Dimension2D solve(Cluster root, Collection<Path> paths) throws IOException {
 		final String dotString = new DotxMaker(root, paths).createDotString("nodesep=0.2;", "ranksep=0.2;");
 
 		if (OptionFlags.getInstance().isKeepTmpFiles()) {
@@ -103,8 +104,11 @@ public class GraphvizSolverB {
 
 		final Graphviz graphviz = GraphvizUtils.create(dotString, "svg");
 		final ByteArrayOutputStream baos = new ByteArrayOutputStream();
-		graphviz.createFile(baos);
+		final ProcessState state = graphviz.createFile3(baos);
 		baos.close();
+		if (state != ProcessState.TERMINATED_OK) {
+			throw new IllegalStateException("Timeout2 " + state);
+		}
 		final byte[] result = baos.toByteArray();
 		final String s = new String(result, "UTF-8");
 		// Log.println("result=" + s);
@@ -238,11 +242,14 @@ public class GraphvizSolverB {
 		return result;
 	}
 
-	private void exportPng(final String dotString, File f) throws IOException, InterruptedException {
+	private void exportPng(final String dotString, File f) throws IOException {
 		final Graphviz graphviz = GraphvizUtils.create(dotString, "png");
 		final OutputStream os = new BufferedOutputStream(new FileOutputStream(f));
-		graphviz.createFile(os);
+		final ProcessState state = graphviz.createFile3(os);
 		os.close();
+		if (state != ProcessState.TERMINATED_OK) {
+			throw new IllegalStateException("Timeout3 " + state);
+		}
 	}
 
 	private Path getPath(Collection<Path> paths, int start, int end) {

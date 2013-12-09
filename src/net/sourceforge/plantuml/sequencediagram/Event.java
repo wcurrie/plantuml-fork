@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 9786 $
+ * Revision $Revision: 12054 $
  *
  */
 package net.sourceforge.plantuml.sequencediagram;
@@ -40,5 +40,7 @@ public interface Event {
 	boolean dealWith(Participant someone);
 
 	Url getUrl();
+
+	boolean hasUrl();
 
 }

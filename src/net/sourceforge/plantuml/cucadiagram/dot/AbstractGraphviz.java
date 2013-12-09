@@ -28,13 +28,12 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 11325 $
+ * Revision $Revision: 12064 $
  *
  */
 package net.sourceforge.plantuml.cucadiagram.dot;
 
 import java.io.File;
-import java.io.IOException;
 import java.io.OutputStream;
 import java.util.Arrays;
 import java.util.List;
@@ -77,7 +76,7 @@ abstract class AbstractGraphviz implements Graphviz {
 
 	abstract protected File specificDotExe();
 
-	final public void createFile(OutputStream os) throws IOException, InterruptedException {
+	final public ProcessState createFile3(OutputStream os) {
 		if (dotString == null) {
 			throw new IllegalArgumentException();
 		}
@@ -88,14 +87,16 @@ abstract class AbstractGraphviz implements Graphviz {
 		}
 		final String cmd[] = getCommandLine();
 		ProcessRunner p = null;
+		ProcessState state = null;
 		try {
 			Log.info("Starting Graphviz process " + Arrays.asList(cmd));
 			Log.info("DotString size: " + dotString.length());
 			p = new ProcessRunner(cmd);
-			p.run(dotString.getBytes(), os);
+			state = p.run2(dotString.getBytes(), os);
+//			if (state == ProcessState.TERMINATED_OK) {
+//				result = true;
+//			}
 			Log.info("Ending process ok");
-		} catch (InterruptedException e) {
-			Log.error("Interrupted");
 		} catch (Throwable e) {
 			e.printStackTrace();
 			Log.error("Error: " + e);
@@ -118,21 +119,24 @@ abstract class AbstractGraphviz implements Graphviz {
 				throw new IllegalStateException("Dot out " + p.getOut());
 			}
 		}
-
+		return state;
 	}
 
 	private boolean illegalDotExe() {
 		return dotExe == null || dotExe.isFile() == false || dotExe.canRead() == false;
 	}
 
-	final public String dotVersion() throws IOException, InterruptedException {
+	final public String dotVersion() {
 		final String cmd[] = getCommandLineVersion();
 		return executeCmd(cmd);
 	}
 
-	private String executeCmd(final String cmd[]) throws IOException, InterruptedException {
+	private String executeCmd(final String cmd[]) {
 		final ProcessRunner p = new ProcessRunner(cmd);
-		p.run(null, null);
+		final ProcessState state = p.run2(null, null);
+		if (state != ProcessState.TERMINATED_OK) {
+			return "?";
+		}
 		final StringBuilder sb = new StringBuilder();
 		if (StringUtils.isNotEmpty(p.getOut())) {
 			sb.append(p.getOut());

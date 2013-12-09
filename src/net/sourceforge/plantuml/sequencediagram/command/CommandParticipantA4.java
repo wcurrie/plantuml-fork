@@ -49,7 +49,8 @@ public class CommandParticipantA4 extends CommandParticipant {
 				new RegexLeaf("\\s+"), //
 				new RegexLeaf("CODE", "\"([^\"]+)\""), //
 				new RegexLeaf("\\s*"), //
-				new RegexLeaf("STEREO", "(?:\\s*(\\<\\<.*\\>\\>))?"), //
+				// new RegexLeaf("STEREO", "(?:\\s*(\\<\\<.*\\>\\>))?"), //
+				new RegexLeaf("STEREO", "(\\<\\<.*\\>\\>)?"), //
 				new RegexLeaf("\\s*"), //
 				new RegexLeaf("URL", "(" + UrlBuilder.getRegexp() + ")?"), //
 				new RegexLeaf("\\s*"), //

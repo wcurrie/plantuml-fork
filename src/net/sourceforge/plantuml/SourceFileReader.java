@@ -64,6 +64,11 @@ public class SourceFileReader implements ISourceFileReader {
 		this(file, file.getAbsoluteFile().getParentFile());
 	}
 
+	public SourceFileReader(File file, File outputDirectory, String charset) throws IOException {
+		this(new Defines(), file, outputDirectory, Collections.<String> emptyList(), charset, new FileFormatOption(
+				FileFormat.PNG));
+	}
+
 	public SourceFileReader(final File file, File outputDirectory) throws IOException {
 		this(new Defines(), file, outputDirectory, Collections.<String> emptyList(), null, new FileFormatOption(
 				FileFormat.PNG));
@@ -92,7 +97,8 @@ public class SourceFileReader implements ISourceFileReader {
 		}
 		this.outputDirectory = outputDirectory;
 
-		builder = new BlockUmlBuilder(config, charset, defines, getReader(charset), file.getAbsoluteFile().getParentFile());
+		builder = new BlockUmlBuilder(config, charset, defines, getReader(charset), file.getAbsoluteFile()
+				.getParentFile());
 	}
 
 	public boolean hasError() throws IOException, InterruptedException {

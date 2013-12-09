@@ -48,6 +48,8 @@ import net.sourceforge.plantuml.FileFormatOption;
 import net.sourceforge.plantuml.UmlDiagram;
 import net.sourceforge.plantuml.UmlDiagramType;
 import net.sourceforge.plantuml.api.ImageDataSimple;
+import net.sourceforge.plantuml.core.DiagramDescription;
+import net.sourceforge.plantuml.core.DiagramDescriptionImpl;
 import net.sourceforge.plantuml.core.ImageData;
 import net.sourceforge.plantuml.cucadiagram.Display;
 import net.sourceforge.plantuml.graphic.TextBlockUtils;
@@ -87,8 +89,8 @@ public class PostItDiagram extends UmlDiagram {
 		return new ImageDataSimple();
 	}
 
-	public String getDescription() {
-		return "Board of post-it";
+	public DiagramDescription getDescription() {
+		return new DiagramDescriptionImpl("Board of post-it", getClass());
 	}
 
 	public Area getDefaultArea() {

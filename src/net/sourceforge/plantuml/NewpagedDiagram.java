@@ -41,6 +41,8 @@ import java.util.List;
 import net.sourceforge.plantuml.command.Command;
 import net.sourceforge.plantuml.command.CommandExecutionResult;
 import net.sourceforge.plantuml.core.Diagram;
+import net.sourceforge.plantuml.core.DiagramDescription;
+import net.sourceforge.plantuml.core.DiagramDescriptionImpl;
 import net.sourceforge.plantuml.core.ImageData;
 
 public class NewpagedDiagram extends AbstractPSystem {
@@ -84,7 +86,7 @@ public class NewpagedDiagram extends AbstractPSystem {
 		return nb;
 	}
 
-	public String getDescription() {
+	public DiagramDescription getDescription() {
 		final StringBuilder sb = new StringBuilder();
 		for (Diagram d : diagrams) {
 			if (sb.length() > 0) {
@@ -92,7 +94,7 @@ public class NewpagedDiagram extends AbstractPSystem {
 			}
 			sb.append(d.getDescription());
 		}
-		return sb.toString();
+		return new DiagramDescriptionImpl(sb.toString(), getClass());
 	}
 
 	public String getWarningOrError() {

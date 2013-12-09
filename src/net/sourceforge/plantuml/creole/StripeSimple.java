@@ -43,6 +43,7 @@ import net.sourceforge.plantuml.graphic.FontConfiguration;
 import net.sourceforge.plantuml.graphic.FontPosition;
 import net.sourceforge.plantuml.graphic.FontStyle;
 import net.sourceforge.plantuml.graphic.ImgValign;
+import net.sourceforge.plantuml.ugraphic.Sprite;
 
 public class StripeSimple implements Stripe {
 
@@ -87,6 +88,7 @@ public class StripeSimple implements Stripe {
 		this.commands.add(CommandCreoleExposantChange.create(FontPosition.EXPOSANT));
 		this.commands.add(CommandCreoleExposantChange.create(FontPosition.INDICE));
 		this.commands.add(CommandCreoleImg.create());
+		this.commands.add(CommandCreoleSprite.create());
 		this.commands.add(CommandCreoleFontFamilyChange.create());
 		this.commands.add(CommandCreoleFontFamilyChange.createEol());
 		this.commands.add(CommandCreoleMonospaced.create());
@@ -130,6 +132,13 @@ public class StripeSimple implements Stripe {
 
 	public void addUrl(Url url) {
 		atoms.add(AtomText.createUrl(url, fontConfiguration));
+	}
+
+	public void addSprite(String src) {
+		final Sprite sprite = skinParam.getSprite(src);
+		if (sprite != null) {
+			atoms.add(new AtomSprite(sprite.asTextBlock(fontConfiguration.getColor())));
+		}
 	}
 
 	private void modifyStripe(String line) {

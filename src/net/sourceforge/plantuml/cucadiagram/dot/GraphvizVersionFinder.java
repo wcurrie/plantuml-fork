@@ -34,7 +34,6 @@
 package net.sourceforge.plantuml.cucadiagram.dot;
 
 import java.io.File;
-import java.io.IOException;
 
 import net.sourceforge.plantuml.StringUtils;
 
@@ -45,28 +44,23 @@ public class GraphvizVersionFinder {
 	public GraphvizVersionFinder(File dotExe) {
 		this.dotExe = dotExe;
 	}
-	
+
 	public GraphvizVersion getVersion() {
-		try {
-			final String s = dotVersion();
-			if (s.contains("2.34.0")) {
-				return GraphvizVersion.V2_34_0;
-			}
-			return GraphvizVersion.COMMON;
-		} catch (IOException e) {
-			e.printStackTrace();
-			return GraphvizVersion.COMMON;
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-			return GraphvizVersion.COMMON;
+		final String s = dotVersion();
+		if (s.contains("2.34.0")) {
+			return GraphvizVersion.V2_34_0;
 		}
+		return GraphvizVersion.COMMON;
 	}
 
-	public String dotVersion() throws IOException, InterruptedException {
+	public String dotVersion() {
 		final String cmd[] = getCommandLine();
-		
+
 		final ProcessRunner p = new ProcessRunner(cmd);
-		p.run(null, null);
+		final ProcessState state = p.run2(null, null);
+		if (state != ProcessState.TERMINATED_OK) {
+			return "?";
+		}
 		final StringBuilder sb = new StringBuilder();
 		if (StringUtils.isNotEmpty(p.getOut())) {
 			sb.append(p.getOut());

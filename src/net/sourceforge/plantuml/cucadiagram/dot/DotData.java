@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 11160 $
+ * Revision $Revision: 12087 $
  *
  */
 package net.sourceforge.plantuml.cucadiagram.dot;
@@ -46,6 +46,7 @@ import net.sourceforge.plantuml.cucadiagram.Link;
 import net.sourceforge.plantuml.cucadiagram.PortionShower;
 import net.sourceforge.plantuml.cucadiagram.Rankdir;
 import net.sourceforge.plantuml.cucadiagram.entity.EntityFactory;
+import net.sourceforge.plantuml.svek.DotMode;
 import net.sourceforge.plantuml.ugraphic.ColorMapper;
 
 final public class DotData implements PortionShower {
@@ -59,17 +60,20 @@ final public class DotData implements PortionShower {
 	final private IGroup topParent;
 	final private PortionShower portionShower;
 	final private boolean isHideEmptyDescriptionForState;
+	final private DotMode dotMode;
 
 	private final ColorMapper colorMapper;
 	private final EntityFactory entityFactory;
 
 	public DotData(IGroup topParent, List<Link> links, Collection<ILeaf> leafs, UmlDiagramType umlDiagramType,
 			ISkinParam skinParam, Rankdir rankdir, GroupHierarchy groupHierarchy, PortionShower portionShower,
-			ColorMapper colorMapper, EntityFactory entityFactory, boolean isHideEmptyDescriptionForState) {
+			ColorMapper colorMapper, EntityFactory entityFactory, boolean isHideEmptyDescriptionForState,
+			DotMode dotMode) {
 		this.topParent = topParent;
 		if (topParent == null) {
 			throw new IllegalArgumentException();
 		}
+		this.dotMode = dotMode;
 		this.isHideEmptyDescriptionForState = isHideEmptyDescriptionForState;
 		this.colorMapper = colorMapper;
 		this.links = links;
@@ -84,12 +88,12 @@ final public class DotData implements PortionShower {
 
 	public DotData(IGroup topParent, List<Link> links, Collection<ILeaf> leafs, UmlDiagramType umlDiagramType,
 			ISkinParam skinParam, Rankdir rankdir, GroupHierarchy groupHierarchy, ColorMapper colorMapper,
-			EntityFactory entityFactory, boolean isHideEmptyDescriptionForState) {
+			EntityFactory entityFactory, boolean isHideEmptyDescriptionForState, DotMode dotMode) {
 		this(topParent, links, leafs, umlDiagramType, skinParam, rankdir, groupHierarchy, new PortionShower() {
 			public boolean showPortion(EntityPortion portion, ILeaf entity) {
 				return true;
 			}
-		}, colorMapper, entityFactory, isHideEmptyDescriptionForState);
+		}, colorMapper, entityFactory, isHideEmptyDescriptionForState, dotMode);
 	}
 
 	public UmlDiagramType getUmlDiagramType() {
@@ -138,6 +142,10 @@ final public class DotData implements PortionShower {
 
 	public final boolean isHideEmptyDescriptionForState() {
 		return isHideEmptyDescriptionForState;
+	}
+
+	public final DotMode getDotMode() {
+		return dotMode;
 	}
 
 }

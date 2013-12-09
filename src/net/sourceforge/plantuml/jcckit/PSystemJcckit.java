@@ -47,6 +47,8 @@ import jcckit.util.PropertiesBasedConfigData;
 import net.sourceforge.plantuml.AbstractPSystem;
 import net.sourceforge.plantuml.FileFormatOption;
 import net.sourceforge.plantuml.api.ImageDataSimple;
+import net.sourceforge.plantuml.core.DiagramDescription;
+import net.sourceforge.plantuml.core.DiagramDescriptionImpl;
 import net.sourceforge.plantuml.core.ImageData;
 
 public class PSystemJcckit extends AbstractPSystem {
@@ -72,13 +74,12 @@ public class PSystemJcckit extends AbstractPSystem {
 
 		// Writes the off-screen image into a PNG file
 		ImageIO.write(image, "png", os);
-		
+
 		return new ImageDataSimple(width, height);
 	}
 
-	public String getDescription() {
-		return "(JCCKit)";
+	public DiagramDescription getDescription() {
+		return new DiagramDescriptionImpl("(JCCKit)", getClass());
 	}
-
 
 }

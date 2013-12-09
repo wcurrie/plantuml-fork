@@ -83,7 +83,9 @@ public class CommandCreateClass extends SingleLineCommand2<ClassDiagram> {
 						new RegexLeaf("CODE3", "(" + CODE + ")"), //
 						new RegexLeaf("CODE4", "\"([^\"]+)\"")), //
 				new RegexLeaf("GENERIC", "(?:\\s*\\<(" + GenericRegexProducer.PATTERN + ")\\>)?"), //
-				new RegexLeaf("STEREO", "(?:\\s*(\\<{2}.*\\>{2}))?"), //
+				// new RegexLeaf("STEREO", "(?:\\s*(\\<{2}.*\\>{2}))?"), //
+				new RegexLeaf("\\s*"), //
+				new RegexLeaf("STEREO", "(\\<{2}.*\\>{2})?"), //
 				new RegexLeaf("\\s*"), //
 				new RegexLeaf("URL", "(" + UrlBuilder.getRegexp() + ")?"), //
 				new RegexLeaf("\\s*"), //
@@ -108,8 +110,8 @@ public class CommandCreateClass extends SingleLineCommand2<ClassDiagram> {
 			entity = diagram.createLeaf(code, Display.getWithNewlines(display), type);
 		}
 		if (stereotype != null) {
-			entity.setStereotype(new Stereotype(stereotype, diagram.getSkinParam().getCircledCharacterRadius(),
-					diagram.getSkinParam().getFont(FontParam.CIRCLED_CHARACTER, null)));
+			entity.setStereotype(new Stereotype(stereotype, diagram.getSkinParam().getCircledCharacterRadius(), diagram
+					.getSkinParam().getFont(FontParam.CIRCLED_CHARACTER, null)));
 		}
 		if (generic != null) {
 			entity.setGeneric(generic);

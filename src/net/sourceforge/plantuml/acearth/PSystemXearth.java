@@ -47,6 +47,8 @@ import java.util.TimeZone;
 import net.sourceforge.plantuml.AbstractPSystem;
 import net.sourceforge.plantuml.FileFormatOption;
 import net.sourceforge.plantuml.api.ImageDataSimple;
+import net.sourceforge.plantuml.core.DiagramDescription;
+import net.sourceforge.plantuml.core.DiagramDescriptionImpl;
 import net.sourceforge.plantuml.core.ImageData;
 
 import com.ctreber.acearth.ACearth;
@@ -121,8 +123,8 @@ public class PSystemXearth extends AbstractPSystem {
 
 	}
 
-	public String getDescription() {
-		return "(XEarth)";
+	public DiagramDescription getDescription() {
+		return new DiagramDescriptionImpl("(XEarth)", getClass());
 	}
 
 

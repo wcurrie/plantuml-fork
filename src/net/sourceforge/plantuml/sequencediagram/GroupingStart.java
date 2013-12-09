@@ -81,6 +81,11 @@ public class GroupingStart extends Grouping {
 	public Url getUrl() {
 		return null;
 	}
+	
+	public boolean hasUrl() {
+		return false;
+	}
+
 
 	@Override
 	public boolean isParallel() {

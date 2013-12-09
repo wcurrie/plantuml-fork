@@ -52,9 +52,8 @@ public class CommandCreateState2 extends SingleLineCommand2<StateDiagram> {
 
 	public CommandCreateState2() {
 		super(getRegexConcat());
-//				"(?i)^(?:state\\s+)([\\p{L}0-9_.]+)\\s+as\\s+\"([^\"]+)\"\\s*(\\<\\<.*\\>\\>)?\\s*(#\\w+)?$");
 	}
-	
+
 	private static RegexConcat getRegexConcat() {
 		return new RegexConcat(new RegexLeaf("^"), //
 				new RegexLeaf("(?:state\\s+)"), //
@@ -75,6 +74,10 @@ public class CommandCreateState2 extends SingleLineCommand2<StateDiagram> {
 		final Code code = Code.of(arg2.get("CODE", 0));
 		final String display = arg2.get("DISPLAY", 0);
 		final IEntity ent = system.getOrCreateLeaf(code, null);
+		if (system.checkConcurrentStateOk(code) == false) {
+			return CommandExecutionResult.error("The state " + code
+					+ " has been created in a concurrent state : it cannot be used here.");
+		}
 		ent.setDisplay(Display.getWithNewlines(display));
 
 		final String stereotype = arg2.get("STEREOTYPE", 0);
@@ -93,5 +96,5 @@ public class CommandCreateState2 extends SingleLineCommand2<StateDiagram> {
 		}
 		return CommandExecutionResult.ok();
 	}
-	
+
 }

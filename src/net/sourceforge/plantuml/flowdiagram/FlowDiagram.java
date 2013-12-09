@@ -47,6 +47,8 @@ import net.sourceforge.plantuml.FileFormatOption;
 import net.sourceforge.plantuml.UmlDiagram;
 import net.sourceforge.plantuml.UmlDiagramType;
 import net.sourceforge.plantuml.api.ImageDataSimple;
+import net.sourceforge.plantuml.core.DiagramDescription;
+import net.sourceforge.plantuml.core.DiagramDescriptionImpl;
 import net.sourceforge.plantuml.core.ImageData;
 import net.sourceforge.plantuml.golem.MinMaxGolem;
 import net.sourceforge.plantuml.golem.Path;
@@ -77,8 +79,8 @@ public class FlowDiagram extends UmlDiagram implements TextBlock {
 	private final Map<Tile, ActivityBox> tilesBoxes = new HashMap<Tile, ActivityBox>();
 	private Tile lastTile;
 
-	public String getDescription() {
-		return "Flow Diagram";
+	public DiagramDescription getDescription() {
+		return new DiagramDescriptionImpl("Flow Diagram", getClass());
 	}
 
 	@Override

@@ -121,11 +121,11 @@ class FtileIf extends AbstractFtile {
 
 		final FontConfiguration fc = new FontConfiguration(font, HtmlColorUtils.BLACK);
 		final TextBlock tb1 = TextBlockUtils.create(branch1.getLabelPositive(), fc, HorizontalAlignment.LEFT,
-				new SpriteContainerEmpty());
+				ftileFactory);
 		final TextBlock tb2 = TextBlockUtils.create(branch2.getLabelPositive(), fc, HorizontalAlignment.LEFT,
-				new SpriteContainerEmpty());
+				ftileFactory);
 		final TextBlock tbTest = TextBlockUtils.create(branch1.getLabelTest(), fc, HorizontalAlignment.LEFT,
-				new SpriteContainerEmpty());
+				ftileFactory);
 
 		final Ftile diamond1;
 		if (conditionStyle == ConditionStyle.INSIDE) {

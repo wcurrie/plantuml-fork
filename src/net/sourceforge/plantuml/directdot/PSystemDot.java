@@ -37,9 +37,12 @@ import java.io.OutputStream;
 import net.sourceforge.plantuml.AbstractPSystem;
 import net.sourceforge.plantuml.FileFormatOption;
 import net.sourceforge.plantuml.api.ImageDataSimple;
+import net.sourceforge.plantuml.core.DiagramDescription;
+import net.sourceforge.plantuml.core.DiagramDescriptionImpl;
 import net.sourceforge.plantuml.core.ImageData;
 import net.sourceforge.plantuml.cucadiagram.dot.Graphviz;
 import net.sourceforge.plantuml.cucadiagram.dot.GraphvizUtils;
+import net.sourceforge.plantuml.cucadiagram.dot.ProcessState;
 
 public class PSystemDot extends AbstractPSystem {
 
@@ -49,19 +52,17 @@ public class PSystemDot extends AbstractPSystem {
 		this.data = data;
 	}
 
-	public String getDescription() {
-		return "(Dot)";
+	public DiagramDescription getDescription() {
+		return new DiagramDescriptionImpl("(Dot)", getClass());
 	}
 
 	public ImageData exportDiagram(OutputStream os, int num, FileFormatOption fileFormat) throws IOException {
 		final Graphviz graphviz = GraphvizUtils.create(data, fileFormat.getFileFormat().name().toLowerCase());
-		try {
-			graphviz.createFile(os);
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			throw new IOException(e.toString());
+		final ProcessState state = graphviz.createFile3(os);
+		if (state != ProcessState.TERMINATED_OK) {
+			throw new IllegalStateException("Timeout1 " + state);
 		}
+
 		return new ImageDataSimple();
 	}
 }

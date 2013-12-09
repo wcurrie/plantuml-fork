@@ -101,7 +101,8 @@ public class QuoteUtils {
 			"Houston, we have a problem.", //
 			"Boot failure, press any key to continue", //
 			"Big mistake!");
-	// Creativity : how many?
+	// Creativity : how many? 
+	// How many folksingers does it take to change a lightbulb ?
 
 	private QuoteUtils() {
 	}

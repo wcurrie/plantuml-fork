@@ -55,6 +55,8 @@ import net.sourceforge.plantuml.activitydiagram3.ftile.Swimlanes;
 import net.sourceforge.plantuml.api.ImageDataComplex;
 import net.sourceforge.plantuml.api.ImageDataSimple;
 import net.sourceforge.plantuml.command.CommandExecutionResult;
+import net.sourceforge.plantuml.core.DiagramDescription;
+import net.sourceforge.plantuml.core.DiagramDescriptionImpl;
 import net.sourceforge.plantuml.core.ImageData;
 import net.sourceforge.plantuml.cucadiagram.Display;
 import net.sourceforge.plantuml.graphic.FontConfiguration;
@@ -129,8 +131,8 @@ public class ActivityDiagram3 extends UmlDiagram {
 		current().add(new InstructionStop(swinlanes.getCurrentSwimlane()));
 	}
 
-	public String getDescription() {
-		return "activity3";
+	public DiagramDescription getDescription() {
+		return new DiagramDescriptionImpl("activity3", getClass());
 	}
 
 	@Override

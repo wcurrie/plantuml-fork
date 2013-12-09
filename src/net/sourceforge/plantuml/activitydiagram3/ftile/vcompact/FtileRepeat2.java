@@ -41,6 +41,7 @@ import java.util.Set;
 
 import net.sourceforge.plantuml.Dimension2DDouble;
 import net.sourceforge.plantuml.MathUtils;
+import net.sourceforge.plantuml.SpriteContainer;
 import net.sourceforge.plantuml.SpriteContainerEmpty;
 import net.sourceforge.plantuml.activitydiagram3.LinkRendering;
 import net.sourceforge.plantuml.activitydiagram3.ftile.AbstractConnection;
@@ -99,10 +100,10 @@ class FtileRepeat2 extends AbstractFtile {
 
 	public static Ftile create(Swimlane swimlane, Ftile repeat, Display test, HtmlColor borderColor,
 			HtmlColor backColor, UFont font, HtmlColor arrowColor, HtmlColor endRepeatLinkColor,
-			ConditionStyle conditionStyle) {
+			ConditionStyle conditionStyle, SpriteContainer spriteContainer) {
 
 		final FontConfiguration fc = new FontConfiguration(font, HtmlColorUtils.BLACK);
-		final TextBlock tbTest = TextBlockUtils.create(test, fc, HorizontalAlignment.LEFT, new SpriteContainerEmpty());
+		final TextBlock tbTest = TextBlockUtils.create(test, fc, HorizontalAlignment.LEFT, spriteContainer);
 
 		final Ftile diamond1 = new FtileDiamond(repeat.shadowing(), backColor, borderColor, swimlane);
 		final FtileRepeat2 result;

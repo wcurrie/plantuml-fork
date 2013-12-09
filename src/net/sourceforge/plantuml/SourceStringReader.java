@@ -44,6 +44,8 @@ import java.util.Collections;
 import java.util.List;
 
 import net.sourceforge.plantuml.core.Diagram;
+import net.sourceforge.plantuml.core.DiagramDescription;
+import net.sourceforge.plantuml.core.DiagramDescriptionImpl;
 import net.sourceforge.plantuml.core.ImageData;
 import net.sourceforge.plantuml.graphic.GraphicStrings;
 import net.sourceforge.plantuml.preproc.Defines;
@@ -75,26 +77,27 @@ public class SourceStringReader {
 		}
 	}
 
-	public String generateImage(OutputStream os) throws IOException {
+	public DiagramDescription generateImage(OutputStream os) throws IOException {
 		return generateImage(os, 0);
 	}
 
-	public String generateImage(File f) throws IOException {
+	public DiagramDescription generateImage(File f) throws IOException {
 		final OutputStream os = new BufferedOutputStream(new FileOutputStream(f));
-		final String result = generateImage(os, 0);
+		final DiagramDescription result = generateImage(os, 0);
 		os.close();
 		return result;
 	}
 
-	public String generateImage(OutputStream os, FileFormatOption fileFormatOption) throws IOException {
+	public DiagramDescription generateImage(OutputStream os, FileFormatOption fileFormatOption) throws IOException {
 		return generateImage(os, 0, fileFormatOption);
 	}
 
-	public String generateImage(OutputStream os, int numImage) throws IOException {
+	public DiagramDescription generateImage(OutputStream os, int numImage) throws IOException {
 		return generateImage(os, numImage, new FileFormatOption(FileFormat.PNG));
 	}
 
-	public String generateImage(OutputStream os, int numImage, FileFormatOption fileFormatOption) throws IOException {
+	public DiagramDescription generateImage(OutputStream os, int numImage, FileFormatOption fileFormatOption)
+			throws IOException {
 		if (blocks.size() == 0) {
 			final GraphicStrings error = new GraphicStrings(Arrays.asList("No @startuml found"));
 			error.writeImage(os, fileFormatOption, null);
@@ -104,10 +107,11 @@ public class SourceStringReader {
 			final Diagram system = b.getDiagram();
 			final int nbInSystem = system.getNbImages();
 			if (numImage < nbInSystem) {
-				//final CMapData cmap = new CMapData();
+				// final CMapData cmap = new CMapData();
 				final ImageData imageData = system.exportDiagram(os, numImage, fileFormatOption);
 				if (imageData.containsCMapData()) {
-					return system.getDescription() + "\n" + imageData.getCMapData("plantuml");
+					return ((DiagramDescriptionImpl) system.getDescription()).withCMapData(imageData
+							.getCMapData("plantuml"));
 				}
 				return system.getDescription();
 			}

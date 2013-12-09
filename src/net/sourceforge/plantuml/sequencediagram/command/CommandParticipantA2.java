@@ -50,7 +50,9 @@ public class CommandParticipantA2 extends CommandParticipant {
 				new RegexLeaf("CODE", "([\\p{L}0-9_.@]+)"), //
 				new RegexLeaf("\\s+as\\s+"), //
 				new RegexLeaf("FULL", "\"([^\"]+)\""), //
-				new RegexLeaf("STEREO", "(?:\\s*(\\<\\<.*\\>\\>))?"), //
+				new RegexLeaf("\\s*"), //
+				// new RegexLeaf("STEREO", "(?:\\s*(\\<\\<.*\\>\\>))?"), //
+				new RegexLeaf("STEREO", "(\\<\\<.*\\>\\>)?"), //
 				new RegexLeaf("\\s*"), //
 				new RegexLeaf("URL", "(" + UrlBuilder.getRegexp() + ")?"), //
 				new RegexLeaf("\\s*"), //

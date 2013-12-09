@@ -59,11 +59,9 @@ class USymbolNode extends USymbol {
 		ug.draw(shape);
 
 		ug.apply(new UTranslate(width - 10, 10)).draw(new ULine(9, -9));
-		final UPath path = new UPath();
-		path.moveTo(0, 0);
-		path.lineTo(width - 10, 0);
-		path.lineTo(width - 10, height - 10);
-		ug.apply(new UTranslate(0, 10)).draw(path);
+		ug.apply(new UTranslate(0, 10)).draw(new ULine(width - 10, 0));
+		ug.apply(new UTranslate(width - 10, 10)).draw(new ULine(0, height - 10));
+
 	}
 
 	private Margin getMargin() {

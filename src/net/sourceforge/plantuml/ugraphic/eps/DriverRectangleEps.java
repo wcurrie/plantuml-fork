@@ -60,7 +60,11 @@ public class DriverRectangleEps implements UDriver<EpsGraphics> {
 
 		final UClip clip = clipContainer.getClip();
 		if (clip != null) {
-			final Rectangle2D.Double r = clip.getClippedRectangle(new Rectangle2D.Double(x, y, width, height));
+			final Rectangle2D.Double orig = new Rectangle2D.Double(x, y, width, height);
+			final Rectangle2D.Double r = clip.getClippedRectangle(orig);
+			if (r.height < 0) {
+				return;
+			}
 			x = r.x;
 			y = r.y;
 			width = r.width;

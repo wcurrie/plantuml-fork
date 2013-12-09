@@ -58,7 +58,6 @@ import net.sourceforge.plantuml.ugraphic.UImage;
 
 public class AtomImg implements Atom {
 
-	// private final TextBlock tileImage;
 	private final BufferedImage image;
 
 	private AtomImg(BufferedImage image) {

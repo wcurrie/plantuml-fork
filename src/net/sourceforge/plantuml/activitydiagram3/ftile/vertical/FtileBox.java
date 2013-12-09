@@ -123,7 +123,7 @@ public class FtileBox extends AbstractFtile {
 			final Sheet sheet = new CreoleParser(fc, skinParam).createSheet(label);
 			tb = new SheetBlock(sheet, new MyStencil(), new UStroke(1));
 		} else {
-			tb = TextBlockUtils.create(label, fc, HorizontalAlignment.LEFT, new SpriteContainerEmpty());
+			tb = TextBlockUtils.create(label, fc, HorizontalAlignment.LEFT, skinParam);
 		}
 		this.print = label.toString();
 	}

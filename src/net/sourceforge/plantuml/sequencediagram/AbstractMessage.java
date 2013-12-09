@@ -48,8 +48,6 @@ import net.sourceforge.plantuml.skin.ArrowConfiguration;
 public abstract class AbstractMessage implements Event {
 
 	final private Display label;
-	// final private boolean dotted;
-	// final private boolean full;
 	final private ArrowConfiguration arrowConfiguration;
 	final private List<LifeEvent> lifeEvents = new ArrayList<LifeEvent>();
 
@@ -74,6 +72,15 @@ public abstract class AbstractMessage implements Event {
 		return url;
 	}
 
+	public boolean hasUrl() {
+		if (notes != null && notes.hasUrl()) {
+			return true;
+		}
+		if (label != null && label.hasUrl()) {
+			return true;
+		}
+		return getUrl() != null;
+	}
 
 	public final boolean addLifeEvent(LifeEvent lifeEvent) {
 		final Set<Participant> noActivationAuthorized = new HashSet<Participant>();

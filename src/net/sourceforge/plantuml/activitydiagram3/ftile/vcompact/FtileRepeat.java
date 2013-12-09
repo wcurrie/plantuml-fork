@@ -40,6 +40,7 @@ import java.util.List;
 import java.util.Set;
 
 import net.sourceforge.plantuml.Dimension2DDouble;
+import net.sourceforge.plantuml.SpriteContainer;
 import net.sourceforge.plantuml.SpriteContainerEmpty;
 import net.sourceforge.plantuml.activitydiagram3.LinkRendering;
 import net.sourceforge.plantuml.activitydiagram3.ftile.AbstractConnection;
@@ -75,13 +76,14 @@ class FtileRepeat extends AbstractFtile {
 	private final HtmlColor borderColor;
 	private final HtmlColor backColor;
 
-	private FtileRepeat(Ftile repeat, Display test, HtmlColor borderColor, HtmlColor backColor, UFont font) {
+	private FtileRepeat(Ftile repeat, Display test, HtmlColor borderColor, HtmlColor backColor, UFont font,
+			SpriteContainer spriteContainer) {
 		super(repeat.shadowing());
 		this.repeat = repeat;
 		this.borderColor = borderColor;
 		this.backColor = backColor;
 		final FontConfiguration fc = new FontConfiguration(font, HtmlColorUtils.BLACK);
-		this.test = TextBlockUtils.create(test, fc, HorizontalAlignment.LEFT, new SpriteContainerEmpty());
+		this.test = TextBlockUtils.create(test, fc, HorizontalAlignment.LEFT, spriteContainer);
 	}
 
 	public Swimlane getSwimlaneIn() {
@@ -97,8 +99,8 @@ class FtileRepeat extends AbstractFtile {
 	}
 
 	public static Ftile create(Ftile repeat, Display test, HtmlColor borderColor, HtmlColor backColor, UFont font,
-			HtmlColor arrowColor, HtmlColor endRepeatLinkColor) {
-		final FtileRepeat result = new FtileRepeat(repeat, test, borderColor, backColor, font);
+			HtmlColor arrowColor, HtmlColor endRepeatLinkColor, SpriteContainer spriteContainer) {
+		final FtileRepeat result = new FtileRepeat(repeat, test, borderColor, backColor, font, spriteContainer);
 		final List<Connection> conns = new ArrayList<Connection>();
 		conns.add(result.new ConnectionIn(LinkRendering.getColor(repeat.getInLinkRendering(), arrowColor)));
 		conns.add(result.new ConnectionBack(arrowColor));

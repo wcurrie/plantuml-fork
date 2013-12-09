@@ -80,7 +80,7 @@ public class SyntaxChecker {
 		final Diagram system = sourceStringReader.getBlocks().get(0).getDiagram();
 		if (system instanceof UmlDiagram) {
 			result.setUmlDiagramType(((UmlDiagram) system).getUmlDiagramType());
-			result.setDescription(system.getDescription());
+			result.setDescription(system.getDescription().getDescription());
 		} else if (system instanceof PSystemError) {
 			result.setError(true);
 			final PSystemError sys = (PSystemError) system;
@@ -90,7 +90,7 @@ public class SyntaxChecker {
 			}
 			result.setSuggest(sys.getSuggest());
 		} else {
-			result.setDescription(system.getDescription());
+			result.setDescription(system.getDescription().getDescription());
 		}
 
 		return result;

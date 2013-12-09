@@ -73,39 +73,55 @@ public class ComponentRoseDivider extends AbstractTextualComponent {
 	@Override
 	protected void drawInternalU(UGraphic ug, Area area) {
 		final Dimension2D dimensionToUse = area.getDimensionToUse();
-		final TextBlock textBlock = getTextBlock();
-		final StringBounder stringBounder = ug.getStringBounder();
-		final double textWidth = getTextWidth(stringBounder);
-		final double textHeight = getTextHeight(stringBounder);
 
-		final double deltaX = 6;
-		final double xpos = (dimensionToUse.getWidth() - textWidth - deltaX) / 2;
-		final double ypos = (dimensionToUse.getHeight() - textHeight) / 2;
+		ug = ug.apply(new UChangeBackColor(background));
+		if (empty) {
+			drawSep(ug.apply(new UTranslate(0, dimensionToUse.getHeight() / 2)), dimensionToUse.getWidth());
+		} else {
+			final TextBlock textBlock = getTextBlock();
+			final StringBounder stringBounder = ug.getStringBounder();
+			final double textWidth = getTextWidth(stringBounder);
+			final double textHeight = getTextHeight(stringBounder);
+			final double deltaX = 6;
+			final double xpos = (dimensionToUse.getWidth() - textWidth - deltaX) / 2;
+			final double ypos = (dimensionToUse.getHeight() - textHeight) / 2;
 
-		ug = ug.apply(new UChangeBackColor(background)).apply(new UChangeColor(background));
-		final URectangle rectLong = new URectangle(dimensionToUse.getWidth(), 3);
-		if (withShadow) {
-			rectLong.setDeltaShadow(2);
-		}
-		ug.apply(new UTranslate(0, dimensionToUse.getHeight() / 2 - 1)).draw(rectLong);
+			drawSep(ug.apply(new UTranslate(0, dimensionToUse.getHeight() / 2)), dimensionToUse.getWidth());
 
-		ug = ug.apply(new UStroke(stroke.getThickness() / 2)).apply(new UChangeColor(HtmlColorUtils.BLACK));
-		ug.apply(new UTranslate(0, dimensionToUse.getHeight() / 2 - 1)).draw(new ULine(dimensionToUse.getWidth(), 0));
-		ug.apply(new UTranslate(0, dimensionToUse.getHeight() / 2 + 2)).draw(new ULine(dimensionToUse.getWidth(), 0));
-
-		if (empty == false) {
-			ug = ug.apply(new UChangeBackColor(background)).apply(new UChangeColor(HtmlColorUtils.BLACK));
-
+			ug = ug.apply(new UChangeColor(HtmlColorUtils.BLACK));
 			ug = ug.apply(stroke);
 			final URectangle rect = new URectangle(textWidth + deltaX, textHeight);
 			if (withShadow) {
 				rect.setDeltaShadow(4);
 			}
 			ug.apply(new UTranslate(xpos, ypos)).draw(rect);
-			ug = ug.apply(new UStroke());
+			textBlock.drawU(ug.apply(new UTranslate(xpos + deltaX, ypos + getMarginY())));
 
-			textBlock.drawU(ug.apply(new UTranslate((xpos + deltaX), (ypos + getMarginY()))));
+			// drawSep(ug.apply(new UTranslate(xpos + deltaX + textWidth + stroke.getThickness() + , dimensionToUse
+			// .getHeight() / 2)), 10);
 		}
+	}
+
+	private void drawSep(UGraphic ug, double width) {
+		ug = ug.apply(new UChangeColor(background));
+		drawRectLong(ug.apply(new UTranslate(0, -1)), width);
+		drawDoubleLine(ug, width);
+	}
+
+	private void drawRectLong(UGraphic ug, double width) {
+		final URectangle rectLong = new URectangle(width, 3);
+		if (withShadow) {
+			rectLong.setDeltaShadow(2);
+		}
+		ug = ug.apply(new UStroke());
+		ug.draw(rectLong);
+	}
+
+	private void drawDoubleLine(UGraphic ug, final double width) {
+		ug = ug.apply(new UStroke(stroke.getThickness() / 2)).apply(new UChangeColor(HtmlColorUtils.BLACK));
+		final ULine line = new ULine(width, 0);
+		ug.apply(new UTranslate(0, -1)).draw(line);
+		ug.apply(new UTranslate(0, 2)).draw(line);
 	}
 
 	@Override

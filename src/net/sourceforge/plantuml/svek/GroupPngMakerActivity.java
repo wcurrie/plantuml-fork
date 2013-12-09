@@ -85,8 +85,8 @@ public final class GroupPngMakerActivity {
 		for (Link link : diagram.getLinks()) {
 			final IEntity e1 = (IEntity) link.getEntity1();
 			final IEntity e2 = (IEntity) link.getEntity2();
-			if ((e1.getParentContainer() == group) && e1.isGroup() == false
-					&& (e2.getParentContainer() == group) && e2.isGroup() == false) {
+			if (e1.getParentContainer() == group && e1.isGroup() == false && e2.getParentContainer() == group
+					&& e2.isGroup() == false) {
 				result.add(link);
 			}
 		}
@@ -103,14 +103,15 @@ public final class GroupPngMakerActivity {
 		}
 		final List<Link> links = getPureInnerLinks();
 		final ISkinParam skinParam = diagram.getSkinParam();
-//		if (OptionFlags.PBBACK && group.getSpecificBackColor() != null) {
-//			skinParam = new SkinParamBackcolored(skinParam, null, group.getSpecificBackColor());
-//		}
+		// if (OptionFlags.PBBACK && group.getSpecificBackColor() != null) {
+		// skinParam = new SkinParamBackcolored(skinParam, null, group.getSpecificBackColor());
+		// }
 		final DotData dotData = new DotData(group, links, group.getLeafsDirect(), diagram.getUmlDiagramType(),
 				skinParam, group.getRankdir(), new InnerGroupHierarchy(), diagram.getColorMapper(),
-				diagram.getEntityFactory(), false);
+				diagram.getEntityFactory(), false, DotMode.NORMAL);
 
-		final CucaDiagramFileMakerSvek2 svek2 = new CucaDiagramFileMakerSvek2(dotData, diagram.getEntityFactory(), false, diagram.getSource(), diagram.getPragma());
+		final CucaDiagramFileMakerSvek2 svek2 = new CucaDiagramFileMakerSvek2(dotData, diagram.getEntityFactory(),
+				false, diagram.getSource(), diagram.getPragma());
 
 		if (group.getGroupType() == GroupType.INNER_ACTIVITY) {
 			final Stereotype stereo = group.getStereotype();

@@ -42,6 +42,8 @@ import java.util.List;
 
 import net.sourceforge.plantuml.AbstractPSystem;
 import net.sourceforge.plantuml.FileFormatOption;
+import net.sourceforge.plantuml.core.DiagramDescription;
+import net.sourceforge.plantuml.core.DiagramDescriptionImpl;
 import net.sourceforge.plantuml.core.ImageData;
 import net.sourceforge.plantuml.graphic.GraphicStrings;
 import net.sourceforge.plantuml.graphic.HtmlColorUtils;
@@ -78,8 +80,8 @@ public class PSystemListFonts extends AbstractPSystem {
 		return result;
 	}
 
-	public String getDescription() {
-		return "(List fonts)";
+	public DiagramDescription getDescription() {
+		return new DiagramDescriptionImpl("(List fonts)", getClass());
 	}
 
 }

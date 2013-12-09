@@ -39,6 +39,8 @@ import java.util.List;
 
 import net.sourceforge.plantuml.AbstractPSystem;
 import net.sourceforge.plantuml.FileFormatOption;
+import net.sourceforge.plantuml.core.DiagramDescription;
+import net.sourceforge.plantuml.core.DiagramDescriptionImpl;
 import net.sourceforge.plantuml.core.ImageData;
 import net.sourceforge.plantuml.graphic.GraphicPosition;
 import net.sourceforge.plantuml.graphic.GraphicStrings;
@@ -73,8 +75,8 @@ public class PSystemTuring extends AbstractPSystem {
 				GraphicPosition.BACKGROUND_CORNER, UAntiAliasing.ANTI_ALIASING_ON);
 	}
 
-	public String getDescription() {
-		return "(Turing)";
+	public DiagramDescription getDescription() {
+		return new DiagramDescriptionImpl("(Turing)", getClass());
 	}
 
 }

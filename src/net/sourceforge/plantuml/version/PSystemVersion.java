@@ -53,6 +53,8 @@ import javax.imageio.ImageIO;
 import net.sourceforge.plantuml.AbstractPSystem;
 import net.sourceforge.plantuml.FileFormatOption;
 import net.sourceforge.plantuml.Log;
+import net.sourceforge.plantuml.core.DiagramDescription;
+import net.sourceforge.plantuml.core.DiagramDescriptionImpl;
 import net.sourceforge.plantuml.core.ImageData;
 import net.sourceforge.plantuml.cucadiagram.dot.GraphvizUtils;
 import net.sourceforge.plantuml.graphic.GraphicPosition;
@@ -243,8 +245,8 @@ public class PSystemVersion extends AbstractPSystem {
 				GraphicPosition.BACKGROUND_CORNER, UAntiAliasing.ANTI_ALIASING_ON);
 	}
 
-	public String getDescription() {
-		return "(Version)";
+	public DiagramDescription getDescription() {
+		return new DiagramDescriptionImpl("(Version)", getClass());
 	}
 
 	public List<String> getLines() {

@@ -38,6 +38,8 @@ import java.io.OutputStream;
 
 import net.sourceforge.plantuml.AbstractPSystem;
 import net.sourceforge.plantuml.FileFormatOption;
+import net.sourceforge.plantuml.core.DiagramDescription;
+import net.sourceforge.plantuml.core.DiagramDescriptionImpl;
 import net.sourceforge.plantuml.core.ImageData;
 import net.sourceforge.plantuml.ugraphic.ColorMapperIdentity;
 
@@ -54,8 +56,8 @@ public class PSystemPath extends AbstractPSystem {
 		return path.writeImage(os);
 	}
 
-	public String getDescription() {
-		return "(Path)";
+	public DiagramDescription getDescription() {
+		return new DiagramDescriptionImpl("(Path)", getClass());
 	}
 
 

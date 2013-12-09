@@ -45,6 +45,7 @@ import java.util.Map;
 import net.sourceforge.plantuml.FileFormat;
 import net.sourceforge.plantuml.FileFormatOption;
 import net.sourceforge.plantuml.SourceStringReader;
+import net.sourceforge.plantuml.core.DiagramDescription;
 
 public class FtpConnexion {
 
@@ -110,15 +111,15 @@ public class FtpConnexion {
 		final SourceStringReader sourceStringReader = new SourceStringReader(incoming.get(fileName));
 		final ByteArrayOutputStream baos = new ByteArrayOutputStream();
 		final FileFormat format = FileFormat.PNG;
-		final String ok = sourceStringReader.generateImage(baos, new FileFormatOption(format));
+		final DiagramDescription desc = sourceStringReader.generateImage(baos, new FileFormatOption(format));
 		final String pngFileName = format.changeName(fileName, 0);
 		final String errorFileName = pngFileName.substring(0, pngFileName.length() - 4) + ".err";
 		outgoing.remove(pngFileName);
 		outgoing.remove(errorFileName);
-		if (ok != null) {
+		if (desc != null && desc.getDescription() != null) {
 			synchronized (this) {
 				outgoing.put(pngFileName, baos.toByteArray());
-				if (ok.startsWith("(Error)")) {
+				if (desc.getDescription().startsWith("(Error)")) {
 					final ByteArrayOutputStream errBaos = new ByteArrayOutputStream();
 					sourceStringReader.generateImage(errBaos, new FileFormatOption(FileFormat.ATXT));
 					errBaos.close();

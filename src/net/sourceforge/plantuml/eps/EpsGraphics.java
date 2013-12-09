@@ -229,7 +229,7 @@ public class EpsGraphics {
 		} else if (y1 == y2) {
 			epsVLine(y1, Math.min(x1, x2), Math.max(x1, x2));
 		}
-		append("closepath stroke", true);
+		append("stroke", true);
 		ensureVisible(Math.max(x1, x2), Math.max(y1, y2));
 	}
 
@@ -307,7 +307,7 @@ public class EpsGraphics {
 					Log.println("unknown " + seg);
 				}
 			}
-			append("closepath stroke", true);
+			append("stroke", true);
 		}
 
 	}

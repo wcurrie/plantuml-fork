@@ -41,6 +41,8 @@ import net.sourceforge.plantuml.AbstractPSystem;
 import net.sourceforge.plantuml.FileFormat;
 import net.sourceforge.plantuml.FileFormatOption;
 import net.sourceforge.plantuml.api.ImageDataSimple;
+import net.sourceforge.plantuml.core.DiagramDescription;
+import net.sourceforge.plantuml.core.DiagramDescriptionImpl;
 import net.sourceforge.plantuml.core.ImageData;
 
 import org.stathissideris.ascii2image.core.ConversionOptions;
@@ -65,8 +67,8 @@ public class PSystemDitaa extends AbstractPSystem {
 		return new PSystemDitaa(data + line + "\n", processingOptions.performSeparationOfCommonEdges(), dropShadows);
 	}
 
-	public String getDescription() {
-		return "(Ditaa)";
+	public DiagramDescription getDescription() {
+		return new DiagramDescriptionImpl("(Ditaa)", getClass());
 	}
 
 	public ImageData exportDiagram(OutputStream os, int num, FileFormatOption fileFormat) throws IOException {

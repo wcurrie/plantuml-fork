@@ -50,7 +50,8 @@ public class Reference implements Event {
 
 	private final Display strings;
 
-	public Reference(List<Participant> participants, Url url, Display strings, HtmlColor backColorGeneral, HtmlColor backColorElement) {
+	public Reference(List<Participant> participants, Url url, Display strings, HtmlColor backColorGeneral,
+			HtmlColor backColorElement) {
 		this.participants = participants;
 		this.url = url;
 		this.strings = strings;
@@ -72,6 +73,10 @@ public class Reference implements Event {
 
 	public final Url getUrl() {
 		return url;
+	}
+
+	public boolean hasUrl() {
+		return url != null;
 	}
 
 	@Override

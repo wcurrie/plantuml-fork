@@ -44,6 +44,7 @@ import net.sourceforge.plantuml.graphic.HtmlColor;
 import net.sourceforge.plantuml.graphic.StringBounder;
 import net.sourceforge.plantuml.sequencediagram.NotePosition;
 import net.sourceforge.plantuml.skin.rose.Rose;
+import net.sourceforge.plantuml.ugraphic.Sprite;
 
 public class FtileFactoryDelegator implements FtileFactory {
 
@@ -146,6 +147,10 @@ public class FtileFactoryDelegator implements FtileFactory {
 
 	protected FtileFactory getFactory() {
 		return factory;
+	}
+
+	public Sprite getSprite(String name) {
+		return skinParam.getSprite(name);
 	}
 
 }

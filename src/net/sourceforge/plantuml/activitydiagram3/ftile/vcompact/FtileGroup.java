@@ -39,6 +39,7 @@ import java.awt.geom.Point2D;
 import java.util.Set;
 
 import net.sourceforge.plantuml.Dimension2DDouble;
+import net.sourceforge.plantuml.SpriteContainer;
 import net.sourceforge.plantuml.SpriteContainerEmpty;
 import net.sourceforge.plantuml.activitydiagram3.ftile.AbstractFtile;
 import net.sourceforge.plantuml.activitydiagram3.ftile.Ftile;
@@ -66,7 +67,7 @@ public class FtileGroup extends AbstractFtile {
 	private final TextBlock name;
 	private final HtmlColor color;
 
-	public FtileGroup(Ftile inner, Display test, HtmlColor color) {
+	public FtileGroup(Ftile inner, Display test, HtmlColor color, SpriteContainer spriteContainer) {
 		super(inner.shadowing());
 		this.inner = new FtileMarged(inner, 10);
 		this.color = color;
@@ -75,7 +76,7 @@ public class FtileGroup extends AbstractFtile {
 		if (test == null) {
 			this.name = TextBlockUtils.empty(0, 0);
 		} else {
-			this.name = TextBlockUtils.create(test, fc, HorizontalAlignment.LEFT, new SpriteContainerEmpty());
+			this.name = TextBlockUtils.create(test, fc, HorizontalAlignment.LEFT, spriteContainer);
 		}
 	}
 

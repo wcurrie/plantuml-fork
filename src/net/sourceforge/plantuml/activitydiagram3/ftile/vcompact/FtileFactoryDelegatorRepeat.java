@@ -67,9 +67,10 @@ public class FtileFactoryDelegatorRepeat extends FtileFactoryDelegator {
 
 		if (NEW) {
 			final ConditionStyle conditionStyle = getSkinParam().getConditionStyle();
-			return FtileRepeat2.create(swimlane, repeat, test, borderColor, backColor, font, arrowColor, endRepeatLinkColor, conditionStyle);
+			return FtileRepeat2.create(swimlane, repeat, test, borderColor, backColor, font, arrowColor,
+					endRepeatLinkColor, conditionStyle, this);
 		}
-		return FtileRepeat.create(repeat, test, borderColor, backColor, font, arrowColor, endRepeatLinkColor);
+		return FtileRepeat.create(repeat, test, borderColor, backColor, font, arrowColor, endRepeatLinkColor, this);
 	}
 
 }

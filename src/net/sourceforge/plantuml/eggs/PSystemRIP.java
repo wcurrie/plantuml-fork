@@ -46,6 +46,8 @@ import javax.imageio.ImageIO;
 
 import net.sourceforge.plantuml.AbstractPSystem;
 import net.sourceforge.plantuml.FileFormatOption;
+import net.sourceforge.plantuml.core.DiagramDescription;
+import net.sourceforge.plantuml.core.DiagramDescriptionImpl;
 import net.sourceforge.plantuml.core.ImageData;
 import net.sourceforge.plantuml.graphic.GraphicPosition;
 import net.sourceforge.plantuml.graphic.GraphicStrings;
@@ -87,8 +89,8 @@ public class PSystemRIP extends AbstractPSystem {
 				GraphicPosition.BOTTOM, UAntiAliasing.ANTI_ALIASING_ON);
 	}
 
-	public String getDescription() {
-		return "(RIP)";
+	public DiagramDescription getDescription() {
+		return new DiagramDescriptionImpl("(RIP)", getClass());
 	}
 
 	private static final byte imm[] = new byte[] { (byte) 255, (byte) 216, (byte) 255, (byte) 224, (byte) 0, (byte) 16,

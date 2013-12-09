@@ -72,7 +72,9 @@ public class CommandCreateElementMultilines extends CommandMultilines2<Descripti
 		return new RegexConcat(new RegexLeaf("^"), //
 				new RegexLeaf("TYPE", "(usecase|database)\\s+"), //
 				new RegexLeaf("CODE", "([\\p{L}0-9_.]+)"), //
-				new RegexLeaf("STEREO", "(?:\\s*(\\<\\<.+\\>\\>))?"), //
+				new RegexLeaf("\\s*"), //
+				// new RegexLeaf("STEREO", "(?:\\s*(\\<\\<.+\\>\\>))?"), //
+				new RegexLeaf("STEREO", "(\\<\\<.+\\>\\>)?"), //
 				new RegexLeaf("\\s*"), //
 				new RegexLeaf("COLOR", "(#\\w+[-\\\\|/]?\\w+)?"), //
 				new RegexLeaf("\\s*"), //
@@ -114,8 +116,8 @@ public class CommandCreateElementMultilines extends CommandMultilines2<Descripti
 		final ILeaf result = system.createLeaf(code, display, type);
 		result.setUSymbol(usymbol);
 		if (stereotype != null) {
-			result.setStereotype(new Stereotype(stereotype, system.getSkinParam().getCircledCharacterRadius(),
-					system.getSkinParam().getFont(FontParam.CIRCLED_CHARACTER, null)));
+			result.setStereotype(new Stereotype(stereotype, system.getSkinParam().getCircledCharacterRadius(), system
+					.getSkinParam().getFont(FontParam.CIRCLED_CHARACTER, null)));
 		}
 
 		result.setSpecificBackcolor(HtmlColorUtils.getColorIfValid(line0.get("COLOR", 0)));

@@ -56,4 +56,8 @@ public class Delay implements Event {
 		return null;
 	}
 
+	public boolean hasUrl() {
+		return false;
+	}
+
 }

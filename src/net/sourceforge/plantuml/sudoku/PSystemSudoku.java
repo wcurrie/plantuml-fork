@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 11919 $
+ * Revision $Revision: 12053 $
  *
  */
 package net.sourceforge.plantuml.sudoku;
@@ -38,6 +38,8 @@ import java.io.OutputStream;
 
 import net.sourceforge.plantuml.AbstractPSystem;
 import net.sourceforge.plantuml.FileFormatOption;
+import net.sourceforge.plantuml.core.DiagramDescription;
+import net.sourceforge.plantuml.core.DiagramDescriptionImpl;
 import net.sourceforge.plantuml.core.ImageData;
 
 public class PSystemSudoku extends AbstractPSystem {
@@ -50,8 +52,8 @@ public class PSystemSudoku extends AbstractPSystem {
 
 
 
-	public String getDescription() {
-		return "(Sudoku)";
+	public DiagramDescription getDescription() {
+		return new DiagramDescriptionImpl("(Sudoku)", getClass());
 	}
 
 	public PSystemSudoku(Long seed) {

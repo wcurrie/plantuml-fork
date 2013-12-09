@@ -181,7 +181,7 @@ public class GroupRoot implements IGroup {
 	}
 
 	public GroupType getGroupType() {
-		throw new UnsupportedOperationException();
+		return null;
 	}
 
 	public String getNamespace() {

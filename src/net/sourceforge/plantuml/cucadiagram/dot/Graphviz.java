@@ -28,20 +28,19 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 10445 $
+ * Revision $Revision: 12064 $
  *
  */
 package net.sourceforge.plantuml.cucadiagram.dot;
 
 import java.io.File;
-import java.io.IOException;
 import java.io.OutputStream;
 
 public interface Graphviz {
 
-	void createFile(OutputStream os) throws IOException, InterruptedException;
+	ProcessState createFile3(OutputStream os);
 
 	File getDotExe();
 
-	String dotVersion() throws IOException, InterruptedException;
+	String dotVersion();
 }
