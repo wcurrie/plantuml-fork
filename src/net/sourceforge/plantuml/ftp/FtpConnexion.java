@@ -111,7 +111,7 @@ public class FtpConnexion {
 		final SourceStringReader sourceStringReader = new SourceStringReader(incoming.get(fileName));
 		final ByteArrayOutputStream baos = new ByteArrayOutputStream();
 		final FileFormat format = FileFormat.PNG;
-		final DiagramDescription desc = sourceStringReader.generateImage(baos, new FileFormatOption(format));
+		final DiagramDescription desc = sourceStringReader.generateDiagramDescription(baos, new FileFormatOption(format));
 		final String pngFileName = format.changeName(fileName, 0);
 		final String errorFileName = pngFileName.substring(0, pngFileName.length() - 4) + ".err";
 		outgoing.remove(pngFileName);

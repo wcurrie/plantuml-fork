@@ -76,27 +76,71 @@ public class SourceStringReader {
 			throw new IllegalStateException(e);
 		}
 	}
-
-	public DiagramDescription generateImage(OutputStream os) throws IOException {
+	
+	public String generateImage(OutputStream os) throws IOException {
 		return generateImage(os, 0);
 	}
 
-	public DiagramDescription generateImage(File f) throws IOException {
+	public String generateImage(File f) throws IOException {
 		final OutputStream os = new BufferedOutputStream(new FileOutputStream(f));
-		final DiagramDescription result = generateImage(os, 0);
+		final String result = generateImage(os, 0);
 		os.close();
 		return result;
 	}
 
-	public DiagramDescription generateImage(OutputStream os, FileFormatOption fileFormatOption) throws IOException {
+	public String generateImage(OutputStream os, FileFormatOption fileFormatOption) throws IOException {
 		return generateImage(os, 0, fileFormatOption);
 	}
 
-	public DiagramDescription generateImage(OutputStream os, int numImage) throws IOException {
+	public String generateImage(OutputStream os, int numImage) throws IOException {
 		return generateImage(os, numImage, new FileFormatOption(FileFormat.PNG));
 	}
 
-	public DiagramDescription generateImage(OutputStream os, int numImage, FileFormatOption fileFormatOption)
+	public String generateImage(OutputStream os, int numImage, FileFormatOption fileFormatOption) throws IOException {
+		if (blocks.size() == 0) {
+			final GraphicStrings error = new GraphicStrings(Arrays.asList("No @startuml found"));
+			error.writeImage(os, fileFormatOption, null);
+			return null;
+		}
+		for (BlockUml b : blocks) {
+			final Diagram system = b.getDiagram();
+			final int nbInSystem = system.getNbImages();
+			if (numImage < nbInSystem) {
+				//final CMapData cmap = new CMapData();
+				final ImageData imageData = system.exportDiagram(os, numImage, fileFormatOption);
+				if (imageData.containsCMapData()) {
+					return system.getDescription().getDescription() + "\n" + imageData.getCMapData("plantuml");
+				}
+				return system.getDescription().getDescription();
+			}
+			numImage -= nbInSystem;
+		}
+		Log.error("numImage is too big = " + numImage);
+		return null;
+
+	}
+
+
+	public DiagramDescription generateDiagramDescription(OutputStream os) throws IOException {
+		return generateDiagramDescription(os, 0);
+	}
+
+	public DiagramDescription generateDiagramDescription(File f) throws IOException {
+		final OutputStream os = new BufferedOutputStream(new FileOutputStream(f));
+		final DiagramDescription result = generateDiagramDescription(os, 0);
+		os.close();
+		return result;
+	}
+
+	public DiagramDescription generateDiagramDescription(OutputStream os, FileFormatOption fileFormatOption) throws IOException {
+		return generateDiagramDescription(os, 0, fileFormatOption);
+	}
+
+	public DiagramDescription generateDiagramDescription(OutputStream os, int numImage) throws IOException {
+		return generateDiagramDescription(os, numImage, new FileFormatOption(FileFormat.PNG));
+	}
+
+	public DiagramDescription generateDiagramDescription(OutputStream os, int numImage, FileFormatOption fileFormatOption)
 			throws IOException {
 		if (blocks.size() == 0) {
 			final GraphicStrings error = new GraphicStrings(Arrays.asList("No @startuml found"));
