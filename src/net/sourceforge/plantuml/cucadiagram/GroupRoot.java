@@ -257,5 +257,14 @@ public class GroupRoot implements IGroup {
 	public boolean hasUrl() {
 		return false;
 	}
+	
+	public int getHectorLayer() {
+		throw new UnsupportedOperationException();
+	}
+	
+	public void setHectorLayer(int layer) {
+		throw new UnsupportedOperationException();
+	}
+
 
 }

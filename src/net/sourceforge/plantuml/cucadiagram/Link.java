@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 11477 $
+ * Revision $Revision: 12146 $
  *
  */
 package net.sourceforge.plantuml.cucadiagram;
@@ -192,7 +192,7 @@ public class Link implements Hideable, Removeable {
 
 	@Override
 	public String toString() {
-		return super.toString() + " " + cl1 + "-->" + cl2;
+		return super.toString() + " {" + length + "} " + cl1 + "-->" + cl2;
 	}
 
 	public IEntity getEntity1() {
@@ -399,6 +399,26 @@ public class Link implements Hideable, Removeable {
 		return false;
 	}
 
+	public boolean doesTouch(Link other) {
+		if (this.cl1 == other.cl1) {
+			return true;
+		}
+		if (this.cl1 == other.cl2) {
+			return true;
+		}
+		if (this.cl2 == other.cl1) {
+			return true;
+		}
+		if (this.cl2 == other.cl2) {
+			return true;
+		}
+		return false;
+	}
+
+	public boolean isAutolink() {
+		return cl1 == cl2;
+	}
+
 	public boolean isRemoved() {
 		return cl1.isRemoved() || cl2.isRemoved();
 	}
@@ -409,15 +429,5 @@ public class Link implements Hideable, Removeable {
 		}
 		return getUrl() != null;
 	}
-
-	// private Group containerEntryPoint;
-	//
-	// public void setEntryPoint(Group container) {
-	// containerEntryPoint = container;
-	// }
-	//
-	// public Group getEntryPoint() {
-	// return containerEntryPoint;
-	// }
 
 }

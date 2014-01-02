@@ -40,7 +40,7 @@ import net.sourceforge.plantuml.UmlDiagram;
 public class CommandPragma extends SingleLineCommand<UmlDiagram> {
 
 	public CommandPragma() {
-		super("(?i)^!pragma\\s+([A-Za-z_][A-Za-z_0-9]*)(?:\\s+(.*))?$");
+		super("(?i)^!pragma[%s]+([A-Za-z_][A-Za-z_0-9]*)(?:[%s]+(.*))?$");
 	}
 
 	@Override

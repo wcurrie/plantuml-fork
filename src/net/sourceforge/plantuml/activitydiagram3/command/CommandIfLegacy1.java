@@ -50,10 +50,10 @@ public class CommandIfLegacy1 extends SingleLineCommand2<ActivityDiagram3> {
 	static RegexConcat getRegexConcat() {
 		return new RegexConcat(new RegexLeaf("^"), //
 				new RegexLeaf("if"), //
-				new RegexLeaf("\\s*"), //
+				new RegexLeaf("[%s]*"), //
 				new RegexLeaf("TEST", "\\((.+?)\\)"), //
-				new RegexLeaf("\\s*"), //
-				new RegexLeaf("WHEN", "then when\\s+(.*)"), //
+				new RegexLeaf("[%s]*"), //
+				new RegexLeaf("WHEN", "then[%s]when[%s]+(.*)"), //
 				new RegexLeaf(";?$"));
 	}
 

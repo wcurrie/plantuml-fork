@@ -37,6 +37,8 @@ import java.io.IOException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import net.sourceforge.plantuml.command.regex.MyPattern;
+
 public class UncommentReadLine implements ReadLine {
 
 	private final ReadLine raw;
@@ -45,7 +47,7 @@ public class UncommentReadLine implements ReadLine {
 
 	public UncommentReadLine(ReadLine source) {
 		this.raw = source;
-		this.start = Pattern.compile("(?i)((?:\\W|\\<[^<>]*\\>)*)@start");
+		this.start = MyPattern.cmpile("(?i)((?:\\W|\\<[^<>]*\\>)*)@start");
 	}
 
 	public String readLine() throws IOException {

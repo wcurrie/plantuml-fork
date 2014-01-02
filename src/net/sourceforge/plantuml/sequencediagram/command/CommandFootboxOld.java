@@ -42,7 +42,7 @@ import net.sourceforge.plantuml.sequencediagram.SequenceDiagram;
 public class CommandFootboxOld extends SingleLineCommand<SequenceDiagram> {
 
 	public CommandFootboxOld() {
-		super("(?i)^footbox\\s*(on|off)?\\s*$");
+		super("(?i)^footbox[%s]*(on|off)?[%s]*$");
 	}
 
 	@Override

@@ -58,10 +58,10 @@ public final class FactorySequenceNoteCommand implements SingleMultiFactoryComma
 	private RegexConcat getRegexConcatMultiLine() {
 		return new RegexConcat(//
 				new RegexLeaf("^"), //
-				new RegexLeaf("VMERGE", "(/)?\\s*"), //
-				new RegexLeaf("STYLE", "(note|hnote|rnote)\\s+"), //
-				new RegexLeaf("POSITION", "(right|left|over)\\s+"), //
-				new RegexLeaf("PARTICIPANT", "(?:of\\s+)?([\\p{L}0-9_.@]+|\"[^\"]+\")\\s*"), //
+				new RegexLeaf("VMERGE", "(/)?[%s]*"), //
+				new RegexLeaf("STYLE", "(note|hnote|rnote)[%s]+"), //
+				new RegexLeaf("POSITION", "(right|left|over)[%s]+"), //
+				new RegexLeaf("PARTICIPANT", "(?:of[%s]+)?([\\p{L}0-9_.@]+|[%g][^%g]+[%g])[%s]*"), //
 				new RegexLeaf("COLOR", "(#\\w+[-\\\\|/]?\\w+)?"), //
 				new RegexLeaf("$"));
 	}
@@ -69,12 +69,12 @@ public final class FactorySequenceNoteCommand implements SingleMultiFactoryComma
 	private RegexConcat getRegexConcatSingleLine() {
 		return new RegexConcat(//
 				new RegexLeaf("^"), //
-				new RegexLeaf("VMERGE", "(/)?\\s*"), //
-				new RegexLeaf("STYLE", "(note|hnote|rnote)\\s+"), //
-				new RegexLeaf("POSITION", "(right|left|over)\\s+"), //
-				new RegexLeaf("PARTICIPANT", "(?:of\\s+)?([\\p{L}0-9_.@]+|\"[^\"]+\")\\s*"), //
+				new RegexLeaf("VMERGE", "(/)?[%s]*"), //
+				new RegexLeaf("STYLE", "(note|hnote|rnote)[%s]+"), //
+				new RegexLeaf("POSITION", "(right|left|over)[%s]+"), //
+				new RegexLeaf("PARTICIPANT", "(?:of[%s])?([\\p{L}0-9_.@]+|[%g][^%g]+[%g])[%s]*"), //
 				new RegexLeaf("COLOR", "(#\\w+[-\\\\|/]?\\w+)?"), //
-				new RegexLeaf("\\s*:\\s*"), //
+				new RegexLeaf("[%s]*:[%s]*"), //
 				new RegexLeaf("NOTE", "(.*)"), //
 				new RegexLeaf("$"));
 	}
@@ -85,7 +85,7 @@ public final class FactorySequenceNoteCommand implements SingleMultiFactoryComma
 
 			@Override
 			public String getPatternEnd() {
-				return "(?i)^end ?(note|hnote|rnote)$";
+				return "(?i)^end[%s]?(note|hnote|rnote)$";
 			}
 
 			public CommandExecutionResult executeNow(final SequenceDiagram system, List<String> lines) {

@@ -56,17 +56,17 @@ import net.sourceforge.plantuml.sequencediagram.SequenceDiagram;
 public final class FactorySequenceNoteOnArrowCommand implements SingleMultiFactoryCommand<SequenceDiagram> {
 
 	private RegexConcat getRegexConcatMultiLine() {
-		return new RegexConcat(new RegexLeaf("^note\\s+"), //
-				new RegexLeaf("POSITION", "(right|left)\\s*"), //
+		return new RegexConcat(new RegexLeaf("^note[%s]+"), //
+				new RegexLeaf("POSITION", "(right|left)[%s]*"), //
 				new RegexLeaf("COLOR", "(#\\w+[-\\\\|/]?\\w+)?"), //
 				new RegexLeaf("$"));
 	}
 
 	private RegexConcat getRegexConcatSingleLine() {
-		return new RegexConcat(new RegexLeaf("^note\\s+"), //
-				new RegexLeaf("POSITION", "(right|left)\\s*"), //
+		return new RegexConcat(new RegexLeaf("^note[%s]+"), //
+				new RegexLeaf("POSITION", "(right|left)[%s]*"), //
 				new RegexLeaf("COLOR", "(#\\w+[-\\\\|/]?\\w+)?"), //
-				new RegexLeaf("\\s*:\\s*"), //
+				new RegexLeaf("[%s]*:[%s]*"), //
 				new RegexLeaf("NOTE", "(.*)"), //
 				new RegexLeaf("$"));
 	}
@@ -88,7 +88,7 @@ public final class FactorySequenceNoteOnArrowCommand implements SingleMultiFacto
 
 			@Override
 			public String getPatternEnd() {
-				return "(?i)^end ?note$";
+				return "(?i)^end[%s]?note$";
 			}
 
 			public CommandExecutionResult executeNow(final SequenceDiagram system, List<String> lines) {

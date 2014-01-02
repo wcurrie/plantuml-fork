@@ -51,11 +51,11 @@ public class CommandSwimlane2 extends SingleLineCommand2<ActivityDiagram3> {
 
 	static RegexConcat getRegexConcat() {
 		return new RegexConcat(new RegexLeaf("^"), //
-				new RegexLeaf("swimlane\\s+"), //
+				new RegexLeaf("swimlane[%s]+"), //
 				new RegexLeaf("COLOR", "(?:(#\\w+[-\\\\|/]?\\w+))?"), //
-				new RegexLeaf("\\s*"), //
+				new RegexLeaf("[%s]*"), //
 				new RegexLeaf("SWIMLANE", "([^|]+)"), //
-				new RegexLeaf("LABEL", "(?:\\s+as\\s+([^|]+))?"), //
+				new RegexLeaf("LABEL", "(?:[%s]+as[%s]+([^|]+))?"), //
 				new RegexLeaf("$"));
 	}
 

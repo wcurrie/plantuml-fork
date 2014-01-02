@@ -105,7 +105,7 @@ public class PostIt {
 
 	private Component getComponent() {
 		final HtmlColor noteBackgroundColor = HtmlColorUtils.getColorIfValid("#FBFB77");
-		final HtmlColor borderColor = HtmlColorUtils.getColorIfValid("#A80036");
+		final HtmlColor borderColor = HtmlColorUtils.MY_RED;
 
 		final SkinParam param = new SkinParam(null);
 		final UFont fontNote = param.getFont(FontParam.NOTE, null);

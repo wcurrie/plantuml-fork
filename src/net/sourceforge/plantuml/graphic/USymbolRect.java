@@ -35,12 +35,17 @@ package net.sourceforge.plantuml.graphic;
 
 import java.awt.geom.Dimension2D;
 
+import net.sourceforge.plantuml.ColorParam;
 import net.sourceforge.plantuml.Dimension2DDouble;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
 import net.sourceforge.plantuml.ugraphic.URectangle;
 import net.sourceforge.plantuml.ugraphic.UTranslate;
 
 class USymbolRect extends USymbol {
+
+	public USymbolRect() {
+		super(ColorParam.rectangleBackground, ColorParam.rectangleBorder);
+	}
 
 	private void drawRect(UGraphic ug, double width, double height, boolean shadowing) {
 		final URectangle shape = new URectangle(width, height);

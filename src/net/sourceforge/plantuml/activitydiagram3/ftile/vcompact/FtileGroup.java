@@ -43,6 +43,7 @@ import net.sourceforge.plantuml.SpriteContainer;
 import net.sourceforge.plantuml.SpriteContainerEmpty;
 import net.sourceforge.plantuml.activitydiagram3.ftile.AbstractFtile;
 import net.sourceforge.plantuml.activitydiagram3.ftile.Ftile;
+import net.sourceforge.plantuml.activitydiagram3.ftile.FtileGeometry;
 import net.sourceforge.plantuml.activitydiagram3.ftile.FtileMarged;
 import net.sourceforge.plantuml.activitydiagram3.ftile.Swimlane;
 import net.sourceforge.plantuml.cucadiagram.Display;
@@ -101,12 +102,8 @@ public class FtileGroup extends AbstractFtile {
 		return new UTranslate(0, diffYY);
 	}
 
-	public Point2D getPointIn(StringBounder stringBounder) {
-		return getTranslate().getTranslated(inner.getPointIn(stringBounder));
-	}
-
-	public Point2D getPointOut(StringBounder stringBounder) {
-		return getTranslate().getTranslated(inner.getPointOut(stringBounder));
+	public FtileGeometry getGeometry(StringBounder stringBounder) {
+		return inner.getGeometry(stringBounder).translate(getTranslate());
 	}
 
 	public TextBlock asTextBlock() {
@@ -130,7 +127,7 @@ public class FtileGroup extends AbstractFtile {
 		};
 	}
 
-	public boolean isKilled() {
+	public boolean isKilled__TOBEREMOVED() {
 		return false;
 	}
 

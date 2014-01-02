@@ -56,15 +56,15 @@ public class CommandCreateState2 extends SingleLineCommand2<StateDiagram> {
 
 	private static RegexConcat getRegexConcat() {
 		return new RegexConcat(new RegexLeaf("^"), //
-				new RegexLeaf("(?:state\\s+)"), //
+				new RegexLeaf("(?:state[%s]+)"), //
 				new RegexLeaf("CODE", "([\\p{L}0-9_.]+)"), //
-				new RegexLeaf("\\s+as\\s+"), //
-				new RegexLeaf("DISPLAY", "\"([^\"]+)\""), //
-				new RegexLeaf("\\s*"), //
+				new RegexLeaf("[%s]+as[%s]+"), //
+				new RegexLeaf("DISPLAY", "[%g]([^%g]+)[%g]"), //
+				new RegexLeaf("[%s]*"), //
 				new RegexLeaf("STEREOTYPE", "(\\<\\<.*\\>\\>)?"), //
-				new RegexLeaf("\\s*"), //
+				new RegexLeaf("[%s]*"), //
 				new RegexLeaf("URL", "(" + UrlBuilder.getRegexp() + ")?"), //
-				new RegexLeaf("\\s*"), //
+				new RegexLeaf("[%s]*"), //
 				new RegexLeaf("COLOR", "(#\\w+[-\\\\|/]?\\w+)?"), //
 				new RegexLeaf("$"));
 	}

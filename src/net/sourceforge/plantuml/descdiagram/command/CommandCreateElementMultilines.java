@@ -34,13 +34,13 @@
 package net.sourceforge.plantuml.descdiagram.command;
 
 import java.util.List;
-import java.util.regex.Pattern;
 
 import net.sourceforge.plantuml.FontParam;
 import net.sourceforge.plantuml.StringUtils;
 import net.sourceforge.plantuml.command.CommandExecutionResult;
 import net.sourceforge.plantuml.command.CommandMultilines2;
 import net.sourceforge.plantuml.command.MultilinesStrategy;
+import net.sourceforge.plantuml.command.regex.MyPattern;
 import net.sourceforge.plantuml.command.regex.RegexConcat;
 import net.sourceforge.plantuml.command.regex.RegexLeaf;
 import net.sourceforge.plantuml.command.regex.RegexResult;
@@ -65,20 +65,19 @@ public class CommandCreateElementMultilines extends CommandMultilines2<Descripti
 
 	@Override
 	public String getPatternEnd() {
-		return "(?i)^(.*)\"$";
+		return "(?i)^(.*)[%g]$";
 	}
 
 	private static RegexConcat getRegexConcat() {
 		return new RegexConcat(new RegexLeaf("^"), //
-				new RegexLeaf("TYPE", "(usecase|database)\\s+"), //
+				new RegexLeaf("TYPE", "(usecase|database)[%s]+"), //
 				new RegexLeaf("CODE", "([\\p{L}0-9_.]+)"), //
-				new RegexLeaf("\\s*"), //
-				// new RegexLeaf("STEREO", "(?:\\s*(\\<\\<.+\\>\\>))?"), //
+				new RegexLeaf("[%s]*"), //
 				new RegexLeaf("STEREO", "(\\<\\<.+\\>\\>)?"), //
-				new RegexLeaf("\\s*"), //
+				new RegexLeaf("[%s]*"), //
 				new RegexLeaf("COLOR", "(#\\w+[-\\\\|/]?\\w+)?"), //
-				new RegexLeaf("\\s*"), //
-				new RegexLeaf("DESC", "as\\s*\"(.*)$"));
+				new RegexLeaf("[%s]*"), //
+				new RegexLeaf("DESC", "as[%s]*[%g](.*)$"));
 	}
 
 	public CommandExecutionResult executeNow(DescriptionDiagram system, List<String> lines) {
@@ -105,7 +104,7 @@ public class CommandCreateElementMultilines extends CommandMultilines2<Descripti
 			display = display.addFirst(descStart);
 		}
 
-		final List<String> lineLast = StringUtils.getSplit(Pattern.compile(getPatternEnd()),
+		final List<String> lineLast = StringUtils.getSplit(MyPattern.cmpile(getPatternEnd()),
 				lines.get(lines.size() - 1));
 		if (StringUtils.isNotEmpty(lineLast.get(0))) {
 			display = display.add(lineLast.get(0));

@@ -55,9 +55,9 @@ public class CommandSpriteFile extends SingleLineCommand2<UmlDiagram> {
 
 	private static RegexConcat getRegexConcat() {
 		return new RegexConcat(new RegexLeaf("^"), //
-				new RegexLeaf("sprite\\s+\\$?"), //
-				new RegexLeaf("NAME", "([\\p{L}0-9_]+)\\s*"), //
-				new RegexLeaf("\\s+"), //
+				new RegexLeaf("sprite[%s]+\\$?"), //
+				new RegexLeaf("NAME", "([\\p{L}0-9_]+)[%s]*"), //
+				new RegexLeaf("[%s]+"), //
 				new RegexLeaf("FILE", "(.*)"), //
 				new RegexLeaf("$"));
 	}

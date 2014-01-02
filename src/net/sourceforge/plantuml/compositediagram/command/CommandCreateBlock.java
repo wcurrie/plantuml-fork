@@ -45,7 +45,7 @@ import net.sourceforge.plantuml.cucadiagram.IEntity;
 public class CommandCreateBlock extends SingleLineCommand<CompositeDiagram> {
 
 	public CommandCreateBlock() {
-		super("(?i)^(?:block\\s+)(?:\"([^\"]+)\"\\s+as\\s+)?([\\p{L}0-9_.]+)$");
+		super("(?i)^(?:block[%s]+)(?:[%g]([^%g]+)[%g][%s]+as[%s]+)?([\\p{L}0-9_.]+)$");
 	}
 
 	@Override

@@ -143,8 +143,8 @@ public class FlowDiagram extends UmlDiagram implements TextBlock {
 			box.drawU(ug.apply(new UTranslate((x + xmin * SINGLE_SIZE_X + deltaX / 2), (y + ymin
 					* SINGLE_SIZE_Y + deltaY / 2))));
 		}
-		ug = ug.apply(new UChangeColor(HtmlColorUtils.getColorIfValid("#A80036")));
-		ug = ug.apply(new UChangeBackColor(HtmlColorUtils.getColorIfValid("#A80036")));
+		ug = ug.apply(new UChangeColor(HtmlColorUtils.MY_RED));
+		ug = ug.apply(new UChangeBackColor(HtmlColorUtils.MY_RED));
 		final UShape arrow = new UEllipse(7, 7);
 		for (Path p : field.getPaths()) {
 			final TileArea start = p.getStart();

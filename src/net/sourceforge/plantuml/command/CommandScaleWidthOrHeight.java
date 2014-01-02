@@ -42,7 +42,7 @@ import net.sourceforge.plantuml.UmlDiagram;
 public class CommandScaleWidthOrHeight extends SingleLineCommand<UmlDiagram> {
 
 	public CommandScaleWidthOrHeight() {
-		super("(?i)^scale\\s+([0-9.]+)\\s+(width|height)$");
+		super("(?i)^scale[%s]+([0-9.]+)[%s]+(width|height)$");
 	}
 
 	@Override

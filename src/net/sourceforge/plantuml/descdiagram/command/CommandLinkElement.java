@@ -39,6 +39,7 @@ import net.sourceforge.plantuml.StringUtils;
 import net.sourceforge.plantuml.classdiagram.command.CommandLinkClass;
 import net.sourceforge.plantuml.command.CommandExecutionResult;
 import net.sourceforge.plantuml.command.SingleLineCommand2;
+import net.sourceforge.plantuml.command.regex.MyPattern;
 import net.sourceforge.plantuml.command.regex.RegexConcat;
 import net.sourceforge.plantuml.command.regex.RegexLeaf;
 import net.sourceforge.plantuml.command.regex.RegexResult;
@@ -63,9 +64,10 @@ public class CommandLinkElement extends SingleLineCommand2<DescriptionDiagram> {
 		return new RegexConcat(
 				new RegexLeaf("^"), //
 				getGroup("ENT1"), //
-				new RegexLeaf("\\s*"), new RegexLeaf("LABEL1", "(?:\"([^\"]+)\")?"),
-				new RegexLeaf("\\s*"),
-				new RegexLeaf("HEAD2", "(0\\)|<<|[<^*+#0)]|<\\|| +o)?"), //
+				new RegexLeaf("[%s]*"), //
+				new RegexLeaf("LABEL1", "(?:[%g]([^%g]+)[%g])?"), //
+				new RegexLeaf("[%s]*"), //
+				new RegexLeaf("HEAD2", "(0\\)|<<|[<^*+#0)]|<\\||[%s]+o)?"), //
 				new RegexLeaf("BODY1", "([-=.~]+)"), //
 				new RegexLeaf("ARROW_STYLE1",
 						"(?:\\[((?:#\\w+|dotted|dashed|bold|hidden)(?:,#\\w+|,dotted|,dashed|,bold|,hidden)*)\\])?"),
@@ -74,11 +76,13 @@ public class CommandLinkElement extends SingleLineCommand2<DescriptionDiagram> {
 				new RegexLeaf("ARROW_STYLE2",
 						"(?:\\[((?:#\\w+|dotted|dashed|bold|hidden)(?:,#\\w+|,dotted|,dashed|,bold|,hidden)*)\\])?"),
 				new RegexLeaf("BODY2", "([-=.~]*)"), //
-				new RegexLeaf("HEAD1", "(\\(0|>>|[>^*+#0(]|\\|>|o +)?"), //
-				new RegexLeaf("\\s*"), new RegexLeaf("LABEL2", "(?:\"([^\"]+)\")?"), new RegexLeaf("\\s*"), //
+				new RegexLeaf("HEAD1", "(\\(0|>>|[>^*+#0(]|\\|>|o[%s]+)?"), //
+				new RegexLeaf("[%s]*"), //
+				new RegexLeaf("LABEL2", "(?:[%g]([^%g]+)[%g])?"), //
+				new RegexLeaf("[%s]*"), //
 				getGroup("ENT2"), //
-				new RegexLeaf("\\s*"), //
-				new RegexLeaf("LABEL_LINK", "(?::\\s*(.+))?$"));
+				new RegexLeaf("[%s]*"), //
+				new RegexLeaf("LABEL_LINK", "(?::[%s]*(.+))?$"));
 	}
 
 	private LinkType getLinkType(RegexResult arg) {
@@ -181,7 +185,7 @@ public class CommandLinkElement extends SingleLineCommand2<DescriptionDiagram> {
 	private static RegexLeaf getGroup(String name) {
 		return new RegexLeaf(
 				name,
-				"([\\p{L}0-9_.]+|\\(\\)\\s*[\\p{L}0-9_.]+|\\(\\)\\s*\"[^\"]+\"|:[^:]+:|(?!\\[\\*\\])\\[[^\\[\\]]+\\]|\\((?!\\*\\))[^)]+\\))(?:\\s*(\\<\\<.*\\>\\>))?");
+				"([\\p{L}0-9_.]+|\\(\\)[%s]*[\\p{L}0-9_.]+|\\(\\)[%s]*[%g][^%g]+[%g]|:[^:]+:|(?!\\[\\*\\])\\[[^\\[\\]]+\\]|\\((?!\\*\\))[^)]+\\))(?:[%s]*(\\<\\<.*\\>\\>))?");
 	}
 
 	static class Labels {
@@ -204,7 +208,7 @@ public class CommandLinkElement extends SingleLineCommand2<DescriptionDiagram> {
 		}
 
 		private void init() {
-			final Pattern p1 = Pattern.compile("^\"([^\"]+)\"([^\"]+)\"([^\"]+)\"$");
+			final Pattern p1 = MyPattern.cmpile("^[%g]([^%g]+)[%g]([^%g]+)[%g]([^%g]+)[%g]$");
 			final Matcher m1 = p1.matcher(labelLink);
 			if (m1.matches()) {
 				firstLabel = m1.group(1);
@@ -212,7 +216,7 @@ public class CommandLinkElement extends SingleLineCommand2<DescriptionDiagram> {
 				secondLabel = m1.group(3);
 				return;
 			}
-			final Pattern p2 = Pattern.compile("^\"([^\"]+)\"([^\"]+)$");
+			final Pattern p2 = MyPattern.cmpile("^[%g]([^%g]+)[%g]([^%g]+)$");
 			final Matcher m2 = p2.matcher(labelLink);
 			if (m2.matches()) {
 				firstLabel = m2.group(1);
@@ -220,7 +224,7 @@ public class CommandLinkElement extends SingleLineCommand2<DescriptionDiagram> {
 				secondLabel = null;
 				return;
 			}
-			final Pattern p3 = Pattern.compile("^([^\"]+)\"([^\"]+)\"$");
+			final Pattern p3 = MyPattern.cmpile("^([^%g]+)[%g]([^%g]+)[%g]$");
 			final Matcher m3 = p3.matcher(labelLink);
 			if (m3.matches()) {
 				firstLabel = null;

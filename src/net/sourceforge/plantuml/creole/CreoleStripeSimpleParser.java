@@ -37,6 +37,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import net.sourceforge.plantuml.ISkinParam;
+import net.sourceforge.plantuml.command.regex.MyPattern;
 import net.sourceforge.plantuml.graphic.FontConfiguration;
 
 public class CreoleStripeSimpleParser {
@@ -51,7 +52,7 @@ public class CreoleStripeSimpleParser {
 		this.fontConfiguration = fontConfiguration;
 		this.skinParam = skinParam;
 
-		final Pattern p4 = Pattern.compile("^--([^-]*)--$");
+		final Pattern p4 = MyPattern.cmpile("^--([^-]*)--$");
 		final Matcher m4 = p4.matcher(line);
 		if (m4.find()) {
 			this.line = m4.group(1);
@@ -59,7 +60,7 @@ public class CreoleStripeSimpleParser {
 			return;
 		}
 
-		final Pattern p5 = Pattern.compile("^==([^=]*)==$");
+		final Pattern p5 = MyPattern.cmpile("^==([^=]*)==$");
 		final Matcher m5 = p5.matcher(line);
 		if (m5.find()) {
 			this.line = m5.group(1);
@@ -67,7 +68,7 @@ public class CreoleStripeSimpleParser {
 			return;
 		}
 
-		final Pattern p6 = Pattern.compile("^__([^_]*)__$");
+		final Pattern p6 = MyPattern.cmpile("^__([^_]*)__$");
 		final Matcher m6 = p6.matcher(line);
 		if (m6.find()) {
 			this.line = m6.group(1);
@@ -75,7 +76,7 @@ public class CreoleStripeSimpleParser {
 			return;
 		}
 
-		final Pattern p7 = Pattern.compile("^\\.\\.([^\\.]*)\\.\\.$");
+		final Pattern p7 = MyPattern.cmpile("^\\.\\.([^\\.]*)\\.\\.$");
 		final Matcher m7 = p7.matcher(line);
 		if (m7.find()) {
 			this.line = m7.group(1);
@@ -83,7 +84,7 @@ public class CreoleStripeSimpleParser {
 			return;
 		}
 
-		final Pattern p1 = Pattern.compile("^(\\*+)([^*]+)$");
+		final Pattern p1 = MyPattern.cmpile("^(\\*+)([^*]+)$");
 		final Matcher m1 = p1.matcher(line);
 		if (m1.find()) {
 			this.line = m1.group(2).trim();
@@ -92,7 +93,7 @@ public class CreoleStripeSimpleParser {
 			return;
 		}
 
-		final Pattern p2 = Pattern.compile("^(#+)([^*]+)$");
+		final Pattern p2 = MyPattern.cmpile("^(#+)([^*]+)$");
 		final Matcher m2 = p2.matcher(line);
 		if (m2.find()) {
 			this.line = m2.group(2).trim();
@@ -101,7 +102,7 @@ public class CreoleStripeSimpleParser {
 			return;
 		}
 
-		final Pattern p3 = Pattern.compile("^(=+)([^*]+)$");
+		final Pattern p3 = MyPattern.cmpile("^(=+)([^*]+)$");
 		final Matcher m3 = p3.matcher(line);
 		if (m3.find()) {
 			this.line = m3.group(2).trim();

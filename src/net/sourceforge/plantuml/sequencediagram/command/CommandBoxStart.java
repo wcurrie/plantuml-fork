@@ -45,7 +45,7 @@ import net.sourceforge.plantuml.sequencediagram.SequenceDiagram;
 public class CommandBoxStart extends SingleLineCommand<SequenceDiagram> {
 
 	public CommandBoxStart() {
-		super("(?i)^box(?:\\s+\"([^\"]+)\")?(?:\\s+(#\\w+))?$");
+		super("(?i)^box(?:[%s]+[%g]([^%g]+)[%g])?(?:[%s]+(#\\w+))?$");
 	}
 
 	@Override

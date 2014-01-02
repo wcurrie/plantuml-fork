@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 11432 $
+ * Revision $Revision: 12130 $
  *
  */
 package net.sourceforge.plantuml.statediagram.command;
@@ -44,7 +44,7 @@ import net.sourceforge.plantuml.statediagram.StateDiagram;
 public class CommandAddField extends SingleLineCommand<StateDiagram> {
 
 	public CommandAddField() {
-		super("(?i)^([\\p{L}0-9_.]+)\\s*:\\s*(.*)$");
+		super("(?i)^([\\p{L}0-9_.]+)[%s]*:[%s]*(.*)$");
 	}
 
 	@Override

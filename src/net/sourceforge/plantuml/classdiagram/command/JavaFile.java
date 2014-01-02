@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  *
- * Revision $Revision: 11254 $
+ * Revision $Revision: 12130 $
  *
  */
 package net.sourceforge.plantuml.classdiagram.command;
@@ -43,14 +43,15 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import net.sourceforge.plantuml.command.regex.MyPattern;
 import net.sourceforge.plantuml.cucadiagram.LeafType;
 
 class JavaFile {
 
-	private static final Pattern classDefinition = Pattern
-			.compile("^(?:public\\s+|abstract\\s+|final\\s+)*(class|interface|enum|annotation)\\s+(\\w+)(?:.*\\b(extends|implements)\\s+([\\w\\s,]+))?");
+	private static final Pattern classDefinition = MyPattern
+			.cmpile("^(?:public[%s]+|abstract[%s]+|final[%s]+)*(class|interface|enum|annotation)[%s]+(\\w+)(?:.*\\b(extends|implements)[%s]+([\\w%s,]+))?");
 
-	private static final Pattern packageDefinition = Pattern.compile("^package\\s+([\\w+.]+)\\s*;");
+	private static final Pattern packageDefinition = MyPattern.cmpile("^package[%s]+([\\w+.]+)[%s]*;");
 
 	private final List<JavaClass> all = new ArrayList<JavaClass>();
 

@@ -44,7 +44,7 @@ public class RegexOptional extends RegexComposed implements IRegex {
 		final StringBuilder sb = new StringBuilder("(?:");
 		sb.append(partial.getPattern());
 		sb.append(")?");
-		this.full = Pattern.compile(sb.toString(), Pattern.CASE_INSENSITIVE);
+		this.full = MyPattern.cmpileNockeck(sb.toString(), Pattern.CASE_INSENSITIVE);
 	}
 
 	@Override

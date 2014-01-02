@@ -76,7 +76,7 @@ public class StateDiagramFactory extends UmlDiagramFactory {
 
 		final FactoryNoteOnEntityCommand factoryNoteOnEntityCommand = new FactoryNoteOnEntityCommand(new RegexOr(
 				"ENTITY", new RegexLeaf("[\\p{L}0-9_.]+"), //
-				new RegexLeaf("\"[^\"]+\"") //
+				new RegexLeaf("[%g][^%g]+[%g]") //
 				));
 		cmds.add(factoryNoteOnEntityCommand.createMultiLine());
 

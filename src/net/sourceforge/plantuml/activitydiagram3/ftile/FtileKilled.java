@@ -49,11 +49,11 @@ public class FtileKilled extends AbstractFtile {
 		super(tileToKill.shadowing());
 		this.tile = tileToKill;
 	}
-	
+
 	public Set<Swimlane> getSwimlanes() {
 		return tile.getSwimlanes();
 	}
-	
+
 	public Swimlane getSwimlaneIn() {
 		return tile.getSwimlaneIn();
 	}
@@ -62,14 +62,9 @@ public class FtileKilled extends AbstractFtile {
 		return tile.getSwimlaneOut();
 	}
 
-
-
-	public Point2D getPointIn(StringBounder stringBounder) {
-		return tile.getPointIn(stringBounder);
-	}
-
-	public Point2D getPointOut(StringBounder stringBounder) {
-		return null;
+	public FtileGeometry getGeometry(StringBounder stringBounder) {
+		final FtileGeometry geo = tile.getGeometry(stringBounder);
+		return new FtileGeometry(geo.getLeft(), geo.getInY());
 	}
 
 	public TextBlock asTextBlock() {
@@ -85,7 +80,7 @@ public class FtileKilled extends AbstractFtile {
 		};
 	}
 
-	public boolean isKilled() {
+	public boolean isKilled__TOBEREMOVED() {
 		return true;
 	}
 

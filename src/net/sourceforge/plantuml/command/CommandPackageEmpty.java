@@ -49,7 +49,7 @@ public class CommandPackageEmpty extends SingleLineCommand<AbstractEntityDiagram
 
 	public CommandPackageEmpty() {
 		super(
-				"(?i)^package\\s+(\"[^\"]+\"|[^#\\s{}]*)(?:\\s+as\\s+([\\p{L}0-9_.]+))?\\s*(#[0-9a-fA-F]{6}|#?\\w+)?\\s*\\{\\s*\\}$");
+				"(?i)^package[%s]+([%g][^%g]+[%g]|[^#%s{}]*)(?:[%s]+as[%s]+([\\p{L}0-9_.]+))?[%s]*(#[0-9a-fA-F]{6}|#?\\w+)?[%s]*\\{[%s]*\\}$");
 	}
 
 	@Override

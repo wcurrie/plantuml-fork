@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 10778 $
+ * Revision $Revision: 12129 $
  *
  */
 package net.sourceforge.plantuml.command;
@@ -41,7 +41,7 @@ import net.sourceforge.plantuml.cucadiagram.Display;
 public class CommandTitle extends SingleLineCommand<UmlDiagram> {
 
 	public CommandTitle() {
-		super("(?i)^title(?:\\s*:\\s*|\\s+)(.*[\\p{L}0-9_.].*)$");
+		super("(?i)^title(?:[%s]*:[%s]*|[%s]+)(.*[\\p{L}0-9_.].*)$");
 	}
 
 	@Override

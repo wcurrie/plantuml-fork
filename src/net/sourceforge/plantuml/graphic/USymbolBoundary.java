@@ -33,9 +33,15 @@
  */
 package net.sourceforge.plantuml.graphic;
 
+import net.sourceforge.plantuml.ColorParam;
 import net.sourceforge.plantuml.svek.Boundary;
 
 class USymbolBoundary extends USymbolSimpleAbstract {
+	
+	public USymbolBoundary() {
+		super(ColorParam.boundaryBackground, ColorParam.boundaryBorder);
+	}
+
 
 	@Override
 	protected TextBlock getDrawing(final SymbolContext symbolContext) {

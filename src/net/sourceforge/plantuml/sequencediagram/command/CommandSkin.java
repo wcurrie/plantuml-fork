@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 10778 $
+ * Revision $Revision: 12130 $
  *
  */
 package net.sourceforge.plantuml.sequencediagram.command;
@@ -42,7 +42,7 @@ import net.sourceforge.plantuml.sequencediagram.SequenceDiagram;
 public class CommandSkin extends SingleLineCommand<SequenceDiagram> {
 
 	public CommandSkin() {
-		super("(?i)^skin\\s+([\\w.]+)$");
+		super("(?i)^skin[%s]+([\\w.]+)$");
 	}
 
 	@Override

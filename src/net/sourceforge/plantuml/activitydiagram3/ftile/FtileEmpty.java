@@ -89,15 +89,12 @@ public class FtileEmpty extends AbstractFtile {
 		};
 	}
 
-	public Point2D getPointIn(StringBounder stringBounder) {
-		return new Point2D.Double(width / 2, 0);
+	public FtileGeometry getGeometry(StringBounder stringBounder) {
+		return new FtileGeometry(width / 2, 0, height);
 	}
 
-	public Point2D getPointOut(StringBounder stringBounder) {
-		return new Point2D.Double(width / 2, height);
-	}
 
-	public boolean isKilled() {
+	public boolean isKilled__TOBEREMOVED() {
 		return false;
 	}
 

@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 10778 $
+ * Revision $Revision: 12130 $
  *
  */
 package net.sourceforge.plantuml.command;
@@ -40,7 +40,7 @@ import net.sourceforge.plantuml.classdiagram.AbstractEntityDiagram;
 public class CommandPage extends SingleLineCommand<AbstractEntityDiagram> {
 
 	public CommandPage() {
-		super("(?i)^page\\s+(\\d+)\\s*x\\s*(\\d+)$");
+		super("(?i)^page[%s]+(\\d+)[%s]*x[%s]*(\\d+)$");
 	}
 
 	@Override

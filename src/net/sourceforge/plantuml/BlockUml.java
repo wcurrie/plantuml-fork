@@ -39,6 +39,7 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import net.sourceforge.plantuml.command.regex.MyPattern;
 import net.sourceforge.plantuml.core.Diagram;
 
 public class BlockUml {
@@ -46,10 +47,7 @@ public class BlockUml {
 	private final List<? extends CharSequence> data;
 	private Diagram system;
 
-	// private static final Pattern patternFilename =
-	// Pattern.compile("^@start\\S+\\s+\"?(.*?)\"?$");
-	private static final Pattern patternFilename = Pattern
-			.compile("^@start[^\\s{}\"]+[\\s{][\\s\"]*([^\"]*?)[\\s}\"]*$");
+	private static final Pattern patternFilename = MyPattern.cmpile("^@start[^%s{}%g]+[%s{][%s%g]*([^%g]*?)[%s}%g]*$");
 
 	BlockUml(String... strings) {
 		this(Arrays.asList(strings));
@@ -72,7 +70,11 @@ public class BlockUml {
 		if (ok == false) {
 			return null;
 		}
-		final String result = m.group(1);
+		String result = m.group(1);
+		final int x = result.indexOf(',');
+		if (x != -1) {
+			result = result.substring(0, x);
+		}
 		for (int i = 0; i < result.length(); i++) {
 			final char c = result.charAt(i);
 			if ("<>|".indexOf(c) != -1) {

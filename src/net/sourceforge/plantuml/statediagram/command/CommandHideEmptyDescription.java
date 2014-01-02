@@ -42,7 +42,7 @@ import net.sourceforge.plantuml.statediagram.StateDiagram;
 public class CommandHideEmptyDescription extends SingleLineCommand<StateDiagram> {
 
 	public CommandHideEmptyDescription() {
-		super("(?i)^(hide|show)\\s+empty\\s+description$");
+		super("(?i)^(hide|show)[%s]+empty[%s]+description$");
 	}
 
 	@Override

@@ -57,17 +57,16 @@ public class CommandPackage extends SingleLineCommand2<AbstractEntityDiagram> {
 	}
 	
 	private static RegexConcat getRegexConcat() {
-		return new RegexConcat(new RegexLeaf("^package\\s+"), //
-				new RegexLeaf("NAME", "(\"[^\"]+\"|[^#\\s{}]*)"), //
-				new RegexLeaf("AS", "(?:\\s+as\\s+([\\p{L}0-9_.]+))?"), //
-				new RegexLeaf("\\s*"), //
+		return new RegexConcat(new RegexLeaf("^package[%s]+"), //
+				new RegexLeaf("NAME", "([%g][^%g]+[%g]|[^#%s{}]*)"), //
+				new RegexLeaf("AS", "(?:[%s]+as[%s]+([\\p{L}0-9_.]+))?"), //
+				new RegexLeaf("[%s]*"), //
 				new RegexLeaf("STEREOTYPE", "(\\<\\<.*\\>\\>)?"), //
-				new RegexLeaf("\\s*"), //
+				new RegexLeaf("[%s]*"), //
 				new RegexLeaf("URL", "(" + UrlBuilder.getRegexp() + ")?"), //
-				new RegexLeaf("\\s*"), //
+				new RegexLeaf("[%s]*"), //
 				new RegexLeaf("COLOR", "(#\\w+[-\\\\|/]?\\w+)?"), //
-				// new RegexLeaf("COLOR", "(#[0-9a-fA-F]{6}|#?\\w+)?"), //
-				new RegexLeaf("\\s*\\{?$"));
+				new RegexLeaf("[%s]*\\{?$"));
 	}
 
 	@Override

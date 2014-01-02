@@ -50,6 +50,7 @@ import net.sourceforge.plantuml.activitydiagram3.ftile.Arrows;
 import net.sourceforge.plantuml.activitydiagram3.ftile.Connection;
 import net.sourceforge.plantuml.activitydiagram3.ftile.Ftile;
 import net.sourceforge.plantuml.activitydiagram3.ftile.FtileFactory;
+import net.sourceforge.plantuml.activitydiagram3.ftile.FtileGeometry;
 import net.sourceforge.plantuml.activitydiagram3.ftile.FtileMinWidth;
 import net.sourceforge.plantuml.activitydiagram3.ftile.FtileUtils;
 import net.sourceforge.plantuml.activitydiagram3.ftile.Snake;
@@ -67,7 +68,7 @@ import net.sourceforge.plantuml.ugraphic.UFont;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
 import net.sourceforge.plantuml.ugraphic.UTranslate;
 
-class FtileIf2 extends AbstractFtile {
+class FtileIfLong extends AbstractFtile {
 
 	private final double xSeparation = 20;
 
@@ -77,7 +78,7 @@ class FtileIf2 extends AbstractFtile {
 
 	private final HtmlColor arrowColor;
 
-	private FtileIf2(List<Ftile> diamonds, List<Ftile> tiles, Ftile tile2, HtmlColor arrowColor) {
+	private FtileIfLong(List<Ftile> diamonds, List<Ftile> tiles, Ftile tile2, HtmlColor arrowColor) {
 		super(tiles.get(0).shadowing() || tile2.shadowing());
 		this.diamonds = diamonds;
 		this.tiles = tiles;
@@ -139,7 +140,7 @@ class FtileIf2 extends AbstractFtile {
 		final int last = diamonds.size() - 1;
 		diamonds.set(last, ((FtileDiamondInside) diamonds.get(last)).withEast(tb2));
 
-		final FtileIf2 result = new FtileIf2(diamonds, tiles, tile2, arrowColor);
+		final FtileIfLong result = new FtileIfLong(diamonds, tiles, tile2, arrowColor);
 
 		for (int i = 0; i < thens.size(); i++) {
 			final Ftile ftile = tiles.get(i);
@@ -208,10 +209,11 @@ class FtileIf2 extends AbstractFtile {
 		}
 
 		public void drawU(UGraphic ug) {
-			final Point2D p1 = getPointIn(ug.getStringBounder());
 			final UTranslate tr = getTranslateDiamond1(getFtile2(), ug.getStringBounder());
-			final Point2D p2 = tr.getTranslated(getFtile2().getPointIn(ug.getStringBounder()));
+			final Point2D p2 = tr.getTranslated(getFtile2().getGeometry(ug.getStringBounder()).getPointIn());
 			final Snake snake = new Snake(arrowColor, Arrows.asToDown());
+			final Point2D p1 = getGeometry(ug.getStringBounder()).getPointIn();
+
 			snake.addPoint(p1);
 			snake.addPoint(p2.getX(), p1.getY());
 			snake.addPoint(p2);
@@ -232,7 +234,7 @@ class FtileIf2 extends AbstractFtile {
 		public void drawU(UGraphic ug) {
 			final Point2D p1 = getP1(ug.getStringBounder());
 			final UTranslate tr2 = getTranslate2(ug.getStringBounder());
-			final Point2D p2 = tr2.getTranslated(getFtile2().getPointIn(ug.getStringBounder()));
+			final Point2D p2 = tr2.getTranslated(getFtile2().getGeometry(ug.getStringBounder()).getPointIn());
 			final Snake snake = new Snake(arrowColor, Arrows.asToDown());
 			snake.addPoint(p1);
 			snake.addPoint(p2.getX(), p1.getY());
@@ -260,7 +262,7 @@ class FtileIf2 extends AbstractFtile {
 		public void drawU(UGraphic ug) {
 			final StringBounder stringBounder = ug.getStringBounder();
 			final UTranslate tr1 = getTranslate2(stringBounder);
-			final Point2D p1 = tr1.getTranslated(getFtile1().getPointOut(stringBounder));
+			final Point2D p1 = tr1.getTranslated(getFtile1().getGeometry(stringBounder).getPointOut());
 			final double totalHeight = calculateDimensionInternal(stringBounder).getHeight();
 			final Point2D p2 = new Point2D.Double(p1.getX(), totalHeight);
 
@@ -293,12 +295,12 @@ class FtileIf2 extends AbstractFtile {
 		}
 
 		private Point2D getP1(StringBounder stringBounder) {
-			final Point2D p = getFtile1().getPointOut(stringBounder);
+			final Point2D p = getFtile1().getGeometry(stringBounder).getPointOut();
 			return getTranslateDiamond1(getFtile1(), stringBounder).getTranslated(p);
 		}
 
 		private Point2D getP2(StringBounder stringBounder) {
-			final Point2D p = getFtile2().getPointIn(stringBounder);
+			final Point2D p = getFtile2().getGeometry(stringBounder).getPointIn();
 			return getTranslate1(getFtile2(), stringBounder).getTranslated(p);
 		}
 
@@ -329,7 +331,11 @@ class FtileIf2 extends AbstractFtile {
 		}
 
 		private Point2D getP1(StringBounder stringBounder) {
-			final Point2D p = getFtile1().getPointOut(stringBounder);
+			final FtileGeometry geo = getFtile1().getGeometry(stringBounder);
+			if (geo.hasPointOut() == false) {
+				return null;
+			}
+			final Point2D p = geo.getPointOut();
 			return getTranslate1(getFtile1(), stringBounder).getTranslated(p);
 		}
 
@@ -353,11 +359,11 @@ class FtileIf2 extends AbstractFtile {
 			double minX = Double.MAX_VALUE;
 			double maxX = 0;
 			for (Ftile tmp : all) {
-				if (tmp.isKilled()) {
+				if (tmp.isKilled__TOBEREMOVED()) {
 					continue;
 				}
 				final UTranslate ut = getTranslateFor(tmp, stringBounder);
-				final double middle = ut.getTranslated(tmp.getPointOut(stringBounder)).getX();
+				final double middle = tmp.getGeometry(stringBounder).translate(ut).getLeft(); 
 				minX = Math.min(minX, middle);
 				maxX = Math.max(maxX, middle);
 			}
@@ -455,13 +461,13 @@ class FtileIf2 extends AbstractFtile {
 		};
 	}
 
-	public boolean isKilled() {
+	public boolean isKilled__TOBEREMOVED() {
 		for (Ftile tile : tiles) {
-			if (tile.isKilled() == false) {
+			if (tile.isKilled__TOBEREMOVED() == false) {
 				return false;
 			}
 		}
-		return tile2.isKilled();
+		return tile2.isKilled__TOBEREMOVED();
 	}
 
 	private Dimension2D dimDiamondAndTile(StringBounder stringBounder, Ftile tileOrDiamond) {
@@ -511,14 +517,9 @@ class FtileIf2 extends AbstractFtile {
 		return dimOnlyDiamond.getHeight();
 	}
 
-	public Point2D getPointIn(StringBounder stringBounder) {
+	public FtileGeometry getGeometry(StringBounder stringBounder) {
 		final Dimension2D dimTotal = calculateDimensionInternal(stringBounder);
-		return new Point2D.Double(dimTotal.getWidth() / 2, 0);
-	}
-
-	public Point2D getPointOut(StringBounder stringBounder) {
-		final Dimension2D dimTotal = calculateDimensionInternal(stringBounder);
-		return new Point2D.Double(dimTotal.getWidth() / 2, dimTotal.getHeight());
+		return new FtileGeometry(dimTotal.getWidth() / 2, 0, dimTotal.getHeight());
 	}
 
 }

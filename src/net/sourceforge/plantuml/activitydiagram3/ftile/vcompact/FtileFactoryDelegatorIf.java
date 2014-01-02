@@ -64,7 +64,7 @@ public class FtileFactoryDelegatorIf extends FtileFactoryDelegator {
 
 		final ConditionStyle conditionStyle = getSkinParam().getConditionStyle();
 		if (thens.size() > 1) {
-			return FtileIf2.create(swimlane, borderColor, backColor, font, arrowColor, getFactory(), conditionStyle,
+			return FtileIfLong.create(swimlane, borderColor, backColor, font, arrowColor, getFactory(), conditionStyle,
 					thens, elseBranch);
 		}
 		return FtileIf.create(swimlane, borderColor, backColor, font, arrowColor, getFactory(), conditionStyle,

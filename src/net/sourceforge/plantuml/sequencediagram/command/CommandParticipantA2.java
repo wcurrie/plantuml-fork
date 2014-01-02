@@ -46,16 +46,15 @@ public class CommandParticipantA2 extends CommandParticipant {
 	static RegexConcat getRegexConcat() {
 		return new RegexConcat(new RegexLeaf("^"), //
 				getRegexType(), //
-				new RegexLeaf("\\s+"), //
+				new RegexLeaf("[%s]+"), //
 				new RegexLeaf("CODE", "([\\p{L}0-9_.@]+)"), //
-				new RegexLeaf("\\s+as\\s+"), //
-				new RegexLeaf("FULL", "\"([^\"]+)\""), //
-				new RegexLeaf("\\s*"), //
-				// new RegexLeaf("STEREO", "(?:\\s*(\\<\\<.*\\>\\>))?"), //
+				new RegexLeaf("[%s]+as[%s]+"), //
+				new RegexLeaf("FULL", "[%g]([^%g]+)[%g]"), //
+				new RegexLeaf("[%s]*"), //
 				new RegexLeaf("STEREO", "(\\<\\<.*\\>\\>)?"), //
-				new RegexLeaf("\\s*"), //
+				new RegexLeaf("[%s]*"), //
 				new RegexLeaf("URL", "(" + UrlBuilder.getRegexp() + ")?"), //
-				new RegexLeaf("\\s*"), //
+				new RegexLeaf("[%s]*"), //
 				new RegexLeaf("COLOR", "(#\\w+[-\\\\|/]?\\w+)?"), //
 				new RegexLeaf("$"));
 	}

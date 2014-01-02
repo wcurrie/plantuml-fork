@@ -49,11 +49,11 @@ public class CommandElseIf2 extends SingleLineCommand2<ActivityDiagram3> {
 
 	static RegexConcat getRegexConcat() {
 		return new RegexConcat(new RegexLeaf("^"), //
-				new RegexLeaf("else\\s*if"), //
-				new RegexLeaf("\\s*"), //
+				new RegexLeaf("else[%s]*if"), //
+				new RegexLeaf("[%s]*"), //
 				new RegexLeaf("TEST", "\\((.*?)\\)"), //
-				new RegexLeaf("\\s*"), //
-				new RegexLeaf("WHEN", "(?:then\\s*(?:\\((.+?)\\))?)?"), //
+				new RegexLeaf("[%s]*"), //
+				new RegexLeaf("WHEN", "(?:then[%s]*(?:\\((.+?)\\))?)?"), //
 				new RegexLeaf(";?$"));
 	}
 

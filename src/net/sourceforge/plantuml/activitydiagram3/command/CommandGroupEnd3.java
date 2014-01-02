@@ -48,7 +48,7 @@ public class CommandGroupEnd3 extends SingleLineCommand2<ActivityDiagram3> {
 
 	static RegexConcat getRegexConcat() {
 		return new RegexConcat(new RegexLeaf("^"), //
-				new RegexLeaf("(end ?group|group ?end)"), //
+				new RegexLeaf("(end[%s]?group|group[%s]?end)"), //
 				new RegexLeaf(";?$"));
 	}
 

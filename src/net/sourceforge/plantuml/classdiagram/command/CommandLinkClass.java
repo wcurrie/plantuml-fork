@@ -43,6 +43,7 @@ import net.sourceforge.plantuml.StringUtils;
 import net.sourceforge.plantuml.UmlDiagramType;
 import net.sourceforge.plantuml.command.CommandExecutionResult;
 import net.sourceforge.plantuml.command.SingleLineCommand2;
+import net.sourceforge.plantuml.command.regex.MyPattern;
 import net.sourceforge.plantuml.command.regex.RegexConcat;
 import net.sourceforge.plantuml.command.regex.RegexLeaf;
 import net.sourceforge.plantuml.command.regex.RegexOr;
@@ -67,19 +68,19 @@ final public class CommandLinkClass extends SingleLineCommand2<AbstractClassOrOb
 
 	static private RegexConcat getRegexConcat(UmlDiagramType umlDiagramType) {
 		return new RegexConcat(
-				new RegexLeaf("HEADER", "^(?:@([\\d.]+)\\s+)?"), //
+				new RegexLeaf("HEADER", "^(?:@([\\d.]+)[%s]+)?"), //
 				new RegexOr(//
-						new RegexLeaf("ENT1", "(?:" + optionalKeywords(umlDiagramType) + "\\s+)?"
-								+ "(\\.?[\\p{L}0-9_]+(?:\\.[\\p{L}0-9_]+)*|\"[^\"]+\")\\s*(\\<\\<.*\\>\\>)?"),
+						new RegexLeaf("ENT1", "(?:" + optionalKeywords(umlDiagramType) + "[%s]+)?"
+								+ "(\\.?[\\p{L}0-9_]+(?:\\.[\\p{L}0-9_]+)*|[%g][^%g]+[%g])[%s]*(\\<\\<.*\\>\\>)?"),
 						new RegexLeaf("COUPLE1",
-								"\\(\\s*(\\.?[\\p{L}0-9_]+(?:\\.[\\p{L}0-9_]+)*)\\s*,\\s*(\\.?[\\p{L}0-9_]+(?:\\.[\\p{L}0-9_]+)*)\\s*\\)")),
-				new RegexLeaf("\\s*"), //
-				new RegexLeaf("FIRST_LABEL", "(?:\"([^\"]+)\")?"), //
-				new RegexLeaf("\\s*"), //
+								"\\([%s]*(\\.?[\\p{L}0-9_]+(?:\\.[\\p{L}0-9_]+)*)[%s]*,[%s]*(\\.?[\\p{L}0-9_]+(?:\\.[\\p{L}0-9_]+)*)[%s]*\\)")),
+				new RegexLeaf("[%s]*"), //
+				new RegexLeaf("FIRST_LABEL", "(?:[%g]([^%g]+)[%g])?"), //
+				new RegexLeaf("[%s]*"), //
 
 				new RegexConcat(
 						//
-						new RegexLeaf("ARROW_HEAD1", "( +o|[\\[<*+^]|[<\\[]\\|)?"), //
+						new RegexLeaf("ARROW_HEAD1", "([%s]+o|[\\[<*+^]|[<\\[]\\|)?"), //
 						new RegexLeaf("ARROW_BODY1", "([-=.]+)"), //
 						new RegexLeaf("ARROW_STYLE1",
 								"(?:\\[((?:#\\w+|dotted|dashed|bold|hidden)(?:,#\\w+|,dotted|,dashed|,bold|,hidden)*)\\])?"),
@@ -87,24 +88,24 @@ final public class CommandLinkClass extends SingleLineCommand2<AbstractClassOrOb
 						new RegexLeaf("ARROW_STYLE2",
 								"(?:\\[((?:#\\w+|dotted|dashed|bold|hidden)(?:,#\\w+|,dotted|,dashed|,bold|,hidden)*)\\])?"),
 						new RegexLeaf("ARROW_BODY2", "([-=.]*)"), //
-						new RegexLeaf("ARROW_HEAD2", "(o +|[\\]>*+^]|\\|[>\\]])?")), //
+						new RegexLeaf("ARROW_HEAD2", "(o[%s]+|[\\]>*+^]|\\|[>\\]])?")), //
 
-				new RegexLeaf("\\s*"), //
-				new RegexLeaf("SECOND_LABEL", "(?:\"([^\"]+)\")?"),
-				new RegexLeaf("\\s*"), //
+				new RegexLeaf("[%s]*"), //
+				new RegexLeaf("SECOND_LABEL", "(?:[%g]([^%g]+)[%g])?"),
+				new RegexLeaf("[%s]*"), //
 				new RegexOr(
-						new RegexLeaf("ENT2", "(?:" + optionalKeywords(umlDiagramType) + "\\s+)?"
-								+ "(\\.?[\\p{L}0-9_]+(?:\\.[\\p{L}0-9_]+)*|\"[^\"]+\")\\s*(\\<\\<.*\\>\\>)?"),
+						new RegexLeaf("ENT2", "(?:" + optionalKeywords(umlDiagramType) + "[%s]+)?"
+								+ "(\\.?[\\p{L}0-9_]+(?:\\.[\\p{L}0-9_]+)*|[%g][^%g]+[%g])[%s]*(\\<\\<.*\\>\\>)?"),
 						new RegexLeaf("COUPLE2",
-								"\\(\\s*(\\.?[\\p{L}0-9_]+(?:\\.[\\p{L}0-9_]+)*)\\s*,\\s*(\\.?[\\p{L}0-9_]+(?:\\.[\\p{L}0-9_]+)*)\\s*\\)")),
-				new RegexLeaf("\\s*"), //
-				new RegexLeaf("LABEL_LINK", "(?::\\s*(.+))?"), //
+								"\\([%s]*(\\.?[\\p{L}0-9_]+(?:\\.[\\p{L}0-9_]+)*)[%s]*,[%s]*(\\.?[\\p{L}0-9_]+(?:\\.[\\p{L}0-9_]+)*)[%s]*\\)")),
+				new RegexLeaf("[%s]*"), //
+				new RegexLeaf("LABEL_LINK", "(?::[%s]*(.+))?"), //
 				new RegexLeaf("$"));
 	}
 
 	private static String optionalKeywords(UmlDiagramType type) {
 		if (type == UmlDiagramType.CLASS) {
-			return "(interface|enum|annotation|abstract\\s+class|abstract|class)";
+			return "(interface|enum|annotation|abstract[%s]+class|abstract|class)";
 		}
 		if (type == UmlDiagramType.OBJECT) {
 			return "(object)";
@@ -173,21 +174,21 @@ final public class CommandLinkClass extends SingleLineCommand2<AbstractClassOrOb
 		if (arg.get("LABEL_LINK", 0) != null) {
 			labelLink = arg.get("LABEL_LINK", 0);
 			if (firstLabel == null && secondLabel == null) {
-				final Pattern p1 = Pattern.compile("^\"([^\"]+)\"([^\"]+)\"([^\"]+)\"$");
+				final Pattern p1 = MyPattern.cmpile("^[%g]([^%g]+)[%g]([^%g]+)[%g]([^%g]+)[%g]$");
 				final Matcher m1 = p1.matcher(labelLink);
 				if (m1.matches()) {
 					firstLabel = m1.group(1);
 					labelLink = StringUtils.eventuallyRemoveStartingAndEndingDoubleQuote(m1.group(2).trim()).trim();
 					secondLabel = m1.group(3);
 				} else {
-					final Pattern p2 = Pattern.compile("^\"([^\"]+)\"([^\"]+)$");
+					final Pattern p2 = MyPattern.cmpile("^[%g]([^%g]+)[%g]([^%g]+)$");
 					final Matcher m2 = p2.matcher(labelLink);
 					if (m2.matches()) {
 						firstLabel = m2.group(1);
 						labelLink = StringUtils.eventuallyRemoveStartingAndEndingDoubleQuote(m2.group(2).trim()).trim();
 						secondLabel = null;
 					} else {
-						final Pattern p3 = Pattern.compile("^([^\"]+)\"([^\"]+)\"$");
+						final Pattern p3 = MyPattern.cmpile("^([^%g]+)[%g]([^%g]+)[%g]$");
 						final Matcher m3 = p3.matcher(labelLink);
 						if (m3.matches()) {
 							firstLabel = null;

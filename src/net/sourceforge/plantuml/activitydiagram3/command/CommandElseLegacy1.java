@@ -50,8 +50,8 @@ public class CommandElseLegacy1 extends SingleLineCommand2<ActivityDiagram3> {
 	static RegexConcat getRegexConcat() {
 		return new RegexConcat(//
 				new RegexLeaf("^"), //
-				new RegexLeaf("else when"), //
-				new RegexLeaf("WHEN", "\\s+(.*)"), //
+				new RegexLeaf("else[%s]when"), //
+				new RegexLeaf("WHEN", "[%s]+(.*)"), //
 				new RegexLeaf(";?$"));
 	}
 

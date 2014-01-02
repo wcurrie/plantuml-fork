@@ -59,10 +59,6 @@ public final class CucaDiagramSimplifierState {
 			for (IGroup g : groups) {
 				if (diagram.isAutarkic(g)) {
 					final IEntityImage img = computeImage(g);
-					// final List<Url> urls = new ArrayList<Url>(g.getUrlsTOBEREMOVED());
-					// for (IEntity ent : g.getLeafsDirect()) {
-					// urls.addAll(ent.getUrlsTOBEREMOVED());
-					// }
 					g.overideImage(img, g.getGroupType() == GroupType.CONCURRENT_STATE ? LeafType.STATE_CONCURRENT
 							: LeafType.STATE);
 

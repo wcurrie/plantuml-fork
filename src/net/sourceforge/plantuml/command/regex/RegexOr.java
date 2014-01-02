@@ -60,7 +60,7 @@ public class RegexOr extends RegexComposed implements IRegex {
 		}
 		sb.setLength(sb.length() - 1);
 		sb.append(')');
-		this.full = Pattern.compile(sb.toString());
+		this.full = MyPattern.cmpileNockeck(sb.toString());
 	}
 
 	@Override

@@ -46,7 +46,7 @@ import net.sourceforge.plantuml.cucadiagram.LinkType;
 public class CommandLinkBlock extends SingleLineCommand<CompositeDiagram> {
 
 	public CommandLinkBlock() {
-		super("(?i)^([\\p{L}0-9_.]+)\\s*(\\[\\]|\\*\\))?([=-]+|\\.+)(\\[\\]|\\(\\*)?\\s*([\\p{L}0-9_.]+)\\s*(?::\\s*(\\S*+))?$");
+		super("(?i)^([\\p{L}0-9_.]+)[%s]*(\\[\\]|\\*\\))?([=-]+|\\.+)(\\[\\]|\\(\\*)?[%s]*([\\p{L}0-9_.]+)[%s]*(?::[%s]*(\\S*+))?$");
 	}
 
 	@Override

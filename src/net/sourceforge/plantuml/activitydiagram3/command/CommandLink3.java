@@ -50,7 +50,7 @@ public class CommandLink3 extends SingleLineCommand2<ActivityDiagram3> {
 
 	static RegexConcat getRegexConcat() {
 		return new RegexConcat(new RegexLeaf("^"), //
-				new RegexLeaf("link +"), //
+				new RegexLeaf("link[%s]+"), //
 				new RegexLeaf("COLOR", "(#\\w+)"), //
 				new RegexLeaf(";?"), //
 				new RegexLeaf("$"));

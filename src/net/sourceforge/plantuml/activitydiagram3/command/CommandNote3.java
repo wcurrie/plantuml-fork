@@ -51,8 +51,8 @@ public class CommandNote3 extends SingleLineCommand2<ActivityDiagram3> {
 	static RegexConcat getRegexConcat() {
 		return new RegexConcat(new RegexLeaf("^"), //
 				new RegexLeaf("note"), //
-				new RegexLeaf("POSITION", "\\s*(left|right)?"), //
-				new RegexLeaf("\\s*:\\s*"), //
+				new RegexLeaf("POSITION", "[%s]*(left|right)?"), //
+				new RegexLeaf("[%s]*:[%s]*"), //
 				new RegexLeaf("NOTE", "(.*)"), //
 				new RegexLeaf("$"));
 	}

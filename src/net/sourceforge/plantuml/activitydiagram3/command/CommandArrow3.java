@@ -55,7 +55,7 @@ public class CommandArrow3 extends SingleLineCommand2<ActivityDiagram3> {
 				new RegexOr(//
 						new RegexLeaf("->"), //
 						new RegexLeaf("COLOR", "-\\[(#\\w+)\\]->")), //
-				new RegexLeaf("\\s*"), //
+				new RegexLeaf("[%s]*"), //
 				new RegexOr(//
 						new RegexLeaf("LABEL", "(.*);"), //
 						new RegexLeaf("")), //

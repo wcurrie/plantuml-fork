@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  *
- * Revision $Revision: 11707 $
+ * Revision $Revision: 12126 $
  *
  */
 package net.sourceforge.plantuml;
@@ -44,6 +44,7 @@ import java.util.TreeSet;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import net.sourceforge.plantuml.command.regex.MyPattern;
 import net.sourceforge.plantuml.cucadiagram.dot.DotSplines;
 import net.sourceforge.plantuml.cucadiagram.dot.GraphvizLayoutStrategy;
 import net.sourceforge.plantuml.graphic.HorizontalAlignment;
@@ -67,7 +68,7 @@ public class SkinParam implements ISkinParam {
 	}
 
 	private static final String stereoPatternString = "\\<\\<(.*?)\\>\\>";
-	private static final Pattern stereoPattern = Pattern.compile(stereoPatternString);
+	private static final Pattern stereoPattern = MyPattern.cmpile(stereoPatternString);
 
 	private final UmlDiagramType type;
 

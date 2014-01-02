@@ -53,7 +53,7 @@ public class CommandNoteLong3 extends CommandMultilines2<ActivityDiagram3> {
 	}
 
 	public String getPatternEnd() {
-		return "(?i)^end ?note$";
+		return "(?i)^end[%s]?note$";
 	}
 
 	public CommandExecutionResult executeNow(final ActivityDiagram3 diagram, List<String> lines) {
@@ -75,24 +75,8 @@ public class CommandNoteLong3 extends CommandMultilines2<ActivityDiagram3> {
 	static RegexConcat getRegexConcat() {
 		return new RegexConcat(new RegexLeaf("^"), //
 				new RegexLeaf("note"), //
-				new RegexLeaf("POSITION", "\\s*(left|right)?"), //
+				new RegexLeaf("POSITION", "[%s]*(left|right)?"), //
 				new RegexLeaf("$"));
 	}
-
-	// static RegexConcat getRegexConcat() {
-	// return new RegexConcat(new RegexLeaf("^"), //
-	// new RegexLeaf("^"), //
-	// new RegexLeaf("note"), //
-	// new RegexLeaf("POSITION", "\\s*(left|right)?"), //
-	// new RegexLeaf("\\s*:\\s*"), //
-	// new RegexLeaf("NOTE", "(.*)"), //
-	// new RegexLeaf("$"));
-	// }
-	//
-	// @Override
-	// protected CommandExecutionResult executeArg(RegexResult arg) {
-	// final Display note = Display.getWithNewlines(arg.get("NOTE", 0));
-	// return getSystem().addNote(note);
-	// }
 
 }

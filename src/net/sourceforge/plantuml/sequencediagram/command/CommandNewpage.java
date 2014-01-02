@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 10778 $
+ * Revision $Revision: 12129 $
  *
  */
 package net.sourceforge.plantuml.sequencediagram.command;
@@ -43,7 +43,7 @@ import net.sourceforge.plantuml.sequencediagram.SequenceDiagram;
 public class CommandNewpage extends SingleLineCommand<SequenceDiagram> {
 
 	public CommandNewpage() {
-		super("(?i)^@?newpage(?:(?:\\s*:\\s*|\\s+)(.*[\\p{L}0-9_.].*))?$");
+		super("(?i)^@?newpage(?:(?:[%s]*:[%s]*|[%s]+)(.*[\\p{L}0-9_.].*))?$");
 	}
 
 	@Override

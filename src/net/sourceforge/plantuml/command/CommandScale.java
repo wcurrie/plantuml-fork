@@ -41,7 +41,7 @@ import net.sourceforge.plantuml.UmlDiagram;
 public class CommandScale extends SingleLineCommand<UmlDiagram> {
 
 	public CommandScale() {
-		super("(?i)^scale\\s+([0-9.]+)(?:\\s*/\\s*([0-9.]+))?$");
+		super("(?i)^scale[%s]+([0-9.]+)(?:[%s]*/[%s]*([0-9.]+))?$");
 	}
 
 	@Override

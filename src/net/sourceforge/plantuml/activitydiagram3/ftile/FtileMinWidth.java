@@ -93,21 +93,24 @@ public class FtileMinWidth extends FtileDecorate {
 		return super.asTextBlock().calculateDimension(stringBounder);
 	}
 
-	private Point2D getPoint(Point2D pt, StringBounder stringBounder) {
+	private double getPoint2(double x, StringBounder stringBounder) {
 		final Dimension2D dim = getDimension(stringBounder);
 		if (dim.getWidth() < minWidth) {
 			final double diff = minWidth - dim.getWidth();
-			return new Point2D.Double(pt.getX() + diff / 2, pt.getY());
+			return x + diff / 2;
 		}
-		return pt;
+		return x;
 	}
 
-	public Point2D getPointIn(StringBounder stringBounder) {
-		return getPoint(super.getPointIn(stringBounder), stringBounder);
-	}
+	@Override
+	public FtileGeometry getGeometry(StringBounder stringBounder) {
+		final FtileGeometry geo = super.getGeometry(stringBounder);
+		final double left = getPoint2(geo.getLeft(), stringBounder);
+		if (geo.hasPointOut() == false) {
+			return new FtileGeometry(left, geo.getInY());
+		}
+		return new FtileGeometry(left, geo.getInY(), geo.getOutY());
 
-	public Point2D getPointOut(StringBounder stringBounder) {
-		return getPoint(super.getPointOut(stringBounder), stringBounder);
 	}
 
 }

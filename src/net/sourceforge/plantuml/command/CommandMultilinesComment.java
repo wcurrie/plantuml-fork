@@ -40,12 +40,12 @@ import net.sourceforge.plantuml.core.Diagram;
 public class CommandMultilinesComment extends CommandMultilines<Diagram> {
 
 	public CommandMultilinesComment() {
-		super("(?i)^\\s*/'.*$");
+		super("(?i)^[%s]*/[%q].*$");
 	}
 
 	@Override
 	public String getPatternEnd() {
-		return "(?i)^.*'/\\s*$";
+		return "(?i)^.*[%q]/[%s]*$";
 	}
 
 	public CommandExecutionResult execute(final Diagram diagram, List<String> lines) {

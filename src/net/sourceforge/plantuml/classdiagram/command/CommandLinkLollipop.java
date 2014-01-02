@@ -41,6 +41,7 @@ import net.sourceforge.plantuml.UmlDiagramType;
 import net.sourceforge.plantuml.UniqueSequence;
 import net.sourceforge.plantuml.command.CommandExecutionResult;
 import net.sourceforge.plantuml.command.SingleLineCommand2;
+import net.sourceforge.plantuml.command.regex.MyPattern;
 import net.sourceforge.plantuml.command.regex.RegexConcat;
 import net.sourceforge.plantuml.command.regex.RegexLeaf;
 import net.sourceforge.plantuml.command.regex.RegexOr;
@@ -61,27 +62,27 @@ final public class CommandLinkLollipop extends SingleLineCommand2<AbstractClassO
 	}
 
 	static RegexConcat getRegexConcat(UmlDiagramType umlDiagramType) {
-		return new RegexConcat(new RegexLeaf("HEADER", "^(?:@([\\d.]+)\\s+)?"), //
-				new RegexLeaf("ENT1", "(?:" + optionalKeywords(umlDiagramType) + "\\s+)?"
-						+ "(\\.?[\\p{L}0-9_]+(?:\\.[\\p{L}0-9_]+)*|\"[^\"]+\")\\s*(\\<\\<.*\\>\\>)?"), //
-				new RegexLeaf("\\s*"), //
-				new RegexLeaf("FIRST_LABEL", "(?:\"([^\"]+)\")?"), //
-				new RegexLeaf("\\s*"), //
+		return new RegexConcat(new RegexLeaf("HEADER", "^(?:@([\\d.]+)[%s]+)?"), //
+				new RegexLeaf("ENT1", "(?:" + optionalKeywords(umlDiagramType) + "[%s]+)?"
+						+ "(\\.?[\\p{L}0-9_]+(?:\\.[\\p{L}0-9_]+)*|[%g][^%g]+[%g])[%s]*(\\<\\<.*\\>\\>)?"), //
+				new RegexLeaf("[%s]*"), //
+				new RegexLeaf("FIRST_LABEL", "(?:[%g]([^%g]+)[%g])?"), //
+				new RegexLeaf("[%s]*"), //
 				new RegexOr(new RegexLeaf("LOL_THEN_ENT", "\\(\\)([-=.]+)"), //
 						new RegexLeaf("ENT_THEN_LOL", "([-=.]+)\\(\\)")), //
-				new RegexLeaf("\\s*"), //
-				new RegexLeaf("SECOND_LABEL", "(?:\"([^\"]+)\")?"), //
-				new RegexLeaf("\\s*"), //
-				new RegexLeaf("ENT2", "(?:" + optionalKeywords(umlDiagramType) + "\\s+)?"
-						+ "(\\.?[\\p{L}0-9_]+(?:\\.[\\p{L}0-9_]+)*|\"[^\"]+\")\\s*(\\<\\<.*\\>\\>)?"), //
-				new RegexLeaf("\\s*"), //
-				new RegexLeaf("LABEL_LINK", "(?::\\s*(.+))?"), //
+				new RegexLeaf("[%s]*"), //
+				new RegexLeaf("SECOND_LABEL", "(?:[%g]([^%g]+)[%g])?"), //
+				new RegexLeaf("[%s]*"), //
+				new RegexLeaf("ENT2", "(?:" + optionalKeywords(umlDiagramType) + "[%s]+)?"
+						+ "(\\.?[\\p{L}0-9_]+(?:\\.[\\p{L}0-9_]+)*|[%g][^%g]+[%g])[%s]*(\\<\\<.*\\>\\>)?"), //
+				new RegexLeaf("[%s]*"), //
+				new RegexLeaf("LABEL_LINK", "(?::[%s]*(.+))?"), //
 				new RegexLeaf("$"));
 	}
 
 	private static String optionalKeywords(UmlDiagramType type) {
 		if (type == UmlDiagramType.CLASS) {
-			return "(interface|enum|annotation|abstract\\s+class|abstract|class)";
+			return "(interface|enum|annotation|abstract[%s]+class|abstract|class)";
 		}
 		if (type == UmlDiagramType.OBJECT) {
 			return "(object)";
@@ -127,21 +128,21 @@ final public class CommandLinkLollipop extends SingleLineCommand2<AbstractClassO
 		if (arg.get("LABEL_LINK", 0) != null) {
 			labelLink = arg.get("LABEL_LINK", 0);
 			if (firstLabel == null && secondLabel == null) {
-				final Pattern p1 = Pattern.compile("^\"([^\"]+)\"([^\"]+)\"([^\"]+)\"$");
+				final Pattern p1 = MyPattern.cmpile("^\"([^\"]+)\"([^\"]+)\"([^\"]+)\"$");
 				final Matcher m1 = p1.matcher(labelLink);
 				if (m1.matches()) {
 					firstLabel = m1.group(1);
 					labelLink = StringUtils.eventuallyRemoveStartingAndEndingDoubleQuote(m1.group(2).trim()).trim();
 					secondLabel = m1.group(3);
 				} else {
-					final Pattern p2 = Pattern.compile("^\"([^\"]+)\"([^\"]+)$");
+					final Pattern p2 = MyPattern.cmpile("^\"([^\"]+)\"([^\"]+)$");
 					final Matcher m2 = p2.matcher(labelLink);
 					if (m2.matches()) {
 						firstLabel = m2.group(1);
 						labelLink = StringUtils.eventuallyRemoveStartingAndEndingDoubleQuote(m2.group(2).trim()).trim();
 						secondLabel = null;
 					} else {
-						final Pattern p3 = Pattern.compile("^([^\"]+)\"([^\"]+)\"$");
+						final Pattern p3 = MyPattern.cmpile("^([^\"]+)\"([^\"]+)\"$");
 						final Matcher m3 = p3.matcher(labelLink);
 						if (m3.matches()) {
 							firstLabel = null;

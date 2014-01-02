@@ -36,9 +36,11 @@ package net.sourceforge.plantuml.graphic;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import net.sourceforge.plantuml.command.regex.MyPattern;
+
 class SvgAttributesChange implements FontChange {
 
-	static final Pattern pattern = Pattern.compile(Splitter.svgAttributePattern);
+	static final Pattern pattern = MyPattern.cmpile(Splitter.svgAttributePattern);
 	private final SvgAttributes attributes;
 
 	SvgAttributesChange(String s) {

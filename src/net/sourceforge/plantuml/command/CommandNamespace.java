@@ -52,13 +52,13 @@ public class CommandNamespace extends SingleLineCommand2<AbstractEntityDiagram> 
 	}
 
 	private static RegexConcat getRegexConcat() {
-		return new RegexConcat(new RegexLeaf("^namespace\\s+"), //
+		return new RegexConcat(new RegexLeaf("^namespace[%s]+"), //
 				new RegexLeaf("NAME", "([\\p{L}0-9_][\\p{L}0-9_.:]*)"), //
-				new RegexLeaf("\\s*"), //
+				new RegexLeaf("[%s]*"), //
 				new RegexLeaf("STEREOTYPE", "(\\<\\<.*\\>\\>)?"), //
-				new RegexLeaf("\\s*"), //
+				new RegexLeaf("[%s]*"), //
 				new RegexLeaf("COLOR", "(#\\w+[-\\\\|/]?\\w+)?"), //
-				new RegexLeaf("\\s*\\{?$"));
+				new RegexLeaf("[%s]*\\{?$"));
 	}
 
 

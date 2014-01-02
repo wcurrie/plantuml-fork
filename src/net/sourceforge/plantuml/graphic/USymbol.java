@@ -37,6 +37,7 @@ import java.awt.geom.Dimension2D;
 import java.util.HashMap;
 import java.util.Map;
 
+import net.sourceforge.plantuml.ColorParam;
 import net.sourceforge.plantuml.Dimension2DDouble;
 
 public abstract class USymbol {
@@ -60,6 +61,23 @@ public abstract class USymbol {
 	public final static USymbol ENTITY_DOMAIN = record("ENTITY_DOMAIN", new USymbolEntityDomain(2));
 	public final static USymbol CONTROL = record("CONTROL", new USymbolControl(2));
 	public final static USymbol INTERFACE = record("INTERFACE", new USymbolInterface());
+	
+	private final ColorParam colorParamBorder;
+	private final ColorParam colorParamBack;
+	
+	public USymbol(ColorParam colorParamBack, ColorParam colorParamBorder) {
+		this.colorParamBack = colorParamBack;
+		this.colorParamBorder = colorParamBorder;
+	}
+	
+	public ColorParam getColorParamBack() {
+		return colorParamBack;
+	}
+
+	public ColorParam getColorParamBorder() {
+		return colorParamBorder;
+	}
+
 
 	public static USymbol getFromString(String s) {
 		final USymbol result = all.get(s.toUpperCase());
@@ -119,5 +137,6 @@ public abstract class USymbol {
 	public boolean manageHorizontalLine() {
 		return false;
 	}
+
 
 }

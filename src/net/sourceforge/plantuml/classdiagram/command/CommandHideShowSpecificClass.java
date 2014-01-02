@@ -51,7 +51,7 @@ public class CommandHideShowSpecificClass extends SingleLineCommand2<ClassDiagra
 	static RegexConcat getRegexConcat() {
 		return new RegexConcat(new RegexLeaf("^"), //
 				new RegexLeaf("COMMAND", "(hide|show)"), //
-				new RegexLeaf("\\s+"), //
+				new RegexLeaf("[%s]+"), //
 				new RegexLeaf("CODE", "(" + CommandCreateClass.CODE + ")"), //
 				new RegexLeaf("$"));
 	}

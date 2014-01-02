@@ -40,7 +40,7 @@ import net.sourceforge.plantuml.core.Diagram;
 public class CommandNope extends SingleLineCommand<Diagram> {
 
 	public CommandNope() {
-		super("(?i)^\\s*$");
+		super("(?i)^[%s]*$");
 	}
 
 	@Override

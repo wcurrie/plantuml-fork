@@ -35,6 +35,7 @@ package net.sourceforge.plantuml.graphic;
 
 import java.awt.geom.Dimension2D;
 
+import net.sourceforge.plantuml.ColorParam;
 import net.sourceforge.plantuml.Dimension2DDouble;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
 import net.sourceforge.plantuml.ugraphic.ULine;
@@ -43,6 +44,11 @@ import net.sourceforge.plantuml.ugraphic.UPolygon;
 import net.sourceforge.plantuml.ugraphic.UTranslate;
 
 class USymbolNode extends USymbol {
+
+	public USymbolNode() {
+		super(ColorParam.nodeBackground, ColorParam.nodeBorder);
+	}
+
 
 	private void drawNode(UGraphic ug, double width, double height, boolean shadowing) {
 		final UPolygon shape = new UPolygon();

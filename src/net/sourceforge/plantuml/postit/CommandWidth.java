@@ -41,7 +41,7 @@ import net.sourceforge.plantuml.command.SingleLineCommand;
 public class CommandWidth extends SingleLineCommand<PostItDiagram> {
 
 	public CommandWidth() {
-		super("(?i)^width\\s+(\\d+)$");
+		super("(?i)^width[%s]+(\\d+)$");
 	}
 
 	@Override

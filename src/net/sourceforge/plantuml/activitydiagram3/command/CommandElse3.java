@@ -51,7 +51,7 @@ public class CommandElse3 extends SingleLineCommand2<ActivityDiagram3> {
 		return new RegexConcat(//
 				new RegexLeaf("^"), //
 				new RegexLeaf("else"), //
-				new RegexLeaf("WHEN", "(?:\\s*(?:\\(([^()]*)\\))?)?"), //
+				new RegexLeaf("WHEN", "(?:[%s]*(?:\\(([^()]*)\\))?)?"), //
 				new RegexLeaf(";?$"));
 	}
 

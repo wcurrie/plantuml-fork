@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 11914 $
+ * Revision $Revision: 12132 $
  *
  */
 package net.sourceforge.plantuml.cucadiagram;
@@ -55,7 +55,7 @@ import net.sourceforge.plantuml.api.ImageDataSimple;
 import net.sourceforge.plantuml.core.ImageData;
 import net.sourceforge.plantuml.cucadiagram.dot.CucaDiagramTxtMaker;
 import net.sourceforge.plantuml.cucadiagram.entity.EntityFactory;
-import net.sourceforge.plantuml.hector.CucaDiagramFileMakerHectorB2;
+import net.sourceforge.plantuml.hector2.CucaDiagramFileMakerHectorC1;
 import net.sourceforge.plantuml.skin.VisibilityModifier;
 import net.sourceforge.plantuml.svek.CucaDiagramFileMaker;
 import net.sourceforge.plantuml.svek.CucaDiagramFileMakerSvek;
@@ -291,7 +291,7 @@ public abstract class CucaDiagram extends UmlDiagram implements GroupHierarchy, 
 			throw new UnsupportedOperationException();
 		}
 
-		final CucaDiagramFileMaker maker = OptionFlags.USE_HECTOR ? new CucaDiagramFileMakerHectorB2(this)
+		final CucaDiagramFileMaker maker = OptionFlags.USE_HECTOR ? new CucaDiagramFileMakerHectorC1(this)
 				: new CucaDiagramFileMakerSvek(this, flashcodes);
 		final ImageData result = maker.createFile(os, getDotStrings(), fileFormatOption);
 

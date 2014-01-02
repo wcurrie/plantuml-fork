@@ -99,7 +99,7 @@ public class ClassDiagramFactory extends UmlDiagramFactory {
 
 		cmds.add(new CommandImport());
 		final FactoryNoteOnEntityCommand factoryNoteOnEntityCommand = new FactoryNoteOnEntityCommand(new RegexLeaf(
-				"ENTITY", "(" + CommandCreateClass.CODE + "|\"[^\"]+\")"));
+				"ENTITY", "(" + CommandCreateClass.CODE + "|[%g][^%g]+[%g])"));
 		cmds.add(factoryNoteOnEntityCommand.createSingleLine());
 		cmds.add(new CommandUrl());
 

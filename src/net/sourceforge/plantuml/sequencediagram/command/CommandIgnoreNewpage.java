@@ -42,7 +42,7 @@ import net.sourceforge.plantuml.sequencediagram.SequenceDiagram;
 public class CommandIgnoreNewpage extends SingleLineCommand<SequenceDiagram> {
 
 	public CommandIgnoreNewpage() {
-		super("(?i)^ignore\\s*newpage$");
+		super("(?i)^ignore[%s]*newpage$");
 	}
 
 	@Override

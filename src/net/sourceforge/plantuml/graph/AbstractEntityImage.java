@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 9786 $
+ * Revision $Revision: 12215 $
  *
  */
 package net.sourceforge.plantuml.graph;
@@ -48,9 +48,9 @@ abstract class AbstractEntityImage {
 
 	private final IEntity entity;
 
-	final private HtmlColor red = HtmlColorUtils.getColorIfValid("#A80036");
+	final private HtmlColor red = HtmlColorUtils.MY_RED;
 	
-	final private HtmlColor yellow = HtmlColorUtils.getColorIfValid("#FEFECE");
+	final private HtmlColor yellow = HtmlColorUtils.MY_YELLOW;
 	private final HtmlColor yellowNote = HtmlColorUtils.getColorIfValid("#FBFB77");
 
 	final private UFont font14 = new UFont("SansSerif", Font.PLAIN, 14);

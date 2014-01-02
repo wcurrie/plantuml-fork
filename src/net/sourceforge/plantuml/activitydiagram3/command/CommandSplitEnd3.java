@@ -49,7 +49,7 @@ public class CommandSplitEnd3 extends SingleLineCommand2<ActivityDiagram3> {
 	static RegexConcat getRegexConcat() {
 		return new RegexConcat(//
 				new RegexLeaf("^"), //
-				new RegexLeaf("(end ?split|split ?end)"), //
+				new RegexLeaf("(end[%s]?split|split[%s]?end)"), //
 				new RegexLeaf(";?$"));
 	}
 

@@ -39,7 +39,6 @@ import java.util.List;
 
 import net.sourceforge.plantuml.FontParam;
 import net.sourceforge.plantuml.ISkinParam;
-import net.sourceforge.plantuml.SpriteContainerEmpty;
 import net.sourceforge.plantuml.activitydiagram3.Instruction;
 import net.sourceforge.plantuml.activitydiagram3.InstructionList;
 import net.sourceforge.plantuml.activitydiagram3.LinkRendering;

@@ -50,7 +50,7 @@ public class RegexLeaf implements IRegex {
 	}
 
 	public RegexLeaf(String name, String regex) {
-		this.pattern = Pattern.compile(regex, Pattern.CASE_INSENSITIVE);
+		this.pattern = MyPattern.cmpile(regex, Pattern.CASE_INSENSITIVE);
 		this.name = name;
 	}
 

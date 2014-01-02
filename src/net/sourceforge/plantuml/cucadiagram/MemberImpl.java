@@ -39,6 +39,7 @@ import java.util.regex.Pattern;
 import net.sourceforge.plantuml.Url;
 import net.sourceforge.plantuml.UrlBuilder;
 import net.sourceforge.plantuml.UrlBuilder.ModeUrl;
+import net.sourceforge.plantuml.command.regex.MyPattern;
 import net.sourceforge.plantuml.skin.VisibilityModifier;
 
 public class MemberImpl implements Member {
@@ -52,7 +53,7 @@ public class MemberImpl implements Member {
 
 	public MemberImpl(String display, boolean isMethod, boolean manageModifier) {
 		// manageModifier = true;
-		final Pattern p = Pattern.compile("^(.*)(" + UrlBuilder.getRegexp() + ")(.*)$");
+		final Pattern p = MyPattern.cmpile("^(.*)(" + UrlBuilder.getRegexp() + ")(.*)$");
 		final Matcher m = p.matcher(display);
 
 		if (m.matches()) {

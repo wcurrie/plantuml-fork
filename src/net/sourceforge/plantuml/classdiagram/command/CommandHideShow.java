@@ -65,10 +65,10 @@ public class CommandHideShow extends SingleLineCommand2<UmlDiagram> {
 	static RegexConcat getRegexConcat() {
 		return new RegexConcat(new RegexLeaf("^"), //
 				new RegexLeaf("COMMAND", "(hide|show)"), //
-				new RegexLeaf("\\s+"), //
+				new RegexLeaf("[%s]+"), //
 				new RegexLeaf("GENDER",
-						"(?:(class|interface|enum|annotation|abstract|[\\p{L}0-9_.]+|\"[^\"]+\"|\\<\\<.*\\>\\>)\\s+)*?"), //
-				new RegexLeaf("EMPTY", "(?:(empty)\\s+)?"), //
+						"(?:(class|interface|enum|annotation|abstract|[\\p{L}0-9_.]+|[%g][^%g]+[%g]|\\<\\<.*\\>\\>)[%s]+)*?"), //
+				new RegexLeaf("EMPTY", "(?:(empty)[%s]+)?"), //
 				new RegexLeaf("PORTION", "(members?|attributes?|fields?|methods?|circle\\w*|stereotypes?)"), //
 				new RegexLeaf("$"));
 	}

@@ -35,6 +35,7 @@ package net.sourceforge.plantuml.graphic;
 
 import java.awt.geom.Dimension2D;
 
+import net.sourceforge.plantuml.ColorParam;
 import net.sourceforge.plantuml.Dimension2DDouble;
 import net.sourceforge.plantuml.ugraphic.AbstractUGraphicHorizontalLine;
 import net.sourceforge.plantuml.ugraphic.UChangeBackColor;
@@ -44,6 +45,11 @@ import net.sourceforge.plantuml.ugraphic.UPath;
 import net.sourceforge.plantuml.ugraphic.UTranslate;
 
 class USymbolDatabase extends USymbol {
+	
+	public USymbolDatabase() {
+		super(ColorParam.databaseBackground, ColorParam.databaseBorder);
+	}
+
 
 	private void drawDatabase(UGraphic ug, double width, double height, boolean shadowing) {
 		final UPath shape = new UPath();

@@ -45,6 +45,7 @@ import net.sourceforge.plantuml.SpriteContainerEmpty;
 import net.sourceforge.plantuml.activitydiagram3.LinkRendering;
 import net.sourceforge.plantuml.activitydiagram3.ftile.AbstractFtile;
 import net.sourceforge.plantuml.activitydiagram3.ftile.BoxStyle;
+import net.sourceforge.plantuml.activitydiagram3.ftile.FtileGeometry;
 import net.sourceforge.plantuml.activitydiagram3.ftile.Swimlane;
 import net.sourceforge.plantuml.creole.CreoleParser;
 import net.sourceforge.plantuml.creole.Sheet;
@@ -157,18 +158,14 @@ public class FtileBox extends AbstractFtile {
 		};
 	}
 
-	public boolean isKilled() {
+	public boolean isKilled__TOBEREMOVED() {
 		return false;
 	}
 
-	public Point2D getPointIn(StringBounder stringBounder) {
+	public FtileGeometry getGeometry(StringBounder stringBounder) {
 		final Dimension2D dim = tb.calculateDimension(stringBounder);
-		return new Point2D.Double(dim.getWidth() / 2 + MARGIN, 0);
+		return new FtileGeometry(dim.getWidth() / 2 + MARGIN, 0, dim.getHeight() + 2 * MARGIN);
 	}
 
-	public Point2D getPointOut(StringBounder stringBounder) {
-		final Dimension2D dim = tb.calculateDimension(stringBounder);
-		return new Point2D.Double(dim.getWidth() / 2 + MARGIN, dim.getHeight() + 2 * MARGIN);
-	}
 
 }

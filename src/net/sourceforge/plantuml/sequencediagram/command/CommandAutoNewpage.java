@@ -42,7 +42,7 @@ import net.sourceforge.plantuml.sequencediagram.SequenceDiagram;
 public class CommandAutoNewpage extends SingleLineCommand<SequenceDiagram> {
 
 	public CommandAutoNewpage() {
-		super("(?i)^autonewpage\\s+(\\d+)$");
+		super("(?i)^autonewpage[%s]+(\\d+)$");
 	}
 
 	@Override

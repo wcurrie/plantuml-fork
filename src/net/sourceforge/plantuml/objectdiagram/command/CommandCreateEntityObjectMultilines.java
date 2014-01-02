@@ -61,21 +61,20 @@ public class CommandCreateEntityObjectMultilines extends CommandMultilines2<Obje
 
 	private static RegexConcat getRegexConcat() {
 		return new RegexConcat(new RegexLeaf("^"), //
-				new RegexLeaf("TYPE", "(object)\\s+"), //
-				new RegexLeaf("NAME", "(?:\"([^\"]+)\"\\s+as\\s+)?([\\p{L}0-9_.]+)"), //
-				new RegexLeaf("\\s*"), //
-				// new RegexLeaf("STEREO", "(?:\\s*(\\<\\<.+\\>\\>))?"), //
+				new RegexLeaf("TYPE", "(object)[%s]+"), //
+				new RegexLeaf("NAME", "(?:[%g]([^%g]+)[%g][%s]+as[%s]+)?([\\p{L}0-9_.]+)"), //
+				new RegexLeaf("[%s]*"), //
 				new RegexLeaf("STEREO", "(\\<\\<.+\\>\\>)?"), //
-				new RegexLeaf("\\s*"), //
+				new RegexLeaf("[%s]*"), //
 				new RegexLeaf("URL", "(" + UrlBuilder.getRegexp() + ")?"), //
-				new RegexLeaf("\\s*"), //
+				new RegexLeaf("[%s]*"), //
 				new RegexLeaf("COLOR", "(#\\w+[-\\\\|/]?\\w+)?"), //
-				new RegexLeaf("\\s*\\{\\s*$"));
+				new RegexLeaf("[%s]*\\{[%s]*$"));
 	}
 
 	@Override
 	public String getPatternEnd() {
-		return "(?i)^\\s*\\}\\s*$";
+		return "(?i)^[%s]*\\}[%s]*$";
 	}
 
 	public CommandExecutionResult executeNow(ObjectDiagram diagram, List<String> lines) {

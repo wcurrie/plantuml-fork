@@ -33,13 +33,13 @@
  */
 package net.sourceforge.plantuml.activitydiagram3.ftile.vertical;
 
-import java.awt.geom.Point2D;
 import java.util.Collection;
 import java.util.Set;
 
 import net.sourceforge.plantuml.activitydiagram3.LinkRendering;
 import net.sourceforge.plantuml.activitydiagram3.ftile.Connection;
 import net.sourceforge.plantuml.activitydiagram3.ftile.Ftile;
+import net.sourceforge.plantuml.activitydiagram3.ftile.FtileGeometry;
 import net.sourceforge.plantuml.activitydiagram3.ftile.Swimlane;
 import net.sourceforge.plantuml.graphic.StringBounder;
 import net.sourceforge.plantuml.graphic.TextBlock;
@@ -58,8 +58,8 @@ public abstract class FtileDecorate implements Ftile {
 		return "" + getClass() + " " + ftile;
 	}
 
-	public boolean isKilled() {
-		return ftile.isKilled();
+	public boolean isKilled__TOBEREMOVED() {
+		return ftile.isKilled__TOBEREMOVED();
 	}
 
 	public LinkRendering getOutLinkRendering() {
@@ -74,12 +74,8 @@ public abstract class FtileDecorate implements Ftile {
 		return ftile.asTextBlock();
 	}
 
-	public Point2D getPointIn(StringBounder stringBounder) {
-		return ftile.getPointIn(stringBounder);
-	}
-
-	public Point2D getPointOut(StringBounder stringBounder) {
-		return ftile.getPointOut(stringBounder);
+	public FtileGeometry getGeometry(StringBounder stringBounder) {
+		return ftile.getGeometry(stringBounder);
 	}
 
 	public Collection<Connection> getInnerConnections() {

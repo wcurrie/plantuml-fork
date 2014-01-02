@@ -58,7 +58,7 @@ public class CommandArrowLong3 extends CommandMultilines2<ActivityDiagram3> {
 
 	static RegexConcat getRegexConcat() {
 		return new RegexConcat(new RegexLeaf("^"), //
-				new RegexLeaf("->\\s*"), //
+				new RegexLeaf("->[%s]*"), //
 				// new RegexLeaf("COLOR", "(?:(#\\w+[-\\\\|/]?\\w+):)?"), //
 				new RegexLeaf("LABEL", "(.*)"), //
 				new RegexLeaf("$"));

@@ -43,7 +43,7 @@ import net.sourceforge.plantuml.project2.Value;
 public class CommandAffectation extends SingleLineCommand<PSystemProject2> {
 
 	public CommandAffectation() {
-		super("(?i)^\\s*([~\\^]?[\\w$/]+)\\s*:=\\s*(.+)$");
+		super("(?i)^[%s]*([~\\^]?[\\w$/]+)[%s]*:=[%s]*(.+)$");
 	}
 
 	@Override

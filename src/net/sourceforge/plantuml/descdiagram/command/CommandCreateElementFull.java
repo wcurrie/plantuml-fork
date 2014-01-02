@@ -62,39 +62,39 @@ public class CommandCreateElementFull extends SingleLineCommand2<DescriptionDiag
 	private static RegexConcat getRegexConcat() {
 		return new RegexConcat(
 				new RegexLeaf("^"), //
-				new RegexLeaf("SYMBOL", "(?:(artifact|actor|folder|rect|node|frame|cloud|database|storage|agent|usecase|component|boundary|control|entity|interface|\\(\\))\\s+)?"), //
-				new RegexLeaf("\\s*"), //
+				new RegexLeaf("SYMBOL", "(?:(artifact|actor|folder|rect|node|frame|cloud|database|storage|agent|usecase|component|boundary|control|entity|interface|\\(\\))[%s]+)?"), //
+				new RegexLeaf("[%s]*"), //
 				new RegexOr(//
 						new RegexLeaf("CODE1", CODE_WITH_QUOTE), //
 						new RegexConcat(//
 								new RegexLeaf("DISPLAY2", DISPLAY), //
-								new RegexLeaf("STEREOTYPE2", "(?:\\s+(\\<\\<.+\\>\\>))?"), //
-								new RegexLeaf("\\s*as\\s+"), //
+								new RegexLeaf("STEREOTYPE2", "(?:[%s]+(\\<\\<.+\\>\\>))?"), //
+								new RegexLeaf("[%s]*as[%s]+"), //
 								new RegexLeaf("CODE2", CODE)), //
 						new RegexConcat(//
 								new RegexLeaf("CODE3", CODE), //
-								new RegexLeaf("STEREOTYPE3", "(?:\\s+(\\<\\<.+\\>\\>))?"), //
-								new RegexLeaf("\\s+as\\s*"), //
+								new RegexLeaf("STEREOTYPE3", "(?:[%s]+(\\<\\<.+\\>\\>))?"), //
+								new RegexLeaf("[%s]+as[%s]*"), //
 								new RegexLeaf("DISPLAY3", DISPLAY)), //
 						new RegexConcat(//
 								new RegexLeaf("DISPLAY4", DISPLAY_WITHOUT_QUOTE), //
-								new RegexLeaf("STEREOTYPE4", "(?:\\s+(\\<\\<.+\\>\\>))?"), //
-								new RegexLeaf("\\s*as\\s+"), //
+								new RegexLeaf("STEREOTYPE4", "(?:[%s]+(\\<\\<.+\\>\\>))?"), //
+								new RegexLeaf("[%s]*as[%s]+"), //
 								new RegexLeaf("CODE4", CODE)) //
 				), //
-				new RegexLeaf("STEREOTYPE", "(?:\\s*(\\<\\<.+\\>\\>))?"), //
-				new RegexLeaf("\\s*"), //
+				new RegexLeaf("STEREOTYPE", "(?:[%s]*(\\<\\<.+\\>\\>))?"), //
+				new RegexLeaf("[%s]*"), //
 				new RegexLeaf("URL", "(" + UrlBuilder.getRegexp() + ")?"), //
-				new RegexLeaf("\\s*"), //
+				new RegexLeaf("[%s]*"), //
 				new RegexLeaf("COLOR", "(#\\w+[-\\\\|/]?\\w+)?"), //
 				new RegexLeaf("$"));
 	}
 
-	private static final String CODE_CORE = "[\\p{L}0-9_.]+|\\(\\)\\s*[\\p{L}0-9_.]+|\\(\\)\\s*\"[^\"]+\"|:[^:]+:|\\([^()]+\\)|\\[[^\\[\\]]+\\]";
+	private static final String CODE_CORE = "[\\p{L}0-9_.]+|\\(\\)[%s]*[\\p{L}0-9_.]+|\\(\\)[%s]*[%g][^%g]+[%g]|:[^:]+:|\\([^()]+\\)|\\[[^\\[\\]]+\\]";
 	private static final String CODE = "(" + CODE_CORE + ")";
-	private static final String CODE_WITH_QUOTE = "(" + CODE_CORE + "|\"[^\"]+\")";
+	private static final String CODE_WITH_QUOTE = "(" + CODE_CORE + "|[%g][^%g]+[%g])";
 
-	private static final String DISPLAY_CORE = "\"[^\"]+\"|:[^:]+:|\\([^()]+\\)|\\[[^\\[\\]]+\\]";
+	private static final String DISPLAY_CORE = "[%g][^%g]+[%g]|:[^:]+:|\\([^()]+\\)|\\[[^\\[\\]]+\\]";
 	private static final String DISPLAY = "(" + DISPLAY_CORE + ")";
 	private static final String DISPLAY_WITHOUT_QUOTE = "(" + DISPLAY_CORE + "|[\\p{L}0-9_.]+)";
 

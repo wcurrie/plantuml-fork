@@ -36,9 +36,11 @@ package net.sourceforge.plantuml.graphic;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import net.sourceforge.plantuml.command.regex.MyPattern;
+
 class FontFamilyChange implements FontChange {
 
-	static private final Pattern colorPattern = Pattern.compile("(?i)" + Splitter.fontFamilyPattern);
+	static private final Pattern colorPattern = MyPattern.cmpile("(?i)" + Splitter.fontFamilyPattern);
 
 	private final String family;
 

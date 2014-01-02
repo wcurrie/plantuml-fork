@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 12064 $
+ * Revision $Revision: 12130 $
  *
  */
 package net.sourceforge.plantuml.cucadiagram.dot;

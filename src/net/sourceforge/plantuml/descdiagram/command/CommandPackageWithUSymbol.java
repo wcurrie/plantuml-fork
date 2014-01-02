@@ -60,16 +60,16 @@ public class CommandPackageWithUSymbol extends SingleLineCommand2<AbstractEntity
 	private static RegexConcat getRegexConcat() {
 		return new RegexConcat(new RegexLeaf("^"), //
 				new RegexLeaf("SYMBOL", "(package|rectangle|node|artifact|folder|frame|cloud|database|storage|component)"), //
-				new RegexLeaf("\\s+"), //
-				new RegexLeaf("NAME", "(\"[^\"]+\"|[^#\\s{}]*)"), //
-				new RegexLeaf("AS", "(?:\\s+as\\s+([\\p{L}0-9_.]+))?"), //
-				new RegexLeaf("\\s*"), //
+				new RegexLeaf("[%s]+"), //
+				new RegexLeaf("NAME", "([%g][^%g]+[%g]|[^#%s{}]*)"), //
+				new RegexLeaf("AS", "(?:[%s]+as[%s]+([\\p{L}0-9_.]+))?"), //
+				new RegexLeaf("[%s]*"), //
 				new RegexLeaf("STEREOTYPE", "(\\<\\<.*\\>\\>)?"), //
-				new RegexLeaf("\\s*"), //
+				new RegexLeaf("[%s]*"), //
 				new RegexLeaf("URL", "(" + UrlBuilder.getRegexp() + ")?"), //
-				new RegexLeaf("\\s*"), //
+				new RegexLeaf("[%s]*"), //
 				new RegexLeaf("COLOR", "(#\\w+[-\\\\|/]?\\w+)?"), //
-				new RegexLeaf("\\s*\\{$"));
+				new RegexLeaf("[%s]*\\{$"));
 	}
 
 	@Override

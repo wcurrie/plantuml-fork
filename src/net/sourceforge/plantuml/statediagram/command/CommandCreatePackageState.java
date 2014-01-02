@@ -55,28 +55,24 @@ public class CommandCreatePackageState extends SingleLineCommand2<StateDiagram> 
 
 	public CommandCreatePackageState() {
 		super(getRegexConcat());
-		// super(diagram,
-		// "(?i)^state\\s+([\\p{L}0-9_.]+)\\s+as\\s+\"([^\"]+)\"\\s*(\\<\\<.*\\>\\>)?\\s*(#\\w+)?(?:\\s*\\{|\\s+begin)$");
 	}
 
-	// "");
-
 	private static RegexConcat getRegexConcat() {
-		return new RegexConcat(new RegexLeaf("^state\\s+"), //
+		return new RegexConcat(new RegexLeaf("^state[%s]+"), //
 				new RegexOr(//
 						new RegexConcat(//
-								new RegexLeaf("CODE1", "([\\p{L}0-9_.]+)\\s+"), //
-								new RegexLeaf("DISPLAY1", "as\\s+\"([^\"]+)\"")), //
+								new RegexLeaf("CODE1", "([\\p{L}0-9_.]+)[%s]+"), //
+								new RegexLeaf("DISPLAY1", "as[%s]+[%g]([^%g]+)[%g]")), //
 						new RegexConcat(//
-								new RegexLeaf("DISPLAY2", "(?:\"([^\"]+)\"\\s+as\\s+)?"), //
+								new RegexLeaf("DISPLAY2", "(?:[%g]([^%g]+)[%g][%s]+as[%s]+)?"), //
 								new RegexLeaf("CODE2", "([\\p{L}0-9_.]+)"))), //
-				new RegexLeaf("\\s*"), //
+				new RegexLeaf("[%s]*"), //
 				new RegexLeaf("STEREOTYPE", "(\\<\\<.*\\>\\>)?"), //
-				new RegexLeaf("\\s*"), //
+				new RegexLeaf("[%s]*"), //
 				new RegexLeaf("URL", "(" + UrlBuilder.getRegexp() + ")?"), //
-				new RegexLeaf("\\s*"), //
+				new RegexLeaf("[%s]*"), //
 				new RegexLeaf("COLOR", "(#\\w+)?"), //
-				new RegexLeaf("(?:\\s*\\{|\\s+begin)$"));
+				new RegexLeaf("(?:[%s]*\\{|[%s]+begin)$"));
 	}
 
 	private String getNotNull(RegexResult arg, String v1, String v2) {

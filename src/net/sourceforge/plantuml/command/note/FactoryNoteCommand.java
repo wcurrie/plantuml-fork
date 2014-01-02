@@ -54,18 +54,18 @@ import net.sourceforge.plantuml.graphic.HtmlColorUtils;
 public final class FactoryNoteCommand implements SingleMultiFactoryCommand<AbstractEntityDiagram> {
 
 	private RegexConcat getRegexConcatMultiLine() {
-		return new RegexConcat(new RegexLeaf("^(note)\\s+"), //
-				new RegexLeaf("CODE", "as\\s+([\\p{L}0-9_.]+)"), //
-				new RegexLeaf("\\s*"), //
+		return new RegexConcat(new RegexLeaf("^(note)[%s]+"), //
+				new RegexLeaf("CODE", "as[%s]+([\\p{L}0-9_.]+)"), //
+				new RegexLeaf("[%s]*"), //
 				new RegexLeaf("COLOR", "(#\\w+[-\\\\|/]?\\w+)?"), //
 				new RegexLeaf("$") //
 		);
 	}
 
 	private RegexConcat getRegexConcatSingleLine() {
-		return new RegexConcat(new RegexLeaf("^note\\s+"), //
-				new RegexLeaf("DISPLAY", "\"([^\"]+)\"\\s+as\\s+"), //
-				new RegexLeaf("CODE", "([\\p{L}0-9_.]+)\\s*"), //
+		return new RegexConcat(new RegexLeaf("^note[%s]+"), //
+				new RegexLeaf("DISPLAY", "[%g]([^%g]+)[%g][%s]+as[%s]+"), //
+				new RegexLeaf("CODE", "([\\p{L}0-9_.]+)[%s]*"), //
 				new RegexLeaf("COLOR", "(#\\w+[-\\\\|/]?\\w+)?"), //
 				new RegexLeaf("$") //
 		);
@@ -89,7 +89,7 @@ public final class FactoryNoteCommand implements SingleMultiFactoryCommand<Abstr
 
 			@Override
 			public String getPatternEnd() {
-				return "(?i)^end ?note$";
+				return "(?i)^end[%s]?note$";
 			}
 
 			public CommandExecutionResult executeNow(final AbstractEntityDiagram system, List<String> lines) {

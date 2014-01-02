@@ -36,9 +36,11 @@ package net.sourceforge.plantuml.graphic;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import net.sourceforge.plantuml.command.regex.MyPattern;
+
 class SizeChange implements FontChange {
 
-	static private final Pattern sizePattern = Pattern.compile("(?i)" + Splitter.fontSizePattern2);
+	static private final Pattern sizePattern = MyPattern.cmpile("(?i)" + Splitter.fontSizePattern2);
 
 	private final Integer size;
 

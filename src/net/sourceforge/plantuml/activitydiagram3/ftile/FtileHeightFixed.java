@@ -53,11 +53,11 @@ public class FtileHeightFixed extends AbstractFtile {
 		this.tile = tile;
 		this.fixedHeight = fixedHeight;
 	}
-	
+
 	public Set<Swimlane> getSwimlanes() {
 		return tile.getSwimlanes();
 	}
-	
+
 	public Swimlane getSwimlaneIn() {
 		return tile.getSwimlaneIn();
 	}
@@ -65,17 +65,9 @@ public class FtileHeightFixed extends AbstractFtile {
 	public Swimlane getSwimlaneOut() {
 		return tile.getSwimlaneOut();
 	}
-	
 
-
-	public Point2D getPointIn(StringBounder stringBounder) {
-		final Point2D p = tile.getPointIn(stringBounder);
-		return getTranslate(stringBounder).getTranslated(p);
-	}
-
-	public Point2D getPointOut(StringBounder stringBounder) {
-		final Point2D p = tile.getPointOut(stringBounder);
-		return getTranslate(stringBounder).getTranslated(p);
+	public FtileGeometry getGeometry(StringBounder stringBounder) {
+		return tile.getGeometry(stringBounder).translate(getTranslate(stringBounder));
 	}
 
 	private UTranslate getTranslate(StringBounder stringBounder) {
@@ -100,8 +92,8 @@ public class FtileHeightFixed extends AbstractFtile {
 		};
 	}
 
-	public boolean isKilled() {
-		return tile.isKilled();
+	public boolean isKilled__TOBEREMOVED() {
+		return tile.isKilled__TOBEREMOVED();
 	}
 
 }

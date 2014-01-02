@@ -70,28 +70,28 @@ public final class FactoryNoteOnEntityCommand implements SingleMultiFactoryComma
 	}
 
 	private RegexConcat getRegexConcatSingleLine(IRegex partialPattern) {
-		return new RegexConcat(new RegexLeaf("^note\\s+"), //
+		return new RegexConcat(new RegexLeaf("^note[%s]+"), //
 				new RegexLeaf("POSITION", "(right|left|top|bottom)"), //
 				new RegexOr(//
-						new RegexConcat(new RegexLeaf("\\s+of\\s+"), partialPattern), //
+						new RegexConcat(new RegexLeaf("[%s]+of[%s]+"), partialPattern), //
 						new RegexLeaf("")), //
-				new RegexLeaf("\\s*"), //
+				new RegexLeaf("[%s]*"), //
 				new RegexLeaf("COLOR", "(#\\w+[-\\\\|/]?\\w+)?"), //
-				new RegexLeaf("\\s*:\\s*"), //
+				new RegexLeaf("[%s]*:[%s]*"), //
 				new RegexLeaf("NOTE", "(.*)"), //
 				new RegexLeaf("$") //
 		);
 	}
 
 	private RegexConcat getRegexConcatMultiLine(IRegex partialPattern) {
-		return new RegexConcat(new RegexLeaf("^note\\s+"), //
+		return new RegexConcat(new RegexLeaf("^note[%s]+"), //
 				new RegexLeaf("POSITION", "(right|left|top|bottom)"), //
 				new RegexOr(//
-						new RegexConcat(new RegexLeaf("\\s+of\\s+"), partialPattern), //
+						new RegexConcat(new RegexLeaf("[%s]+of[%s]+"), partialPattern), //
 						new RegexLeaf("")), //
-				new RegexLeaf("\\s*"), //
+				new RegexLeaf("[%s]*"), //
 				new RegexLeaf("COLOR", "(#\\w+[-\\\\|/]?\\w+)?"), //
-				new RegexLeaf("\\s*\\{?"), //
+				new RegexLeaf("[%s]*\\{?"), //
 				new RegexLeaf("$") //
 		);
 	}
@@ -112,7 +112,7 @@ public final class FactoryNoteOnEntityCommand implements SingleMultiFactoryComma
 
 			@Override
 			public String getPatternEnd() {
-				return "(?i)^(end ?note|\\})$";
+				return "(?i)^(end[%s]?note|\\})$";
 			}
 
 			public CommandExecutionResult executeNow(final AbstractEntityDiagram system, List<String> lines) {

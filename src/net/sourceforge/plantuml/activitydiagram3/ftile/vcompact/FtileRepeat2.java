@@ -35,14 +35,15 @@ package net.sourceforge.plantuml.activitydiagram3.ftile.vcompact;
 
 import java.awt.geom.Dimension2D;
 import java.awt.geom.Point2D;
+import java.awt.geom.Point2D.Double;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
 import net.sourceforge.plantuml.Dimension2DDouble;
 import net.sourceforge.plantuml.MathUtils;
+import net.sourceforge.plantuml.OptionFlags;
 import net.sourceforge.plantuml.SpriteContainer;
-import net.sourceforge.plantuml.SpriteContainerEmpty;
 import net.sourceforge.plantuml.activitydiagram3.LinkRendering;
 import net.sourceforge.plantuml.activitydiagram3.ftile.AbstractConnection;
 import net.sourceforge.plantuml.activitydiagram3.ftile.AbstractFtile;
@@ -50,6 +51,7 @@ import net.sourceforge.plantuml.activitydiagram3.ftile.Arrows;
 import net.sourceforge.plantuml.activitydiagram3.ftile.Connection;
 import net.sourceforge.plantuml.activitydiagram3.ftile.Diamond;
 import net.sourceforge.plantuml.activitydiagram3.ftile.Ftile;
+import net.sourceforge.plantuml.activitydiagram3.ftile.FtileGeometry;
 import net.sourceforge.plantuml.activitydiagram3.ftile.FtileUtils;
 import net.sourceforge.plantuml.activitydiagram3.ftile.Snake;
 import net.sourceforge.plantuml.activitydiagram3.ftile.Swimlane;
@@ -137,11 +139,11 @@ class FtileRepeat2 extends AbstractFtile {
 		}
 
 		private Point2D getP1(final StringBounder stringBounder) {
-			return getTranslateDiamond1(stringBounder).getTranslated(getFtile1().getPointOut(stringBounder));
+			return getFtile1().getGeometry(stringBounder).translate(getTranslateDiamond1(stringBounder)).getPointOut();
 		}
 
 		private Point2D getP2(final StringBounder stringBounder) {
-			return getTranslateForRepeat(stringBounder).getTranslated(getFtile2().getPointIn(stringBounder));
+			return getFtile2().getGeometry(stringBounder).translate(getTranslateForRepeat(stringBounder)).getPointIn();
 		}
 
 		public void drawU(UGraphic ug) {
@@ -164,11 +166,13 @@ class FtileRepeat2 extends AbstractFtile {
 		}
 
 		private Point2D getP1(final StringBounder stringBounder) {
-			return getTranslateForRepeat(stringBounder).getTranslated(getFtile1().getPointOut(stringBounder));
+			return getTranslateForRepeat(stringBounder).getTranslated(
+					getFtile1().getGeometry(stringBounder).getPointOut());
 		}
 
 		private Point2D getP2(final StringBounder stringBounder) {
-			return getTranslateDiamond2(stringBounder).getTranslated(getFtile2().getPointIn(stringBounder));
+			return getTranslateDiamond2(stringBounder).getTranslated(
+					getFtile2().getGeometry(stringBounder).getPointIn());
 		}
 
 		public void drawU(UGraphic ug) {
@@ -242,17 +246,27 @@ class FtileRepeat2 extends AbstractFtile {
 		};
 	}
 
-	public boolean isKilled() {
+	public boolean isKilled__TOBEREMOVED() {
 		return false;
 	}
 
 	private Dimension2D calculateDimensionInternal(StringBounder stringBounder) {
 		final Dimension2D dimDiamond1 = diamond1.asTextBlock().calculateDimension(stringBounder);
 		final Dimension2D dimDiamond2 = diamond2.asTextBlock().calculateDimension(stringBounder);
+		final Dimension2D dimRepeat = repeat.asTextBlock().calculateDimension(stringBounder);
+
 		final double w = tbTest.calculateDimension(stringBounder).getWidth();
 
-		final Dimension2D dim = Dimension2DDouble.atLeast(repeat.asTextBlock().calculateDimension(stringBounder), 2 * w
-				+ 2 * Diamond.diamondHalfSize, 0);
+		if (OptionFlags.USE_4747) {
+			double width = getLeft(stringBounder) + getRight(stringBounder);
+			width = Math.max(width, w + 2 * Diamond.diamondHalfSize);
+			final double height = dimDiamond1.getHeight() + dimRepeat.getHeight() + dimDiamond2.getHeight() + 8
+					* Diamond.diamondHalfSize;
+			return new Dimension2DDouble(width + 2 * Diamond.diamondHalfSize, height);
+
+		}
+
+		final Dimension2D dim = Dimension2DDouble.atLeast(dimRepeat, 2 * w + 2 * Diamond.diamondHalfSize, 0);
 		final double width = MathUtils.max(dimDiamond1.getWidth(), dim.getWidth(), dimDiamond2.getWidth());
 		final double height = dimDiamond1.getHeight() + dim.getHeight() + dimDiamond2.getHeight();
 
@@ -273,21 +287,31 @@ class FtileRepeat2 extends AbstractFtile {
 	}
 
 	private UTranslate getTranslateForRepeat(StringBounder stringBounder) {
+
 		final Dimension2D dimDiamond1 = diamond1.asTextBlock().calculateDimension(stringBounder);
 		final Dimension2D dimDiamond2 = diamond2.asTextBlock().calculateDimension(stringBounder);
 		final Dimension2D dimTotal = calculateDimensionInternal(stringBounder);
 		final Dimension2D dimRepeat = repeat.asTextBlock().calculateDimension(stringBounder);
-
-		final double x = (dimTotal.getWidth() - dimRepeat.getWidth()) / 2;
 		final double y = (dimTotal.getHeight() - dimDiamond1.getHeight() - dimDiamond2.getHeight() - dimRepeat
 				.getHeight()) / 2;
+
+		if (OptionFlags.USE_4747) {
+			final double left = getLeft(stringBounder);
+			return new UTranslate(left - repeat.getGeometry(stringBounder).getLeft(), y);
+		}
+
+		final double x = (dimTotal.getWidth() - dimRepeat.getWidth()) / 2;
 		return new UTranslate(x, y);
 
 	}
 
 	private UTranslate getTranslateDiamond1(StringBounder stringBounder) {
-		final Dimension2D dimTotal = calculateDimensionInternal(stringBounder);
 		final Dimension2D dimDiamond1 = diamond1.asTextBlock().calculateDimension(stringBounder);
+		if (OptionFlags.USE_4747) {
+			final double left = getLeft(stringBounder);
+			return new UTranslate(left - dimDiamond1.getWidth() / 2, 0);
+		}
+		final Dimension2D dimTotal = calculateDimensionInternal(stringBounder);
 
 		final double x1 = (dimTotal.getWidth() - dimDiamond1.getWidth()) / 2;
 		final double y1 = 0;
@@ -297,20 +321,43 @@ class FtileRepeat2 extends AbstractFtile {
 	private UTranslate getTranslateDiamond2(StringBounder stringBounder) {
 		final Dimension2D dimTotal = calculateDimensionInternal(stringBounder);
 		final Dimension2D dimDiamond2 = diamond2.asTextBlock().calculateDimension(stringBounder);
+		final double y2 = dimTotal.getHeight() - dimDiamond2.getHeight();
+		if (OptionFlags.USE_4747) {
+			final double left = getLeft(stringBounder);
+			return new UTranslate(left - dimDiamond2.getWidth() / 2, y2);
+		}
 
 		final double x2 = (dimTotal.getWidth() - dimDiamond2.getWidth()) / 2;
-		final double y2 = dimTotal.getHeight() - dimDiamond2.getHeight();
 		return new UTranslate(x2, y2);
 	}
 
-	public Point2D getPointIn(StringBounder stringBounder) {
-		final Dimension2D dimTotal = calculateDimensionInternal(stringBounder);
-		return new Point2D.Double(dimTotal.getWidth() / 2, 0);
+	private double getLeft(StringBounder stringBounder) {
+		final Dimension2D dimDiamond1 = diamond1.asTextBlock().calculateDimension(stringBounder);
+		final Dimension2D dimDiamond2 = diamond2.asTextBlock().calculateDimension(stringBounder);
+		double left1 = repeat.getGeometry(stringBounder).getLeft();
+		left1 = Math.max(left1, dimDiamond1.getWidth() / 2);
+		double left2 = repeat.getGeometry(stringBounder).getLeft();
+		left2 = Math.max(left2, dimDiamond2.getWidth() / 2);
+		return Math.max(left1, left2);
 	}
 
-	public Point2D getPointOut(StringBounder stringBounder) {
+	private double getRight(StringBounder stringBounder) {
+		final Dimension2D dimDiamond1 = diamond1.asTextBlock().calculateDimension(stringBounder);
+		final Dimension2D dimDiamond2 = diamond2.asTextBlock().calculateDimension(stringBounder);
+		final Dimension2D dimRepeat = repeat.asTextBlock().calculateDimension(stringBounder);
+		double right1 = dimRepeat.getWidth() - repeat.getGeometry(stringBounder).getLeft();
+		right1 = Math.max(right1, dimDiamond1.getWidth() / 2);
+		double right2 = dimRepeat.getWidth() - repeat.getGeometry(stringBounder).getLeft();
+		right2 = Math.max(right2, dimDiamond2.getWidth() / 2);
+		return Math.max(right1, right2);
+	}
+
+	public FtileGeometry getGeometry(StringBounder stringBounder) {
 		final Dimension2D dimTotal = calculateDimensionInternal(stringBounder);
-		return new Point2D.Double(dimTotal.getWidth() / 2, dimTotal.getHeight());
+		if (OptionFlags.USE_4747) {
+			return new FtileGeometry(getLeft(stringBounder), 0, dimTotal.getHeight());
+		}
+		return new FtileGeometry(dimTotal.getWidth() / 2, 0, dimTotal.getHeight());
 	}
 
 }

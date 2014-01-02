@@ -56,19 +56,19 @@ import net.sourceforge.plantuml.graphic.HtmlColorUtils;
 public final class FactoryNoteOnLinkCommand implements SingleMultiFactoryCommand<CucaDiagram> {
 
 	private RegexConcat getRegexConcatSingleLine() {
-		return new RegexConcat(new RegexLeaf("^note\\s+"), //
-				new RegexLeaf("POSITION", "(right|left|top|bottom)?\\s*on\\s+link"), //
-				new RegexLeaf("\\s*"), //
+		return new RegexConcat(new RegexLeaf("^note[%s]+"), //
+				new RegexLeaf("POSITION", "(right|left|top|bottom)?[%s]*on[%s]+link"), //
+				new RegexLeaf("[%s]*"), //
 				new RegexLeaf("COLOR", "(#\\w+[-\\\\|/]?\\w+)?"), //
-				new RegexLeaf("\\s*:\\s*"), //
+				new RegexLeaf("[%s]*:[%s]*"), //
 				new RegexLeaf("NOTE", "(.*)"), //
 				new RegexLeaf("$"));
 	}
 
 	private RegexConcat getRegexConcatMultiLine() {
-		return new RegexConcat(new RegexLeaf("^note\\s+"), //
-				new RegexLeaf("POSITION", "(right|left|top|bottom)?\\s*on\\s+link"), //
-				new RegexLeaf("\\s*"), //
+		return new RegexConcat(new RegexLeaf("^note[%s]+"), //
+				new RegexLeaf("POSITION", "(right|left|top|bottom)?[%s]*on[%s]+link"), //
+				new RegexLeaf("[%s]*"), //
 				new RegexLeaf("COLOR", "(#\\w+[-\\\\|/]?\\w+)?"), //
 				new RegexLeaf("$"));
 	}
@@ -78,7 +78,7 @@ public final class FactoryNoteOnLinkCommand implements SingleMultiFactoryCommand
 
 			@Override
 			public String getPatternEnd() {
-				return "(?i)^end ?note$";
+				return "(?i)^end[%s]?note$";
 			}
 
 			public CommandExecutionResult executeNow(final CucaDiagram system, List<String> lines) {

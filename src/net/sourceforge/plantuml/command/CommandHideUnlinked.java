@@ -40,7 +40,7 @@ import net.sourceforge.plantuml.UmlDiagram;
 public class CommandHideUnlinked extends SingleLineCommand<UmlDiagram> {
 
 	public CommandHideUnlinked() {
-		super("(?i)^(hide|show)\\s+unlinked$");
+		super("(?i)^(hide|show)[%s]+unlinked$");
 	}
 
 	@Override

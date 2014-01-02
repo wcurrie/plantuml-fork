@@ -40,6 +40,7 @@ import net.sourceforge.plantuml.ISkinParam;
 import net.sourceforge.plantuml.Url;
 import net.sourceforge.plantuml.UrlBuilder;
 import net.sourceforge.plantuml.UrlBuilder.ModeUrl;
+import net.sourceforge.plantuml.command.regex.MyPattern;
 
 public class CommandCreoleUrl implements Command {
 
@@ -51,7 +52,7 @@ public class CommandCreoleUrl implements Command {
 	}
 
 	private CommandCreoleUrl(ISkinParam skinParam, String p) {
-		this.pattern = Pattern.compile(p);
+		this.pattern = MyPattern.cmpile(p);
 		this.skinParam = skinParam;
 
 	}

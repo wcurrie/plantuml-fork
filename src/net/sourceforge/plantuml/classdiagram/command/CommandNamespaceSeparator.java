@@ -42,7 +42,7 @@ import net.sourceforge.plantuml.command.SingleLineCommand;
 public class CommandNamespaceSeparator extends SingleLineCommand<ClassDiagram> {
 
 	public CommandNamespaceSeparator() {
-		super("(?i)^set namespaceseparator (\\S+)$");
+		super("(?i)^set[%s]namespaceseparator[%s](\\S+)$");
 	}
 
 	@Override

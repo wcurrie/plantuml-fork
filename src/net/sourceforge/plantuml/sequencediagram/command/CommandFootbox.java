@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 10778 $
+ * Revision $Revision: 12130 $
  *
  */
 package net.sourceforge.plantuml.sequencediagram.command;
@@ -42,7 +42,7 @@ import net.sourceforge.plantuml.sequencediagram.SequenceDiagram;
 public class CommandFootbox extends SingleLineCommand<SequenceDiagram> {
 
 	public CommandFootbox() {
-		super("(?i)^(hide|show)?\\s*footbox?$");
+		super("(?i)^(hide|show)?[%s]*footbox?$");
 	}
 
 	@Override

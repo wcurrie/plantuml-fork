@@ -33,6 +33,7 @@
  */
 package net.sourceforge.plantuml.graphic;
 
+import net.sourceforge.plantuml.ColorParam;
 import net.sourceforge.plantuml.svek.Control;
 
 class USymbolControl extends USymbolSimpleAbstract {
@@ -40,6 +41,7 @@ class USymbolControl extends USymbolSimpleAbstract {
 	private final double thickness;
 	
 	public USymbolControl(double thickness) {
+		super(ColorParam.controlBackground, ColorParam.controlBorder);
 		this.thickness = thickness;
 	}
 

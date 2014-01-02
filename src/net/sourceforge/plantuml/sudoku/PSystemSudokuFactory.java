@@ -38,10 +38,11 @@ import java.util.regex.Pattern;
 
 import net.sourceforge.plantuml.AbstractPSystem;
 import net.sourceforge.plantuml.command.PSystemSingleLineFactory;
+import net.sourceforge.plantuml.command.regex.MyPattern;
 
 public class PSystemSudokuFactory extends PSystemSingleLineFactory {
 
-	final private static Pattern p = Pattern.compile("(?i)^sudoku(?:\\s+([0-9a-zA-Z]+))?\\s*$");
+	final private static Pattern p = MyPattern.cmpile("(?i)^sudoku(?:[%s]+([0-9a-zA-Z]+))?[%s]*$");
 
 	@Override
 	protected AbstractPSystem executeLine(String line) {

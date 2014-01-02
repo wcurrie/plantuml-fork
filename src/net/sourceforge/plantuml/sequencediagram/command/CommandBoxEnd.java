@@ -42,7 +42,7 @@ import net.sourceforge.plantuml.sequencediagram.SequenceDiagram;
 public class CommandBoxEnd extends SingleLineCommand<SequenceDiagram> {
 
 	public CommandBoxEnd() {
-		super("(?i)^end ?box$");
+		super("(?i)^end[%s]?box$");
 	}
 
 	@Override

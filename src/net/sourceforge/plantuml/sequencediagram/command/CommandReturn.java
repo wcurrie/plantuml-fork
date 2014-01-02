@@ -47,7 +47,7 @@ import net.sourceforge.plantuml.skin.ArrowConfiguration;
 public class CommandReturn extends SingleLineCommand<SequenceDiagram> {
 
 	public CommandReturn() {
-		super("(?i)^return\\s*(.*)$");
+		super("(?i)^return[%s]*(.*)$");
 	}
 
 	@Override

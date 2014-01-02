@@ -52,9 +52,9 @@ public class CommandWhile3 extends SingleLineCommand2<ActivityDiagram3> {
 		return new RegexConcat(//
 				new RegexLeaf("^"), //
 				new RegexLeaf("while"), //
-				new RegexLeaf("TEST", "\\s*\\((.+?)\\)"), //
+				new RegexLeaf("TEST", "[%s]*\\((.+?)\\)"), //
 				new RegexOptional(new RegexConcat(//
-						new RegexLeaf("\\s*(is|equals?)\\s*"), //
+						new RegexLeaf("[%s]*(is|equals?)[%s]*"), //
 						new RegexLeaf("YES", "\\((.+?)\\)"))), //
 				new RegexLeaf(";?$"));
 	}

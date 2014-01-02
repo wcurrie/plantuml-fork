@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 11873 $
+ * Revision $Revision: 12206 $
  *
  */
 package net.sourceforge.plantuml.graphic;
@@ -42,6 +42,7 @@ import java.util.StringTokenizer;
 import net.sourceforge.plantuml.Dimension2DDouble;
 import net.sourceforge.plantuml.EmbededDiagram;
 import net.sourceforge.plantuml.SpriteContainer;
+import net.sourceforge.plantuml.command.regex.MyPattern;
 import net.sourceforge.plantuml.cucadiagram.Display;
 import net.sourceforge.plantuml.cucadiagram.Stereotype;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
@@ -126,7 +127,7 @@ class TextBlockSimple implements TextBlock {
 	}
 
 	private void addSingleLineNoSpace(String s) {
-		if (s.length() == 0 || s.matches("^\\s*$ ")) {
+		if (s.length() == 0 || MyPattern.mtches(s, "^[%s]*$ ")) {
 			return;
 		}
 		lines2.add(new SingleLine(s, fontConfiguration, horizontalAlignment, spriteContainer));

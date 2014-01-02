@@ -36,6 +36,7 @@ package net.sourceforge.plantuml.creole;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import net.sourceforge.plantuml.command.regex.MyPattern;
 import net.sourceforge.plantuml.graphic.FontConfiguration;
 import net.sourceforge.plantuml.graphic.HtmlColor;
 import net.sourceforge.plantuml.graphic.HtmlColorUtils;
@@ -54,7 +55,7 @@ public class CommandCreoleColorChange implements Command {
 	}
 
 	private CommandCreoleColorChange(String p) {
-		this.pattern = Pattern.compile(p);
+		this.pattern = MyPattern.cmpile(p);
 
 	}
 

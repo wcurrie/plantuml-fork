@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 12105 $
+ * Revision $Revision: 12207 $
  *
  */
 package net.sourceforge.plantuml.graphic;
@@ -42,17 +42,18 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import net.sourceforge.plantuml.StringUtils;
+import net.sourceforge.plantuml.command.regex.MyPattern;
 
 public class Splitter {
 
 	static final String endFontPattern = "\\</font\\>|\\</color\\>|\\</size\\>|\\</text\\>";
 	static final String endSupSub = "\\</sup\\>|\\</sub\\>";
-	public static final String fontPattern = "\\<font(\\s+size\\s*=\\s*\"?\\d+\"?|\\s+color\\s*=\\s*\"?(#[0-9a-fA-F]{6}|\\w+)\"?)+\\s*\\>";
-	public static final String fontColorPattern2 = "\\<color[\\s:]+(#[0-9a-fA-F]{6}|#?\\w+)\\s*\\>";
-	public static final String fontSizePattern2 = "\\<size[\\s:]+(\\d+)\\s*\\>";
+	public static final String fontPattern = "\\<font(\\s+size[%s]*=[%s]*[%g]?\\d+[%g]?|[%s]+color[%s]*=\\s*[%g]?(#[0-9a-fA-F]{6}|\\w+)[%g]?)+[%s]*\\>";
+	public static final String fontColorPattern2 = "\\<color[\\s:]+(#[0-9a-fA-F]{6}|#?\\w+)[%s]*\\>";
+	public static final String fontSizePattern2 = "\\<size[\\s:]+(\\d+)[%s]*\\>";
 	static final String fontSup = "\\<sup\\>";
 	static final String fontSub = "\\<sub\\>";
-	static final String imgPattern = "\\<img\\s+(src\\s*=\\s*['\"]?[^\\s\">]+['\"]?\\s*|vspace\\s*=\\s*['\"]?\\d+['\"]?\\s*|valign\\s*=\\s*['\"]?(top|middle|bottom)['\"]?\\s*)+\\>";
+	static final String imgPattern = "\\<img\\s+(src[%s]*=[%s]*[%q%g]?[^\\s%g>]+[%q%g]?[%s]*|vspace\\s*=\\s*[%q%g]?\\d+[%q%g]?\\s*|valign[%s]*=[%s]*[%q%g]?(top|middle|bottom)[%q%g]?[%s]*)+\\>";
 	public static final String imgPatternNoSrcColon = "\\<img[\\s:]+([^>]+)/?\\>";
 	public static final String fontFamilyPattern = "\\<font[\\s:]+([^>]+)/?\\>";
 	static final String svgAttributePattern = "\\<text[\\s:]+([^>]+)/?\\>";
@@ -103,7 +104,7 @@ public class Splitter {
 		sb.append(svgAttributePattern);
 
 		htmlTag = sb.toString();
-		tagOrText = Pattern.compile(htmlTag + "|.+?(?=" + htmlTag + ")|.+$", Pattern.CASE_INSENSITIVE);
+		tagOrText = MyPattern.cmpile(htmlTag + "|.+?(?=" + htmlTag + ")|.+$", Pattern.CASE_INSENSITIVE);
 	}
 
 	private final List<String> splitted = new ArrayList<String>();

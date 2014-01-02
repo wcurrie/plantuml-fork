@@ -71,13 +71,13 @@ public class CommandLinkActivity2 extends SingleLineCommand2<ActivityDiagram> {
 						new RegexOr("FIRST", //
 								new RegexLeaf("STAR", "(\\(\\*(top)?\\))"), //
 								new RegexLeaf("CODE", "([\\p{L}0-9][\\p{L}0-9_.]*)"), //
-								new RegexLeaf("BAR", "(?:==+)\\s*([\\p{L}0-9_.]+)\\s*(?:==+)"), //
-								new RegexLeaf("QUOTED", "\"([^\"]+)\"(?:\\s+as\\s+([\\p{L}0-9_.]+))?"))), //
-				new RegexLeaf("\\s*"), //
+								new RegexLeaf("BAR", "(?:==+)[%s]*([\\p{L}0-9_.]+)[%s]*(?:==+)"), //
+								new RegexLeaf("QUOTED", "[%g]([^%g]+)[%g](?:[%s]+as[%s]+([\\p{L}0-9_.]+))?"))), //
+				new RegexLeaf("[%s]*"), //
 				new RegexLeaf("STEREOTYPE", "(\\<\\<.*\\>\\>)?"), //
-				new RegexLeaf("\\s*"), //
+				new RegexLeaf("[%s]*"), //
 				new RegexLeaf("BACKCOLOR", "(#\\w+[-\\\\|/]?\\w+)?"), //
-				new RegexLeaf("\\s*"), //
+				new RegexLeaf("[%s]*"), //
 				new RegexLeaf("URL", "(" + UrlBuilder.getRegexp() + ")?"), //
 
 				new RegexLeaf("ARROW_BODY1", "([-.]+)"), //
@@ -88,22 +88,21 @@ public class CommandLinkActivity2 extends SingleLineCommand2<ActivityDiagram> {
 						"(?:\\[((?:#\\w+|dotted|dashed|bold|hidden)(?:,#\\w+|,dotted|,dashed|,bold|,hidden)*)\\])?"), //
 				new RegexLeaf("ARROW_BODY2", "([-.]*)\\>"), //
 
-				// new RegexLeaf("ARROW", "([-=.]+(?:\\*|left|right|up|down|le?|ri?|up?|do?)?[-=.]*\\>)"), //
-				new RegexLeaf("\\s*"), //
+				new RegexLeaf("[%s]*"), //
 				new RegexLeaf("BRACKET", "(?:\\[([^\\]*]+[^\\]]*)\\])?"), //
-				new RegexLeaf("\\s*"), //
+				new RegexLeaf("[%s]*"), //
 				new RegexOr("FIRST2", //
 						new RegexLeaf("STAR2", "(\\(\\*(top)?\\))"), //
 						new RegexLeaf("OPENBRACKET2", "(\\{)"), //
 						new RegexLeaf("CODE2", "([\\p{L}0-9][\\p{L}0-9_.]*)"), //
-						new RegexLeaf("BAR2", "(?:==+)\\s*([\\p{L}0-9_.]+)\\s*(?:==+)"), //
-						new RegexLeaf("QUOTED2", "\"([^\"]+)\"(?:\\s+as\\s+([\\p{L}0-9][\\p{L}0-9_.]*))?"), //
+						new RegexLeaf("BAR2", "(?:==+)[%s]*([\\p{L}0-9_.]+)[%s]*(?:==+)"), //
+						new RegexLeaf("QUOTED2", "[%g]([^%g]+)[%g](?:[%s]+as[%s]+([\\p{L}0-9][\\p{L}0-9_.]*))?"), //
 						new RegexLeaf("QUOTED_INVISIBLE2", "(\\w.*?)")), //
-				new RegexLeaf("\\s*"), //
+				new RegexLeaf("[%s]*"), //
 				new RegexLeaf("STEREOTYPE2", "(\\<\\<.*\\>\\>)?"), //
-				new RegexLeaf("\\s*"), //
-				new RegexLeaf("PARTITION2", "(?:in\\s+(\"[^\"]+\"|\\S+))?"), //
-				new RegexLeaf("\\s*"), //
+				new RegexLeaf("[%s]*"), //
+				new RegexLeaf("PARTITION2", "(?:in[%s]+([%g][^%g]+[%g]|\\S+))?"), //
+				new RegexLeaf("[%s]*"), //
 				new RegexLeaf("BACKCOLOR2", "(#\\w+[-\\\\|/]?\\w+)?"), //
 				new RegexLeaf("$"));
 	}

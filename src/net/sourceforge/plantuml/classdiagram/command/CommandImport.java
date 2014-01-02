@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  *
- * Revision $Revision: 11432 $
+ * Revision $Revision: 12202 $
  *
  */
 package net.sourceforge.plantuml.classdiagram.command;
@@ -50,7 +50,7 @@ import net.sourceforge.plantuml.cucadiagram.LinkType;
 public class CommandImport extends SingleLineCommand<ClassDiagram> {
 
 	public CommandImport() {
-		super("(?i)^import\\s+\"?([^\"]+)\"?$");
+		super("(?i)^import[%s]+[%g]?([^%g]+)[%g]?$");
 	}
 
 	@Override

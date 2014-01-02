@@ -44,7 +44,7 @@ import net.sourceforge.plantuml.cucadiagram.LeafType;
 public class CommandDiamondAssociation extends SingleLineCommand<ClassDiagram> {
 
 	public CommandDiamondAssociation() {
-		super("(?i)^\\<\\>\\s*([\\p{L}0-9_.]+)$");
+		super("(?i)^\\<\\>[%s]*([\\p{L}0-9_.]+)$");
 	}
 
 	@Override

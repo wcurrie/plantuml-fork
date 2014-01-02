@@ -39,7 +39,7 @@ import net.sourceforge.plantuml.cucadiagram.Rankdir;
 public class CommandRankDir extends SingleLineCommand<CucaDiagram> {
 
 	public CommandRankDir() {
-		super("(?i)^(left to right|top to bottom)\\s+direction$");
+		super("(?i)^(left[%s]to[%s]right|top[%s]to[%s]bottom)[%s]+direction$");
 	}
 
 	@Override

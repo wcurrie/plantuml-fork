@@ -53,12 +53,12 @@ public class CommandReferenceMultilinesOverSeveral extends CommandMultilines<Seq
 
 	public CommandReferenceMultilinesOverSeveral() {
 		super(
-				"(?i)^ref(#\\w+)?\\s+over\\s+((?:[\\p{L}0-9_.@]+|\"[^\"]+\")(?:\\s*,\\s*(?:[\\p{L}0-9_.@]+|\"[^\"]+\"))*)\\s*(#\\w+)?$");
+				"(?i)^ref(#\\w+)?[%s]+over[%s]+((?:[\\p{L}0-9_.@]+|[%g][^%g]+[%g])(?:[%s]*,[%s]*(?:[\\p{L}0-9_.@]+|[%g][^%g]+[%g]))*)[%s]*(#\\w+)?$");
 	}
 
 	@Override
 	public String getPatternEnd() {
-		return "(?i)^end ?(ref)?$";
+		return "(?i)^end[%s]?(ref)?$";
 	}
 
 	public CommandExecutionResult execute(final SequenceDiagram system, List<String> lines) {

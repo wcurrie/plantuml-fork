@@ -44,6 +44,7 @@ import java.util.Set;
 import net.sourceforge.plantuml.Dimension2DDouble;
 import net.sourceforge.plantuml.activitydiagram3.ftile.AbstractFtile;
 import net.sourceforge.plantuml.activitydiagram3.ftile.Ftile;
+import net.sourceforge.plantuml.activitydiagram3.ftile.FtileGeometry;
 import net.sourceforge.plantuml.activitydiagram3.ftile.Swimlane;
 import net.sourceforge.plantuml.graphic.StringBounder;
 import net.sourceforge.plantuml.graphic.TextBlock;
@@ -102,7 +103,7 @@ class FtileForkInner extends AbstractFtile {
 		};
 	}
 
-	public boolean isKilled() {
+	public boolean isKilled__TOBEREMOVED() {
 		return false;
 	}
 
@@ -119,15 +120,11 @@ class FtileForkInner extends AbstractFtile {
 		return new Dimension2DDouble(width, height);
 	}
 
-	public Point2D getPointIn(StringBounder stringBounder) {
+	public FtileGeometry getGeometry(StringBounder stringBounder) {
 		final Dimension2D dimTotal = calculateDimensionInternal(stringBounder);
-		return new Point2D.Double(dimTotal.getWidth() / 2, 0);
+		return new FtileGeometry(dimTotal.getWidth() / 2,  0, dimTotal.getHeight());
 	}
 
-	public Point2D getPointOut(StringBounder stringBounder) {
-		final Dimension2D dimTotal = calculateDimensionInternal(stringBounder);
-		return new Point2D.Double(dimTotal.getWidth() / 2, dimTotal.getHeight());
-	}
 
 	public UTranslate getTranslateFor(Ftile searched, StringBounder stringBounder) {
 		double xpos = 0;

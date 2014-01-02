@@ -33,7 +33,6 @@
  */
 package net.sourceforge.plantuml.activitydiagram3.ftile;
 
-import java.awt.geom.Point2D;
 import java.util.Collection;
 
 import net.sourceforge.plantuml.activitydiagram3.LinkRendering;
@@ -45,15 +44,17 @@ public interface Ftile extends TextBlockable, Swimable {
 
 	public boolean shadowing();
 
-	public boolean isKilled();
+	public boolean isKilled__TOBEREMOVED();
 
 	public LinkRendering getInLinkRendering();
 
 	public LinkRendering getOutLinkRendering();
 
-	public Point2D getPointIn(StringBounder stringBounder);
-
-	public Point2D getPointOut(StringBounder stringBounder);
+//	public Point2D getPointIn__TOBEREMOVED(StringBounder stringBounder);
+//
+//	public Point2D getPointOut__TOBEREMOVED(StringBounder stringBounder);
+	
+	public FtileGeometry getGeometry(StringBounder stringBounder);
 
 	public UTranslate getTranslateFor(Ftile child, StringBounder stringBounder);
 

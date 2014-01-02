@@ -93,8 +93,8 @@ public class ActivityBox implements TextBlock {
 		final double widthTotal = dimTotal.getWidth();
 		final double heightTotal = dimTotal.getHeight();
 		final Shadowable rect = new URectangle(widthTotal, heightTotal, CORNER, CORNER);
-		ug = ug.apply(new UChangeColor(HtmlColorUtils.getColorIfValid("#A80036")));
-		ug = ug.apply(new UChangeBackColor(HtmlColorUtils.getColorIfValid("#FEFECE")));
+		ug = ug.apply(new UChangeColor(HtmlColorUtils.MY_RED));
+		ug = ug.apply(new UChangeBackColor(HtmlColorUtils.MY_YELLOW));
 		ug.apply(new UStroke(1.5)).draw(rect);
 		
 		tb.drawU(ug.apply(new UTranslate(MARGIN, MARGIN)));

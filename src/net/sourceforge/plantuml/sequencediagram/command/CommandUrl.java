@@ -46,7 +46,7 @@ import net.sourceforge.plantuml.sequencediagram.SequenceDiagram;
 public class CommandUrl extends SingleLineCommand<SequenceDiagram> {
 
 	public CommandUrl() {
-		super("(?i)^url\\s*(?:of|for)?\\s+([\\p{L}0-9_.@]+|\"[^\"]+\")\\s+(?:is)?\\s*(" + UrlBuilder.getRegexp() + ")$");
+		super("(?i)^url[%s]*(?:of|for)?[%s]+([\\p{L}0-9_.@]+|[%g][^%g]+[%g])[%s]+(?:is)?[%s]*(" + UrlBuilder.getRegexp() + ")$");
 	}
 
 	@Override

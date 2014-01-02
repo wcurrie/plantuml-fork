@@ -62,7 +62,7 @@ public abstract class CommandParticipant extends SingleLineCommand2<SequenceDiag
 
 	static IRegex getRegexType() {
 		return new RegexOr(new RegexLeaf("TYPE", "(participant|actor|create|boundary|control|entity|database)"), //
-				new RegexLeaf("CREATE", "create (participant|actor|boundary|control|entity|database)"));
+				new RegexLeaf("CREATE", "create[%s](participant|actor|boundary|control|entity|database)"));
 	}
 
 	@Override

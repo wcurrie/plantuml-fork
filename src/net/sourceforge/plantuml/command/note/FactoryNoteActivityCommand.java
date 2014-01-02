@@ -61,18 +61,18 @@ import net.sourceforge.plantuml.graphic.HtmlColorUtils;
 public final class FactoryNoteActivityCommand implements SingleMultiFactoryCommand<ActivityDiagram> {
 
 	private RegexConcat getRegexConcatMultiLine() {
-		return new RegexConcat(new RegexLeaf("^note\\s+"), //
-				new RegexLeaf("POSITION", "(right|left|top|bottom)\\s*"), //
+		return new RegexConcat(new RegexLeaf("^note[%s]+"), //
+				new RegexLeaf("POSITION", "(right|left|top|bottom)[%s]*"), //
 				new RegexLeaf("COLOR", "(#\\w+[-\\\\|/]?\\w+)?"), //
-				new RegexLeaf("\\s*"), //
+				new RegexLeaf("[%s]*"), //
 				new RegexLeaf("$"));
 	}
 
 	private RegexConcat getRegexConcatSingleLine() {
-		return new RegexConcat(new RegexLeaf("^note\\s+"), //
-				new RegexLeaf("POSITION", "(right|left|top|bottom)\\s*"), //
+		return new RegexConcat(new RegexLeaf("^note[%s]+"), //
+				new RegexLeaf("POSITION", "(right|left|top|bottom)[%s]*"), //
 				new RegexLeaf("COLOR", "(#\\w+[-\\\\|/]?\\w+)?"), //
-				new RegexLeaf("\\s*:\\s*"), //
+				new RegexLeaf("[%s]*:[%s]*"), //
 				new RegexLeaf("NOTE", "(.*)"), //
 				new RegexLeaf("$"));
 	}
@@ -82,7 +82,7 @@ public final class FactoryNoteActivityCommand implements SingleMultiFactoryComma
 
 			@Override
 			public String getPatternEnd() {
-				return "(?i)^end ?note$";
+				return "(?i)^end[%s]?note$";
 			}
 
 			public final CommandExecutionResult executeNow(final ActivityDiagram system, List<String> lines) {

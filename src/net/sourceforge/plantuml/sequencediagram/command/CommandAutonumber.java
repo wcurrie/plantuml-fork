@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 10778 $
+ * Revision $Revision: 12202 $
  *
  */
 package net.sourceforge.plantuml.sequencediagram.command;
@@ -43,7 +43,7 @@ import net.sourceforge.plantuml.sequencediagram.SequenceDiagram;
 public class CommandAutonumber extends SingleLineCommand<SequenceDiagram> {
 
 	public CommandAutonumber() {
-		super("(?i)^autonumber\\s*(\\d+)?(?:\\s+(\\d+))?(?:\\s+\"([^\"]+)\")?\\s*$");
+		super("(?i)^autonumber[%s]*(\\d+)?(?:[%s]+(\\d+))?(?:[%s]+[%g]([^%g]+)[%g])?[%s]*$");
 	}
 
 	@Override

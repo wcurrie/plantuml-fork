@@ -41,7 +41,7 @@ import net.sourceforge.plantuml.cucadiagram.IEntity;
 public class CommandEndNamespace extends SingleLineCommand<AbstractEntityDiagram> {
 
 	public CommandEndNamespace() {
-		super("(?i)^end ?namespace$");
+		super("(?i)^end[%s]?namespace$");
 	}
 
 	@Override

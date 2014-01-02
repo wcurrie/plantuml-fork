@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 9929 $
+ * Revision $Revision: 12201 $
  *
  */
 package net.sourceforge.plantuml.preproc;
@@ -45,10 +45,11 @@ import java.util.regex.Pattern;
 import net.sourceforge.plantuml.FileSystem;
 import net.sourceforge.plantuml.Log;
 import net.sourceforge.plantuml.OptionFlags;
+import net.sourceforge.plantuml.command.regex.MyPattern;
 
 class PreprocessorInclude implements ReadLine {
 
-	private static final Pattern includePattern = Pattern.compile("^\\s*!include\\s+\"?([^\"]+)\"?$");
+	private static final Pattern includePattern = MyPattern.cmpile("^[%s]*!include[%s]+[%g]?([^%g]+)[%g]?$");
 
 	private final ReadLine reader2;
 	private final String charset;

@@ -74,36 +74,35 @@ public class CommandCreateClassMultilines extends CommandMultilines2<ClassDiagra
 
 	@Override
 	public String getPatternEnd() {
-		return "(?i)^\\s*\\}\\s*$";
+		return "(?i)^[%s]*\\}[%s]*$";
 	}
 
 	private static RegexConcat getRegexConcat() {
 		return new RegexConcat(new RegexLeaf("^"), //
-				new RegexLeaf("TYPE", "(interface|enum|abstract\\s+class|abstract|class)\\s+"), //
+				new RegexLeaf("TYPE", "(interface|enum|abstract[%s]+class|abstract|class)[%s]+"), //
 				new RegexOr(//
 						new RegexConcat(//
-								new RegexLeaf("DISPLAY1", "\"([^\"]+)\""), //
-								new RegexLeaf("\\s+as\\s+"), //
+								new RegexLeaf("DISPLAY1", "[%g]([^%g]+)[%g]"), //
+								new RegexLeaf("[%s]+as[%s]+"), //
 								new RegexLeaf("CODE1", "(" + CommandCreateClass.CODE + ")")), //
 						new RegexConcat(//
 								new RegexLeaf("CODE2", "(" + CommandCreateClass.CODE + ")"), //
-								new RegexLeaf("\\s+as\\s+"), // //
-								new RegexLeaf("DISPLAY2", "\"([^\"]+)\"")), //
+								new RegexLeaf("[%s]+as[%s]+"), // //
+								new RegexLeaf("DISPLAY2", "[%g]([^%g]+)[%g]")), //
 						new RegexLeaf("CODE3", "(" + CommandCreateClass.CODE + ")"), //
-						new RegexLeaf("CODE4", "\"([^\"]+)\"")), //
-				new RegexLeaf("GENERIC", "(?:\\s*\\<(" + GenericRegexProducer.PATTERN + ")\\>)?"), //
-				new RegexLeaf("\\s*"), //
-				// new RegexLeaf("STEREO", "(?:\\s*(\\<\\<.+\\>\\>))?"), //
+						new RegexLeaf("CODE4", "[%g]([^%g]+)[%g]")), //
+				new RegexLeaf("GENERIC", "(?:[%s]*\\<(" + GenericRegexProducer.PATTERN + ")\\>)?"), //
+				new RegexLeaf("[%s]*"), //
 				new RegexLeaf("STEREO", "(\\<\\<.+\\>\\>)?"), //
-				new RegexLeaf("\\s*"), //
+				new RegexLeaf("[%s]*"), //
 				new RegexLeaf("URL", "(" + UrlBuilder.getRegexp() + ")?"), //
-				new RegexLeaf("\\s*"), //
+				new RegexLeaf("[%s]*"), //
 				new RegexLeaf("COLOR", "(#\\w+[-\\\\|/]?\\w+)?"), //
-				new RegexLeaf("\\s*"), //
+				new RegexLeaf("[%s]*"), //
 				new RegexLeaf("LINECOLOR", "(?:##(?:\\[(dotted|dashed|bold)\\])?(\\w+)?)?"), //
 				new RegexLeaf("EXTENDS",
-						"(\\s+(extends|implements)\\s+((?:\\.|::)?[\\p{L}0-9_]+(?:(?:\\.|::)[\\p{L}0-9_]+)*))?"), //
-				new RegexLeaf("\\s*\\{\\s*$"));
+						"([%s]+(extends|implements)[%s]+((?:\\.|::)?[\\p{L}0-9_]+(?:(?:\\.|::)[\\p{L}0-9_]+)*))?"), //
+				new RegexLeaf("[%s]*\\{[%s]*$"));
 	}
 
 	public CommandExecutionResult executeNow(ClassDiagram diagram, List<String> lines) {

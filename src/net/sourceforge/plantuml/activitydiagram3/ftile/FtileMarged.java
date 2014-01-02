@@ -34,7 +34,6 @@
 package net.sourceforge.plantuml.activitydiagram3.ftile;
 
 import java.awt.geom.Dimension2D;
-import java.awt.geom.Point2D;
 import java.util.Set;
 
 import net.sourceforge.plantuml.Dimension2DDouble;
@@ -57,7 +56,7 @@ public class FtileMarged extends AbstractFtile {
 	public Set<Swimlane> getSwimlanes() {
 		return tile.getSwimlanes();
 	}
-	
+
 	public Swimlane getSwimlaneIn() {
 		return tile.getSwimlaneIn();
 	}
@@ -66,15 +65,8 @@ public class FtileMarged extends AbstractFtile {
 		return tile.getSwimlaneOut();
 	}
 
-
-	public Point2D getPointIn(StringBounder stringBounder) {
-		final Point2D p = tile.getPointIn(stringBounder);
-		return new UTranslate(marge, 0).getTranslated(p);
-	}
-
-	public Point2D getPointOut(StringBounder stringBounder) {
-		final Point2D p = tile.getPointOut(stringBounder);
-		return new UTranslate(marge, 0).getTranslated(p);
+	public FtileGeometry getGeometry(StringBounder stringBounder) {
+		return tile.getGeometry(stringBounder).translate(new UTranslate(marge, 0));
 	}
 
 	public TextBlock asTextBlock() {
@@ -90,8 +82,8 @@ public class FtileMarged extends AbstractFtile {
 		};
 	}
 
-	public boolean isKilled() {
-		return tile.isKilled();
+	public boolean isKilled__TOBEREMOVED() {
+		return tile.isKilled__TOBEREMOVED();
 	}
 
 }

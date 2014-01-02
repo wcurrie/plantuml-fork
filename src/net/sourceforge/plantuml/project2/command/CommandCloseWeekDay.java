@@ -42,7 +42,7 @@ import net.sourceforge.plantuml.project2.PSystemProject2;
 public class CommandCloseWeekDay extends SingleLineCommand<PSystemProject2> {
 
 	public CommandCloseWeekDay() {
-		super("(?i)^\\s*close\\s+(\\w{3,}day)\\s*$");
+		super("(?i)^[%s]*close[%s]+(\\w{3,}day)[%s]*$");
 	}
 
 	@Override

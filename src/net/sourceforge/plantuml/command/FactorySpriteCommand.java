@@ -50,19 +50,19 @@ public final class FactorySpriteCommand implements SingleMultiFactoryCommand<Uml
 
 	private RegexConcat getRegexConcatMultiLine() {
 		return new RegexConcat(new RegexLeaf("^"), //
-				new RegexLeaf("sprite\\s+\\$?"), //
-				new RegexLeaf("NAME", "([\\p{L}0-9_]+)\\s*"), //
+				new RegexLeaf("sprite[%s]+\\$?"), //
+				new RegexLeaf("NAME", "([\\p{L}0-9_]+)[%s]*"), //
 				new RegexLeaf("DIM", "(?:\\[(\\d+)x(\\d+)/(\\d+)(z)?\\])?"), //
-				new RegexLeaf("\\s*\\{"), //
+				new RegexLeaf("[%s]*\\{"), //
 				new RegexLeaf("$"));
 	}
 
 	private RegexConcat getRegexConcatSingleLine() {
 		return new RegexConcat(new RegexLeaf("^"), //
-				new RegexLeaf("sprite\\s+\\$?"), //
-				new RegexLeaf("NAME", "([\\p{L}0-9_]+)\\s*"), //
+				new RegexLeaf("sprite[%s]+\\$?"), //
+				new RegexLeaf("NAME", "([\\p{L}0-9_]+)[%s]*"), //
 				new RegexLeaf("DIM", "(?:\\[(\\d+)x(\\d+)/(\\d+)(z)\\])?"), //
-				new RegexLeaf("\\s+"), //
+				new RegexLeaf("[%s]+"), //
 				new RegexLeaf("DATA", "([-_A-Za-z0-9]+)"), //
 				new RegexLeaf("$"));
 	}
@@ -83,7 +83,7 @@ public final class FactorySpriteCommand implements SingleMultiFactoryCommand<Uml
 
 			@Override
 			public String getPatternEnd() {
-				return "(?i)^end ?sprite|\\}$";
+				return "(?i)^end[%s]?sprite|\\}$";
 			}
 
 			public CommandExecutionResult executeNow(final UmlDiagram system, List<String> lines) {

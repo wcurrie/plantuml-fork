@@ -42,7 +42,7 @@ import net.sourceforge.plantuml.sequencediagram.SequenceDiagram;
 public class CommandAutoactivate extends SingleLineCommand<SequenceDiagram> {
 
 	public CommandAutoactivate() {
-		super("(?i)^autoactivate\\s+(off|on)*$");
+		super("(?i)^autoactivate[%s]+(off|on)*$");
 	}
 
 	@Override

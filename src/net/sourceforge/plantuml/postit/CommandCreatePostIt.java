@@ -48,9 +48,9 @@ public class CommandCreatePostIt extends SingleLineCommand2<PostItDiagram> {
 
 	static RegexConcat getRegexConcat() {
 		return new RegexConcat(new RegexLeaf("^"), //
-				new RegexLeaf("post[- ]?it\\s+"), //
+				new RegexLeaf("post[-[%s]]?it[%s]+"), //
 				new RegexLeaf("ID", "([-\\p{L}0-9_./]+)"), //
-				new RegexLeaf("\\s+"), // 
+				new RegexLeaf("[%s]+"), // 
 				new RegexLeaf("TEXT", ":?(.*)?$"));
 	}
 

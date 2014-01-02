@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 11153 $
+ * Revision $Revision: 12215 $
  *
  */
 package net.sourceforge.plantuml.skin.bluemodern;
@@ -65,7 +65,7 @@ public class BlueModern implements Skin {
 	private final HtmlColor blue2 = HtmlColorUtils.getColorIfValid("#D1DBEF");
 	private final HtmlColor blue3 = HtmlColorUtils.getColorIfValid("#D7E0F2");
 
-	private final HtmlColor red = HtmlColorUtils.getColorIfValid("#A80036");
+	private final HtmlColor red = HtmlColorUtils.MY_RED;
 
 	private final HtmlColor lineColor = HtmlColorUtils.getColorIfValid("#989898");
 	private final HtmlColor borderGroupColor = HtmlColorUtils.getColorIfValid("#BBBBBB");

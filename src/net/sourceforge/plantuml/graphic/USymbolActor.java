@@ -33,9 +33,14 @@
  */
 package net.sourceforge.plantuml.graphic;
 
+import net.sourceforge.plantuml.ColorParam;
 import net.sourceforge.plantuml.skin.StickMan;
 
 class USymbolActor extends USymbolSimpleAbstract {
+
+	public USymbolActor() {
+		super(ColorParam.usecaseActorBackground, ColorParam.usecaseActorBorder);
+	}
 
 	@Override
 	protected TextBlock getDrawing(SymbolContext symbolContext) {

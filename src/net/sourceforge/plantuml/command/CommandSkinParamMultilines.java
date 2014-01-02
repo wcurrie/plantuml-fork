@@ -40,6 +40,7 @@ import java.util.regex.Pattern;
 
 import net.sourceforge.plantuml.StringUtils;
 import net.sourceforge.plantuml.UmlDiagram;
+import net.sourceforge.plantuml.command.regex.MyPattern;
 
 public class CommandSkinParamMultilines extends CommandMultilinesBracket<UmlDiagram> {
 
@@ -63,10 +64,10 @@ public class CommandSkinParamMultilines extends CommandMultilinesBracket<UmlDiag
 		}
 	}
 
-	private final static Pattern p1 = Pattern.compile("^([\\w.]*(?:\\<\\<.*\\>\\>)?[\\w.]*)\\s+(?:(\\{)|(.*))$|^\\}?$");
+	private final static Pattern p1 = MyPattern.cmpile("^([\\w.]*(?:\\<\\<.*\\>\\>)?[\\w.]*)[%s]+(?:(\\{)|(.*))$|^\\}?$");
 
 	public CommandSkinParamMultilines() {
-		super("(?i)^skinparam\\s*(?:\\s+([\\w.]*(?:\\<\\<.*\\>\\>)?[\\w.]*))?\\s*\\{$");
+		super("(?i)^skinparam[%s]*(?:[%s]+([\\w.]*(?:\\<\\<.*\\>\\>)?[\\w.]*))?[%s]*\\{$");
 	}
 
 	@Override

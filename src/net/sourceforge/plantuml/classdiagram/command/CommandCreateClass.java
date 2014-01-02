@@ -57,7 +57,7 @@ import net.sourceforge.plantuml.graphic.HtmlColorUtils;
 
 public class CommandCreateClass extends SingleLineCommand2<ClassDiagram> {
 
-	public static final String CODE = "[^\\s{}\"<>]+";
+	public static final String CODE = "[^%s{}%g<>]+";
 
 	enum Mode {
 		EXTENDS, IMPLEMENTS
@@ -70,27 +70,26 @@ public class CommandCreateClass extends SingleLineCommand2<ClassDiagram> {
 	private static RegexConcat getRegexConcat() {
 		return new RegexConcat(new RegexLeaf("^"), //
 				new RegexLeaf("TYPE", //
-						"(interface|enum|annotation|abstract\\s+class|abstract|class)\\s+"), //
+						"(interface|enum|annotation|abstract[%s]+class|abstract|class)[%s]+"), //
 				new RegexOr(//
 						new RegexConcat(//
-								new RegexLeaf("DISPLAY1", "\"([^\"]+)\""), //
-								new RegexLeaf("\\s+as\\s+"), //
+								new RegexLeaf("DISPLAY1", "[%g]([^%g]+)[%g]"), //
+								new RegexLeaf("[%s]+as[%s]+"), //
 								new RegexLeaf("CODE1", "(" + CODE + ")")), //
 						new RegexConcat(//
 								new RegexLeaf("CODE2", "(" + CODE + ")"), //
-								new RegexLeaf("\\s+as\\s+"), // //
-								new RegexLeaf("DISPLAY2", "\"([^\"]+)\"")), //
+								new RegexLeaf("[%s]+as[%s]+"), // //
+								new RegexLeaf("DISPLAY2", "[%g]([^%g]+)[%g]")), //
 						new RegexLeaf("CODE3", "(" + CODE + ")"), //
-						new RegexLeaf("CODE4", "\"([^\"]+)\"")), //
-				new RegexLeaf("GENERIC", "(?:\\s*\\<(" + GenericRegexProducer.PATTERN + ")\\>)?"), //
-				// new RegexLeaf("STEREO", "(?:\\s*(\\<{2}.*\\>{2}))?"), //
-				new RegexLeaf("\\s*"), //
+						new RegexLeaf("CODE4", "[%g]([^%g]+)[%g]")), //
+				new RegexLeaf("GENERIC", "(?:[%s]*\\<(" + GenericRegexProducer.PATTERN + ")\\>)?"), //
+				new RegexLeaf("[%s]*"), //
 				new RegexLeaf("STEREO", "(\\<{2}.*\\>{2})?"), //
-				new RegexLeaf("\\s*"), //
+				new RegexLeaf("[%s]*"), //
 				new RegexLeaf("URL", "(" + UrlBuilder.getRegexp() + ")?"), //
-				new RegexLeaf("\\s*"), //
+				new RegexLeaf("[%s]*"), //
 				new RegexLeaf("COLOR", "(#\\w+[-\\\\|/]?\\w+)?"), //
-				new RegexLeaf("EXTENDS", "(\\s+(extends|implements)\\s+(\\.?[\\p{L}0-9_]+(?:\\.[\\p{L}0-9_]+)*))?"), //
+				new RegexLeaf("EXTENDS", "([%s]+(extends|implements)[%s]+(\\.?[\\p{L}0-9_]+(?:\\.[\\p{L}0-9_]+)*))?"), //
 				new RegexLeaf("$"));
 	}
 

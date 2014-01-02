@@ -33,6 +33,7 @@
  */
 package net.sourceforge.plantuml.graphic;
 
+import net.sourceforge.plantuml.ColorParam;
 import net.sourceforge.plantuml.svek.EntityDomain;
 
 class USymbolEntityDomain extends USymbolSimpleAbstract {
@@ -40,6 +41,7 @@ class USymbolEntityDomain extends USymbolSimpleAbstract {
 	private final double thickness;
 	
 	public USymbolEntityDomain(double thickness) {
+		super(ColorParam.entityBackground, ColorParam.entityBorder);
 		this.thickness = thickness;
 	}
 

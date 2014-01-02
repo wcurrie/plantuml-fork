@@ -41,7 +41,8 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
 import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+
+import net.sourceforge.plantuml.command.regex.MyPattern;
 
 public class HtmlColorUtils {
 
@@ -215,6 +216,8 @@ public class HtmlColorUtils {
 	public static final HtmlColor GRAY = HtmlColorUtils.getColorIfValid("#808080");
 	public static final HtmlColor LIGHT_GRAY = HtmlColorUtils.getColorIfValid("#C0C0C0");
 	public static final HtmlColor TRANSPARENT = new HtmlColorTransparent();
+	public static final HtmlColor MY_YELLOW = HtmlColorUtils.getColorIfValid("#FEFECE");
+	public static final HtmlColor MY_RED = HtmlColorUtils.getColorIfValid("#A80036");
 
 	private static HtmlColor build(String s) {
 
@@ -257,7 +260,7 @@ public class HtmlColorUtils {
 		if (s == null) {
 			return null;
 		}
-		final Matcher m = Pattern.compile("[-\\\\|/]").matcher(s);
+		final Matcher m = MyPattern.cmpile("[-\\\\|/]").matcher(s);
 		if (m.find()) {
 			final char sep = m.group(0).charAt(0);
 			final int idx = s.indexOf(sep);

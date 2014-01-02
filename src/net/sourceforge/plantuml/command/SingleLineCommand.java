@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 10779 $
+ * Revision $Revision: 12126 $
  *
  */
 package net.sourceforge.plantuml.command;
@@ -38,6 +38,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import net.sourceforge.plantuml.StringUtils;
+import net.sourceforge.plantuml.command.regex.MyPattern;
 import net.sourceforge.plantuml.core.Diagram;
 
 public abstract class SingleLineCommand<S extends Diagram> implements Command<S> {
@@ -52,7 +53,7 @@ public abstract class SingleLineCommand<S extends Diagram> implements Command<S>
 			throw new IllegalArgumentException("Bad pattern " + pattern);
 		}
 
-		this.pattern = Pattern.compile(pattern);
+		this.pattern = MyPattern.cmpile(pattern);
 	}
 
 	public String[] getDescription() {

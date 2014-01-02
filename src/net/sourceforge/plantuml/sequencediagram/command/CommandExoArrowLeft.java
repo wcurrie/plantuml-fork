@@ -60,10 +60,10 @@ public class CommandExoArrowLeft extends CommandExoArrowAny {
 								new RegexLeaf("ARROW_BODYB1", "(-*)"), //
 								new RegexLeaf("ARROW_STYLE2", CommandArrow.getColorOrStylePattern()), //
 								new RegexLeaf("ARROW_BODYA2", "(-+)"))), //
-				new RegexLeaf("\\s*"), //
-				new RegexLeaf("PARTICIPANT", "([\\p{L}0-9_.@]+|\"[^\"]+\")"), //
-				new RegexLeaf("\\s*"), //
-				new RegexLeaf("LABEL", "(?::\\s*(.*))?"), //
+				new RegexLeaf("[%s]*"), //
+				new RegexLeaf("PARTICIPANT", "([\\p{L}0-9_.@]+|[%g][^%g]+[%g])"), //
+				new RegexLeaf("[%s]*"), //
+				new RegexLeaf("LABEL", "(?::[%s]*(.*))?"), //
 				new RegexLeaf("$"));
 	}
 

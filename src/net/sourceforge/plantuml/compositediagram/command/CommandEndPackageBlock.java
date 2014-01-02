@@ -43,7 +43,7 @@ import net.sourceforge.plantuml.cucadiagram.IEntity;
 public class CommandEndPackageBlock extends SingleLineCommand<CompositeDiagram> {
 
 	public CommandEndPackageBlock() {
-		super("(?i)^(end ?block|\\})$");
+		super("(?i)^(end[%s]?block|\\})$");
 	}
 
 	@Override

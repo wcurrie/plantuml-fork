@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 10778 $
+ * Revision $Revision: 12129 $
  *
  */
 package net.sourceforge.plantuml.command;
@@ -40,7 +40,7 @@ import net.sourceforge.plantuml.UmlDiagram;
 public class CommandMinwidth extends SingleLineCommand<UmlDiagram> {
 
 	public CommandMinwidth() {
-		super("(?i)^minwidth\\s+(\\d+)$");
+		super("(?i)^minwidth[%s]+(\\d+)$");
 	}
 
 	@Override

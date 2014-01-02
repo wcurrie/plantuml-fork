@@ -57,10 +57,10 @@ public final class FactorySequenceNoteOverSeveralCommand implements SingleMultiF
 	private RegexConcat getRegexConcatMultiLine() {
 		return new RegexConcat( //
 				new RegexLeaf("^"), //
-				new RegexLeaf("VMERGE", "(/)?\\s*"), //
-				new RegexLeaf("STYLE", "(note|hnote|rnote)\\s+over\\s+"), //
-				new RegexLeaf("P1", "([\\p{L}0-9_.@]+|\"[^\"]+\")\\s*\\,\\s*"), //
-				new RegexLeaf("P2", "([\\p{L}0-9_.@]+|\"[^\"]+\")\\s*"), //
+				new RegexLeaf("VMERGE", "(/)?[%s]*"), //
+				new RegexLeaf("STYLE", "(note|hnote|rnote)[%s]+over[%s]+"), //
+				new RegexLeaf("P1", "([\\p{L}0-9_.@]+|[%g][^%g]+[%g])[%s]*\\,[%s]*"), //
+				new RegexLeaf("P2", "([\\p{L}0-9_.@]+|[%g][^%g]+[%g])[%s]*"), //
 				new RegexLeaf("COLOR", "(#\\w+[-\\\\|/]?\\w+)?"), //
 				new RegexLeaf("$") //
 		);
@@ -69,12 +69,12 @@ public final class FactorySequenceNoteOverSeveralCommand implements SingleMultiF
 	private RegexConcat getRegexConcatSingleLine() {
 		return new RegexConcat( //
 				new RegexLeaf("^"), //
-				new RegexLeaf("VMERGE", "(/)?\\s*"), //
-				new RegexLeaf("STYLE", "(note|hnote|rnote)\\s+over\\s+"), //
-				new RegexLeaf("P1", "([\\p{L}0-9_.@]+|\"[^\"]+\")\\s*\\,\\s*"), //
-				new RegexLeaf("P2", "([\\p{L}0-9_.@]+|\"[^\"]+\")\\s*"), //
+				new RegexLeaf("VMERGE", "(/)?[%s]*"), //
+				new RegexLeaf("STYLE", "(note|hnote|rnote)[%s]+over[%s]+"), //
+				new RegexLeaf("P1", "([\\p{L}0-9_.@]+|[%g][^%g]+[%g])[%s]*\\,[%s]*"), //
+				new RegexLeaf("P2", "([\\p{L}0-9_.@]+|[%g][^%g]+[%g])[%s]*"), //
 				new RegexLeaf("COLOR", "(#\\w+[-\\\\|/]?\\w+)?"), //
-				new RegexLeaf("\\s*:\\s*"), //
+				new RegexLeaf("[%s]*:[%s]*"), //
 				new RegexLeaf("NOTE", "(.*)"), //
 				new RegexLeaf("$"));
 	}
@@ -97,7 +97,7 @@ public final class FactorySequenceNoteOverSeveralCommand implements SingleMultiF
 
 			@Override
 			public String getPatternEnd() {
-				return "(?i)^end ?(note|hnote|rnote)$";
+				return "(?i)^end[%s]?(note|hnote|rnote)$";
 			}
 
 			public CommandExecutionResult executeNow(final SequenceDiagram system, List<String> lines) {

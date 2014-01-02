@@ -49,7 +49,7 @@ public class CommandForkEnd3 extends SingleLineCommand2<ActivityDiagram3> {
 	static RegexConcat getRegexConcat() {
 		return new RegexConcat(//
 				new RegexLeaf("^"), //
-				new RegexLeaf("(end ?fork|fork ?end)"), //
+				new RegexLeaf("(end[%s]?fork|fork[%s]?end)"), //
 				new RegexLeaf(";?$"));
 	}
 

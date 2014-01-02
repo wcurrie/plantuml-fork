@@ -50,11 +50,11 @@ public class CommandIf4 extends SingleLineCommand2<ActivityDiagram3> {
 	static RegexConcat getRegexConcat() {
 		return new RegexConcat(new RegexLeaf("^"), //
 				new RegexLeaf("if"), //
-				new RegexLeaf("\\s*"), //
+				new RegexLeaf("[%s]*"), //
 				new RegexLeaf("TEST", "\\((.*?)\\)"), //
-				new RegexLeaf("\\s*(is|equals?)\\s*"), //
+				new RegexLeaf("[%s]*(is|equals?)[%s]*"), //
 				new RegexLeaf("WHEN", "\\((.+?)\\)"), //
-				new RegexLeaf("\\s*then\\s*"), //
+				new RegexLeaf("[%s]*then[%s]*"), //
 				new RegexLeaf(";?$"));
 	}
 

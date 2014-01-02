@@ -50,7 +50,7 @@ public class CommandGroup3 extends SingleLineCommand2<ActivityDiagram3> {
 	static RegexConcat getRegexConcat() {
 		return new RegexConcat(new RegexLeaf("^"), //
 				new RegexLeaf("group"), //
-				new RegexLeaf("\\s*"), //
+				new RegexLeaf("[%s]*"), //
 				new RegexLeaf("NAME", "(.*)"), //
 				new RegexLeaf(";?$"));
 	}

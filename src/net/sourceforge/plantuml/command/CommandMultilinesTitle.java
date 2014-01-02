@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 10779 $
+ * Revision $Revision: 12128 $
  *
  */
 package net.sourceforge.plantuml.command;
@@ -47,7 +47,7 @@ public class CommandMultilinesTitle extends CommandMultilines<UmlDiagram> {
 
 	@Override
 	public String getPatternEnd() {
-		return "(?i)^end ?title$";
+		return "(?i)^end[%s]?title$";
 	}
 
 	public CommandExecutionResult execute(final UmlDiagram diagram, List<String> lines) {

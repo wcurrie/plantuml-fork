@@ -84,12 +84,12 @@ public class DescriptionDiagramFactory extends UmlDiagramFactory {
 		final FactoryNoteOnEntityCommand factoryNoteOnEntityCommand = new FactoryNoteOnEntityCommand(new RegexOr(
 				"ENTITY", //
 				new RegexLeaf("[\\p{L}0-9_.]+"), //
-				new RegexLeaf("\\(\\)\\s*[\\p{L}0-9_.]+"), //
-				new RegexLeaf("\\(\\)\\s*\"[^\"]+\""), //
+				new RegexLeaf("\\(\\)[%s]*[\\p{L}0-9_.]+"), //
+				new RegexLeaf("\\(\\)[%s]*[%g][^%g]+[%g]"), //
 				new RegexLeaf("\\[[^\\]*]+[^\\]]*\\]"), //
 				new RegexLeaf("\\((?!\\*\\))[^\\)]+\\)"), //
 				new RegexLeaf(":[^:]+:"), //
-				new RegexLeaf("\"[^\"]+\"") //
+				new RegexLeaf("[%g][^%g]+[%g]") //
 				));
 		cmds.add(factoryNoteOnEntityCommand.createSingleLine());
 

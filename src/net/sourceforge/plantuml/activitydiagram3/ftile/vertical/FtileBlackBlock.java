@@ -40,6 +40,7 @@ import java.util.Set;
 
 import net.sourceforge.plantuml.Dimension2DDouble;
 import net.sourceforge.plantuml.activitydiagram3.ftile.AbstractFtile;
+import net.sourceforge.plantuml.activitydiagram3.ftile.FtileGeometry;
 import net.sourceforge.plantuml.activitydiagram3.ftile.Swimlane;
 import net.sourceforge.plantuml.graphic.HtmlColor;
 import net.sourceforge.plantuml.graphic.StringBounder;
@@ -64,13 +65,10 @@ public class FtileBlackBlock extends AbstractFtile {
 		this.swimlane = swimlane;
 	}
 
-	public Point2D getPointIn(StringBounder stringBounder) {
-		return new Point2D.Double(width / 2, 0);
+	public FtileGeometry getGeometry(StringBounder stringBounder) {
+		return new FtileGeometry(width / 2, 0, height);
 	}
 
-	public Point2D getPointOut(StringBounder stringBounder) {
-		return new Point2D.Double(width / 2, height);
-	}
 
 	public TextBlock asTextBlock() {
 		return new TextBlock() {
@@ -89,7 +87,7 @@ public class FtileBlackBlock extends AbstractFtile {
 		};
 	}
 
-	public boolean isKilled() {
+	public boolean isKilled__TOBEREMOVED() {
 		return false;
 	}
 

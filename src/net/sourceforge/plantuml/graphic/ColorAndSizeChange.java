@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 9786 $
+ * Revision $Revision: 12202 $
  *
  */
 package net.sourceforge.plantuml.graphic;
@@ -36,11 +36,13 @@ package net.sourceforge.plantuml.graphic;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import net.sourceforge.plantuml.command.regex.MyPattern;
+
 class ColorAndSizeChange implements FontChange {
 
-	static final Pattern colorPattern = Pattern.compile("(?i)color\\s*=\\s*\"?(#[0-9a-fA-F]{6}|\\w+)\"?");
+	static final Pattern colorPattern = MyPattern.cmpile("(?i)color\\s*=\\s*[%g]?(#[0-9a-fA-F]{6}|\\w+)[%g]?");
 
-	static final Pattern sizePattern = Pattern.compile("(?i)size\\s*=\\s*\"?(\\d+)\"?");
+	static final Pattern sizePattern = MyPattern.cmpile("(?i)size\\s*=\\s*[%g]?(\\d+)[%g]?");
 
 	private final HtmlColor color;
 	private final Integer size;

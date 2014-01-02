@@ -46,6 +46,7 @@ import net.sourceforge.plantuml.SkinParam;
 import net.sourceforge.plantuml.UmlDiagramType;
 import net.sourceforge.plantuml.activitydiagram3.ftile.AbstractFtile;
 import net.sourceforge.plantuml.activitydiagram3.ftile.Ftile;
+import net.sourceforge.plantuml.activitydiagram3.ftile.FtileGeometry;
 import net.sourceforge.plantuml.activitydiagram3.ftile.Swimlane;
 import net.sourceforge.plantuml.creole.CreoleParser;
 import net.sourceforge.plantuml.creole.Sheet;
@@ -117,12 +118,8 @@ public class FtileWithNoteOpale extends AbstractFtile implements Stencil {
 
 	}
 
-	public Point2D getPointIn(StringBounder stringBounder) {
-		return getTranslate(stringBounder).getTranslated(tile.getPointIn(stringBounder));
-	}
-
-	public Point2D getPointOut(StringBounder stringBounder) {
-		return getTranslate(stringBounder).getTranslated(tile.getPointOut(stringBounder));
+	public FtileGeometry getGeometry(StringBounder stringBounder) {
+		return tile.getGeometry(stringBounder).translate(getTranslate(stringBounder));
 	}
 
 	private UTranslate getTranslate(StringBounder stringBounder) {
@@ -170,8 +167,8 @@ public class FtileWithNoteOpale extends AbstractFtile implements Stencil {
 		};
 	}
 
-	public boolean isKilled() {
-		return tile.isKilled();
+	public boolean isKilled__TOBEREMOVED() {
+		return tile.isKilled__TOBEREMOVED();
 	}
 
 	private Dimension2D calculateDimensionInternal(StringBounder stringBounder) {

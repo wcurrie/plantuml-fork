@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 10778 $
+ * Revision $Revision: 12128 $
  *
  */
 package net.sourceforge.plantuml.command;
@@ -42,7 +42,7 @@ import net.sourceforge.plantuml.cucadiagram.IGroup;
 public class CommandEndPackage extends SingleLineCommand<AbstractEntityDiagram> {
 
 	public CommandEndPackage() {
-		super("(?i)^(end ?package|\\})$");
+		super("(?i)^(end[%s]?package|\\})$");
 	}
 
 	@Override

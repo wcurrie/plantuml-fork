@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  *
- * Revision $Revision: 11432 $
+ * Revision $Revision: 12202 $
  *
  */
 package net.sourceforge.plantuml.classdiagram.command;
@@ -46,7 +46,7 @@ import net.sourceforge.plantuml.cucadiagram.Stereotype;
 public class CommandStereotype extends SingleLineCommand<ClassDiagram> {
 
 	public CommandStereotype() {
-		super("(?i)^([\\p{L}0-9_.]+|\"[^\"]+\")\\s*(\\<\\<.*\\>\\>)$");
+		super("(?i)^([\\p{L}0-9_.]+|[%g][^%g]+[%g])[%s]*(\\<\\<.*\\>\\>)$");
 	}
 
 	@Override

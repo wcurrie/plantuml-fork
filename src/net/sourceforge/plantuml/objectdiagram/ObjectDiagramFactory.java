@@ -78,7 +78,7 @@ public class ObjectDiagramFactory extends UmlDiagramFactory {
 		//
 		// addCommand(new CommandImport());
 		final FactoryNoteOnEntityCommand factoryNoteOnEntityCommand = new FactoryNoteOnEntityCommand(new RegexLeaf(
-				"ENTITY", "([\\p{L}0-9_.]+|\"[^\"]+\")"));
+				"ENTITY", "([\\p{L}0-9_.]+|[%g][^%g]+[%g])"));
 		cmds.add(factoryNoteOnEntityCommand.createSingleLine());
 
 		cmds.add(new CommandUrl());

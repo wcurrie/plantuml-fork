@@ -47,6 +47,7 @@ import net.sourceforge.plantuml.activitydiagram3.ftile.Ftile;
 import net.sourceforge.plantuml.activitydiagram3.ftile.FtileAssemblySimple;
 import net.sourceforge.plantuml.activitydiagram3.ftile.FtileFactory;
 import net.sourceforge.plantuml.activitydiagram3.ftile.FtileFactoryDelegator;
+import net.sourceforge.plantuml.activitydiagram3.ftile.FtileGeometry;
 import net.sourceforge.plantuml.activitydiagram3.ftile.FtileHeightFixed;
 import net.sourceforge.plantuml.activitydiagram3.ftile.FtileMarged;
 import net.sourceforge.plantuml.activitydiagram3.ftile.FtileUtils;
@@ -113,10 +114,10 @@ public class FtileFactoryDelegatorCreateFork extends FtileFactoryDelegator {
 
 		public void drawU(UGraphic ug) {
 			ug = ug.apply(new UTranslate(x, 0));
-			final Point2D p = getFtile2().getPointIn(getStringBounder());
+			final FtileGeometry geo = getFtile2().getGeometry(getStringBounder());
 			final Snake s = new Snake(arrowColor, Arrows.asToDown());
-			s.addPoint(p.getX(), 0);
-			s.addPoint(p.getX(), p.getY());
+			s.addPoint(geo.getLeft(), 0);
+			s.addPoint(geo.getLeft(), geo.getInY());
 			ug.draw(s);
 		}
 	}
@@ -136,13 +137,13 @@ public class FtileFactoryDelegatorCreateFork extends FtileFactoryDelegator {
 
 		public void drawU(UGraphic ug) {
 			ug = ug.apply(new UTranslate(x, 0));
-			final Point2D p = getFtile1().getPointOut(getStringBounder());
-			if (p == null) {
+			final FtileGeometry geo = getFtile1().getGeometry(getStringBounder());
+			if (geo.hasPointOut() == false) {
 				return;
 			}
 			final Snake s = new Snake(arrowColor, Arrows.asToDown());
-			s.addPoint(p.getX(), p.getY());
-			s.addPoint(p.getX(), height);
+			s.addPoint(geo.getLeft(), geo.getOutY());
+			s.addPoint(geo.getLeft(), height);
 			ug.draw(s);
 		}
 	}

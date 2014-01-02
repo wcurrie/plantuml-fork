@@ -34,7 +34,6 @@
 package net.sourceforge.plantuml.activitydiagram.command;
 
 import java.util.List;
-import java.util.regex.Pattern;
 
 import net.sourceforge.plantuml.Direction;
 import net.sourceforge.plantuml.StringUtils;
@@ -45,6 +44,7 @@ import net.sourceforge.plantuml.activitydiagram.ActivityDiagram;
 import net.sourceforge.plantuml.command.CommandExecutionResult;
 import net.sourceforge.plantuml.command.CommandMultilines2;
 import net.sourceforge.plantuml.command.MultilinesStrategy;
+import net.sourceforge.plantuml.command.regex.MyPattern;
 import net.sourceforge.plantuml.command.regex.RegexConcat;
 import net.sourceforge.plantuml.command.regex.RegexLeaf;
 import net.sourceforge.plantuml.command.regex.RegexOptional;
@@ -69,7 +69,7 @@ public class CommandLinkLongActivity extends CommandMultilines2<ActivityDiagram>
 
 	@Override
 	public String getPatternEnd() {
-		return "(?i)^\\s*([^\"]*)\"(?:\\s+as\\s+([\\p{L}0-9][\\p{L}0-9_.]*))?\\s*(\\<\\<.*\\>\\>)?\\s*(?:in\\s+(\"[^\"]+\"|\\S+))?\\s*(#\\w+)?$";
+		return "(?i)^[%s]*([^%g]*)[%g](?:[%s]+as[%s]+([\\p{L}0-9][\\p{L}0-9_.]*))?[%s]*(\\<\\<.*\\>\\>)?[%s]*(?:in[%s]+([%g][^%g]+[%g]|\\S+))?[%s]*(#\\w+)?$";
 	}
 
 	static RegexConcat getRegexConcat() {
@@ -78,20 +78,20 @@ public class CommandLinkLongActivity extends CommandMultilines2<ActivityDiagram>
 						new RegexOr("FIRST", //
 								new RegexLeaf("STAR", "(\\(\\*(top)?\\))"), //
 								new RegexLeaf("CODE", "([\\p{L}0-9][\\p{L}0-9_.]*)"), //
-								new RegexLeaf("BAR", "(?:==+)\\s*([\\p{L}0-9_.]+)\\s*(?:==+)"), //
-								new RegexLeaf("QUOTED", "\"([^\"]+)\"(?:\\s+as\\s+([\\p{L}0-9_.]+))?"))), //
-				new RegexLeaf("\\s*"), //
+								new RegexLeaf("BAR", "(?:==+)[%s]*([\\p{L}0-9_.]+)[%s]*(?:==+)"), //
+								new RegexLeaf("QUOTED", "[%g]([^%g]+)[%g](?:[%s]+as[%s]+([\\p{L}0-9_.]+))?"))), //
+				new RegexLeaf("[%s]*"), //
 				new RegexLeaf("STEREOTYPE", "(\\<\\<.*\\>\\>)?"), //
-				new RegexLeaf("\\s*"), //
+				new RegexLeaf("[%s]*"), //
 				new RegexLeaf("BACKCOLOR", "(#\\w+)?"), //
-				new RegexLeaf("\\s*"), //
+				new RegexLeaf("[%s]*"), //
 				new RegexLeaf("URL", "(" + UrlBuilder.getRegexp() + ")?"), //
 				new RegexLeaf("ARROW", "([-=.]+(?:(left|right|up|down|le?|ri?|up?|do?)(?=[-=.]))?[-=.]*\\>)"), //
-				new RegexLeaf("\\s*"), //
+				new RegexLeaf("[%s]*"), //
 				new RegexLeaf("BRACKET", "(?:\\[([^\\]*]+[^\\]]*)\\])?"), //
-				new RegexLeaf("\\s*"), //
-				new RegexLeaf("DESC", "\"([^\"]*?)"), //
-				new RegexLeaf("\\s*"), //
+				new RegexLeaf("[%s]*"), //
+				new RegexLeaf("DESC", "[%g]([^%g]*?)"), //
+				new RegexLeaf("[%s]*"), //
 				new RegexLeaf("$"));
 	}
 
@@ -133,7 +133,7 @@ public class CommandLinkLongActivity extends CommandMultilines2<ActivityDiagram>
 			}
 		}
 
-		final List<String> lineLast = StringUtils.getSplit(Pattern.compile(getPatternEnd()),
+		final List<String> lineLast = StringUtils.getSplit(MyPattern.cmpile(getPatternEnd()),
 				lines.get(lines.size() - 1));
 		if (StringUtils.isNotEmpty(lineLast.get(0))) {
 			if (sb.length() > 0 && sb.toString().endsWith("\\n") == false) {

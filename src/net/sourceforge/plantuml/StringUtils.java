@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  *
- * Revision $Revision: 11949 $
+ * Revision $Revision: 12202 $
  *
  */
 package net.sourceforge.plantuml;
@@ -44,6 +44,7 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import net.sourceforge.plantuml.command.regex.MyPattern;
 import net.sourceforge.plantuml.cucadiagram.Code;
 import net.sourceforge.plantuml.cucadiagram.Display;
 import net.sourceforge.plantuml.graphic.HtmlColor;
@@ -256,7 +257,7 @@ public class StringUtils {
 	// }
 
 	public static String eventuallyRemoveStartingAndEndingDoubleQuote(String s) {
-		if (s.startsWith("\"") && s.endsWith("\"")) {
+		if (s.length() > 1 && isDoubleQuote(s.charAt(0)) && isDoubleQuote(s.charAt(s.length() - 1))) {
 			return s.substring(1, s.length() - 1);
 		}
 		if (s.startsWith("(") && s.endsWith(")")) {
@@ -269,6 +270,10 @@ public class StringUtils {
 			return s.substring(1, s.length() - 1);
 		}
 		return s;
+	}
+
+	private static boolean isDoubleQuote(char c) {
+		return c == '\"' || c == '\u201c' || c == '\u201d' || c == '\u00ab' || c == '\u00bb';
 	}
 
 	public static boolean isCJK(char c) {
@@ -412,11 +417,11 @@ public class StringUtils {
 
 	public static List<String> splitComma(String s) {
 		s = s.trim();
-		if (s.matches("([\\p{L}0-9_.]+|\"[^\"]+\")(\\s*,\\s*([\\p{L}0-9_.]+|\"[^\"]+\"))*") == false) {
+		if (s.matches("([\\p{L}0-9_.]+|[%g][^%g]+[%g])(\\s*,\\s*([\\p{L}0-9_.]+|[%g][^%g]+[%g]))*") == false) {
 			throw new IllegalArgumentException();
 		}
 		final List<String> result = new ArrayList<String>();
-		final Pattern p = Pattern.compile("([\\p{L}0-9_.]+|\"[^\"]+\")");
+		final Pattern p = MyPattern.cmpile("([\\p{L}0-9_.]+|[%g][^%g]+[%g])");
 		final Matcher m = p.matcher(s);
 		while (m.find()) {
 			result.add(eventuallyRemoveStartingAndEndingDoubleQuote(m.group(0)));

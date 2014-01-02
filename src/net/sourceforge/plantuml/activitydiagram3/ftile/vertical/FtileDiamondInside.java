@@ -41,6 +41,7 @@ import java.util.Set;
 import net.sourceforge.plantuml.Dimension2DDouble;
 import net.sourceforge.plantuml.activitydiagram3.ftile.AbstractFtile;
 import net.sourceforge.plantuml.activitydiagram3.ftile.Diamond;
+import net.sourceforge.plantuml.activitydiagram3.ftile.FtileGeometry;
 import net.sourceforge.plantuml.activitydiagram3.ftile.Swimlane;
 import net.sourceforge.plantuml.graphic.HtmlColor;
 import net.sourceforge.plantuml.graphic.StringBounder;
@@ -150,23 +151,13 @@ public class FtileDiamondInside extends AbstractFtile {
 		return result;
 	}
 
-	public boolean isKilled() {
+	public boolean isKilled__TOBEREMOVED() {
 		return false;
 	}
 
-	public Point2D getPointIn(StringBounder stringBounder) {
-		return new Point2D.Double(calculateDimensionInternal(stringBounder).getWidth() / 2, 0);
-	}
-
-	public Point2D getPointOut(StringBounder stringBounder) {
-		// return new Point2D.Double(calculateDimensionInternal(stringBounder).getWidth() / 2, Diamond.diamondHalfSize * 2);
+	public FtileGeometry getGeometry(StringBounder stringBounder) {
 		final Dimension2D dim = calculateDimensionInternal(stringBounder);
-		return new Point2D.Double(dim.getWidth() / 2, dim.getHeight());
+		return new FtileGeometry(dim.getWidth() / 2, 0, dim.getHeight());
 	}
-
-	// private double getDeltaX(StringBounder stringBounder) {
-	// return calculateDimensionInternal(stringBounder).getWidth() -
-	// Diamond.diamondHalfSize * 2;
-	// }
 
 }

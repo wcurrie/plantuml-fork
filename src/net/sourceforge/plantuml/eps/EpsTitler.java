@@ -145,33 +145,6 @@ public final class EpsTitler {
 		uGraphicEps.close();
 		return uGraphicEps.getEPSCode();
 
-		// String svgTitle = CucaDiagramFileMaker.getSvg(uGraphicSvg);
-		// svgTitle = svgTitle.replaceFirst("(?i)<g>", "<g
-		// transform=\"translate(0 0)\">");
-		//
-		// if (verticalPosition == VerticalPosition.TOP) {
-		// final Pattern p =
-		// Pattern.compile("(?i)translate\\((\\d+)\\s+(\\d+)");
-		// final Matcher m = p.matcher(svg);
-		//
-		// final StringBuffer sb = new StringBuffer();
-		// while (m.find()) {
-		// final int tx = Integer.parseInt(m.group(1));
-		// final int ty = Integer.parseInt(m.group(2)) + (int)
-		// (dimText.getHeight()) + margin;
-		// m.appendReplacement(sb, "translate(" + tx + " " + ty);
-		// }
-		// m.appendTail(sb);
-		// svg = sb.toString();
-		// }
-		//
-		// final int x = svg.indexOf("<g ");
-		// if (x == -1) {
-		// throw new IllegalStateException();
-		// }
-		// svg = svg.substring(0, x) + svgTitle + svg.substring(x);
-		//
-		// return svg;
 	}
 
 }

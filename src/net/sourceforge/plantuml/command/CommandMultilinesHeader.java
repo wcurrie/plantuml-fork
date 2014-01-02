@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 11153 $
+ * Revision $Revision: 12128 $
  *
  */
 package net.sourceforge.plantuml.command;
@@ -44,12 +44,12 @@ import net.sourceforge.plantuml.graphic.HorizontalAlignment;
 public class CommandMultilinesHeader extends CommandMultilines<UmlDiagram> {
 
 	public CommandMultilinesHeader() {
-		super("(?i)^(?:(left|right|center)?\\s*)header$");
+		super("(?i)^(?:(left|right|center)?[%s]*)header$");
 	}
 	
 	@Override
 	public String getPatternEnd() {
-		return "(?i)^end ?header$";
+		return "(?i)^end[%s]?header$";
 	}
 
 

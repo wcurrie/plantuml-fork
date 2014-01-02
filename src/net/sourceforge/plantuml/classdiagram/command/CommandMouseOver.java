@@ -55,16 +55,16 @@ public class CommandMouseOver extends CommandMultilines2<ClassDiagram> {
 
 	@Override
 	public String getPatternEnd() {
-		return "(?i)^\\s*\\}\\s*$";
+		return "(?i)^[%s]*\\}[%s]*$";
 	}
 
 	private static RegexConcat getRegexConcat() {
 		return new RegexConcat(new RegexLeaf("^"), //
-				new RegexLeaf("mouseover\\s+"), //
+				new RegexLeaf("mouseover[%s]+"), //
 				new RegexOr(//
 						new RegexLeaf("NAME1", "(\\.?[\\p{L}0-9_]+(?:\\.[\\p{L}0-9_]+)*)"), //
-						new RegexLeaf("NAME3", "\"([^\"]+)\"")), //
-				new RegexLeaf("\\s*\\{\\s*$"));
+						new RegexLeaf("NAME3", "[%g]([^%g]+)[%g]")), //
+				new RegexLeaf("[%s]*\\{[%s]*$"));
 	}
 
 	public CommandExecutionResult executeNow(ClassDiagram system, List<String> lines) {

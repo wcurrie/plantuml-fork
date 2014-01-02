@@ -61,7 +61,7 @@ public class CommandLinkState extends SingleLineCommand2<StateDiagram> {
 	static RegexConcat getRegex() {
 		return new RegexConcat(new RegexLeaf("^"), //
 				getStatePattern("ENT1"), //
-				new RegexLeaf("\\s*"), //
+				new RegexLeaf("[%s]*"), //
 				new RegexConcat(
 						//
 						new RegexLeaf("ARROW_CROSS_START", "(x)?"), //
@@ -73,18 +73,18 @@ public class CommandLinkState extends SingleLineCommand2<StateDiagram> {
 								"(?:\\[((?:#\\w+|dotted|dashed|bold|hidden)(?:,#\\w+|,dotted|,dashed|,bold|,hidden)*)\\])?"), //
 						new RegexLeaf("ARROW_BODY2", "(-*)"), //
 						new RegexLeaf("\\>"), //
-						new RegexLeaf("ARROW_CIRCLE_END", "(o\\s+)?")), //
-				new RegexLeaf("\\s*"), //
+						new RegexLeaf("ARROW_CIRCLE_END", "(o[%s]+)?")), //
+				new RegexLeaf("[%s]*"), //
 				getStatePattern("ENT2"), //
-				new RegexLeaf("\\s*"), //
-				new RegexLeaf("LABEL", "(?::\\s*([^\"]+))?"), //
+				new RegexLeaf("[%s]*"), //
+				new RegexLeaf("LABEL", "(?::[%s]*([^%g]+))?"), //
 				new RegexLeaf("$"));
 	}
 
 	private static RegexLeaf getStatePattern(String name) {
 		return new RegexLeaf(
 				name,
-				"([\\p{L}0-9_.]+|[\\p{L}0-9_.]+\\[H\\]|\\[\\*\\]|\\[H\\]|(?:==+)(?:[\\p{L}0-9_.]+)(?:==+))\\s*(\\<\\<.*\\>\\>)?\\s*(#\\w+)?");
+				"([\\p{L}0-9_.]+|[\\p{L}0-9_.]+\\[H\\]|\\[\\*\\]|\\[H\\]|(?:==+)(?:[\\p{L}0-9_.]+)(?:==+))[%s]*(\\<\\<.*\\>\\>)?[%s]*(#\\w+)?");
 	}
 
 	@Override

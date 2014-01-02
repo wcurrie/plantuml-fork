@@ -35,6 +35,7 @@ package net.sourceforge.plantuml.graphic;
 
 import java.awt.geom.Dimension2D;
 
+import net.sourceforge.plantuml.ColorParam;
 import net.sourceforge.plantuml.Dimension2DDouble;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
 import net.sourceforge.plantuml.ugraphic.URectangle;
@@ -42,6 +43,11 @@ import net.sourceforge.plantuml.ugraphic.UShape;
 import net.sourceforge.plantuml.ugraphic.UTranslate;
 
 class USymbolComponent2 extends USymbol {
+	
+	public USymbolComponent2() {
+		super(ColorParam.componentBackground, ColorParam.componentBorder);
+	}
+
 
 	private void drawNode(UGraphic ug, double widthTotal, double heightTotal, boolean shadowing) {
 

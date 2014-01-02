@@ -45,7 +45,7 @@ import net.sourceforge.plantuml.skin.VisibilityModifier;
 public class CommandAddData extends SingleLineCommand<ObjectDiagram> {
 
 	public CommandAddData() {
-		super("(?i)^([\\p{L}0-9_.]+)\\s*:\\s*(.*)$");
+		super("(?i)^([\\p{L}0-9_.]+)[%s]*:[%s]*(.*)$");
 	}
 
 	@Override

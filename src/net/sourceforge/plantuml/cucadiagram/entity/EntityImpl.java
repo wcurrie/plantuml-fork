@@ -71,7 +71,7 @@ import net.sourceforge.plantuml.svek.PackageStyle;
 import net.sourceforge.plantuml.svek.SingleStrategy;
 import net.sourceforge.plantuml.ugraphic.UStroke;
 
-class EntityImpl implements ILeaf, IGroup {
+final class EntityImpl implements ILeaf, IGroup {
 
 	private final EntityFactory entityFactory;
 
@@ -592,6 +592,20 @@ class EntityImpl implements ILeaf, IGroup {
 
 	public void setSpecificLineStroke(UStroke specificLineStroke) {
 		this.specificStroke = specificLineStroke;
+	}
+
+	private int layer;
+
+	public int getHectorLayer() {
+		return layer;
+	}
+
+	public void setHectorLayer(int layer) {
+		System.err.println("layer=" + layer);
+		this.layer = layer;
+		if (layer > 1000) {
+			throw new IllegalArgumentException();
+		}
 	}
 
 }

@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 11838 $
+ * Revision $Revision: 12126 $
  *
  */
 package net.sourceforge.plantuml.graphic;
@@ -36,8 +36,8 @@ package net.sourceforge.plantuml.graphic;
 import java.awt.Font;
 import java.util.EnumSet;
 import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
+import net.sourceforge.plantuml.command.regex.MyPattern;
 import net.sourceforge.plantuml.ugraphic.UFont;
 
 public enum FontStyle {
@@ -112,7 +112,7 @@ public enum FontStyle {
 	}
 
 	public HtmlColor getExtendedColor(String s) {
-		final Matcher m = Pattern.compile(getActivationPattern()).matcher(s);
+		final Matcher m = MyPattern.cmpile(getActivationPattern()).matcher(s);
 		if (m.find() == false || m.groupCount() != 1) {
 			return null;
 		}

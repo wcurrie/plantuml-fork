@@ -83,5 +83,9 @@ public interface IEntity extends SpecificBackcolorable, Hideable, Removeable, Li
 	public boolean isGroup();
 
 	public boolean hasUrl();
+	
+	public int getHectorLayer();
+	
+	public void setHectorLayer(int layer);
 
 }

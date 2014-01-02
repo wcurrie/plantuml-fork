@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 10778 $
+ * Revision $Revision: 12128 $
  *
  */
 package net.sourceforge.plantuml.statediagram.command;
@@ -43,7 +43,7 @@ import net.sourceforge.plantuml.statediagram.StateDiagram;
 public class CommandEndState extends SingleLineCommand<StateDiagram> {
 
 	public CommandEndState() {
-		super("(?i)^(end ?state|\\})$");
+		super("(?i)^(end[%s]?state|\\})$");
 	}
 
 	@Override

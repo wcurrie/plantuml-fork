@@ -41,7 +41,7 @@ import net.sourceforge.plantuml.UmlDiagram;
 public class CommandScaleWidthAndHeight extends SingleLineCommand<UmlDiagram> {
 
 	public CommandScaleWidthAndHeight() {
-		super("(?i)^scale\\s+([0-9.]+)\\s*[*x]\\s*([0-9.]+)$");
+		super("(?i)^scale[%s]+([0-9.]+)[%s]*[*x][%s]*([0-9.]+)$");
 	}
 
 	@Override

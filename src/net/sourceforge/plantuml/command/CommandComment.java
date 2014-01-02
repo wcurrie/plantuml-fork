@@ -40,7 +40,7 @@ import net.sourceforge.plantuml.core.Diagram;
 public class CommandComment extends SingleLineCommand<Diagram> {
 
 	public CommandComment() {
-		super("(?i)^\\s*('.*||/'.*'/\\s*)$");
+		super("(?i)^[%s]*([%q].*||/[%q].*[%q]/[%s]*)$");
 	}
 
 	@Override

@@ -46,6 +46,7 @@ import net.sourceforge.plantuml.activitydiagram3.ftile.Connection;
 import net.sourceforge.plantuml.activitydiagram3.ftile.Ftile;
 import net.sourceforge.plantuml.activitydiagram3.ftile.FtileFactory;
 import net.sourceforge.plantuml.activitydiagram3.ftile.FtileFactoryDelegator;
+import net.sourceforge.plantuml.activitydiagram3.ftile.FtileGeometry;
 import net.sourceforge.plantuml.activitydiagram3.ftile.FtileHeightFixed;
 import net.sourceforge.plantuml.activitydiagram3.ftile.FtileMarged;
 import net.sourceforge.plantuml.activitydiagram3.ftile.FtileUtils;
@@ -122,11 +123,12 @@ public class FtileFactoryDelegatorCreateSplit extends FtileFactoryDelegator {
 			double maxX = 0;
 			final StringBounder stringBounder = ug.getStringBounder();
 			for (Ftile tmp : list) {
-				if (y > 0 && tmp.isKilled()) {
+				if (y > 0 && tmp.isKilled__TOBEREMOVED()) {
 					continue;
 				}
 				final UTranslate ut = inner.getTranslateFor(tmp, stringBounder);
-				final double middle = ut.getTranslated(tmp.getPointIn(stringBounder)).getX();
+				// final double middle = ut.getTranslated(tmp.getGeometry(stringBounder).getPointIn()).getX();
+				final double middle = tmp.getGeometry(stringBounder).translate(ut).getLeft(); 
 				minX = Math.min(minX, middle);
 				maxX = Math.max(maxX, middle);
 			}
@@ -157,10 +159,11 @@ public class FtileFactoryDelegatorCreateSplit extends FtileFactoryDelegator {
 
 		public void drawU(UGraphic ug) {
 			ug = ug.apply(new UTranslate(x, 0));
-			final Point2D p = getFtile2().getPointIn(ug.getStringBounder());
+			final FtileGeometry geo = getFtile2().getGeometry(ug.getStringBounder());
+			final double left = geo.getLeft();
 			final Snake s = new Snake(arrowColor, Arrows.asToDown());
-			s.addPoint(p.getX(), 0);
-			s.addPoint(p.getX(), p.getY());
+			s.addPoint(left, 0);
+			s.addPoint(left, geo.getInY());
 			ug.draw(s);
 		}
 	}
@@ -180,13 +183,13 @@ public class FtileFactoryDelegatorCreateSplit extends FtileFactoryDelegator {
 
 		public void drawU(UGraphic ug) {
 			ug = ug.apply(new UTranslate(x, 0));
-			final Point2D p = getFtile1().getPointOut(ug.getStringBounder());
-			if (p == null) {
+			final FtileGeometry geo = getFtile1().getGeometry(ug.getStringBounder());
+			if (geo.hasPointOut() == false) {
 				return;
 			}
 			final Snake s = new Snake(arrowColor, Arrows.asToDown());
-			s.addPoint(p.getX(), p.getY());
-			s.addPoint(p.getX(), height);
+			s.addPoint(geo.getLeft(), geo.getOutY());
+			s.addPoint(geo.getLeft(), height);
 			ug.draw(s);
 		}
 	}

@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  *
- * Revision $Revision: 12022 $
+ * Revision $Revision: 12126 $
  *
  */
 package net.sourceforge.plantuml;
@@ -45,6 +45,7 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import net.sourceforge.plantuml.command.regex.MyPattern;
 import net.sourceforge.plantuml.preproc.Defines;
 
 public class Option {
@@ -267,7 +268,7 @@ public class Option {
 	}
 
 	private void manageDefine(String s) {
-		final Pattern p = Pattern.compile("^(\\w+)(?:=(.*))?$");
+		final Pattern p = MyPattern.cmpile("^(\\w+)(?:=(.*))?$");
 		final Matcher m = p.matcher(s);
 		if (m.find()) {
 			define(m.group(1), m.group(2));
@@ -275,7 +276,7 @@ public class Option {
 	}
 
 	private void manageSkinParam(String s) {
-		final Pattern p = Pattern.compile("^(\\w+)(?:=(.*))?$");
+		final Pattern p = MyPattern.cmpile("^(\\w+)(?:=(.*))?$");
 		final Matcher m = p.matcher(s);
 		if (m.find()) {
 			skinParam(m.group(1), m.group(2));

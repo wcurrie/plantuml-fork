@@ -52,13 +52,13 @@ public class CommandMultilinesLegend extends CommandMultilines2<UmlDiagram> {
 	private static RegexConcat getRegexConcat() {
 		return new RegexConcat(new RegexLeaf("^"), //
 				new RegexLeaf("legend"), //
-				new RegexLeaf("ALIGN", "(?:\\s+(left|right|center))?"), //
+				new RegexLeaf("ALIGN", "(?:[%s]+(left|right|center))?"), //
 				new RegexLeaf("$"));
 	}
 
 	@Override
 	public String getPatternEnd() {
-		return "(?i)^end ?legend$";
+		return "(?i)^end[%s]?legend$";
 	}
 
 	@Override

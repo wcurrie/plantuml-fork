@@ -36,7 +36,6 @@ package net.sourceforge.plantuml.svek.image;
 
 import java.awt.geom.Dimension2D;
 
-import net.sourceforge.plantuml.ColorParam;
 import net.sourceforge.plantuml.FontParam;
 import net.sourceforge.plantuml.ISkinParam;
 import net.sourceforge.plantuml.SkinParamUtils;
@@ -84,9 +83,10 @@ public class EntityImageComponentForDescriptionDiagram extends AbstractEntityIma
 
 		HtmlColor backcolor = getEntity().getSpecificBackColor();
 		if (backcolor == null) {
-			backcolor = SkinParamUtils.getColor(getSkinParam(), getColorParamBack(symbol), getStereo());
+			backcolor = SkinParamUtils.getColor(getSkinParam(), symbol.getColorParamBack(), getStereo());
 		}
-		final HtmlColor forecolor = SkinParamUtils.getColor(getSkinParam(), getColorParamBorder(symbol), getStereo());
+		// backcolor = HtmlColorUtils.BLUE;
+		final HtmlColor forecolor = SkinParamUtils.getColor(getSkinParam(), symbol.getColorParamBorder(), getStereo());
 		final SymbolContext ctx = new SymbolContext(backcolor, forecolor).withStroke(new UStroke(1.5)).withShadow(
 				getSkinParam().shadowing());
 
@@ -132,34 +132,34 @@ public class EntityImageComponentForDescriptionDiagram extends AbstractEntityIma
 		// throw new UnsupportedOperationException("symbol=" + symbol.getClass());
 	}
 
-	private ColorParam getColorParamBorder(USymbol symbol) {
-		if (symbol == USymbol.COMPONENT1 || symbol == USymbol.COMPONENT2 || symbol == USymbol.INTERFACE) {
-			return ColorParam.componentBorder;
-		}
-		if (symbol == USymbol.ACTOR) {
-			return ColorParam.usecaseActorBorder;
-		}
-		if (symbol == USymbol.ARTIFACT || symbol == USymbol.FOLDER || symbol == USymbol.BOUNDARY
-				|| symbol == USymbol.ENTITY_DOMAIN || symbol == USymbol.CONTROL) {
-			return ColorParam.usecaseActorBorder;
-		}
-		return ColorParam.usecaseActorBorder;
-		// throw new UnsupportedOperationException("symbol=" + symbol.getClass());
-	}
-
-	private ColorParam getColorParamBack(USymbol symbol) {
-		if (symbol == USymbol.COMPONENT1 || symbol == USymbol.COMPONENT2 || symbol == USymbol.INTERFACE) {
-			return ColorParam.componentBackground;
-		}
-		if (symbol == USymbol.ACTOR) {
-			return ColorParam.usecaseActorBackground;
-		}
-		if (symbol == USymbol.ARTIFACT || symbol == USymbol.FOLDER || symbol == USymbol.BOUNDARY
-				|| symbol == USymbol.ENTITY_DOMAIN || symbol == USymbol.CONTROL) {
-			return ColorParam.usecaseActorBackground;
-		}
-		return ColorParam.usecaseActorBackground;
-	}
+//	private ColorParam getColorParamBorder(USymbol symbol) {
+//		if (symbol == USymbol.COMPONENT1 || symbol == USymbol.COMPONENT2 || symbol == USymbol.INTERFACE) {
+//			return ColorParam.componentBorder;
+//		}
+//		if (symbol == USymbol.ACTOR) {
+//			return ColorParam.usecaseActorBorder;
+//		}
+//		if (symbol == USymbol.ARTIFACT || symbol == USymbol.FOLDER || symbol == USymbol.BOUNDARY
+//				|| symbol == USymbol.ENTITY_DOMAIN || symbol == USymbol.CONTROL) {
+//			return ColorParam.usecaseActorBorder;
+//		}
+//		return ColorParam.usecaseActorBorder;
+//		// throw new UnsupportedOperationException("symbol=" + symbol.getClass());
+//	}
+//
+//	private ColorParam getColorParamBack(USymbol symbol) {
+//		if (symbol == USymbol.COMPONENT1 || symbol == USymbol.COMPONENT2 || symbol == USymbol.INTERFACE) {
+//			return ColorParam.componentBackground;
+//		}
+//		if (symbol == USymbol.ACTOR) {
+//			return ColorParam.usecaseActorBackground;
+//		}
+//		if (symbol == USymbol.ARTIFACT || symbol == USymbol.FOLDER || symbol == USymbol.BOUNDARY
+//				|| symbol == USymbol.ENTITY_DOMAIN || symbol == USymbol.CONTROL) {
+//			return ColorParam.usecaseActorBackground;
+//		}
+//		return ColorParam.usecaseActorBackground;
+//	}
 
 	public Dimension2D calculateDimension(StringBounder stringBounder) {
 		return asSmall.calculateDimension(stringBounder);

@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 11153 $
+ * Revision $Revision: 12129 $
  *
  */
 package net.sourceforge.plantuml.command;
@@ -42,7 +42,7 @@ import net.sourceforge.plantuml.graphic.HorizontalAlignment;
 public class CommandHeader extends SingleLineCommand<UmlDiagram> {
 
 	public CommandHeader() {
-		super("(?i)^(?:(left|right|center)?\\s*)header(?:\\s*:\\s*|\\s+)(.*[\\p{L}0-9_.].*)$");
+		super("(?i)^(?:(left|right|center)?[%s]*)header(?:[%s]*:[%s]*|[%s]+)(.*[\\p{L}0-9_.].*)$");
 	}
 
 	@Override
