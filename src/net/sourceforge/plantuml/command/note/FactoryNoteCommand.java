@@ -2,7 +2,7 @@
  * PlantUML : a free UML diagram generator
  * ========================================================================
  *
- * (C) Copyright 2009-2013, Arnaud Roques
+ * (C) Copyright 2009-2014, Arnaud Roques
  *
  * Project Info:  http://plantuml.sourceforge.net
  * 
@@ -57,7 +57,7 @@ public final class FactoryNoteCommand implements SingleMultiFactoryCommand<Abstr
 		return new RegexConcat(new RegexLeaf("^(note)[%s]+"), //
 				new RegexLeaf("CODE", "as[%s]+([\\p{L}0-9_.]+)"), //
 				new RegexLeaf("[%s]*"), //
-				new RegexLeaf("COLOR", "(#\\w+[-\\\\|/]?\\w+)?"), //
+				new RegexLeaf("COLOR", "(" + HtmlColorUtils.COLOR_REGEXP + ")?"), //
 				new RegexLeaf("$") //
 		);
 	}
@@ -66,7 +66,7 @@ public final class FactoryNoteCommand implements SingleMultiFactoryCommand<Abstr
 		return new RegexConcat(new RegexLeaf("^note[%s]+"), //
 				new RegexLeaf("DISPLAY", "[%g]([^%g]+)[%g][%s]+as[%s]+"), //
 				new RegexLeaf("CODE", "([\\p{L}0-9_.]+)[%s]*"), //
-				new RegexLeaf("COLOR", "(#\\w+[-\\\\|/]?\\w+)?"), //
+				new RegexLeaf("COLOR", "(" + HtmlColorUtils.COLOR_REGEXP + ")?"), //
 				new RegexLeaf("$") //
 		);
 

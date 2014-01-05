@@ -2,7 +2,7 @@
  * PlantUML : a free UML diagram generator
  * ========================================================================
  *
- * (C) Copyright 2009-2013, Arnaud Roques
+ * (C) Copyright 2009-2014, Arnaud Roques
  *
  * Project Info:  http://plantuml.sourceforge.net
  * 
@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  *
- * Revision $Revision: 11786 $
+ * Revision $Revision: 12235 $
  *
  */
 package net.sourceforge.plantuml;
@@ -174,9 +174,11 @@ public class OptionPrint {
 		System.out.println();
 		System.out.println("Original idea: Arnaud Roques");
 		System.out.println("Word Macro: Alain Bertucat & Matthieu Sabatier");
+		System.out.println("Word Add-in: Adriaan van den Brand");
 		System.out.println("Eclipse Plugin: Claude Durif & Anne Pecoil");
 		System.out.println("Servlet & XWiki: Maxime Sinclair");
 		System.out.println("Site design: Raphael Cotisson");
+		System.out.println("Logo: Benjamin Croizet");
 		System.out.println();
 		System.out.println("http://plantuml.sourceforge.net");
 		exit();

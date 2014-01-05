@@ -2,7 +2,7 @@
  * PlantUML : a free UML diagram generator
  * ========================================================================
  *
- * (C) Copyright 2009-2013, Arnaud Roques
+ * (C) Copyright 2009-2014, Arnaud Roques
  *
  * Project Info:  http://plantuml.sourceforge.net
  * 
@@ -33,6 +33,7 @@
  */
 package net.sourceforge.plantuml.activitydiagram3;
 
+import net.sourceforge.plantuml.Url;
 import net.sourceforge.plantuml.activitydiagram3.ftile.BoxStyle;
 import net.sourceforge.plantuml.activitydiagram3.ftile.Ftile;
 import net.sourceforge.plantuml.activitydiagram3.ftile.FtileFactory;
@@ -49,21 +50,27 @@ public class InstructionSimple extends MonoSwimable implements Instruction {
 	private Display note;
 	private NotePosition notePosition;
 	private final BoxStyle style;
+	private final Url url;
 
-	public InstructionSimple(Display label, HtmlColor color, LinkRendering inlinkRendering, Swimlane swimlane, BoxStyle style) {
+	public InstructionSimple(Display label, HtmlColor color, LinkRendering inlinkRendering, Swimlane swimlane,
+			BoxStyle style, Url url) {
 		super(swimlane);
+		this.url = url;
 		this.style = style;
 		this.label = label;
 		this.color = color;
 		this.inlinkRendering = inlinkRendering;
 	}
-	
+
 	public Ftile createFtile(FtileFactory factory) {
-		final Ftile result = factory.activity(label, color, getSwimlaneIn(), style);
-		if (note == null) {
-			return result;
+		Ftile result = factory.activity(label, color, getSwimlaneIn(), style);
+		if (url != null) {
+			result = factory.addUrl(result, url);
 		}
-		return factory.addNote(result, note, notePosition);
+		if (note != null) {
+			result = factory.addNote(result, note, notePosition);
+		}
+		return result;
 	}
 
 	public void add(Instruction other) {

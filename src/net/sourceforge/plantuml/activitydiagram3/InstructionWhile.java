@@ -2,7 +2,7 @@
  * PlantUML : a free UML diagram generator
  * ========================================================================
  *
- * (C) Copyright 2009-2013, Arnaud Roques
+ * (C) Copyright 2009-2014, Arnaud Roques
  *
  * Project Info:  http://plantuml.sourceforge.net
  * 
@@ -39,6 +39,7 @@ import net.sourceforge.plantuml.activitydiagram3.ftile.Ftile;
 import net.sourceforge.plantuml.activitydiagram3.ftile.FtileFactory;
 import net.sourceforge.plantuml.activitydiagram3.ftile.Swimlane;
 import net.sourceforge.plantuml.cucadiagram.Display;
+import net.sourceforge.plantuml.graphic.HtmlColor;
 import net.sourceforge.plantuml.sequencediagram.NotePosition;
 
 public class InstructionWhile implements Instruction {
@@ -46,6 +47,7 @@ public class InstructionWhile implements Instruction {
 	private final InstructionList repeatList = new InstructionList();
 	private final Instruction parent;
 	private final LinkRendering nextLinkRenderer;
+	private final HtmlColor color;
 
 	private final Display test;
 	private final Display yes;
@@ -54,12 +56,14 @@ public class InstructionWhile implements Instruction {
 	private LinkRendering afterEndwhile;
 	private final Swimlane swimlane;
 
-	public InstructionWhile(Swimlane swimlane, Instruction parent, Display test, LinkRendering nextLinkRenderer, Display yes) {
+	public InstructionWhile(Swimlane swimlane, Instruction parent, Display test, LinkRendering nextLinkRenderer,
+			Display yes, HtmlColor color) {
 		this.parent = parent;
 		this.test = test;
 		this.nextLinkRenderer = nextLinkRenderer;
 		this.yes = yes;
 		this.swimlane = swimlane;
+		this.color = color;
 	}
 
 	public void add(Instruction ins) {
@@ -68,7 +72,7 @@ public class InstructionWhile implements Instruction {
 
 	public Ftile createFtile(FtileFactory factory) {
 		Ftile tmp = factory.decorateOut(repeatList.createFtile(factory), endInlinkRendering);
-		tmp = factory.createWhile(swimlane, tmp, test, yes, out, afterEndwhile);
+		tmp = factory.createWhile(swimlane, tmp, test, yes, out, afterEndwhile, color);
 		// tmp = factory.decorateOut(tmp, afterEndwhile);
 		return tmp;
 	}
@@ -97,7 +101,7 @@ public class InstructionWhile implements Instruction {
 	public void addNote(Display note, NotePosition position) {
 		repeatList.addNote(note, position);
 	}
-	
+
 	public Set<Swimlane> getSwimlanes() {
 		return repeatList.getSwimlanes();
 	}
@@ -109,7 +113,5 @@ public class InstructionWhile implements Instruction {
 	public Swimlane getSwimlaneOut() {
 		return getSwimlaneIn();
 	}
-
-
 
 }

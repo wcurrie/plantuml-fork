@@ -2,7 +2,7 @@
  * PlantUML : a free UML diagram generator
  * ========================================================================
  *
- * (C) Copyright 2009-2013, Arnaud Roques
+ * (C) Copyright 2009-2014, Arnaud Roques
  *
  * Project Info:  http://plantuml.sourceforge.net
  * 
@@ -37,6 +37,7 @@ import java.util.List;
 
 import net.sourceforge.plantuml.ColorParam;
 import net.sourceforge.plantuml.ISkinParam;
+import net.sourceforge.plantuml.Url;
 import net.sourceforge.plantuml.activitydiagram3.Branch;
 import net.sourceforge.plantuml.activitydiagram3.LinkRendering;
 import net.sourceforge.plantuml.cucadiagram.Display;
@@ -92,6 +93,10 @@ public class FtileFactoryDelegator implements FtileFactory {
 		return factory.addNote(ftile, note, notePosition);
 	}
 
+	public Ftile addUrl(Ftile ftile, Url url) {
+		return factory.addUrl(ftile, url);
+	}
+
 	public Ftile decorateIn(Ftile ftile, LinkRendering linkRendering) {
 		return factory.decorateIn(ftile, linkRendering);
 	}
@@ -104,13 +109,13 @@ public class FtileFactoryDelegator implements FtileFactory {
 		return factory.assembly(tile1, tile2);
 	}
 
-	public Ftile repeat(Swimlane swimlane, Ftile repeat, Display test) {
-		return factory.repeat(swimlane, repeat, test);
+	public Ftile repeat(Swimlane swimlane, Ftile repeat, Display test, HtmlColor color) {
+		return factory.repeat(swimlane, repeat, test, color);
 	}
 
 	public Ftile createWhile(Swimlane swimlane, Ftile whileBlock, Display test, Display yes, Display out,
-			LinkRendering afterEndwhile) {
-		return factory.createWhile(swimlane, whileBlock, test, yes, out, afterEndwhile);
+			LinkRendering afterEndwhile, HtmlColor color) {
+		return factory.createWhile(swimlane, whileBlock, test, yes, out, afterEndwhile, color);
 	}
 
 	public Ftile createIf(Swimlane swimlane, List<Branch> thens, Branch elseBranch) {

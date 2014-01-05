@@ -2,7 +2,7 @@
  * PlantUML : a free UML diagram generator
  * ========================================================================
  *
- * (C) Copyright 2009-2013, Arnaud Roques
+ * (C) Copyright 2009-2014, Arnaud Roques
  *
  * Project Info:  http://plantuml.sourceforge.net
  * 
@@ -62,7 +62,7 @@ public final class FactorySequenceNoteCommand implements SingleMultiFactoryComma
 				new RegexLeaf("STYLE", "(note|hnote|rnote)[%s]+"), //
 				new RegexLeaf("POSITION", "(right|left|over)[%s]+"), //
 				new RegexLeaf("PARTICIPANT", "(?:of[%s]+)?([\\p{L}0-9_.@]+|[%g][^%g]+[%g])[%s]*"), //
-				new RegexLeaf("COLOR", "(#\\w+[-\\\\|/]?\\w+)?"), //
+				new RegexLeaf("COLOR", "(" + HtmlColorUtils.COLOR_REGEXP + ")?"), //
 				new RegexLeaf("$"));
 	}
 
@@ -73,7 +73,7 @@ public final class FactorySequenceNoteCommand implements SingleMultiFactoryComma
 				new RegexLeaf("STYLE", "(note|hnote|rnote)[%s]+"), //
 				new RegexLeaf("POSITION", "(right|left|over)[%s]+"), //
 				new RegexLeaf("PARTICIPANT", "(?:of[%s])?([\\p{L}0-9_.@]+|[%g][^%g]+[%g])[%s]*"), //
-				new RegexLeaf("COLOR", "(#\\w+[-\\\\|/]?\\w+)?"), //
+				new RegexLeaf("COLOR", "(" + HtmlColorUtils.COLOR_REGEXP + ")?"), //
 				new RegexLeaf("[%s]*:[%s]*"), //
 				new RegexLeaf("NOTE", "(.*)"), //
 				new RegexLeaf("$"));

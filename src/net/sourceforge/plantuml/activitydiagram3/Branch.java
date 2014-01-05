@@ -2,7 +2,7 @@
  * PlantUML : a free UML diagram generator
  * ========================================================================
  *
- * (C) Copyright 2009-2013, Arnaud Roques
+ * (C) Copyright 2009-2014, Arnaud Roques
  *
  * Project Info:  http://plantuml.sourceforge.net
  * 
@@ -47,15 +47,17 @@ public class Branch {
 	private final InstructionList list;
 	private final Display labelTest;
 	private final Display labelPositive;
+	private final HtmlColor color;
 
 	private LinkRendering inlinkRendering;
 
 	private Ftile ftile;
 
-	public Branch(Swimlane swimlane, Display labelPositive, Display labelTest) {
+	public Branch(Swimlane swimlane, Display labelPositive, Display labelTest, HtmlColor color) {
 		this.list = new InstructionList(swimlane);
 		this.labelTest = labelTest;
 		this.labelPositive = labelPositive;
+		this.color = color;
 	}
 
 	public void add(Instruction ins) {
@@ -100,5 +102,9 @@ public class Branch {
 
 	public boolean shadowing() {
 		return ftile.shadowing();
+	}
+
+	public final HtmlColor getColor() {
+		return color;
 	}
 }

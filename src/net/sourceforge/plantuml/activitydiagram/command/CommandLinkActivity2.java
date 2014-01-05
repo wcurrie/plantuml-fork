@@ -2,7 +2,7 @@
  * PlantUML : a free UML diagram generator
  * ========================================================================
  *
- * (C) Copyright 2009-2013, Arnaud Roques
+ * (C) Copyright 2009-2014, Arnaud Roques
  *
  * Project Info:  http://plantuml.sourceforge.net
  * 
@@ -76,7 +76,7 @@ public class CommandLinkActivity2 extends SingleLineCommand2<ActivityDiagram> {
 				new RegexLeaf("[%s]*"), //
 				new RegexLeaf("STEREOTYPE", "(\\<\\<.*\\>\\>)?"), //
 				new RegexLeaf("[%s]*"), //
-				new RegexLeaf("BACKCOLOR", "(#\\w+[-\\\\|/]?\\w+)?"), //
+				new RegexLeaf("BACKCOLOR", "(" + HtmlColorUtils.COLOR_REGEXP + ")?"), //
 				new RegexLeaf("[%s]*"), //
 				new RegexLeaf("URL", "(" + UrlBuilder.getRegexp() + ")?"), //
 
@@ -103,7 +103,7 @@ public class CommandLinkActivity2 extends SingleLineCommand2<ActivityDiagram> {
 				new RegexLeaf("[%s]*"), //
 				new RegexLeaf("PARTITION2", "(?:in[%s]+([%g][^%g]+[%g]|\\S+))?"), //
 				new RegexLeaf("[%s]*"), //
-				new RegexLeaf("BACKCOLOR2", "(#\\w+[-\\\\|/]?\\w+)?"), //
+				new RegexLeaf("BACKCOLOR2", "(" + HtmlColorUtils.COLOR_REGEXP + ")?"), //
 				new RegexLeaf("$"));
 	}
 

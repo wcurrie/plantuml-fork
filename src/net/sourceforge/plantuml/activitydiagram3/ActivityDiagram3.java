@@ -2,7 +2,7 @@
  * PlantUML : a free UML diagram generator
  * ========================================================================
  *
- * (C) Copyright 2009-2013, Arnaud Roques
+ * (C) Copyright 2009-2014, Arnaud Roques
  *
  * Project Info:  http://plantuml.sourceforge.net
  * 
@@ -113,12 +113,16 @@ public class ActivityDiagram3 extends UmlDiagram {
 		return swinlanes.nextLinkRenderer();
 	}
 
-	public void addActivity(Display activity, HtmlColor color, BoxStyle style) {
+	public void addActivity(Display activity, HtmlColor color, BoxStyle style, Url url) {
 		manageSwimlaneStrategy();
-		current()
-				.add(new InstructionSimple(activity, color, nextLinkRenderer(), swinlanes.getCurrentSwimlane(), style));
+		final InstructionSimple ins = new InstructionSimple(activity, color, nextLinkRenderer(),
+				swinlanes.getCurrentSwimlane(), style, url);
+		current().add(ins);
 		setNextLinkRendererInternal(null);
 		manageHasUrl(activity);
+		if (url != null) {
+			hasUrl = true;
+		}
 	}
 
 	public void start() {
@@ -259,17 +263,17 @@ public class ActivityDiagram3 extends UmlDiagram {
 		return CommandExecutionResult.error("Cannot find split");
 	}
 
-	public void startIf(Display test, Display whenThen) {
+	public void startIf(Display test, Display whenThen, HtmlColor color) {
 		manageSwimlaneStrategy();
-		final InstructionIf1 instructionIf = new InstructionIf1(swinlanes.getCurrentSwimlane(), current(), test,
-				whenThen, nextLinkRenderer());
+		final InstructionIf instructionIf = new InstructionIf(swinlanes.getCurrentSwimlane(), current(), test,
+				whenThen, nextLinkRenderer(), color);
 		current().add(instructionIf);
 		setCurrent(instructionIf);
 	}
 
-	public CommandExecutionResult elseIf(Display test, Display whenThen) {
-		if (current() instanceof InstructionIf1) {
-			((InstructionIf1) current()).elseIf(test, whenThen, nextLinkRenderer());
+	public CommandExecutionResult elseIf(Display test, Display whenThen, HtmlColor color) {
+		if (current() instanceof InstructionIf) {
+			((InstructionIf) current()).elseIf(test, whenThen, nextLinkRenderer(), color);
 			setNextLinkRendererInternal(null);
 			return CommandExecutionResult.ok();
 		}
@@ -277,8 +281,8 @@ public class ActivityDiagram3 extends UmlDiagram {
 	}
 
 	public CommandExecutionResult else2(Display whenElse) {
-		if (current() instanceof InstructionIf1) {
-			((InstructionIf1) current()).swithToElse(whenElse, nextLinkRenderer());
+		if (current() instanceof InstructionIf) {
+			((InstructionIf) current()).swithToElse(whenElse, nextLinkRenderer());
 			setNextLinkRendererInternal(null);
 			return CommandExecutionResult.ok();
 		}
@@ -286,19 +290,19 @@ public class ActivityDiagram3 extends UmlDiagram {
 	}
 
 	public CommandExecutionResult endif() {
-		if (current() instanceof InstructionIf1) {
-			((InstructionIf1) current()).endif(nextLinkRenderer());
+		if (current() instanceof InstructionIf) {
+			((InstructionIf) current()).endif(nextLinkRenderer());
 			setNextLinkRendererInternal(null);
-			setCurrent(((InstructionIf1) current()).getParent());
+			setCurrent(((InstructionIf) current()).getParent());
 			return CommandExecutionResult.ok();
 		}
 		return CommandExecutionResult.error("Cannot find if");
 	}
 
-	public void startRepeat() {
+	public void startRepeat(HtmlColor color) {
 		manageSwimlaneStrategy();
 		final InstructionRepeat instructionRepeat = new InstructionRepeat(swinlanes.getCurrentSwimlane(), current(),
-				nextLinkRenderer());
+				nextLinkRenderer(), color);
 		current().add(instructionRepeat);
 		setCurrent(instructionRepeat);
 
@@ -317,10 +321,10 @@ public class ActivityDiagram3 extends UmlDiagram {
 
 	}
 
-	public void doWhile(Display test, Display yes) {
+	public void doWhile(Display test, Display yes, HtmlColor color) {
 		manageSwimlaneStrategy();
 		final InstructionWhile instructionWhile = new InstructionWhile(swinlanes.getCurrentSwimlane(), current(), test,
-				nextLinkRenderer(), yes);
+				nextLinkRenderer(), yes, color);
 		current().add(instructionWhile);
 		setCurrent(instructionWhile);
 	}

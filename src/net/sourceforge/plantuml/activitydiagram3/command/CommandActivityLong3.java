@@ -2,7 +2,7 @@
  * PlantUML : a free UML diagram generator
  * ========================================================================
  *
- * (C) Copyright 2009-2013, Arnaud Roques
+ * (C) Copyright 2009-2014, Arnaud Roques
  *
  * Project Info:  http://plantuml.sourceforge.net
  * 
@@ -62,7 +62,7 @@ public class CommandActivityLong3 extends CommandMultilines2<ActivityDiagram3> {
 	static RegexConcat getRegexConcat() {
 		return new RegexConcat(new RegexLeaf("^"), //
 				new RegexLeaf(":"), //
-				new RegexLeaf("COLOR", "(?:(#\\w+[-\\\\|/]?\\w+):)?"), //
+				new RegexLeaf("COLOR", "(?:(" + HtmlColorUtils.COLOR_REGEXP + "):)?"), //
 				new RegexLeaf("DATA", "(.*)"), //
 				new RegexLeaf("$"));
 	}
@@ -74,7 +74,7 @@ public class CommandActivityLong3 extends CommandMultilines2<ActivityDiagram3> {
 		final BoxStyle style = BoxStyle.fromChar(getLastChar(lines));
 		removeStarting(lines, line0.get("DATA", 0));
 		removeEnding(lines);
-		diagram.addActivity(new Display(lines), color, style);
+		diagram.addActivity(new Display(lines), color, style, null);
 		return CommandExecutionResult.ok();
 	}
 

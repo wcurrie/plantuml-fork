@@ -2,7 +2,7 @@
  * PlantUML : a free UML diagram generator
  * ========================================================================
  *
- * (C) Copyright 2009-2013, Arnaud Roques
+ * (C) Copyright 2009-2014, Arnaud Roques
  *
  * Project Info:  http://plantuml.sourceforge.net
  * 
@@ -53,11 +53,12 @@ public class FtileFactoryDelegatorRepeat extends FtileFactoryDelegator {
 	}
 
 	@Override
-	public Ftile repeat(Swimlane swimlane, Ftile repeat, Display test) {
+	public Ftile repeat(Swimlane swimlane, Ftile repeat, Display test, HtmlColor color) {
 		final UFont font = getSkinParam().getFont(FontParam.ACTIVITY_ARROW2, null);
 
 		final HtmlColor borderColor = getRose().getHtmlColor(getSkinParam(), ColorParam.activityBorder);
-		final HtmlColor backColor = getRose().getHtmlColor(getSkinParam(), ColorParam.activityBackground);
+		final HtmlColor backColor = color == null ? getRose().getHtmlColor(getSkinParam(),
+				ColorParam.activityBackground) : color;
 		final HtmlColor arrowColor = getRose().getHtmlColor(getSkinParam(), ColorParam.activityArrow);
 
 		final LinkRendering endRepeatLinkRendering = repeat.getOutLinkRendering();

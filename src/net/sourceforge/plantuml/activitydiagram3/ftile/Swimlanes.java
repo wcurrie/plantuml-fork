@@ -2,7 +2,7 @@
  * PlantUML : a free UML diagram generator
  * ========================================================================
  *
- * (C) Copyright 2009-2013, Arnaud Roques
+ * (C) Copyright 2009-2014, Arnaud Roques
  *
  * Project Info:  http://plantuml.sourceforge.net
  * 
@@ -43,6 +43,7 @@ import net.sourceforge.plantuml.activitydiagram3.Instruction;
 import net.sourceforge.plantuml.activitydiagram3.InstructionList;
 import net.sourceforge.plantuml.activitydiagram3.LinkRendering;
 import net.sourceforge.plantuml.activitydiagram3.ftile.vcompact.FtileFactoryDelegatorAddNote;
+import net.sourceforge.plantuml.activitydiagram3.ftile.vcompact.FtileFactoryDelegatorAddUrl;
 import net.sourceforge.plantuml.activitydiagram3.ftile.vcompact.FtileFactoryDelegatorAssembly;
 import net.sourceforge.plantuml.activitydiagram3.ftile.vcompact.FtileFactoryDelegatorCreateFork;
 import net.sourceforge.plantuml.activitydiagram3.ftile.vcompact.FtileFactoryDelegatorCreateGroup;
@@ -98,6 +99,7 @@ public class Swimlanes implements TextBlock {
 
 	private FtileFactory getFtileFactory() {
 		FtileFactory factory = new VCompactFactory(skinParam, TextBlockUtils.getDummyStringBounder());
+		factory = new FtileFactoryDelegatorAddUrl(factory, skinParam);
 		factory = new FtileFactoryDelegatorAssembly(factory, skinParam);
 		factory = new FtileFactoryDelegatorIf(factory, skinParam);
 		factory = new FtileFactoryDelegatorWhile(factory, skinParam);

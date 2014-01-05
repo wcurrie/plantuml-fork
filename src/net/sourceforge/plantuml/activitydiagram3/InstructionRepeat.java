@@ -2,7 +2,7 @@
  * PlantUML : a free UML diagram generator
  * ========================================================================
  *
- * (C) Copyright 2009-2013, Arnaud Roques
+ * (C) Copyright 2009-2014, Arnaud Roques
  *
  * Project Info:  http://plantuml.sourceforge.net
  * 
@@ -39,6 +39,7 @@ import net.sourceforge.plantuml.activitydiagram3.ftile.Ftile;
 import net.sourceforge.plantuml.activitydiagram3.ftile.FtileFactory;
 import net.sourceforge.plantuml.activitydiagram3.ftile.Swimlane;
 import net.sourceforge.plantuml.cucadiagram.Display;
+import net.sourceforge.plantuml.graphic.HtmlColor;
 import net.sourceforge.plantuml.sequencediagram.NotePosition;
 
 public class InstructionRepeat implements Instruction {
@@ -47,14 +48,16 @@ public class InstructionRepeat implements Instruction {
 	private final Instruction parent;
 	private final LinkRendering nextLinkRenderer;
 	private final Swimlane swimlane;
+	private final HtmlColor color;
 
 	private Display test;
 	private LinkRendering endRepeatLinkRendering;
 
-	public InstructionRepeat(Swimlane swimlane, Instruction parent, LinkRendering nextLinkRenderer) {
+	public InstructionRepeat(Swimlane swimlane, Instruction parent, LinkRendering nextLinkRenderer, HtmlColor color) {
 		this.parent = parent;
 		this.swimlane = swimlane;
 		this.nextLinkRenderer = nextLinkRenderer;
+		this.color = color;
 	}
 
 	public void add(Instruction ins) {
@@ -62,7 +65,8 @@ public class InstructionRepeat implements Instruction {
 	}
 
 	public Ftile createFtile(FtileFactory factory) {
-		return factory.repeat(swimlane, factory.decorateOut(repeatList.createFtile(factory), endRepeatLinkRendering), test);
+		return factory.repeat(swimlane, factory.decorateOut(repeatList.createFtile(factory), endRepeatLinkRendering),
+				test, color);
 	}
 
 	public Instruction getParent() {
@@ -85,7 +89,7 @@ public class InstructionRepeat implements Instruction {
 	public void addNote(Display note, NotePosition position) {
 		repeatList.addNote(note, position);
 	}
-	
+
 	public Set<Swimlane> getSwimlanes() {
 		return repeatList.getSwimlanes();
 	}
@@ -97,6 +101,5 @@ public class InstructionRepeat implements Instruction {
 	public Swimlane getSwimlaneOut() {
 		return repeatList.getSwimlaneOut();
 	}
-
 
 }

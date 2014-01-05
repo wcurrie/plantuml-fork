@@ -2,7 +2,7 @@
  * PlantUML : a free UML diagram generator
  * ========================================================================
  *
- * (C) Copyright 2009-2013, Arnaud Roques
+ * (C) Copyright 2009-2014, Arnaud Roques
  *
  * Project Info:  http://plantuml.sourceforge.net
  * 
@@ -150,6 +150,7 @@ public class PSystemVersion extends AbstractPSystem {
 		strings.add(" ");
 		strings.add("<u>Original idea</u>: Arnaud Roques");
 		strings.add("<u>Word Macro</u>: Alain Bertucat & Matthieu Sabatier");
+		strings.add("<u>Word Add-in</u>: Adriaan van den Brand");
 		strings.add("<u>Eclipse Plugin</u>: Claude Durif & Anne Pecoil");
 		strings.add("<u>Servlet & XWiki</u>: Maxime Sinclair");
 		strings.add("<u>Site design</u>: Raphael Cotisson");

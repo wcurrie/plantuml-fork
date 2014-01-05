@@ -2,7 +2,7 @@
  * PlantUML : a free UML diagram generator
  * ========================================================================
  *
- * (C) Copyright 2009-2013, Arnaud Roques
+ * (C) Copyright 2009-2014, Arnaud Roques
  *
  * Project Info:  http://plantuml.sourceforge.net
  * 
@@ -45,6 +45,8 @@ import java.util.regex.Matcher;
 import net.sourceforge.plantuml.command.regex.MyPattern;
 
 public class HtmlColorUtils {
+
+	public static final String COLOR_REGEXP = "#\\w+[-\\\\|/]?\\w+";
 
 	private static final Map<String, String> htmlNames;
 	private static final Set<String> names;

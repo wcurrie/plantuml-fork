@@ -2,7 +2,7 @@
  * PlantUML : a free UML diagram generator
  * ========================================================================
  *
- * (C) Copyright 2009-2013, Arnaud Roques
+ * (C) Copyright 2009-2014, Arnaud Roques
  *
  * Project Info:  http://plantuml.sourceforge.net
  * 
@@ -43,9 +43,10 @@ import net.sourceforge.plantuml.activitydiagram3.ftile.Ftile;
 import net.sourceforge.plantuml.activitydiagram3.ftile.FtileFactory;
 import net.sourceforge.plantuml.activitydiagram3.ftile.Swimlane;
 import net.sourceforge.plantuml.cucadiagram.Display;
+import net.sourceforge.plantuml.graphic.HtmlColor;
 import net.sourceforge.plantuml.sequencediagram.NotePosition;
 
-public class InstructionIf1 implements Instruction {
+public class InstructionIf implements Instruction {
 
 	private final List<Branch> thens = new ArrayList<Branch>();
 	private Branch elseBranch;
@@ -57,13 +58,13 @@ public class InstructionIf1 implements Instruction {
 
 	private final Swimlane swimlane;
 
-	public InstructionIf1(Swimlane swimlane, Instruction parent, Display labelTest, Display whenThen,
-			LinkRendering inlinkRendering) {
+	public InstructionIf(Swimlane swimlane, Instruction parent, Display labelTest, Display whenThen,
+			LinkRendering inlinkRendering, HtmlColor color) {
 		this.parent = parent;
 
 		this.inlinkRendering = inlinkRendering;
 		this.swimlane = swimlane;
-		this.thens.add(new Branch(swimlane, whenThen, labelTest));
+		this.thens.add(new Branch(swimlane, whenThen, labelTest, color));
 		this.current = this.thens.get(0);
 	}
 
@@ -76,7 +77,7 @@ public class InstructionIf1 implements Instruction {
 			branch.updateFtile(factory);
 		}
 		if (elseBranch == null) {
-			this.elseBranch = new Branch(swimlane, null, null);
+			this.elseBranch = new Branch(swimlane, null, null, null);
 		}
 		elseBranch.updateFtile(factory);
 		return factory.createIf(swimlane, thens, elseBranch);
@@ -91,24 +92,24 @@ public class InstructionIf1 implements Instruction {
 			throw new IllegalStateException();
 		}
 		this.current.setInlinkRendering(nextLinkRenderer);
-		this.elseBranch = new Branch(swimlane, whenElse, null);
+		this.elseBranch = new Branch(swimlane, whenElse, null, null);
 		// this.elseBranch.setLabelPositive(whenElse);
 		this.current = elseBranch;
 	}
 
-	public void elseIf(Display test, Display whenThen, LinkRendering nextLinkRenderer) {
+	public void elseIf(Display test, Display whenThen, LinkRendering nextLinkRenderer, HtmlColor color) {
 		if (elseBranch != null) {
 			throw new IllegalStateException();
 		}
 		this.current.setInlinkRendering(nextLinkRenderer);
-		this.current = new Branch(swimlane, whenThen, test);
+		this.current = new Branch(swimlane, whenThen, test, color);
 		this.thens.add(current);
 
 	}
 
 	public void endif(LinkRendering nextLinkRenderer) {
 		if (elseBranch == null) {
-			this.elseBranch = new Branch(swimlane, null, null);
+			this.elseBranch = new Branch(swimlane, null, null, null);
 		}
 		this.current.setInlinkRendering(nextLinkRenderer);
 	}
