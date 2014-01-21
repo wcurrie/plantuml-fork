@@ -28,12 +28,29 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 12235 $
+ * Revision $Revision: 12299 $
  *
  */
 package net.sourceforge.plantuml.sequencediagram;
 
+import net.sourceforge.plantuml.ColorParam;
+
 public enum ParticipantType {
-	PARTICIPANT, ACTOR, BOUNDARY, CONTROL, ENTITY, DATABASE
+	PARTICIPANT(ColorParam.participantBackground), //
+	ACTOR(ColorParam.actorBackground), //
+	BOUNDARY(ColorParam.boundaryBackground), //
+	CONTROL(ColorParam.controlBackground), //
+	ENTITY(ColorParam.entityBackground), //
+	DATABASE(ColorParam.databaseBackground);
+
+	private final ColorParam background;
+
+	private ParticipantType(ColorParam background) {
+		this.background = background;
+	}
+
+	public ColorParam getBackgroundColorParam() {
+		return background;
+	}
 
 }

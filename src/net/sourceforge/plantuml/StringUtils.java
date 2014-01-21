@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  *
- * Revision $Revision: 12235 $
+ * Revision $Revision: 12262 $
  *
  */
 package net.sourceforge.plantuml;
@@ -417,9 +417,9 @@ public class StringUtils {
 
 	public static List<String> splitComma(String s) {
 		s = s.trim();
-		if (s.matches("([\\p{L}0-9_.]+|[%g][^%g]+[%g])(\\s*,\\s*([\\p{L}0-9_.]+|[%g][^%g]+[%g]))*") == false) {
-			throw new IllegalArgumentException();
-		}
+		// if (s.matches("([\\p{L}0-9_.]+|[%g][^%g]+[%g])(\\s*,\\s*([\\p{L}0-9_.]+|[%g][^%g]+[%g]))*") == false) {
+		// throw new IllegalArgumentException();
+		// }
 		final List<String> result = new ArrayList<String>();
 		final Pattern p = MyPattern.cmpile("([\\p{L}0-9_.]+|[%g][^%g]+[%g])");
 		final Matcher m = p.matcher(s);

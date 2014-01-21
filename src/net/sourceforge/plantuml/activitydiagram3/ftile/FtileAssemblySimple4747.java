@@ -45,7 +45,7 @@ import net.sourceforge.plantuml.graphic.StringBounder;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
 import net.sourceforge.plantuml.ugraphic.UTranslate;
 
-public class FtileAssemblySimple implements Ftile {
+public class FtileAssemblySimple4747 implements Ftile {
 
 	private final Ftile tile1;
 	private final Ftile tile2;
@@ -55,7 +55,7 @@ public class FtileAssemblySimple implements Ftile {
 		return "FtileAssemblySimple " + tile1 + " && " + tile2;
 	}
 
-	public FtileAssemblySimple(Ftile tile1, Ftile tile2) {
+	public FtileAssemblySimple4747(Ftile tile1, Ftile tile2) {
 		this.tile1 = tile1;
 		this.tile2 = tile2;
 	}
@@ -90,6 +90,42 @@ public class FtileAssemblySimple implements Ftile {
 		final StringBounder stringBounder = ug.getStringBounder();
 		ug.apply(getTranslated1(stringBounder)).draw(tile1);
 		ug.apply(getTranslated2(stringBounder)).draw(tile2);
+	}
+
+	private double left1 = Double.MIN_VALUE;
+	private double right1 = Double.MIN_VALUE;
+	private double left2 = Double.MIN_VALUE;
+	private double right2 = Double.MIN_VALUE;
+
+	private double getLeft1(StringBounder stringBounder) {
+		if (left1 == Double.MIN_VALUE) {
+			final FtileGeometry geo = tile1.calculateDimension(stringBounder);
+			left1 = geo.getLeft();
+		}
+		return left1;
+	}
+
+	private double getRight1(StringBounder stringBounder) {
+		if (right1 == Double.MIN_VALUE) {
+			final Dimension2D dim = tile1.calculateDimension(stringBounder);
+			right1 = dim.getWidth() - getLeft1(stringBounder);
+		}
+		return right1;
+	}
+
+	private double getLeft2(StringBounder stringBounder) {
+		if (left2 == Double.MIN_VALUE) {
+			left2 = tile2.calculateDimension(stringBounder).getLeft();
+		}
+		return left2;
+	}
+
+	private double getRight2(StringBounder stringBounder) {
+		if (right2 == Double.MIN_VALUE) {
+			final Dimension2D dim = tile2.calculateDimension(stringBounder);
+			right2 = dim.getWidth() - getLeft2(stringBounder);
+		}
+		return right2;
 	}
 
 	public boolean isKilled() {
@@ -144,22 +180,25 @@ public class FtileAssemblySimple implements Ftile {
 	private Dimension2D calculateDimensionInternalSlow(StringBounder stringBounder) {
 		final Dimension2D dim1 = tile1.calculateDimension(stringBounder);
 		final Dimension2D dim2 = tile2.calculateDimension(stringBounder);
-		return Dimension2DDouble.mergeTB(dim1, dim2);
+		final double width = Math.max(getLeft1(stringBounder), getLeft2(stringBounder))
+				+ Math.max(getRight1(stringBounder), getRight2(stringBounder));
+		final double height = dim1.getHeight() + dim2.getHeight();
+		return new Dimension2DDouble(width, height);
 	}
 
 	private UTranslate getTranslated1(StringBounder stringBounder) {
-		final Dimension2D dimTotal = calculateDimensionInternal(stringBounder);
-		final Dimension2D dim1 = tile1.calculateDimension(stringBounder);
-		final double dx1 = dimTotal.getWidth() - dim1.getWidth();
-		return new UTranslate(dx1 / 2, 0);
+		final double left1 = getLeft1(stringBounder);
+		final double left2 = getLeft2(stringBounder);
+		final double maxLeft = Math.max(left1, left2);
+		return new UTranslate(maxLeft - left1, 0);
 	}
 
 	private UTranslate getTranslated2(StringBounder stringBounder) {
-		final Dimension2D dimTotal = calculateDimensionInternal(stringBounder);
 		final Dimension2D dim1 = tile1.calculateDimension(stringBounder);
-		final Dimension2D dim2 = tile2.calculateDimension(stringBounder);
-		final double dx2 = dimTotal.getWidth() - dim2.getWidth();
-		return new UTranslate(dx2 / 2, dim1.getHeight());
+		final double left1 = getLeft1(stringBounder);
+		final double left2 = getLeft2(stringBounder);
+		final double maxLeft = Math.max(left1, left2);
+		return new UTranslate(maxLeft - left2, dim1.getHeight());
 	}
 
 	public Collection<Connection> getInnerConnections() {

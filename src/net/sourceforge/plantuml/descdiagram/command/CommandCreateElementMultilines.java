@@ -91,7 +91,7 @@ public class CommandCreateElementMultilines extends CommandMultilines2<Descripti
 			type = LeafType.USECASE;
 			usymbol = null;
 		} else if (symbol.equalsIgnoreCase("database")) {
-			type = LeafType.COMPONENT2;
+			type = LeafType.DESCRIPTION;
 			usymbol = USymbol.DATABASE;
 		} else {
 			throw new IllegalStateException();
@@ -112,7 +112,7 @@ public class CommandCreateElementMultilines extends CommandMultilines2<Descripti
 
 		final String stereotype = line0.get("STEREO", 0);
 
-		final ILeaf result = system.createLeaf(code, display, type);
+		final ILeaf result = system.createLeaf(code, display, type, usymbol);
 		result.setUSymbol(usymbol);
 		if (stereotype != null) {
 			result.setStereotype(new Stereotype(stereotype, system.getSkinParam().getCircledCharacterRadius(), system

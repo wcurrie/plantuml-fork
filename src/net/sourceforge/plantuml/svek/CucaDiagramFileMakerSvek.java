@@ -60,6 +60,7 @@ import net.sourceforge.plantuml.core.ImageData;
 import net.sourceforge.plantuml.cucadiagram.CucaDiagram;
 import net.sourceforge.plantuml.cucadiagram.Display;
 import net.sourceforge.plantuml.cucadiagram.Link;
+import net.sourceforge.plantuml.cucadiagram.Stereotype;
 import net.sourceforge.plantuml.cucadiagram.dot.CucaDiagramSimplifierActivity;
 import net.sourceforge.plantuml.cucadiagram.dot.CucaDiagramSimplifierState;
 import net.sourceforge.plantuml.cucadiagram.dot.DotData;
@@ -109,9 +110,8 @@ public final class CucaDiagramFileMakerSvek implements CucaDiagramFileMaker {
 
 	private CucaDiagramFileMakerSvek2 buildCucaDiagramFileMakerSvek2(DotMode dotMode) {
 		final DotData dotData = new DotData(diagram.getEntityFactory().getRootGroup(), getOrderedLinks(), diagram
-				.getLeafs().values(), diagram.getUmlDiagramType(), diagram.getSkinParam(), diagram.getRankdir(),
-				diagram, diagram, diagram.getColorMapper(), diagram.getEntityFactory(),
-				diagram.isHideEmptyDescriptionForState(), dotMode);
+				.getLeafs().values(), diagram.getUmlDiagramType(), diagram.getSkinParam(), diagram, diagram,
+				diagram.getColorMapper(), diagram.getEntityFactory(), diagram.isHideEmptyDescriptionForState(), dotMode);
 		final CucaDiagramFileMakerSvek2 svek2 = new CucaDiagramFileMakerSvek2(dotData, diagram.getEntityFactory(),
 				false, diagram.getSource(), diagram.getPragma());
 		return svek2;
@@ -253,7 +253,7 @@ public final class CucaDiagramFileMakerSvek implements CucaDiagramFileMaker {
 		return skinParam.getFont(fontParam, null);
 	}
 
-	private final HtmlColor getFontColor(FontParam fontParam, String stereo) {
+	private final HtmlColor getFontColor(FontParam fontParam, Stereotype stereo) {
 		final ISkinParam skinParam = diagram.getSkinParam();
 		return skinParam.getFontHtmlColor(fontParam, stereo);
 	}

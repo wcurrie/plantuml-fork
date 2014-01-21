@@ -67,12 +67,20 @@ final public class BlockUmlBuilder {
 	private void init(Preprocessor includer, List<String> config) throws IOException {
 		String s = null;
 		List<String> current = null;
+		boolean paused = false;
 		while ((s = includer.readLine()) != null) {
 			if (StartUtils.isArobaseStartDiagram(s)) {
 				current = new ArrayList<String>();
+				paused = false;
 			}
-			if (current != null) {
+			if (StartUtils.isArobasePauseDiagram(s)) {
+				paused = true;
+			}
+			if (current != null && paused==false) {
 				current.add(s);
+			}
+			if (StartUtils.isArobaseContinueDiagram(s)) {
+				paused = false;
 			}
 			if (StartUtils.isArobaseEndDiagram(s) && current != null) {
 				current.addAll(1, config);

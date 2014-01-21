@@ -50,7 +50,8 @@ import net.sourceforge.plantuml.activitydiagram3.ftile.FtileGeometry;
 import net.sourceforge.plantuml.activitydiagram3.ftile.Swimlane;
 import net.sourceforge.plantuml.creole.CreoleParser;
 import net.sourceforge.plantuml.creole.Sheet;
-import net.sourceforge.plantuml.creole.SheetBlock;
+import net.sourceforge.plantuml.creole.SheetBlock1;
+import net.sourceforge.plantuml.creole.SheetBlock2;
 import net.sourceforge.plantuml.creole.Stencil;
 import net.sourceforge.plantuml.cucadiagram.Display;
 import net.sourceforge.plantuml.graphic.FontConfiguration;
@@ -110,7 +111,7 @@ public class FtileWithNoteOpale extends AbstractFtile implements Stencil {
 		final TextBlock text;
 		if (OptionFlags.USE_CREOLE) {
 			final Sheet sheet = new CreoleParser(fc, skinParam).createSheet(note);
-			text = new SheetBlock(sheet, this, new UStroke(1));
+			text = new SheetBlock2(new SheetBlock1(sheet), this, new UStroke(1));
 		} else {
 			text = TextBlockUtils.create(note, fc, HorizontalAlignment.LEFT, skinParam);
 		}
@@ -118,64 +119,65 @@ public class FtileWithNoteOpale extends AbstractFtile implements Stencil {
 
 	}
 
-	public FtileGeometry getGeometry(StringBounder stringBounder) {
-		return tile.getGeometry(stringBounder).translate(getTranslate(stringBounder));
-	}
-
 	private UTranslate getTranslate(StringBounder stringBounder) {
 		final Dimension2D dimTotal = calculateDimensionInternal(stringBounder);
 		final Dimension2D dimNote = opale.calculateDimension(stringBounder);
-		final Dimension2D dimTile = tile.asTextBlock().calculateDimension(stringBounder);
+		final Dimension2D dimTile = tile.calculateDimension(stringBounder);
 		final double yForFtile = (dimTotal.getHeight() - dimTile.getHeight()) / 2;
 		final double marge = dimNote.getWidth() + halfSuppSpace;
 		return new UTranslate(marge, yForFtile);
 
 	}
 
-	public TextBlock asTextBlock() {
-		return new TextBlock() {
-
-			public void drawU(UGraphic ug) {
-				final StringBounder stringBounder = ug.getStringBounder();
-				final Dimension2D dimTotal = calculateDimension(stringBounder);
-				final Dimension2D dimNote = opale.calculateDimension(stringBounder);
-				final Dimension2D dimTile = tile.asTextBlock().calculateDimension(stringBounder);
-				final double yForNote = (dimTotal.getHeight() - dimNote.getHeight()) / 2;
-				final double yForFtile = (dimTotal.getHeight() - dimTile.getHeight()) / 2;
-
-				final double marge = dimNote.getWidth() + halfSuppSpace;
-				if (notePosition == NotePosition.LEFT) {
-					final Direction strategy = Direction.RIGHT;
-					final Point2D pp1 = new Point2D.Double(dimNote.getWidth(), dimNote.getHeight() / 2);
-					final Point2D pp2 = new Point2D.Double(marge, dimNote.getHeight() / 2);
-					opale.setOpale(strategy, pp1, pp2);
-					opale.drawU(ug.apply(new UTranslate(0, yForNote)));
-				} else {
-					final double dx = dimTotal.getWidth() - dimNote.getWidth();
-					final Direction strategy = Direction.LEFT;
-					final Point2D pp1 = new Point2D.Double(0, dimNote.getHeight() / 2);
-					final Point2D pp2 = new Point2D.Double(-halfSuppSpace, dimNote.getHeight() / 2);
-					opale.setOpale(strategy, pp1, pp2);
-					opale.drawU(ug.apply(new UTranslate(dx, yForNote)));
-				}
-				ug.apply(getTranslate(stringBounder)).draw(tile);
-			}
-
-			public Dimension2D calculateDimension(StringBounder stringBounder) {
-				return calculateDimensionInternal(stringBounder);
-			}
-		};
+	private UTranslate getTranslateForOpale(UGraphic ug) {
+		final StringBounder stringBounder = ug.getStringBounder();
+		final Dimension2D dimTotal = calculateDimension(stringBounder);
+		final Dimension2D dimNote = opale.calculateDimension(stringBounder);
+		final double yForNote = (dimTotal.getHeight() - dimNote.getHeight()) / 2;
+		if (notePosition == NotePosition.LEFT) {
+			return new UTranslate(0, yForNote);
+		}
+		final double dx = dimTotal.getWidth() - dimNote.getWidth();
+		return new UTranslate(dx, yForNote);
 	}
 
-	public boolean isKilled__TOBEREMOVED() {
-		return tile.isKilled__TOBEREMOVED();
+	public void drawU(UGraphic ug) {
+		final StringBounder stringBounder = ug.getStringBounder();
+		final Dimension2D dimNote = opale.calculateDimension(stringBounder);
+
+		final double marge = dimNote.getWidth() + halfSuppSpace;
+		if (notePosition == NotePosition.LEFT) {
+			final Direction strategy = Direction.RIGHT;
+			final Point2D pp1 = new Point2D.Double(dimNote.getWidth(), dimNote.getHeight() / 2);
+			final Point2D pp2 = new Point2D.Double(marge, dimNote.getHeight() / 2);
+			opale.setOpale(strategy, pp1, pp2);
+		} else {
+			final Direction strategy = Direction.LEFT;
+			final Point2D pp1 = new Point2D.Double(0, dimNote.getHeight() / 2);
+			final Point2D pp2 = new Point2D.Double(-halfSuppSpace, dimNote.getHeight() / 2);
+			opale.setOpale(strategy, pp1, pp2);
+		}
+		opale.drawU(ug.apply(getTranslateForOpale(ug)));
+		ug.apply(getTranslate(stringBounder)).draw(tile);
+	}
+
+	public FtileGeometry calculateDimension(StringBounder stringBounder) {
+		final UTranslate translate = getTranslate(stringBounder);
+		final Dimension2D dim = calculateDimensionInternal(stringBounder);
+		final FtileGeometry orig = tile.calculateDimension(stringBounder);
+		return new FtileGeometry(dim, dim.getWidth() / 2, orig.getInY() + translate.getDy(), orig.getOutY()
+				+ translate.getDy());
 	}
 
 	private Dimension2D calculateDimensionInternal(StringBounder stringBounder) {
 		final Dimension2D dimNote = opale.calculateDimension(stringBounder);
-		final Dimension2D dimTile = tile.asTextBlock().calculateDimension(stringBounder);
+		final Dimension2D dimTile = tile.calculateDimension(stringBounder);
 		final double height = Math.max(dimNote.getHeight(), dimTile.getHeight());
 		return new Dimension2DDouble(dimTile.getWidth() + 2 * dimNote.getWidth() + halfSuppSpace * 2, height);
+	}
+
+	public boolean isKilled() {
+		return tile.isKilled();
 	}
 
 	public double getStartingX(StringBounder stringBounder, double y) {
@@ -184,7 +186,6 @@ public class FtileWithNoteOpale extends AbstractFtile implements Stencil {
 
 	public double getEndingX(StringBounder stringBounder, double y) {
 		return opale.calculateDimension(stringBounder).getWidth() - opale.getMarginX1();
-		// return calculateDimensionInternal(stringBounder).getWidth();
 	}
 
 }

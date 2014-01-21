@@ -89,6 +89,8 @@ public class CommandCreateClass extends SingleLineCommand2<ClassDiagram> {
 				new RegexLeaf("URL", "(" + UrlBuilder.getRegexp() + ")?"), //
 				new RegexLeaf("[%s]*"), //
 				new RegexLeaf("COLOR", "(" + HtmlColorUtils.COLOR_REGEXP + ")?"), //
+				new RegexLeaf("[%s]*"), //
+				new RegexLeaf("LINECOLOR", "(?:##(?:\\[(dotted|dashed|bold)\\])?(\\w+)?)?"), //
 				new RegexLeaf("EXTENDS", "([%s]+(extends|implements)[%s]+(\\.?[\\p{L}0-9_]+(?:\\.[\\p{L}0-9_]+)*))?"), //
 				new RegexLeaf("$"));
 	}
@@ -103,10 +105,10 @@ public class CommandCreateClass extends SingleLineCommand2<ClassDiagram> {
 		final String generic = arg.get("GENERIC", 0);
 		final ILeaf entity;
 		if (diagram.leafExist(code)) {
-			entity = diagram.getOrCreateLeaf(code, type);
-			entity.muteToType(type);
+			entity = diagram.getOrCreateLeaf(code, type, null);
+			entity.muteToType(type, null);
 		} else {
-			entity = diagram.createLeaf(code, Display.getWithNewlines(display), type);
+			entity = diagram.createLeaf(code, Display.getWithNewlines(display), type, null);
 		}
 		if (stereotype != null) {
 			entity.setStereotype(new Stereotype(stereotype, diagram.getSkinParam().getCircledCharacterRadius(), diagram
@@ -124,6 +126,9 @@ public class CommandCreateClass extends SingleLineCommand2<ClassDiagram> {
 		}
 
 		entity.setSpecificBackcolor(HtmlColorUtils.getColorIfValid(arg.get("COLOR", 0)));
+		entity.setSpecificLineColor(HtmlColorUtils.getColorIfValid(arg.get("LINECOLOR", 1)));
+		CommandCreateClassMultilines.applyStroke(entity, arg.get("LINECOLOR", 0));
+		
 		manageExtends(diagram, arg, entity);
 
 		return CommandExecutionResult.ok();
@@ -140,7 +145,7 @@ public class CommandCreateClass extends SingleLineCommand2<ClassDiagram> {
 			if (mode == Mode.EXTENDS && entity.getEntityType() == LeafType.INTERFACE) {
 				type2 = LeafType.INTERFACE;
 			}
-			final IEntity cl2 = system.getOrCreateLeaf(other, type2);
+			final IEntity cl2 = system.getOrCreateLeaf(other, type2, null);
 			LinkType typeLink = new LinkType(LinkDecor.NONE, LinkDecor.EXTENDS);
 			if (type2 == LeafType.INTERFACE && entity.getEntityType() != LeafType.INTERFACE) {
 				typeLink = typeLink.getDashed();

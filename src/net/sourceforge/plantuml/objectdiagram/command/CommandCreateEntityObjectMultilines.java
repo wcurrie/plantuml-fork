@@ -99,9 +99,9 @@ public class CommandCreateEntityObjectMultilines extends CommandMultilines2<Obje
 		final String display = line0.get("NAME", 0);
 		final String stereotype = line0.get("STEREO", 0);
 		if (diagram.leafExist(code)) {
-			return diagram.getOrCreateLeaf(code, null);
+			return diagram.getOrCreateLeaf(code, null, null);
 		}
-		final IEntity entity = diagram.createLeaf(code, Display.getWithNewlines(display), LeafType.OBJECT);
+		final IEntity entity = diagram.createLeaf(code, Display.getWithNewlines(display), LeafType.OBJECT, null);
 		if (stereotype != null) {
 			entity.setStereotype(new Stereotype(stereotype, diagram.getSkinParam().getCircledCharacterRadius(),
 					diagram.getSkinParam().getFont(FontParam.CIRCLED_CHARACTER, null)));

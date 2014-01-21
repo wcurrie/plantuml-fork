@@ -99,53 +99,53 @@ public class CommandLinkActivity extends SingleLineCommand2<ActivityDiagram> {
 	}
 
 	@Override
-	protected CommandExecutionResult executeArg(ActivityDiagram diagram, RegexResult arg2) {
-		final IEntity entity1 = getEntity(diagram, arg2, true);
+	protected CommandExecutionResult executeArg(ActivityDiagram diagram, RegexResult arg) {
+		final IEntity entity1 = getEntity(diagram, arg, true);
 		if (entity1 == null) {
 			return CommandExecutionResult.error("No such activity");
 		}
-		if (arg2.get("STEREOTYPE", 0) != null) {
-			entity1.setStereotype(new Stereotype(arg2.get("STEREOTYPE", 0)));
+		if (arg.get("STEREOTYPE", 0) != null) {
+			entity1.setStereotype(new Stereotype(arg.get("STEREOTYPE", 0)));
 		}
-		if (arg2.get("BACKCOLOR", 0) != null) {
-			entity1.setSpecificBackcolor(HtmlColorUtils.getColorIfValid(arg2.get("BACKCOLOR", 0)));
+		if (arg.get("BACKCOLOR", 0) != null) {
+			entity1.setSpecificBackcolor(HtmlColorUtils.getColorIfValid(arg.get("BACKCOLOR", 0)));
 		}
 
-		final IEntity entity2 = getEntity(diagram, arg2, false);
+		final IEntity entity2 = getEntity(diagram, arg, false);
 		if (entity2 == null) {
 			return CommandExecutionResult.error("No such activity");
 		}
-		if (arg2.get("BACKCOLOR2", 0) != null) {
-			entity2.setSpecificBackcolor(HtmlColorUtils.getColorIfValid(arg2.get("BACKCOLOR2", 0)));
+		if (arg.get("BACKCOLOR2", 0) != null) {
+			entity2.setSpecificBackcolor(HtmlColorUtils.getColorIfValid(arg.get("BACKCOLOR2", 0)));
 		}
-		if (arg2.get("STEREOTYPE2", 0) != null) {
-			entity2.setStereotype(new Stereotype(arg2.get("STEREOTYPE2", 0)));
+		if (arg.get("STEREOTYPE2", 0) != null) {
+			entity2.setStereotype(new Stereotype(arg.get("STEREOTYPE2", 0)));
 		}
 
-		final Display linkLabel = Display.getWithNewlines(arg2.get("BRACKET", 0));
+		final Display linkLabel = Display.getWithNewlines(arg.get("BRACKET", 0));
 
-		final String arrow = StringUtils.manageArrowForCuca(arg2.get("ARROW", 0));
+		final String arrow = StringUtils.manageArrowForCuca(arg.get("ARROW", 0));
 		int lenght = arrow.length() - 1;
-		if (arg2.get("ARROW", 0).contains("*")) {
+		if (arg.get("ARROW", 0).contains("*")) {
 			lenght = 2;
 		}
 
 		LinkType type = new LinkType(LinkDecor.ARROW, LinkDecor.NONE);
-		if (arg2.get("ARROW", 0).contains(".")) {
+		if (arg.get("ARROW", 0).contains(".")) {
 			type = type.getDotted();
 		}
 
 		Link link = new Link(entity1, entity2, type, linkLabel, lenght);
-		if (arg2.get("ARROW", 0).contains("*")) {
+		if (arg.get("ARROW", 0).contains("*")) {
 			link.setConstraint(false);
 		}
-		final Direction direction = StringUtils.getArrowDirection(arg2.get("ARROW", 0));
+		final Direction direction = StringUtils.getArrowDirection(arg.get("ARROW", 0));
 		if (direction == Direction.LEFT || direction == Direction.UP) {
 			link = link.getInv();
 		}
-		if (arg2.get("URL", 0) != null) {
+		if (arg.get("URL", 0) != null) {
 			final UrlBuilder urlBuilder = new UrlBuilder(diagram.getSkinParam().getValue("topurl"), ModeUrl.STRICT);
-			final Url urlLink = urlBuilder.getUrl(arg2.get("URL", 0));
+			final Url urlLink = urlBuilder.getUrl(arg.get("URL", 0));
 			link.setUrl(urlLink);
 		}
 

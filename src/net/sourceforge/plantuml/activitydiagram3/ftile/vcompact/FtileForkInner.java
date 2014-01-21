@@ -34,7 +34,6 @@
 package net.sourceforge.plantuml.activitydiagram3.ftile.vcompact;
 
 import java.awt.geom.Dimension2D;
-import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
@@ -47,7 +46,6 @@ import net.sourceforge.plantuml.activitydiagram3.ftile.Ftile;
 import net.sourceforge.plantuml.activitydiagram3.ftile.FtileGeometry;
 import net.sourceforge.plantuml.activitydiagram3.ftile.Swimlane;
 import net.sourceforge.plantuml.graphic.StringBounder;
-import net.sourceforge.plantuml.graphic.TextBlock;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
 import net.sourceforge.plantuml.ugraphic.UTranslate;
 
@@ -82,49 +80,34 @@ class FtileForkInner extends AbstractFtile {
 		return Collections.unmodifiableSet(result);
 	}
 
-	public TextBlock asTextBlock() {
-		return new TextBlock() {
+	public void drawU(UGraphic ug) {
+		final StringBounder stringBounder = ug.getStringBounder();
 
-			public void drawU(UGraphic ug) {
-				final StringBounder stringBounder = ug.getStringBounder();
-
-				double xpos = 0;
-				for (Ftile ftile : forks) {
-					ug.apply(new UTranslate(xpos, 0)).draw(ftile);
-					final Dimension2D dim = ftile.asTextBlock().calculateDimension(stringBounder);
-					xpos += dim.getWidth();
-				}
-			}
-
-			public Dimension2D calculateDimension(StringBounder stringBounder) {
-				return calculateDimensionInternal(stringBounder);
-			}
-
-		};
+		double xpos = 0;
+		for (Ftile ftile : forks) {
+			ug.apply(new UTranslate(xpos, 0)).draw(ftile);
+			final Dimension2D dim = ftile.calculateDimension(stringBounder);
+			xpos += dim.getWidth();
+		}
 	}
 
-	public boolean isKilled__TOBEREMOVED() {
+	public boolean isKilled() {
 		return false;
 	}
 
-	private Dimension2D calculateDimensionInternal(StringBounder stringBounder) {
+	public FtileGeometry calculateDimension(StringBounder stringBounder) {
 		double height = 0;
 		double width = 0;
 		for (Ftile ftile : forks) {
-			final Dimension2D dim = ftile.asTextBlock().calculateDimension(stringBounder);
+			final Dimension2D dim = ftile.calculateDimension(stringBounder);
 			width += dim.getWidth();
 			if (dim.getHeight() > height) {
 				height = dim.getHeight();
 			}
 		}
-		return new Dimension2DDouble(width, height);
+		final Dimension2D dimTotal = new Dimension2DDouble(width, height);
+		return new FtileGeometry(dimTotal, dimTotal.getWidth() / 2, 0, dimTotal.getHeight());
 	}
-
-	public FtileGeometry getGeometry(StringBounder stringBounder) {
-		final Dimension2D dimTotal = calculateDimensionInternal(stringBounder);
-		return new FtileGeometry(dimTotal.getWidth() / 2,  0, dimTotal.getHeight());
-	}
-
 
 	public UTranslate getTranslateFor(Ftile searched, StringBounder stringBounder) {
 		double xpos = 0;
@@ -132,7 +115,7 @@ class FtileForkInner extends AbstractFtile {
 			if (ftile == searched) {
 				return new UTranslate(xpos, 0);
 			}
-			final Dimension2D dim = ftile.asTextBlock().calculateDimension(stringBounder);
+			final Dimension2D dim = ftile.calculateDimension(stringBounder);
 			xpos += dim.getWidth();
 		}
 		throw new IllegalArgumentException();

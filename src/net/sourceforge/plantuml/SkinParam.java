@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  *
- * Revision $Revision: 12235 $
+ * Revision $Revision: 12328 $
  *
  */
 package net.sourceforge.plantuml;
@@ -45,6 +45,8 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import net.sourceforge.plantuml.command.regex.MyPattern;
+import net.sourceforge.plantuml.cucadiagram.Rankdir;
+import net.sourceforge.plantuml.cucadiagram.Stereotype;
 import net.sourceforge.plantuml.cucadiagram.dot.DotSplines;
 import net.sourceforge.plantuml.cucadiagram.dot.GraphvizLayoutStrategy;
 import net.sourceforge.plantuml.graphic.HorizontalAlignment;
@@ -62,6 +64,7 @@ import net.sourceforge.plantuml.ugraphic.UStroke;
 public class SkinParam implements ISkinParam {
 
 	private final Map<String, String> params = new HashMap<String, String>();
+	private Rankdir rankdir = Rankdir.TOP_TO_BOTTOM;
 
 	public void setParam(String key, String value) {
 		params.put(cleanForKey(key), value.trim());
@@ -83,6 +86,8 @@ public class SkinParam implements ISkinParam {
 		key = key.toLowerCase().trim();
 		key = key.replaceAll("_|\\.|\\s", "");
 		key = key.replaceAll("partition", "package");
+		key = key.replaceAll("sequenceparticipant", "participant");
+		key = key.replaceAll("sequenceactor", "actor");
 		key = key.replaceAll("activityarrow", "genericarrow");
 		key = key.replaceAll("objectarrow", "genericarrow");
 		key = key.replaceAll("classarrow", "genericarrow");
@@ -125,10 +130,10 @@ public class SkinParam implements ISkinParam {
 		return sb.toString();
 	}
 
-	public HtmlColor getHtmlColor(ColorParam param, String stereotype, boolean clickable) {
-		if (stereotype != null) {
-			checkStereotype(stereotype);
-			final String value2 = getValue(param.name() + "color" + stereotype);
+	public HtmlColor getHtmlColor(ColorParam param, Stereotype stereotype2, boolean clickable) {
+		if (stereotype2 != null) {
+			checkStereotype(stereotype2);
+			final String value2 = getValue(param.name() + "color" + stereotype2.getLabel());
 			if (value2 != null && HtmlColorUtils.getColorIfValid(value2) != null) {
 				return HtmlColorUtils.getColorIfValid(value2);
 			}
@@ -151,16 +156,16 @@ public class SkinParam implements ISkinParam {
 		return n + "color";
 	}
 
-	private void checkStereotype(String stereotype) {
-		if (stereotype.startsWith("<<") == false || stereotype.endsWith(">>") == false) {
-			throw new IllegalArgumentException();
-		}
+	private void checkStereotype(Stereotype stereotype) {
+//		if (stereotype.startsWith("<<") == false || stereotype.endsWith(">>") == false) {
+//			throw new IllegalArgumentException();
+//		}
 	}
 
-	private int getFontSize(FontParam param, String stereotype) {
-		if (stereotype != null) {
-			checkStereotype(stereotype);
-			final String value2 = getValue(param.name() + "fontsize" + stereotype);
+	private int getFontSize(FontParam param, Stereotype stereotype2) {
+		if (stereotype2 != null) {
+			checkStereotype(stereotype2);
+			final String value2 = getValue(param.name() + "fontsize" + stereotype2.getLabel());
 			if (value2 != null && value2.matches("\\d+")) {
 				return Integer.parseInt(value2);
 			}
@@ -175,10 +180,10 @@ public class SkinParam implements ISkinParam {
 		return Integer.parseInt(value);
 	}
 
-	private String getFontFamily(FontParam param, String stereotype) {
-		if (stereotype != null) {
-			checkStereotype(stereotype);
-			final String value2 = getValue(param.name() + "fontname" + stereotype);
+	private String getFontFamily(FontParam param, Stereotype stereotype2) {
+		if (stereotype2 != null) {
+			checkStereotype(stereotype2);
+			final String value2 = getValue(param.name() + "fontname" + stereotype2.getLabel());
 			if (value2 != null) {
 				return StringUtils.eventuallyRemoveStartingAndEndingDoubleQuote(value2);
 			}
@@ -197,11 +202,11 @@ public class SkinParam implements ISkinParam {
 		return param.getDefaultFamily();
 	}
 
-	public HtmlColor getFontHtmlColor(FontParam param, String stereotype) {
+	public HtmlColor getFontHtmlColor(FontParam param, Stereotype stereotype2) {
 		String value = null;
-		if (stereotype != null) {
-			checkStereotype(stereotype);
-			value = getValue(param.name() + "fontcolor" + stereotype);
+		if (stereotype2 != null) {
+			checkStereotype(stereotype2);
+			value = getValue(param.name() + "fontcolor" + stereotype2.getLabel());
 		}
 		if (value == null || HtmlColorUtils.getColorIfValid(value) == null) {
 			value = getValue(param.name() + "fontcolor");
@@ -215,11 +220,11 @@ public class SkinParam implements ISkinParam {
 		return HtmlColorUtils.getColorIfValid(value);
 	}
 
-	private int getFontStyle(FontParam param, String stereotype) {
+	private int getFontStyle(FontParam param, Stereotype stereotype2) {
 		String value = null;
-		if (stereotype != null) {
-			checkStereotype(stereotype);
-			value = getValue(param.name() + "fontstyle" + stereotype);
+		if (stereotype2 != null) {
+			checkStereotype(stereotype2);
+			value = getValue(param.name() + "fontstyle" + stereotype2.getLabel());
 		}
 		if (value == null) {
 			value = getValue(param.name() + "fontstyle");
@@ -240,13 +245,13 @@ public class SkinParam implements ISkinParam {
 		return result;
 	}
 
-	public UFont getFont(FontParam fontParam, String stereotype) {
-		if (stereotype != null) {
-			checkStereotype(stereotype);
+	public UFont getFont(FontParam fontParam, Stereotype stereotype2) {
+		if (stereotype2 != null) {
+			checkStereotype(stereotype2);
 		}
-		final String fontFamily = getFontFamily(fontParam, stereotype);
-		final int fontStyle = getFontStyle(fontParam, stereotype);
-		return new UFont(fontFamily, fontStyle, getFontSize(fontParam, stereotype));
+		final String fontFamily = getFontFamily(fontParam, stereotype2);
+		final int fontStyle = getFontStyle(fontParam, stereotype2);
+		return new UFont(fontFamily, fontStyle, getFontSize(fontParam, stereotype2));
 	}
 
 	public int getCircledCharacterRadius() {
@@ -508,5 +513,14 @@ public class SkinParam implements ISkinParam {
 	public boolean sameClassWidth() {
 		return "true".equals(getValue("sameclasswidth"));
 	}
+	
+	public final Rankdir getRankdir() {
+		return rankdir;
+	}
+
+	public final void setRankdir(Rankdir rankdir) {
+		this.rankdir = rankdir;
+	}
+
 
 }

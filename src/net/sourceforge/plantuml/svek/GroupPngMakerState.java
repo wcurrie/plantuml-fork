@@ -66,6 +66,7 @@ import net.sourceforge.plantuml.graphic.TextBlockWidth;
 import net.sourceforge.plantuml.skin.rose.Rose;
 import net.sourceforge.plantuml.svek.image.EntityImageState;
 import net.sourceforge.plantuml.ugraphic.UFont;
+import net.sourceforge.plantuml.ugraphic.UStroke;
 
 public final class GroupPngMakerState {
 
@@ -129,12 +130,19 @@ public final class GroupPngMakerState {
 
 		final CucaDiagramFileMakerSvek2 svek2 = new CucaDiagramFileMakerSvek2(dotData, diagram.getEntityFactory(),
 				hasVerticalLine, diagram.getSource(), diagram.getPragma());
+		UStroke stroke = group.getSpecificLineStroke();
+		if (stroke == null) {
+			stroke = new UStroke(1.5);
+		}
 
 		if (group.getGroupType() == GroupType.CONCURRENT_STATE) {
 			// return new InnerStateConcurrent(svek2.createFile());
 			return svek2.createFile();
 		} else if (group.getGroupType() == GroupType.STATE) {
-			final HtmlColor borderColor = getColor(ColorParam.stateBorder, null);
+			HtmlColor borderColor = group.getSpecificLineColor();
+			if (borderColor == null) {
+				borderColor = getColor(ColorParam.stateBorder, null);
+			}
 			final Stereotype stereo = group.getStereotype();
 			final HtmlColor backColor = group.getSpecificBackColor() == null ? getColor(ColorParam.stateBackground,
 					stereo) : group.getSpecificBackColor();
@@ -150,7 +158,7 @@ public final class GroupPngMakerState {
 			final boolean withSymbol = stereotype != null && stereotype.isWithOOSymbol();
 
 			return new InnerStateAutonom(svek2.createFile(), title, attribute, borderColor, backColor,
-					skinParam.shadowing(), group.getUrl99(), withSymbol);
+					skinParam.shadowing(), group.getUrl99(), withSymbol, stroke);
 		}
 
 		throw new UnsupportedOperationException(group.getGroupType().toString());
@@ -165,8 +173,7 @@ public final class GroupPngMakerState {
 	private final Rose rose = new Rose();
 
 	protected final HtmlColor getColor(ColorParam colorParam, Stereotype stereo) {
-		final String s = stereo == null ? null : stereo.getLabel();
 		final ISkinParam skinParam = diagram.getSkinParam();
-		return rose.getHtmlColor(skinParam, colorParam, s);
+		return rose.getHtmlColor(skinParam, colorParam, stereo);
 	}
 }

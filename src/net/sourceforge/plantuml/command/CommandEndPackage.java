@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 12235 $
+ * Revision $Revision: 12338 $
  *
  */
 package net.sourceforge.plantuml.command;
@@ -42,14 +42,14 @@ import net.sourceforge.plantuml.cucadiagram.IGroup;
 public class CommandEndPackage extends SingleLineCommand<AbstractEntityDiagram> {
 
 	public CommandEndPackage() {
-		super("(?i)^(end[%s]?package|\\})$");
+		super("(?i)^\\}$");
 	}
 
 	@Override
 	protected CommandExecutionResult executeArg(AbstractEntityDiagram diagram, List<String> arg) {
 		final IGroup currentPackage = diagram.getCurrentGroup();
 		if (EntityUtils.groupRoot(currentPackage)) {
-			return CommandExecutionResult.error("No package defined");
+			return CommandExecutionResult.error("No package or namespace defined");
 		}
 		diagram.endGroup();
 		return CommandExecutionResult.ok();

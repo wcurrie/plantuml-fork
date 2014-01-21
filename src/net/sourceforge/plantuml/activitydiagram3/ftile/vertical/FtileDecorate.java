@@ -42,7 +42,7 @@ import net.sourceforge.plantuml.activitydiagram3.ftile.Ftile;
 import net.sourceforge.plantuml.activitydiagram3.ftile.FtileGeometry;
 import net.sourceforge.plantuml.activitydiagram3.ftile.Swimlane;
 import net.sourceforge.plantuml.graphic.StringBounder;
-import net.sourceforge.plantuml.graphic.TextBlock;
+import net.sourceforge.plantuml.ugraphic.UGraphic;
 import net.sourceforge.plantuml.ugraphic.UTranslate;
 
 public abstract class FtileDecorate implements Ftile {
@@ -58,8 +58,8 @@ public abstract class FtileDecorate implements Ftile {
 		return "" + getClass() + " " + ftile;
 	}
 
-	public boolean isKilled__TOBEREMOVED() {
-		return ftile.isKilled__TOBEREMOVED();
+	public boolean isKilled() {
+		return ftile.isKilled();
 	}
 
 	public LinkRendering getOutLinkRendering() {
@@ -69,13 +69,13 @@ public abstract class FtileDecorate implements Ftile {
 	public LinkRendering getInLinkRendering() {
 		return ftile.getInLinkRendering();
 	}
-
-	public TextBlock asTextBlock() {
-		return ftile.asTextBlock();
+	
+	public void drawU(UGraphic ug) {
+		ftile.drawU(ug);
 	}
 
-	public FtileGeometry getGeometry(StringBounder stringBounder) {
-		return ftile.getGeometry(stringBounder);
+	public FtileGeometry calculateDimension(StringBounder stringBounder) {
+		return ftile.calculateDimension(stringBounder);
 	}
 
 	public Collection<Connection> getInnerConnections() {

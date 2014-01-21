@@ -161,7 +161,7 @@ public class DotStringFactory implements Moveable {
 		sb.append("compound=true;");
 		SvekUtils.println(sb);
 
-		if (dotData.getRankdir() == Rankdir.LEFT_TO_RIGHT) {
+		if (dotData.getSkinParam().getRankdir() == Rankdir.LEFT_TO_RIGHT) {
 			sb.append("rankdir=LR;");
 			SvekUtils.println(sb);
 		}

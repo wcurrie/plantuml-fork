@@ -34,12 +34,10 @@
 package net.sourceforge.plantuml.activitydiagram3.ftile;
 
 import java.awt.geom.Dimension2D;
-import java.awt.geom.Point2D;
 
 import net.sourceforge.plantuml.Dimension2DDouble;
 import net.sourceforge.plantuml.activitydiagram3.ftile.vertical.FtileDecorate;
 import net.sourceforge.plantuml.graphic.StringBounder;
-import net.sourceforge.plantuml.graphic.TextBlock;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
 import net.sourceforge.plantuml.ugraphic.UTranslate;
 
@@ -52,34 +50,35 @@ public class FtileMinWidth extends FtileDecorate {
 		this.minWidth = minWidth;
 	}
 
-	public TextBlock asTextBlock() {
-		return new TextBlock() {
-
-			public void drawU(UGraphic ug) {
-				final StringBounder stringBounder = ug.getStringBounder();
-				final UTranslate change = getUTranslateInternal(stringBounder);
-				FtileMinWidth.super.asTextBlock().drawU(ug.apply(change));
-			}
-
-			public Dimension2D calculateDimension(StringBounder stringBounder) {
-				return getDimensionInternal(stringBounder);
-			}
-		};
+	public void drawU(UGraphic ug) {
+		final StringBounder stringBounder = ug.getStringBounder();
+		final UTranslate change = getUTranslateInternal(stringBounder);
+		super.drawU(ug.apply(change));
 	}
 
-	private UTranslate getUTranslateInternal(final StringBounder stringBounder) {
-		final Dimension2D dimTile = getDimension(stringBounder);
-		final Dimension2D dimTotal = getDimensionInternal(stringBounder);
-		final UTranslate change = new UTranslate((dimTotal.getWidth() - dimTile.getWidth()) / 2, 0);
-		return change;
+	@Override
+	public FtileGeometry calculateDimension(StringBounder stringBounder) {
+		final FtileGeometry geo = super.calculateDimension(stringBounder);
+		final double left = getPoint2(geo.getLeft(), stringBounder);
+		if (geo.hasPointOut() == false) {
+			return new FtileGeometry(getDimensionInternal(stringBounder), left, geo.getInY());
+		}
+		return new FtileGeometry(getDimensionInternal(stringBounder), left, geo.getInY(), geo.getOutY());
 	}
 
 	private Dimension2D getDimensionInternal(StringBounder stringBounder) {
-		final Dimension2D dim = getDimension(stringBounder);
+		final Dimension2D dim = getFtileDelegated().calculateDimension(stringBounder);
 		if (dim.getWidth() < minWidth) {
 			return new Dimension2DDouble(minWidth, dim.getHeight());
 		}
 		return dim;
+	}
+
+	private UTranslate getUTranslateInternal(final StringBounder stringBounder) {
+		final Dimension2D dimTile = getFtileDelegated().calculateDimension(stringBounder);
+		final Dimension2D dimTotal = getDimensionInternal(stringBounder);
+		final UTranslate change = new UTranslate((dimTotal.getWidth() - dimTile.getWidth()) / 2, 0);
+		return change;
 	}
 
 	public UTranslate getTranslateFor(Ftile child, StringBounder stringBounder) {
@@ -89,28 +88,13 @@ public class FtileMinWidth extends FtileDecorate {
 		return null;
 	}
 
-	private Dimension2D getDimension(StringBounder stringBounder) {
-		return super.asTextBlock().calculateDimension(stringBounder);
-	}
-
 	private double getPoint2(double x, StringBounder stringBounder) {
-		final Dimension2D dim = getDimension(stringBounder);
+		final Dimension2D dim = getFtileDelegated().calculateDimension(stringBounder);
 		if (dim.getWidth() < minWidth) {
 			final double diff = minWidth - dim.getWidth();
 			return x + diff / 2;
 		}
 		return x;
-	}
-
-	@Override
-	public FtileGeometry getGeometry(StringBounder stringBounder) {
-		final FtileGeometry geo = super.getGeometry(stringBounder);
-		final double left = getPoint2(geo.getLeft(), stringBounder);
-		if (geo.hasPointOut() == false) {
-			return new FtileGeometry(left, geo.getInY());
-		}
-		return new FtileGeometry(left, geo.getInY(), geo.getOutY());
-
 	}
 
 }

@@ -86,7 +86,7 @@ public class UFont {
 	public boolean isItalic() {
 		return font.isItalic();
 	}
-	
+
 	public String getFamily(UFontContext context) {
 		if (context == UFontContext.EPS) {
 			if (family == null) {
@@ -95,9 +95,11 @@ public class UFont {
 			return font.getPSName();
 		}
 		if (context == UFontContext.SVG) {
+			if (family.equalsIgnoreCase("sansserif")) {
+				return "sans-serif";
+			}
 			return family;
 		}
-		// return font.getFamily();
 		return family;
 	}
 
@@ -129,7 +131,7 @@ public class UFont {
 		final FontRenderContext frc = gg.getFontRenderContext();
 		return font.getLineMetrics(text, frc);
 	}
-	
+
 	public FontMetrics getFontMetrics() {
 		return TextBlockUtils.getFontMetrics(getFont());
 	}

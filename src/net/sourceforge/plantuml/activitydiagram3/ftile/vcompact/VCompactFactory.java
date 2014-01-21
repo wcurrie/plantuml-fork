@@ -45,6 +45,7 @@ import net.sourceforge.plantuml.activitydiagram3.LinkRendering;
 import net.sourceforge.plantuml.activitydiagram3.ftile.BoxStyle;
 import net.sourceforge.plantuml.activitydiagram3.ftile.Ftile;
 import net.sourceforge.plantuml.activitydiagram3.ftile.FtileAssemblySimple;
+import net.sourceforge.plantuml.activitydiagram3.ftile.FtileAssemblyUtils;
 import net.sourceforge.plantuml.activitydiagram3.ftile.FtileFactory;
 import net.sourceforge.plantuml.activitydiagram3.ftile.Swimlane;
 import net.sourceforge.plantuml.activitydiagram3.ftile.vertical.FtileBox;
@@ -88,7 +89,7 @@ public class VCompactFactory implements FtileFactory {
 	public Ftile activity(Display label, final HtmlColor color, Swimlane swimlane, BoxStyle style) {
 		final HtmlColor borderColor = rose.getHtmlColor(skinParam, ColorParam.activityBorder);
 		final HtmlColor backColor = color == null ? rose.getHtmlColor(skinParam, ColorParam.activityBackground) : color;
-		final UFont font = skinParam.getFont(FontParam.ACTIVITY2, null);
+		final UFont font = skinParam.getFont(FontParam.ACTIVITY, null);
 		final HtmlColor arrowColor = rose.getHtmlColor(skinParam, ColorParam.activityArrow);
 		return new FtileBox(shadowing(), label, borderColor, backColor, font, arrowColor, swimlane, style, skinParam);
 	}
@@ -102,7 +103,7 @@ public class VCompactFactory implements FtileFactory {
 	}
 
 	public Ftile assembly(Ftile tile1, Ftile tile2) {
-		return new FtileAssemblySimple(tile1, tile2);
+		return FtileAssemblyUtils.assembly(tile1, tile2);
 	}
 
 	public Ftile repeat(Swimlane swimlane, Ftile repeat, Display test, HtmlColor color) {

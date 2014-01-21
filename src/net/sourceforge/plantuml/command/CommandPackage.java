@@ -66,7 +66,7 @@ public class CommandPackage extends SingleLineCommand2<AbstractEntityDiagram> {
 				new RegexLeaf("URL", "(" + UrlBuilder.getRegexp() + ")?"), //
 				new RegexLeaf("[%s]*"), //
 				new RegexLeaf("COLOR", "(" + HtmlColorUtils.COLOR_REGEXP + ")?"), //
-				new RegexLeaf("[%s]*\\{?$"));
+				new RegexLeaf("[%s]*\\{$"));
 	}
 
 	@Override

@@ -61,8 +61,8 @@ public class CommandActivityLong3 extends CommandMultilines2<ActivityDiagram3> {
 
 	static RegexConcat getRegexConcat() {
 		return new RegexConcat(new RegexLeaf("^"), //
+				new RegexLeaf("COLOR", "(?::?(" + HtmlColorUtils.COLOR_REGEXP + "))?"), //
 				new RegexLeaf(":"), //
-				new RegexLeaf("COLOR", "(?:(" + HtmlColorUtils.COLOR_REGEXP + "):)?"), //
 				new RegexLeaf("DATA", "(.*)"), //
 				new RegexLeaf("$"));
 	}

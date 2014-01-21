@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  *
- * Revision $Revision: 12235 $
+ * Revision $Revision: 12371 $
  *
  */
 package net.sourceforge.plantuml.activitydiagram;
@@ -48,6 +48,7 @@ import net.sourceforge.plantuml.cucadiagram.GroupType;
 import net.sourceforge.plantuml.cucadiagram.IEntity;
 import net.sourceforge.plantuml.cucadiagram.ILeaf;
 import net.sourceforge.plantuml.cucadiagram.LeafType;
+import net.sourceforge.plantuml.graphic.USymbol;
 
 public class ActivityDiagram extends CucaDiagram {
 
@@ -55,8 +56,8 @@ public class ActivityDiagram extends CucaDiagram {
 	private IEntity lastEntityBrancheConsulted;
 	private ConditionalContext currentContext;
 
-	public ILeaf getOrCreateLeaf(Code code, LeafType type) {
-		return getOrCreateLeafDefault(code, type);
+	public ILeaf getOrCreateLeaf(Code code, LeafType type, USymbol symbol) {
+		return getOrCreateLeafDefault(code, type, symbol);
 	}
 
 	private String getAutoBranch() {
@@ -66,13 +67,13 @@ public class ActivityDiagram extends CucaDiagram {
 	public IEntity getOrCreate(Code code, Display display, LeafType type) {
 		final IEntity result;
 		if (leafExist(code)) {
-			result = getOrCreateLeafDefault(code, type);
+			result = getOrCreateLeafDefault(code, type, null);
 			if (result.getEntityType() != type) {
 				// throw new IllegalArgumentException("Already known: " + code + " " + result.getType() + " " + type);
 				return null;
 			}
 		} else {
-			result = createLeaf(code, display, type);
+			result = createLeaf(code, display, type, null);
 		}
 		updateLasts(result);
 		return result;
@@ -80,7 +81,7 @@ public class ActivityDiagram extends CucaDiagram {
 
 	public void startIf(Code optionalCode) {
 		final IEntity br = createLeaf(optionalCode == null ? Code.of(getAutoBranch()) : optionalCode,
-				Display.asList(""), LeafType.BRANCH);
+				Display.asList(""), LeafType.BRANCH, null);
 		currentContext = new ConditionalContext(currentContext, br, Direction.DOWN);
 	}
 
@@ -107,14 +108,14 @@ public class ActivityDiagram extends CucaDiagram {
 	}
 
 	@Override
-	public ILeaf createLeaf(Code code, Display display, LeafType type) {
-		final ILeaf result = super.createLeaf(code, display, type);
+	public ILeaf createLeaf(Code code, Display display, LeafType type, USymbol symbol) {
+		final ILeaf result = super.createLeaf(code, display, type, symbol);
 		updateLasts(result);
 		return result;
 	}
 
 	public IEntity createNote(Code code, Display display) {
-		return super.createLeaf(code, display, LeafType.NOTE);
+		return super.createLeaf(code, display, LeafType.NOTE, null);
 	}
 
 	final protected List<String> getDotStrings() {

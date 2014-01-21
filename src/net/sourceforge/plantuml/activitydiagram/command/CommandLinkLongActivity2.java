@@ -163,7 +163,7 @@ public class CommandLinkLongActivity2 extends CommandMultilines2<ActivityDiagram
 			diagram.getOrCreateGroup(Code.of(partition), Display.getWithNewlines(partition), null, GroupType.PACKAGE,
 					null);
 		}
-		final IEntity entity2 = diagram.createLeaf(code, Display.getWithNewlines(display), LeafType.ACTIVITY);
+		final IEntity entity2 = diagram.createLeaf(code, Display.getWithNewlines(display), LeafType.ACTIVITY, null);
 		if (partition != null) {
 			diagram.endGroup();
 		}

@@ -47,6 +47,7 @@ import net.sourceforge.plantuml.ugraphic.AbstractCommonUGraphic;
 import net.sourceforge.plantuml.ugraphic.ClipContainer;
 import net.sourceforge.plantuml.ugraphic.ColorMapperIdentity;
 import net.sourceforge.plantuml.ugraphic.UClip;
+import net.sourceforge.plantuml.ugraphic.UImage;
 import net.sourceforge.plantuml.ugraphic.UShape;
 import net.sourceforge.plantuml.ugraphic.UText;
 
@@ -85,8 +86,10 @@ public class UGraphicTxt extends AbstractCommonUGraphic implements ClipContainer
 				charArea.drawStringLR(txt.getText(), 0, y);
 			}
 			return;
+		} else if (shape instanceof UImage) {
+			return;
 		}
-		throw new UnsupportedOperationException();
+		throw new UnsupportedOperationException("cl=" + shape.getClass());
 	}
 
 	public final UmlCharArea getCharArea() {

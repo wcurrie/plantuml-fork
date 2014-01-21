@@ -77,7 +77,7 @@ public class CommandCreateEntityObject extends SingleLineCommand2<ObjectDiagram>
 		if (diagram.leafExist(code)) {
 			return CommandExecutionResult.error("Object already exists : " + code);
 		}
-		final IEntity entity = diagram.createLeaf(code, Display.getWithNewlines(display), LeafType.OBJECT);
+		final IEntity entity = diagram.createLeaf(code, Display.getWithNewlines(display), LeafType.OBJECT, null);
 		if (stereotype != null) {
 			entity.setStereotype(new Stereotype(stereotype, diagram.getSkinParam().getCircledCharacterRadius(),
 					diagram.getSkinParam().getFont(FontParam.CIRCLED_CHARACTER, null)));

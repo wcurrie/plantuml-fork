@@ -40,7 +40,6 @@ import java.io.OutputStream;
 import net.sourceforge.plantuml.Url;
 import net.sourceforge.plantuml.graphic.StringBounder;
 import net.sourceforge.plantuml.graphic.TextBlock;
-import net.sourceforge.plantuml.graphic.TextBlockable;
 
 public class LimitFinder implements UGraphic {
 
@@ -102,8 +101,8 @@ public class LimitFinder implements UGraphic {
 			drawImage(x, y, (UImage) shape);
 		} else if (shape instanceof UEmpty) {
 			drawEmpty(x, y, (UEmpty) shape);
-		} else if (shape instanceof TextBlockable) {
-			final TextBlock tb = ((TextBlockable) shape).asTextBlock();
+		} else if (shape instanceof TextBlock) {
+			final TextBlock tb = (TextBlock) shape;
 			tb.drawU(this);
 		} else if (shape instanceof UCenteredCharacter) {
 			// To be done

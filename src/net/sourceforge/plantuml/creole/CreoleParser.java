@@ -60,11 +60,13 @@ public class CreoleParser {
 
 	public Sheet createSheet(Display display) {
 		final Sheet sheet = new Sheet();
-		final CreoleContext context = new CreoleContext();
-		for (CharSequence cs : display) {
-			final Stripe stripe = createStripe(cs.toString(), context, sheet.getLastStripe());
-			if (stripe != null) {
-				sheet.add(stripe);
+		if (display != null) {
+			final CreoleContext context = new CreoleContext();
+			for (CharSequence cs : display) {
+				final Stripe stripe = createStripe(cs.toString(), context, sheet.getLastStripe());
+				if (stripe != null) {
+					sheet.add(stripe);
+				}
 			}
 		}
 		return sheet;

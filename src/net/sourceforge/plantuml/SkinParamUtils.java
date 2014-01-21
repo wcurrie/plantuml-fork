@@ -39,22 +39,19 @@ import net.sourceforge.plantuml.skin.rose.Rose;
 import net.sourceforge.plantuml.ugraphic.UFont;
 
 public class SkinParamUtils {
-	
+
 	private static final Rose rose = new Rose();
 
 	public static UFont getFont(ISkinParam skinParam, FontParam fontParam, Stereotype stereo) {
-		final String s = stereo == null ? null : stereo.getLabel();
-		return skinParam.getFont(fontParam, s);
+		return skinParam.getFont(fontParam, stereo);
 	}
 
 	public static HtmlColor getFontColor(ISkinParam skinParam, FontParam fontParam, Stereotype stereo) {
-		final String s = stereo == null ? null : stereo.getLabel();
-		return skinParam.getFontHtmlColor(fontParam, s);
+		return skinParam.getFontHtmlColor(fontParam, stereo);
 	}
 
 	public static HtmlColor getColor(ISkinParam skinParam, ColorParam colorParam, Stereotype stereo) {
-		final String s = stereo == null ? null : stereo.getLabel();
-		return rose.getHtmlColor(skinParam, colorParam, s);
+		return rose.getHtmlColor(skinParam, colorParam, stereo);
 	}
 
 }

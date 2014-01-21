@@ -27,18 +27,19 @@
  * in the United States and other countries.]
  *
  * Original Author:  Arnaud Roques
- * 
- * Revision $Revision: 10266 $
+ *
+ * Revision $Revision: 8475 $
  *
  */
-package net.sourceforge.plantuml.graphic;
+package net.sourceforge.plantuml.activitydiagram3.ftile;
 
-import net.sourceforge.plantuml.ugraphic.UShape;
+import net.sourceforge.plantuml.OptionFlags;
 
-public interface TextBlockable extends UShape {
-	
-	public TextBlock asTextBlock();
+public class FtileAssemblyUtils {
 
-
+	static public Ftile assembly(Ftile tile1, Ftile tile2) {
+		return OptionFlags.USE_4747 ? new FtileAssemblySimple4747bis(tile1, tile2) : new FtileAssemblySimple(tile1,
+				tile2);
+	}
 
 }

@@ -142,7 +142,7 @@ public class Swimlanes implements TextBlock {
 		public void draw(UShape shape) {
 			if (shape instanceof Ftile) {
 				final Ftile tile = (Ftile) shape;
-				tile.asTextBlock().drawU(this);
+				tile.drawU(this);
 			} else if (shape instanceof Connection) {
 				final Connection connection = (Connection) shape;
 				final Ftile tile1 = connection.getFtile1();
@@ -170,7 +170,7 @@ public class Swimlanes implements TextBlock {
 
 	public void drawU(UGraphic ug) {
 		final FtileFactory factory = getFtileFactory();
-		TextBlock full = root.createFtile(factory).asTextBlock();
+		TextBlock full = root.createFtile(factory);
 		ug = new UGraphicForSnake(ug);
 		if (swinlanes.size() <= 1) {
 			full = new TextBlockInterceptorTextBlockable(full);
@@ -258,7 +258,7 @@ public class Swimlanes implements TextBlock {
 
 	private CollisionDetector getCollisionDetector(UGraphic ug, final UTranslate titleHeightTranslate) {
 		final FtileFactory factory = getFtileFactory();
-		final TextBlock full = root.createFtile(factory).asTextBlock();
+		final TextBlock full = root.createFtile(factory);
 		ug = new UGraphicForSnake(ug);
 
 		final CollisionDetector collisionDetector = new CollisionDetector(ug.getStringBounder());

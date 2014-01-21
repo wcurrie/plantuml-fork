@@ -44,10 +44,7 @@ public class UGraphicInterceptorTextBlockable extends UGraphicDelegator {
 	}
 
 	public void draw(UShape shape) {
-		if (shape instanceof TextBlockable) {
-			final TextBlock textBlock = ((TextBlockable) shape).asTextBlock();
-			textBlock.drawU(this);
-		} else if (shape instanceof UDrawable) {
+		if (shape instanceof UDrawable) {
 			final UDrawable drawable = (UDrawable) shape;
 			drawable.drawU(this);
 		} else {

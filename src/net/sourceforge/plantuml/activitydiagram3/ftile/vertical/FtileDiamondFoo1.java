@@ -34,7 +34,6 @@
 package net.sourceforge.plantuml.activitydiagram3.ftile.vertical;
 
 import java.awt.geom.Dimension2D;
-import java.awt.geom.Point2D;
 import java.util.Collections;
 import java.util.Set;
 
@@ -108,35 +107,30 @@ public class FtileDiamondFoo1 extends AbstractFtile {
 		return swimlane;
 	}
 
-	public TextBlock asTextBlock() {
-		return new TextBlock() {
+	public void drawU(UGraphic ug) {
+		final StringBounder stringBounder = ug.getStringBounder();
+		final Dimension2D dimLabel = label.calculateDimension(stringBounder);
+		final Dimension2D dimTotal = calculateDimensionInternal(stringBounder);
+		ug = ug.apply(new UChangeColor(borderColor)).apply(new UStroke(1.5)).apply(new UChangeBackColor(backColor));
+		ug.draw(Diamond.asPolygonFoo1(shadowing(), dimTotal.getWidth(), dimTotal.getHeight()));
 
-			public void drawU(UGraphic ug) {
-				final StringBounder stringBounder = ug.getStringBounder();
-				final Dimension2D dimLabel = label.calculateDimension(stringBounder);
-				final Dimension2D dimTotal = calculateDimensionInternal(stringBounder);
-				ug = ug.apply(new UChangeColor(borderColor)).apply(new UStroke(1.5))
-						.apply(new UChangeBackColor(backColor));
-				ug.draw(Diamond.asPolygonFoo1(shadowing(), dimTotal.getWidth(), dimTotal.getHeight()));
+		north.drawU(ug.apply(new UTranslate(4 + dimTotal.getWidth() / 2, dimTotal.getHeight())));
 
-				north.drawU(ug.apply(new UTranslate(4 + dimTotal.getWidth() / 2, dimTotal.getHeight())));
+		final double lx = (dimTotal.getWidth() - dimLabel.getWidth()) / 2;
+		final double ly = (dimTotal.getHeight() - dimLabel.getHeight()) / 2;
+		label.drawU(ug.apply(new UTranslate(lx, ly)));
 
-				final double lx = (dimTotal.getWidth() - dimLabel.getWidth()) / 2;
-				final double ly = (dimTotal.getHeight() - dimLabel.getHeight()) / 2;
-				label.drawU(ug.apply(new UTranslate(lx, ly)));
+		final Dimension2D dimWeat = west.calculateDimension(stringBounder);
+		west.drawU(ug.apply(new UTranslate(-dimWeat.getWidth(), -dimWeat.getHeight() + Diamond.diamondHalfSize)));
 
-				final Dimension2D dimWeat = west.calculateDimension(stringBounder);
-				west.drawU(ug.apply(new UTranslate(-dimWeat.getWidth(), -dimWeat.getHeight() + Diamond.diamondHalfSize)));
+		final Dimension2D dimEast = east.calculateDimension(stringBounder);
+		east.drawU(ug.apply(new UTranslate(dimTotal.getWidth(), -dimEast.getHeight() + Diamond.diamondHalfSize)));
 
-				final Dimension2D dimEast = east.calculateDimension(stringBounder);
-				east.drawU(ug.apply(new UTranslate(dimTotal.getWidth(), -dimEast.getHeight() + Diamond.diamondHalfSize)));
+	}
 
-			}
-
-			public Dimension2D calculateDimension(StringBounder stringBounder) {
-				return calculateDimensionInternal(stringBounder);
-			}
-		};
+	public FtileGeometry calculateDimension(StringBounder stringBounder) {
+		final Dimension2D dim = calculateDimensionInternal(stringBounder);
+		return new FtileGeometry(dim, dim.getWidth() / 2, 0, dim.getHeight());
 	}
 
 	private Dimension2D calculateDimensionInternal(StringBounder stringBounder) {
@@ -149,13 +143,8 @@ public class FtileDiamondFoo1 extends AbstractFtile {
 		return result;
 	}
 
-	public boolean isKilled__TOBEREMOVED() {
+	public boolean isKilled() {
 		return false;
-	}
-
-	public FtileGeometry getGeometry(StringBounder stringBounder) {
-		final Dimension2D dim = calculateDimensionInternal(stringBounder);
-		return new FtileGeometry(dim.getWidth() / 2, 0, dim.getHeight());
 	}
 
 }

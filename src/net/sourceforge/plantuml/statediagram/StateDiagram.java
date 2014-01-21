@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 12235 $
+ * Revision $Revision: 12371 $
  *
  */
 package net.sourceforge.plantuml.statediagram;
@@ -43,6 +43,7 @@ import net.sourceforge.plantuml.cucadiagram.GroupType;
 import net.sourceforge.plantuml.cucadiagram.IEntity;
 import net.sourceforge.plantuml.cucadiagram.IGroup;
 import net.sourceforge.plantuml.cucadiagram.LeafType;
+import net.sourceforge.plantuml.graphic.USymbol;
 
 public class StateDiagram extends AbstractEntityDiagram {
 
@@ -62,7 +63,8 @@ public class StateDiagram extends AbstractEntityDiagram {
 		return true;
 	}
 
-	public IEntity getOrCreateLeaf(Code code, LeafType type) {
+	@Override
+	public IEntity getOrCreateLeaf(Code code, LeafType type, USymbol symbol) {
 		if (checkConcurrentStateOk(code) == false) {
 			throw new IllegalStateException("Concurrent State " + code);
 		}
@@ -73,39 +75,39 @@ public class StateDiagram extends AbstractEntityDiagram {
 			if (isGroup(code)) {
 				return getGroup(code);
 			}
-			return getOrCreateLeafDefault(code, LeafType.STATE);
+			return getOrCreateLeafDefault(code, LeafType.STATE, null);
 		}
-		return getOrCreateLeafDefault(code, type);
+		return getOrCreateLeafDefault(code, type, symbol);
 	}
 
 	public IEntity getStart() {
 		final IGroup g = getCurrentGroup();
 		if (EntityUtils.groupRoot(g)) {
-			return getOrCreateLeaf(Code.of("*start"), LeafType.CIRCLE_START);
+			return getOrCreateLeaf(Code.of("*start"), LeafType.CIRCLE_START, null);
 		}
-		return getOrCreateLeaf(Code.of("*start*" + g.getCode().getCode()), LeafType.CIRCLE_START);
+		return getOrCreateLeaf(Code.of("*start*" + g.getCode().getCode()), LeafType.CIRCLE_START, null);
 	}
 
 	public IEntity getEnd() {
 		final IGroup p = getCurrentGroup();
 		if (EntityUtils.groupRoot(p)) {
-			return getOrCreateLeaf(Code.of("*end"), LeafType.CIRCLE_END);
+			return getOrCreateLeaf(Code.of("*end"), LeafType.CIRCLE_END, null);
 		}
-		return getOrCreateLeaf(Code.of("*end*" + p.getCode().getCode()), LeafType.CIRCLE_END);
+		return getOrCreateLeaf(Code.of("*end*" + p.getCode().getCode()), LeafType.CIRCLE_END, null);
 	}
 
 	public IEntity getHistorical() {
 		final IGroup g = getCurrentGroup();
 		if (EntityUtils.groupRoot(g)) {
-			return getOrCreateLeaf(Code.of("*historical"), LeafType.PSEUDO_STATE);
+			return getOrCreateLeaf(Code.of("*historical"), LeafType.PSEUDO_STATE, null);
 		}
-		return getOrCreateLeaf(Code.of("*historical*" + g.getCode().getCode()), LeafType.PSEUDO_STATE);
+		return getOrCreateLeaf(Code.of("*historical*" + g.getCode().getCode()), LeafType.PSEUDO_STATE, null);
 	}
 
 	public IEntity getHistorical(Code codeGroup) {
 		final IEntity g = getOrCreateGroup(codeGroup, Display.getWithNewlines(codeGroup), null, GroupType.STATE,
 				getRootGroup());
-		final IEntity result = getOrCreateLeaf(Code.of("*historical*" + g.getCode().getCode()), LeafType.PSEUDO_STATE);
+		final IEntity result = getOrCreateLeaf(Code.of("*historical*" + g.getCode().getCode()), LeafType.PSEUDO_STATE, null);
 		endGroup();
 		return result;
 	}

@@ -33,12 +33,9 @@
  */
 package net.sourceforge.plantuml.activitydiagram3.ftile;
 
-import java.awt.geom.Dimension2D;
-import java.awt.geom.Point2D;
 import java.util.Set;
 
 import net.sourceforge.plantuml.graphic.StringBounder;
-import net.sourceforge.plantuml.graphic.TextBlock;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
 
 public class FtileKilled extends AbstractFtile {
@@ -62,25 +59,16 @@ public class FtileKilled extends AbstractFtile {
 		return tile.getSwimlaneOut();
 	}
 
-	public FtileGeometry getGeometry(StringBounder stringBounder) {
-		final FtileGeometry geo = tile.getGeometry(stringBounder);
-		return new FtileGeometry(geo.getLeft(), geo.getInY());
+	public FtileGeometry calculateDimension(StringBounder stringBounder) {
+		final FtileGeometry geo = tile.calculateDimension(stringBounder);
+		return new FtileGeometry(tile.calculateDimension(stringBounder), geo.getLeft(), geo.getInY());
 	}
 
-	public TextBlock asTextBlock() {
-		return new TextBlock() {
-
-			public Dimension2D calculateDimension(StringBounder stringBounder) {
-				return tile.asTextBlock().calculateDimension(stringBounder);
-			}
-
-			public void drawU(UGraphic ug) {
-				ug.draw(tile);
-			}
-		};
+	public void drawU(UGraphic ug) {
+		ug.draw(tile);
 	}
 
-	public boolean isKilled__TOBEREMOVED() {
+	public boolean isKilled() {
 		return true;
 	}
 

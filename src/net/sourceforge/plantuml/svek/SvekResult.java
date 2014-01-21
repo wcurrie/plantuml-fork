@@ -76,7 +76,7 @@ public final class SvekResult implements IEntityImage, Moveable {
 
 	public void drawU(UGraphic ug) {
 		for (Cluster cluster : dotStringFactory.getBibliotekon().allCluster()) {
-			cluster.drawU(ug, clusterBorder, dotData);
+			cluster.drawU(ug, clusterBorder, dotData, new UStroke(1.5));
 		}
 
 		final Set<Double> xdots = new TreeSet<Double>();

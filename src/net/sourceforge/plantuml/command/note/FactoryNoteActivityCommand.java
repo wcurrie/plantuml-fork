@@ -78,7 +78,8 @@ public final class FactoryNoteActivityCommand implements SingleMultiFactoryComma
 	}
 
 	public Command<ActivityDiagram> createMultiLine() {
-		return new CommandMultilines2<ActivityDiagram>(getRegexConcatMultiLine(), MultilinesStrategy.KEEP_STARTING_QUOTE) {
+		return new CommandMultilines2<ActivityDiagram>(getRegexConcatMultiLine(),
+				MultilinesStrategy.KEEP_STARTING_QUOTE) {
 
 			@Override
 			public String getPatternEnd() {
@@ -92,7 +93,8 @@ public final class FactoryNoteActivityCommand implements SingleMultiFactoryComma
 
 				Url url = null;
 				if (strings.size() > 0) {
-					final UrlBuilder urlBuilder = new UrlBuilder(system.getSkinParam().getValue("topurl"), ModeUrl.STRICT);
+					final UrlBuilder urlBuilder = new UrlBuilder(system.getSkinParam().getValue("topurl"),
+							ModeUrl.STRICT);
 					url = urlBuilder.getUrl(strings.get(0).toString());
 				}
 				if (url != null) {
@@ -101,7 +103,7 @@ public final class FactoryNoteActivityCommand implements SingleMultiFactoryComma
 
 				// final String s = StringUtils.getMergedLines(strings);
 
-				final IEntity note = system.createLeaf(UniqueSequence.getCode("GMN"), strings, LeafType.NOTE);
+				final IEntity note = system.createLeaf(UniqueSequence.getCode("GMN"), strings, LeafType.NOTE, null);
 				if (url != null) {
 					note.addUrl(url);
 				}
@@ -134,7 +136,7 @@ public final class FactoryNoteActivityCommand implements SingleMultiFactoryComma
 		final Link link;
 
 		final Position position = Position.valueOf(arg.get("POSITION", 0).toUpperCase()).withRankdir(
-				system.getRankdir());
+				system.getSkinParam().getRankdir());
 
 		final LinkType type = new LinkType(LinkDecor.NONE, LinkDecor.NONE).getDashed();
 

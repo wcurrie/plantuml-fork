@@ -56,7 +56,10 @@ public class FtileFactoryDelegatorIf extends FtileFactoryDelegator {
 	@Override
 	public Ftile createIf(Swimlane swimlane, List<Branch> thens, Branch elseBranch) {
 
-		final UFont font = getSkinParam().getFont(FontParam.ACTIVITY_ARROW2, null);
+		final ConditionStyle conditionStyle = getSkinParam().getConditionStyle();
+		final UFont fontArrow = getSkinParam().getFont(FontParam.ACTIVITY_ARROW, null);
+		final UFont fontTest = getSkinParam().getFont(
+				conditionStyle == ConditionStyle.INSIDE ? FontParam.ACTIVITY_DIAMOND : FontParam.ACTIVITY_ARROW, null);
 		final Branch branch0 = thens.get(0);
 
 		final HtmlColor borderColor = getRose().getHtmlColor(getSkinParam(), ColorParam.activityBorder);
@@ -64,13 +67,12 @@ public class FtileFactoryDelegatorIf extends FtileFactoryDelegator {
 				ColorParam.activityBackground) : branch0.getColor();
 		final HtmlColor arrowColor = getRose().getHtmlColor(getSkinParam(), ColorParam.activityArrow);
 
-		final ConditionStyle conditionStyle = getSkinParam().getConditionStyle();
 		if (thens.size() > 1) {
-			return FtileIfLong.create(swimlane, borderColor, backColor, font, arrowColor, getFactory(), conditionStyle,
-					thens, elseBranch);
+			return FtileIfLong.create(swimlane, borderColor, backColor, fontArrow, arrowColor, getFactory(),
+					conditionStyle, thens, elseBranch);
 		}
-		return FtileIf.create(swimlane, borderColor, backColor, font, arrowColor, getFactory(), conditionStyle,
-				thens.get(0), elseBranch);
+		return FtileIf.create(swimlane, borderColor, backColor, fontArrow, fontTest, arrowColor, getFactory(),
+				conditionStyle, thens.get(0), elseBranch, getSkinParam());
 	}
 
 }

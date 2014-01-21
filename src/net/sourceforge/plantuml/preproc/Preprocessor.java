@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 12235 $
+ * Revision $Revision: 12339 $
  *
  */
 package net.sourceforge.plantuml.preproc;
@@ -43,8 +43,11 @@ import net.sourceforge.plantuml.command.regex.MyPattern;
 
 public class Preprocessor implements ReadLine {
 
-	private static final Pattern definePattern = MyPattern.cmpile("^[%s]*!define[%s]+([A-Za-z_][A-Za-z_0-9]*(?:\\([A-Za-z_][A-Za-z_0-9]*\\))?)(?:[%s]+(.*))?$");
-	private static final Pattern undefPattern = MyPattern.cmpile("^[%s]*!undef[%s]+([A-Za-z_][A-Za-z_0-9]*)$");
+	private static final String ID = "[A-Za-z_][A-Za-z_0-9]*";
+	private static final String ARG = "(?:\\(" + ID + "(?:," + ID + ")*\\))?";
+	private static final Pattern definePattern = MyPattern.cmpile("^[%s]*!define[%s]+(" + ID + ARG + ")"
+			+ "(?:[%s]+(.*))?$");
+	private static final Pattern undefPattern = MyPattern.cmpile("^[%s]*!undef[%s]+(" + ID + ")$");
 
 	private final Defines defines;
 	private final PreprocessorInclude rawSource;

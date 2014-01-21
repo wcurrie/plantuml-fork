@@ -39,6 +39,7 @@ import java.util.Map;
 
 import net.sourceforge.plantuml.ColorParam;
 import net.sourceforge.plantuml.Dimension2DDouble;
+import net.sourceforge.plantuml.FontParam;
 
 public abstract class USymbol {
 
@@ -50,26 +51,46 @@ public abstract class USymbol {
 	public final static USymbol FRAME = record("FRAME", new USymbolFrame());
 	public final static USymbol NODE = record("NODE", new USymbolNode());
 	public final static USymbol ARTIFACT = record("ARTIFACT", new USymbolArtifact());
-	public final static USymbol PACKAGE = record("PACKAGE", new USymbolFolder());
-	public final static USymbol FOLDER = record("FOLDER", new USymbolFolder());
-	public final static USymbol RECT = record("RECT", new USymbolRect());
-	public final static USymbol RECTANGLE = record("RECTANGLE", new USymbolRect());
+	public final static USymbol PACKAGE = record("PACKAGE", new USymbolFolder(ColorParam.packageBackground,
+			ColorParam.packageBorder));
+	public final static USymbol FOLDER = record("FOLDER", new USymbolFolder(ColorParam.folderBackground,
+			ColorParam.folderBorder));
+	public final static USymbol RECTANGLE = record("RECTANGLE", new USymbolRect(ColorParam.rectangleBackground,
+			ColorParam.rectangleBorder, FontParam.RECTANGLE, FontParam.RECTANGLE_STEREOTYPE));
+	public final static USymbol AGENT = record("AGENT", new USymbolRect(ColorParam.agentBackground,
+			ColorParam.agentBorder, FontParam.AGENT, FontParam.AGENT_STEREOTYPE));
 	public final static USymbol ACTOR = record("ACTOR", new USymbolActor());
+	public final static USymbol USECASE = null;
 	public final static USymbol COMPONENT1 = record("COMPONENT1", new USymbolComponent1());
 	public final static USymbol COMPONENT2 = record("COMPONENT2", new USymbolComponent2());
 	public final static USymbol BOUNDARY = record("BOUNDARY", new USymbolBoundary());
 	public final static USymbol ENTITY_DOMAIN = record("ENTITY_DOMAIN", new USymbolEntityDomain(2));
 	public final static USymbol CONTROL = record("CONTROL", new USymbolControl(2));
 	public final static USymbol INTERFACE = record("INTERFACE", new USymbolInterface());
-	
+
 	private final ColorParam colorParamBorder;
 	private final ColorParam colorParamBack;
-	
-	public USymbol(ColorParam colorParamBack, ColorParam colorParamBorder) {
+	private final FontParam fontParam;
+	private final FontParam fontParamStereotype;
+
+	public USymbol(ColorParam colorParamBack, ColorParam colorParamBorder, FontParam fontParam,
+			FontParam fontParamStereotype) {
 		this.colorParamBack = colorParamBack;
 		this.colorParamBorder = colorParamBorder;
+		this.fontParam = fontParam;
+		this.fontParamStereotype = fontParamStereotype;
 	}
-	
+
+	public FontParam getFontParam() {
+		return fontParam;
+
+	}
+
+	public FontParam getFontParamStereotype() {
+		return fontParamStereotype;
+
+	}
+
 	public ColorParam getColorParamBack() {
 		return colorParamBack;
 	}
@@ -77,7 +98,6 @@ public abstract class USymbol {
 	public ColorParam getColorParamBorder() {
 		return colorParamBorder;
 	}
-
 
 	public static USymbol getFromString(String s) {
 		final USymbol result = all.get(s.toUpperCase());
@@ -137,6 +157,5 @@ public abstract class USymbol {
 	public boolean manageHorizontalLine() {
 		return false;
 	}
-
 
 }

@@ -33,13 +33,14 @@
  */
 package net.sourceforge.plantuml.activitydiagram3.command;
 
-import net.sourceforge.plantuml.Url;
-import net.sourceforge.plantuml.UrlBuilder;
-import net.sourceforge.plantuml.UrlBuilder.ModeUrl;
+import java.util.List;
+
+import net.sourceforge.plantuml.StringUtils;
 import net.sourceforge.plantuml.activitydiagram3.ActivityDiagram3;
-import net.sourceforge.plantuml.activitydiagram3.ftile.BoxStyle;
 import net.sourceforge.plantuml.command.CommandExecutionResult;
-import net.sourceforge.plantuml.command.SingleLineCommand2;
+import net.sourceforge.plantuml.command.CommandMultilines2;
+import net.sourceforge.plantuml.command.MultilinesStrategy;
+import net.sourceforge.plantuml.command.regex.MyPattern;
 import net.sourceforge.plantuml.command.regex.RegexConcat;
 import net.sourceforge.plantuml.command.regex.RegexLeaf;
 import net.sourceforge.plantuml.command.regex.RegexResult;
@@ -47,38 +48,46 @@ import net.sourceforge.plantuml.cucadiagram.Display;
 import net.sourceforge.plantuml.graphic.HtmlColor;
 import net.sourceforge.plantuml.graphic.HtmlColorUtils;
 
-public class CommandActivity3 extends SingleLineCommand2<ActivityDiagram3> {
+public class CommandIf2Multilines extends CommandMultilines2<ActivityDiagram3> {
 
-	public static final String ENDING_GROUP = "(;|(?<![/|<>}\\]])(?:[/<}\\]])|(?<!\\</?\\w{1,5})(?<!\\<img[^>]{1,999})(?<!\\<\\$\\w{1,999})(?:\\>)|(?<!\\|.{1,999})(?:\\|))";
+	public CommandIf2Multilines() {
+		super(getRegexConcat(), MultilinesStrategy.REMOVE_STARTING_QUOTE);
+	}
 
-	public CommandActivity3() {
-		super(getRegexConcat());
+	@Override
+	public String getPatternEnd() {
+		return "(?i)^(.*?)\\)[%s]*(?:then[%s]*(?:\\((.+?)\\))?)?;?$";
 	}
 
 	static RegexConcat getRegexConcat() {
 		return new RegexConcat(new RegexLeaf("^"), //
-				new RegexLeaf("URL", "(" + UrlBuilder.getRegexp() + ")?"), //
-				new RegexLeaf("COLOR", "(?::?(" + HtmlColorUtils.COLOR_REGEXP + "))?"), //
-				new RegexLeaf(":"), //
-				new RegexLeaf("LABEL", "(.*)"), //
-				new RegexLeaf("STYLE", ENDING_GROUP), //
-				new RegexLeaf("$"));
+				new RegexLeaf("COLOR", "(?:(" + HtmlColorUtils.COLOR_REGEXP + "):)?"), //
+				new RegexLeaf("if"), //
+				new RegexLeaf("[%s]*"), //
+				new RegexLeaf("\\("), //
+				new RegexLeaf("TEST", "([^)]*)$"));
 	}
 
 	@Override
-	protected CommandExecutionResult executeArg(ActivityDiagram3 diagram, RegexResult arg) {
+	public CommandExecutionResult executeNow(ActivityDiagram3 diagram, List<String> lines) {
+		StringUtils.trim(lines, false);
+		final RegexResult line0 = getStartingPattern().matcher(lines.get(0).trim());
+		final List<String> lineLast = StringUtils.getSplit(MyPattern.cmpile(getPatternEnd()),
+				lines.get(lines.size() - 1));
 
-		final Url url;
-		if (arg.get("URL", 0) == null) {
-			url = null;
-		} else {
-			final UrlBuilder urlBuilder = new UrlBuilder(diagram.getSkinParam().getValue("topurl"), ModeUrl.STRICT);
-			url = urlBuilder.getUrl(arg.get("URL", 0));
+		final HtmlColor color = HtmlColorUtils.getColorIfValid(line0.get("COLOR", 0));
+
+		final String test = line0.get("TEST", 0);
+		Display testDisplay = Display.getWithNewlines(test);
+		for (int i = 1; i < lines.size() - 1; i++) {
+			testDisplay = testDisplay.add(lines.get(i));
+		}
+		final String trailTest = lineLast.get(0);
+		if (StringUtils.isEmpty(trailTest) == false) {
+			testDisplay = testDisplay.add(trailTest);
 		}
 
-		final HtmlColor color = HtmlColorUtils.getColorIfValid(arg.get("COLOR", 0));
-		final BoxStyle style = BoxStyle.fromChar(arg.get("STYLE", 0).charAt(0));
-		diagram.addActivity(Display.getWithNewlines(arg.get("LABEL", 0)), color, style, url);
+		diagram.startIf(testDisplay, Display.getWithNewlines(lineLast.get(1)), color);
 		return CommandExecutionResult.ok();
 	}
 

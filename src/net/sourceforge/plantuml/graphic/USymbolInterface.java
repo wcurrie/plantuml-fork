@@ -34,12 +34,14 @@
 package net.sourceforge.plantuml.graphic;
 
 import net.sourceforge.plantuml.ColorParam;
+import net.sourceforge.plantuml.FontParam;
 import net.sourceforge.plantuml.svek.CircleInterface2;
 
 class USymbolInterface extends USymbolSimpleAbstract {
 
 	public USymbolInterface() {
-		super(ColorParam.componentBackground, ColorParam.componentBorder);
+		super(ColorParam.interfaceBackground, ColorParam.interfaceBorder, FontParam.INTERFACE,
+				FontParam.INTERFACE_STEREOTYPE);
 	}
 
 	@Override

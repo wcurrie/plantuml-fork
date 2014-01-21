@@ -111,9 +111,9 @@ public class EntityImageCircleInterface extends AbstractEntityImage {
 		}
 		ug = ug.apply(new UStroke(2));
 		ug = ug.apply(
-				new UChangeBackColor(SkinParamUtils.getColor(getSkinParam(), ColorParam.componentInterfaceBackground,
+				new UChangeBackColor(SkinParamUtils.getColor(getSkinParam(), ColorParam.interfaceBackground,
 						getStereo()))).apply(
-				new UChangeColor(SkinParamUtils.getColor(getSkinParam(), ColorParam.componentInterfaceBorder,
+				new UChangeColor(SkinParamUtils.getColor(getSkinParam(), ColorParam.interfaceBorder,
 						getStereo())));
 		if (url != null) {
 			ug.startUrl(url);

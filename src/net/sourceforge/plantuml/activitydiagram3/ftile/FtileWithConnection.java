@@ -33,7 +33,6 @@
  */
 package net.sourceforge.plantuml.activitydiagram3.ftile;
 
-import java.awt.geom.Dimension2D;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -41,8 +40,6 @@ import java.util.Collections;
 import java.util.List;
 
 import net.sourceforge.plantuml.activitydiagram3.ftile.vertical.FtileDecorate;
-import net.sourceforge.plantuml.graphic.StringBounder;
-import net.sourceforge.plantuml.graphic.TextBlock;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
 
 class FtileWithConnection extends FtileDecorate {
@@ -69,21 +66,11 @@ class FtileWithConnection extends FtileDecorate {
 		}
 	}
 
-	public TextBlock asTextBlock() {
-		final TextBlock original = super.asTextBlock();
-		return new TextBlock() {
-
-			public void drawU(UGraphic ug) {
-				original.drawU(ug);
-				for (Connection c : connections) {
-					ug.draw(c);
-				}
-			}
-
-			public Dimension2D calculateDimension(StringBounder stringBounder) {
-				return original.calculateDimension(stringBounder);
-			}
-		};
+	public void drawU(UGraphic ug) {
+		getFtileDelegated().drawU(ug);
+		for (Connection c : connections) {
+			ug.draw(c);
+		}
 	}
 
 	public Collection<Connection> getInnerConnections() {

@@ -34,7 +34,6 @@
 package net.sourceforge.plantuml.activitydiagram3.ftile.vcompact;
 
 import java.awt.geom.Dimension2D;
-import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -44,7 +43,7 @@ import net.sourceforge.plantuml.activitydiagram3.ftile.AbstractConnection;
 import net.sourceforge.plantuml.activitydiagram3.ftile.Arrows;
 import net.sourceforge.plantuml.activitydiagram3.ftile.Connection;
 import net.sourceforge.plantuml.activitydiagram3.ftile.Ftile;
-import net.sourceforge.plantuml.activitydiagram3.ftile.FtileAssemblySimple;
+import net.sourceforge.plantuml.activitydiagram3.ftile.FtileAssemblyUtils;
 import net.sourceforge.plantuml.activitydiagram3.ftile.FtileFactory;
 import net.sourceforge.plantuml.activitydiagram3.ftile.FtileFactoryDelegator;
 import net.sourceforge.plantuml.activitydiagram3.ftile.FtileGeometry;
@@ -75,7 +74,7 @@ public class FtileFactoryDelegatorCreateFork extends FtileFactoryDelegator {
 		final HtmlColor colorBar = rose.getHtmlColor(getSkinParam(), ColorParam.activityBar);
 		final HtmlColor arrowColor = rose.getHtmlColor(getSkinParam(), ColorParam.activityArrow);
 
-		final Dimension2D dimSuper = super.createFork(all).asTextBlock().calculateDimension(getStringBounder());
+		final Dimension2D dimSuper = super.createFork(all).calculateDimension(getStringBounder());
 		final double height1 = dimSuper.getHeight() + 2 * spaceArroundBlackBar;
 
 		final List<Ftile> list = new ArrayList<Ftile>();
@@ -89,16 +88,16 @@ public class FtileFactoryDelegatorCreateFork extends FtileFactoryDelegator {
 
 		double x = 0;
 		for (Ftile tmp : list) {
-			final Dimension2D dim = tmp.asTextBlock().calculateDimension(getStringBounder());
+			final Dimension2D dim = tmp.calculateDimension(getStringBounder());
 			conns.add(new ConnectionIn(tmp, x, arrowColor));
 			conns.add(new ConnectionOut(tmp, x, arrowColor, height1));
 			x += dim.getWidth();
 		}
 
 		inner = FtileUtils.addConnection(inner, conns);
-		final Ftile black = new FtileBlackBlock(shadowing(), inner.asTextBlock().calculateDimension(getStringBounder())
-				.getWidth(), barHeight, colorBar, list.get(0).getSwimlaneIn());
-		return new FtileAssemblySimple(new FtileAssemblySimple(black, inner), black);
+		final Ftile black = new FtileBlackBlock(shadowing(), inner.calculateDimension(getStringBounder()).getWidth(),
+				barHeight, colorBar, list.get(0).getSwimlaneIn());
+		return FtileAssemblyUtils.assembly(FtileAssemblyUtils.assembly(black, inner), black);
 	}
 
 	class ConnectionIn extends AbstractConnection {
@@ -114,7 +113,7 @@ public class FtileFactoryDelegatorCreateFork extends FtileFactoryDelegator {
 
 		public void drawU(UGraphic ug) {
 			ug = ug.apply(new UTranslate(x, 0));
-			final FtileGeometry geo = getFtile2().getGeometry(getStringBounder());
+			final FtileGeometry geo = getFtile2().calculateDimension(getStringBounder());
 			final Snake s = new Snake(arrowColor, Arrows.asToDown());
 			s.addPoint(geo.getLeft(), 0);
 			s.addPoint(geo.getLeft(), geo.getInY());
@@ -137,7 +136,7 @@ public class FtileFactoryDelegatorCreateFork extends FtileFactoryDelegator {
 
 		public void drawU(UGraphic ug) {
 			ug = ug.apply(new UTranslate(x, 0));
-			final FtileGeometry geo = getFtile1().getGeometry(getStringBounder());
+			final FtileGeometry geo = getFtile1().calculateDimension(getStringBounder());
 			if (geo.hasPointOut() == false) {
 				return;
 			}

@@ -106,7 +106,7 @@ public final class FactoryNoteCommand implements SingleMultiFactoryCommand<Abstr
 	private CommandExecutionResult executeInternal(AbstractEntityDiagram system, RegexResult arg,
 			final List<? extends CharSequence> display) {
 		final Code code = Code.of(arg.get("CODE", 0));
-		final IEntity entity = system.createLeaf(code, new Display(display), LeafType.NOTE);
+		final IEntity entity = system.createLeaf(code, new Display(display), LeafType.NOTE, null);
 		assert entity != null;
 		entity.setSpecificBackcolor(HtmlColorUtils.getColorIfValid(arg.get("COLOR", 0)));
 		return CommandExecutionResult.ok();

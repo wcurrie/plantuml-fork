@@ -53,6 +53,7 @@ import net.sourceforge.plantuml.cucadiagram.LinkDecor;
 import net.sourceforge.plantuml.cucadiagram.LinkType;
 import net.sourceforge.plantuml.cucadiagram.Stereotype;
 import net.sourceforge.plantuml.descdiagram.DescriptionDiagram;
+import net.sourceforge.plantuml.graphic.USymbol;
 
 public class CommandLinkElement extends SingleLineCommand2<DescriptionDiagram> {
 
@@ -287,18 +288,19 @@ public class CommandLinkElement extends SingleLineCommand2<DescriptionDiagram> {
 		if (code.startsWith("()")) {
 			return diagram.getOrCreateLeaf(
 					Code.of(StringUtils.eventuallyRemoveStartingAndEndingDoubleQuote(code.substring(2).trim())),
-					LeafType.CIRCLE_INTERFACE);
+					LeafType.CIRCLE_INTERFACE, USymbol.INTERFACE);
 		}
 		final char codeChar = code.length() > 2 ? code.charAt(0) : 0;
 		if (codeChar == '(') {
-			return diagram.getOrCreateLeaf(code2.eventuallyRemoveStartingAndEndingDoubleQuote(), LeafType.USECASE);
+			return diagram.getOrCreateLeaf(code2.eventuallyRemoveStartingAndEndingDoubleQuote(), LeafType.USECASE, USymbol.USECASE);
 		} else if (codeChar == ':') {
-			return diagram.getOrCreateLeaf(code2.eventuallyRemoveStartingAndEndingDoubleQuote(), LeafType.ACTOR);
+			return diagram.getOrCreateLeaf(code2.eventuallyRemoveStartingAndEndingDoubleQuote(), LeafType.DESCRIPTION, USymbol.ACTOR);
 		} else if (codeChar == '[') {
-			return diagram.getOrCreateLeaf(code2.eventuallyRemoveStartingAndEndingDoubleQuote(), LeafType.COMPONENT);
+			final USymbol sym = diagram.getSkinParam().useUml2ForComponent() ? USymbol.COMPONENT2 : USymbol.COMPONENT1;
+			return diagram.getOrCreateLeaf(code2.eventuallyRemoveStartingAndEndingDoubleQuote(), LeafType.DESCRIPTION, sym);
 		}
 
-		return diagram.getOrCreateLeaf(code2, null);
+		return diagram.getOrCreateLeaf(code2, null, null);
 	}
 
 	private CommandExecutionResult executePackageLink(DescriptionDiagram diagram, RegexResult arg) {

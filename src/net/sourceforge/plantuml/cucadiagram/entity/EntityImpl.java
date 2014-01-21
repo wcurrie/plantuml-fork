@@ -156,7 +156,7 @@ final class EntityImpl implements ILeaf, IGroup {
 		return leafType;
 	}
 
-	public void muteToType(LeafType newType) {
+	public void muteToType(LeafType newType, USymbol newSymbol) {
 		checkNotGroup();
 		if (newType == null) {
 			throw new IllegalArgumentException();
@@ -172,6 +172,7 @@ final class EntityImpl implements ILeaf, IGroup {
 			}
 		}
 		this.leafType = newType;
+		this.symbol = newSymbol;
 	}
 
 	public Code getCode() {

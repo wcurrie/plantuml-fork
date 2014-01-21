@@ -33,34 +33,27 @@
  */
 package net.sourceforge.plantuml.activitydiagram3.ftile;
 
-import java.awt.geom.Dimension2D;
-
-import net.sourceforge.plantuml.Dimension2DDouble;
 import net.sourceforge.plantuml.activitydiagram3.ftile.vertical.FtileDecorate;
 import net.sourceforge.plantuml.graphic.StringBounder;
-import net.sourceforge.plantuml.graphic.TextBlock;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
 
 public class FtileMargedBottom extends FtileDecorate {
 
-	private final double marge;
+	private final double margin;
 
-	public FtileMargedBottom(Ftile tile, double marge) {
+	public FtileMargedBottom(Ftile tile, double margin) {
 		super(tile);
-		this.marge = marge;
+		this.margin = margin;
 	}
 
-	public TextBlock asTextBlock() {
-		return new TextBlock() {
+	public void drawU(UGraphic ug) {
+		ug.draw(getFtileDelegated());
+	}
 
-			public void drawU(UGraphic ug) {
-				ug.draw(getFtileDelegated());
-			}
-
-			public Dimension2D calculateDimension(StringBounder stringBounder) {
-				return Dimension2DDouble.delta(getFtileDelegated().asTextBlock().calculateDimension(stringBounder), 0, marge);
-			}
-		};
+	public FtileGeometry calculateDimension(StringBounder stringBounder) {
+		final FtileGeometry orig = getFtileDelegated().calculateDimension(stringBounder);
+		return new FtileGeometry(orig.getWidth(), orig.getHeight() + margin, orig.getLeft(), orig.getInY(),
+				orig.getOutY());
 	}
 
 }

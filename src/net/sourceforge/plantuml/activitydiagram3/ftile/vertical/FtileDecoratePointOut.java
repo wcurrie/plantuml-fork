@@ -33,13 +33,9 @@
  */
 package net.sourceforge.plantuml.activitydiagram3.ftile.vertical;
 
-import java.awt.geom.Point2D;
-
 import net.sourceforge.plantuml.activitydiagram3.ftile.Ftile;
 import net.sourceforge.plantuml.activitydiagram3.ftile.FtileGeometry;
 import net.sourceforge.plantuml.graphic.StringBounder;
-import net.sourceforge.plantuml.graphic.TextBlock;
-import net.sourceforge.plantuml.graphic.TextBlockUtils;
 
 public class FtileDecoratePointOut extends FtileDecorate {
 
@@ -49,19 +45,16 @@ public class FtileDecoratePointOut extends FtileDecorate {
 	public FtileDecoratePointOut(final Ftile ftile, final double dx, double dy) {
 		super(ftile);
 		this.dx = dx;
+		if (dx != 0) {
+			throw new IllegalArgumentException();
+		}
 		this.dy = dy;
 	}
 
 	@Override
-	public FtileGeometry getGeometry(StringBounder stringBounder) {
-		final FtileGeometry geo = super.getGeometry(stringBounder);
-		return new FtileGeometry(geo.getLeft(), geo.getInY(), geo.getOutY() + dy);
-	}
-
-	@Override
-	public TextBlock asTextBlock() {
-		final TextBlock result = super.asTextBlock();
-		return TextBlockUtils.withMargin(result, 0, 0, dx, dy);
+	public FtileGeometry calculateDimension(StringBounder stringBounder) {
+		final FtileGeometry geo = super.calculateDimension(stringBounder);
+		return new FtileGeometry(geo.getWidth(), geo.getHeight(), geo.getLeft(), geo.getInY(), geo.getOutY() + dy);
 	}
 
 }

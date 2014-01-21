@@ -58,7 +58,7 @@ public class CommandNamespace extends SingleLineCommand2<AbstractEntityDiagram> 
 				new RegexLeaf("STEREOTYPE", "(\\<\\<.*\\>\\>)?"), //
 				new RegexLeaf("[%s]*"), //
 				new RegexLeaf("COLOR", "(" + HtmlColorUtils.COLOR_REGEXP + ")?"), //
-				new RegexLeaf("[%s]*\\{?$"));
+				new RegexLeaf("[%s]*\\{$"));
 	}
 
 

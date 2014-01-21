@@ -34,12 +34,13 @@
 package net.sourceforge.plantuml.graphic;
 
 import net.sourceforge.plantuml.ColorParam;
+import net.sourceforge.plantuml.FontParam;
 import net.sourceforge.plantuml.svek.Boundary;
 
 class USymbolBoundary extends USymbolSimpleAbstract {
 	
 	public USymbolBoundary() {
-		super(ColorParam.boundaryBackground, ColorParam.boundaryBorder);
+		super(ColorParam.boundaryBackground, ColorParam.boundaryBorder, FontParam.BOUNDARY, FontParam.BOUNDARY_STEREOTYPE);
 	}
 
 

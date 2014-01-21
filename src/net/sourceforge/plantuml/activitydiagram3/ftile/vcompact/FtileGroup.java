@@ -35,12 +35,10 @@ package net.sourceforge.plantuml.activitydiagram3.ftile.vcompact;
 
 import java.awt.Font;
 import java.awt.geom.Dimension2D;
-import java.awt.geom.Point2D;
 import java.util.Set;
 
 import net.sourceforge.plantuml.Dimension2DDouble;
 import net.sourceforge.plantuml.SpriteContainer;
-import net.sourceforge.plantuml.SpriteContainerEmpty;
 import net.sourceforge.plantuml.activitydiagram3.ftile.AbstractFtile;
 import net.sourceforge.plantuml.activitydiagram3.ftile.Ftile;
 import net.sourceforge.plantuml.activitydiagram3.ftile.FtileGeometry;
@@ -93,41 +91,32 @@ public class FtileGroup extends AbstractFtile {
 		return inner.getSwimlaneOut();
 	}
 
-	private Dimension2D calculateDimensionInternal(StringBounder stringBounder) {
-		final Dimension2D dim = inner.asTextBlock().calculateDimension(stringBounder);
-		return Dimension2DDouble.delta(dim, 0, diffYY * 2);
-	}
-
 	private UTranslate getTranslate() {
 		return new UTranslate(0, diffYY);
 	}
 
-	public FtileGeometry getGeometry(StringBounder stringBounder) {
-		return inner.getGeometry(stringBounder).translate(getTranslate());
+	public FtileGeometry calculateDimension(StringBounder stringBounder) {
+		final FtileGeometry orig = inner.calculateDimension(stringBounder);
+		if (orig.hasPointOut()) {
+			return new FtileGeometry(orig.getWidth(), orig.getHeight() + diffYY * 2, orig.getLeft(), orig.getInY()
+					+ diffYY, orig.getOutY() + diffYY);
+		}
+		return new FtileGeometry(orig.getWidth(), orig.getHeight() + diffYY * 2, orig.getLeft(), orig.getInY() + diffYY);
 	}
 
-	public TextBlock asTextBlock() {
-		return new TextBlock() {
+	public void drawU(UGraphic ug) {
+		final Dimension2D dimTotal = calculateDimension(ug.getStringBounder());
 
-			public void drawU(UGraphic ug) {
-				final Dimension2D dimTotal = calculateDimension(ug.getStringBounder());
+		final SymbolContext symbolContext = new SymbolContext(HtmlColorUtils.WHITE, HtmlColorUtils.BLACK).withShadow(
+				shadowing()).withStroke(new UStroke(2));
+		USymbol.FRAME.asBig(name, TextBlockUtils.empty(0, 0), dimTotal.getWidth(), dimTotal.getHeight(), symbolContext)
+				.drawU(ug);
 
-				final SymbolContext symbolContext = new SymbolContext(HtmlColorUtils.WHITE, HtmlColorUtils.BLACK)
-						.withShadow(shadowing()).withStroke(new UStroke(2));
-				USymbol.FRAME.asBig(name, TextBlockUtils.empty(0, 0), dimTotal.getWidth(), dimTotal.getHeight(),
-						symbolContext).drawU(ug);
+		ug.apply(getTranslate()).draw(inner);
 
-				ug.apply(getTranslate()).draw(inner);
-
-			}
-
-			public Dimension2D calculateDimension(StringBounder stringBounder) {
-				return calculateDimensionInternal(stringBounder);
-			}
-		};
 	}
 
-	public boolean isKilled__TOBEREMOVED() {
+	public boolean isKilled() {
 		return false;
 	}
 

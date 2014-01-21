@@ -37,14 +37,16 @@ import java.awt.geom.Dimension2D;
 
 import net.sourceforge.plantuml.ColorParam;
 import net.sourceforge.plantuml.Dimension2DDouble;
+import net.sourceforge.plantuml.FontParam;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
 import net.sourceforge.plantuml.ugraphic.URectangle;
 import net.sourceforge.plantuml.ugraphic.UTranslate;
 
 class USymbolRect extends USymbol {
 
-	public USymbolRect() {
-		super(ColorParam.rectangleBackground, ColorParam.rectangleBorder);
+	public USymbolRect(ColorParam colorParamBack, ColorParam colorParamBorder, FontParam fontParam,
+			FontParam fontParamStereotype) {
+		super(colorParamBack, colorParamBorder, fontParam, fontParamStereotype);
 	}
 
 	private void drawRect(UGraphic ug, double width, double height, boolean shadowing) {

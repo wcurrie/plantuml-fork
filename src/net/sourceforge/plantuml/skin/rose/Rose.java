@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 12235 $
+ * Revision $Revision: 12297 $
  *
  */
 package net.sourceforge.plantuml.skin.rose;
@@ -39,6 +39,7 @@ import net.sourceforge.plantuml.FontParam;
 import net.sourceforge.plantuml.ISkinParam;
 import net.sourceforge.plantuml.LineParam;
 import net.sourceforge.plantuml.cucadiagram.Display;
+import net.sourceforge.plantuml.cucadiagram.Stereotype;
 import net.sourceforge.plantuml.graphic.HorizontalAlignment;
 import net.sourceforge.plantuml.graphic.HtmlColor;
 import net.sourceforge.plantuml.graphic.HtmlColorUtils;
@@ -63,7 +64,7 @@ public class Rose implements Skin {
 		return getHtmlColor(param, color, null);
 	}
 
-	public HtmlColor getHtmlColor(ISkinParam param, ColorParam color, String stereotype) {
+	public HtmlColor getHtmlColor(ISkinParam param, ColorParam color, Stereotype stereotype) {
 		HtmlColor result = param.getHtmlColor(color, stereotype, false);
 		if (result == null) {
 			result = color.getDefaultValue();
@@ -85,13 +86,13 @@ public class Rose implements Skin {
 				ColorParam.sequenceReferenceHeaderBackground);
 		final HtmlColor sequenceReferenceBorder = getHtmlColor(param, ColorParam.sequenceReferenceBorder);
 		final HtmlColor lifeLineBackgroundColor = getHtmlColor(param, ColorParam.sequenceLifeLineBackground);
-		final HtmlColor sequenceActorBackground = getHtmlColor(param, ColorParam.sequenceActorBackground);
-		final HtmlColor sequenceParticipantBackground = getHtmlColor(param, ColorParam.sequenceParticipantBackground);
+		final HtmlColor sequenceActorBackground = getHtmlColor(param, ColorParam.actorBackground);
+		final HtmlColor sequenceParticipantBackground = getHtmlColor(param, ColorParam.participantBackground);
 
 		final UFont fontArrow = param.getFont(FontParam.SEQUENCE_ARROW, null);
 		final UFont fontGrouping = param.getFont(FontParam.SEQUENCE_GROUP, null);
-		final UFont fontParticipant = param.getFont(FontParam.SEQUENCE_PARTICIPANT, null);
-		final UFont fontActor = param.getFont(FontParam.SEQUENCE_ACTOR, null);
+		final UFont fontParticipant = param.getFont(FontParam.PARTICIPANT, null);
+		final UFont fontActor = param.getFont(FontParam.ACTOR, null);
 
 		final double deltaShadow = param.shadowing() ? 4.0 : 0;
 
@@ -116,15 +117,15 @@ public class Rose implements Skin {
 					param.maxMessageSize(), param.strictUmlStyle() == false);
 		}
 		if (type == ComponentType.PARTICIPANT_HEAD) {
-			final HtmlColor borderColor = getHtmlColor(param, ColorParam.sequenceParticipantBorder);
+			final HtmlColor borderColor = getHtmlColor(param, ColorParam.participantBorder);
 			return new ComponentRoseParticipant(sequenceParticipantBackground, borderColor, getFontColor(param,
-					FontParam.SEQUENCE_PARTICIPANT), fontParticipant, stringsToDisplay, param, deltaShadow,
+					FontParam.PARTICIPANT), fontParticipant, stringsToDisplay, param, deltaShadow,
 					param.getRoundCorner(), getStroke(param, LineParam.sequenceParticipantBorder, 1.5));
 		}
 		if (type == ComponentType.PARTICIPANT_TAIL) {
-			final HtmlColor borderColor = getHtmlColor(param, ColorParam.sequenceParticipantBorder);
+			final HtmlColor borderColor = getHtmlColor(param, ColorParam.participantBorder);
 			return new ComponentRoseParticipant(sequenceParticipantBackground, borderColor, getFontColor(param,
-					FontParam.SEQUENCE_PARTICIPANT), fontParticipant, stringsToDisplay, param, deltaShadow,
+					FontParam.PARTICIPANT), fontParticipant, stringsToDisplay, param, deltaShadow,
 					param.getRoundCorner(), getStroke(param, LineParam.sequenceParticipantBorder, 1.5));
 		}
 		if (type == ComponentType.PARTICIPANT_LINE) {
@@ -136,63 +137,63 @@ public class Rose implements Skin {
 			return new ComponentRoseLine(borderColor, true, getStroke(param, LineParam.sequenceLifeLineBorder, 1.5));
 		}
 		if (type == ComponentType.ACTOR_HEAD) {
-			final HtmlColor borderColor = getHtmlColor(param, ColorParam.sequenceActorBorder);
+			final HtmlColor borderColor = getHtmlColor(param, ColorParam.actorBorder);
 			return new ComponentRoseActor(sequenceActorBackground, borderColor, getFontColor(param,
-					FontParam.SEQUENCE_ACTOR), fontActor, stringsToDisplay, true, param, deltaShadow, getStroke(param,
+					FontParam.ACTOR), fontActor, stringsToDisplay, true, param, deltaShadow, getStroke(param,
 					LineParam.sequenceActorBorder, 2));
 		}
 		if (type == ComponentType.ACTOR_TAIL) {
-			final HtmlColor borderColor = getHtmlColor(param, ColorParam.sequenceActorBorder);
+			final HtmlColor borderColor = getHtmlColor(param, ColorParam.actorBorder);
 			return new ComponentRoseActor(sequenceActorBackground, borderColor, getFontColor(param,
-					FontParam.SEQUENCE_ACTOR), fontActor, stringsToDisplay, false, param, deltaShadow, getStroke(param,
+					FontParam.ACTOR), fontActor, stringsToDisplay, false, param, deltaShadow, getStroke(param,
 					LineParam.sequenceActorBorder, 2));
 		}
 		if (type == ComponentType.BOUNDARY_HEAD) {
-			final HtmlColor borderColor = getHtmlColor(param, ColorParam.sequenceActorBorder);
+			final HtmlColor borderColor = getHtmlColor(param, ColorParam.actorBorder);
 			return new ComponentRoseBoundary(sequenceActorBackground, borderColor, getFontColor(param,
-					FontParam.SEQUENCE_ACTOR), fontActor, stringsToDisplay, true, param, deltaShadow, getStroke(param,
+					FontParam.ACTOR), fontActor, stringsToDisplay, true, param, deltaShadow, getStroke(param,
 					LineParam.sequenceActorBorder, 2));
 		}
 		if (type == ComponentType.BOUNDARY_TAIL) {
-			final HtmlColor borderColor = getHtmlColor(param, ColorParam.sequenceActorBorder);
+			final HtmlColor borderColor = getHtmlColor(param, ColorParam.actorBorder);
 			return new ComponentRoseBoundary(sequenceActorBackground, borderColor, getFontColor(param,
-					FontParam.SEQUENCE_ACTOR), fontActor, stringsToDisplay, false, param, deltaShadow, getStroke(param,
+					FontParam.ACTOR), fontActor, stringsToDisplay, false, param, deltaShadow, getStroke(param,
 					LineParam.sequenceActorBorder, 2));
 		}
 		if (type == ComponentType.CONTROL_HEAD) {
-			final HtmlColor borderColor = getHtmlColor(param, ColorParam.sequenceActorBorder);
+			final HtmlColor borderColor = getHtmlColor(param, ColorParam.actorBorder);
 			return new ComponentRoseControl(sequenceActorBackground, borderColor, getFontColor(param,
-					FontParam.SEQUENCE_ACTOR), fontActor, stringsToDisplay, true, param, deltaShadow, getStroke(param,
+					FontParam.ACTOR), fontActor, stringsToDisplay, true, param, deltaShadow, getStroke(param,
 					LineParam.sequenceActorBorder, 2));
 		}
 		if (type == ComponentType.CONTROL_TAIL) {
-			final HtmlColor borderColor = getHtmlColor(param, ColorParam.sequenceActorBorder);
+			final HtmlColor borderColor = getHtmlColor(param, ColorParam.actorBorder);
 			return new ComponentRoseControl(sequenceActorBackground, borderColor, getFontColor(param,
-					FontParam.SEQUENCE_ACTOR), fontActor, stringsToDisplay, false, param, deltaShadow, getStroke(param,
+					FontParam.ACTOR), fontActor, stringsToDisplay, false, param, deltaShadow, getStroke(param,
 					LineParam.sequenceActorBorder, 2));
 		}
 		if (type == ComponentType.ENTITY_HEAD) {
-			final HtmlColor borderColor = getHtmlColor(param, ColorParam.sequenceActorBorder);
+			final HtmlColor borderColor = getHtmlColor(param, ColorParam.actorBorder);
 			return new ComponentRoseEntity(sequenceActorBackground, borderColor, getFontColor(param,
-					FontParam.SEQUENCE_ACTOR), fontActor, stringsToDisplay, true, param, deltaShadow, getStroke(param,
+					FontParam.ACTOR), fontActor, stringsToDisplay, true, param, deltaShadow, getStroke(param,
 					LineParam.sequenceActorBorder, 2));
 		}
 		if (type == ComponentType.ENTITY_TAIL) {
-			final HtmlColor borderColor = getHtmlColor(param, ColorParam.sequenceActorBorder);
+			final HtmlColor borderColor = getHtmlColor(param, ColorParam.actorBorder);
 			return new ComponentRoseEntity(sequenceActorBackground, borderColor, getFontColor(param,
-					FontParam.SEQUENCE_ACTOR), fontActor, stringsToDisplay, false, param, deltaShadow, getStroke(param,
+					FontParam.ACTOR), fontActor, stringsToDisplay, false, param, deltaShadow, getStroke(param,
 					LineParam.sequenceActorBorder, 2));
 		}
 		if (type == ComponentType.DATABASE_HEAD) {
-			final HtmlColor borderColor = getHtmlColor(param, ColorParam.sequenceActorBorder);
+			final HtmlColor borderColor = getHtmlColor(param, ColorParam.actorBorder);
 			return new ComponentRoseDatabase(sequenceActorBackground, borderColor, getFontColor(param,
-					FontParam.SEQUENCE_ACTOR), fontActor, stringsToDisplay, true, param, deltaShadow, getStroke(param,
+					FontParam.ACTOR), fontActor, stringsToDisplay, true, param, deltaShadow, getStroke(param,
 					LineParam.sequenceActorBorder, 2));
 		}
 		if (type == ComponentType.DATABASE_TAIL) {
-			final HtmlColor borderColor = getHtmlColor(param, ColorParam.sequenceActorBorder);
+			final HtmlColor borderColor = getHtmlColor(param, ColorParam.actorBorder);
 			return new ComponentRoseDatabase(sequenceActorBackground, borderColor, getFontColor(param,
-					FontParam.SEQUENCE_ACTOR), fontActor, stringsToDisplay, false, param, deltaShadow, getStroke(param,
+					FontParam.ACTOR), fontActor, stringsToDisplay, false, param, deltaShadow, getStroke(param,
 					LineParam.sequenceActorBorder, 2));
 		}
 		if (type == ComponentType.NOTE) {

@@ -27,31 +27,31 @@
  * in the United States and other countries.]
  *
  * Original Author:  Arnaud Roques
- * 
- * Revision $Revision: 3828 $
+ *
+ * Revision $Revision: 8475 $
  *
  */
-package net.sourceforge.plantuml.command;
+package net.sourceforge.plantuml.activitydiagram3.ftile;
 
-import java.util.List;
+public class FtileGeometryMerger {
 
-import net.sourceforge.plantuml.classdiagram.AbstractEntityDiagram;
-import net.sourceforge.plantuml.cucadiagram.IEntity;
+	private final FtileGeometry result;
 
-public class CommandEndNamespace extends SingleLineCommand<AbstractEntityDiagram> {
+	public FtileGeometryMerger(FtileGeometry geo1, FtileGeometry geo2) {
+		final double left = Math.max(geo1.getLeft(), geo2.getLeft());
+		final double dx1 = left - geo1.getLeft();
+		final double dx2 = left - geo2.getLeft();
+		final double width = Math.max(geo1.getWidth() + dx1, geo2.getWidth() + dx2);
+		final double height = geo1.getHeight() + geo2.getHeight();
 
-	public CommandEndNamespace() {
-		super("(?i)^end[%s]?namespace$");
-	}
-
-	@Override
-	protected CommandExecutionResult executeArg(AbstractEntityDiagram diagram, List<String> arg) {
-		final IEntity currentPackage = diagram.getCurrentGroup();
-		if (currentPackage == null) {
-			return CommandExecutionResult.error("No namesspace defined");
+		if (geo2.hasPointOut()) {
+			result = new FtileGeometry(width, height, left, geo1.getInY(), geo2.getOutY() + geo1.getHeight());
+		} else {
+			result = new FtileGeometry(width, height, left, geo1.getInY());
 		}
-		diagram.endGroup();
-		return CommandExecutionResult.ok();
 	}
 
+	public final FtileGeometry getResult() {
+		return result;
+	}
 }

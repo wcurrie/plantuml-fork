@@ -33,18 +33,14 @@
  */
 package net.sourceforge.plantuml.activitydiagram3.ftile.vertical;
 
-import java.awt.geom.Dimension2D;
-import java.awt.geom.Point2D;
 import java.util.Collections;
 import java.util.Set;
 
-import net.sourceforge.plantuml.Dimension2DDouble;
 import net.sourceforge.plantuml.activitydiagram3.ftile.AbstractFtile;
 import net.sourceforge.plantuml.activitydiagram3.ftile.FtileGeometry;
 import net.sourceforge.plantuml.activitydiagram3.ftile.Swimlane;
 import net.sourceforge.plantuml.graphic.HtmlColor;
 import net.sourceforge.plantuml.graphic.StringBounder;
-import net.sourceforge.plantuml.graphic.TextBlock;
 import net.sourceforge.plantuml.ugraphic.UChangeBackColor;
 import net.sourceforge.plantuml.ugraphic.UChangeColor;
 import net.sourceforge.plantuml.ugraphic.UEllipse;
@@ -79,44 +75,35 @@ public class FtileCircleStop extends AbstractFtile {
 		return swimlane;
 	}
 
-	public TextBlock asTextBlock() {
-		return new TextBlock() {
+	public void drawU(UGraphic ug) {
+		double xTheoricalPosition = 0;
+		double yTheoricalPosition = 0;
+		xTheoricalPosition = Math.round(xTheoricalPosition);
+		yTheoricalPosition = Math.round(yTheoricalPosition);
 
-			public void drawU(UGraphic ug) {
-				double xTheoricalPosition = 0;
-				double yTheoricalPosition = 0;
-				xTheoricalPosition = Math.round(xTheoricalPosition);
-				yTheoricalPosition = Math.round(yTheoricalPosition);
+		final UEllipse circle = new UEllipse(SIZE, SIZE);
+		if (shadowing()) {
+			circle.setDeltaShadow(3);
+		}
+		ug.apply(new UChangeColor(backColor)).apply(new UChangeBackColor(null))
+				.apply(new UTranslate(xTheoricalPosition, yTheoricalPosition)).draw(circle);
 
-				final UEllipse circle = new UEllipse(SIZE, SIZE);
-				if (shadowing()) {
-					circle.setDeltaShadow(3);
-				}
-				ug.apply(new UChangeColor(backColor)).apply(new UChangeBackColor(null))
-						.apply(new UTranslate(xTheoricalPosition, yTheoricalPosition)).draw(circle);
-
-				final double delta = 4;
-				final UEllipse circleSmall = new UEllipse(SIZE - delta * 2, SIZE - delta * 2);
-				if (shadowing()) {
-					circleSmall.setDeltaShadow(3);
-				}
-				ug.apply(new UChangeColor(null)).apply(new UChangeBackColor(backColor))
-						.apply(new UTranslate(xTheoricalPosition + delta + .5, yTheoricalPosition + delta + .5))
-						.draw(circleSmall);
-			}
-
-			public Dimension2D calculateDimension(StringBounder stringBounder) {
-				return new Dimension2DDouble(SIZE, SIZE);
-			}
-		};
+		final double delta = 4;
+		final UEllipse circleSmall = new UEllipse(SIZE - delta * 2, SIZE - delta * 2);
+		if (shadowing()) {
+			circleSmall.setDeltaShadow(3);
+		}
+		ug.apply(new UChangeColor(null)).apply(new UChangeBackColor(backColor))
+				.apply(new UTranslate(xTheoricalPosition + delta + .5, yTheoricalPosition + delta + .5))
+				.draw(circleSmall);
 	}
 
-	public boolean isKilled__TOBEREMOVED() {
+	public boolean isKilled() {
 		return true;
 	}
 
-	public FtileGeometry getGeometry(StringBounder stringBounder) {
-		return new FtileGeometry(SIZE / 2, 0);
+	public FtileGeometry calculateDimension(StringBounder stringBounder) {
+		return new FtileGeometry(SIZE, SIZE, SIZE / 2, 0);
 	}
 
 }

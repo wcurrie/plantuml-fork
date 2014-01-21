@@ -34,73 +34,37 @@
 package net.sourceforge.plantuml.creole;
 
 import java.awt.geom.Dimension2D;
-import java.util.LinkedHashMap;
-import java.util.Map;
 
 import net.sourceforge.plantuml.graphic.StringBounder;
 import net.sourceforge.plantuml.graphic.TextBlock;
-import net.sourceforge.plantuml.ugraphic.MinMax;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
 import net.sourceforge.plantuml.ugraphic.UGraphicStencil;
 import net.sourceforge.plantuml.ugraphic.UStroke;
 
-public class SheetBlock implements TextBlock, Atom {
+public class SheetBlock2 implements TextBlock, Atom {
 
-	private final Sheet sheet;
+	private final SheetBlock1 block;
 	private final UStroke defaultStroke;
 	private final Stencil stencil;
-	private Map<Stripe, Double> heights;
-	private Map<Atom, Position> positions;
-	private MinMax minMax;
 
-	public SheetBlock(Sheet sheet, Stencil stencil, UStroke defaultStroke) {
-		this.sheet = sheet;
+	public SheetBlock2(SheetBlock1 block, Stencil stencil, UStroke defaultStroke) {
+		this.block = block;
 		this.stencil = stencil;
 		this.defaultStroke = defaultStroke;
-	}
-
-	private void initMap(StringBounder stringBounder) {
-		if (positions != null) {
-			return;
-		}
-		positions = new LinkedHashMap<Atom, Position>();
-		heights = new LinkedHashMap<Stripe, Double>();
-		minMax = MinMax.getEmpty(true);
-		double y = 0;
-		for (Stripe stripe : sheet) {
-			if (stripe.getAtoms().size() == 0) {
-				continue;
-			}
-			final Sea sea = new Sea(stringBounder);
-			for (Atom atom : stripe.getAtoms()) {
-				sea.add(atom);
-			}
-			sea.doAlign();
-			sea.translateMinYto(y);
-			sea.exportAllPositions(positions);
-			minMax = sea.update(minMax);
-			final double height = sea.getHeight();
-			heights.put(stripe, height);
-			y += height;
+		if (stencil == null) {
+			throw new IllegalArgumentException();
 		}
 	}
 
 	public Dimension2D calculateDimension(StringBounder stringBounder) {
-		initMap(stringBounder);
-		return minMax.getDimension();
+		return block.calculateDimension(stringBounder);
 	}
 
 	public void drawU(UGraphic ug) {
 		if (stencil != null) {
 			ug = new UGraphicStencil(ug, stencil, defaultStroke);
 		}
-		for (Stripe stripe : sheet) {
-			for (Atom atom : stripe.getAtoms()) {
-				final Position position = positions.get(atom);
-				atom.drawU(position.translate(ug));
-				// position.drawDebug(ug);
-			}
-		}
+		block.drawU(ug);
 	}
 
 	public double getStartingAltitude(StringBounder stringBounder) {

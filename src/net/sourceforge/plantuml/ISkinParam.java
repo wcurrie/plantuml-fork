@@ -33,6 +33,8 @@
  */
 package net.sourceforge.plantuml;
 
+import net.sourceforge.plantuml.cucadiagram.Rankdir;
+import net.sourceforge.plantuml.cucadiagram.Stereotype;
 import net.sourceforge.plantuml.cucadiagram.dot.DotSplines;
 import net.sourceforge.plantuml.cucadiagram.dot.GraphvizLayoutStrategy;
 import net.sourceforge.plantuml.graphic.HorizontalAlignment;
@@ -49,13 +51,13 @@ public interface ISkinParam extends SpriteContainer {
 
 	public String getValue(String key);
 
-	public HtmlColor getHtmlColor(ColorParam param, String stereotype, boolean clickable);
+	public HtmlColor getHtmlColor(ColorParam param, Stereotype stereotype, boolean clickable);
 
-	public HtmlColor getFontHtmlColor(FontParam param, String stereotype);
+	public HtmlColor getFontHtmlColor(FontParam param, Stereotype stereotype);
 
 	public UStroke getThickness(LineParam param);
 
-	public UFont getFont(FontParam fontParam, String stereotype);
+	public UFont getFont(FontParam fontParam, Stereotype stereotype);
 
 	public HorizontalAlignment getHorizontalAlignment(AlignParam param);
 
@@ -94,9 +96,11 @@ public interface ISkinParam extends SpriteContainer {
 	public boolean forceSequenceParticipantUnderlined();
 
 	public ConditionStyle getConditionStyle();
-	
+
 	public double minClassWidth();
-	
+
 	public boolean sameClassWidth();
+
+	public Rankdir getRankdir();
 
 }

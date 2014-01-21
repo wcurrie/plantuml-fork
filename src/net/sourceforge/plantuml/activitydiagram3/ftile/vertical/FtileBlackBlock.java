@@ -33,18 +33,14 @@
  */
 package net.sourceforge.plantuml.activitydiagram3.ftile.vertical;
 
-import java.awt.geom.Dimension2D;
-import java.awt.geom.Point2D;
 import java.util.Collections;
 import java.util.Set;
 
-import net.sourceforge.plantuml.Dimension2DDouble;
 import net.sourceforge.plantuml.activitydiagram3.ftile.AbstractFtile;
 import net.sourceforge.plantuml.activitydiagram3.ftile.FtileGeometry;
 import net.sourceforge.plantuml.activitydiagram3.ftile.Swimlane;
 import net.sourceforge.plantuml.graphic.HtmlColor;
 import net.sourceforge.plantuml.graphic.StringBounder;
-import net.sourceforge.plantuml.graphic.TextBlock;
 import net.sourceforge.plantuml.ugraphic.UChangeBackColor;
 import net.sourceforge.plantuml.ugraphic.UChangeColor;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
@@ -65,29 +61,19 @@ public class FtileBlackBlock extends AbstractFtile {
 		this.swimlane = swimlane;
 	}
 
-	public FtileGeometry getGeometry(StringBounder stringBounder) {
-		return new FtileGeometry(width / 2, 0, height);
+	public FtileGeometry calculateDimension(StringBounder stringBounder) {
+		return new FtileGeometry(width, height, width / 2, 0, height);
 	}
 
-
-	public TextBlock asTextBlock() {
-		return new TextBlock() {
-
-			public void drawU(UGraphic ug) {
-				final URectangle rect = new URectangle(width, height, 5, 5);
-				if (shadowing()) {
-					rect.setDeltaShadow(3);
-				}
-				ug.apply(new UChangeColor(colorBar)).apply(new UChangeBackColor(colorBar)).draw(rect);
-			}
-
-			public Dimension2D calculateDimension(StringBounder stringBounder) {
-				return new Dimension2DDouble(width, height);
-			}
-		};
+	public void drawU(UGraphic ug) {
+		final URectangle rect = new URectangle(width, height, 5, 5);
+		if (shadowing()) {
+			rect.setDeltaShadow(3);
+		}
+		ug.apply(new UChangeColor(colorBar)).apply(new UChangeBackColor(colorBar)).draw(rect);
 	}
 
-	public boolean isKilled__TOBEREMOVED() {
+	public boolean isKilled() {
 		return false;
 	}
 

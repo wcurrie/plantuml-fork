@@ -28,11 +28,12 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 12235 $
+ * Revision $Revision: 12299 $
  *
  */
 package net.sourceforge.plantuml.sequencediagram;
 
+import net.sourceforge.plantuml.ColorParam;
 import net.sourceforge.plantuml.SpecificBackcolorable;
 import net.sourceforge.plantuml.Url;
 import net.sourceforge.plantuml.cucadiagram.Display;
@@ -135,6 +136,14 @@ public class Participant implements SpecificBackcolorable {
 
 	public final void setUrl(Url url) {
 		this.url = url;
+	}
+
+	public final Stereotype getStereotype() {
+		return stereotype;
+	}
+
+	public ColorParam getBackgroundColorParam() {
+		return type.getBackgroundColorParam();
 	}
 
 }

@@ -34,12 +34,13 @@
 package net.sourceforge.plantuml.graphic;
 
 import net.sourceforge.plantuml.ColorParam;
+import net.sourceforge.plantuml.FontParam;
 import net.sourceforge.plantuml.skin.StickMan;
 
 class USymbolActor extends USymbolSimpleAbstract {
 
 	public USymbolActor() {
-		super(ColorParam.usecaseActorBackground, ColorParam.usecaseActorBorder);
+		super(ColorParam.actorBackground, ColorParam.actorBorder, FontParam.ACTOR, FontParam.ACTOR_STEREOTYPE);
 	}
 
 	@Override

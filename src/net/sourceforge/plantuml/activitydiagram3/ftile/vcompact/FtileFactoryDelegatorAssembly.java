@@ -72,21 +72,21 @@ public class FtileFactoryDelegatorAssembly extends FtileFactoryDelegator {
 		// final Ftile space = new FtileEmpty(getFactory().shadowing(), 1, height);
 		final Ftile tile1andSpace = new FtileMargedBottom(tile1, height);
 		Ftile result = super.assembly(tile1andSpace, tile2);
-		final FtileGeometry geo = tile1.getGeometry(stringBounder);
+		final FtileGeometry geo = tile1.calculateDimension(stringBounder);
 		if (geo.hasPointOut() == false) {
 			return result;
 		}
 		final UTranslate translate1 = result.getTranslateFor(tile1andSpace, stringBounder);
 		final Point2D p1 = geo.translate(translate1).getPointOut();
 		final UTranslate translate2 = result.getTranslateFor(tile2, stringBounder);
-		final Point2D p2 = tile2.getGeometry(stringBounder).translate(translate2).getPointIn();
+		final Point2D p2 = tile2.calculateDimension(stringBounder).translate(translate2).getPointIn();
 
 		final HtmlColor color = getInLinkRenderingColor(tile2);
 
 		final ConnectionVerticalDown connection = new ConnectionVerticalDown(tile1, tile2, p1, p2, color, textBlock);
 		result = FtileUtils.addConnection(result, connection);
 		if (textBlock != null) {
-			final double width = result.asTextBlock().calculateDimension(stringBounder).getWidth();
+			final double width = result.calculateDimension(stringBounder).getWidth();
 			// System.err.println("width=" + width);
 			// System.err.println("p1=" + p1);
 			// System.err.println("p2=" + p2);
@@ -105,8 +105,8 @@ public class FtileFactoryDelegatorAssembly extends FtileFactoryDelegator {
 			return null;
 		}
 		final ISkinParam skinParam = getSkinParam();
-		final UFont font = skinParam.getFont(FontParam.ACTIVITY_ARROW2, null);
-		final HtmlColor color = rose.getFontColor(skinParam, FontParam.ACTIVITY_ARROW2);
+		final UFont font = skinParam.getFont(FontParam.ACTIVITY_ARROW, null);
+		final HtmlColor color = rose.getFontColor(skinParam, FontParam.ACTIVITY_ARROW);
 		final FontConfiguration fontConfiguration = new FontConfiguration(font, color);
 		return TextBlockUtils.create(display, fontConfiguration, HorizontalAlignment.LEFT, null);
 	}

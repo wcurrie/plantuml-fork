@@ -43,6 +43,7 @@ import java.util.Set;
 
 import net.sourceforge.plantuml.Dimension2DDouble;
 import net.sourceforge.plantuml.Direction;
+import net.sourceforge.plantuml.ISkinParam;
 import net.sourceforge.plantuml.OptionFlags;
 import net.sourceforge.plantuml.activitydiagram3.Branch;
 import net.sourceforge.plantuml.activitydiagram3.LinkRendering;
@@ -62,6 +63,10 @@ import net.sourceforge.plantuml.activitydiagram3.ftile.Snake;
 import net.sourceforge.plantuml.activitydiagram3.ftile.Swimlane;
 import net.sourceforge.plantuml.activitydiagram3.ftile.vertical.FtileDiamond;
 import net.sourceforge.plantuml.activitydiagram3.ftile.vertical.FtileDiamondInside;
+import net.sourceforge.plantuml.creole.CreoleParser;
+import net.sourceforge.plantuml.creole.Sheet;
+import net.sourceforge.plantuml.creole.SheetBlock1;
+import net.sourceforge.plantuml.creole.SheetBlock2;
 import net.sourceforge.plantuml.graphic.FontConfiguration;
 import net.sourceforge.plantuml.graphic.HorizontalAlignment;
 import net.sourceforge.plantuml.graphic.HtmlColor;
@@ -73,6 +78,7 @@ import net.sourceforge.plantuml.svek.ConditionStyle;
 import net.sourceforge.plantuml.ugraphic.UFont;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
 import net.sourceforge.plantuml.ugraphic.UPolygon;
+import net.sourceforge.plantuml.ugraphic.UStroke;
 import net.sourceforge.plantuml.ugraphic.UTranslate;
 
 class FtileIf extends AbstractFtile {
@@ -113,20 +119,29 @@ class FtileIf extends AbstractFtile {
 		return getSwimlaneIn();
 	}
 
-	static Ftile create(Swimlane swimlane, HtmlColor borderColor, HtmlColor backColor, UFont font,
+	static Ftile create(Swimlane swimlane, HtmlColor borderColor, HtmlColor backColor, UFont fontArrow, UFont fontTest,
 			HtmlColor arrowColor, FtileFactory ftileFactory, ConditionStyle conditionStyle, Branch branch1,
-			Branch branch2) {
+			Branch branch2, ISkinParam skinParam) {
 
 		final Ftile tile1 = new FtileMinWidth(branch1.getFtile(), 30);
 		final Ftile tile2 = new FtileMinWidth(branch2.getFtile(), 30);
 
-		final FontConfiguration fc = new FontConfiguration(font, HtmlColorUtils.BLACK);
-		final TextBlock tb1 = TextBlockUtils.create(branch1.getLabelPositive(), fc, HorizontalAlignment.LEFT,
+		final FontConfiguration fcArrow = new FontConfiguration(fontArrow, HtmlColorUtils.BLACK);
+		final FontConfiguration fcTest = new FontConfiguration(fontTest, HtmlColorUtils.BLACK);
+
+		final TextBlock tb1 = TextBlockUtils.create(branch1.getLabelPositive(), fcArrow, HorizontalAlignment.LEFT,
 				ftileFactory);
-		final TextBlock tb2 = TextBlockUtils.create(branch2.getLabelPositive(), fc, HorizontalAlignment.LEFT,
+		final TextBlock tb2 = TextBlockUtils.create(branch2.getLabelPositive(), fcArrow, HorizontalAlignment.LEFT,
 				ftileFactory);
-		final TextBlock tbTest = TextBlockUtils.create(branch1.getLabelTest(), fc, HorizontalAlignment.LEFT,
-				ftileFactory);
+
+		final TextBlock tbTest;
+		if (OptionFlags.USE_CREOLE) {
+			final Sheet sheet = new CreoleParser(fcTest, skinParam).createSheet(branch1.getLabelTest());
+			final SheetBlock1 sheetBlock1 = new SheetBlock1(sheet);
+			tbTest = new SheetBlock2(sheetBlock1, Diamond.asStencil(sheetBlock1), new UStroke(1.5));
+		} else {
+			tbTest = TextBlockUtils.create(branch1.getLabelTest(), fcTest, HorizontalAlignment.LEFT, ftileFactory);
+		}
 
 		final Ftile diamond1;
 		if (conditionStyle == ConditionStyle.INSIDE) {
@@ -140,7 +155,7 @@ class FtileIf extends AbstractFtile {
 		}
 
 		final Ftile diamond2;
-		if (tile1.isKilled__TOBEREMOVED() || tile2.isKilled__TOBEREMOVED()) {
+		if (tile1.isKilled() || tile2.isKilled()) {
 			diamond2 = new FtileEmpty(tile1.shadowing(), Diamond.diamondHalfSize * 2, Diamond.diamondHalfSize * 2,
 					swimlane, swimlane);
 		} else {
@@ -151,12 +166,12 @@ class FtileIf extends AbstractFtile {
 		final List<Connection> conns = new ArrayList<Connection>();
 		conns.add(result.new ConnectionHorizontalThenVertical(tile1));
 		conns.add(result.new ConnectionHorizontalThenVertical(tile2));
-		if (tile1.isKilled__TOBEREMOVED() == false && tile2.isKilled__TOBEREMOVED() == false) {
+		if (tile1.isKilled() == false && tile2.isKilled() == false) {
 			conns.add(result.new ConnectionVerticalThenHorizontal(tile1, branch1.getInlinkRenderingColor()));
 			conns.add(result.new ConnectionVerticalThenHorizontal(tile2, branch2.getInlinkRenderingColor()));
-		} else if (tile1.isKilled__TOBEREMOVED() == false && tile2.isKilled__TOBEREMOVED()) {
+		} else if (tile1.isKilled() == false && tile2.isKilled()) {
 			conns.add(result.new ConnectionVerticalThenHorizontalDirect(tile1, branch1.getInlinkRenderingColor()));
-		} else if (tile1.isKilled__TOBEREMOVED() && tile2.isKilled__TOBEREMOVED() == false) {
+		} else if (tile1.isKilled() && tile2.isKilled() == false) {
 			conns.add(result.new ConnectionVerticalThenHorizontalDirect(tile2, branch2.getInlinkRenderingColor()));
 		}
 		return FtileUtils.addConnection(result, conns);
@@ -198,7 +213,7 @@ class FtileIf extends AbstractFtile {
 			final LinkRendering linkIn = getFtile2().getInLinkRendering();
 			if (originalDirection != newDirection) {
 				final double delta = (originalDirection == Direction.RIGHT ? -1 : 1) * Diamond.diamondHalfSize;
-				final Dimension2D dimDiamond1 = diamond1.asTextBlock().calculateDimension(stringBounder);
+				final Dimension2D dimDiamond1 = diamond1.calculateDimension(stringBounder);
 				final Snake small = new Snake(linkIn == null ? arrowColor : linkIn.getColor(), false);
 				small.addPoint(p1);
 				small.addPoint(p1.getX() + delta, p1.getY());
@@ -215,7 +230,7 @@ class FtileIf extends AbstractFtile {
 		}
 
 		private Point2D getP1(StringBounder stringBounder) {
-			final Dimension2D dimDiamond1 = diamond1.asTextBlock().calculateDimension(stringBounder);
+			final Dimension2D dimDiamond1 = diamond1.calculateDimension(stringBounder);
 			final double diamondWidth = dimDiamond1.getWidth();
 			final double x;
 			if (getFtile2() == tile1) {
@@ -230,7 +245,7 @@ class FtileIf extends AbstractFtile {
 		}
 
 		private Point2D getP2(final StringBounder stringBounder) {
-			return translate(stringBounder).getTranslated(getFtile2().getGeometry(stringBounder).getPointIn());
+			return translate(stringBounder).getTranslated(getFtile2().calculateDimension(stringBounder).getPointIn());
 		}
 
 		private UTranslate translate(StringBounder stringBounder) {
@@ -255,7 +270,7 @@ class FtileIf extends AbstractFtile {
 		public void drawU(UGraphic ug) {
 			final StringBounder stringBounder = ug.getStringBounder();
 
-			final FtileGeometry geo = getFtile1().getGeometry(stringBounder);
+			final FtileGeometry geo = getFtile1().calculateDimension(stringBounder);
 			if (geo.hasPointOut() == false) {
 				return;
 			}
@@ -278,7 +293,7 @@ class FtileIf extends AbstractFtile {
 
 		public void drawTranslate(UGraphic ug, UTranslate translate1, UTranslate translate2) {
 			final StringBounder stringBounder = ug.getStringBounder();
-			final FtileGeometry geo = getFtile1().getGeometry(stringBounder);
+			final FtileGeometry geo = getFtile1().calculateDimension(stringBounder);
 			if (geo.hasPointOut() == false) {
 				return;
 			}
@@ -326,7 +341,7 @@ class FtileIf extends AbstractFtile {
 		}
 
 		private Point2D getP2(StringBounder stringBounder) {
-			final Dimension2D dimDiamond2 = diamond2.asTextBlock().calculateDimension(stringBounder);
+			final Dimension2D dimDiamond2 = diamond2.calculateDimension(stringBounder);
 			final double diamondWidth = dimDiamond2.getWidth();
 			final double x;
 			if (getFtile1() == tile1) {
@@ -364,7 +379,7 @@ class FtileIf extends AbstractFtile {
 			final StringBounder stringBounder = ug.getStringBounder();
 			final Dimension2D dimTotal = calculateDimensionInternal(stringBounder);
 
-			final FtileGeometry geo = getFtile1().getGeometry(stringBounder);
+			final FtileGeometry geo = getFtile1().calculateDimension(stringBounder);
 			if (geo.hasPointOut() == false) {
 				return;
 			}
@@ -401,7 +416,7 @@ class FtileIf extends AbstractFtile {
 			final StringBounder stringBounder = ug.getStringBounder();
 			final Dimension2D dimTotal = calculateDimensionInternal(stringBounder);
 
-			final FtileGeometry geo = getFtile1().getGeometry(stringBounder);
+			final FtileGeometry geo = getFtile1().calculateDimension(stringBounder);
 			if (geo.hasPointOut() == false) {
 				return;
 			}
@@ -429,8 +444,8 @@ class FtileIf extends AbstractFtile {
 
 	private UTranslate getTranslate1(StringBounder stringBounder) {
 		final Dimension2D dimTotal = calculateDimensionInternal(stringBounder);
-		final Dimension2D dimDiamond1 = diamond1.asTextBlock().calculateDimension(stringBounder);
-		final Dimension2D dim1 = tile1.asTextBlock().calculateDimension(stringBounder);
+		final Dimension2D dimDiamond1 = diamond1.calculateDimension(stringBounder);
+		final Dimension2D dim1 = tile1.calculateDimension(stringBounder);
 
 		final double x1 = 0;
 		final double h = dimDiamond1.getHeight();
@@ -440,8 +455,8 @@ class FtileIf extends AbstractFtile {
 
 	private UTranslate getTranslate2(StringBounder stringBounder) {
 		final Dimension2D dimTotal = calculateDimensionInternal(stringBounder);
-		final Dimension2D dimDiamond1 = diamond1.asTextBlock().calculateDimension(stringBounder);
-		final Dimension2D dim2 = tile2.asTextBlock().calculateDimension(stringBounder);
+		final Dimension2D dimDiamond1 = diamond1.calculateDimension(stringBounder);
+		final Dimension2D dim2 = tile2.calculateDimension(stringBounder);
 
 		final double x2 = dimTotal.getWidth() - dim2.getWidth();
 		final double h = dimDiamond1.getHeight();
@@ -452,7 +467,7 @@ class FtileIf extends AbstractFtile {
 
 	private UTranslate getTranslateDiamond1(StringBounder stringBounder) {
 		final double y1 = 0;
-		final Dimension2D dimDiamond1 = diamond1.asTextBlock().calculateDimension(stringBounder);
+		final Dimension2D dimDiamond1 = diamond1.calculateDimension(stringBounder);
 		if (OptionFlags.USE_4747) {
 			final double x1 = getLeft(stringBounder) - dimDiamond1.getWidth() / 2;
 			return new UTranslate(x1, y1);
@@ -465,7 +480,7 @@ class FtileIf extends AbstractFtile {
 
 	private UTranslate getTranslateDiamond2(StringBounder stringBounder) {
 		final Dimension2D dimTotal = calculateDimensionInternal(stringBounder);
-		final Dimension2D dimDiamond2 = diamond2.asTextBlock().calculateDimension(stringBounder);
+		final Dimension2D dimDiamond2 = diamond2.calculateDimension(stringBounder);
 		final double y2 = dimTotal.getHeight() - dimDiamond2.getHeight();
 		if (OptionFlags.USE_4747) {
 			final double x2 = getLeft(stringBounder) - dimDiamond2.getWidth() / 2;
@@ -493,34 +508,42 @@ class FtileIf extends AbstractFtile {
 		throw new UnsupportedOperationException();
 	}
 
-	public TextBlock asTextBlock() {
-		return new TextBlock() {
+	public void drawU(UGraphic ug) {
+		final StringBounder stringBounder = ug.getStringBounder();
 
-			public void drawU(UGraphic ug) {
-				final StringBounder stringBounder = ug.getStringBounder();
-
-				ug.apply(getTranslateDiamond1(stringBounder)).draw(diamond1);
-				ug.apply(getTranslate1(stringBounder)).draw(tile1);
-				ug.apply(getTranslate2(stringBounder)).draw(tile2);
-				ug.apply(getTranslateDiamond2(stringBounder)).draw(diamond2);
-			}
-
-			public Dimension2D calculateDimension(StringBounder stringBounder) {
-				return calculateDimensionInternal(stringBounder);
-			}
-
-		};
+		ug.apply(getTranslateDiamond1(stringBounder)).draw(diamond1);
+		ug.apply(getTranslate1(stringBounder)).draw(tile1);
+		ug.apply(getTranslate2(stringBounder)).draw(tile2);
+		ug.apply(getTranslateDiamond2(stringBounder)).draw(diamond2);
 	}
 
-	public boolean isKilled__TOBEREMOVED() {
-		return tile1.isKilled__TOBEREMOVED() && tile2.isKilled__TOBEREMOVED();
+	public FtileGeometry calculateDimension(StringBounder stringBounder) {
+		final Dimension2D dimTotal = calculateDimensionInternal(stringBounder);
+		if (OptionFlags.USE_4747) {
+			return new FtileGeometry(dimTotal, getLeft(stringBounder), 0, dimTotal.getHeight());
+
+		}
+		return new FtileGeometry(dimTotal, dimTotal.getWidth() / 2, 0, dimTotal.getHeight());
 	}
+
+	public boolean isKilled() {
+		return tile1.isKilled() && tile2.isKilled();
+	}
+
+	private Dimension2D calculateDimensionInternal;
 
 	private Dimension2D calculateDimensionInternal(StringBounder stringBounder) {
-		final Dimension2D dim1 = tile1.asTextBlock().calculateDimension(stringBounder);
-		final Dimension2D dim2 = tile2.asTextBlock().calculateDimension(stringBounder);
+		if (calculateDimensionInternal == null) {
+			calculateDimensionInternal = calculateDimensionInternalSlow(stringBounder);
+		}
+		return calculateDimensionInternal;
+	}
+
+	private Dimension2D calculateDimensionInternalSlow(StringBounder stringBounder) {
+		final Dimension2D dim1 = tile1.calculateDimension(stringBounder);
+		final Dimension2D dim2 = tile2.calculateDimension(stringBounder);
 		final Dimension2D dim12 = Dimension2DDouble.mergeLR(dim1, dim2);
-		final Dimension2D dimDiamond1 = diamond1.asTextBlock().calculateDimension(stringBounder);
+		final Dimension2D dimDiamond1 = diamond1.calculateDimension(stringBounder);
 		final double widthA = dim12.getWidth();
 		final double widthB = Math.max(dim1.getWidth(), dim2.getWidth()) + dimDiamond1.getWidth();
 		final double width = Math.max(widthA, widthB);
@@ -528,18 +551,9 @@ class FtileIf extends AbstractFtile {
 	}
 
 	private double getLeft(StringBounder stringBounder) {
-		final double left1 = tile1.getGeometry(stringBounder).translate(getTranslate1(stringBounder)).getLeft();
-		final double left2 = tile2.getGeometry(stringBounder).translate(getTranslate2(stringBounder)).getLeft();
+		final double left1 = tile1.calculateDimension(stringBounder).translate(getTranslate1(stringBounder)).getLeft();
+		final double left2 = tile2.calculateDimension(stringBounder).translate(getTranslate2(stringBounder)).getLeft();
 		return (left1 + left2) / 2;
-	}
-
-	public FtileGeometry getGeometry(StringBounder stringBounder) {
-		final Dimension2D dimTotal = calculateDimensionInternal(stringBounder);
-		if (OptionFlags.USE_4747) {
-			return new FtileGeometry(getLeft(stringBounder), 0, dimTotal.getHeight());
-
-		}
-		return new FtileGeometry(dimTotal.getWidth() / 2, 0, dimTotal.getHeight());
 	}
 
 }

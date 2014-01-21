@@ -149,7 +149,7 @@ public class CommandCreateClassMultilines extends CommandMultilines2<ClassDiagra
 			if (mode == Mode.EXTENDS && entity.getEntityType() == LeafType.INTERFACE) {
 				type2 = LeafType.INTERFACE;
 			}
-			final IEntity cl2 = system.getOrCreateLeaf(other, type2);
+			final IEntity cl2 = system.getOrCreateLeaf(other, type2, null);
 			LinkType typeLink = new LinkType(LinkDecor.NONE, LinkDecor.EXTENDS);
 			if (type2 == LeafType.INTERFACE && entity.getEntityType() != LeafType.INTERFACE) {
 				typeLink = typeLink.getDashed();
@@ -172,10 +172,10 @@ public class CommandCreateClassMultilines extends CommandMultilines2<ClassDiagra
 
 		final ILeaf result;
 		if (diagram.leafExist(code)) {
-			result = diagram.getOrCreateLeaf(code, null);
-			result.muteToType(type);
+			result = diagram.getOrCreateLeaf(code, null, null);
+			result.muteToType(type, null);
 		} else {
-			result = diagram.createLeaf(code, Display.getWithNewlines(display), type);
+			result = diagram.createLeaf(code, Display.getWithNewlines(display), type, null);
 		}
 		if (stereotype != null) {
 			result.setStereotype(new Stereotype(stereotype, diagram.getSkinParam().getCircledCharacterRadius(), diagram
@@ -199,7 +199,7 @@ public class CommandCreateClassMultilines extends CommandMultilines2<ClassDiagra
 		return result;
 	}
 
-	public UStroke getStroke(LinkStyle style) {
+	public static UStroke getStroke(LinkStyle style) {
 		if (style == LinkStyle.DASHED) {
 			return new UStroke(6, 6, 1);
 		}
@@ -212,7 +212,7 @@ public class CommandCreateClassMultilines extends CommandMultilines2<ClassDiagra
 		return new UStroke();
 	}
 
-	private void applyStroke(ILeaf entity, String s) {
+	public static void applyStroke(IEntity entity, String s) {
 		if (s == null) {
 			return;
 		}

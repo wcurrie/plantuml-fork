@@ -42,7 +42,6 @@ import java.util.List;
 import java.util.Set;
 
 import net.sourceforge.plantuml.Dimension2DDouble;
-import net.sourceforge.plantuml.SpriteContainerEmpty;
 import net.sourceforge.plantuml.activitydiagram3.Branch;
 import net.sourceforge.plantuml.activitydiagram3.ftile.AbstractConnection;
 import net.sourceforge.plantuml.activitydiagram3.ftile.AbstractFtile;
@@ -185,14 +184,14 @@ class FtileIfLong extends AbstractFtile {
 		}
 
 		private Point2D getP1(StringBounder stringBounder) {
-			final Dimension2D dimDiamond1 = getFtile1().asTextBlock().calculateDimension(stringBounder);
+			final Dimension2D dimDiamond1 = getFtile1().calculateDimension(stringBounder);
 			final Point2D p = new Point2D.Double(dimDiamond1.getWidth(), dimDiamond1.getHeight() / 2);
 
 			return getTranslateDiamond1(getFtile1(), stringBounder).getTranslated(p);
 		}
 
 		private Point2D getP2(StringBounder stringBounder) {
-			final Dimension2D dimDiamond1 = getFtile2().asTextBlock().calculateDimension(stringBounder);
+			final Dimension2D dimDiamond1 = getFtile2().calculateDimension(stringBounder);
 			final Point2D p = new Point2D.Double(0, dimDiamond1.getHeight() / 2);
 			return getTranslateDiamond1(getFtile2(), stringBounder).getTranslated(p);
 		}
@@ -210,9 +209,9 @@ class FtileIfLong extends AbstractFtile {
 
 		public void drawU(UGraphic ug) {
 			final UTranslate tr = getTranslateDiamond1(getFtile2(), ug.getStringBounder());
-			final Point2D p2 = tr.getTranslated(getFtile2().getGeometry(ug.getStringBounder()).getPointIn());
+			final Point2D p2 = tr.getTranslated(getFtile2().calculateDimension(ug.getStringBounder()).getPointIn());
 			final Snake snake = new Snake(arrowColor, Arrows.asToDown());
-			final Point2D p1 = getGeometry(ug.getStringBounder()).getPointIn();
+			final Point2D p1 = calculateDimension(ug.getStringBounder()).getPointIn();
 
 			snake.addPoint(p1);
 			snake.addPoint(p2.getX(), p1.getY());
@@ -234,7 +233,7 @@ class FtileIfLong extends AbstractFtile {
 		public void drawU(UGraphic ug) {
 			final Point2D p1 = getP1(ug.getStringBounder());
 			final UTranslate tr2 = getTranslate2(ug.getStringBounder());
-			final Point2D p2 = tr2.getTranslated(getFtile2().getGeometry(ug.getStringBounder()).getPointIn());
+			final Point2D p2 = tr2.getTranslated(getFtile2().calculateDimension(ug.getStringBounder()).getPointIn());
 			final Snake snake = new Snake(arrowColor, Arrows.asToDown());
 			snake.addPoint(p1);
 			snake.addPoint(p2.getX(), p1.getY());
@@ -243,7 +242,7 @@ class FtileIfLong extends AbstractFtile {
 		}
 
 		private Point2D getP1(StringBounder stringBounder) {
-			final Dimension2D dimDiamond1 = getFtile1().asTextBlock().calculateDimension(stringBounder);
+			final Dimension2D dimDiamond1 = getFtile1().calculateDimension(stringBounder);
 			final Point2D p = new Point2D.Double(dimDiamond1.getWidth(), dimDiamond1.getHeight() / 2);
 			return getTranslateDiamond1(getFtile1(), stringBounder).getTranslated(p);
 		}
@@ -262,7 +261,7 @@ class FtileIfLong extends AbstractFtile {
 		public void drawU(UGraphic ug) {
 			final StringBounder stringBounder = ug.getStringBounder();
 			final UTranslate tr1 = getTranslate2(stringBounder);
-			final Point2D p1 = tr1.getTranslated(getFtile1().getGeometry(stringBounder).getPointOut());
+			final Point2D p1 = tr1.getTranslated(getFtile1().calculateDimension(stringBounder).getPointOut());
 			final double totalHeight = calculateDimensionInternal(stringBounder).getHeight();
 			final Point2D p2 = new Point2D.Double(p1.getX(), totalHeight);
 
@@ -295,12 +294,12 @@ class FtileIfLong extends AbstractFtile {
 		}
 
 		private Point2D getP1(StringBounder stringBounder) {
-			final Point2D p = getFtile1().getGeometry(stringBounder).getPointOut();
+			final Point2D p = getFtile1().calculateDimension(stringBounder).getPointOut();
 			return getTranslateDiamond1(getFtile1(), stringBounder).getTranslated(p);
 		}
 
 		private Point2D getP2(StringBounder stringBounder) {
-			final Point2D p = getFtile2().getGeometry(stringBounder).getPointIn();
+			final Point2D p = getFtile2().calculateDimension(stringBounder).getPointIn();
 			return getTranslate1(getFtile2(), stringBounder).getTranslated(p);
 		}
 
@@ -331,7 +330,7 @@ class FtileIfLong extends AbstractFtile {
 		}
 
 		private Point2D getP1(StringBounder stringBounder) {
-			final FtileGeometry geo = getFtile1().getGeometry(stringBounder);
+			final FtileGeometry geo = getFtile1().calculateDimension(stringBounder);
 			if (geo.hasPointOut() == false) {
 				return null;
 			}
@@ -359,11 +358,11 @@ class FtileIfLong extends AbstractFtile {
 			double minX = Double.MAX_VALUE;
 			double maxX = 0;
 			for (Ftile tmp : all) {
-				if (tmp.isKilled__TOBEREMOVED()) {
+				if (tmp.isKilled()) {
 					continue;
 				}
 				final UTranslate ut = getTranslateFor(tmp, stringBounder);
-				final double middle = tmp.getGeometry(stringBounder).translate(ut).getLeft(); 
+				final double middle = tmp.calculateDimension(stringBounder).translate(ut).getLeft();
 				minX = Math.min(minX, middle);
 				maxX = Math.max(maxX, middle);
 			}
@@ -389,8 +388,8 @@ class FtileIfLong extends AbstractFtile {
 
 	private UTranslate getTranslate2(StringBounder stringBounder) {
 		final Dimension2D dimTotal = calculateDimensionInternal(stringBounder);
-		// final Dimension2D dimDiamond1 = diamond1.asTextBlock().calculateDimension(stringBounder);
-		final Dimension2D dim2 = tile2.asTextBlock().calculateDimension(stringBounder);
+		// final Dimension2D dimDiamond1 = diamond1.calculateDimension(stringBounder);
+		final Dimension2D dim2 = tile2.calculateDimension(stringBounder);
 
 		final double x2 = dimTotal.getWidth() - dim2.getWidth();
 
@@ -409,7 +408,7 @@ class FtileIfLong extends AbstractFtile {
 		for (Ftile diamond : diamonds) {
 			final Dimension2D dim1 = dimDiamondAndTile(stringBounder, diamond);
 			if (diamond == diamond1) {
-				final Dimension2D dimDiamond = diamond.asTextBlock().calculateDimension(stringBounder);
+				final Dimension2D dimDiamond = diamond.calculateDimension(stringBounder);
 				return new UTranslate(x1 + (dim1.getWidth() - dimDiamond.getWidth()) / 2, 25);
 			}
 			x1 += dim1.getWidth() + xSeparation;
@@ -425,7 +424,7 @@ class FtileIfLong extends AbstractFtile {
 		for (Ftile tile : tiles) {
 			final Dimension2D dim1 = dimDiamondAndTile(stringBounder, tile);
 			if (tile == tile1) {
-				final Dimension2D dimTile = tile.asTextBlock().calculateDimension(stringBounder);
+				final Dimension2D dimTile = tile.calculateDimension(stringBounder);
 				final double h = getAllDiamondsHeight(stringBounder);
 				final double y1 = (dimTotal.getHeight() - 2 * h - dimTile.getHeight()) / 2 + h;
 				return new UTranslate(x1 + (dim1.getWidth() - dimTile.getWidth()) / 2, y1);
@@ -436,38 +435,30 @@ class FtileIfLong extends AbstractFtile {
 
 	}
 
-	public TextBlock asTextBlock() {
-		return new TextBlock() {
+	public void drawU(UGraphic ug) {
+		final StringBounder stringBounder = ug.getStringBounder();
+		for (Ftile tile : tiles) {
+			ug.apply(getTranslate1(tile, stringBounder)).draw(tile);
+		}
+		for (Ftile diamond : diamonds) {
+			ug.apply(getTranslateDiamond1(diamond, stringBounder)).draw(diamond);
+		}
 
-			public void drawU(UGraphic ug) {
-				final StringBounder stringBounder = ug.getStringBounder();
-				for (Ftile tile : tiles) {
-					ug.apply(getTranslate1(tile, stringBounder)).draw(tile);
-				}
-				for (Ftile diamond : diamonds) {
-					ug.apply(getTranslateDiamond1(diamond, stringBounder)).draw(diamond);
-				}
-
-				// ug.apply(getTranslateDiamond1(stringBounder)).draw(diamond1);
-				// ug.apply(getTranslate1(stringBounder)).draw(tile1);
-				ug.apply(getTranslate2(stringBounder)).draw(tile2);
-				// ug.apply(getTranslateDiamond2(stringBounder)).draw(diamond2);
-			}
-
-			public Dimension2D calculateDimension(StringBounder stringBounder) {
-				return calculateDimensionInternal(stringBounder);
-			}
-
-		};
+		ug.apply(getTranslate2(stringBounder)).draw(tile2);
 	}
 
-	public boolean isKilled__TOBEREMOVED() {
+	public FtileGeometry calculateDimension(StringBounder stringBounder) {
+		final Dimension2D dimTotal = calculateDimensionInternal(stringBounder);
+		return new FtileGeometry(dimTotal, dimTotal.getWidth() / 2, 0, dimTotal.getHeight());
+	}
+
+	public boolean isKilled() {
 		for (Ftile tile : tiles) {
-			if (tile.isKilled__TOBEREMOVED() == false) {
+			if (tile.isKilled() == false) {
 				return false;
 			}
 		}
-		return tile2.isKilled__TOBEREMOVED();
+		return tile2.isKilled();
 	}
 
 	private Dimension2D dimDiamondAndTile(StringBounder stringBounder, Ftile tileOrDiamond) {
@@ -477,8 +468,8 @@ class FtileIfLong extends AbstractFtile {
 			if (tile != tileOrDiamond && diamond != tileOrDiamond) {
 				continue;
 			}
-			final Dimension2D dimTile = tile.asTextBlock().calculateDimension(stringBounder);
-			final Dimension2D dimDiamond = diamond.asTextBlock().calculateDimension(stringBounder);
+			final Dimension2D dimTile = tile.calculateDimension(stringBounder);
+			final Dimension2D dimDiamond = diamond.calculateDimension(stringBounder);
 			return Dimension2DDouble.mergeTB(dimDiamond, dimTile);
 		}
 		throw new UnsupportedOperationException();
@@ -492,14 +483,14 @@ class FtileIfLong extends AbstractFtile {
 		for (int i = 0; i < tiles.size(); i++) {
 			final Ftile tile = tiles.get(i);
 			final Ftile diamond = diamonds.get(i);
-			final Dimension2D dimTile = tile.asTextBlock().calculateDimension(stringBounder);
-			final Dimension2D dimDiamond = diamond.asTextBlock().calculateDimension(stringBounder);
+			final Dimension2D dimTile = tile.calculateDimension(stringBounder);
+			final Dimension2D dimDiamond = diamond.calculateDimension(stringBounder);
 			final Dimension2D both = Dimension2DDouble.mergeTB(dimDiamond, dimTile);
 			dimOnlyTiles = Dimension2DDouble.mergeLR(dimOnlyTiles, dimTile);
 			dimOnlyDiamond = Dimension2DDouble.mergeLR(dimOnlyDiamond, dimDiamond);
 			dimBoth = Dimension2DDouble.mergeLR(dimBoth, both);
 		}
-		final Dimension2D dimTile2 = tile2.asTextBlock().calculateDimension(stringBounder);
+		final Dimension2D dimTile2 = tile2.calculateDimension(stringBounder);
 		dimOnlyTiles = Dimension2DDouble.mergeLR(dimOnlyTiles, dimTile2);
 		dimBoth = Dimension2DDouble.mergeLR(dimBoth, dimTile2);
 
@@ -511,15 +502,10 @@ class FtileIfLong extends AbstractFtile {
 	private double getAllDiamondsHeight(StringBounder stringBounder) {
 		Dimension2D dimOnlyDiamond = new Dimension2DDouble(0, 0);
 		for (Ftile diamond : diamonds) {
-			final Dimension2D dimDiamond = diamond.asTextBlock().calculateDimension(stringBounder);
+			final Dimension2D dimDiamond = diamond.calculateDimension(stringBounder);
 			dimOnlyDiamond = Dimension2DDouble.mergeLR(dimOnlyDiamond, dimDiamond);
 		}
 		return dimOnlyDiamond.getHeight();
-	}
-
-	public FtileGeometry getGeometry(StringBounder stringBounder) {
-		final Dimension2D dimTotal = calculateDimensionInternal(stringBounder);
-		return new FtileGeometry(dimTotal.getWidth() / 2, 0, dimTotal.getHeight());
 	}
 
 }

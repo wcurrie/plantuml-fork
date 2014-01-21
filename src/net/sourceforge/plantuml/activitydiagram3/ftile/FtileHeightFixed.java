@@ -34,12 +34,9 @@
 package net.sourceforge.plantuml.activitydiagram3.ftile;
 
 import java.awt.geom.Dimension2D;
-import java.awt.geom.Point2D;
 import java.util.Set;
 
-import net.sourceforge.plantuml.Dimension2DDouble;
 import net.sourceforge.plantuml.graphic.StringBounder;
-import net.sourceforge.plantuml.graphic.TextBlock;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
 import net.sourceforge.plantuml.ugraphic.UTranslate;
 
@@ -66,34 +63,24 @@ public class FtileHeightFixed extends AbstractFtile {
 		return tile.getSwimlaneOut();
 	}
 
-	public FtileGeometry getGeometry(StringBounder stringBounder) {
-		return tile.getGeometry(stringBounder).translate(getTranslate(stringBounder));
+	public FtileGeometry calculateDimension(StringBounder stringBounder) {
+		return tile.calculateDimension(stringBounder).translate(getTranslate(stringBounder)).fixedHeight(fixedHeight);
 	}
 
 	private UTranslate getTranslate(StringBounder stringBounder) {
-		final Dimension2D dim = tile.asTextBlock().calculateDimension(stringBounder);
+		final Dimension2D dim = tile.calculateDimension(stringBounder);
 		if (dim.getHeight() > fixedHeight) {
 			throw new IllegalStateException();
 		}
 		return new UTranslate(0, (fixedHeight - dim.getHeight()) / 2);
 	}
 
-	public TextBlock asTextBlock() {
-		return new TextBlock() {
-
-			public void drawU(UGraphic ug) {
-				ug.apply(getTranslate(ug.getStringBounder())).draw(tile);
-			}
-
-			public Dimension2D calculateDimension(StringBounder stringBounder) {
-				final Dimension2D dim = tile.asTextBlock().calculateDimension(stringBounder);
-				return new Dimension2DDouble(dim.getWidth(), fixedHeight);
-			}
-		};
+	public void drawU(UGraphic ug) {
+		ug.apply(getTranslate(ug.getStringBounder())).draw(tile);
 	}
 
-	public boolean isKilled__TOBEREMOVED() {
-		return tile.isKilled__TOBEREMOVED();
+	public boolean isKilled() {
+		return tile.isKilled();
 	}
 
 }

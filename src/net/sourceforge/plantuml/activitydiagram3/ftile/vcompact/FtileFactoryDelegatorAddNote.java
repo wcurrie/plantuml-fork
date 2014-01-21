@@ -65,7 +65,7 @@ public class FtileFactoryDelegatorAddNote extends FtileFactoryDelegator {
 		} else {
 			colorlink = inlinkRendering.getColor();
 		}
-		return OptionFlags.USE_4747 ? new FtileWithNoteOpale4747(ftile, note, colorlink, notePosition)
+		return OptionFlags.USE_4747 ? new FtileWithNoteOpale4747(ftile, note, colorlink, notePosition, getSkinParam())
 				: new FtileWithNoteOpale(ftile, note, colorlink, notePosition);
 	}
 }

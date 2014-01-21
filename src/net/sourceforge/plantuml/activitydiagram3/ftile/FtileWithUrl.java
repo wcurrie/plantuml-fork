@@ -33,12 +33,8 @@
  */
 package net.sourceforge.plantuml.activitydiagram3.ftile;
 
-import java.awt.geom.Dimension2D;
-
 import net.sourceforge.plantuml.Url;
 import net.sourceforge.plantuml.activitydiagram3.ftile.vertical.FtileDecorate;
-import net.sourceforge.plantuml.graphic.StringBounder;
-import net.sourceforge.plantuml.graphic.TextBlock;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
 
 public class FtileWithUrl extends FtileDecorate {
@@ -53,20 +49,10 @@ public class FtileWithUrl extends FtileDecorate {
 		this.url = url;
 	}
 
-	public TextBlock asTextBlock() {
-		final TextBlock original = super.asTextBlock();
-		return new TextBlock() {
-
-			public void drawU(UGraphic ug) {
-				ug.startUrl(url);
-				original.drawU(ug);
-				ug.closeAction();
-			}
-
-			public Dimension2D calculateDimension(StringBounder stringBounder) {
-				return original.calculateDimension(stringBounder);
-			}
-		};
+	public void drawU(UGraphic ug) {
+		ug.startUrl(url);
+		getFtileDelegated().drawU(ug);
+		ug.closeAction();
 	}
 
 }

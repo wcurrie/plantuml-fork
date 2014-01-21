@@ -33,6 +33,7 @@
  */
 package net.sourceforge.plantuml;
 
+import net.sourceforge.plantuml.cucadiagram.Stereotype;
 import net.sourceforge.plantuml.graphic.HtmlColor;
 
 public class SkinParamBackcolored extends SkinParamDelegator {
@@ -68,7 +69,7 @@ public class SkinParamBackcolored extends SkinParamDelegator {
 		return super.getBackgroundColor();
 	}
 
-	public HtmlColor getHtmlColor(ColorParam param, String stereotype, boolean clickable) {
+	public HtmlColor getHtmlColor(ColorParam param, Stereotype stereotype, boolean clickable) {
 		if (param.isBackground() && backColorElement != null) {
 			return backColorElement;
 		}

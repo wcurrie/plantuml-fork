@@ -53,7 +53,7 @@ public class CommandDiamondAssociation extends SingleLineCommand<ClassDiagram> {
 		if (diagram.leafExist(code)) {
 			return CommandExecutionResult.error("Already existing : "+code);
 		}
-		diagram.createLeaf(code, null, LeafType.ASSOCIATION);
+		diagram.createLeaf(code, null, LeafType.ASSOCIATION, null);
 
 		return CommandExecutionResult.ok();
 	}

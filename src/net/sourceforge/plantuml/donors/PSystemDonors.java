@@ -56,6 +56,8 @@ import net.sourceforge.plantuml.version.PSystemVersion;
 
 public class PSystemDonors extends AbstractPSystem {
 
+	public static final String DONORS = "UDfTJriAmZ0G_9zJv3kt21KAjOXOBv3gbaRQtPA7K4zl1KEqyxN3pExCcab_GHvdYkILuIZix0rNqWKoevL2VO39gxP7xOj4AphgROZEiZh9o31y5wzgeVYYppWCcoFRBQErFq4SSN2Pk0ccd9OdkbGghAYT_WSBcjmo1NIHbf5OLIBBzjzntjd5evB9iRf82eGcxNJzaAry9el36qjNJ600";
+
 	public ImageData exportDiagram(OutputStream os, int num, FileFormatOption fileFormat) throws IOException {
 		return getGraphicStrings().exportDiagram(os, fileFormat);
 	}
@@ -65,8 +67,7 @@ public class PSystemDonors extends AbstractPSystem {
 		lines.add("<b>Special thanks to our sponsors and donors !");
 		lines.add(" ");
 		final Transcoder t = new TranscoderImpl();
-		final String s = t
-				.decode("UDfLZb4A0Z4CHF_d5FtkBG92GHOHrWjaDOk5DO6sAwodNmLBz7rbo2GpjCGlKd2M9YMGDjFCLrmaElR0O2vB1VLJdf2AhsJ3A1FNbbd3oUuAqfkLa4pQIpxZFByTtSwAWN-2jE6GkyWBo5_R4-Fg5JQa7FzHmx6tN2js5iStZG00");
+		final String s = t.decode(DONORS);
 		final StringTokenizer st = new StringTokenizer(s, "\n");
 		while (st.hasMoreTokens()) {
 			lines.add(st.nextToken());

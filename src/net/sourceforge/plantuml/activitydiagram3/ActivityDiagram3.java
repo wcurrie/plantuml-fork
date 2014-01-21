@@ -59,6 +59,7 @@ import net.sourceforge.plantuml.core.DiagramDescription;
 import net.sourceforge.plantuml.core.DiagramDescriptionImpl;
 import net.sourceforge.plantuml.core.ImageData;
 import net.sourceforge.plantuml.cucadiagram.Display;
+import net.sourceforge.plantuml.cucadiagram.Stereotype;
 import net.sourceforge.plantuml.graphic.FontConfiguration;
 import net.sourceforge.plantuml.graphic.HorizontalAlignment;
 import net.sourceforge.plantuml.graphic.HtmlColor;
@@ -214,9 +215,9 @@ public class ActivityDiagram3 extends UmlDiagram {
 		return skinParam.getFont(fontParam, null);
 	}
 
-	private final HtmlColor getFontColor(FontParam fontParam, String stereo) {
+	private final HtmlColor getFontColor(FontParam fontParam, Stereotype stereotype2) {
 		final ISkinParam skinParam = getSkinParam();
-		return skinParam.getFontHtmlColor(fontParam, stereo);
+		return skinParam.getFontHtmlColor(fontParam, stereotype2);
 	}
 
 	public void fork() {

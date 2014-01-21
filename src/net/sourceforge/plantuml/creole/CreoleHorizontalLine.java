@@ -44,7 +44,6 @@ import net.sourceforge.plantuml.graphic.TextBlock;
 import net.sourceforge.plantuml.graphic.TextBlockUtils;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
 import net.sourceforge.plantuml.ugraphic.UHorizontalLine;
-import net.sourceforge.plantuml.ugraphic.UStroke;
 import net.sourceforge.plantuml.ugraphic.UTranslate;
 
 public class CreoleHorizontalLine implements Atom {
@@ -80,7 +79,7 @@ public class CreoleHorizontalLine implements Atom {
 		}
 		final CreoleParser parser = new CreoleParser(fontConfiguration, skinParam);
 		final Sheet sheet = parser.createSheet(Display.getWithNewlines(line));
-		final TextBlock tb = new SheetBlock(sheet, null, new UStroke());
+		final TextBlock tb = new SheetBlock1(sheet);
 		return tb;
 	}
 

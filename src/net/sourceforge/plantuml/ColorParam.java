@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  *
- * Revision $Revision: 12235 $
+ * Revision $Revision: 12348 $
  * 
  */
 package net.sourceforge.plantuml;
@@ -47,8 +47,6 @@ public enum ColorParam {
 	activityBar(HtmlColorUtils.BLACK),
 	activityArrow(HtmlColorUtils.MY_RED),
 	
-	usecaseActorBackground(HtmlColorUtils.MY_YELLOW),
-	usecaseActorBorder(HtmlColorUtils.MY_RED),
 	usecaseBorder(HtmlColorUtils.MY_RED),
 	usecaseBackground(HtmlColorUtils.MY_YELLOW),
 	usecaseArrow(HtmlColorUtils.MY_RED),
@@ -73,8 +71,8 @@ public enum ColorParam {
 
 	componentBackground(HtmlColorUtils.MY_YELLOW),
 	componentBorder(HtmlColorUtils.MY_RED),
-	componentInterfaceBackground(HtmlColorUtils.MY_YELLOW),
-	componentInterfaceBorder(HtmlColorUtils.MY_RED),
+	interfaceBackground(HtmlColorUtils.MY_YELLOW),
+	interfaceBorder(HtmlColorUtils.MY_RED),
 	// componentArrow,
 
 	stateBackground(HtmlColorUtils.MY_YELLOW),
@@ -89,8 +87,10 @@ public enum ColorParam {
 	legendBackground(HtmlColorUtils.getColorIfValid("#DDDDDD"), true),
 	legendBorder(HtmlColorUtils.BLACK),
 	
-	sequenceActorBackground(HtmlColorUtils.MY_YELLOW, true),
-	sequenceActorBorder(HtmlColorUtils.MY_RED),
+	actorBackground(HtmlColorUtils.MY_YELLOW, true),
+	actorBorder(HtmlColorUtils.MY_RED),
+	participantBackground(HtmlColorUtils.MY_YELLOW, true),
+	participantBorder(HtmlColorUtils.MY_RED),
 	sequenceGroupBorder(HtmlColorUtils.BLACK),
 	sequenceGroupBackground(HtmlColorUtils.getColorIfValid("#EEEEEE"), true),
 	sequenceReferenceBorder(HtmlColorUtils.BLACK),
@@ -99,8 +99,6 @@ public enum ColorParam {
 	sequenceDividerBackground(HtmlColorUtils.getColorIfValid("#EEEEEE"), true),
 	sequenceLifeLineBackground(HtmlColorUtils.WHITE, true),
 	sequenceLifeLineBorder(HtmlColorUtils.MY_RED),
-	sequenceParticipantBackground(HtmlColorUtils.MY_YELLOW, true),
-	sequenceParticipantBorder(HtmlColorUtils.MY_RED),
 	sequenceArrow(HtmlColorUtils.MY_RED),
 	sequenceBoxBorder(HtmlColorUtils.MY_RED),
 	sequenceBoxBackground(HtmlColorUtils.getColorIfValid("#DDDDDD"), true),
@@ -119,6 +117,8 @@ public enum ColorParam {
 	nodeBorder(HtmlColorUtils.MY_RED),
 	rectangleBackground(HtmlColorUtils.MY_YELLOW),
 	rectangleBorder(HtmlColorUtils.MY_RED),
+	agentBackground(HtmlColorUtils.MY_YELLOW),
+	agentBorder(HtmlColorUtils.MY_RED),
 	storageBackground(HtmlColorUtils.MY_YELLOW),
 	storageBorder(HtmlColorUtils.MY_RED),
 	boundaryBackground(HtmlColorUtils.MY_YELLOW),

@@ -34,7 +34,6 @@
 package net.sourceforge.plantuml.activitydiagram3.ftile.vcompact;
 
 import java.awt.geom.Dimension2D;
-import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -74,7 +73,7 @@ public class FtileFactoryDelegatorCreateSplit extends FtileFactoryDelegator {
 		// final HtmlColor colorBar = rose.getHtmlColor(getSkinParam(), ColorParam.activityBar);
 		final HtmlColor arrowColor = rose.getHtmlColor(getSkinParam(), ColorParam.activityArrow);
 
-		final Dimension2D dimSuper = super.createSplit(all).asTextBlock().calculateDimension(getStringBounder());
+		final Dimension2D dimSuper = super.createSplit(all).calculateDimension(getStringBounder());
 		final double height1 = dimSuper.getHeight() + 2 * spaceArroundBlackBar;
 
 		final List<Ftile> list = new ArrayList<Ftile>();
@@ -88,12 +87,12 @@ public class FtileFactoryDelegatorCreateSplit extends FtileFactoryDelegator {
 
 		double x = 0;
 		for (Ftile tmp : list) {
-			final Dimension2D dim = tmp.asTextBlock().calculateDimension(getStringBounder());
+			final Dimension2D dim = tmp.calculateDimension(getStringBounder());
 			conns.add(new ConnectionIn(tmp, x, arrowColor));
 			conns.add(new ConnectionOut(tmp, x, arrowColor, height1));
 			x += dim.getWidth();
 		}
-		final double totalWidth = inner.asTextBlock().calculateDimension(getStringBounder()).getWidth();
+		final double totalWidth = inner.calculateDimension(getStringBounder()).getWidth();
 		conns.add(new ConnectionHline2(inner, arrowColor, 0, list, totalWidth));
 		conns.add(new ConnectionHline2(inner, arrowColor, height1, list, totalWidth));
 
@@ -123,12 +122,12 @@ public class FtileFactoryDelegatorCreateSplit extends FtileFactoryDelegator {
 			double maxX = 0;
 			final StringBounder stringBounder = ug.getStringBounder();
 			for (Ftile tmp : list) {
-				if (y > 0 && tmp.isKilled__TOBEREMOVED()) {
+				if (y > 0 && tmp.isKilled()) {
 					continue;
 				}
 				final UTranslate ut = inner.getTranslateFor(tmp, stringBounder);
 				// final double middle = ut.getTranslated(tmp.getGeometry(stringBounder).getPointIn()).getX();
-				final double middle = tmp.getGeometry(stringBounder).translate(ut).getLeft(); 
+				final double middle = tmp.calculateDimension(stringBounder).translate(ut).getLeft();
 				minX = Math.min(minX, middle);
 				maxX = Math.max(maxX, middle);
 			}
@@ -159,7 +158,7 @@ public class FtileFactoryDelegatorCreateSplit extends FtileFactoryDelegator {
 
 		public void drawU(UGraphic ug) {
 			ug = ug.apply(new UTranslate(x, 0));
-			final FtileGeometry geo = getFtile2().getGeometry(ug.getStringBounder());
+			final FtileGeometry geo = getFtile2().calculateDimension(ug.getStringBounder());
 			final double left = geo.getLeft();
 			final Snake s = new Snake(arrowColor, Arrows.asToDown());
 			s.addPoint(left, 0);
@@ -183,7 +182,7 @@ public class FtileFactoryDelegatorCreateSplit extends FtileFactoryDelegator {
 
 		public void drawU(UGraphic ug) {
 			ug = ug.apply(new UTranslate(x, 0));
-			final FtileGeometry geo = getFtile1().getGeometry(ug.getStringBounder());
+			final FtileGeometry geo = getFtile1().calculateDimension(ug.getStringBounder());
 			if (geo.hasPointOut() == false) {
 				return;
 			}

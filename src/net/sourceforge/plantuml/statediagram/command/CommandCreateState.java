@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 12235 $
+ * Revision $Revision: 12371 $
  *
  */
 package net.sourceforge.plantuml.statediagram.command;
@@ -36,6 +36,7 @@ package net.sourceforge.plantuml.statediagram.command;
 import net.sourceforge.plantuml.Url;
 import net.sourceforge.plantuml.UrlBuilder;
 import net.sourceforge.plantuml.UrlBuilder.ModeUrl;
+import net.sourceforge.plantuml.classdiagram.command.CommandCreateClassMultilines;
 import net.sourceforge.plantuml.command.CommandExecutionResult;
 import net.sourceforge.plantuml.command.SingleLineCommand2;
 import net.sourceforge.plantuml.command.regex.RegexConcat;
@@ -66,19 +67,21 @@ public class CommandCreateState extends SingleLineCommand2<StateDiagram> {
 				new RegexLeaf("URL", "(" + UrlBuilder.getRegexp() + ")?"), //
 				new RegexLeaf("[%s]*"), //
 				new RegexLeaf("COLOR", "(" + HtmlColorUtils.COLOR_REGEXP + ")?"), //
+				new RegexLeaf("[%s]*"), //
+				new RegexLeaf("LINECOLOR", "(?:##(?:\\[(dotted|dashed|bold)\\])?(\\w+)?)?"), //
 				new RegexLeaf("$"));
 	}
 
 	@Override
-	protected CommandExecutionResult executeArg(StateDiagram system, RegexResult arg2) {
-		String display = arg2.get("DISPLAY", 0);
-		final Code code = Code.of(arg2.get("CODE", 0));
+	protected CommandExecutionResult executeArg(StateDiagram system, RegexResult arg) {
+		String display = arg.get("DISPLAY", 0);
+		final Code code = Code.of(arg.get("CODE", 0));
 		if (display == null) {
 			display = code.getCode();
 		}
-		final String stereotype = arg2.get("STEREOTYPE", 0);
+		final String stereotype = arg.get("STEREOTYPE", 0);
 		final LeafType type = getTypeFromStereotype(stereotype);
-		final IEntity ent = system.getOrCreateLeaf(code, type);
+		final IEntity ent = system.getOrCreateLeaf(code, type, null);
 		if (system.checkConcurrentStateOk(code) == false) {
 			return CommandExecutionResult.error("The state " + code
 					+ " has been created in a concurrent state : it cannot be used here.");
@@ -88,16 +91,15 @@ public class CommandCreateState extends SingleLineCommand2<StateDiagram> {
 		if (stereotype != null) {
 			ent.setStereotype(new Stereotype(stereotype));
 		}
-		final String urlString = arg2.get("URL", 0);
+		final String urlString = arg.get("URL", 0);
 		if (urlString != null) {
 			final UrlBuilder urlBuilder = new UrlBuilder(system.getSkinParam().getValue("topurl"), ModeUrl.STRICT);
 			final Url url = urlBuilder.getUrl(urlString);
 			ent.addUrl(url);
 		}
-		final String color = arg2.get("COLOR", 0);
-		if (color != null) {
-			ent.setSpecificBackcolor(HtmlColorUtils.getColorIfValid(color));
-		}
+		ent.setSpecificBackcolor(HtmlColorUtils.getColorIfValid(arg.get("COLOR", 0)));
+		ent.setSpecificLineColor(HtmlColorUtils.getColorIfValid(arg.get("LINECOLOR", 1)));
+		CommandCreateClassMultilines.applyStroke(ent, arg.get("LINECOLOR", 0));
 		return CommandExecutionResult.ok();
 	}
 

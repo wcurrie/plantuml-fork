@@ -36,6 +36,7 @@ package net.sourceforge.plantuml.statediagram.command;
 import net.sourceforge.plantuml.Url;
 import net.sourceforge.plantuml.UrlBuilder;
 import net.sourceforge.plantuml.UrlBuilder.ModeUrl;
+import net.sourceforge.plantuml.classdiagram.command.CommandCreateClassMultilines;
 import net.sourceforge.plantuml.command.CommandExecutionResult;
 import net.sourceforge.plantuml.command.SingleLineCommand2;
 import net.sourceforge.plantuml.command.regex.RegexConcat;
@@ -71,7 +72,9 @@ public class CommandCreatePackageState extends SingleLineCommand2<StateDiagram> 
 				new RegexLeaf("[%s]*"), //
 				new RegexLeaf("URL", "(" + UrlBuilder.getRegexp() + ")?"), //
 				new RegexLeaf("[%s]*"), //
-				new RegexLeaf("COLOR", "(#\\w+)?"), //
+				new RegexLeaf("COLOR", "(" + HtmlColorUtils.COLOR_REGEXP + ")?"), //
+				new RegexLeaf("[%s]*"), //
+				new RegexLeaf("LINECOLOR", "(?:##(?:\\[(dotted|dashed|bold)\\])?(\\w+)?)?"), //
 				new RegexLeaf("(?:[%s]*\\{|[%s]+begin)$"));
 	}
 
@@ -90,7 +93,8 @@ public class CommandCreatePackageState extends SingleLineCommand2<StateDiagram> 
 		if (display == null) {
 			display = code.getCode();
 		}
-		final IEntity p = system.getOrCreateGroup(code, Display.getWithNewlines(display), null, GroupType.STATE, currentPackage);
+		final IEntity p = system.getOrCreateGroup(code, Display.getWithNewlines(display), null, GroupType.STATE,
+				currentPackage);
 		final String stereotype = arg.get("STEREOTYPE", 0);
 		if (stereotype != null) {
 			p.setStereotype(new Stereotype(stereotype));
@@ -101,10 +105,9 @@ public class CommandCreatePackageState extends SingleLineCommand2<StateDiagram> 
 			final Url url = urlBuilder.getUrl(urlString);
 			p.addUrl(url);
 		}
-		final String color = arg.get("COLOR", 0);
-		if (HtmlColorUtils.getColorIfValid(color) != null) {
-			p.setSpecificBackcolor(HtmlColorUtils.getColorIfValid(color));
-		}
+		p.setSpecificBackcolor(HtmlColorUtils.getColorIfValid(arg.get("COLOR", 0)));
+		p.setSpecificLineColor(HtmlColorUtils.getColorIfValid(arg.get("LINECOLOR", 1)));
+		CommandCreateClassMultilines.applyStroke(p, arg.get("LINECOLOR", 0));
 		return CommandExecutionResult.ok();
 	}
 

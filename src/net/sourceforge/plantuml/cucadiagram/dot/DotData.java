@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 12235 $
+ * Revision $Revision: 12328 $
  *
  */
 package net.sourceforge.plantuml.cucadiagram.dot;
@@ -55,7 +55,7 @@ final public class DotData implements PortionShower {
 	final private Collection<ILeaf> leafs;
 	final private UmlDiagramType umlDiagramType;
 	final private ISkinParam skinParam;
-	final private Rankdir rankdir;
+	// final private Rankdir rankdir;
 	final private GroupHierarchy groupHierarchy;
 	final private IGroup topParent;
 	final private PortionShower portionShower;
@@ -66,9 +66,8 @@ final public class DotData implements PortionShower {
 	private final EntityFactory entityFactory;
 
 	public DotData(IGroup topParent, List<Link> links, Collection<ILeaf> leafs, UmlDiagramType umlDiagramType,
-			ISkinParam skinParam, Rankdir rankdir, GroupHierarchy groupHierarchy, PortionShower portionShower,
-			ColorMapper colorMapper, EntityFactory entityFactory, boolean isHideEmptyDescriptionForState,
-			DotMode dotMode) {
+			ISkinParam skinParam, GroupHierarchy groupHierarchy, PortionShower portionShower, ColorMapper colorMapper,
+			EntityFactory entityFactory, boolean isHideEmptyDescriptionForState, DotMode dotMode) {
 		this.topParent = topParent;
 		if (topParent == null) {
 			throw new IllegalArgumentException();
@@ -80,7 +79,7 @@ final public class DotData implements PortionShower {
 		this.leafs = leafs;
 		this.umlDiagramType = umlDiagramType;
 		this.skinParam = skinParam;
-		this.rankdir = rankdir;
+		// this.rankdir = rankdir;
 		this.groupHierarchy = groupHierarchy;
 		this.portionShower = portionShower;
 		this.entityFactory = entityFactory;
@@ -89,7 +88,7 @@ final public class DotData implements PortionShower {
 	public DotData(IGroup topParent, List<Link> links, Collection<ILeaf> leafs, UmlDiagramType umlDiagramType,
 			ISkinParam skinParam, Rankdir rankdir, GroupHierarchy groupHierarchy, ColorMapper colorMapper,
 			EntityFactory entityFactory, boolean isHideEmptyDescriptionForState, DotMode dotMode) {
-		this(topParent, links, leafs, umlDiagramType, skinParam, rankdir, groupHierarchy, new PortionShower() {
+		this(topParent, links, leafs, umlDiagramType, skinParam, groupHierarchy, new PortionShower() {
 			public boolean showPortion(EntityPortion portion, ILeaf entity) {
 				return true;
 			}
@@ -104,9 +103,9 @@ final public class DotData implements PortionShower {
 		return skinParam;
 	}
 
-	public Rankdir getRankdir() {
-		return rankdir;
-	}
+//	public Rankdir getRankdir() {
+//		return rankdir;
+//	}
 
 	public GroupHierarchy getGroupHierarchy() {
 		return groupHierarchy;

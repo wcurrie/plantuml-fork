@@ -44,49 +44,52 @@ import net.sourceforge.plantuml.graphic.USymbol;
 public class DescriptionDiagram extends AbstractEntityDiagram {
 
 	@Override
-	public ILeaf getOrCreateLeaf(Code code, LeafType type) {
+	public ILeaf getOrCreateLeaf(Code code, LeafType type, USymbol symbol) {
 		if (type == null) {
 			String code2 = code.getCode();
 			if (code2.startsWith("[") && code2.endsWith("]")) {
-				return getOrCreateLeafDefault(code.eventuallyRemoveStartingAndEndingDoubleQuote(), LeafType.COMPONENT);
+				final USymbol sym = getSkinParam().useUml2ForComponent() ? USymbol.COMPONENT2 : USymbol.COMPONENT1;
+				return getOrCreateLeafDefault(code.eventuallyRemoveStartingAndEndingDoubleQuote(), LeafType.DESCRIPTION,
+						sym);
 			}
 			if (code2.startsWith(":") && code2.endsWith(":")) {
-				return getOrCreateLeafDefault(code.eventuallyRemoveStartingAndEndingDoubleQuote(), LeafType.ACTOR);
+				return getOrCreateLeafDefault(code.eventuallyRemoveStartingAndEndingDoubleQuote(), LeafType.DESCRIPTION,
+						USymbol.ACTOR);
 			}
 			if (code2.startsWith("()")) {
 				code2 = code2.substring(2).trim();
 				code2 = StringUtils.eventuallyRemoveStartingAndEndingDoubleQuote(code2);
-				return getOrCreateLeafDefault(Code.of(code2), LeafType.CIRCLE_INTERFACE);
+				return getOrCreateLeafDefault(Code.of(code2), LeafType.CIRCLE_INTERFACE, USymbol.INTERFACE);
 			}
 			code = code.eventuallyRemoveStartingAndEndingDoubleQuote();
-			return getOrCreateLeafDefault(code, LeafType.STILL_UNKNOWN);
+			return getOrCreateLeafDefault(code, LeafType.STILL_UNKNOWN, symbol);
 		}
-		return getOrCreateLeafDefault(code, type);
+		return getOrCreateLeafDefault(code, type, symbol);
 	}
 
-//	@Override
-//	public ILeaf createLeaf(Code code, List<? extends CharSequence> display, LeafType type) {
-//		if (type != LeafType.COMPONENT) {
-//			return super.createLeaf(code, display, type);
-//		}
-//		code = code.getFullyQualifiedCode(getCurrentGroup());
-//		if (super.leafExist(code)) {
-//			throw new IllegalArgumentException("Already known: " + code);
-//		}
-//		return createEntityWithNamespace(code, display, type);
-//	}
+	// @Override
+	// public ILeaf createLeaf(Code code, List<? extends CharSequence> display, LeafType type) {
+	// if (type != LeafType.COMPONENT) {
+	// return super.createLeaf(code, display, type);
+	// }
+	// code = code.getFullyQualifiedCode(getCurrentGroup());
+	// if (super.leafExist(code)) {
+	// throw new IllegalArgumentException("Already known: " + code);
+	// }
+	// return createEntityWithNamespace(code, display, type);
+	// }
 
-//	private ILeaf createEntityWithNamespace(Code fullyCode, List<? extends CharSequence> display, LeafType type) {
-//		IGroup group = getCurrentGroup();
-//		final String namespace = fullyCode.getNamespace(getLeafs());
-//		if (namespace != null && (EntityUtils.groupRoot(group) || group.getCode().equals(namespace) == false)) {
-//			group = getOrCreateGroupInternal(Code.of(namespace), StringUtils.getWithNewlines(namespace), namespace,
-//					GroupType.PACKAGE, getRootGroup());
-//		}
-//		return createLeafInternal(fullyCode,
-//				display == null ? StringUtils.getWithNewlines(fullyCode.getShortName(getLeafs())) : display, type,
-//				group);
-//	}
+	// private ILeaf createEntityWithNamespace(Code fullyCode, List<? extends CharSequence> display, LeafType type) {
+	// IGroup group = getCurrentGroup();
+	// final String namespace = fullyCode.getNamespace(getLeafs());
+	// if (namespace != null && (EntityUtils.groupRoot(group) || group.getCode().equals(namespace) == false)) {
+	// group = getOrCreateGroupInternal(Code.of(namespace), StringUtils.getWithNewlines(namespace), namespace,
+	// GroupType.PACKAGE, getRootGroup());
+	// }
+	// return createLeafInternal(fullyCode,
+	// display == null ? StringUtils.getWithNewlines(fullyCode.getShortName(getLeafs())) : display, type,
+	// group);
+	// }
 
 	private boolean isUsecase() {
 		for (ILeaf leaf : getLeafs().values()) {
@@ -101,10 +104,11 @@ public class DescriptionDiagram extends AbstractEntityDiagram {
 
 	@Override
 	public void makeDiagramReady() {
-		final LeafType defaultType = isUsecase() ? LeafType.ACTOR : LeafType.CIRCLE_INTERFACE;
+		final LeafType defaultType = isUsecase() ? LeafType.DESCRIPTION : LeafType.CIRCLE_INTERFACE;
+		final USymbol defaultSymbol = isUsecase() ? USymbol.ACTOR : USymbol.INTERFACE;
 		for (ILeaf leaf : getLeafs().values()) {
 			if (leaf.getEntityType() == LeafType.STILL_UNKNOWN) {
-				leaf.muteToType(defaultType);
+				leaf.muteToType(defaultType, defaultSymbol);
 			}
 		}
 	}

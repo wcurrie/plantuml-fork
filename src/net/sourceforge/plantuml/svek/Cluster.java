@@ -67,6 +67,7 @@ import net.sourceforge.plantuml.graphic.StringBounder;
 import net.sourceforge.plantuml.graphic.TextBlock;
 import net.sourceforge.plantuml.graphic.TextBlockEmpty;
 import net.sourceforge.plantuml.graphic.TextBlockWidth;
+import net.sourceforge.plantuml.graphic.USymbol;
 import net.sourceforge.plantuml.posimo.Moveable;
 import net.sourceforge.plantuml.skin.rose.Rose;
 import net.sourceforge.plantuml.svek.image.EntityImageState;
@@ -282,7 +283,7 @@ public class Cluster implements Moveable {
 		this.yTitle = y;
 	}
 
-	public void drawU(UGraphic ug, HtmlColor borderColor, DotData dotData) {
+	public void drawU(UGraphic ug, HtmlColor borderColor, DotData dotData, UStroke stroke) {
 		final Url url = group.getUrl99();
 		if (url != null) {
 			ug.startUrl(url);
@@ -297,7 +298,13 @@ public class Cluster implements Moveable {
 			}
 			final boolean isState = dotData.getUmlDiagramType() == UmlDiagramType.STATE;
 			if (isState) {
-				drawUState(ug, borderColor, dotData);
+				if (group.getSpecificLineStroke() != null) {
+					stroke = group.getSpecificLineStroke();
+				}
+				if (group.getSpecificLineColor() != null) {
+					borderColor = group.getSpecificLineColor();
+				}
+				drawUState(ug, borderColor, dotData, stroke);
 				return;
 			}
 			PackageStyle style = group.getPackageStyle();
@@ -306,7 +313,7 @@ public class Cluster implements Moveable {
 			}
 			if (ztitle != null || zstereo != null) {
 				final HtmlColor stateBack = getStateBackColor(getBackColor(), dotData.getSkinParam(),
-						group.getStereotype() == null ? null : group.getStereotype().getLabel());
+						group.getStereotype());
 				final ClusterDecoration decoration = new ClusterDecoration(style, group.getUSymbol(), ztitle, zstereo,
 						stateBack, minX, minY, maxX, maxY);
 				decoration.drawU(ug, borderColor, dotData.getSkinParam().shadowing());
@@ -316,8 +323,7 @@ public class Cluster implements Moveable {
 			if (dotData.getSkinParam().shadowing()) {
 				rect.setDeltaShadow(3.0);
 			}
-			final HtmlColor stateBack = getStateBackColor(getBackColor(), dotData.getSkinParam(),
-					group.getStereotype() == null ? null : group.getStereotype().getLabel());
+			final HtmlColor stateBack = getStateBackColor(getBackColor(), dotData.getSkinParam(), group.getStereotype());
 			ug = ug.apply(new UChangeBackColor(stateBack)).apply(new UChangeColor(borderColor));
 			ug.apply(new UStroke(2)).apply(new UTranslate(minX, minY)).draw(rect);
 
@@ -368,11 +374,11 @@ public class Cluster implements Moveable {
 
 	}
 
-	private HtmlColor getColor(DotData dotData, ColorParam colorParam, String stereo) {
+	private HtmlColor getColor(DotData dotData, ColorParam colorParam, Stereotype stereo) {
 		return new Rose().getHtmlColor(dotData.getSkinParam(), colorParam, stereo);
 	}
 
-	private void drawUState(UGraphic ug, HtmlColor borderColor, DotData dotData) {
+	private void drawUState(UGraphic ug, HtmlColor borderColor, DotData dotData, UStroke stroke) {
 		final Dimension2D total = new Dimension2DDouble(maxX - minX, maxY - minY);
 		final double suppY;
 		if (ztitle == null) {
@@ -384,14 +390,13 @@ public class Cluster implements Moveable {
 
 		HtmlColor stateBack = getBackColor();
 		if (stateBack == null) {
-			stateBack = getColor(dotData, ColorParam.stateBackground, group.getStereotype() == null ? null : group
-					.getStereotype().getLabel());
+			stateBack = getColor(dotData, ColorParam.stateBackground, group.getStereotype());
 		}
 		final HtmlColor background = getColor(dotData, ColorParam.background, null);
 		final TextBlockWidth attribute = getTextBlockAttribute(dotData);
 		final double attributeHeight = attribute.calculateDimension(ug.getStringBounder()).getHeight();
 		final RoundedContainer r = new RoundedContainer(total, suppY, attributeHeight
-				+ (attributeHeight > 0 ? IEntityImage.MARGIN : 0), borderColor, stateBack, background);
+				+ (attributeHeight > 0 ? IEntityImage.MARGIN : 0), borderColor, stateBack, background, stroke);
 		r.drawU(ug.apply(new UTranslate(minX, minY)), dotData.getSkinParam().shadowing());
 
 		if (ztitle != null) {
@@ -743,6 +748,13 @@ public class Cluster implements Moveable {
 		if (result != null) {
 			return result;
 		}
+		final Stereotype stereo = group.getStereotype();
+		final USymbol sym = group.getUSymbol() == null ? USymbol.PACKAGE : group.getUSymbol();
+		final ColorParam backparam = sym.getColorParamBack();
+		final HtmlColor c1 = skinParam.getHtmlColor(backparam, stereo, false);
+		if (c1 != null) {
+			return c1;
+		}
 		if (parent == null) {
 			return null;
 		}
@@ -756,7 +768,7 @@ public class Cluster implements Moveable {
 		return group == ent;
 	}
 
-	public static HtmlColor getStateBackColor(HtmlColor stateBack, ISkinParam skinParam, String stereotype) {
+	public static HtmlColor getStateBackColor(HtmlColor stateBack, ISkinParam skinParam, Stereotype stereotype) {
 		if (stateBack == null) {
 			stateBack = skinParam.getHtmlColor(ColorParam.packageBackground, stereotype, false);
 		}

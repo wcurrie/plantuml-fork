@@ -108,34 +108,34 @@ public class CommandLinkActivity2 extends SingleLineCommand2<ActivityDiagram> {
 	}
 
 	@Override
-	protected CommandExecutionResult executeArg(ActivityDiagram diagram, RegexResult arg2) {
-		final IEntity entity1 = getEntity(diagram, arg2, true);
+	protected CommandExecutionResult executeArg(ActivityDiagram diagram, RegexResult arg) {
+		final IEntity entity1 = getEntity(diagram, arg, true);
 		if (entity1 == null) {
 			return CommandExecutionResult.error("No such activity");
 		}
-		if (arg2.get("STEREOTYPE", 0) != null) {
-			entity1.setStereotype(new Stereotype(arg2.get("STEREOTYPE", 0)));
+		if (arg.get("STEREOTYPE", 0) != null) {
+			entity1.setStereotype(new Stereotype(arg.get("STEREOTYPE", 0)));
 		}
-		if (arg2.get("BACKCOLOR", 0) != null) {
-			entity1.setSpecificBackcolor(HtmlColorUtils.getColorIfValid(arg2.get("BACKCOLOR", 0)));
+		if (arg.get("BACKCOLOR", 0) != null) {
+			entity1.setSpecificBackcolor(HtmlColorUtils.getColorIfValid(arg.get("BACKCOLOR", 0)));
 		}
 
-		final IEntity entity2 = getEntity(diagram, arg2, false);
+		final IEntity entity2 = getEntity(diagram, arg, false);
 		if (entity2 == null) {
 			return CommandExecutionResult.error("No such activity");
 		}
-		if (arg2.get("BACKCOLOR2", 0) != null) {
-			entity2.setSpecificBackcolor(HtmlColorUtils.getColorIfValid(arg2.get("BACKCOLOR2", 0)));
+		if (arg.get("BACKCOLOR2", 0) != null) {
+			entity2.setSpecificBackcolor(HtmlColorUtils.getColorIfValid(arg.get("BACKCOLOR2", 0)));
 		}
-		if (arg2.get("STEREOTYPE2", 0) != null) {
-			entity2.setStereotype(new Stereotype(arg2.get("STEREOTYPE2", 0)));
+		if (arg.get("STEREOTYPE2", 0) != null) {
+			entity2.setStereotype(new Stereotype(arg.get("STEREOTYPE2", 0)));
 		}
 
-		final Display linkLabel = Display.getWithNewlines(arg2.get("BRACKET", 0));
+		final Display linkLabel = Display.getWithNewlines(arg.get("BRACKET", 0));
 
-		final String arrowBody1 = CommandLinkClass.notNull(arg2.get("ARROW_BODY1", 0));
-		final String arrowBody2 = CommandLinkClass.notNull(arg2.get("ARROW_BODY2", 0));
-		final String arrowDirection = CommandLinkClass.notNull(arg2.get("ARROW_DIRECTION", 0));
+		final String arrowBody1 = CommandLinkClass.notNull(arg.get("ARROW_BODY1", 0));
+		final String arrowBody2 = CommandLinkClass.notNull(arg.get("ARROW_BODY2", 0));
+		final String arrowDirection = CommandLinkClass.notNull(arg.get("ARROW_DIRECTION", 0));
 
 		final String arrow = StringUtils.manageArrowForCuca(arrowBody1 + arrowDirection + arrowBody2 + ">");
 		int lenght = arrow.length() - 1;
@@ -156,13 +156,13 @@ public class CommandLinkActivity2 extends SingleLineCommand2<ActivityDiagram> {
 		if (direction == Direction.LEFT || direction == Direction.UP) {
 			link = link.getInv();
 		}
-		if (arg2.get("URL", 0) != null) {
+		if (arg.get("URL", 0) != null) {
 			final UrlBuilder urlBuilder = new UrlBuilder(diagram.getSkinParam().getValue("topurl"), ModeUrl.STRICT);
-			final Url urlLink = urlBuilder.getUrl(arg2.get("URL", 0));
+			final Url urlLink = urlBuilder.getUrl(arg.get("URL", 0));
 			link.setUrl(urlLink);
 		}
 
-		CommandLinkClass.applyStyle(arg2.getLazzy("ARROW_STYLE", 0), link);
+		CommandLinkClass.applyStyle(arg.getLazzy("ARROW_STYLE", 0), link);
 		diagram.addLink(link);
 
 		return CommandExecutionResult.ok();

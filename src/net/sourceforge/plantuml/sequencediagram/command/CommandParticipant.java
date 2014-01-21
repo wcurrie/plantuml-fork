@@ -66,20 +66,20 @@ public abstract class CommandParticipant extends SingleLineCommand2<SequenceDiag
 	}
 
 	@Override
-	final protected CommandExecutionResult executeArg(SequenceDiagram system, RegexResult arg2) {
-		final String code = arg2.get("CODE", 0);
+	final protected CommandExecutionResult executeArg(SequenceDiagram system, RegexResult arg) {
+		final String code = arg.get("CODE", 0);
 		if (system.participants().containsKey(code)) {
 			system.putParticipantInLast(code);
 			return CommandExecutionResult.ok();
 		}
 
 		Display strings = null;
-		if (arg2.get("FULL", 0) != null) {
-			strings = Display.getWithNewlines(arg2.get("FULL", 0));
+		if (arg.get("FULL", 0) != null) {
+			strings = Display.getWithNewlines(arg.get("FULL", 0));
 		}
 
-		final String typeString1 = arg2.get("TYPE", 0);
-		final String typeCreate1 = arg2.get("CREATE", 0);
+		final String typeString1 = arg.get("TYPE", 0);
+		final String typeCreate1 = arg.get("CREATE", 0);
 		final ParticipantType type;
 		final boolean create;
 		if (typeCreate1 != null) {
@@ -94,7 +94,7 @@ public abstract class CommandParticipant extends SingleLineCommand2<SequenceDiag
 		}
 		final Participant participant = system.createNewParticipant(type, code, strings);
 
-		final String stereotype = arg2.get("STEREO", 0);
+		final String stereotype = arg.get("STEREO", 0);
 
 		if (stereotype != null) {
 			final ISkinParam skinParam = system.getSkinParam();
@@ -103,9 +103,9 @@ public abstract class CommandParticipant extends SingleLineCommand2<SequenceDiag
 			participant.setStereotype(new Stereotype(stereotype, skinParam.getCircledCharacterRadius(), font),
 					stereotypePositionTop);
 		}
-		participant.setSpecificBackcolor(HtmlColorUtils.getColorIfValid(arg2.get("COLOR", 0)));
+		participant.setSpecificBackcolor(HtmlColorUtils.getColorIfValid(arg.get("COLOR", 0)));
 
-		final String urlString = arg2.get("URL", 0);
+		final String urlString = arg.get("URL", 0);
 		if (urlString != null) {
 			final UrlBuilder urlBuilder = new UrlBuilder(system.getSkinParam().getValue("topurl"), ModeUrl.STRICT);
 			final Url url = urlBuilder.getUrl(urlString);

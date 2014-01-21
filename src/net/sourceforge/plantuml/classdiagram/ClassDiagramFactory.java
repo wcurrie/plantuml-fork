@@ -51,7 +51,6 @@ import net.sourceforge.plantuml.classdiagram.command.CommandNamespaceSeparator;
 import net.sourceforge.plantuml.classdiagram.command.CommandStereotype;
 import net.sourceforge.plantuml.classdiagram.command.CommandUrl;
 import net.sourceforge.plantuml.command.Command;
-import net.sourceforge.plantuml.command.CommandEndNamespace;
 import net.sourceforge.plantuml.command.CommandEndPackage;
 import net.sourceforge.plantuml.command.CommandNamespace;
 import net.sourceforge.plantuml.command.CommandPackage;
@@ -91,7 +90,6 @@ public class ClassDiagramFactory extends UmlDiagramFactory {
 		cmds.add(new CommandPackageEmpty());
 
 		cmds.add(new CommandNamespace());
-		cmds.add(new CommandEndNamespace());
 		cmds.add(new CommandStereotype());
 
 		cmds.add(new CommandLinkClass(UmlDiagramType.CLASS));

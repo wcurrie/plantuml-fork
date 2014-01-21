@@ -75,7 +75,7 @@ public class PSystemCreole extends AbstractPSystem {
 		final UFont font = new UFont("Serif", Font.PLAIN, 14);
 		final FontConfiguration fontConfiguration = new FontConfiguration(font, HtmlColorUtils.BLACK);
 		final Sheet sheet = new CreoleParser(fontConfiguration, null).createSheet(display);
-		final SheetBlock sheetBlock = new SheetBlock(sheet, null, new UStroke());
+		final SheetBlock1 sheetBlock = new SheetBlock1(sheet);
 		final Dimension2D dim = TextBlockUtils.getDimension(sheetBlock);
 		final UGraphic ug = fileFormat.createUGraphic(new ColorMapperIdentity(), 1, dim, null, false);
 		// sheetBlock.drawU(ug.apply(new UTranslate(0, 10)));

@@ -34,14 +34,12 @@
 package net.sourceforge.plantuml.activitydiagram3.ftile.vertical;
 
 import java.awt.geom.Dimension2D;
-import java.awt.geom.Point2D;
 import java.util.Collections;
 import java.util.Set;
 
 import net.sourceforge.plantuml.Dimension2DDouble;
 import net.sourceforge.plantuml.ISkinParam;
 import net.sourceforge.plantuml.OptionFlags;
-import net.sourceforge.plantuml.SpriteContainerEmpty;
 import net.sourceforge.plantuml.activitydiagram3.LinkRendering;
 import net.sourceforge.plantuml.activitydiagram3.ftile.AbstractFtile;
 import net.sourceforge.plantuml.activitydiagram3.ftile.BoxStyle;
@@ -49,7 +47,8 @@ import net.sourceforge.plantuml.activitydiagram3.ftile.FtileGeometry;
 import net.sourceforge.plantuml.activitydiagram3.ftile.Swimlane;
 import net.sourceforge.plantuml.creole.CreoleParser;
 import net.sourceforge.plantuml.creole.Sheet;
-import net.sourceforge.plantuml.creole.SheetBlock;
+import net.sourceforge.plantuml.creole.SheetBlock1;
+import net.sourceforge.plantuml.creole.SheetBlock2;
 import net.sourceforge.plantuml.creole.Stencil;
 import net.sourceforge.plantuml.cucadiagram.Display;
 import net.sourceforge.plantuml.graphic.FontConfiguration;
@@ -105,7 +104,7 @@ public class FtileBox extends AbstractFtile {
 		}
 
 		public double getEndingX(StringBounder stringBounder, double y) {
-			final Dimension2D dim = asTextBlock().calculateDimension(stringBounder);
+			final Dimension2D dim = calculateDimension(stringBounder);
 			return dim.getWidth() - MARGIN;
 		}
 
@@ -122,7 +121,7 @@ public class FtileBox extends AbstractFtile {
 		final FontConfiguration fc = new FontConfiguration(font, HtmlColorUtils.BLACK);
 		if (OptionFlags.USE_CREOLE) {
 			final Sheet sheet = new CreoleParser(fc, skinParam).createSheet(label);
-			tb = new SheetBlock(sheet, new MyStencil(), new UStroke(1));
+			tb = new SheetBlock2(new SheetBlock1(sheet), new MyStencil(), new UStroke(1));
 		} else {
 			tb = TextBlockUtils.create(label, fc, HorizontalAlignment.LEFT, skinParam);
 		}
@@ -136,36 +135,26 @@ public class FtileBox extends AbstractFtile {
 		return print;
 	}
 
-	public TextBlock asTextBlock() {
-		return new TextBlock() {
+	public void drawU(UGraphic ug) {
+		final Dimension2D dimTotal = calculateDimension(ug.getStringBounder());
+		final double widthTotal = dimTotal.getWidth();
+		final double heightTotal = dimTotal.getHeight();
+		final UDrawable rect = style.getUDrawable(widthTotal, heightTotal, shadowing());
 
-			public void drawU(UGraphic ug) {
-				final Dimension2D dimTotal = calculateDimension(ug.getStringBounder());
-				final double widthTotal = dimTotal.getWidth();
-				final double heightTotal = dimTotal.getHeight();
-				final UDrawable rect = style.getUDrawable(widthTotal, heightTotal, shadowing());
+		ug = ug.apply(new UChangeColor(color)).apply(new UChangeBackColor(backColor)).apply(new UStroke(1.5));
+		rect.drawU(ug);
 
-				ug = ug.apply(new UChangeColor(color)).apply(new UChangeBackColor(backColor)).apply(new UStroke(1.5));
-				rect.drawU(ug);
-
-				tb.drawU(ug.apply(new UTranslate(MARGIN, MARGIN)));
-			}
-
-			public Dimension2D calculateDimension(StringBounder stringBounder) {
-				final Dimension2D dim = tb.calculateDimension(stringBounder);
-				return Dimension2DDouble.delta(dim, 2 * MARGIN, 2 * MARGIN);
-			}
-		};
+		tb.drawU(ug.apply(new UTranslate(MARGIN, MARGIN)));
 	}
 
-	public boolean isKilled__TOBEREMOVED() {
+	public boolean isKilled() {
 		return false;
 	}
 
-	public FtileGeometry getGeometry(StringBounder stringBounder) {
+	public FtileGeometry calculateDimension(StringBounder stringBounder) {
 		final Dimension2D dim = tb.calculateDimension(stringBounder);
-		return new FtileGeometry(dim.getWidth() / 2 + MARGIN, 0, dim.getHeight() + 2 * MARGIN);
+		return new FtileGeometry(Dimension2DDouble.delta(dim, 2 * MARGIN, 2 * MARGIN), dim.getWidth() / 2 + MARGIN, 0,
+				dim.getHeight() + 2 * MARGIN);
 	}
-
 
 }

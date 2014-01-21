@@ -129,13 +129,13 @@ public class CommandArrow extends SingleLineCommand2<SequenceDiagram> {
 	}
 
 	@Override
-	protected CommandExecutionResult executeArg(SequenceDiagram system, RegexResult arg2) {
+	protected CommandExecutionResult executeArg(SequenceDiagram system, RegexResult arg) {
 
 		Participant p1;
 		Participant p2;
 
-		final String dressing1 = CommandLinkClass.notNull(arg2.get("ARROW_DRESSING1", 0)).toLowerCase();
-		final String dressing2 = CommandLinkClass.notNull(arg2.get("ARROW_DRESSING2", 0)).toLowerCase();
+		final String dressing1 = CommandLinkClass.notNull(arg.get("ARROW_DRESSING1", 0)).toLowerCase();
+		final String dressing2 = CommandLinkClass.notNull(arg.get("ARROW_DRESSING2", 0)).toLowerCase();
 
 		final boolean circleAtStart;
 		final boolean circleAtEnd;
@@ -143,13 +143,13 @@ public class CommandArrow extends SingleLineCommand2<SequenceDiagram> {
 		final boolean hasDressing2 = contains(dressing2, ">", "\\", "/", "x");
 		final boolean hasDressing1 = contains(dressing1, "x", "<", "\\", "/");
 		if (hasDressing2) {
-			p1 = getOrCreateParticipant(system, arg2, "PART1");
-			p2 = getOrCreateParticipant(system, arg2, "PART2");
+			p1 = getOrCreateParticipant(system, arg, "PART1");
+			p2 = getOrCreateParticipant(system, arg, "PART2");
 			circleAtStart = dressing1.contains("o");
 			circleAtEnd = dressing2.contains("o");
 		} else if (hasDressing1) {
-			p2 = getOrCreateParticipant(system, arg2, "PART1");
-			p1 = getOrCreateParticipant(system, arg2, "PART2");
+			p2 = getOrCreateParticipant(system, arg, "PART1");
+			p1 = getOrCreateParticipant(system, arg, "PART2");
 			circleAtStart = dressing2.contains("o");
 			circleAtEnd = dressing1.contains("o");
 		} else {
@@ -159,13 +159,13 @@ public class CommandArrow extends SingleLineCommand2<SequenceDiagram> {
 
 		final boolean sync = contains(dressing1, "<<", "\\\\", "//") || contains(dressing2, ">>", "\\\\", "//");
 
-		final boolean dotted = getLength(arg2) > 1;
+		final boolean dotted = getLength(arg) > 1;
 
 		final Display labels;
-		if (arg2.get("MESSAGE", 0) == null) {
+		if (arg.get("MESSAGE", 0) == null) {
 			labels = Display.asList("");
 		} else {
-			labels = Display.getWithNewlines(arg2.get("MESSAGE", 0));
+			labels = Display.getWithNewlines(arg.get("MESSAGE", 0));
 		}
 
 		ArrowConfiguration config = hasDressing1 && hasDressing2 ? ArrowConfiguration.withDirectionBoth()
@@ -196,9 +196,9 @@ public class CommandArrow extends SingleLineCommand2<SequenceDiagram> {
 			config = config.withHead2(ArrowHead.CROSSX);
 		}
 
-		config = applyStyle(arg2.getLazzy("ARROW_STYLE", 0), config);
+		config = applyStyle(arg.getLazzy("ARROW_STYLE", 0), config);
 
-		final String activationSpec = arg2.get("ACTIVATION", 0);
+		final String activationSpec = arg.get("ACTIVATION", 0);
 
 		if (activationSpec != null && activationSpec.charAt(0) == '*') {
 			system.activate(p2, LifeEventType.CREATE, null);
@@ -209,7 +209,7 @@ public class CommandArrow extends SingleLineCommand2<SequenceDiagram> {
 			return CommandExecutionResult.error(error);
 		}
 
-		final HtmlColor activationColor = HtmlColorUtils.getColorIfValid(arg2.get("LIFECOLOR", 0));
+		final HtmlColor activationColor = HtmlColorUtils.getColorIfValid(arg.get("LIFECOLOR", 0));
 
 		if (activationSpec != null) {
 			switch (activationSpec.charAt(0)) {

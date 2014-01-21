@@ -46,4 +46,14 @@ public class StartUtils {
 		return s.startsWith("@end");
 	}
 
+	public static boolean isArobasePauseDiagram(String s) {
+		s = s.trim();
+		return s.startsWith("@pause");
+	}
+
+	public static boolean isArobaseContinueDiagram(String s) {
+		s = s.trim();
+		return s.startsWith("@continue");
+	}
+
 }

@@ -33,24 +33,21 @@
  */
 package net.sourceforge.plantuml.activitydiagram3.ftile;
 
-import java.awt.geom.Dimension2D;
 import java.util.Set;
 
-import net.sourceforge.plantuml.Dimension2DDouble;
 import net.sourceforge.plantuml.graphic.StringBounder;
-import net.sourceforge.plantuml.graphic.TextBlock;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
 import net.sourceforge.plantuml.ugraphic.UTranslate;
 
 public class FtileMarged extends AbstractFtile {
 
 	private final Ftile tile;
-	private final double marge;
+	private final double margin;
 
-	public FtileMarged(Ftile tile, double marge) {
+	public FtileMarged(Ftile tile, double margin) {
 		super(tile.shadowing());
 		this.tile = tile;
-		this.marge = marge;
+		this.margin = margin;
 	}
 
 	public Set<Swimlane> getSwimlanes() {
@@ -65,25 +62,18 @@ public class FtileMarged extends AbstractFtile {
 		return tile.getSwimlaneOut();
 	}
 
-	public FtileGeometry getGeometry(StringBounder stringBounder) {
-		return tile.getGeometry(stringBounder).translate(new UTranslate(marge, 0));
+	public FtileGeometry calculateDimension(StringBounder stringBounder) {
+		final FtileGeometry orig = tile.calculateDimension(stringBounder);
+		return new FtileGeometry(orig.getWidth() + 2 * margin, orig.getHeight(), orig.getLeft() + margin,
+				orig.getInY(), orig.getOutY());
 	}
 
-	public TextBlock asTextBlock() {
-		return new TextBlock() {
-
-			public void drawU(UGraphic ug) {
-				ug.apply(new UTranslate(marge, 0)).draw(tile);
-			}
-
-			public Dimension2D calculateDimension(StringBounder stringBounder) {
-				return Dimension2DDouble.delta(tile.asTextBlock().calculateDimension(stringBounder), 2 * marge, 0);
-			}
-		};
+	public void drawU(UGraphic ug) {
+		ug.apply(new UTranslate(margin, 0)).draw(tile);
 	}
 
-	public boolean isKilled__TOBEREMOVED() {
-		return tile.isKilled__TOBEREMOVED();
+	public boolean isKilled() {
+		return tile.isKilled();
 	}
 
 }

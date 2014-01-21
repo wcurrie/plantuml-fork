@@ -33,6 +33,8 @@
  */
 package net.sourceforge.plantuml;
 
+import net.sourceforge.plantuml.cucadiagram.Rankdir;
+import net.sourceforge.plantuml.cucadiagram.Stereotype;
 import net.sourceforge.plantuml.cucadiagram.dot.DotSplines;
 import net.sourceforge.plantuml.cucadiagram.dot.GraphvizLayoutStrategy;
 import net.sourceforge.plantuml.graphic.HorizontalAlignment;
@@ -60,15 +62,15 @@ public class SkinParamDelegator implements ISkinParam {
 		return skinParam.getCircledCharacterRadius();
 	}
 
-	public UFont getFont(FontParam fontParam, String stereotype) {
+	public UFont getFont(FontParam fontParam, Stereotype stereotype) {
 		return skinParam.getFont(fontParam, stereotype);
 	}
 
-	public HtmlColor getFontHtmlColor(FontParam param, String stereotype) {
+	public HtmlColor getFontHtmlColor(FontParam param, Stereotype stereotype) {
 		return skinParam.getFontHtmlColor(param, stereotype);
 	}
 
-	public HtmlColor getHtmlColor(ColorParam param, String stereotype, boolean clickable) {
+	public HtmlColor getHtmlColor(ColorParam param, Stereotype stereotype, boolean clickable) {
 		return skinParam.getHtmlColor(param, stereotype, clickable);
 	}
 
@@ -162,6 +164,10 @@ public class SkinParamDelegator implements ISkinParam {
 
 	public boolean sameClassWidth() {
 		return skinParam.sameClassWidth();
+	}
+
+	public Rankdir getRankdir() {
+		return skinParam.getRankdir();
 	}
 
 }

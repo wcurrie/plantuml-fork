@@ -125,9 +125,8 @@ public class EntityImageNote extends AbstractEntityImage implements Stencil {
 	}
 
 	private static HtmlColor getColorStatic(ISkinParam skinParam, ColorParam colorParam, Stereotype stereo) {
-		final String s = stereo == null ? null : stereo.getLabel();
 		final Rose rose = new Rose();
-		return rose.getHtmlColor(skinParam, colorParam, s);
+		return rose.getHtmlColor(skinParam, colorParam, stereo);
 	}
 
 	final public double getPreferredWidth(StringBounder stringBounder) {

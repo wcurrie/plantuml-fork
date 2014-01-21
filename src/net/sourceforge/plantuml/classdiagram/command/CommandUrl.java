@@ -56,7 +56,7 @@ public class CommandUrl extends SingleLineCommand<AbstractEntityDiagram> {
 		final String urlString = arg.get(1);
 		final IEntity entity;
 		if (diagram.leafExist(code)) {
-			entity = diagram.getOrCreateLeaf(code, null);
+			entity = diagram.getOrCreateLeaf(code, null, null);
 		} else if (diagram.isGroup(code)) {
 			entity = diagram.getGroup(code);
 		} else {

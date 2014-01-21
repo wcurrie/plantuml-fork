@@ -62,7 +62,7 @@ public class CommandCreateElementFull extends SingleLineCommand2<DescriptionDiag
 	private static RegexConcat getRegexConcat() {
 		return new RegexConcat(
 				new RegexLeaf("^"), //
-				new RegexLeaf("SYMBOL", "(?:(artifact|actor|folder|rect|node|frame|cloud|database|storage|agent|usecase|component|boundary|control|entity|interface|\\(\\))[%s]+)?"), //
+				new RegexLeaf("SYMBOL", "(?:(artifact|actor|folder|package|rectangle|node|frame|cloud|database|storage|agent|usecase|component|boundary|control|entity|interface|\\(\\))[%s]+)?"), //
 				new RegexLeaf("[%s]*"), //
 				new RegexOr(//
 						new RegexLeaf("CODE1", CODE_WITH_QUOTE), //
@@ -130,55 +130,58 @@ public class CommandCreateElementFull extends SingleLineCommand2<DescriptionDiag
 		final USymbol usymbol;
 
 		if (symbol == null) {
-			type = LeafType.COMPONENT2;
+			type = LeafType.DESCRIPTION;
 			usymbol = USymbol.ACTOR;
 		} else if (symbol.equalsIgnoreCase("artifact")) {
-			type = LeafType.COMPONENT2;
+			type = LeafType.DESCRIPTION;
 			usymbol = USymbol.ARTIFACT;
 		} else if (symbol.equalsIgnoreCase("folder")) {
-			type = LeafType.COMPONENT2;
+			type = LeafType.DESCRIPTION;
 			usymbol = USymbol.FOLDER;
-		} else if (symbol.equalsIgnoreCase("rect")) {
-			type = LeafType.COMPONENT2;
-			usymbol = USymbol.RECT;
+		} else if (symbol.equalsIgnoreCase("package")) {
+			type = LeafType.DESCRIPTION;
+			usymbol = USymbol.PACKAGE;
+		} else if (symbol.equalsIgnoreCase("rectangle")) {
+			type = LeafType.DESCRIPTION;
+			usymbol = USymbol.RECTANGLE;
 		} else if (symbol.equalsIgnoreCase("node")) {
-			type = LeafType.COMPONENT2;
+			type = LeafType.DESCRIPTION;
 			usymbol = USymbol.NODE;
 		} else if (symbol.equalsIgnoreCase("frame")) {
-			type = LeafType.COMPONENT2;
+			type = LeafType.DESCRIPTION;
 			usymbol = USymbol.FRAME;
 		} else if (symbol.equalsIgnoreCase("cloud")) {
-			type = LeafType.COMPONENT2;
+			type = LeafType.DESCRIPTION;
 			usymbol = USymbol.CLOUD;
 		} else if (symbol.equalsIgnoreCase("database")) {
-			type = LeafType.COMPONENT2;
+			type = LeafType.DESCRIPTION;
 			usymbol = USymbol.DATABASE;
 		} else if (symbol.equalsIgnoreCase("storage")) {
-			type = LeafType.COMPONENT2;
+			type = LeafType.DESCRIPTION;
 			usymbol = USymbol.STORAGE;
 		} else if (symbol.equalsIgnoreCase("agent")) {
-			type = LeafType.COMPONENT2;
-			usymbol = USymbol.RECT;
+			type = LeafType.DESCRIPTION;
+			usymbol = USymbol.AGENT;
 		} else if (symbol.equalsIgnoreCase("actor")) {
-			type = LeafType.COMPONENT2;
+			type = LeafType.DESCRIPTION;
 			usymbol = USymbol.ACTOR;
 		} else if (symbol.equalsIgnoreCase("component")) {
-			type = LeafType.COMPONENT2;
+			type = LeafType.DESCRIPTION;
 			usymbol = system.getSkinParam().useUml2ForComponent() ? USymbol.COMPONENT2 : USymbol.COMPONENT1;
 		} else if (symbol.equalsIgnoreCase("boundary")) {
-			type = LeafType.COMPONENT2;
+			type = LeafType.DESCRIPTION;
 			usymbol = USymbol.BOUNDARY;
 		} else if (symbol.equalsIgnoreCase("control")) {
-			type = LeafType.COMPONENT2;
+			type = LeafType.DESCRIPTION;
 			usymbol = USymbol.CONTROL;
 		} else if (symbol.equalsIgnoreCase("entity")) {
-			type = LeafType.COMPONENT2;
+			type = LeafType.DESCRIPTION;
 			usymbol = USymbol.ENTITY_DOMAIN;
 		} else if (symbol.equalsIgnoreCase("interface")) {
-			type = LeafType.COMPONENT2;
+			type = LeafType.DESCRIPTION;
 			usymbol = USymbol.INTERFACE;
 		} else if (symbol.equalsIgnoreCase("()")) {
-			type = LeafType.COMPONENT2;
+			type = LeafType.DESCRIPTION;
 			usymbol = USymbol.INTERFACE;
 		} else if (symbol.equalsIgnoreCase("usecase")) {
 			type = LeafType.USECASE;
@@ -194,7 +197,7 @@ public class CommandCreateElementFull extends SingleLineCommand2<DescriptionDiag
 		}
 		display = StringUtils.eventuallyRemoveStartingAndEndingDoubleQuote(display);
 		final String stereotype = arg.getLazzy("STEREOTYPE", 0);
-		final IEntity entity = system.getOrCreateLeaf(code, type);
+		final IEntity entity = system.getOrCreateLeaf(code, type, usymbol);
 		entity.setDisplay(Display.getWithNewlines(display));
 		entity.setUSymbol(usymbol);
 		if (stereotype != null) {

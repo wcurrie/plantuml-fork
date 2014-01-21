@@ -34,14 +34,15 @@
 package net.sourceforge.plantuml.graphic;
 
 import net.sourceforge.plantuml.ColorParam;
+import net.sourceforge.plantuml.FontParam;
 import net.sourceforge.plantuml.svek.EntityDomain;
 
 class USymbolEntityDomain extends USymbolSimpleAbstract {
 
 	private final double thickness;
-	
+
 	public USymbolEntityDomain(double thickness) {
-		super(ColorParam.entityBackground, ColorParam.entityBorder);
+		super(ColorParam.entityBackground, ColorParam.entityBorder, FontParam.ENTITY, FontParam.ENTITY_STEREOTYPE);
 		this.thickness = thickness;
 	}
 

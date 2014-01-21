@@ -108,7 +108,8 @@ public final class FactoryNoteOnEntityCommand implements SingleMultiFactoryComma
 	}
 
 	public Command<AbstractEntityDiagram> createMultiLine() {
-		return new CommandMultilines2<AbstractEntityDiagram>(getRegexConcatMultiLine(partialPattern), MultilinesStrategy.KEEP_STARTING_QUOTE) {
+		return new CommandMultilines2<AbstractEntityDiagram>(getRegexConcatMultiLine(partialPattern),
+				MultilinesStrategy.KEEP_STARTING_QUOTE) {
 
 			@Override
 			public String getPatternEnd() {
@@ -116,13 +117,14 @@ public final class FactoryNoteOnEntityCommand implements SingleMultiFactoryComma
 			}
 
 			public CommandExecutionResult executeNow(final AbstractEntityDiagram system, List<String> lines) {
-				//StringUtils.trim(lines, false);
+				// StringUtils.trim(lines, false);
 				final RegexResult line0 = getStartingPattern().matcher(lines.get(0).trim());
 
 				List<String> strings = StringUtils.removeEmptyColumns(lines.subList(1, lines.size() - 1));
 				Url url = null;
 				if (strings.size() > 0) {
-					final UrlBuilder urlBuilder = new UrlBuilder(system.getSkinParam().getValue("topurl"), ModeUrl.STRICT);
+					final UrlBuilder urlBuilder = new UrlBuilder(system.getSkinParam().getValue("topurl"),
+							ModeUrl.STRICT);
 					url = urlBuilder.getUrl(strings.get(0));
 				}
 				if (url != null) {
@@ -147,16 +149,16 @@ public final class FactoryNoteOnEntityCommand implements SingleMultiFactoryComma
 				return CommandExecutionResult.error("Nothing to note to");
 			}
 		} else {
-			cl1 = system.getOrCreateLeaf(code, null);
+			cl1 = system.getOrCreateLeaf(code, null, null);
 		}
 
-		final IEntity note = system.createLeaf(UniqueSequence.getCode("GMN"), new Display(s), LeafType.NOTE);
+		final IEntity note = system.createLeaf(UniqueSequence.getCode("GMN"), new Display(s), LeafType.NOTE, null);
 		note.setSpecificBackcolor(HtmlColorUtils.getColorIfValid(line0.get("COLOR", 0)));
 		if (url != null) {
 			note.addUrl(url);
 		}
 
-		final Position position = Position.valueOf(pos.toUpperCase()).withRankdir(system.getRankdir());
+		final Position position = Position.valueOf(pos.toUpperCase()).withRankdir(system.getSkinParam().getRankdir());
 		final Link link;
 
 		final LinkType type = new LinkType(LinkDecor.NONE, LinkDecor.NONE).getDashed();

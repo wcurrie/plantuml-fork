@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 12235 $
+ * Revision $Revision: 12371 $
  *
  */
 package net.sourceforge.plantuml.cucadiagram;
@@ -55,6 +55,7 @@ import net.sourceforge.plantuml.api.ImageDataSimple;
 import net.sourceforge.plantuml.core.ImageData;
 import net.sourceforge.plantuml.cucadiagram.dot.CucaDiagramTxtMaker;
 import net.sourceforge.plantuml.cucadiagram.entity.EntityFactory;
+import net.sourceforge.plantuml.graphic.USymbol;
 import net.sourceforge.plantuml.hector2.CucaDiagramFileMakerHectorC1;
 import net.sourceforge.plantuml.skin.VisibilityModifier;
 import net.sourceforge.plantuml.svek.CucaDiagramFileMaker;
@@ -70,11 +71,11 @@ public abstract class CucaDiagram extends UmlDiagram implements GroupHierarchy, 
 	private final EntityFactory entityFactory = new EntityFactory();
 	private IGroup currentGroup = entityFactory.getRootGroup();
 
-	private Rankdir rankdir = Rankdir.TOP_TO_BOTTOM;
+	// private Rankdir rankdir = Rankdir.TOP_TO_BOTTOM;
 
 	private boolean visibilityModifierPresent;
 
-	public abstract IEntity getOrCreateLeaf(Code code, LeafType type);
+	public abstract IEntity getOrCreateLeaf(Code code, LeafType type, USymbol symbol);
 
 	@Override
 	public boolean hasUrl() {
@@ -100,32 +101,34 @@ public abstract class CucaDiagram extends UmlDiagram implements GroupHierarchy, 
 	// return getOrCreateLeaf1Default(code, type);
 	// }
 
-	final protected ILeaf getOrCreateLeafDefault(Code code, LeafType type) {
+	final protected ILeaf getOrCreateLeafDefault(Code code, LeafType type, USymbol symbol) {
 		if (type == null) {
 			throw new IllegalArgumentException();
 		}
 		ILeaf result = getLeafs().get(code);
 		if (result == null) {
-			result = createLeafInternal(code, Display.getWithNewlines(code), type, getCurrentGroup());
+			result = createLeafInternal(code, Display.getWithNewlines(code), type, getCurrentGroup(), symbol);
+			result.setUSymbol(symbol);
 		}
 		this.lastEntity = result;
 		return result;
 	}
 
-	public ILeaf createLeaf(Code code, Display display, LeafType type) {
+	public ILeaf createLeaf(Code code, Display display, LeafType type, USymbol symbol) {
 		if (getLeafs().containsKey(code)) {
 			throw new IllegalArgumentException("Already known: " + code);
 		}
-		return createLeafInternal(code, display, type, getCurrentGroup());
+		return createLeafInternal(code, display, type, getCurrentGroup(), symbol);
 	}
 
-	final protected ILeaf createLeafInternal(Code code, Display display, LeafType type, IGroup group) {
+	final protected ILeaf createLeafInternal(Code code, Display display, LeafType type, IGroup group, USymbol symbol) {
 		if (display == null) {
 			display = Display.getWithNewlines(code);
 		}
 		final ILeaf leaf = entityFactory.createLeaf(code, display, type, group, getHides());
 		entityFactory.addLeaf(leaf);
 		this.lastEntity = leaf;
+		leaf.setUSymbol(symbol);
 		return leaf;
 	}
 
@@ -321,13 +324,13 @@ public abstract class CucaDiagram extends UmlDiagram implements GroupHierarchy, 
 		maker.createFiles(os, index);
 	}
 
-	public final Rankdir getRankdir() {
-		return rankdir;
-	}
-
-	public final void setRankdir(Rankdir rankdir) {
-		this.rankdir = rankdir;
-	}
+//	public final Rankdir getRankdir() {
+//		return rankdir;
+//	}
+//
+//	public final void setRankdir(Rankdir rankdir) {
+//		this.rankdir = rankdir;
+//	}
 
 	public boolean isAutarkic(IGroup g) {
 		if (g.getGroupType() == GroupType.PACKAGE) {

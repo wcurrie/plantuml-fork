@@ -59,7 +59,7 @@ public class UGraphicInterceptorOneSwimlane extends UGraphicDelegator {
 			final Set<Swimlane> swinlanes = tile.getSwimlanes();
 			final boolean contained = swinlanes.contains(swimlane);
 			if (contained) {
-				tile.asTextBlock().drawU(this);
+				tile.drawU(this);
 			}
 		} else if (shape instanceof Connection) {
 			final Connection connection = (Connection) shape;

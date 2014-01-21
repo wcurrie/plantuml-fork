@@ -133,8 +133,7 @@ public final class GroupPngMakerActivity {
 	private final Rose rose = new Rose();
 
 	protected final HtmlColor getColor(ColorParam colorParam, Stereotype stereo) {
-		final String s = stereo == null ? null : stereo.getLabel();
 		final ISkinParam skinParam = diagram.getSkinParam();
-		return rose.getHtmlColor(skinParam, colorParam, s);
+		return rose.getHtmlColor(skinParam, colorParam, stereo);
 	}
 }

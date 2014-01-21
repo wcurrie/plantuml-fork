@@ -103,12 +103,12 @@ final public class CommandLinkLollipop extends SingleLineCommand2<AbstractClassO
 		final String suffix = "lol" + UniqueSequence.getValue();
 		if (arg.get("LOL_THEN_ENT", 0) == null) {
 			assert arg.get("ENT_THEN_LOL", 0) != null;
-			cl1 = diagram.getOrCreateLeaf(ent1, null);
-			cl2 = diagram.createLeaf(cl1.getCode().addSuffix(suffix), Display.getWithNewlines(ent2), LeafType.LOLLIPOP);
+			cl1 = diagram.getOrCreateLeaf(ent1, null, null);
+			cl2 = diagram.createLeaf(cl1.getCode().addSuffix(suffix), Display.getWithNewlines(ent2), LeafType.LOLLIPOP, null);
 			normalEntity = cl1;
 		} else {
-			cl2 = diagram.getOrCreateLeaf(ent2, null);
-			cl1 = diagram.createLeaf(cl2.getCode().addSuffix(suffix), Display.getWithNewlines(ent1), LeafType.LOLLIPOP);
+			cl2 = diagram.getOrCreateLeaf(ent2, null, null);
+			cl1 = diagram.createLeaf(cl2.getCode().addSuffix(suffix), Display.getWithNewlines(ent1), LeafType.LOLLIPOP, null);
 			normalEntity = cl2;
 		}
 

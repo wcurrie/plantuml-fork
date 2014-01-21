@@ -33,26 +33,46 @@
  */
 package net.sourceforge.plantuml.activitydiagram3.ftile;
 
+import java.awt.geom.Dimension2D;
 import java.awt.geom.Point2D;
 
 import net.sourceforge.plantuml.ugraphic.UTranslate;
 
-public class FtileGeometry {
+public class FtileGeometry extends Dimension2D {
 
+	private final double width;
+	private final double height;
 	private final double left;
 	private final double inY;
 	private final double outY;
 
-	public FtileGeometry(double left, double inY) {
+	public FtileGeometry(Dimension2D dim, double left, double inY) {
+		this(dim.getWidth(), dim.getHeight(), left, inY);
+	}
+
+	public FtileGeometry(double width, double height, double left, double inY) {
 		this.left = left;
 		this.inY = inY;
 		this.outY = Double.MIN_NORMAL;
+		this.width = width;
+		this.height = height;
 	}
 
-	public FtileGeometry(double left, double inY, double outY) {
+	@Override
+	public void setSize(double width, double height) {
+		throw new UnsupportedOperationException();
+	}
+
+	public FtileGeometry(double width, double height, double left, double inY, double outY) {
 		this.left = left;
 		this.inY = inY;
 		this.outY = outY;
+		this.width = width;
+		this.height = height;
+	}
+
+	public FtileGeometry(Dimension2D dim, double left, double inY, double outY) {
+		this(dim.getWidth(), dim.getHeight(), left, inY, outY);
 	}
 
 	public boolean hasPointOut() {
@@ -69,18 +89,18 @@ public class FtileGeometry {
 		}
 		return new Point2D.Double(left, outY);
 	}
-	
-	public FtileGeometry withoutPointOut() {
-		return new FtileGeometry(left, inY);
+
+	private FtileGeometry withoutPointOut() {
+		return new FtileGeometry(width, height, left, inY);
 	}
 
 	public FtileGeometry translate(UTranslate translate) {
 		final double dx = translate.getDx();
 		final double dy = translate.getDy();
 		if (this.outY == Double.MIN_NORMAL) {
-			return new FtileGeometry(left + dx, inY + dy);
+			return new FtileGeometry(width, height, left + dx, inY + dy);
 		}
-		return new FtileGeometry(left + dx, inY + dy, outY + dy);
+		return new FtileGeometry(width, height, left + dx, inY + dy, outY + dy);
 	}
 
 	public final double getInY() {
@@ -93,6 +113,30 @@ public class FtileGeometry {
 
 	public double getOutY() {
 		return outY;
+	}
+
+	public final double getWidth() {
+		return width;
+	}
+
+	public final double getHeight() {
+		return height;
+	}
+
+	public FtileGeometry addDim(double deltaWidth, double deltaHeight) {
+		return new FtileGeometry(width + deltaWidth, height + deltaWidth, left, inY, outY);
+	}
+
+	public FtileGeometry addMarginX(double marginx) {
+		return new FtileGeometry(width + 2 * marginx, height, left + marginx, inY, outY);
+	}
+
+	public FtileGeometry fixedHeight(double fixedHeight) {
+		return new FtileGeometry(width, fixedHeight, left, inY, outY);
+	}
+
+	public FtileGeometry appendBottom(FtileGeometry other) {
+		return new FtileGeometryMerger(this, other).getResult();
 	}
 
 }

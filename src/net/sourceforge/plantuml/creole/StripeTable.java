@@ -39,7 +39,6 @@ import java.util.StringTokenizer;
 
 import net.sourceforge.plantuml.ISkinParam;
 import net.sourceforge.plantuml.graphic.FontConfiguration;
-import net.sourceforge.plantuml.ugraphic.UStroke;
 
 public class StripeTable implements Stripe {
 
@@ -68,7 +67,7 @@ public class StripeTable implements Stripe {
 	private static Atom asAtom(StripeSimple stripe) {
 		final Sheet sheet = new Sheet();
 		sheet.add(stripe);
-		return new SheetBlock(sheet, null, new UStroke());
+		return new SheetBlock1(sheet);
 	}
 
 	private void analyzeAndAddInternal(String line, Mode mode) {

@@ -27,7 +27,6 @@
  * in the United States and other countries.]
  *
  * Original Author:  Arnaud Roques
- * Modified by : Arno Peterson
  * 
  * Revision $Revision: 5183 $
  *
@@ -37,13 +36,14 @@ package net.sourceforge.plantuml.svek.image;
 import java.awt.geom.Dimension2D;
 
 import net.sourceforge.plantuml.ISkinParam;
+import net.sourceforge.plantuml.LineConfigurable;
 import net.sourceforge.plantuml.SkinParamUtils;
 import net.sourceforge.plantuml.Url;
 import net.sourceforge.plantuml.cucadiagram.BodyEnhanced;
 import net.sourceforge.plantuml.cucadiagram.Display;
-import net.sourceforge.plantuml.cucadiagram.ILeaf;
+import net.sourceforge.plantuml.cucadiagram.IEntity;
+import net.sourceforge.plantuml.cucadiagram.Member;
 import net.sourceforge.plantuml.cucadiagram.Stereotype;
-import net.sourceforge.plantuml.graphic.FontConfiguration;
 import net.sourceforge.plantuml.graphic.HorizontalAlignment;
 import net.sourceforge.plantuml.graphic.HtmlColor;
 import net.sourceforge.plantuml.graphic.StringBounder;
@@ -56,25 +56,25 @@ import net.sourceforge.plantuml.svek.ShapeType;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
 import net.sourceforge.plantuml.ugraphic.UStroke;
 
-public class EntityImageComponent extends AbstractEntityImage {
+public class EntityImageState2 extends AbstractEntityImage {
 
 	final private Url url;
 
+	final private LineConfigurable lineConfig;
+
 	private final TextBlock asSmall;
 
-	public EntityImageComponent(ILeaf entity, ISkinParam skinParam) {
+	public EntityImageState2(IEntity entity, ISkinParam skinParam) {
 		super(entity, skinParam);
+		this.lineConfig = entity;
 		final Stereotype stereotype = entity.getStereotype();
-		final USymbol symbol = entity.getUSymbol() == null ? (skinParam.useUml2ForComponent() ? USymbol.COMPONENT2
-				: USymbol.COMPONENT1) : entity.getUSymbol();
-		if (symbol == null) {
-			throw new IllegalArgumentException();
+
+		Display list = new Display();
+		for (Member att : entity.getFieldsToDisplay()) {
+			list = list.addAll(Display.getWithNewlines(att.getDisplay(true)));
 		}
 
-		final TextBlock desc = new BodyEnhanced(entity.getDisplay(), symbol.getFontParam(), skinParam,
-				HorizontalAlignment.CENTER, stereotype, symbol.manageHorizontalLine(), false);
-
-		this.url = entity.getUrl99();
+		final USymbol symbol = USymbol.FRAME;
 
 		HtmlColor backcolor = getEntity().getSpecificBackColor();
 		if (backcolor == null) {
@@ -82,19 +82,26 @@ public class EntityImageComponent extends AbstractEntityImage {
 		}
 		// backcolor = HtmlColorUtils.BLUE;
 		final HtmlColor forecolor = SkinParamUtils.getColor(getSkinParam(), symbol.getColorParamBorder(), getStereo());
+
 		final SymbolContext ctx = new SymbolContext(backcolor, forecolor).withStroke(new UStroke(1.5)).withShadow(
 				getSkinParam().shadowing());
 
+		this.url = entity.getUrl99();
 		TextBlock stereo = TextBlockUtils.empty(0, 0);
-		if (stereotype != null && stereotype.getLabel() != null) {
-			stereo = TextBlockUtils.create(
-					Display.getWithNewlines(stereotype.getLabel()),
-					new FontConfiguration(SkinParamUtils.getFont(getSkinParam(), symbol.getFontParamStereotype(),
-							stereotype), SkinParamUtils.getFontColor(getSkinParam(), symbol.getFontParamStereotype(),
-							null)), HorizontalAlignment.CENTER, skinParam);
-		}
+
+		final TextBlock desc = new BodyEnhanced(entity.getDisplay(), symbol.getFontParam(), skinParam,
+				HorizontalAlignment.CENTER, stereotype, symbol.manageHorizontalLine(), false);
 
 		asSmall = symbol.asSmall(desc, stereo, ctx);
+
+	}
+
+	public ShapeType getShapeType() {
+		return ShapeType.RECTANGLE;
+	}
+
+	public int getShield() {
+		return 0;
 	}
 
 	public Dimension2D calculateDimension(StringBounder stringBounder) {
@@ -110,14 +117,6 @@ public class EntityImageComponent extends AbstractEntityImage {
 		if (url != null) {
 			ug.closeAction();
 		}
-	}
-
-	public ShapeType getShapeType() {
-		return ShapeType.RECTANGLE;
-	}
-
-	public int getShield() {
-		return 0;
 	}
 
 }

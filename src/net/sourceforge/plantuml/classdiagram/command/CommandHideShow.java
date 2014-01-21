@@ -117,7 +117,7 @@ public class CommandHideShow extends SingleLineCommand2<UmlDiagram> {
 		} else if (arg1.startsWith("<<")) {
 			gender = EntityGenderUtils.byStereotype(arg1);
 		} else {
-			final IEntity entity = classDiagram.getOrCreateLeaf(Code.of(arg1), null);
+			final IEntity entity = classDiagram.getOrCreateLeaf(Code.of(arg1), null, null);
 			gender = EntityGenderUtils.byEntityAlone(entity);
 		}
 		if (gender != null) {

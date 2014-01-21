@@ -37,13 +37,19 @@ import java.awt.geom.Dimension2D;
 
 import net.sourceforge.plantuml.ColorParam;
 import net.sourceforge.plantuml.Dimension2DDouble;
+import net.sourceforge.plantuml.FontParam;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
 import net.sourceforge.plantuml.ugraphic.UTranslate;
 
 abstract class USymbolSimpleAbstract extends USymbol {
-	
-	public USymbolSimpleAbstract(ColorParam colorParamBack, ColorParam colorParamBorder) {
-		super(colorParamBack, colorParamBorder);
+
+//	public USymbolSimpleAbstract(ColorParam colorParamBack, ColorParam colorParamBorder) {
+//		super(colorParamBack, colorParamBorder);
+//	}
+
+	public USymbolSimpleAbstract(ColorParam colorParamBack, ColorParam colorParamBorder, FontParam fontParam,
+			FontParam fontParamStereotype) {
+		super(colorParamBack, colorParamBorder, fontParam, fontParamStereotype);
 	}
 
 	public TextBlock asSmall(final TextBlock label, final TextBlock stereotype, final SymbolContext symbolContext) {
@@ -66,7 +72,7 @@ abstract class USymbolSimpleAbstract extends USymbol {
 				final double labelX = (dimTotal.getWidth() - dimName.getWidth()) / 2;
 				final double labelY = dimStickMan.getHeight() + dimStereo.getHeight();
 				label.drawU(ug.apply(new UTranslate(labelX, labelY)));
-				
+
 				final double stereoX = (dimTotal.getWidth() - dimStereo.getWidth()) / 2;
 				stereotype.drawU(ug.apply(new UTranslate(stereoX, 0)));
 			}

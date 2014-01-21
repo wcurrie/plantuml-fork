@@ -37,24 +37,20 @@ import java.util.Collection;
 
 import net.sourceforge.plantuml.activitydiagram3.LinkRendering;
 import net.sourceforge.plantuml.graphic.StringBounder;
-import net.sourceforge.plantuml.graphic.TextBlockable;
+import net.sourceforge.plantuml.graphic.TextBlock;
 import net.sourceforge.plantuml.ugraphic.UTranslate;
 
-public interface Ftile extends TextBlockable, Swimable {
+public interface Ftile extends Swimable, TextBlock {
 
 	public boolean shadowing();
 
-	public boolean isKilled__TOBEREMOVED();
+	public boolean isKilled();
 
 	public LinkRendering getInLinkRendering();
 
 	public LinkRendering getOutLinkRendering();
 
-//	public Point2D getPointIn__TOBEREMOVED(StringBounder stringBounder);
-//
-//	public Point2D getPointOut__TOBEREMOVED(StringBounder stringBounder);
-	
-	public FtileGeometry getGeometry(StringBounder stringBounder);
+	public FtileGeometry calculateDimension(StringBounder stringBounder);
 
 	public UTranslate getTranslateFor(Ftile child, StringBounder stringBounder);
 

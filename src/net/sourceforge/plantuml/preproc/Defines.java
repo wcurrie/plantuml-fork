@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 12235 $
+ * Revision $Revision: 12342 $
  *
  */
 package net.sourceforge.plantuml.preproc;
@@ -51,11 +51,26 @@ public class Defines extends Pragma {
 			if (key.contains("(")) {
 				final StringTokenizer st = new StringTokenizer(key, "(),");
 				final String fctName = st.nextToken();
-				final String var1 = st.nextToken();
-				final String regex = "\\b" + fctName + "\\(([^)]*)\\)";
-				// final String newValue = value.replaceAll("\\b" + Matcher.quoteReplacement(var1) + "\\b", "\\$1");
-				final String newValue = value.replaceAll("\\b" + var1 + "\\b", "\\$1");
-				line = line.replaceAll(regex, newValue);
+				String newValue = value;
+				final StringBuilder regex = new StringBuilder("\\b" + fctName + "\\(");
+				int i = 1;
+
+				while (st.hasMoreTokens()) {
+					if (st.hasMoreTokens()) {
+						regex.append("([^,]*)");
+					} else {
+						regex.append("([^)]*)");
+					}
+					final String var1 = st.nextToken();
+					newValue = newValue.replaceAll("\\b" + var1 + "\\b", "\\$" + i);
+					i++;
+					if (st.hasMoreTokens()) {
+						regex.append(",");
+					}
+				}
+
+				regex.append("\\)");
+				line = line.replaceAll(regex.toString(), newValue);
 			} else {
 				final String regex = "\\b" + key + "\\b";
 				line = line.replaceAll(regex, value);

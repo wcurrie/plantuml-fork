@@ -33,18 +33,14 @@
  */
 package net.sourceforge.plantuml.activitydiagram3.ftile.vertical;
 
-import java.awt.geom.Dimension2D;
-import java.awt.geom.Point2D;
 import java.util.Collections;
 import java.util.Set;
 
-import net.sourceforge.plantuml.Dimension2DDouble;
 import net.sourceforge.plantuml.activitydiagram3.ftile.AbstractFtile;
 import net.sourceforge.plantuml.activitydiagram3.ftile.FtileGeometry;
 import net.sourceforge.plantuml.activitydiagram3.ftile.Swimlane;
 import net.sourceforge.plantuml.graphic.HtmlColor;
 import net.sourceforge.plantuml.graphic.StringBounder;
-import net.sourceforge.plantuml.graphic.TextBlock;
 import net.sourceforge.plantuml.ugraphic.UChangeBackColor;
 import net.sourceforge.plantuml.ugraphic.UChangeColor;
 import net.sourceforge.plantuml.ugraphic.UEllipse;
@@ -78,29 +74,20 @@ public class FtileCircleStart extends AbstractFtile {
 		return swimlane;
 	}
 
-	public TextBlock asTextBlock() {
-		return new TextBlock() {
-
-			public void drawU(UGraphic ug) {
-				final UEllipse circle = new UEllipse(SIZE, SIZE);
-				if (shadowing()) {
-					circle.setDeltaShadow(3);
-				}
-				ug.apply(new UChangeColor(null)).apply(new UChangeBackColor(backColor)).draw(circle);
-			}
-
-			public Dimension2D calculateDimension(StringBounder stringBounder) {
-				return new Dimension2DDouble(SIZE, SIZE);
-			}
-		};
+	public void drawU(UGraphic ug) {
+		final UEllipse circle = new UEllipse(SIZE, SIZE);
+		if (shadowing()) {
+			circle.setDeltaShadow(3);
+		}
+		ug.apply(new UChangeColor(null)).apply(new UChangeBackColor(backColor)).draw(circle);
 	}
 
-	public boolean isKilled__TOBEREMOVED() {
+	public boolean isKilled() {
 		return false;
 	}
 
-	public FtileGeometry getGeometry(StringBounder stringBounder) {
-		return new FtileGeometry(SIZE / 2, 0, SIZE);
+	public FtileGeometry calculateDimension(StringBounder stringBounder) {
+		return new FtileGeometry(SIZE, SIZE, SIZE / 2, 0, SIZE);
 	}
 
 }
