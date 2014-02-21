@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 12235 $
+ * Revision $Revision: 12495 $
  *
  */
 package net.sourceforge.plantuml.cucadiagram;
@@ -36,8 +36,8 @@ package net.sourceforge.plantuml.cucadiagram;
 import java.awt.geom.Dimension2D;
 
 import net.sourceforge.plantuml.Hideable;
+import net.sourceforge.plantuml.ISkinSimple;
 import net.sourceforge.plantuml.Removeable;
-import net.sourceforge.plantuml.SpriteContainer;
 import net.sourceforge.plantuml.UniqueSequence;
 import net.sourceforge.plantuml.Url;
 import net.sourceforge.plantuml.command.Position;
@@ -299,22 +299,22 @@ public class Link implements Hideable, Removeable {
 		throw new IllegalArgumentException();
 	}
 
-	public double getMarginDecors1(StringBounder stringBounder, UFont fontQualif, SpriteContainer spriteContainer) {
+	public double getMarginDecors1(StringBounder stringBounder, UFont fontQualif, ISkinSimple spriteContainer) {
 		final double q = getQualifierMargin(stringBounder, fontQualif, qualifier1, spriteContainer);
 		final LinkDecor decor = getType().getDecor1();
 		return decor.getMargin() + q;
 	}
 
-	public double getMarginDecors2(StringBounder stringBounder, UFont fontQualif, SpriteContainer spriteContainer) {
+	public double getMarginDecors2(StringBounder stringBounder, UFont fontQualif, ISkinSimple spriteContainer) {
 		final double q = getQualifierMargin(stringBounder, fontQualif, qualifier2, spriteContainer);
 		final LinkDecor decor = getType().getDecor2();
 		return decor.getMargin() + q;
 	}
 
 	private double getQualifierMargin(StringBounder stringBounder, UFont fontQualif, String qualif,
-			SpriteContainer spriteContainer) {
+			ISkinSimple spriteContainer) {
 		if (qualif != null) {
-			final TextBlock b = TextBlockUtils.create(Display.asList(qualif), new FontConfiguration(fontQualif,
+			final TextBlock b = TextBlockUtils.create(Display.create(qualif), new FontConfiguration(fontQualif,
 					HtmlColorUtils.BLACK), HorizontalAlignment.LEFT, spriteContainer);
 			final Dimension2D dim = b.calculateDimension(stringBounder);
 			return Math.max(dim.getWidth(), dim.getHeight());

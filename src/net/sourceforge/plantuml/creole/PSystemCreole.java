@@ -48,12 +48,12 @@ import net.sourceforge.plantuml.core.DiagramDescriptionImpl;
 import net.sourceforge.plantuml.core.ImageData;
 import net.sourceforge.plantuml.cucadiagram.Display;
 import net.sourceforge.plantuml.graphic.FontConfiguration;
+import net.sourceforge.plantuml.graphic.HorizontalAlignment;
 import net.sourceforge.plantuml.graphic.HtmlColorUtils;
 import net.sourceforge.plantuml.graphic.TextBlockUtils;
 import net.sourceforge.plantuml.ugraphic.ColorMapperIdentity;
 import net.sourceforge.plantuml.ugraphic.UFont;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
-import net.sourceforge.plantuml.ugraphic.UStroke;
 
 public class PSystemCreole extends AbstractPSystem {
 
@@ -71,10 +71,10 @@ public class PSystemCreole extends AbstractPSystem {
 	}
 
 	public ImageData exportDiagram(OutputStream os, int num, FileFormatOption fileFormat) throws IOException {
-		final Display display = new Display(lines);
+		final Display display = Display.create(lines);
 		final UFont font = new UFont("Serif", Font.PLAIN, 14);
 		final FontConfiguration fontConfiguration = new FontConfiguration(font, HtmlColorUtils.BLACK);
-		final Sheet sheet = new CreoleParser(fontConfiguration, null).createSheet(display);
+		final Sheet sheet = new CreoleParser(fontConfiguration, HorizontalAlignment.LEFT, null).createSheet(display);
 		final SheetBlock1 sheetBlock = new SheetBlock1(sheet);
 		final Dimension2D dim = TextBlockUtils.getDimension(sheetBlock);
 		final UGraphic ug = fileFormat.createUGraphic(new ColorMapperIdentity(), 1, dim, null, false);

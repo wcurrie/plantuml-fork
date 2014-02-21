@@ -98,7 +98,7 @@ public class CommandCreateElementMultilines extends CommandMultilines2<Descripti
 		}
 
 		final Code code = Code.of(line0.get("CODE", 0));
-		Display display = new Display(lines.subList(1, lines.size() - 1));
+		Display display = Display.create(lines.subList(1, lines.size() - 1));
 		final String descStart = line0.get("DESC", 0);
 		if (StringUtils.isNotEmpty(descStart)) {
 			display = display.addFirst(descStart);

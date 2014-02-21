@@ -158,4 +158,8 @@ public class VCompactFactory implements FtileFactory {
 		return skinParam.getSprite(name);
 	}
 
+	public String getValue(String key) {
+		return skinParam.getValue(key);
+	}
+
 }

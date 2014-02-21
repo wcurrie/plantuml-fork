@@ -36,7 +36,7 @@ package net.sourceforge.plantuml.salt.element;
 import java.awt.geom.Dimension2D;
 
 import net.sourceforge.plantuml.Dimension2DDouble;
-import net.sourceforge.plantuml.SpriteContainer;
+import net.sourceforge.plantuml.ISkinSimple;
 import net.sourceforge.plantuml.cucadiagram.Display;
 import net.sourceforge.plantuml.graphic.FontConfiguration;
 import net.sourceforge.plantuml.graphic.HorizontalAlignment;
@@ -54,7 +54,7 @@ abstract class AbstractElementText implements Element {
 	private final FontConfiguration config;
 	private final int charLength;
 
-	public AbstractElementText(String text, UFont font, boolean manageLength, SpriteContainer spriteContainer) {
+	public AbstractElementText(String text, UFont font, boolean manageLength, ISkinSimple spriteContainer) {
 		config = new FontConfiguration(font, HtmlColorUtils.BLACK);
 		if (manageLength) {
 			this.charLength = text.length();
@@ -62,7 +62,7 @@ abstract class AbstractElementText implements Element {
 		} else {
 			this.charLength = 0;
 		}
-		this.block = TextBlockUtils.create(Display.asList(text), config, HorizontalAlignment.LEFT, spriteContainer);
+		this.block = TextBlockUtils.create(Display.create(text), config, HorizontalAlignment.LEFT, spriteContainer);
 	}
 
 	protected void drawText(UGraphic ug, double x, double y) {

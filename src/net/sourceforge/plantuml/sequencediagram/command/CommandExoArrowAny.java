@@ -65,7 +65,7 @@ abstract class CommandExoArrowAny extends SingleLineCommand2<SequenceDiagram> {
 
 		final Display labels;
 		if (arg2.get("LABEL", 0) == null) {
-			labels = Display.asList("");
+			labels = Display.create("");
 		} else {
 			labels = Display.getWithNewlines(arg2.get("LABEL", 0));
 		}

@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 12371 $
+ * Revision $Revision: 12495 $
  *
  */
 package net.sourceforge.plantuml.statediagram;
@@ -118,12 +118,12 @@ public class StateDiagram extends AbstractEntityDiagram {
 		if (EntityUtils.groupRoot(cur) == false && cur.getGroupType() == GroupType.CONCURRENT_STATE) {
 			super.endGroup();
 		}
-		final IGroup conc1 = getOrCreateGroup(UniqueSequence.getCode("CONC"), Display.asList(""), null,
+		final IGroup conc1 = getOrCreateGroup(UniqueSequence.getCode("CONC"), Display.create(""), null,
 				GroupType.CONCURRENT_STATE, getCurrentGroup());
 		if (EntityUtils.groupRoot(cur) == false && cur.getGroupType() == GroupType.STATE) {
 			cur.moveEntitiesTo(conc1);
 			super.endGroup();
-			getOrCreateGroup(UniqueSequence.getCode("CONC"), Display.asList(""), null, GroupType.CONCURRENT_STATE,
+			getOrCreateGroup(UniqueSequence.getCode("CONC"), Display.create(""), null, GroupType.CONCURRENT_STATE,
 					getCurrentGroup());
 		}
 		// printlink("AFTER");

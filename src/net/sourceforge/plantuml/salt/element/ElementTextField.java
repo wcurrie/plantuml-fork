@@ -36,7 +36,7 @@ package net.sourceforge.plantuml.salt.element;
 import java.awt.geom.Dimension2D;
 
 import net.sourceforge.plantuml.Dimension2DDouble;
-import net.sourceforge.plantuml.SpriteContainer;
+import net.sourceforge.plantuml.ISkinSimple;
 import net.sourceforge.plantuml.graphic.StringBounder;
 import net.sourceforge.plantuml.ugraphic.UFont;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
@@ -45,7 +45,7 @@ import net.sourceforge.plantuml.ugraphic.UTranslate;
 
 public class ElementTextField extends AbstractElementText implements Element {
 
-	public ElementTextField(String text, UFont font, SpriteContainer spriteContainer) {
+	public ElementTextField(String text, UFont font, ISkinSimple spriteContainer) {
 		super(text, font, true, spriteContainer);
 	}
 

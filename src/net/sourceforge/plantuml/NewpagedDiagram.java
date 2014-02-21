@@ -47,9 +47,19 @@ import net.sourceforge.plantuml.core.ImageData;
 
 public class NewpagedDiagram extends AbstractPSystem {
 
+	// public static NewpagedDiagram newpage(AbstractPSystem diagram, AbstractPSystem empty) {
+	// System.err.println("executing newpage A=" + diagram);
+	// if (diagram instanceof NewpagedDiagram) {
+	// final NewpagedDiagram other = (NewpagedDiagram) diagram;
+	// other.diagrams.add(empty);
+	// return other;
+	// }
+	// return new NewpagedDiagram(diagram, empty);
+	// }
+
 	private final List<Diagram> diagrams = new ArrayList<Diagram>();
 
-	private NewpagedDiagram(Diagram diag1, Diagram diag2) {
+	public NewpagedDiagram(Diagram diag1, Diagram diag2) {
 		if (diag1 instanceof NewpagedDiagram) {
 			throw new IllegalArgumentException();
 		}
@@ -60,18 +70,33 @@ public class NewpagedDiagram extends AbstractPSystem {
 		this.diagrams.add(diag2);
 	}
 
-	public static NewpagedDiagram newpage(AbstractPSystem diagram, AbstractPSystem empty) {
-		if (diagram instanceof NewpagedDiagram) {
-			final NewpagedDiagram other = (NewpagedDiagram) diagram;
-			other.diagrams.add(empty);
-			return other;
-		}
-		return new NewpagedDiagram(diagram, empty);
+	@Override
+	public String toString() {
+		return super.toString() + " SIZE=" + diagrams.size() + " " + diagrams;
 	}
 
 	public CommandExecutionResult executeCommand(Command cmd, List<String> lines) {
 		final int nb = diagrams.size();
-		return cmd.execute(diagrams.get(nb - 1), lines);
+		final CommandExecutionResult tmp = cmd.execute(diagrams.get(nb - 1), lines);
+		if (tmp.getNewDiagram() instanceof NewpagedDiagram) {
+			final NewpagedDiagram new1 = (NewpagedDiagram) tmp.getNewDiagram();
+			// System.err.println("this=" + this);
+			// System.err.println("new1=" + new1);
+			if (new1.size() != 2) {
+				throw new IllegalStateException();
+			}
+			if (new1.diagrams.get(0) != this.diagrams.get(nb - 1)) {
+				throw new IllegalStateException();
+			}
+			this.diagrams.add(new1.diagrams.get(1));
+			return tmp.withDiagram(this);
+
+		}
+		return tmp;
+	}
+
+	private int size() {
+		return diagrams.size();
 	}
 
 	public ImageData exportDiagram(OutputStream os, int num, FileFormatOption fileFormat) throws IOException {
@@ -106,6 +131,14 @@ public class NewpagedDiagram extends AbstractPSystem {
 			sb.append(d.getWarningOrError());
 		}
 		return sb.toString();
+	}
+
+	@Override
+	public void makeDiagramReady() {
+		super.makeDiagramReady();
+		for (Diagram diagram : diagrams) {
+			((AbstractPSystem) diagram).makeDiagramReady();
+		}
 	}
 
 }

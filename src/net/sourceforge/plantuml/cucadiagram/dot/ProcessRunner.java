@@ -37,13 +37,17 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
+
+import net.sourceforge.plantuml.api.Performance;
 
 public class ProcessRunner {
 	// http://steveliles.github.io/invoking_processes_from_java.html
 
-	private static final long TIMEOUT_MINUTE = 15;
+	public static long TIMEOUT = 15 * 60 * 1000L;
+	public static long LOCK_WAITING_TIMEOUT = -1;
 
 	private final String[] cmd;
 
@@ -52,26 +56,65 @@ public class ProcessRunner {
 
 	private volatile ProcessState state = ProcessState.INIT;
 	private final Lock changeState = new ReentrantLock();
+	private static final Lock oneSingleProcess = new ReentrantLock();
+	private static volatile MainThread runningThread;
 
 	public ProcessRunner(String[] cmd) {
 		this.cmd = cmd;
 	}
 
-	public ProcessState run2(byte in[], OutputStream redirection) {
-		return run2(in, redirection, null);
+	public ProcessState run(byte in[], OutputStream redirection) {
+		return run(in, redirection, null);
 	}
 
-	public ProcessState run2(byte in[], OutputStream redirection, File dir) {
+	public ProcessState run(byte in[], OutputStream redirection, File dir) {
 		if (this.state != ProcessState.INIT) {
 			throw new IllegalStateException();
 		}
 		this.state = ProcessState.RUNNING;
 		final MainThread mainThread = new MainThread(cmd, dir, redirection, in);
 		try {
-			mainThread.start();
-			mainThread.join(TIMEOUT_MINUTE * 60 * 1000L);
+			if (LOCK_WAITING_TIMEOUT > 0) {
+				doTheJobWithLock(mainThread);
+			} else {
+				doTheJob(mainThread);
+			}
 		} catch (InterruptedException e) {
 			e.printStackTrace();
+		}
+		if (state == ProcessState.TERMINATED_OK) {
+			assert mainThread != null;
+			this.error = mainThread.getError();
+			this.out = mainThread.getOut();
+		}
+		return state;
+	}
+
+	private void doTheJobWithLock(MainThread mainThread) throws InterruptedException {
+		while (true) {
+			final MainThread run = runningThread;
+			final boolean ok = oneSingleProcess.tryLock(LOCK_WAITING_TIMEOUT, TimeUnit.MILLISECONDS);
+			if (ok) {
+				try {
+					runningThread = mainThread;
+					doTheJob(mainThread);
+					runningThread = null;
+				} finally {
+					oneSingleProcess.unlock();
+				}
+				return;
+			}
+			if (run == runningThread) {
+				Performance.incDotInterruption3();
+				run.cancel();
+			}
+		}
+	}
+
+	private void doTheJob(final MainThread mainThread) throws InterruptedException {
+		try {
+			mainThread.start();
+			mainThread.join(TIMEOUT);
 		} finally {
 			changeState.lock();
 			try {
@@ -83,12 +126,6 @@ public class ProcessRunner {
 				changeState.unlock();
 			}
 		}
-		if (state == ProcessState.TERMINATED_OK) {
-			assert mainThread != null;
-			this.error = mainThread.getError();
-			this.out = mainThread.getOut();
-		}
-		return state;
 	}
 
 	class MainThread extends Thread {
@@ -163,6 +200,8 @@ public class ProcessRunner {
 			try {
 				process = Runtime.getRuntime().exec(cmd, null, dir);
 			} catch (IOException e) {
+				e.printStackTrace();
+				Performance.incDotInterruption1();
 				changeState.lock();
 				try {
 					state = ProcessState.IO_EXCEPTION1;
@@ -185,6 +224,7 @@ public class ProcessRunner {
 						os.close();
 					}
 				} catch (IOException e) {
+					Performance.incDotInterruption2();
 					changeState.lock();
 					try {
 						state = ProcessState.IO_EXCEPTION2;

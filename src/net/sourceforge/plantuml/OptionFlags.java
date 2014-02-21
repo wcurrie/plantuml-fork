@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  *
- * Revision $Revision: 12292 $
+ * Revision $Revision: 12452 $
  *
  */
 package net.sourceforge.plantuml;
@@ -54,6 +54,8 @@ public class OptionFlags {
 	static public final boolean USE_HECTOR = false;
 	static public final boolean USE_4747 = true;
 	static public final boolean USE_CREOLE = true;
+	static public final boolean USE_CREOLE2 = false;
+	static public boolean ADD_NICE_FOR_DOT = false;
 
 	void reset() {
 		reset(false);
@@ -71,7 +73,7 @@ public class OptionFlags {
 		checkDotError = false;
 		printFonts = false;
 		useSuggestEngine = true;
-		failOnError = false;
+		// failOnError = false;
 		encodesprite = false;
 		// PIC_LINE = false;
 	}
@@ -93,7 +95,7 @@ public class OptionFlags {
 	private boolean checkDotError;
 	private boolean printFonts;
 	private boolean useSuggestEngine;
-	private boolean failOnError;
+	// private boolean failOnError;
 	private boolean encodesprite;
 	private boolean overwrite;
 	private File logData;
@@ -260,13 +262,13 @@ public class OptionFlags {
 		this.useSuggestEngine = useSuggestEngine;
 	}
 
-	public final boolean isFailOnError() {
-		return failOnError;
-	}
-
-	public final void setFailOnError(boolean failOnError) {
-		this.failOnError = failOnError;
-	}
+//	public final boolean isFailOnError() {
+//		return failOnError;
+//	}
+//
+//	public final void setFailOnError(boolean failOnError) {
+//		this.failOnError = failOnError;
+//	}
 
 	public final boolean isEncodesprite() {
 		return encodesprite;

@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  *
- * Revision $Revision: 12235 $
+ * Revision $Revision: 12390 $
  *
  */
 package net.sourceforge.plantuml.ant;
@@ -101,15 +101,15 @@ public class PlantUmlTask extends Task {
 		try {
 			if (dir != null) {
 				final File error = processingSingleDirectory(new File(dir));
-				checkError(error);
+				eventuallyFailfast(error);
 			}
 			for (FileSet fileSet : filesets) {
 				final File error = manageFileSet(fileSet);
-				checkError(error);
+				eventuallyFailfast(error);
 			}
 			for (FileList fileList : filelists) {
 				final File error = manageFileList(fileList);
-				checkError(error);
+				eventuallyFailfast(error);
 			}
 			if (executorService != null) {
 				executorService.shutdown();
@@ -126,8 +126,8 @@ public class PlantUmlTask extends Task {
 
 	}
 
-	private void checkError(final File error) throws IOException {
-		if (error != null && OptionFlags.getInstance().isFailOnError()) {
+	private void eventuallyFailfast(final File error) throws IOException {
+		if (error != null && option.isFailfastOrFailfast2()) {
 			this.log("Error in file " + error.getCanonicalPath());
 			throw new BuildException("Error in file " + error.getCanonicalPath());
 		}
@@ -178,8 +178,8 @@ public class PlantUmlTask extends Task {
 		if (OptionFlags.getInstance().isVerbose()) {
 			this.log("Processing " + f.getAbsolutePath());
 		}
-		final SourceFileReader sourceFileReader = new SourceFileReader(new Defines(), f, option.getOutputDir(), option
-				.getConfig(), option.getCharset(), option.getFileFormatOption());
+		final SourceFileReader sourceFileReader = new SourceFileReader(new Defines(), f, option.getOutputDir(),
+				option.getConfig(), option.getCharset(), option.getFileFormatOption());
 
 		if (option.isCheckOnly()) {
 			return sourceFileReader.hasError();
@@ -213,7 +213,7 @@ public class PlantUmlTask extends Task {
 		if (error) {
 			myLog("Error: " + f.getCanonicalPath());
 		}
-		if (error && OptionFlags.getInstance().isFailOnError()) {
+		if (error && option.isFailfastOrFailfast2()) {
 			return true;
 		}
 		return false;
@@ -332,17 +332,23 @@ public class PlantUmlTask extends Task {
 	}
 
 	public void setSuggestEngine(String s) {
-		OptionFlags.getInstance().setUseSuggestEngine("true".equalsIgnoreCase(s) || "yes".equalsIgnoreCase(s) || "on".equalsIgnoreCase(s));
+		OptionFlags.getInstance().setUseSuggestEngine(
+				"true".equalsIgnoreCase(s) || "yes".equalsIgnoreCase(s) || "on".equalsIgnoreCase(s));
 	}
 
-	public void setFailOnError(String s) {
-		OptionFlags.getInstance().setFailOnError("true".equalsIgnoreCase(s) || "yes".equalsIgnoreCase(s) || "on".equalsIgnoreCase(s));
+	public void setFailFast(String s) {
+		final boolean flag = "true".equalsIgnoreCase(s) || "yes".equalsIgnoreCase(s) || "on".equalsIgnoreCase(s);
+		option.setFailfast(flag);
+	}
+
+	public void setFailFast2(String s) {
+		final boolean flag = "true".equalsIgnoreCase(s) || "yes".equalsIgnoreCase(s) || "on".equalsIgnoreCase(s);
+		option.setFailfast2(flag);
 	}
 
 	public void setCheckOnly(String s) {
 		final boolean flag = "true".equalsIgnoreCase(s) || "yes".equalsIgnoreCase(s) || "on".equalsIgnoreCase(s);
-		option.setCheckOnly(true);
-		OptionFlags.getInstance().setFailOnError(flag);
+		option.setCheckOnly(flag);
 	}
 
 	public void setOverwrite(String s) {

@@ -72,7 +72,7 @@ public class CommandReferenceMultilinesOverSeveral extends CommandMultilines<Seq
 			p.add(system.getOrCreateParticipant(StringUtils.eventuallyRemoveStartingAndEndingDoubleQuote(s)));
 		}
 
-		Display strings = new Display(lines.subList(1, lines.size() - 1)).removeEmptyColumns();
+		Display strings = Display.create(lines.subList(1, lines.size() - 1)).removeEmptyColumns();
 
 		Url u = null;
 		if (strings.size() > 0) {

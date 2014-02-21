@@ -81,7 +81,7 @@ final class EntityImpl implements ILeaf, IGroup {
 
 	private final Bodier bodier;
 	private final String uid = StringUtils.getUid("cl", UniqueSequence.getValue());
-	private Display display = new Display();
+	private Display display = Display.empty();
 
 	private LeafType leafType;
 	private Stereotype stereotype;

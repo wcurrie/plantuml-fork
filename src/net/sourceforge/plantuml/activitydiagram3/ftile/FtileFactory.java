@@ -35,7 +35,7 @@ package net.sourceforge.plantuml.activitydiagram3.ftile;
 
 import java.util.List;
 
-import net.sourceforge.plantuml.SpriteContainer;
+import net.sourceforge.plantuml.ISkinSimple;
 import net.sourceforge.plantuml.Url;
 import net.sourceforge.plantuml.activitydiagram3.Branch;
 import net.sourceforge.plantuml.activitydiagram3.LinkRendering;
@@ -44,7 +44,7 @@ import net.sourceforge.plantuml.graphic.HtmlColor;
 import net.sourceforge.plantuml.graphic.StringBounder;
 import net.sourceforge.plantuml.sequencediagram.NotePosition;
 
-public interface FtileFactory extends SpriteContainer {
+public interface FtileFactory extends ISkinSimple {
 
 	public StringBounder getStringBounder();
 

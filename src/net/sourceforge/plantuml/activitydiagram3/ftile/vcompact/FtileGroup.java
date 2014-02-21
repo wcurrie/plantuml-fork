@@ -37,8 +37,7 @@ import java.awt.Font;
 import java.awt.geom.Dimension2D;
 import java.util.Set;
 
-import net.sourceforge.plantuml.Dimension2DDouble;
-import net.sourceforge.plantuml.SpriteContainer;
+import net.sourceforge.plantuml.ISkinSimple;
 import net.sourceforge.plantuml.activitydiagram3.ftile.AbstractFtile;
 import net.sourceforge.plantuml.activitydiagram3.ftile.Ftile;
 import net.sourceforge.plantuml.activitydiagram3.ftile.FtileGeometry;
@@ -66,7 +65,7 @@ public class FtileGroup extends AbstractFtile {
 	private final TextBlock name;
 	private final HtmlColor color;
 
-	public FtileGroup(Ftile inner, Display test, HtmlColor color, SpriteContainer spriteContainer) {
+	public FtileGroup(Ftile inner, Display test, HtmlColor color, ISkinSimple spriteContainer) {
 		super(inner.shadowing());
 		this.inner = new FtileMarged(inner, 10);
 		this.color = color;

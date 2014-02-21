@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 12300 $
+ * Revision $Revision: 12495 $
  *
  */
 package net.sourceforge.plantuml.sequencediagram.graphic;
@@ -335,11 +335,11 @@ class DrawableSetInitializer {
 				m.getBackColorGeneral());
 
 		final Component comp = drawableSet.getSkin().createComponent(ComponentType.GROUPING_SPACE, null, skinParam,
-				Display.asList(m.getComment()));
+				Display.create(m.getComment()));
 		final double preferredHeight = comp.getPreferredHeight(stringBounder);
 		freeY2 = freeY2.add(preferredHeight, range);
 
-		final Display strings = m.getTitle().equals("group") ? Display.asList(m.getComment()) : Display.asList(
+		final Display strings = m.getTitle().equals("group") ? Display.create(m.getComment()) : Display.create(
 				m.getTitle(), m.getComment());
 		final Component header = drawableSet.getSkin().createComponent(ComponentType.GROUPING_HEADER, null, skinParam,
 				strings);
@@ -366,7 +366,7 @@ class DrawableSetInitializer {
 				freeY2 = ((FrontierStack) freeY2).restore();
 			}
 			final Component compElse = drawableSet.getSkin().createComponent(ComponentType.GROUPING_ELSE, null,
-					skinParam, Display.asList(m.getComment()));
+					skinParam, Display.create(m.getComment()));
 			final Lazy lazy = new Lazy() {
 				public double getNow() {
 					final GraphicalElement after = drawableSet.getEvent(m.getJustAfter());
@@ -392,7 +392,7 @@ class DrawableSetInitializer {
 			element = new GroupingGraphicalElementTail(freeY2.getFreeY(range),
 					inGroupableStack.getTopGroupingStructure(), m.isParallel());
 			final Component comp = drawableSet.getSkin().createComponent(ComponentType.GROUPING_SPACE, null, skinParam,
-					Display.asList(m.getComment()));
+					Display.create(m.getComment()));
 			final double preferredHeight = comp.getPreferredHeight(stringBounder);
 			freeY2 = freeY2.add(preferredHeight, range);
 			inGroupableStack.pop();
@@ -476,7 +476,7 @@ class DrawableSetInitializer {
 		final ISkinParam skinParam = new SkinParamBackcoloredReference(drawableSet.getSkinParam(),
 				reference.getBackColorElement(), reference.getBackColorGeneral());
 
-		Display strings = new Display();
+		Display strings = Display.empty();
 		strings = strings.add("ref");
 		strings = strings.addAll(reference.getStrings());
 		final Component comp = drawableSet.getSkin().createComponent(ComponentType.REFERENCE, null, skinParam, strings);

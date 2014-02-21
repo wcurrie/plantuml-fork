@@ -36,7 +36,7 @@ package net.sourceforge.plantuml.salt.element;
 import java.awt.geom.Dimension2D;
 
 import net.sourceforge.plantuml.Dimension2DDouble;
-import net.sourceforge.plantuml.SpriteContainer;
+import net.sourceforge.plantuml.ISkinSimple;
 import net.sourceforge.plantuml.graphic.HtmlColorUtils;
 import net.sourceforge.plantuml.graphic.StringBounder;
 import net.sourceforge.plantuml.ugraphic.UChangeBackColor;
@@ -52,7 +52,7 @@ public class ElementButton extends AbstractElementText implements Element {
 	private final double marginX = 2;
 	private final double marginY = 2;
 
-	public ElementButton(String text, UFont font, SpriteContainer spriteContainer) {
+	public ElementButton(String text, UFont font, ISkinSimple spriteContainer) {
 		super(text, font, true, spriteContainer);
 	}
 

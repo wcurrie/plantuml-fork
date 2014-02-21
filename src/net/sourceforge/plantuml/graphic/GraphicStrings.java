@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 12235 $
+ * Revision $Revision: 12495 $
  *
  */
 package net.sourceforge.plantuml.graphic;
@@ -58,6 +58,7 @@ import net.sourceforge.plantuml.svek.ShapeType;
 import net.sourceforge.plantuml.ugraphic.ColorMapper;
 import net.sourceforge.plantuml.ugraphic.ColorMapperIdentity;
 import net.sourceforge.plantuml.ugraphic.UAntiAliasing;
+import net.sourceforge.plantuml.ugraphic.UChangeColor;
 import net.sourceforge.plantuml.ugraphic.UFont;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
 import net.sourceforge.plantuml.ugraphic.UImage;
@@ -85,23 +86,22 @@ public class GraphicStrings implements IEntityImage {
 
 	private final ColorMapper colorMapper = new ColorMapperIdentity();
 
-	public GraphicStrings(List<String> strings) {
-		this(strings, new UFont("SansSerif", Font.BOLD, 14), HtmlColorUtils.getColorIfValid("#33FF02"),
-				HtmlColorUtils.BLACK, null, null, UAntiAliasing.ANTI_ALIASING_ON);
-	}
-
-	public GraphicStrings(List<String> strings, BufferedImage image) {
-		this(strings, new UFont("SansSerif", Font.BOLD, 14), HtmlColorUtils.getColorIfValid("#33FF02"),
-				HtmlColorUtils.BLACK, image, null, UAntiAliasing.ANTI_ALIASING_ON);
+	public static GraphicStrings createDefault(List<String> strings, boolean useRed) {
+		if (useRed) {
+			return new GraphicStrings(strings, new UFont("SansSerif", Font.BOLD, 14), HtmlColorUtils.BLACK,
+					HtmlColorUtils.RED_LIGHT, UAntiAliasing.ANTI_ALIASING_ON);
+		}
+		return new GraphicStrings(strings, new UFont("SansSerif", Font.BOLD, 14),
+				HtmlColorUtils.getColorIfValid("#33FF02"), HtmlColorUtils.BLACK, UAntiAliasing.ANTI_ALIASING_ON);
 	}
 
 	public GraphicStrings(List<String> strings, UFont font, HtmlColor green, HtmlColor background,
 			UAntiAliasing antiAliasing) {
-		this(strings, font, green, background, null, null, antiAliasing);
+		this(strings, font, green, background, antiAliasing, null, null);
 	}
 
-	public GraphicStrings(List<String> strings, UFont font, HtmlColor green, HtmlColor background, BufferedImage image,
-			GraphicPosition position, UAntiAliasing antiAliasing) {
+	public GraphicStrings(List<String> strings, UFont font, HtmlColor green, HtmlColor background,
+			UAntiAliasing antiAliasing, BufferedImage image, GraphicPosition position) {
 		this.strings = strings;
 		this.font = font;
 		this.green = green;
@@ -195,12 +195,12 @@ public class GraphicStrings implements IEntityImage {
 	}
 
 	private Dimension2D drawAndGetSize(final UGraphic ug) {
-		TextBlock textBlock = TextBlockUtils.create(new Display(strings), new FontConfiguration(font, green),
+		TextBlock textBlock = TextBlockUtils.create(Display.create(strings), new FontConfiguration(font, green),
 				HorizontalAlignment.LEFT, new SpriteContainerEmpty());
 		textBlock = DateEventUtils.addEvent(textBlock, green);
 
 		Dimension2D size = getSizeWithMin(textBlock.calculateDimension(ug.getStringBounder()));
-		textBlock.drawU(ug);
+		textBlock.drawU(ug.apply(new UChangeColor(green)));
 
 		if (image != null) {
 			if (position == GraphicPosition.BOTTOM) {
@@ -220,7 +220,7 @@ public class GraphicStrings implements IEntityImage {
 	}
 
 	public Dimension2D calculateDimension(StringBounder stringBounder) {
-		final TextBlock textBlock = TextBlockUtils.create(new Display(strings), new FontConfiguration(font, green),
+		final TextBlock textBlock = TextBlockUtils.create(Display.create(strings), new FontConfiguration(font, green),
 				HorizontalAlignment.LEFT, new SpriteContainerEmpty());
 		return getSizeWithMin(textBlock.calculateDimension(stringBounder));
 	}

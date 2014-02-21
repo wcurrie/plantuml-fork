@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  *
- * Revision $Revision: 12235 $
+ * Revision $Revision: 12400 $
  *
  */
 package net.sourceforge.plantuml;
@@ -72,6 +72,8 @@ public class OptionPrint {
 		System.out.println("    -tpng\t\tTo generate images using PNG format (default)");
 		System.out.println("    -tsvg\t\tTo generate images using SVG format");
 		System.out.println("    -teps\t\tTo generate images using EPS format");
+		System.out.println("    -tpdf\t\tTo generate images using PDF format");
+		System.out.println("    -tvdx\t\tTo generate images using VDX format");
 		System.out.println("    -txmi\t\tTo generate XMI file for class diagram");
 		System.out.println("    -thtml\t\tTo generate HTML files for class diagram");
 		System.out.println("    -ttxt\t\tTo generate images with ASCII art");
@@ -79,6 +81,7 @@ public class OptionPrint {
 		System.out.println("    -o[utput] \"dir\"\tTo generate images in the specified directory");
 		System.out.println("    -DVAR1=value\tTo set a preprocessing variable as if '!define VAR1 value' were used");
 		System.out.println("    -Sparam1=value\tTo set a skin parameter as if 'skinparam param1 value' were used");
+		System.out.println("    -r[ecurse]\t\trecurse through directories");
 		System.out.println("    -config \"file\"\tTo read the provided config file before each diagram");
 		System.out.println("    -charset xxx\tTo use a specific charset (default is " + charset + ")");
 		System.out.println("    -e[x]clude pattern\tTo exclude files that match the provided pattern");
@@ -94,19 +97,22 @@ public class OptionPrint {
 		System.out.println("    -testdot\t\tTo test the installation of graphviz");
 		System.out.println("    -graphvizdot \"exe\"\tTo specify dot executable");
 		System.out.println("    -p[ipe]\t\tTo use stdin for PlantUML source and stdout for PNG/SVG/EPS generation");
-		System.out.println("    -computeurl\t\tTo compute the encoded URL of a PlantUML source file");
+		System.out.println("    -encodesprite 4|8|16[z] \"file\"\tTo encode a sprite at gray level (z for compression) from an image");
+		System.out.println("    -computeurl|-encodeurl\tTo compute the encoded URL of a PlantUML source file");
 		System.out.println("    -decodeurl\t\tTo retrieve the PlantUML source from an encoded URL");
 		System.out.println("    -syntax\t\tTo report any syntax error from standard input without generating images");
 		System.out.println("    -language\t\tTo print the list of PlantUML keywords");
 		System.out.println("    -nosuggestengine\tTo disable the suggest engine when errors in diagrams");
 		System.out.println("    -checkonly\t\tTo check the syntax of files without generating images");
-		System.out.println("    -failonerror\tTo stop processing if syntax error in diagram occurs");
+		System.out.println("    -failfast\t\tTo stop processing as soon as a syntax error in diagram occurs");
+		System.out.println("    -failfast2\t\tTo do a first syntax check before processing files, to fail even faster");
 		System.out.println("    -pattern\t\tTo print the list of Regular Expression used by PlantUML");
 		System.out.println("    -duration\t\tTo print the duration of complete diagrams processing");
 		System.out.println("    -nbthread N\t\tTo use (N) threads for processing");
 		System.out.println("    -nbthread auto\tTo use " + Option.defaultNbThreads() + " threads for processing");
 		System.out.println("    -author[s]\t\tTo print information about PlantUML authors");
 		System.out.println("    -overwrite\t\tTo all to overwrite read only files");
+		System.out.println("    -printfonts\t\tTo print fonts available on your system");
 		System.out.println();
 		System.out.println("If needed, you can setup the environment variable GRAPHVIZ_DOT.");
 		exit();

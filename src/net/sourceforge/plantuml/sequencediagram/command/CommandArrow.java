@@ -163,7 +163,7 @@ public class CommandArrow extends SingleLineCommand2<SequenceDiagram> {
 
 		final Display labels;
 		if (arg.get("MESSAGE", 0) == null) {
-			labels = Display.asList("");
+			labels = Display.create("");
 		} else {
 			labels = Display.getWithNewlines(arg.get("MESSAGE", 0));
 		}

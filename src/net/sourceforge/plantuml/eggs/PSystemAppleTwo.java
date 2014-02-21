@@ -76,7 +76,7 @@ public class PSystemAppleTwo extends AbstractPSystem {
 	private GraphicStrings getGraphicStrings() throws IOException {
 		final UFont font = new UFont("SansSerif", Font.PLAIN, 12);
 		final GraphicStrings result = new GraphicStrings(strings, font, HtmlColorUtils.BLACK, HtmlColorUtils.WHITE,
-				image, GraphicPosition.BOTTOM, UAntiAliasing.ANTI_ALIASING_ON);
+				UAntiAliasing.ANTI_ALIASING_ON, image, GraphicPosition.BOTTOM);
 		result.setMinWidth(200);
 		return result;
 	}

@@ -36,7 +36,7 @@ package net.sourceforge.plantuml.creole;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import net.sourceforge.plantuml.ISkinParam;
+import net.sourceforge.plantuml.ISkinSimple;
 import net.sourceforge.plantuml.Url;
 import net.sourceforge.plantuml.UrlBuilder;
 import net.sourceforge.plantuml.UrlBuilder.ModeUrl;
@@ -45,13 +45,13 @@ import net.sourceforge.plantuml.command.regex.MyPattern;
 public class CommandCreoleUrl implements Command {
 
 	private final Pattern pattern;
-	private final ISkinParam skinParam;
+	private final ISkinSimple skinParam;
 
-	public static Command create(ISkinParam skinParam) {
+	public static Command create(ISkinSimple skinParam) {
 		return new CommandCreoleUrl(skinParam, "^(" + UrlBuilder.getRegexp() + ")");
 	}
 
-	private CommandCreoleUrl(ISkinParam skinParam, String p) {
+	private CommandCreoleUrl(ISkinSimple skinParam, String p) {
 		this.pattern = MyPattern.cmpile(p);
 		this.skinParam = skinParam;
 

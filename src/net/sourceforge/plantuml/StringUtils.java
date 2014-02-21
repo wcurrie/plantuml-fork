@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  *
- * Revision $Revision: 12262 $
+ * Revision $Revision: 12495 $
  *
  */
 package net.sourceforge.plantuml;
@@ -458,12 +458,12 @@ public class StringUtils {
 	}
 
 	public static Display manageEmbededDiagrams(final Display strings) {
-		Display result = new Display();
+		Display result = Display.empty();
 		final Iterator<CharSequence> it = strings.iterator();
 		while (it.hasNext()) {
 			CharSequence s = it.next();
 			if (s.equals("{{")) {
-				Display other = new Display();
+				Display other = Display.empty();
 				other = other.add("@startuml");
 				while (it.hasNext()) {
 					final CharSequence s2 = it.next();
@@ -496,7 +496,7 @@ public class StringUtils {
 					other.add(s2);
 				}
 				other.add("@enduml");
-				s = new EmbededDiagram(new Display(other));
+				s = new EmbededDiagram(Display.create(other));
 			}
 			result.add(s);
 		}
@@ -512,5 +512,11 @@ public class StringUtils {
 		result.addAll(l2);
 		return Collections.unmodifiableList(result);
 	}
+	
+	public static boolean endsWithBackslash(final String s) {
+		return s.endsWith("\\") && s.endsWith("\\\\") == false;
+	}
+
+
 
 }

@@ -68,7 +68,7 @@ public class ComponentTextArrow implements Component {
 		if (orig.size() == 0 || orig.get(0) instanceof MessageNumber == false) {
 			return orig;
 		}
-		Display result = new Display();
+		Display result = Display.empty();
 		for (int i = 0; i < orig.size(); i++) {
 			CharSequence element = orig.get(i);
 			if (i == 1) {

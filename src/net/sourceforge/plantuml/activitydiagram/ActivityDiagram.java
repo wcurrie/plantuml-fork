@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  *
- * Revision $Revision: 12371 $
+ * Revision $Revision: 12495 $
  *
  */
 package net.sourceforge.plantuml.activitydiagram;
@@ -81,7 +81,7 @@ public class ActivityDiagram extends CucaDiagram {
 
 	public void startIf(Code optionalCode) {
 		final IEntity br = createLeaf(optionalCode == null ? Code.of(getAutoBranch()) : optionalCode,
-				Display.asList(""), LeafType.BRANCH, null);
+				Display.create(""), LeafType.BRANCH, null);
 		currentContext = new ConditionalContext(currentContext, br, Direction.DOWN);
 	}
 

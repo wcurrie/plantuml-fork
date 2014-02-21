@@ -36,9 +36,10 @@ package net.sourceforge.plantuml.creole;
 import java.awt.geom.Dimension2D;
 
 import net.sourceforge.plantuml.Dimension2DDouble;
-import net.sourceforge.plantuml.ISkinParam;
+import net.sourceforge.plantuml.ISkinSimple;
 import net.sourceforge.plantuml.cucadiagram.Display;
 import net.sourceforge.plantuml.graphic.FontConfiguration;
+import net.sourceforge.plantuml.graphic.HorizontalAlignment;
 import net.sourceforge.plantuml.graphic.StringBounder;
 import net.sourceforge.plantuml.graphic.TextBlock;
 import net.sourceforge.plantuml.graphic.TextBlockUtils;
@@ -51,14 +52,14 @@ public class CreoleHorizontalLine implements Atom {
 	private final FontConfiguration fontConfiguration;
 	private final String line;
 	private final char style;
-	private final ISkinParam skinParam;
+	private final ISkinSimple skinParam;
 
 	public static CreoleHorizontalLine create(FontConfiguration fontConfiguration, String line, char style,
-			ISkinParam skinParam) {
+			ISkinSimple skinParam) {
 		return new CreoleHorizontalLine(fontConfiguration, line, style, skinParam);
 	}
 
-	private CreoleHorizontalLine(FontConfiguration fontConfiguration, String line, char style, ISkinParam skinParam) {
+	private CreoleHorizontalLine(FontConfiguration fontConfiguration, String line, char style, ISkinSimple skinParam) {
 		this.fontConfiguration = fontConfiguration;
 		this.line = line;
 		this.style = style;
@@ -77,7 +78,7 @@ public class CreoleHorizontalLine implements Atom {
 		if (line.length() == 0) {
 			return TextBlockUtils.empty(0, 0);
 		}
-		final CreoleParser parser = new CreoleParser(fontConfiguration, skinParam);
+		final CreoleParser parser = new CreoleParser(fontConfiguration, HorizontalAlignment.LEFT, skinParam);
 		final Sheet sheet = parser.createSheet(Display.getWithNewlines(line));
 		final TextBlock tb = new SheetBlock1(sheet);
 		return tb;

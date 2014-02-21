@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  *
- * Revision $Revision: 12235 $
+ * Revision $Revision: 12394 $
  *
  */
 package net.sourceforge.plantuml;
@@ -38,6 +38,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -59,6 +60,8 @@ public class Option {
 	private boolean pipe = false;
 	private boolean syntax = false;
 	private boolean checkOnly = false;
+	private boolean failfast = false;
+	private boolean failfast2 = false;
 	private boolean pattern = false;
 	private boolean duration = false;
 	private int nbThreads = 0;
@@ -161,9 +164,12 @@ public class Option {
 				} else if (nb.matches("\\d+")) {
 					this.nbThreads = Integer.parseInt(nb);
 				}
+			} else if (s.equalsIgnoreCase("-failfast")) {
+				this.failfast = true;
+			} else if (s.equalsIgnoreCase("-failfast2")) {
+				this.failfast2 = true;
 			} else if (s.equalsIgnoreCase("-checkonly")) {
 				this.checkOnly = true;
-				OptionFlags.getInstance().setFailOnError(true);
 			} else if (s.equalsIgnoreCase("-config")) {
 				i++;
 				if (i == arg.length) {
@@ -228,8 +234,6 @@ public class Option {
 				OptionFlags.getInstance().setEncodesprite(true);
 			} else if (s.equalsIgnoreCase("-nosuggestengine")) {
 				OptionFlags.getInstance().setUseSuggestEngine(false);
-			} else if (s.equalsIgnoreCase("-failonerror")) {
-				OptionFlags.getInstance().setFailOnError(true);
 			} else if (s.equalsIgnoreCase("-printfonts")) {
 				OptionFlags.getInstance().setPrintFonts(true);
 			} else if (s.toLowerCase().startsWith("-ftp")) {
@@ -309,7 +313,7 @@ public class Option {
 	public Defines getDefaultDefines() {
 		final Defines result = new Defines();
 		for (Map.Entry<String, String> ent : defines.entrySet()) {
-			result.define(ent.getKey(), ent.getValue());
+			result.define(ent.getKey(), Arrays.asList(ent.getValue()));
 
 		}
 		return result;
@@ -382,6 +386,22 @@ public class Option {
 
 	public final void setCheckOnly(boolean checkOnly) {
 		this.checkOnly = checkOnly;
+	}
+
+	public final boolean isFailfastOrFailfast2() {
+		return failfast || failfast2;
+	}
+
+	public final boolean isFailfast2() {
+		return failfast2;
+	}
+
+	public final void setFailfast(boolean failfast) {
+		this.failfast = failfast;
+	}
+
+	public final void setFailfast2(boolean failfast2) {
+		this.failfast2 = failfast2;
 	}
 
 	public final File getOutputFile() {

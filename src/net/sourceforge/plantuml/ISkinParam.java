@@ -45,11 +45,9 @@ import net.sourceforge.plantuml.ugraphic.ColorMapper;
 import net.sourceforge.plantuml.ugraphic.UFont;
 import net.sourceforge.plantuml.ugraphic.UStroke;
 
-public interface ISkinParam extends SpriteContainer {
+public interface ISkinParam extends ISkinSimple {
 
 	public HtmlColor getBackgroundColor();
-
-	public String getValue(String key);
 
 	public HtmlColor getHtmlColor(ColorParam param, Stereotype stereotype, boolean clickable);
 

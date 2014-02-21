@@ -122,4 +122,8 @@ public class Sea {
 		return minMax;
 	}
 
+	public final double getWidth() {
+		return currentX;
+	}
+
 }

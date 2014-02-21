@@ -37,15 +37,17 @@ import java.awt.geom.Dimension2D;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+import net.sourceforge.plantuml.graphic.HorizontalAlignment;
 import net.sourceforge.plantuml.graphic.StringBounder;
 import net.sourceforge.plantuml.graphic.TextBlock;
 import net.sourceforge.plantuml.ugraphic.MinMax;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
 
-public class SheetBlock1 implements TextBlock, Atom {
+public class SheetBlock1 implements TextBlock, Atom, Stencil {
 
 	private final Sheet sheet;
 	private Map<Stripe, Double> heights;
+	private Map<Stripe, Double> widths;
 	private Map<Atom, Position> positions;
 	private MinMax minMax;
 
@@ -58,6 +60,7 @@ public class SheetBlock1 implements TextBlock, Atom {
 			return;
 		}
 		positions = new LinkedHashMap<Atom, Position>();
+		widths = new LinkedHashMap<Stripe, Double>();
 		heights = new LinkedHashMap<Stripe, Double>();
 		minMax = MinMax.getEmpty(true);
 		double y = 0;
@@ -72,10 +75,39 @@ public class SheetBlock1 implements TextBlock, Atom {
 			sea.doAlign();
 			sea.translateMinYto(y);
 			sea.exportAllPositions(positions);
+			final double width = sea.getWidth();
+			widths.put(stripe, width);
 			minMax = sea.update(minMax);
 			final double height = sea.getHeight();
 			heights.put(stripe, height);
 			y += height;
+		}
+		final int coef;
+		if (sheet.getHorizontalAlignment() == HorizontalAlignment.CENTER) {
+			coef = 2;
+		} else if (sheet.getHorizontalAlignment() == HorizontalAlignment.RIGHT) {
+			coef = 1;
+		} else {
+			coef = 0;
+		}
+		if (coef != 0) {
+			double maxWidth = 0;
+			for (Double v : widths.values()) {
+				if (v > maxWidth) {
+					maxWidth = v;
+				}
+			}
+			for (Map.Entry<Stripe, Double> ent : widths.entrySet()) {
+				final double diff = maxWidth - ent.getValue();
+				if (diff > 0) {
+					for (Atom atom : ent.getKey().getAtoms()) {
+						final Position pos = positions.get(atom);
+						positions.put(atom, pos.translateX(diff / coef));
+					}
+				}
+
+			}
+
 		}
 	}
 
@@ -85,6 +117,7 @@ public class SheetBlock1 implements TextBlock, Atom {
 	}
 
 	public void drawU(UGraphic ug) {
+		initMap(ug.getStringBounder());
 		for (Stripe stripe : sheet) {
 			for (Atom atom : stripe.getAtoms()) {
 				final Position position = positions.get(atom);
@@ -96,5 +129,13 @@ public class SheetBlock1 implements TextBlock, Atom {
 
 	public double getStartingAltitude(StringBounder stringBounder) {
 		return 0;
+	}
+
+	public double getStartingX(StringBounder stringBounder, double y) {
+		return 0;
+	}
+
+	public double getEndingX(StringBounder stringBounder, double y) {
+		return calculateDimension(stringBounder).getWidth();
 	}
 }

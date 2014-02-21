@@ -152,7 +152,7 @@ public final class FactoryNoteOnEntityCommand implements SingleMultiFactoryComma
 			cl1 = system.getOrCreateLeaf(code, null, null);
 		}
 
-		final IEntity note = system.createLeaf(UniqueSequence.getCode("GMN"), new Display(s), LeafType.NOTE, null);
+		final IEntity note = system.createLeaf(UniqueSequence.getCode("GMN"), Display.create(s), LeafType.NOTE, null);
 		note.setSpecificBackcolor(HtmlColorUtils.getColorIfValid(line0.get("COLOR", 0)));
 		if (url != null) {
 			note.addUrl(url);

@@ -87,14 +87,14 @@ public class InstructionIf implements Instruction {
 		return parent;
 	}
 
-	public void swithToElse(Display whenElse, LinkRendering nextLinkRenderer) {
+	public boolean swithToElse2(Display whenElse, LinkRendering nextLinkRenderer) {
 		if (elseBranch != null) {
-			throw new IllegalStateException();
+			return false;
 		}
 		this.current.setInlinkRendering(nextLinkRenderer);
 		this.elseBranch = new Branch(swimlane, whenElse, null, null);
-		// this.elseBranch.setLabelPositive(whenElse);
 		this.current = elseBranch;
+		return true;
 	}
 
 	public void elseIf(Display test, Display whenThen, LinkRendering nextLinkRenderer, HtmlColor color) {

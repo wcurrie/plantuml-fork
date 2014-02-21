@@ -38,7 +38,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import net.sourceforge.plantuml.FontParam;
-import net.sourceforge.plantuml.SpriteContainer;
+import net.sourceforge.plantuml.ISkinSimple;
 import net.sourceforge.plantuml.graphic.FontConfiguration;
 import net.sourceforge.plantuml.graphic.HorizontalAlignment;
 import net.sourceforge.plantuml.graphic.HtmlColor;
@@ -55,13 +55,13 @@ public class BodyEnhanced2 implements TextBlock {
 	private TextBlock area2;
 	private final FontConfiguration titleConfig;
 	private final Display rawBody2;
-	private final SpriteContainer spriteContainer;
+	private final ISkinSimple spriteContainer;
 
 	private final HorizontalAlignment align;
 
 	// private final List<Url> urls = new ArrayList<Url>();
 
-	public BodyEnhanced2(Display rawBody, FontParam fontParam, SpriteContainer spriteContainer,
+	public BodyEnhanced2(Display rawBody, FontParam fontParam, ISkinSimple spriteContainer,
 			HorizontalAlignment align, UFont fontNote, HtmlColor fontColor) {
 		this.rawBody2 = rawBody;
 		// this.fontParam = fontParam;
@@ -97,13 +97,13 @@ public class BodyEnhanced2 implements TextBlock {
 
 		char separator = 0;
 		TextBlock title = null;
-		Display members2 = new Display();
+		Display members2 = Display.empty();
 		for (CharSequence s : rawBody2) {
 			if (isBlockSeparator(s.toString())) {
 				blocks.add(decorate(stringBounder, getTextBlock(members2, stringBounder), separator, title));
 				separator = s.charAt(0);
 				title = getTitle(s.toString(), spriteContainer);
-				members2 = new Display();
+				members2 = Display.empty();
 			} else {
 				members2 = members2.add(s);
 			}
@@ -140,7 +140,7 @@ public class BodyEnhanced2 implements TextBlock {
 		return false;
 	}
 
-	private TextBlock getTitle(String s, SpriteContainer spriteContainer) {
+	private TextBlock getTitle(String s, ISkinSimple spriteContainer) {
 		if (s.length() <= 4) {
 			return null;
 		}

@@ -93,7 +93,7 @@ public class EntityImageState extends AbstractEntityImage {
 						SkinParamUtils.getFontColor(getSkinParam(), FontParam.STATE, stereotype)),
 				HorizontalAlignment.CENTER, skinParam);
 
-		Display list = new Display();
+		Display list = Display.empty();
 		for (Member att : entity.getFieldsToDisplay()) {
 			list = list.addAll(Display.getWithNewlines(att.getDisplay(true)));
 		}

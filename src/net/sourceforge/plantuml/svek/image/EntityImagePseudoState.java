@@ -65,7 +65,7 @@ public class EntityImagePseudoState extends AbstractEntityImage {
 	public EntityImagePseudoState(ILeaf entity, ISkinParam skinParam) {
 		super(entity, skinParam);
 		final Stereotype stereotype = entity.getStereotype();
-		this.desc = TextBlockUtils.create(Display.asList("H"),
+		this.desc = TextBlockUtils.create(Display.create("H"),
 				new FontConfiguration(SkinParamUtils.getFont(getSkinParam(), FontParam.STATE, stereotype),
 						SkinParamUtils.getFontColor(getSkinParam(), FontParam.STATE, stereotype)),
 				HorizontalAlignment.CENTER, skinParam);

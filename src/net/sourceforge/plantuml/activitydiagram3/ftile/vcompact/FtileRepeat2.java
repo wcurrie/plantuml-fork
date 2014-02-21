@@ -40,9 +40,9 @@ import java.util.List;
 import java.util.Set;
 
 import net.sourceforge.plantuml.Dimension2DDouble;
+import net.sourceforge.plantuml.ISkinSimple;
 import net.sourceforge.plantuml.MathUtils;
 import net.sourceforge.plantuml.OptionFlags;
-import net.sourceforge.plantuml.SpriteContainer;
 import net.sourceforge.plantuml.activitydiagram3.LinkRendering;
 import net.sourceforge.plantuml.activitydiagram3.ftile.AbstractConnection;
 import net.sourceforge.plantuml.activitydiagram3.ftile.AbstractFtile;
@@ -101,7 +101,7 @@ class FtileRepeat2 extends AbstractFtile {
 
 	public static Ftile create(Swimlane swimlane, Ftile repeat, Display test, HtmlColor borderColor,
 			HtmlColor backColor, UFont fontTest, HtmlColor arrowColor, HtmlColor endRepeatLinkColor,
-			ConditionStyle conditionStyle, SpriteContainer spriteContainer) {
+			ConditionStyle conditionStyle, ISkinSimple spriteContainer) {
 
 		final FontConfiguration fc = new FontConfiguration(fontTest, HtmlColorUtils.BLACK);
 		final TextBlock tbTest = TextBlockUtils.create(test, fc, HorizontalAlignment.LEFT, spriteContainer);

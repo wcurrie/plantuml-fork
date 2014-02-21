@@ -67,9 +67,10 @@ public class FileFormatOption {
 	private final FileFormat fileFormat;
 	private final AffineTransform affineTransform;
 	private final boolean withMetadata;
+	private final boolean useRedForError;
 
 	public FileFormatOption(FileFormat fileFormat) {
-		this(fileFormat, null, true);
+		this(fileFormat, null, true, false);
 	}
 
 	public final boolean isWithMetadata() {
@@ -77,17 +78,22 @@ public class FileFormatOption {
 	}
 
 	public FileFormatOption(FileFormat fileFormat, boolean withMetadata) {
-		this(fileFormat, null, false);
+		this(fileFormat, null, false, false);
 	}
 
-	public FileFormatOption(FileFormat fileFormat, AffineTransform at) {
-		this(fileFormat, at, true);
+	private FileFormatOption(FileFormat fileFormat, AffineTransform at) {
+		this(fileFormat, at, true, false);
 	}
 
-	public FileFormatOption(FileFormat fileFormat, AffineTransform at, boolean withMetadata) {
+	private FileFormatOption(FileFormat fileFormat, AffineTransform at, boolean withMetadata, boolean useRedForError) {
 		this.fileFormat = fileFormat;
 		this.affineTransform = at;
 		this.withMetadata = withMetadata;
+		this.useRedForError = useRedForError;
+	}
+
+	public FileFormatOption withUseRedForError() {
+		return new FileFormatOption(fileFormat, affineTransform, withMetadata, true);
 	}
 
 	@Override
@@ -187,6 +193,10 @@ public class FileFormatOption {
 		}
 
 		return ug;
+	}
+
+	public final boolean isUseRedForError() {
+		return useRedForError;
 	}
 
 }

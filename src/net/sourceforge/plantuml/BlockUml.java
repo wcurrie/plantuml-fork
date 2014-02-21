@@ -86,17 +86,13 @@ public class BlockUml {
 
 	private Diagram getSystem() {
 		if (system == null) {
-			createSystem();
+			system = new PSystemBuilder().createPSystem(data);
 		}
 		return system;
 	}
 
 	public Diagram getDiagram() {
 		return getSystem();
-	}
-
-	private void createSystem() {
-		system = new PSystemBuilder().createPSystem(data);
 	}
 
 }

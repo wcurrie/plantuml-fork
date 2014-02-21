@@ -28,12 +28,12 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 12235 $
+ * Revision $Revision: 12444 $
  *
  */
 package net.sourceforge.plantuml.skin.rose;
 
-import net.sourceforge.plantuml.SpriteContainer;
+import net.sourceforge.plantuml.ISkinSimple;
 import net.sourceforge.plantuml.cucadiagram.Display;
 import net.sourceforge.plantuml.graphic.HorizontalAlignment;
 import net.sourceforge.plantuml.graphic.HtmlColor;
@@ -49,7 +49,7 @@ public class ComponentRoseTitle extends AbstractTextualComponent {
 
 	private final int outMargin = 5;
 
-	public ComponentRoseTitle(HtmlColor fontColor, UFont font, Display stringsToDisplay, SpriteContainer spriteContainer) {
+	public ComponentRoseTitle(HtmlColor fontColor, UFont font, Display stringsToDisplay, ISkinSimple spriteContainer) {
 		super(stringsToDisplay, fontColor, font, HorizontalAlignment.CENTER, 7, 7, 7, spriteContainer, 0, false);
 	}
 

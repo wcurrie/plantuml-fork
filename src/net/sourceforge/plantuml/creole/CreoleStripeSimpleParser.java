@@ -36,7 +36,7 @@ package net.sourceforge.plantuml.creole;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import net.sourceforge.plantuml.ISkinParam;
+import net.sourceforge.plantuml.ISkinSimple;
 import net.sourceforge.plantuml.command.regex.MyPattern;
 import net.sourceforge.plantuml.graphic.FontConfiguration;
 
@@ -46,9 +46,9 @@ public class CreoleStripeSimpleParser {
 	final private StripeStyle style;
 
 	private final FontConfiguration fontConfiguration;
-	private final ISkinParam skinParam;
+	private final ISkinSimple skinParam;
 
-	public CreoleStripeSimpleParser(String line, FontConfiguration fontConfiguration, ISkinParam skinParam) {
+	public CreoleStripeSimpleParser(String line, FontConfiguration fontConfiguration, ISkinSimple skinParam) {
 		this.fontConfiguration = fontConfiguration;
 		this.skinParam = skinParam;
 
@@ -64,6 +64,13 @@ public class CreoleStripeSimpleParser {
 		final Matcher m5 = p5.matcher(line);
 		if (m5.find()) {
 			this.line = m5.group(1);
+			this.style = new StripeStyle(StripeStyleType.HORIZONTAL_LINE, 0, '=');
+			return;
+		}
+		final Pattern p5b = MyPattern.cmpile("^===*==$");
+		final Matcher m5b = p5b.matcher(line);
+		if (m5b.find()) {
+			this.line = "";
 			this.style = new StripeStyle(StripeStyleType.HORIZONTAL_LINE, 0, '=');
 			return;
 		}

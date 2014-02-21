@@ -33,12 +33,14 @@
  */
 package net.sourceforge.plantuml.creole;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.StringTokenizer;
 
-import net.sourceforge.plantuml.ISkinParam;
+import net.sourceforge.plantuml.ISkinSimple;
 import net.sourceforge.plantuml.graphic.FontConfiguration;
+import net.sourceforge.plantuml.graphic.HorizontalAlignment;
 
 public class StripeTable implements Stripe {
 
@@ -47,16 +49,16 @@ public class StripeTable implements Stripe {
 	};
 
 	private FontConfiguration fontConfiguration;
-	final private ISkinParam skinParam;
+	final private ISkinSimple skinParam;
 	final private AtomTable table;
 	final private Atom marged;
 	final private StripeStyle stripeStyle = new StripeStyle(StripeStyleType.NORMAL, 0, '\0');
 
-	public StripeTable(FontConfiguration fontConfiguration, ISkinParam skinParam, String line) {
+	public StripeTable(FontConfiguration fontConfiguration, ISkinSimple skinParam, String line) {
 		this.fontConfiguration = fontConfiguration;
 		this.skinParam = skinParam;
 		this.table = new AtomTable(fontConfiguration.getColor());
-		this.marged = new AtomWithMargin(table, 4, 4);
+		this.marged = new AtomWithMargin(table, 2, 2);
 		analyzeAndAddInternal(line, Mode.HEADER);
 	}
 
@@ -64,9 +66,11 @@ public class StripeTable implements Stripe {
 		return Collections.<Atom> singletonList(marged);
 	}
 
-	private static Atom asAtom(StripeSimple stripe) {
-		final Sheet sheet = new Sheet();
-		sheet.add(stripe);
+	private static Atom asAtom(List<StripeSimple> cells) {
+		final Sheet sheet = new Sheet(HorizontalAlignment.LEFT);
+		for (StripeSimple cell : cells) {
+			sheet.add(cell);
+		}
 		return new SheetBlock1(sheet);
 	}
 
@@ -77,11 +81,41 @@ public class StripeTable implements Stripe {
 			if (mode == Mode.HEADER && v.startsWith("=")) {
 				v = v.substring(1);
 			}
-			final StripeSimple cell = new StripeSimple(getFontConfiguration(mode), stripeStyle, new CreoleContext(),
-					skinParam);
-			cell.analyzeAndAdd(v);
-			table.addCell(asAtom(cell));
+			final List<String> lines = getWithNewlinesInternal(v);
+			final List<StripeSimple> cells = new ArrayList<StripeSimple>();
+			for (String s : lines) {
+				final StripeSimple cell = new StripeSimple(getFontConfiguration(mode), stripeStyle,
+						new CreoleContext(), skinParam);
+				cell.analyzeAndAdd(s);
+				cells.add(cell);
+			}
+			table.addCell(asAtom(cells));
 		}
+	}
+
+	private static List<String> getWithNewlinesInternal(String s) {
+		final List<String> result = new ArrayList<String>();
+		final StringBuilder current = new StringBuilder();
+		for (int i = 0; i < s.length(); i++) {
+			final char c = s.charAt(i);
+			if (c == '\\' && i < s.length() - 1) {
+				final char c2 = s.charAt(i + 1);
+				i++;
+				if (c2 == 'n') {
+					result.add(current.toString());
+					current.setLength(0);
+				} else if (c2 == '\\') {
+					current.append(c2);
+				} else {
+					current.append(c);
+					current.append(c2);
+				}
+			} else {
+				current.append(c);
+			}
+		}
+		result.add(current.toString());
+		return result;
 	}
 
 	private FontConfiguration getFontConfiguration(Mode mode) {

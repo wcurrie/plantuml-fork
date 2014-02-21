@@ -75,7 +75,7 @@ public final class EpsTitler {
 			textBloc = null;
 		} else {
 			final UFont normalFont = new UFont(fontFamily, Font.PLAIN, fontSize);
-			textBloc = TextBlockUtils.create(new Display(text), new FontConfiguration(normalFont, textColor),
+			textBloc = TextBlockUtils.create(Display.create(text), new FontConfiguration(normalFont, textColor),
 					HorizontalAlignment.LEFT, new SpriteContainerEmpty());
 		}
 	}

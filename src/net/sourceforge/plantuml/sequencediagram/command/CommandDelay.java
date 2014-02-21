@@ -48,7 +48,7 @@ public class CommandDelay extends SingleLineCommand<SequenceDiagram> {
 
 	@Override
 	protected CommandExecutionResult executeArg(SequenceDiagram sequenceDiagram, List<String> arg) {
-		final Display strings = arg.get(0) == null ? Display.emptyList() : Display.getWithNewlines(arg.get(0));
+		final Display strings = arg.get(0) == null ? Display.empty() : Display.getWithNewlines(arg.get(0));
 		sequenceDiagram.delay(strings);
 		return CommandExecutionResult.ok();
 	}

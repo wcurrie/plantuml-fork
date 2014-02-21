@@ -27,13 +27,53 @@
  * in the United States and other countries.]
  *
  * Original Author:  Arnaud Roques
- * 
- * Revision $Revision: 11025 $
+ *
+ * Revision $Revision: 4780 $
  *
  */
-package net.sourceforge.plantuml.creole;
+package net.sourceforge.plantuml;
 
+import java.io.IOException;
+import java.io.OutputStream;
 
+public class CounterOutputStream extends OutputStream {
 
-public class Table {
+	private int length;
+	private final OutputStream os;
+
+	public CounterOutputStream(OutputStream os) {
+		this.os = os;
+	}
+
+	/**
+	 * Writes to nowhere
+	 */
+	@Override
+	public void write(int b) throws IOException {
+		os.write(b);
+		length++;
+	}
+
+	/**
+	 * Overridden for performance reason
+	 */
+	@Override
+	public void write(byte b[]) throws IOException {
+		os.write(b);
+		length += b.length;
+	}
+
+	/**
+	 * Overridden for performance reason
+	 */
+	@Override
+	public void write(byte b[], int off, int len) throws IOException {
+		os.write(b, off, len);
+		length += len;
+	}
+
+	public int getLength() {
+		return length;
+	}
+
 }

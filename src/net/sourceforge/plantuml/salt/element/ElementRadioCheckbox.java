@@ -37,7 +37,7 @@ import java.awt.geom.Dimension2D;
 import java.util.List;
 
 import net.sourceforge.plantuml.Dimension2DDouble;
-import net.sourceforge.plantuml.SpriteContainer;
+import net.sourceforge.plantuml.ISkinSimple;
 import net.sourceforge.plantuml.cucadiagram.Display;
 import net.sourceforge.plantuml.graphic.FontConfiguration;
 import net.sourceforge.plantuml.graphic.HorizontalAlignment;
@@ -66,9 +66,9 @@ public class ElementRadioCheckbox implements Element {
 	private final boolean checked;
 
 	public ElementRadioCheckbox(List<String> text, UFont font, boolean radio, boolean checked,
-			SpriteContainer spriteContainer) {
+			ISkinSimple spriteContainer) {
 		final FontConfiguration config = new FontConfiguration(font, HtmlColorUtils.BLACK);
-		this.block = TextBlockUtils.create(new Display(text), config, HorizontalAlignment.LEFT, spriteContainer);
+		this.block = TextBlockUtils.create(Display.create(text), config, HorizontalAlignment.LEFT, spriteContainer);
 		this.radio = radio;
 		this.checked = checked;
 	}

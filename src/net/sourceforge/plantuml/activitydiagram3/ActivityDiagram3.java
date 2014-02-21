@@ -51,6 +51,7 @@ import net.sourceforge.plantuml.UmlDiagram;
 import net.sourceforge.plantuml.UmlDiagramType;
 import net.sourceforge.plantuml.Url;
 import net.sourceforge.plantuml.activitydiagram3.ftile.BoxStyle;
+import net.sourceforge.plantuml.activitydiagram3.ftile.EntityImageLegend;
 import net.sourceforge.plantuml.activitydiagram3.ftile.Swimlanes;
 import net.sourceforge.plantuml.api.ImageDataComplex;
 import net.sourceforge.plantuml.api.ImageDataSimple;
@@ -69,6 +70,7 @@ import net.sourceforge.plantuml.graphic.TextBlockRecentred;
 import net.sourceforge.plantuml.graphic.TextBlockUtils;
 import net.sourceforge.plantuml.sequencediagram.NotePosition;
 import net.sourceforge.plantuml.skin.rose.Rose;
+import net.sourceforge.plantuml.svek.DecorateEntityImage;
 import net.sourceforge.plantuml.svek.DecorateTextBlock;
 import net.sourceforge.plantuml.ugraphic.UFont;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
@@ -144,6 +146,17 @@ public class ActivityDiagram3 extends UmlDiagram {
 	public UmlDiagramType getUmlDiagramType() {
 		return UmlDiagramType.ACTIVITY;
 	}
+	
+	private TextBlock addLegend(TextBlock original) {
+		final Display legend = getLegend();
+		if (legend == null) {
+			return original;
+		}
+		final TextBlock text = EntityImageLegend.create(legend, getSkinParam());
+
+		return DecorateEntityImage.addBottom(original, text, getLegendAlignment());
+	}
+
 
 	protected ImageData exportDiagramInternal(OutputStream os, int index, FileFormatOption fileFormatOption,
 			List<BufferedImage> flashcodes) throws IOException {
@@ -151,6 +164,7 @@ public class ActivityDiagram3 extends UmlDiagram {
 		// TextBlock result = swinlanes;
 		TextBlock result = new TextBlockCompressed(swinlanes);
 		result = new TextBlockRecentred(result);
+		result = addLegend(result);
 		result = addTitle(result);
 		result = addHeaderAndFooter(result);
 		final ISkinParam skinParam = getSkinParam();
@@ -283,7 +297,10 @@ public class ActivityDiagram3 extends UmlDiagram {
 
 	public CommandExecutionResult else2(Display whenElse) {
 		if (current() instanceof InstructionIf) {
-			((InstructionIf) current()).swithToElse(whenElse, nextLinkRenderer());
+			final boolean result = ((InstructionIf) current()).swithToElse2(whenElse, nextLinkRenderer());
+			if (result == false) {
+				return CommandExecutionResult.error("Cannot find if");
+			}
 			setNextLinkRendererInternal(null);
 			return CommandExecutionResult.ok();
 		}

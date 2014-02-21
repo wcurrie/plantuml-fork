@@ -79,7 +79,7 @@ final public class BlockUmlBuilder {
 			if (current != null && paused==false) {
 				current.add(s);
 			}
-			if (StartUtils.isArobaseContinueDiagram(s)) {
+			if (StartUtils.isArobaseUnpauseDiagram(s)) {
 				paused = false;
 			}
 			if (StartUtils.isArobaseEndDiagram(s) && current != null) {

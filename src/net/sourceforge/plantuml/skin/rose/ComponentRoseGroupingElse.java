@@ -28,14 +28,14 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 12235 $
+ * Revision $Revision: 12444 $
  *
  */
 package net.sourceforge.plantuml.skin.rose;
 
 import java.awt.geom.Dimension2D;
 
-import net.sourceforge.plantuml.SpriteContainer;
+import net.sourceforge.plantuml.ISkinSimple;
 import net.sourceforge.plantuml.graphic.HorizontalAlignment;
 import net.sourceforge.plantuml.graphic.HtmlColor;
 import net.sourceforge.plantuml.graphic.StringBounder;
@@ -57,7 +57,7 @@ public class ComponentRoseGroupingElse extends AbstractTextualComponent {
 	private final UStroke stroke;
 
 	public ComponentRoseGroupingElse(HtmlColor fontColor, HtmlColor groupBorder, UFont smallFont, CharSequence comment,
-			SpriteContainer spriteContainer, HtmlColor backgroundColor, UStroke stroke) {
+			ISkinSimple spriteContainer, HtmlColor backgroundColor, UStroke stroke) {
 		super(comment == null ? null : "[" + comment + "]", fontColor, smallFont, HorizontalAlignment.LEFT, 5, 5, 1,
 				spriteContainer, 0);
 		this.groupBorder = groupBorder;

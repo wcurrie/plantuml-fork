@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 12235 $
+ * Revision $Revision: 12444 $
  *
  */
 package net.sourceforge.plantuml.skin;
@@ -36,6 +36,7 @@ package net.sourceforge.plantuml.skin;
 import java.awt.geom.Dimension2D;
 
 import net.sourceforge.plantuml.FontParam;
+import net.sourceforge.plantuml.ISkinSimple;
 import net.sourceforge.plantuml.SpriteContainer;
 import net.sourceforge.plantuml.cucadiagram.BodyEnhanced2;
 import net.sourceforge.plantuml.cucadiagram.Display;
@@ -63,14 +64,14 @@ public abstract class AbstractTextualComponent extends AbstractComponent {
 
 	public AbstractTextualComponent(CharSequence label, HtmlColor fontColor, UFont font,
 			HorizontalAlignment horizontalAlignment, int marginX1, int marginX2, int marginY,
-			SpriteContainer spriteContainer, double maxMessageSize) {
+			ISkinSimple spriteContainer, double maxMessageSize) {
 		this(Display.getWithNewlines(label == null ? "" : label.toString()), fontColor, font, horizontalAlignment,
 				marginX1, marginX2, marginY, spriteContainer, maxMessageSize, false);
 	}
 
 	public AbstractTextualComponent(Display strings, HtmlColor fontColor, UFont font,
 			HorizontalAlignment horizontalAlignment, int marginX1, int marginX2, int marginY,
-			SpriteContainer spriteContainer, double maxMessageSize, boolean enhanced) {
+			ISkinSimple spriteContainer, double maxMessageSize, boolean enhanced) {
 		this.font = font;
 		this.fontColor = fontColor;
 		this.marginX1 = marginX1;

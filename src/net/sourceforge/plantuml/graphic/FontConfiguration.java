@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 12235 $
+ * Revision $Revision: 12451 $
  *
  */
 package net.sourceforge.plantuml.graphic;
@@ -94,7 +94,7 @@ public class FontConfiguration {
 		this.svgAttributes = svgAttributes;
 	}
 
-	FontConfiguration changeAttributes(SvgAttributes toBeAdded) {
+	public FontConfiguration changeAttributes(SvgAttributes toBeAdded) {
 		return new FontConfiguration(styles, motherFont, motherColor, currentFont, currentColor, extendedColor,
 				fontPosition, svgAttributes.add(toBeAdded));
 	}

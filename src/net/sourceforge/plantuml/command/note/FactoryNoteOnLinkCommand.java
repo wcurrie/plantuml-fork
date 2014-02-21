@@ -123,7 +123,7 @@ public final class FactoryNoteOnLinkCommand implements SingleMultiFactoryCommand
 		if (url != null) {
 			note = note.subList(1, note.size());
 		}
-		link.addNote(new Display(note), position, HtmlColorUtils.getColorIfValid(arg.get("COLOR", 0)));
+		link.addNote(Display.create(note), position, HtmlColorUtils.getColorIfValid(arg.get("COLOR", 0)));
 		return CommandExecutionResult.ok();
 	}
 

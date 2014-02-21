@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 12235 $
+ * Revision $Revision: 12418 $
  *
  */
 package net.sourceforge.plantuml.svg;
@@ -261,7 +261,7 @@ public class SvgGraphics {
 	}
 
 	public final void setStrokeColor(String stroke) {
-		this.stroke = stroke;
+		this.stroke = stroke == null ? "none" : stroke;
 	}
 
 	public final void setStrokeWidth(double strokeWidth, String strokeDasharray) {

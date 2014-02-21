@@ -119,7 +119,7 @@ public final class FactorySequenceNoteOverSeveralCommand implements SingleMultiF
 
 		if (strings.size() > 0) {
 			final boolean tryMerge = line0.get("VMERGE", 0) != null;
-			final Note note = new Note(p1, p2, new Display(strings));
+			final Note note = new Note(p1, p2, Display.create(strings));
 			note.setSpecificBackcolor(HtmlColorUtils.getColorIfValid(line0.get("COLOR", 0)));
 			note.setStyle(NoteStyle.getNoteStyle(line0.get("STYLE", 0)));
 			system.addNote(note, tryMerge);

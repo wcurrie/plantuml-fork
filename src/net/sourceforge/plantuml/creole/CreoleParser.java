@@ -33,18 +33,22 @@
  */
 package net.sourceforge.plantuml.creole;
 
-import net.sourceforge.plantuml.ISkinParam;
+import net.sourceforge.plantuml.ISkinSimple;
 import net.sourceforge.plantuml.cucadiagram.Display;
 import net.sourceforge.plantuml.graphic.FontConfiguration;
+import net.sourceforge.plantuml.graphic.HorizontalAlignment;
 
 public class CreoleParser {
 
 	private final FontConfiguration fontConfiguration;
-	private final ISkinParam skinParam;
+	private final ISkinSimple skinParam;
+	private final HorizontalAlignment horizontalAlignment;
 
-	public CreoleParser(FontConfiguration fontConfiguration, ISkinParam skinParam) {
+	public CreoleParser(FontConfiguration fontConfiguration, HorizontalAlignment horizontalAlignment,
+			ISkinSimple skinParam) {
 		this.fontConfiguration = fontConfiguration;
 		this.skinParam = skinParam;
+		this.horizontalAlignment = horizontalAlignment;
 	}
 
 	private Stripe createStripe(String line, CreoleContext context, Stripe lastStripe) {
@@ -59,7 +63,7 @@ public class CreoleParser {
 	}
 
 	public Sheet createSheet(Display display) {
-		final Sheet sheet = new Sheet();
+		final Sheet sheet = new Sheet(horizontalAlignment);
 		if (display != null) {
 			final CreoleContext context = new CreoleContext();
 			for (CharSequence cs : display) {

@@ -39,7 +39,7 @@ import java.util.Collection;
 import java.util.List;
 
 import net.sourceforge.plantuml.Dimension2DDouble;
-import net.sourceforge.plantuml.SpriteContainer;
+import net.sourceforge.plantuml.ISkinSimple;
 import net.sourceforge.plantuml.graphic.HtmlColorUtils;
 import net.sourceforge.plantuml.graphic.StringBounder;
 import net.sourceforge.plantuml.ugraphic.UChangeColor;
@@ -53,9 +53,9 @@ public class ElementTree implements Element {
 
 	private final Collection<ElementTreeEntry> entries = new ArrayList<ElementTreeEntry>();
 	private final UFont font;
-	private final SpriteContainer spriteContainer;
+	private final ISkinSimple spriteContainer;
 
-	public ElementTree(UFont font, SpriteContainer spriteContainer) {
+	public ElementTree(UFont font, ISkinSimple spriteContainer) {
 		this.font = font;
 		this.spriteContainer = spriteContainer;
 	}

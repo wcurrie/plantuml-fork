@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 12235 $
+ * Revision $Revision: 12495 $
  *
  */
 package net.sourceforge.plantuml.graphic;
@@ -36,7 +36,7 @@ package net.sourceforge.plantuml.graphic;
 import java.awt.geom.Dimension2D;
 
 import net.sourceforge.plantuml.Dimension2DDouble;
-import net.sourceforge.plantuml.SpriteContainer;
+import net.sourceforge.plantuml.ISkinSimple;
 import net.sourceforge.plantuml.cucadiagram.Display;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
 import net.sourceforge.plantuml.ugraphic.UTranslate;
@@ -46,9 +46,9 @@ class TextBlockWithNumber extends TextBlockSimple {
 	private final TextBlock numText;
 
 	public TextBlockWithNumber(String number, Display texts, FontConfiguration fontConfiguration,
-			HorizontalAlignment horizontalAlignment, SpriteContainer spriteContainer, double maxMessageSize) {
+			HorizontalAlignment horizontalAlignment, ISkinSimple spriteContainer, double maxMessageSize) {
 		super(texts, fontConfiguration, horizontalAlignment, spriteContainer, maxMessageSize);
-		this.numText = TextBlockUtils.create(Display.asList(number), fontConfiguration, HorizontalAlignment.LEFT,
+		this.numText = TextBlockUtils.create(Display.create(number), fontConfiguration, HorizontalAlignment.LEFT,
 				spriteContainer);
 	}
 

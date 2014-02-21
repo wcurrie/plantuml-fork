@@ -119,7 +119,7 @@ public final class FactorySequenceNoteOnArrowCommand implements SingleMultiFacto
 				strings = strings.subList(1, strings.size());
 			}
 
-			m.setNote(new Display(strings), position, line0.get("COLOR", 0), url);
+			m.setNote(Display.create(strings), position, line0.get("COLOR", 0), url);
 		}
 
 		return CommandExecutionResult.ok();

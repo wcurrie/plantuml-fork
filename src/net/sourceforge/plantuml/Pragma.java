@@ -33,10 +33,8 @@
  */
 package net.sourceforge.plantuml;
 
-import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.Map;
-import java.util.Set;
 
 public class Pragma {
 
@@ -61,7 +59,4 @@ public class Pragma {
 		return values.get(name);
 	}
 
-	protected Set<Map.Entry<String, String>> entrySet() {
-		return Collections.unmodifiableSet(values.entrySet());
-	}
 }

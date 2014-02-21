@@ -95,7 +95,7 @@ public class TimeHeaderMonth implements TextBlock {
 	private void manage(UGraphic ug, double x, double y, int n, String last, double pendingX) {
 		final double width = n * dayWidth - pendingX;
 		ug.apply(new UTranslate(x + pendingX, y)).draw(new URectangle(width, getHeight()));
-		final TextBlock b = TextBlockUtils.create(Display.asList(last), fontConfig, HorizontalAlignment.LEFT,
+		final TextBlock b = TextBlockUtils.create(Display.create(last), fontConfig, HorizontalAlignment.LEFT,
 				new SpriteContainerEmpty());
 		final Dimension2D dimText = b.calculateDimension(ug.getStringBounder());
 		final double diffX = width - dimText.getWidth();

@@ -35,7 +35,7 @@ package net.sourceforge.plantuml.skin.rose;
 
 import java.awt.geom.Dimension2D;
 
-import net.sourceforge.plantuml.SpriteContainer;
+import net.sourceforge.plantuml.ISkinSimple;
 import net.sourceforge.plantuml.cucadiagram.Display;
 import net.sourceforge.plantuml.graphic.HorizontalAlignment;
 import net.sourceforge.plantuml.graphic.HtmlColor;
@@ -55,7 +55,7 @@ public class ComponentRoseEntity extends AbstractTextualComponent {
 	private final boolean head;
 
 	public ComponentRoseEntity(HtmlColor yellow, HtmlColor red, HtmlColor fontColor, UFont font,
-			Display stringsToDisplay, boolean head, SpriteContainer spriteContainer, double deltaShadow, UStroke stroke) {
+			Display stringsToDisplay, boolean head, ISkinSimple spriteContainer, double deltaShadow, UStroke stroke) {
 		super(stringsToDisplay, fontColor, font, HorizontalAlignment.CENTER, 3, 3, 0, spriteContainer, 0, false);
 		this.head = head;
 		this.stickman = new EntityDomain(yellow, red, deltaShadow, stroke.getThickness());

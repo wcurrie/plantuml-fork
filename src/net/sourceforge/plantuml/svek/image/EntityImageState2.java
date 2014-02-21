@@ -69,7 +69,7 @@ public class EntityImageState2 extends AbstractEntityImage {
 		this.lineConfig = entity;
 		final Stereotype stereotype = entity.getStereotype();
 
-		Display list = new Display();
+		Display list = Display.empty();
 		for (Member att : entity.getFieldsToDisplay()) {
 			list = list.addAll(Display.getWithNewlines(att.getDisplay(true)));
 		}

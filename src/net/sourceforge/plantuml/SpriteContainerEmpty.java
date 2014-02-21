@@ -35,9 +35,13 @@ package net.sourceforge.plantuml;
 
 import net.sourceforge.plantuml.ugraphic.Sprite;
 
-public class SpriteContainerEmpty implements SpriteContainer {
+public class SpriteContainerEmpty implements SpriteContainer, ISkinSimple {
 
 	public Sprite getSprite(String name) {
+		return null;
+	}
+
+	public String getValue(String key) {
 		return null;
 	}
 

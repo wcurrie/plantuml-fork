@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 12297 $
+ * Revision $Revision: 12495 $
  *
  */
 package net.sourceforge.plantuml.skin.rose;
@@ -283,7 +283,7 @@ public class Rose implements Skin {
 					FontParam.SEQUENCE_TITLE, null), stringsToDisplay, param);
 		}
 		if (type == ComponentType.SIGNATURE) {
-			return new ComponentRoseTitle(HtmlColorUtils.BLACK, fontGrouping, Display.asList("This skin was created ",
+			return new ComponentRoseTitle(HtmlColorUtils.BLACK, fontGrouping, Display.create("This skin was created ",
 					"in April 2009."), param);
 		}
 		if (type == ComponentType.ENGLOBER) {

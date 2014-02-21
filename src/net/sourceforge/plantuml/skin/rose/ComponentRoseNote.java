@@ -28,12 +28,12 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 12235 $
+ * Revision $Revision: 12444 $
  *
  */
 package net.sourceforge.plantuml.skin.rose;
 
-import net.sourceforge.plantuml.SpriteContainer;
+import net.sourceforge.plantuml.ISkinSimple;
 import net.sourceforge.plantuml.creole.Stencil;
 import net.sourceforge.plantuml.cucadiagram.Display;
 import net.sourceforge.plantuml.graphic.HorizontalAlignment;
@@ -62,7 +62,7 @@ final public class ComponentRoseNote extends AbstractTextualComponent implements
 	private final UStroke stroke;
 
 	public ComponentRoseNote(HtmlColor back, HtmlColor foregroundColor, HtmlColor fontColor, UFont font,
-			Display strings, double paddingX, double paddingY, SpriteContainer spriteContainer, double deltaShadow,
+			Display strings, double paddingX, double paddingY, ISkinSimple spriteContainer, double deltaShadow,
 			UStroke stroke) {
 		super(strings, fontColor, font, HorizontalAlignment.LEFT, 6, 15, 5, spriteContainer, 0, true);
 		this.back = back;

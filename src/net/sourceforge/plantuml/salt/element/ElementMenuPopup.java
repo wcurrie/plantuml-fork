@@ -38,7 +38,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 import net.sourceforge.plantuml.Dimension2DDouble;
-import net.sourceforge.plantuml.SpriteContainer;
+import net.sourceforge.plantuml.ISkinSimple;
 import net.sourceforge.plantuml.graphic.HtmlColorUtils;
 import net.sourceforge.plantuml.graphic.StringBounder;
 import net.sourceforge.plantuml.ugraphic.UChangeBackColor;
@@ -52,9 +52,9 @@ public class ElementMenuPopup implements Element {
 
 	private final Collection<ElementMenuEntry> entries = new ArrayList<ElementMenuEntry>();
 	private final UFont font;
-	private final SpriteContainer spriteContainer;
+	private final ISkinSimple spriteContainer;
 
-	public ElementMenuPopup(UFont font, SpriteContainer spriteContainer) {
+	public ElementMenuPopup(UFont font, ISkinSimple spriteContainer) {
 		this.font = font;
 		this.spriteContainer = spriteContainer;
 	}

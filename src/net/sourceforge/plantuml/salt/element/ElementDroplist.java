@@ -39,7 +39,7 @@ import java.util.List;
 import java.util.StringTokenizer;
 
 import net.sourceforge.plantuml.Dimension2DDouble;
-import net.sourceforge.plantuml.SpriteContainer;
+import net.sourceforge.plantuml.ISkinSimple;
 import net.sourceforge.plantuml.cucadiagram.Display;
 import net.sourceforge.plantuml.graphic.HorizontalAlignment;
 import net.sourceforge.plantuml.graphic.HtmlColorUtils;
@@ -59,7 +59,7 @@ public class ElementDroplist extends AbstractElementText implements Element {
 	private final int box = 12;
 	private final TextBlock openDrop;
 
-	public ElementDroplist(String text, UFont font, SpriteContainer spriteContainer) {
+	public ElementDroplist(String text, UFont font, ISkinSimple spriteContainer) {
 		super(extract(text), font, true, spriteContainer);
 		final StringTokenizer st = new StringTokenizer(text, "^");
 		final List<String> drop = new ArrayList<String>();
@@ -72,7 +72,7 @@ public class ElementDroplist extends AbstractElementText implements Element {
 		if (drop.size() == 0) {
 			this.openDrop = null;
 		} else {
-			this.openDrop = TextBlockUtils.create(new Display(drop), getConfig(), HorizontalAlignment.LEFT,
+			this.openDrop = TextBlockUtils.create(Display.create(drop), getConfig(), HorizontalAlignment.LEFT,
 					spriteContainer);
 		}
 	}

@@ -40,7 +40,7 @@ import java.util.List;
 
 import net.sourceforge.plantuml.FontParam;
 import net.sourceforge.plantuml.ISkinParam;
-import net.sourceforge.plantuml.SpriteContainer;
+import net.sourceforge.plantuml.ISkinSimple;
 import net.sourceforge.plantuml.StringUtils;
 import net.sourceforge.plantuml.Url;
 import net.sourceforge.plantuml.graphic.FontConfiguration;
@@ -166,7 +166,7 @@ public class BodyEnhanced implements TextBlock {
 		return false;
 	}
 
-	private TextBlock getTitle(String s, SpriteContainer spriteContainer) {
+	private TextBlock getTitle(String s, ISkinSimple spriteContainer) {
 		if (s.length() <= 4) {
 			return null;
 		}

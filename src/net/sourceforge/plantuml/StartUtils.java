@@ -51,9 +51,9 @@ public class StartUtils {
 		return s.startsWith("@pause");
 	}
 
-	public static boolean isArobaseContinueDiagram(String s) {
+	public static boolean isArobaseUnpauseDiagram(String s) {
 		s = s.trim();
-		return s.startsWith("@continue");
+		return s.startsWith("@unpause");
 	}
 
 }

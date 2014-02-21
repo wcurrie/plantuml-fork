@@ -37,7 +37,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import net.sourceforge.plantuml.ISkinParam;
+import net.sourceforge.plantuml.ISkinSimple;
 import net.sourceforge.plantuml.Url;
 import net.sourceforge.plantuml.graphic.FontConfiguration;
 import net.sourceforge.plantuml.graphic.FontPosition;
@@ -54,10 +54,10 @@ public class StripeSimple implements Stripe {
 
 	final private StripeStyle style;
 
-	final private ISkinParam skinParam;
+	final private ISkinSimple skinParam;
 
 	public StripeSimple(FontConfiguration fontConfiguration, StripeStyle style, CreoleContext context,
-			ISkinParam skinParam) {
+			ISkinSimple skinParam) {
 		this.fontConfiguration = fontConfiguration;
 		this.style = style;
 		this.skinParam = skinParam;
@@ -93,6 +93,7 @@ public class StripeSimple implements Stripe {
 		this.commands.add(CommandCreoleFontFamilyChange.createEol());
 		this.commands.add(CommandCreoleMonospaced.create());
 		this.commands.add(CommandCreoleUrl.create(skinParam));
+		this.commands.add(CommandCreoleSvgAttributeChange.create());
 
 		final Atom header = style.getHeader(fontConfiguration, context);
 
@@ -102,6 +103,9 @@ public class StripeSimple implements Stripe {
 	}
 
 	public List<Atom> getAtoms() {
+		if (atoms.size() == 0) {
+			atoms.add(AtomText.create(" ", fontConfiguration));
+		}
 		return Collections.unmodifiableList(atoms);
 	}
 

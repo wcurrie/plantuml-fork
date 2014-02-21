@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 12235 $
+ * Revision $Revision: 12458 $
  *
  */
 package net.sourceforge.plantuml.cucadiagram.dot;
@@ -41,6 +41,7 @@ import java.util.List;
 import net.sourceforge.plantuml.Log;
 import net.sourceforge.plantuml.OptionFlags;
 import net.sourceforge.plantuml.StringUtils;
+import net.sourceforge.plantuml.api.Performance;
 
 abstract class AbstractGraphviz implements Graphviz {
 
@@ -88,14 +89,16 @@ abstract class AbstractGraphviz implements Graphviz {
 		final String cmd[] = getCommandLine();
 		ProcessRunner p = null;
 		ProcessState state = null;
+		long startTime = -1;
 		try {
 			Log.info("Starting Graphviz process " + Arrays.asList(cmd));
 			Log.info("DotString size: " + dotString.length());
 			p = new ProcessRunner(cmd);
-			state = p.run2(dotString.getBytes(), os);
-//			if (state == ProcessState.TERMINATED_OK) {
-//				result = true;
-//			}
+			startTime = System.nanoTime();
+			state = p.run(dotString.getBytes(), os);
+			// if (state == ProcessState.TERMINATED_OK) {
+			// result = true;
+			// }
 			Log.info("Ending process ok");
 		} catch (Throwable e) {
 			e.printStackTrace();
@@ -105,6 +108,11 @@ abstract class AbstractGraphviz implements Graphviz {
 			Log.error("Try java -jar plantuml.jar -testdot to figure out the issue");
 			Log.error("");
 		} finally {
+			Performance.incDotCount();
+			if (startTime != -1) {
+				final long duration = System.nanoTime() - startTime;
+				Performance.updateDotTime(duration);
+			}
 			Log.info("Ending Graphviz process");
 		}
 		if (OptionFlags.getInstance().isCheckDotError() && p != null && p.getError().length() > 0) {
@@ -133,7 +141,7 @@ abstract class AbstractGraphviz implements Graphviz {
 
 	private String executeCmd(final String cmd[]) {
 		final ProcessRunner p = new ProcessRunner(cmd);
-		final ProcessState state = p.run2(null, null);
+		final ProcessState state = p.run(null, null);
 		if (state != ProcessState.TERMINATED_OK) {
 			return "?";
 		}
@@ -151,6 +159,17 @@ abstract class AbstractGraphviz implements Graphviz {
 	}
 
 	final String[] getCommandLine() {
+		if (OptionFlags.ADD_NICE_FOR_DOT) {
+			final String[] result = new String[type.length + 1 + 3];
+			result[0] = "/bin/nice";
+			result[1] = "-n";
+			result[2] = "10";
+			result[3] = getDotExe().getAbsolutePath();
+			for (int i = 0; i < type.length; i++) {
+				result[i + 4] = "-T" + type[i];
+			}
+			return result;
+		}
 		final String[] result = new String[type.length + 1];
 		result[0] = getDotExe().getAbsolutePath();
 		for (int i = 0; i < type.length; i++) {

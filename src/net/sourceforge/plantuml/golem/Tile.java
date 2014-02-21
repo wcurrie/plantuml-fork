@@ -79,7 +79,7 @@ public class Tile implements TextBlock {
 
 	public void drawU(UGraphic ug) {
 		ug = ug.apply(new UChangeColor(HtmlColorUtils.BLACK));
-		final TextBlock n = TextBlockUtils.create(Display.asList("" + num), fc, HorizontalAlignment.LEFT,
+		final TextBlock n = TextBlockUtils.create(Display.create("" + num), fc, HorizontalAlignment.LEFT,
 				new SpriteContainerEmpty());
 		final Dimension2D dimNum = n.calculateDimension(ug.getStringBounder());
 		final Dimension2D dimTotal = calculateDimension(ug.getStringBounder());

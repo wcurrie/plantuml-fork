@@ -36,7 +36,7 @@ package net.sourceforge.plantuml.skin.rose;
 import java.awt.geom.Dimension2D;
 import java.awt.geom.Point2D;
 
-import net.sourceforge.plantuml.SpriteContainer;
+import net.sourceforge.plantuml.ISkinSimple;
 import net.sourceforge.plantuml.cucadiagram.Display;
 import net.sourceforge.plantuml.graphic.HorizontalAlignment;
 import net.sourceforge.plantuml.graphic.HtmlColor;
@@ -65,7 +65,7 @@ public class ComponentRoseArrow2 extends AbstractComponentRoseArrow {
 
 	public ComponentRoseArrow2(HtmlColor foregroundColor, HtmlColor fontColor, UFont font, Display stringsToDisplay,
 			ArrowConfiguration arrowConfiguration, HorizontalAlignment messagePosition,
-			SpriteContainer spriteContainer, HorizontalAlignment textHorizontalAlignment, double maxMessageSize,
+			ISkinSimple spriteContainer, HorizontalAlignment textHorizontalAlignment, double maxMessageSize,
 			boolean niceArrow) {
 		super(foregroundColor, fontColor, font, stringsToDisplay, arrowConfiguration, spriteContainer,
 				textHorizontalAlignment, maxMessageSize);

@@ -48,7 +48,7 @@ import net.sourceforge.plantuml.ugraphic.UTranslate;
 
 public class CircleInterface2 implements TextBlock {
 
-	private final double margin = 4;
+	private final double margin = 1;
 
 	private final double radius = 8;
 

@@ -98,7 +98,7 @@ public class SourceStringReader {
 
 	public String generateImage(OutputStream os, int numImage, FileFormatOption fileFormatOption) throws IOException {
 		if (blocks.size() == 0) {
-			final GraphicStrings error = new GraphicStrings(Arrays.asList("No @startuml found"));
+			final GraphicStrings error = GraphicStrings.createDefault(Arrays.asList("No @startuml found"), fileFormatOption.isUseRedForError());
 			error.writeImage(os, fileFormatOption, null);
 			return null;
 		}
@@ -143,7 +143,7 @@ public class SourceStringReader {
 	public DiagramDescription generateDiagramDescription(OutputStream os, int numImage, FileFormatOption fileFormatOption)
 			throws IOException {
 		if (blocks.size() == 0) {
-			final GraphicStrings error = new GraphicStrings(Arrays.asList("No @startuml found"));
+			final GraphicStrings error = GraphicStrings.createDefault(Arrays.asList("No @startuml found"), fileFormatOption.isUseRedForError());
 			error.writeImage(os, fileFormatOption, null);
 			return null;
 		}

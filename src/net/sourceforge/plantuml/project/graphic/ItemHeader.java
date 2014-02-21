@@ -71,7 +71,7 @@ class ItemHeader {
 		ug.apply(new UTranslate(x, y)).draw(new URectangle(getWidth(stringBounder), getHeight(stringBounder)));
 
 		for (Item it : project.getValidItems()) {
-			final TextBlock b = TextBlockUtils.create(Display.asList("" + it.getCode()), fontConfig,
+			final TextBlock b = TextBlockUtils.create(Display.create("" + it.getCode()), fontConfig,
 					HorizontalAlignment.LEFT, new SpriteContainerEmpty());
 			final Dimension2D dim = b.calculateDimension(stringBounder);
 			b.drawU(ug.apply(new UTranslate(x, y)));

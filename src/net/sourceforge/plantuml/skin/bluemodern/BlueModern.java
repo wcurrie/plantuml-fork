@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 12235 $
+ * Revision $Revision: 12495 $
  *
  */
 package net.sourceforge.plantuml.skin.bluemodern;
@@ -155,7 +155,7 @@ public class BlueModern implements Skin {
 					stringsToDisplay, param);
 		}
 		if (type == ComponentType.SIGNATURE) {
-			return new ComponentRoseTitle(HtmlColorUtils.BLACK, smallFont, Display.asList("This skin was created ",
+			return new ComponentRoseTitle(HtmlColorUtils.BLACK, smallFont, Display.create("This skin was created ",
 					"in April 2009."), param);
 		}
 		if (type == ComponentType.ENGLOBER) {

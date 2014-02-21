@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 12235 $
+ * Revision $Revision: 12495 $
  *
  */
 package net.sourceforge.plantuml.command;
@@ -51,7 +51,7 @@ public class CommandMultilinesTitle extends CommandMultilines<UmlDiagram> {
 	}
 
 	public CommandExecutionResult execute(final UmlDiagram diagram, List<String> lines) {
-		final Display strings = new Display(lines.subList(1, lines.size() - 1)).removeEmptyColumns();
+		final Display strings = Display.create(lines.subList(1, lines.size() - 1)).removeEmptyColumns();
 		if (strings.size() > 0) {
 			diagram.setTitle(StringUtils.manageEmbededDiagrams(strings));
 			return CommandExecutionResult.ok();

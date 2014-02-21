@@ -156,7 +156,7 @@ public class SequenceDiagramFileMakerPuma implements FileMaker {
 		final double tailHeight = drawableSet.getTailHeight(dummyStringBounder, showFootbox);
 		final double signatureHeight = 0;
 		final double newpageHeight = drawableSet.getSkin()
-				.createComponent(ComponentType.NEWPAGE, null, drawableSet.getSkinParam(), Display.asList(""))
+				.createComponent(ComponentType.NEWPAGE, null, drawableSet.getSkinParam(), Display.create(""))
 				.getPreferredHeight(dummyStringBounder);
 
 		return new PageSplitter(fullDimension.getHeight(), headerHeight, positions, tailHeight, signatureHeight,

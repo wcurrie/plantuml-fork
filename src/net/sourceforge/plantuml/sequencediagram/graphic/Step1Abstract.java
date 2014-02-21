@@ -85,7 +85,7 @@ abstract class Step1Abstract {
 		if (message.getMessageNumber() == null) {
 			return message.getLabel();
 		}
-		Display result = new Display();
+		Display result = Display.empty();
 		result = result.add(new MessageNumber(message.getMessageNumber()));
 		result = result.addAll(message.getLabel());
 		return result;

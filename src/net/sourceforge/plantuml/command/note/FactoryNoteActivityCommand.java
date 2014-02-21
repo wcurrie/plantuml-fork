@@ -89,7 +89,7 @@ public final class FactoryNoteActivityCommand implements SingleMultiFactoryComma
 			public final CommandExecutionResult executeNow(final ActivityDiagram system, List<String> lines) {
 				// StringUtils.trim(lines, true);
 				final RegexResult arg = getStartingPattern().matcher(lines.get(0).trim());
-				Display strings = new Display(StringUtils.removeEmptyColumns(lines.subList(1, lines.size() - 1)));
+				Display strings = Display.create(StringUtils.removeEmptyColumns(lines.subList(1, lines.size() - 1)));
 
 				Url url = null;
 				if (strings.size() > 0) {

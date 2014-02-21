@@ -288,16 +288,19 @@ public class CommandLinkElement extends SingleLineCommand2<DescriptionDiagram> {
 		if (code.startsWith("()")) {
 			return diagram.getOrCreateLeaf(
 					Code.of(StringUtils.eventuallyRemoveStartingAndEndingDoubleQuote(code.substring(2).trim())),
-					LeafType.CIRCLE_INTERFACE, USymbol.INTERFACE);
+					LeafType.DESCRIPTION, USymbol.INTERFACE);
 		}
 		final char codeChar = code.length() > 2 ? code.charAt(0) : 0;
 		if (codeChar == '(') {
-			return diagram.getOrCreateLeaf(code2.eventuallyRemoveStartingAndEndingDoubleQuote(), LeafType.USECASE, USymbol.USECASE);
+			return diagram.getOrCreateLeaf(code2.eventuallyRemoveStartingAndEndingDoubleQuote(), LeafType.USECASE,
+					USymbol.USECASE);
 		} else if (codeChar == ':') {
-			return diagram.getOrCreateLeaf(code2.eventuallyRemoveStartingAndEndingDoubleQuote(), LeafType.DESCRIPTION, USymbol.ACTOR);
+			return diagram.getOrCreateLeaf(code2.eventuallyRemoveStartingAndEndingDoubleQuote(), LeafType.DESCRIPTION,
+					USymbol.ACTOR);
 		} else if (codeChar == '[') {
 			final USymbol sym = diagram.getSkinParam().useUml2ForComponent() ? USymbol.COMPONENT2 : USymbol.COMPONENT1;
-			return diagram.getOrCreateLeaf(code2.eventuallyRemoveStartingAndEndingDoubleQuote(), LeafType.DESCRIPTION, sym);
+			return diagram.getOrCreateLeaf(code2.eventuallyRemoveStartingAndEndingDoubleQuote(), LeafType.DESCRIPTION,
+					sym);
 		}
 
 		return diagram.getOrCreateLeaf(code2, null, null);

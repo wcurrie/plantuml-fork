@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 12235 $
+ * Revision $Revision: 12421 $
  *
  */
 package net.sourceforge.plantuml.cucadiagram.dot;
@@ -211,11 +211,11 @@ public class GraphvizUtils {
 		return null;
 	}
 
-	public static OS getOS() {
-		if (isWindows()) {
-			return new OSWindows();
-		}
-		return new OSLinux();
-	}
+//	public static OS getOS() {
+//		if (isWindows()) {
+//			return new OSWindows();
+//		}
+//		return new OSLinux();
+//	}
 
 }

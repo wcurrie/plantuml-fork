@@ -71,7 +71,7 @@ public class ActivityBox implements TextBlock {
 		this.label = label;
 		final UFont font = new UFont("Serif", Font.PLAIN, 14);
 		final FontConfiguration fc = new FontConfiguration(font, HtmlColorUtils.BLACK);
-		tb = TextBlockUtils.create(Display.asList(label), fc, HorizontalAlignment.LEFT, new SpriteContainerEmpty());
+		tb = TextBlockUtils.create(Display.create(label), fc, HorizontalAlignment.LEFT, new SpriteContainerEmpty());
 	}
 
 	public Tile getTile() {

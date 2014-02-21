@@ -28,10 +28,13 @@
  *
  * Original Author:  Arnaud Roques
  *
- * Revision $Revision: 12235 $
+ * Revision $Revision: 12455 $
  *
  */
 package net.sourceforge.plantuml;
+
+import net.sourceforge.plantuml.api.HealthCheck;
+import net.sourceforge.plantuml.api.Performance;
 
 public abstract class Log {
 
@@ -52,14 +55,30 @@ public abstract class Log {
 
 	private static String format(String s) {
 		final long delta = System.currentTimeMillis() - start;
+		final HealthCheck healthCheck = Performance.getHealthCheck();
+		final long cpu = healthCheck.jvmCpuTime() / 1000L / 1000L;
+		final long dot = healthCheck.totalDotTime() / 1000L / 1000L;
 		final StringBuilder sb = new StringBuilder();
 		sb.append("(");
 		sb.append(delta / 1000L);
 		sb.append(".");
 		sb.append(String.format("%03d", delta % 1000L));
+		if (cpu != -1) {
+			sb.append(" - ");
+			sb.append(cpu / 1000L);
+			sb.append(".");
+			sb.append(String.format("%03d", cpu % 1000L));
+		}
 		sb.append(" - ");
-		final long total = (Runtime.getRuntime().totalMemory()) / 1024 / 1024;
-		final long free = (Runtime.getRuntime().freeMemory()) / 1024 / 1024;
+		sb.append(dot / 1000L);
+		sb.append(".");
+		sb.append(String.format("%03d", dot % 1000L));
+		sb.append("(");
+		sb.append(healthCheck.dotCount());
+		sb.append(")");
+		sb.append(" - ");
+		final long total = (healthCheck.totalMemory()) / 1024 / 1024;
+		final long free = (healthCheck.freeMemory()) / 1024 / 1024;
 		sb.append(total);
 		sb.append(" Mo) ");
 		sb.append(free);

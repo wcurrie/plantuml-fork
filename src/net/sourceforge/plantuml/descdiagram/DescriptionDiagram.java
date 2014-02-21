@@ -49,17 +49,17 @@ public class DescriptionDiagram extends AbstractEntityDiagram {
 			String code2 = code.getCode();
 			if (code2.startsWith("[") && code2.endsWith("]")) {
 				final USymbol sym = getSkinParam().useUml2ForComponent() ? USymbol.COMPONENT2 : USymbol.COMPONENT1;
-				return getOrCreateLeafDefault(code.eventuallyRemoveStartingAndEndingDoubleQuote(), LeafType.DESCRIPTION,
-						sym);
+				return getOrCreateLeafDefault(code.eventuallyRemoveStartingAndEndingDoubleQuote(),
+						LeafType.DESCRIPTION, sym);
 			}
 			if (code2.startsWith(":") && code2.endsWith(":")) {
-				return getOrCreateLeafDefault(code.eventuallyRemoveStartingAndEndingDoubleQuote(), LeafType.DESCRIPTION,
-						USymbol.ACTOR);
+				return getOrCreateLeafDefault(code.eventuallyRemoveStartingAndEndingDoubleQuote(),
+						LeafType.DESCRIPTION, USymbol.ACTOR);
 			}
 			if (code2.startsWith("()")) {
 				code2 = code2.substring(2).trim();
 				code2 = StringUtils.eventuallyRemoveStartingAndEndingDoubleQuote(code2);
-				return getOrCreateLeafDefault(Code.of(code2), LeafType.CIRCLE_INTERFACE, USymbol.INTERFACE);
+				return getOrCreateLeafDefault(Code.of(code2), LeafType.DESCRIPTION, USymbol.INTERFACE);
 			}
 			code = code.eventuallyRemoveStartingAndEndingDoubleQuote();
 			return getOrCreateLeafDefault(code, LeafType.STILL_UNKNOWN, symbol);
@@ -104,7 +104,8 @@ public class DescriptionDiagram extends AbstractEntityDiagram {
 
 	@Override
 	public void makeDiagramReady() {
-		final LeafType defaultType = isUsecase() ? LeafType.DESCRIPTION : LeafType.CIRCLE_INTERFACE;
+		super.makeDiagramReady();
+		final LeafType defaultType = isUsecase() ? LeafType.DESCRIPTION : LeafType.DESCRIPTION;
 		final USymbol defaultSymbol = isUsecase() ? USymbol.ACTOR : USymbol.INTERFACE;
 		for (ILeaf leaf : getLeafs().values()) {
 			if (leaf.getEntityType() == LeafType.STILL_UNKNOWN) {

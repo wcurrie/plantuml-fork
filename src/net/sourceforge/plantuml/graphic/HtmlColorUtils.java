@@ -212,6 +212,8 @@ public class HtmlColorUtils {
 
 	public static final HtmlColor BLACK = HtmlColorUtils.getColorIfValid("black");
 	public static final HtmlColor WHITE = HtmlColorUtils.getColorIfValid("white");
+	public static final HtmlColor RED_LIGHT = HtmlColorUtils.getColorIfValid("#FEF6F3");
+	public static final HtmlColor RED_DARK = HtmlColorUtils.getColorIfValid("#CD0A0A");
 	public static final HtmlColor RED = HtmlColorUtils.getColorIfValid("#FF0000");
 	public static final HtmlColor GREEN = HtmlColorUtils.getColorIfValid("#00FF00");
 	public static final HtmlColor BLUE = HtmlColorUtils.getColorIfValid("#0000FF");

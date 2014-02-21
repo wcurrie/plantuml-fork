@@ -35,10 +35,13 @@ package net.sourceforge.plantuml.creole;
 
 import java.awt.font.LineMetrics;
 import java.awt.geom.Dimension2D;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.StringTokenizer;
 
 import net.sourceforge.plantuml.Dimension2DDouble;
 import net.sourceforge.plantuml.Log;
+import net.sourceforge.plantuml.StringUtils;
 import net.sourceforge.plantuml.Url;
 import net.sourceforge.plantuml.graphic.FontConfiguration;
 import net.sourceforge.plantuml.graphic.StringBounder;
@@ -66,7 +69,7 @@ public class AtomText implements Atom {
 	private final DelayedDouble marginRight;
 	private final Url url;
 
-	public static AtomText create(String text, FontConfiguration fontConfiguration) {
+	public static Atom create(String text, FontConfiguration fontConfiguration) {
 		return new AtomText(text, fontConfiguration, null, ZERO, ZERO);
 	}
 
@@ -111,13 +114,9 @@ public class AtomText implements Atom {
 	private AtomText(String text, FontConfiguration style, Url url, DelayedDouble marginLeft, DelayedDouble marginRight) {
 		this.marginLeft = marginLeft;
 		this.marginRight = marginRight;
-		this.text = text;
+		this.text = StringUtils.showComparatorCharacters(text);
 		this.fontConfiguration = style;
 		this.url = url;
-	}
-
-	public final String getText() {
-		return text;
 	}
 
 	public FontConfiguration getFontConfiguration() {
@@ -153,7 +152,7 @@ public class AtomText implements Atom {
 		return fontConfiguration.getSpace();
 	}
 
-	double getTabSize(StringBounder stringBounder) {
+	private double getTabSize(StringBounder stringBounder) {
 		return stringBounder.calculateDimension(fontConfiguration.getFont(), "        ").getWidth();
 	}
 
@@ -193,7 +192,7 @@ public class AtomText implements Atom {
 		}
 	}
 
-	double getWidth(StringBounder stringBounder) {
+	private double getWidth(StringBounder stringBounder) {
 		final StringTokenizer tokenizer = new StringTokenizer(text, "\t", true);
 		final double tabSize = getTabSize(stringBounder);
 		double x = 0;

@@ -66,7 +66,7 @@ public class CommandMultilinesLegend extends CommandMultilines2<UmlDiagram> {
 		StringUtils.trim(lines, false);
 		final RegexResult line0 = getStartingPattern().matcher(lines.get(0).trim());
 		final String align = line0.get("ALIGN", 0);
-		final Display strings = new Display(lines.subList(1, lines.size() - 1)).removeEmptyColumns();
+		final Display strings = Display.create(lines.subList(1, lines.size() - 1)).removeEmptyColumns();
 		if (strings.size() > 0) {
 			HorizontalAlignment alignment = HorizontalAlignment.fromString(align);
 			if (alignment == null) {

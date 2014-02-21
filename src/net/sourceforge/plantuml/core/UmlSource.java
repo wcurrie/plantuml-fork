@@ -40,6 +40,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import net.sourceforge.plantuml.StartUtils;
+import net.sourceforge.plantuml.StringUtils;
 import net.sourceforge.plantuml.command.regex.MyPattern;
 import net.sourceforge.plantuml.cucadiagram.Display;
 import net.sourceforge.plantuml.version.IteratorCounter;
@@ -73,7 +74,7 @@ final public class UmlSource {
 			final StringBuilder pending = new StringBuilder();
 			for (CharSequence cs : source) {
 				final String s = cs.toString();
-				if (s.endsWith("\\") && s.endsWith("\\\\") == false) {
+				if (StringUtils.endsWithBackslash(s)) {
 					pending.append(s.substring(0, s.length() - 1));
 				} else {
 					pending.append(s);
@@ -88,6 +89,7 @@ final public class UmlSource {
 		}
 		this.source = Collections.unmodifiableList(tmp);
 	}
+
 
 	/**
 	 * Retrieve the type of the diagram.
@@ -177,10 +179,10 @@ final public class UmlSource {
 			final Matcher m = p.matcher(s);
 			final boolean ok = m.matches();
 			if (ok) {
-				return Display.asList(m.group(1));
+				return Display.create(m.group(1));
 			}
 		}
-		return Display.emptyList();
+		return Display.empty();
 	}
 
 }

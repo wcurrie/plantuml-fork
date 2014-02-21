@@ -116,7 +116,7 @@ public final class FactorySequenceNoteCommand implements SingleMultiFactoryComma
 
 		if (strings.size() > 0) {
 			final boolean tryMerge = arg.get("VMERGE", 0) != null;
-			final Note note = new Note(p, position, new Display(strings));
+			final Note note = new Note(p, position, Display.create(strings));
 			note.setSpecificBackcolor(HtmlColorUtils.getColorIfValid(arg.get("COLOR", 0)));
 			note.setStyle(NoteStyle.getNoteStyle(arg.get("STYLE", 0)));
 			system.addNote(note, tryMerge);

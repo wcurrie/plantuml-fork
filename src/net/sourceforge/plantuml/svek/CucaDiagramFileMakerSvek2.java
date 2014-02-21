@@ -88,7 +88,6 @@ import net.sourceforge.plantuml.svek.image.EntityImageAssociation;
 import net.sourceforge.plantuml.svek.image.EntityImageAssociationPoint;
 import net.sourceforge.plantuml.svek.image.EntityImageBranch;
 import net.sourceforge.plantuml.svek.image.EntityImageCircleEnd;
-import net.sourceforge.plantuml.svek.image.EntityImageCircleInterface;
 import net.sourceforge.plantuml.svek.image.EntityImageCircleStart;
 import net.sourceforge.plantuml.svek.image.EntityImageClass;
 import net.sourceforge.plantuml.svek.image.EntityImageComponent;
@@ -300,7 +299,7 @@ public final class CucaDiagramFileMakerSvek2 {
 		msg.add(" ");
 		msg.add("java -jar plantuml.jar -testdot");
 		msg.add(" ");
-		return new GraphicStrings(msg);
+		return GraphicStrings.createDefault(msg, false);
 	}
 
 	private void printEntities(Collection<ILeaf> entities2) {
@@ -402,9 +401,9 @@ public final class CucaDiagramFileMakerSvek2 {
 		if (leaf.getEntityType() == LeafType.USECASE) {
 			return new EntityImageUseCase(leaf, skinParam);
 		}
-		if (leaf.getEntityType() == LeafType.CIRCLE_INTERFACE) {
-			return new EntityImageCircleInterface(leaf, skinParam);
-		}
+		// if (leaf.getEntityType() == LeafType.CIRCLE_INTERFACE) {
+		// return new EntityImageCircleInterface(leaf, skinParam);
+		// }
 		if (leaf.getEntityType() == LeafType.OBJECT) {
 			return new EntityImageObject(leaf, skinParam);
 		}
@@ -530,7 +529,7 @@ public final class CucaDiagramFileMakerSvek2 {
 		final Stereotype stereotype2 = g.getStereotype();
 
 		final FontParam fontParam = FontParam.COMPONENT_STEREOTYPE;
-		return TextBlockUtils.create(new Display(stereos),
+		return TextBlockUtils.create(Display.create(stereos),
 				new FontConfiguration(dotData.getSkinParam().getFont(fontParam, stereotype2), dotData.getSkinParam()
 						.getFontHtmlColor(fontParam, stereotype2)), HorizontalAlignment.CENTER, dotData.getSkinParam());
 	}

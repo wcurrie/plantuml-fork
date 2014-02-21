@@ -47,14 +47,37 @@ public class Display implements Iterable<CharSequence> {
 
 	private final List<CharSequence> display = new ArrayList<CharSequence>();
 
+	public static Display empty() {
+		return new Display();
+	}
+
+	public static Display create(CharSequence... s) {
+		return new Display(Arrays.asList(s));
+	}
+
+	public static Display create(List<? extends CharSequence> other) {
+		return new Display(other);
+	}
+
+	public static Display getWithNewlines(Code s) {
+		return getWithNewlines(s.getCode());
+	}
+
+	public static Display getWithNewlines(String s) {
+		if (s == null) {
+			return null;
+		}
+		return new Display(getWithNewlinesInternal(s));
+	}
+
 	private Display(Display other) {
 		this.display.addAll(other.display);
 	}
 
-	public Display() {
+	private Display() {
 	}
 
-	public Display(List<? extends CharSequence> other) {
+	private Display(List<? extends CharSequence> other) {
 		this.display.addAll(other);
 	}
 
@@ -146,27 +169,12 @@ public class Display implements Iterable<CharSequence> {
 		return new Display(display.subList(i, size));
 	}
 
-	public static Display asList(CharSequence... s) {
-		return new Display(Arrays.asList(s));
-	}
-
-	public static Display emptyList() {
-		return new Display();
-	}
-
 	public List<? extends CharSequence> as() {
 		return Collections.unmodifiableList(display);
 	}
 
-	public static Display getWithNewlines(Code s) {
-		return getWithNewlines(s.getCode());
-	}
-
-	public static Display getWithNewlines(String s) {
-		if (s == null) {
-			return null;
-		}
-		final Display result = new Display();
+	private static List<String> getWithNewlinesInternal(String s) {
+		final List<String> result = new ArrayList<String>();
 		final StringBuilder current = new StringBuilder();
 		for (int i = 0; i < s.length(); i++) {
 			final char c = s.charAt(i);
@@ -174,7 +182,7 @@ public class Display implements Iterable<CharSequence> {
 				final char c2 = s.charAt(i + 1);
 				i++;
 				if (c2 == 'n') {
-					result.display.add(current.toString());
+					result.add(current.toString());
 					current.setLength(0);
 				} else if (c2 == 't') {
 					current.append('\t');
@@ -188,7 +196,7 @@ public class Display implements Iterable<CharSequence> {
 				current.append(c);
 			}
 		}
-		result.display.add(current.toString());
+		result.add(current.toString());
 		return result;
 	}
 

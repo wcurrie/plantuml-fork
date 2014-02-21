@@ -40,7 +40,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import net.sourceforge.plantuml.Dimension2DDouble;
-import net.sourceforge.plantuml.SpriteContainer;
+import net.sourceforge.plantuml.ISkinSimple;
 import net.sourceforge.plantuml.graphic.HtmlColorUtils;
 import net.sourceforge.plantuml.graphic.StringBounder;
 import net.sourceforge.plantuml.ugraphic.UChangeBackColor;
@@ -54,9 +54,9 @@ public class ElementMenuBar implements Element {
 	private final Collection<ElementMenuEntry> entries = new ArrayList<ElementMenuEntry>();
 	private final Map<ElementMenuEntry, ElementMenuPopup> popups = new HashMap<ElementMenuEntry, ElementMenuPopup>();
 	private final UFont font;
-	private final SpriteContainer spriteContainer;
+	private final ISkinSimple spriteContainer;
 
-	public ElementMenuBar(UFont font, SpriteContainer spriteContainer) {
+	public ElementMenuBar(UFont font, ISkinSimple spriteContainer) {
 		this.font = font;
 		this.spriteContainer = spriteContainer;
 	}

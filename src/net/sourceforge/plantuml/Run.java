@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  *
- * Revision $Revision: 12235 $
+ * Revision $Revision: 12463 $
  *
  */
 package net.sourceforge.plantuml;
@@ -85,7 +85,7 @@ public class Run {
 			Log.info("Forcing -Djava.awt.headless=true");
 			System.setProperty("java.awt.headless", "true");
 			Log.info("java.awt.headless set as true");
-			
+
 		}
 		if (OptionFlags.getInstance().isPrintFonts()) {
 			printFonts();
@@ -106,9 +106,30 @@ public class Run {
 				UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
 			} catch (Exception e) {
 			}
-			new MainWindow2(option);
+			final List<String> list = option.getResult();
+			File dir = null;
+			if (list.size() == 1) {
+				final File f = new File(list.get(0));
+				if (f.exists() && f.isDirectory()) {
+					dir = f;
+				}
+			}
+			new MainWindow2(option, dir);
 		} else if (option.isPipe() || option.isSyntax()) {
 			managePipe(option);
+			forceQuit = true;
+		} else if (option.isFailfast2()) {
+			final long start2 = System.currentTimeMillis();
+			option.setCheckOnly(true);
+			error = manageAllFiles(option);
+			option.setCheckOnly(false);
+			if (option.isDuration()) {
+				final double duration = (System.currentTimeMillis() - start2) / 1000.0;
+				Log.error("Check Duration = " + duration + " seconds");
+			}
+			if (error == false) {
+				error = manageAllFiles(option);
+			}
 			forceQuit = true;
 		} else {
 			error = manageAllFiles(option);
@@ -116,8 +137,8 @@ public class Run {
 		}
 
 		if (option.isDuration()) {
-			final long duration = System.currentTimeMillis() - start;
-			Log.error("Duration = " + (duration / 1000L) + " seconds");
+			final double duration = (System.currentTimeMillis() - start) / 1000.0;
+			Log.error("Duration = " + duration + " seconds");
 		}
 
 		if (error) {
@@ -359,16 +380,23 @@ public class Run {
 				System.out.println(s);
 			}
 			return false;
-		} else if (option.isCheckOnly()) {
-			return sourceFileReader.hasError();
+		}
+		if (option.isCheckOnly()) {
+			final boolean hasError = sourceFileReader.hasError();
+			if (hasError) {
+				Log.error("Error in file: " + f.getCanonicalPath());
+			}
+			return hasError;
 		}
 		final List<GeneratedImage> result = sourceFileReader.getGeneratedImages();
-		if (OptionFlags.getInstance().isFailOnError()) {
+		for (GeneratedImage i : result) {
+			if (i.isError()) {
+				Log.error("Error in file: " + f.getCanonicalPath());
+			}
+		}
+		if (option.isFailfastOrFailfast2()) {
 			for (GeneratedImage i : result) {
 				if (i.isError()) {
-					Log.error("Error in file: " + f.getCanonicalPath());
-				}
-				if (i.isError() && OptionFlags.getInstance().isFailOnError()) {
 					return true;
 				}
 			}

@@ -41,6 +41,7 @@ import net.sourceforge.plantuml.acearth.PSystemXearthFactory;
 import net.sourceforge.plantuml.activitydiagram.ActivityDiagramFactory;
 import net.sourceforge.plantuml.activitydiagram3.ActivityDiagramFactory3;
 import net.sourceforge.plantuml.api.PSystemFactory;
+import net.sourceforge.plantuml.api.Performance;
 import net.sourceforge.plantuml.classdiagram.ClassDiagramFactory;
 import net.sourceforge.plantuml.compositediagram.CompositeDiagramFactory;
 import net.sourceforge.plantuml.core.Diagram;
@@ -76,31 +77,37 @@ import net.sourceforge.plantuml.version.PSystemVersionFactory;
 
 public class PSystemBuilder {
 
+	public static final long startTime = System.currentTimeMillis();
+
 	final public Diagram createPSystem(final List<? extends CharSequence> strings) {
 
-		final List<PSystemFactory> factories = getAllFactories();
+		try {
+			final List<PSystemFactory> factories = getAllFactories();
 
-		final DiagramType type = DiagramType.getTypeFromArobaseStart(strings.get(0).toString());
+			final DiagramType type = DiagramType.getTypeFromArobaseStart(strings.get(0).toString());
 
-		final UmlSource umlSource = new UmlSource(strings, type == DiagramType.UML);
-		final DiagramType diagramType = umlSource.getDiagramType();
-		final List<PSystemError> errors = new ArrayList<PSystemError>();
-		for (PSystemFactory systemFactory : factories) {
-			if (diagramType != systemFactory.getDiagramType()) {
-				continue;
+			final UmlSource umlSource = new UmlSource(strings, type == DiagramType.UML);
+			final DiagramType diagramType = umlSource.getDiagramType();
+			final List<PSystemError> errors = new ArrayList<PSystemError>();
+			for (PSystemFactory systemFactory : factories) {
+				if (diagramType != systemFactory.getDiagramType()) {
+					continue;
+				}
+				final Diagram sys = systemFactory.createSystem(umlSource);
+				if (isOk(sys)) {
+					return sys;
+				}
+				errors.add((PSystemError) sys);
 			}
-			final Diagram sys = systemFactory.createSystem(umlSource);
-			if (isOk(sys)) {
-				return sys;
-			}
-			errors.add((PSystemError) sys);
+
+			final PSystemError err = merge(errors);
+			// if (OptionFlags.getInstance().isQuiet() == false) {
+			// err.print(System.err);
+			// }
+			return err;
+		} finally {
+			Performance.incDiagramCount();
 		}
-
-		final PSystemError err = merge(errors);
-//		if (OptionFlags.getInstance().isQuiet() == false) {
-//			err.print(System.err);
-//		}
-		return err;
 
 	}
 

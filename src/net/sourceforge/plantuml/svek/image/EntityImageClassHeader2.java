@@ -86,7 +86,7 @@ public class EntityImageClassHeader2 extends AbstractEntityImage {
 			stereo = null;
 		} else {
 			stereo = TextBlockUtils.withMargin(TextBlockUtils.create(
-					new Display(stereotype.getLabels()),
+					Display.create(stereotype.getLabels()),
 					new FontConfiguration(SkinParamUtils
 							.getFont(getSkinParam(), FontParam.CLASS_STEREOTYPE, stereotype), SkinParamUtils
 							.getFontColor(getSkinParam(), FontParam.CLASS_STEREOTYPE, stereotype)),
@@ -98,7 +98,7 @@ public class EntityImageClassHeader2 extends AbstractEntityImage {
 			genericBlock = null;
 		} else {
 			genericBlock = TextBlockUtils.create(
-					Display.asList(generic),
+					Display.create(generic),
 					new FontConfiguration(SkinParamUtils
 							.getFont(getSkinParam(), FontParam.CLASS_STEREOTYPE, stereotype), SkinParamUtils
 							.getFontColor(getSkinParam(), FontParam.CLASS_STEREOTYPE, stereotype)),

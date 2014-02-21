@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 12235 $
+ * Revision $Revision: 12495 $
  *
  */
 package net.sourceforge.plantuml;
@@ -89,7 +89,7 @@ public abstract class AbstractPSystem implements Diagram {
 
 	public Display getTitle() {
 		if (source == null) {
-			return Display.emptyList();
+			return Display.empty();
 		}
 		return source.getTitle();
 	}

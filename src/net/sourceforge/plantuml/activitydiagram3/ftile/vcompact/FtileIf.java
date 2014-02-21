@@ -136,7 +136,8 @@ class FtileIf extends AbstractFtile {
 
 		final TextBlock tbTest;
 		if (OptionFlags.USE_CREOLE) {
-			final Sheet sheet = new CreoleParser(fcTest, skinParam).createSheet(branch1.getLabelTest());
+			final Sheet sheet = new CreoleParser(fcTest, HorizontalAlignment.LEFT, skinParam).createSheet(branch1
+					.getLabelTest());
 			final SheetBlock1 sheetBlock1 = new SheetBlock1(sheet);
 			tbTest = new SheetBlock2(sheetBlock1, Diamond.asStencil(sheetBlock1), new UStroke(1.5));
 		} else {

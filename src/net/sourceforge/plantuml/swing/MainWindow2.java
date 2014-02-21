@@ -100,11 +100,6 @@ public class MainWindow2 extends JFrame {
 
 	private DirWatcher2 dirWatcher;
 
-	public MainWindow2(Option option) {
-		this(new File(prefs.get(KEY_DIR, ".")), option);
-
-	}
-
 	private String getExtensions() {
 		return prefs.get(KEY_PATTERN, getDefaultFileExtensions());
 	}
@@ -157,8 +152,9 @@ public class MainWindow2 extends JFrame {
 		return Option.getPattern();
 	}
 
-	private MainWindow2(File dir, Option option) {
-		super(dir.getAbsolutePath());
+	public MainWindow2(Option option, File arg) {
+		super(getDirectory(arg).getAbsolutePath());
+		final File dir = getDirectory(arg);
 		setIconImage(PSystemVersion.getPlantumlSmallIcon2());
 		this.option = option;
 		dirWatcher = new DirWatcher2(dir, option, getRegexpPattern(getExtensions()));
@@ -265,6 +261,13 @@ public class MainWindow2 extends JFrame {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
 		startTimer();
+	}
+
+	private static File getDirectory(File arg) {
+		if (arg != null && arg.exists() && arg.isDirectory()) {
+			return arg;
+		}
+		return new File(prefs.get(KEY_DIR, "."));
 	}
 
 	private void startTimer() {

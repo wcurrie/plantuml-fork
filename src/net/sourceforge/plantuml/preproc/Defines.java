@@ -28,21 +28,51 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 12342 $
+ * Revision $Revision: 12395 $
  *
  */
 package net.sourceforge.plantuml.preproc;
 
+import java.util.Arrays;
+import java.util.Iterator;
+import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.StringTokenizer;
 import java.util.regex.Matcher;
 
-import net.sourceforge.plantuml.Pragma;
+public class Defines {
 
-public class Defines extends Pragma {
+	private final Map<String, String> values = new LinkedHashMap<String, String>();
 
-	public String applyDefines(String line) {
-		for (Map.Entry<String, String> ent : this.entrySet()) {
+	public void define(String name, List<String> value) {
+		values.put(name, addLineReturn(value));
+	}
+
+	private String addLineReturn(List<String> value) {
+		if (value == null) {
+			return null;
+		}
+		final StringBuilder sb = new StringBuilder();
+		for (final Iterator<String> it = value.iterator(); it.hasNext();) {
+			sb.append(it.next());
+			if (it.hasNext()) {
+				sb.append('\n');
+			}
+		}
+		return sb.toString();
+	}
+
+	public boolean isDefine(String name) {
+		return values.containsKey(name);
+	}
+
+	public void undefine(String name) {
+		values.remove(name);
+	}
+
+	public List<String> applyDefines(String line) {
+		for (Map.Entry<String, String> ent : values.entrySet()) {
 			final String key = ent.getKey();
 			if (ent.getValue() == null) {
 				continue;
@@ -76,7 +106,7 @@ public class Defines extends Pragma {
 				line = line.replaceAll(regex, value);
 			}
 		}
-		return line;
+		return Arrays.asList(line.split("\n"));
 	}
 
 }

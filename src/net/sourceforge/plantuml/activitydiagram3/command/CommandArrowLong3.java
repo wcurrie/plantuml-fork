@@ -72,7 +72,7 @@ public class CommandArrowLong3 extends CommandMultilines2<ActivityDiagram3> {
 		removeStarting(lines, line0.get("LABEL", 0));
 		removeEnding(lines);
 		// diagram.addActivity(Display.getWithNewlines(arg.get("LABEL", 0)), color, style);
-		diagram.setLabelNextArrow(new Display(lines));
+		diagram.setLabelNextArrow(Display.create(lines));
 		return CommandExecutionResult.ok();
 	}
 

@@ -41,8 +41,8 @@ import java.util.List;
 import java.util.Set;
 
 import net.sourceforge.plantuml.Dimension2DDouble;
+import net.sourceforge.plantuml.ISkinSimple;
 import net.sourceforge.plantuml.MathUtils;
-import net.sourceforge.plantuml.SpriteContainer;
 import net.sourceforge.plantuml.activitydiagram3.LinkRendering;
 import net.sourceforge.plantuml.activitydiagram3.ftile.AbstractConnection;
 import net.sourceforge.plantuml.activitydiagram3.ftile.AbstractFtile;
@@ -102,7 +102,7 @@ class FtileWhile2 extends AbstractFtile {
 		this.supplementarySouthText = supplementarySouthText;
 	}
 
-	private static TextBlock createLabel1(Display test, Display yes, UFont font, SpriteContainer spriteContainer) {
+	private static TextBlock createLabel1(Display test, Display yes, UFont font, ISkinSimple spriteContainer) {
 		final FontConfiguration fc = new FontConfiguration(font, HtmlColorUtils.BLACK);
 		final TextBlock tmpb = TextBlockUtils.create(yes, fc, HorizontalAlignment.LEFT, spriteContainer);
 		if (test == null) {

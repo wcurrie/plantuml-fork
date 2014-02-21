@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 12235 $
+ * Revision $Revision: 12495 $
  *
  */
 package net.sourceforge.plantuml.command;
@@ -63,7 +63,7 @@ public class CommandMultilinesHeader extends CommandMultilines<UmlDiagram> {
 		if (align != null) {
 			diagram.setHeaderAlignment(HorizontalAlignment.valueOf(align.toUpperCase()));
 		}
-		final Display strings = new Display(lines.subList(1, lines.size() - 1));
+		final Display strings = Display.create(lines.subList(1, lines.size() - 1));
 		if (strings.size() > 0) {
 			diagram.setHeader(strings);
 			return CommandExecutionResult.ok();
