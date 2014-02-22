@@ -51,11 +51,14 @@ final public class BlockUmlBuilder {
 
 	private final List<BlockUml> blocks = new ArrayList<BlockUml>();
 	private final Set<File> usedFiles = new HashSet<File>();
+	private final UncommentReadLine reader2;
 
-	public BlockUmlBuilder(List<String> config, String charset, Defines defines, Reader reader, File newCurrentDir) throws IOException {
+	public BlockUmlBuilder(List<String> config, String charset, Defines defines, Reader reader, File newCurrentDir)
+			throws IOException {
 		Preprocessor includer = null;
 		try {
-			includer = new Preprocessor(new UncommentReadLine(new ReadLineReader(reader)), charset, defines, usedFiles, newCurrentDir);
+			reader2 = new UncommentReadLine(new ReadLineReader(reader));
+			includer = new Preprocessor(reader2, charset, defines, usedFiles, newCurrentDir);
 			init(includer, config);
 		} finally {
 			if (includer != null) {
@@ -75,17 +78,20 @@ final public class BlockUmlBuilder {
 			}
 			if (StartUtils.isArobasePauseDiagram(s)) {
 				paused = true;
+				reader2.setPaused(true);
 			}
-			if (current != null && paused==false) {
+			if (current != null && paused == false) {
 				current.add(s);
 			}
 			if (StartUtils.isArobaseUnpauseDiagram(s)) {
 				paused = false;
+				reader2.setPaused(false);
 			}
 			if (StartUtils.isArobaseEndDiagram(s) && current != null) {
 				current.addAll(1, config);
 				blocks.add(new BlockUml(current));
 				current = null;
+				reader2.setPaused(false);
 			}
 		}
 	}
@@ -99,11 +105,9 @@ final public class BlockUmlBuilder {
 	}
 
 	/*
-	 * private List<String> getStrings(Reader reader) throws IOException {
-	 * final List<String> result = new ArrayList<String>(); Preprocessor
-	 * includer = null; try { includer = new Preprocessor(reader, defines);
-	 * String s = null; while ((s = includer.readLine()) != null) {
-	 * result.add(s); } } finally { if (includer != null) { includer.close(); } }
-	 * return Collections.unmodifiableList(result); }
+	 * private List<String> getStrings(Reader reader) throws IOException { final List<String> result = new
+	 * ArrayList<String>(); Preprocessor includer = null; try { includer = new Preprocessor(reader, defines); String s =
+	 * null; while ((s = includer.readLine()) != null) { result.add(s); } } finally { if (includer != null) {
+	 * includer.close(); } } return Collections.unmodifiableList(result); }
 	 */
 }

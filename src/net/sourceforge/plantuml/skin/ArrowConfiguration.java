@@ -42,15 +42,21 @@ public class ArrowConfiguration {
 	private final ArrowDressing dressing1;
 	private final ArrowDressing dressing2;
 
+	private final ArrowDecoration decoration1;
+	private final ArrowDecoration decoration2;
+
 	private final HtmlColor color;
 
-	private ArrowConfiguration(ArrowBody body, ArrowDressing dressing1, ArrowDressing dressing2, HtmlColor color) {
+	private ArrowConfiguration(ArrowBody body, ArrowDressing dressing1, ArrowDressing dressing2,
+			ArrowDecoration decoration1, ArrowDecoration decoration2, HtmlColor color) {
 		if (body == null || dressing1 == null) {
 			throw new IllegalArgumentException();
 		}
 		this.body = body;
 		this.dressing1 = dressing1;
 		this.dressing2 = dressing2;
+		this.decoration1 = decoration1;
+		this.decoration2 = decoration2;
 		this.color = color;
 	}
 
@@ -60,21 +66,26 @@ public class ArrowConfiguration {
 	}
 
 	public String name() {
-		return body.name() + "(" + dressing1.name() + ")(" + dressing2.name() + ")" + color;
+		if (dressing2 == null) {
+			return body.name() + "(" + dressing1.name() + ")" + color + " " + decoration1;
+		}
+		return body.name() + "(" + dressing1.name() + " " + decoration1 + ")(" + dressing2.name() + " " + decoration2
+				+ ")" + color;
 	}
 
 	public static ArrowConfiguration withDirectionNormal() {
 		return new ArrowConfiguration(ArrowBody.NORMAL, ArrowDressing.create(), ArrowDressing.create().withHead(
-				ArrowHead.NORMAL), null);
+				ArrowHead.NORMAL), ArrowDecoration.NONE, ArrowDecoration.NONE, null);
 	}
 
 	public static ArrowConfiguration withDirectionBoth() {
 		return new ArrowConfiguration(ArrowBody.NORMAL, ArrowDressing.create().withHead(ArrowHead.NORMAL),
-				ArrowDressing.create().withHead(ArrowHead.NORMAL), null);
+				ArrowDressing.create().withHead(ArrowHead.NORMAL), ArrowDecoration.NONE, ArrowDecoration.NONE, null);
 	}
 
 	public static ArrowConfiguration withDirectionSelf() {
-		return new ArrowConfiguration(ArrowBody.NORMAL, ArrowDressing.create().withHead(ArrowHead.NORMAL), null, null);
+		return new ArrowConfiguration(ArrowBody.NORMAL, ArrowDressing.create().withHead(ArrowHead.NORMAL), null,
+				ArrowDecoration.NONE, ArrowDecoration.NONE, null);
 	}
 
 	public static ArrowConfiguration withDirectionReverse() {
@@ -82,21 +93,21 @@ public class ArrowConfiguration {
 	}
 
 	public ArrowConfiguration reverse() {
-		return new ArrowConfiguration(body, dressing2, dressing1, color);
+		return new ArrowConfiguration(body, dressing2, dressing1, decoration2, decoration1, color);
 	}
 
 	public ArrowConfiguration self() {
-		return new ArrowConfiguration(body, dressing1, null, color);
+		return new ArrowConfiguration(body, dressing1, null, decoration1, decoration2, color);
 	}
 
 	public ArrowConfiguration withDotted() {
-		return new ArrowConfiguration(ArrowBody.DOTTED, dressing1, dressing2, color);
+		return new ArrowConfiguration(ArrowBody.DOTTED, dressing1, dressing2, decoration1, decoration2, color);
 	}
 
 	public ArrowConfiguration withHead(ArrowHead head) {
 		final ArrowDressing newDressing1 = addHead(dressing1, head);
 		final ArrowDressing newDressing2 = addHead(dressing2, head);
-		return new ArrowConfiguration(body, newDressing1, newDressing2, color);
+		return new ArrowConfiguration(body, newDressing1, newDressing2, decoration1, decoration2, color);
 	}
 
 	private static ArrowDressing addHead(ArrowDressing dressing, ArrowHead head) {
@@ -107,38 +118,38 @@ public class ArrowConfiguration {
 	}
 
 	public ArrowConfiguration withHead1(ArrowHead head) {
-		return new ArrowConfiguration(body, dressing1.withHead(head), dressing2, color);
+		return new ArrowConfiguration(body, dressing1.withHead(head), dressing2, decoration1, decoration2, color);
 	}
 
 	public ArrowConfiguration withHead2(ArrowHead head) {
-		return new ArrowConfiguration(body, dressing1, dressing2.withHead(head), color);
+		return new ArrowConfiguration(body, dressing1, dressing2.withHead(head), decoration1, decoration2, color);
 	}
 
 	public ArrowConfiguration withPart(ArrowPart part) {
 		if (dressing2 != null && dressing2.getHead() != ArrowHead.NONE) {
-			return new ArrowConfiguration(body, dressing1, dressing2.withPart(part), color);
+			return new ArrowConfiguration(body, dressing1, dressing2.withPart(part), decoration1, decoration2, color);
 		}
-		return new ArrowConfiguration(body, dressing1.withPart(part), dressing2, color);
+		return new ArrowConfiguration(body, dressing1.withPart(part), dressing2, decoration1, decoration2, color);
 	}
 
-	public ArrowConfiguration withDecorationStart(ArrowDecoration decorationStart) {
-		return new ArrowConfiguration(body, dressing1.withDecoration(decorationStart), dressing2, color);
+	public ArrowConfiguration withDecoration1(ArrowDecoration decoration1) {
+		return new ArrowConfiguration(body, dressing1, dressing2, decoration1, decoration2, color);
 	}
 
-	public ArrowConfiguration withDecorationEnd(ArrowDecoration decorationEnd) {
-		return new ArrowConfiguration(body, dressing1, dressing2.withDecoration(decorationEnd), color);
+	public ArrowConfiguration withDecoration2(ArrowDecoration decoration2) {
+		return new ArrowConfiguration(body, dressing1, dressing2, decoration1, decoration2, color);
 	}
 
 	public ArrowConfiguration withColor(HtmlColor color) {
-		return new ArrowConfiguration(body, dressing1, dressing2, color);
+		return new ArrowConfiguration(body, dressing1, dressing2, decoration1, decoration2, color);
 	}
 
-	public final ArrowDecoration getDecorationEnd() {
-		return this.dressing2.getDecoration();
+	public final ArrowDecoration getDecoration1() {
+		return this.decoration1;
 	}
 
-	public final ArrowDecoration getDecorationStart() {
-		return this.dressing1.getDecoration();
+	public final ArrowDecoration getDecoration2() {
+		return this.decoration2;
 	}
 
 	public final ArrowDirection getArrowDirection() {

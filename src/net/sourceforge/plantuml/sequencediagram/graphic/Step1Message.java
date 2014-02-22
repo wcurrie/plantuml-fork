@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 12495 $
+ * Revision $Revision: 12522 $
  *
  */
 package net.sourceforge.plantuml.sequencediagram.graphic;
@@ -42,6 +42,7 @@ import net.sourceforge.plantuml.sequencediagram.LifeEvent;
 import net.sourceforge.plantuml.sequencediagram.Message;
 import net.sourceforge.plantuml.sequencediagram.NotePosition;
 import net.sourceforge.plantuml.skin.ArrowConfiguration;
+import net.sourceforge.plantuml.skin.ArrowDecoration;
 import net.sourceforge.plantuml.skin.ArrowHead;
 import net.sourceforge.plantuml.skin.Component;
 import net.sourceforge.plantuml.skin.ComponentType;
@@ -230,6 +231,8 @@ class Step1Message extends Step1Abstract {
 		}
 		result = result.withPart(m.getArrowConfiguration().getPart());
 		result = result.withColor(m.getArrowConfiguration().getColor());
+		result = result.withDecoration1(m.getArrowConfiguration().getDecoration1());
+		result = result.withDecoration2(m.getArrowConfiguration().getDecoration2());
 		return result;
 	}
 

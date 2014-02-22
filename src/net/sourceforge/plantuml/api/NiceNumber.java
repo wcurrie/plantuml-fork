@@ -27,54 +27,43 @@
  * in the United States and other countries.]
  *
  * Original Author:  Arnaud Roques
- * 
- * Revision $Revision: 5191 $
+ *
+ * Revision $Revision: 9786 $
  *
  */
-package net.sourceforge.plantuml.skin;
+package net.sourceforge.plantuml.api;
 
-public class ArrowDressing {
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
+import java.util.Locale;
 
-	private final ArrowHead head;
-	private final ArrowPart part;
-	// private final ArrowDecoration decoration;
+public class NiceNumber {
 
-	public String name() {
-		return toString();
-	}
-
-	@Override
-	public String toString() {
-		return head.name();
-	}
-
-	private ArrowDressing(ArrowHead head, ArrowPart part) {
-		if (head == null || part == null) {
-			throw new IllegalArgumentException();
+	public static int getNicer(final int value) {
+		if (value <= 18) {
+			return value;
 		}
-		this.head = head;
-		this.part = part;
+		if (value < 93) {
+			return ((value + 2) / 5) * 5;
+		}
+		if (value < 100) {
+			return ((value + 5) / 10) * 10;
+		}
+		int m = 1;
+		double head = value;
+		while (head >= 100) {
+			head = head / 10.0;
+			m *= 10;
+		}
+		return getNicer((int) Math.round(head)) * m;
 	}
 
-	public static ArrowDressing create() {
-		return new ArrowDressing(ArrowHead.NONE, ArrowPart.FULL);
+	public static String format(final long v) {
+		final DecimalFormat df = new DecimalFormat();
+		df.setDecimalFormatSymbols(new DecimalFormatSymbols(Locale.US));
+		df.setGroupingSize(3);
+		df.setMaximumFractionDigits(0);
+		final String t = df.format(v).replace(',', ' ');
+		return t;
 	}
-
-	public ArrowDressing withHead(ArrowHead head) {
-		return new ArrowDressing(head, part);
-	}
-
-	public ArrowDressing withPart(ArrowPart part) {
-		return new ArrowDressing(head, part);
-	}
-
-	public ArrowHead getHead() {
-		return head;
-	}
-
-	public ArrowPart getPart() {
-		return part;
-	}
-
-
 }

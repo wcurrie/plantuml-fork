@@ -58,15 +58,14 @@ import net.sourceforge.plantuml.ugraphic.UPolygon;
 import net.sourceforge.plantuml.ugraphic.UStroke;
 import net.sourceforge.plantuml.ugraphic.UTranslate;
 
-public class ComponentRoseArrow2 extends AbstractComponentRoseArrow {
+public class ComponentRoseArrow extends AbstractComponentRoseArrow {
 
 	private final HorizontalAlignment messagePosition;
 	private final boolean niceArrow;
 
-	public ComponentRoseArrow2(HtmlColor foregroundColor, HtmlColor fontColor, UFont font, Display stringsToDisplay,
-			ArrowConfiguration arrowConfiguration, HorizontalAlignment messagePosition,
-			ISkinSimple spriteContainer, HorizontalAlignment textHorizontalAlignment, double maxMessageSize,
-			boolean niceArrow) {
+	public ComponentRoseArrow(HtmlColor foregroundColor, HtmlColor fontColor, UFont font, Display stringsToDisplay,
+			ArrowConfiguration arrowConfiguration, HorizontalAlignment messagePosition, ISkinSimple spriteContainer,
+			HorizontalAlignment textHorizontalAlignment, double maxMessageSize, boolean niceArrow) {
 		super(foregroundColor, fontColor, font, stringsToDisplay, arrowConfiguration, spriteContainer,
 				textHorizontalAlignment, maxMessageSize);
 		this.messagePosition = messagePosition;
@@ -74,7 +73,7 @@ public class ComponentRoseArrow2 extends AbstractComponentRoseArrow {
 	}
 
 	private final double spaceCrossX = 6;
-	private final double diamCircle = 8;
+	public static final double diamCircle = 8;
 	private final double thinCircle = 1.5;
 
 	@Override
@@ -93,24 +92,25 @@ public class ComponentRoseArrow2 extends AbstractComponentRoseArrow {
 		final double pos1 = start + 1;
 		final double pos2 = len - 1;
 
-		if (dressing2.getDecoration() == ArrowDecoration.CIRCLE && dressing2.getHead() == ArrowHead.NONE) {
+		if (getArrowConfiguration().getDecoration2() == ArrowDecoration.CIRCLE && dressing2.getHead() == ArrowHead.NONE) {
 			len -= diamCircle / 2;
 		}
-		if (dressing2.getDecoration() == ArrowDecoration.CIRCLE && dressing2.getHead() != ArrowHead.NONE) {
+		if (getArrowConfiguration().getDecoration2() == ArrowDecoration.CIRCLE && dressing2.getHead() != ArrowHead.NONE) {
 			len -= diamCircle / 2 + thinCircle;
 		}
 
-		if (dressing1.getDecoration() == ArrowDecoration.CIRCLE && dressing1.getHead() == ArrowHead.NONE) {
+		if (getArrowConfiguration().getDecoration1() == ArrowDecoration.CIRCLE && dressing1.getHead() == ArrowHead.NONE) {
 			start += diamCircle / 2;
 			len -= diamCircle / 2;
 		}
-		if (dressing1.getDecoration() == ArrowDecoration.CIRCLE && dressing1.getHead() == ArrowHead.NORMAL) {
+		if (getArrowConfiguration().getDecoration1() == ArrowDecoration.CIRCLE
+				&& dressing1.getHead() == ArrowHead.NORMAL) {
 			start += diamCircle + thinCircle;
 			len -= diamCircle + thinCircle;
 		}
 
-		drawDressing1(ug, pos1, dressing1);
-		drawDressing2(ug, pos2, dressing2);
+		drawDressing1(ug, pos1, dressing1, getArrowConfiguration().getDecoration1());
+		drawDressing2(ug, pos2, dressing2, getArrowConfiguration().getDecoration2());
 
 		if (dressing2.getPart() == ArrowPart.FULL && dressing2.getHead() == ArrowHead.NORMAL) {
 			len -= getArrowDeltaX() / 2;
@@ -153,16 +153,16 @@ public class ComponentRoseArrow2 extends AbstractComponentRoseArrow {
 		getTextBlock().drawU(ug.apply(new UTranslate(textPos, 0)));
 	}
 
-	private void drawDressing1(UGraphic ug, double x, ArrowDressing dressing) {
+	private void drawDressing1(UGraphic ug, double x, ArrowDressing dressing, ArrowDecoration decoration) {
 		final StringBounder stringBounder = ug.getStringBounder();
 		final int textHeight = (int) getTextHeight(stringBounder);
 
-		if (dressing.getDecoration() == ArrowDecoration.CIRCLE) {
-			ug = ug.apply(new UStroke(thinCircle)).apply(new UChangeColor(getForegroundColor()));
+		if (decoration == ArrowDecoration.CIRCLE) {
 			final UEllipse circle = new UEllipse(diamCircle, diamCircle);
-			ug.apply(new UTranslate(x - diamCircle / 2 - thinCircle, textHeight - diamCircle / 2 - thinCircle / 2))
+			ug.apply(new UStroke(thinCircle))
+					.apply(new UChangeColor(getForegroundColor()))
+					.apply(new UTranslate(x - diamCircle / 2 - thinCircle, textHeight - diamCircle / 2 - thinCircle / 2))
 					.draw(circle);
-			ug = ug.apply(new UStroke());
 			x += diamCircle / 2 + thinCircle;
 		}
 
@@ -186,11 +186,11 @@ public class ComponentRoseArrow2 extends AbstractComponentRoseArrow {
 
 	}
 
-	private void drawDressing2(UGraphic ug, double x, ArrowDressing dressing) {
+	private void drawDressing2(UGraphic ug, double x, ArrowDressing dressing, ArrowDecoration decoration) {
 		final StringBounder stringBounder = ug.getStringBounder();
 		final int textHeight = (int) getTextHeight(stringBounder);
 
-		if (dressing.getDecoration() == ArrowDecoration.CIRCLE) {
+		if (decoration == ArrowDecoration.CIRCLE) {
 			ug = ug.apply(new UStroke(thinCircle)).apply(new UChangeColor(getForegroundColor()));
 			final UEllipse circle = new UEllipse(diamCircle, diamCircle);
 			ug.apply(new UTranslate(x - diamCircle / 2 + thinCircle, textHeight - diamCircle / 2 - thinCircle / 2))

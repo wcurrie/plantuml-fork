@@ -43,11 +43,14 @@ public class UncommentReadLine implements ReadLine {
 
 	private final ReadLine raw;
 	private final Pattern start;
+	private final Pattern unpause;
 	private String headerToRemove;
+	private boolean paused;
 
 	public UncommentReadLine(ReadLine source) {
 		this.raw = source;
 		this.start = MyPattern.cmpile("(?i)((?:\\W|\\<[^<>]*\\>)*)@start");
+		this.unpause = MyPattern.cmpile("(?i)((?:\\W|\\<[^<>]*\\>)*)@unpause");
 	}
 
 	public String readLine() throws IOException {
@@ -61,6 +64,12 @@ public class UncommentReadLine implements ReadLine {
 		if (m.find()) {
 			headerToRemove = m.group(1);
 		}
+		if (paused) {
+			final Matcher m2 = unpause.matcher(result);
+			if (m2.find()) {
+				headerToRemove = m2.group(1);
+			}
+		}
 		if (headerToRemove != null && headerToRemove.startsWith(result)) {
 			return "";
 		}
@@ -72,6 +81,10 @@ public class UncommentReadLine implements ReadLine {
 
 	public void close() throws IOException {
 		this.raw.close();
+	}
+
+	public void setPaused(boolean paused) {
+		this.paused = paused;
 	}
 
 }

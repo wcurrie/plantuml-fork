@@ -183,10 +183,10 @@ public class CommandArrow extends SingleLineCommand2<SequenceDiagram> {
 			config = config.withPart(ArrowPart.BOTTOM_PART);
 		}
 		if (circleAtEnd) {
-			config = config.withDecorationEnd(ArrowDecoration.CIRCLE);
+			config = config.withDecoration2(ArrowDecoration.CIRCLE);
 		}
 		if (circleAtStart) {
-			config = config.withDecorationStart(ArrowDecoration.CIRCLE);
+			config = config.withDecoration1(ArrowDecoration.CIRCLE);
 		}
 		if (dressing1.contains("x")) {
 			config = config.withHead2(ArrowHead.CROSSX);

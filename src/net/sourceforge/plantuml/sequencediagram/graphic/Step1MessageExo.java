@@ -58,7 +58,7 @@ class Step1MessageExo extends Step1Abstract {
 		this.messageArrow = new MessageExoArrow(freeY.getFreeY(range), drawingSet.getSkin(), drawingSet.getSkin()
 				.createComponent(ComponentType.ARROW, getConfig(), drawingSet.getSkinParam(),
 						getLabelOfMessage(message)), getLivingParticipantBox(), message.getType(), message.getUrl(),
-				message.isShortArrow());
+				message.isShortArrow(), message.getArrowConfiguration());
 
 		if (message.getNote() != null) {
 			final ISkinParam skinParam = new SkinParamBackcolored(drawingSet.getSkinParam(),
@@ -134,10 +134,16 @@ class Step1MessageExo extends Step1Abstract {
 
 	private ArrowConfiguration getArrowType(MessageExo m) {
 		final MessageExoType type = m.getType();
+		ArrowConfiguration result = null;
+
 		if (type.getDirection() == 1) {
-			return m.getArrowConfiguration();
+			result = m.getArrowConfiguration();
+		} else {
+			result = m.getArrowConfiguration().reverse();
 		}
-		return m.getArrowConfiguration().reverse();
+		result = result.withDecoration1(m.getArrowConfiguration().getDecoration1());
+		result = result.withDecoration2(m.getArrowConfiguration().getDecoration2());
+		return result;
 		// ArrowConfiguration result = null;
 		// if (type.getDirection() == 1) {
 		// result = ArrowConfiguration.withDirectionNormal();

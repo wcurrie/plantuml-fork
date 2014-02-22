@@ -49,6 +49,7 @@ public class CommandExoArrowRight extends CommandExoArrowAny {
 		return new RegexConcat(new RegexLeaf("^"), //
 				new RegexLeaf("PARTICIPANT", "([\\p{L}0-9_.@]+|[%g][^%g]+[%g])"), //
 				new RegexLeaf("[%s]*"), //
+				new RegexLeaf("ARROW_SUPPCIRCLE", "([%s]+o)?"), //
 				new RegexOr( //
 						new RegexConcat( //
 								new RegexLeaf("ARROW_BOTHDRESSING", "(<<?|//?|\\\\\\\\?)?"), //
@@ -61,7 +62,7 @@ public class CommandExoArrowRight extends CommandExoArrowAny {
 								new RegexLeaf("ARROW_BODYB1", "(-*)"), //
 								new RegexLeaf("ARROW_STYLE2", CommandArrow.getColorOrStylePattern()), //
 								new RegexLeaf("ARROW_BODYA2", "(-+)"))), //
-				new RegexLeaf("SHORT", "([?\\]])?"), //
+				new RegexLeaf("SHORT", "(o?[?\\]])?"), //
 				new RegexLeaf("[%s]*"), //
 				new RegexLeaf("LABEL", "(?::[%s]*(.*))?"), //
 				new RegexLeaf("$"));
@@ -79,6 +80,5 @@ public class CommandExoArrowRight extends CommandExoArrowAny {
 		}
 		throw new IllegalArgumentException();
 	}
-
 
 }
