@@ -71,6 +71,7 @@ public class LanguageDescriptor {
 		type.add("boundary");
 		type.add("control");
 		type.add("entity");
+		type.add("card");
 
 		keyword.add("@startuml");
 		keyword.add("@enduml");

@@ -37,16 +37,17 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
-import net.sourceforge.plantuml.api.MyRunnable;
 import net.sourceforge.plantuml.api.Performance;
-import net.sourceforge.plantuml.api.TimeoutExecutor;
 
-public class ProcessRunner {
+public class ProcessRunnerOld2 {
 	// http://steveliles.github.io/invoking_processes_from_java.html
+
 	public static long TIMEOUT = 15 * 60 * 1000L;
+	private final static long LOCK_WAITING_TIMEOUT = -1;
 
 	private final String[] cmd;
 
@@ -55,8 +56,10 @@ public class ProcessRunner {
 
 	private volatile ProcessState state = ProcessState.INIT;
 	private final Lock changeState = new ReentrantLock();
+	private static final Lock oneSingleProcess = new ReentrantLock();
+	private static volatile MainThread runningThread;
 
-	public ProcessRunner(String[] cmd) {
+	public ProcessRunnerOld2(String[] cmd) {
 		this.cmd = cmd;
 	}
 
@@ -71,17 +74,13 @@ public class ProcessRunner {
 		this.state = ProcessState.RUNNING;
 		final MainThread mainThread = new MainThread(cmd, dir, redirection, in);
 		try {
-			final boolean done = new TimeoutExecutor(TIMEOUT).executeNow(mainThread);
-		} finally {
-			changeState.lock();
-			try {
-				if (state == ProcessState.RUNNING) {
-					state = ProcessState.TIMEOUT;
-					// mainThread.cancel();
-				}
-			} finally {
-				changeState.unlock();
+			if (LOCK_WAITING_TIMEOUT > 0) {
+				doTheJobWithLock(mainThread);
+			} else {
+				doTheJob(mainThread);
 			}
+		} catch (InterruptedException e) {
+			e.printStackTrace();
 		}
 		if (state == ProcessState.TERMINATED_OK) {
 			assert mainThread != null;
@@ -91,7 +90,45 @@ public class ProcessRunner {
 		return state;
 	}
 
-	class MainThread implements MyRunnable {
+	private void doTheJobWithLock(MainThread mainThread) throws InterruptedException {
+		while (true) {
+			final MainThread run = runningThread;
+			final boolean ok = oneSingleProcess.tryLock(LOCK_WAITING_TIMEOUT, TimeUnit.MILLISECONDS);
+			if (ok) {
+				try {
+					runningThread = mainThread;
+					doTheJob(mainThread);
+					runningThread = null;
+				} finally {
+					oneSingleProcess.unlock();
+				}
+				return;
+			}
+			if (run == runningThread) {
+				Performance.incDotInterruption3();
+				run.cancel();
+			}
+		}
+	}
+
+	private void doTheJob(final MainThread mainThread) throws InterruptedException {
+		try {
+			mainThread.start();
+			mainThread.join(TIMEOUT);
+		} finally {
+			changeState.lock();
+			try {
+				if (state == ProcessState.RUNNING) {
+					state = ProcessState.TIMEOUT;
+					mainThread.cancel();
+				}
+			} finally {
+				changeState.unlock();
+			}
+		}
+	}
+
+	class MainThread extends Thread {
 
 		private final String[] cmd;
 		private final File dir;
@@ -116,12 +153,15 @@ public class ProcessRunner {
 			return errorStream.getString();
 		}
 
-		public void runJob() throws InterruptedException {
+		@Override
+		public void run() {
 			try {
-				startThreads();
+				runInternal();
 				if (state == ProcessState.RUNNING) {
 					final int result = joinInternal();
 				}
+			} catch (InterruptedException e) {
+				e.printStackTrace();
 			} finally {
 				changeState.lock();
 				try {
@@ -141,22 +181,22 @@ public class ProcessRunner {
 
 		}
 
-		public void cancelJob() {
+		private void cancel() {
 			// The changeState lock is ok
-			// assert changeState.tryLock();
-			// assert state == ProcessState.TIMEOUT;
+			assert changeState.tryLock();
+			assert state == ProcessState.TIMEOUT;
 			if (process != null) {
 				errorStream.cancel();
 				outStream.cancel();
 				process.destroy();
-				// interrupt();
+				interrupt();
 				close(process.getErrorStream());
 				close(process.getOutputStream());
 				close(process.getInputStream());
 			}
 		}
 
-		private void startThreads() {
+		public void runInternal() {
 			try {
 				process = Runtime.getRuntime().exec(cmd, null, dir);
 			} catch (IOException e) {
@@ -244,7 +284,6 @@ public class ProcessRunner {
 					}
 				}
 			} catch (Throwable e) {
-				System.err.println("ProcessRunnerA " + e);
 				e.printStackTrace();
 				sb.append('\n');
 				sb.append(e.toString());

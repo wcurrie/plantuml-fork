@@ -42,7 +42,6 @@ import java.text.DecimalFormatSymbols;
 import java.util.Date;
 import java.util.Locale;
 import java.util.concurrent.atomic.AtomicInteger;
-import java.util.concurrent.atomic.AtomicLong;
 
 import net.sourceforge.plantuml.PSystemBuilder;
 
@@ -50,22 +49,28 @@ import com.sun.management.OperatingSystemMXBean;
 
 public class Performance {
 
-	private final static AtomicLong dotDuration = new AtomicLong(0);
+	// private final static AtomicLong dotDuration = new AtomicLong(0);
 	private final static AtomicInteger maxThreadActiveCount = new AtomicInteger(0);
-	private final static AtomicInteger dotCount = new AtomicInteger(0);
+	// private final static AtomicInteger dotCount = new AtomicInteger(0);
 	// private final static CountRate diagramCountRate = new CountRate();
 	private final static AtomicInteger diagramCount = new AtomicInteger(0);
 	private final static AtomicInteger dotInterruption1 = new AtomicInteger(0);
 	private final static AtomicInteger dotInterruption2 = new AtomicInteger(0);
 	private final static AtomicInteger dotInterruption3 = new AtomicInteger(0);
 
-	public static void updateDotTime(long duration) {
-		dotDuration.addAndGet(duration);
+	private final static NumberAnalyzed dotTime = new NumberAnalyzed();
+
+	public static void updateDotTime2(long duration) {
+		dotTime.addValue((int) duration);
 	}
 
-	public static void incDotCount() {
-		dotCount.incrementAndGet();
-	}
+	// public static void updateDotTime(long duration) {
+	// dotDuration.addAndGet(duration);
+	// }
+	//
+	// public static void incDotCount() {
+	// dotCount.incrementAndGet();
+	// }
 
 	public static void incDotInterruption1() {
 		dotInterruption1.incrementAndGet();
@@ -81,7 +86,7 @@ public class Performance {
 
 	public static void incDiagramCount() {
 		diagramCount.incrementAndGet();
-		
+
 		boolean done;
 		do {
 			final int max = maxThreadActiveCount.get();
@@ -93,7 +98,6 @@ public class Performance {
 			}
 		} while (done == false);
 
-		
 		// diagramCountRate.tick();
 	}
 
@@ -109,14 +113,15 @@ public class Performance {
 		final int threadActiveCount = Thread.activeCount();
 		final int maxThreadActiveCountValue = maxThreadActiveCount.get();
 
-		final int dotCountValue = dotCount.get();
+		// final int dotCountValue = dotCount.get();
 		final int diagramCountValue = diagramCount.get();
 
-//		final int diagramPerMinute = (int) diagramCountRate.perMinute();
-//
-//		final int diagramPerHour = (int) diagramCountRate.perHour();
+		// final int diagramPerMinute = (int) diagramCountRate.perMinute();
+		//
+		// final int diagramPerHour = (int) diagramCountRate.perHour();
 
-		final long dotTimeValue = dotDuration.get() / 1000L / 1000L;
+		//final long dotTimeValue = dotDuration.get() / 1000L / 1000L;
+		final INumberAnalyzed dotCopy = dotTime.getCopyImmutable();
 
 		final long jvmCpuTime;
 		if (ManagementFactory.getOperatingSystemMXBean() instanceof OperatingSystemMXBean) {
@@ -158,13 +163,13 @@ public class Performance {
 				return jvmCpuTime;
 			}
 
-			public int dotCount() {
-				return dotCountValue;
-			}
-
-			public long totalDotTime() {
-				return dotTimeValue;
-			}
+//			public int dotCount() {
+//				return dotCountValue;
+//			}
+//
+//			public long totalDotTime() {
+//				return dotTimeValue;
+//			}
 
 			public long timeStamp() {
 				return timeStamp;
@@ -206,13 +211,17 @@ public class Performance {
 				return maxThreadActiveCountValue;
 			}
 
-//			public int diagramPerMinute() {
-//				return diagramPerMinute;
-//			}
-//
-//			public int diagramPerHour() {
-//				return diagramPerHour;
-//			}
+			public INumberAnalyzed dotTime() {
+				return dotCopy;
+			}
+
+			// public int diagramPerMinute() {
+			// return diagramPerMinute;
+			// }
+			//
+			// public int diagramPerHour() {
+			// return diagramPerHour;
+			// }
 		};
 	}
 
@@ -233,16 +242,16 @@ public class Performance {
 		printHtmlOut(pw, "Timestamp", new Date(health.timeStamp()));
 		printHtmlOut(pw, "RunningTime", format(health.runningTime()));
 		printHtmlOut(pw, "JvmCpuTime", format(health.jvmCpuTime()));
-		printHtmlOut(pw, "TotalDotTime", format(health.totalDotTime()));
+		printHtmlOut(pw, "TotalDotTime", format(health.dotTime().getSum()));
 		printHtmlOut(pw, "ThreadActiveCount", health.threadActiveCount());
 		printHtmlOut(pw, "MaxMemory", format(health.maxMemory()));
 		printHtmlOut(pw, "TotalMemory", format(health.totalMemory()));
 		printHtmlOut(pw, "UsedMemory", format(health.usedMemory()));
 		printHtmlOut(pw, "FreeMemory", format(health.freeMemory()));
 		printHtmlOut(pw, "DiagramCount", health.diagramCount());
-//		printHtmlOut(pw, "DiagramPerMinute", health.diagramPerMinute());
-//		printHtmlOut(pw, "DiagramPerHour", health.diagramPerHour());
-		printHtmlOut(pw, "DotCount", health.dotCount());
+		// printHtmlOut(pw, "DiagramPerMinute", health.diagramPerMinute());
+		// printHtmlOut(pw, "DiagramPerHour", health.diagramPerHour());
+		printHtmlOut(pw, "DotCount", health.dotTime().getNb());
 		printHtmlOut(pw, "DotInterruption1", health.dotInterruption1());
 		printHtmlOut(pw, "DotInterruption2", health.dotInterruption2());
 		printHtmlOut(pw, "DotInterruption3", health.dotInterruption3());

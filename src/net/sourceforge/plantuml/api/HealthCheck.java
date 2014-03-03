@@ -55,15 +55,13 @@ public interface HealthCheck {
 
 	public long jvmCpuTime();
 
-	public int dotCount();
+	// public int dotCount();
 
 	public int diagramCount();
+	
+	public INumberAnalyzed dotTime();
 
-//	public int diagramPerMinute();
-//
-//	public int diagramPerHour();
-
-	public long totalDotTime();
+	// public long totalDotTime();
 
 	public String pid();
 

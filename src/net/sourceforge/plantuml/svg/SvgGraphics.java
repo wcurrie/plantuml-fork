@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 12418 $
+ * Revision $Revision: 12561 $
  *
  */
 package net.sourceforge.plantuml.svg;

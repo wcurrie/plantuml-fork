@@ -82,7 +82,13 @@ final public class BlockUmlBuilder {
 			}
 			if (current != null && paused == false) {
 				current.add(s);
+			} else if (paused) {
+				final String append = StartUtils.getPossibleAppend(s);
+				if (append != null) {
+					current.add(append);
+				}
 			}
+			
 			if (StartUtils.isArobaseUnpauseDiagram(s)) {
 				paused = false;
 				reader2.setPaused(false);

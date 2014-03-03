@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  *
- * Revision $Revision: 12455 $
+ * Revision $Revision: 12553 $
  *
  */
 package net.sourceforge.plantuml;
@@ -57,7 +57,7 @@ public abstract class Log {
 		final long delta = System.currentTimeMillis() - start;
 		final HealthCheck healthCheck = Performance.getHealthCheck();
 		final long cpu = healthCheck.jvmCpuTime() / 1000L / 1000L;
-		final long dot = healthCheck.totalDotTime() / 1000L / 1000L;
+		final long dot = healthCheck.dotTime().getSum();
 		final StringBuilder sb = new StringBuilder();
 		sb.append("(");
 		sb.append(delta / 1000L);
@@ -74,7 +74,7 @@ public abstract class Log {
 		sb.append(".");
 		sb.append(String.format("%03d", dot % 1000L));
 		sb.append("(");
-		sb.append(healthCheck.dotCount());
+		sb.append(healthCheck.dotTime().getNb());
 		sb.append(")");
 		sb.append(" - ");
 		final long total = (healthCheck.totalMemory()) / 1024 / 1024;

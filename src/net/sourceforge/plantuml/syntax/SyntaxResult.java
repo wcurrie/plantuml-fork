@@ -33,11 +33,15 @@
  */
 package net.sourceforge.plantuml.syntax;
 
+import java.io.IOException;
+import java.io.OutputStream;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.TreeSet;
 
+import net.sourceforge.plantuml.FileFormatOption;
+import net.sourceforge.plantuml.PSystemError;
 import net.sourceforge.plantuml.UmlDiagramType;
 
 public class SyntaxResult {
@@ -48,6 +52,8 @@ public class SyntaxResult {
 	private int errorLinePosition;
 	private Collection<String> errors = new TreeSet<String>();
 	private List<String> suggest;
+	private boolean hasCmapData;
+	private PSystemError systemError;
 
 	public UmlDiagramType getUmlDiagramType() {
 		return umlDiagramType;
@@ -95,6 +101,26 @@ public class SyntaxResult {
 
 	public void setSuggest(List<String> suggest) {
 		this.suggest = suggest;
+	}
+
+	public final boolean hasCmapData() {
+		return hasCmapData;
+	}
+
+	public final void setCmapData(boolean hasCmapData) {
+		this.hasCmapData = hasCmapData;
+	}
+
+	public void setSystemError(PSystemError systemError) {
+		this.systemError = systemError;
+	}
+
+	public void generateDiagramDescriptionForError(OutputStream os, FileFormatOption fileFormatOption)
+			throws IOException {
+		if (systemError == null) {
+			throw new IllegalStateException();
+		}
+		systemError.exportDiagram(os, 0, fileFormatOption);
 	}
 
 }

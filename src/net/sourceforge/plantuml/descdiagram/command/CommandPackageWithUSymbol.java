@@ -59,7 +59,7 @@ public class CommandPackageWithUSymbol extends SingleLineCommand2<AbstractEntity
 
 	private static RegexConcat getRegexConcat() {
 		return new RegexConcat(new RegexLeaf("^"), //
-				new RegexLeaf("SYMBOL", "(package|rectangle|node|artifact|folder|frame|cloud|database|storage|component)"), //
+				new RegexLeaf("SYMBOL", "(package|rectangle|node|artifact|folder|frame|cloud|database|storage|component|card)"), //
 				new RegexLeaf("[%s]+"), //
 				new RegexLeaf("NAME", "([%g][^%g]+[%g]|[^#%s{}]*)"), //
 				new RegexLeaf("AS", "(?:[%s]+as[%s]+([\\p{L}0-9_.]+))?"), //

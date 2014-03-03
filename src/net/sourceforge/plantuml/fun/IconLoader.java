@@ -28,46 +28,52 @@
  *
  * Original Author:  Arnaud Roques
  *
- * Revision $Revision: 6110 $
- *
  */
-package net.sourceforge.plantuml;
+package net.sourceforge.plantuml.fun;
 
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.io.InputStream;
 
-import net.sourceforge.plantuml.command.regex.MyPattern;
+import javax.imageio.ImageIO;
 
-public class StartUtils {
+public class IconLoader {
 
-	public static boolean isArobaseStartDiagram(String s) {
-		s = s.trim();
-		return s.startsWith("@start");
+	public static BufferedImage getRandom() {
+		return addTransparent(getIcon("sprite013.png"));
+		// return addTransparent(getIcon(getSomeQuote()));
 	}
 
-	public static boolean isArobaseEndDiagram(String s) {
-		s = s.trim();
-		return s.startsWith("@end");
+	private static String getSomeQuote() {
+		final int v = (int) (System.currentTimeMillis() / 1000L);
+		final int n = v % 10;
+		return "sprite" + String.format("%03d", n) + ".png";
 	}
 
-	public static boolean isArobasePauseDiagram(String s) {
-		s = s.trim();
-		return s.startsWith("@pause");
-	}
-
-	public static boolean isArobaseUnpauseDiagram(String s) {
-		s = s.trim();
-		return s.startsWith("@unpause");
-	}
-
-	private static final Pattern append = MyPattern.cmpile("^\\W*@append");
-
-	public static String getPossibleAppend(String s) {
-		final Matcher m = append.matcher(s);
-		if (m.find()) {
-			return s.substring(m.group(0).length()).trim();
+	private static BufferedImage getIcon(String name) {
+		try {
+			final InputStream is = IconLoader.class.getResourceAsStream(name);
+			final BufferedImage image = ImageIO.read(is);
+			is.close();
+			return image;
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
 		return null;
+	}
+
+	private static BufferedImage addTransparent(BufferedImage ico) {
+		final BufferedImage transparentIcon = new BufferedImage(ico.getWidth(), ico.getHeight(),
+				BufferedImage.TYPE_INT_ARGB_PRE);
+		for (int i = 0; i < ico.getWidth(); i++) {
+			for (int j = 0; j < ico.getHeight(); j++) {
+				final int col = ico.getRGB(i, j);
+				if (col != ico.getRGB(0, 0)) {
+					transparentIcon.setRGB(i, j, col);
+				}
+			}
+		}
+		return transparentIcon;
 	}
 
 }

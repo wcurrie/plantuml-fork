@@ -59,7 +59,7 @@ public class CreoleParser {
 		} else if (line.startsWith("|=") && line.endsWith("|")) {
 			return new StripeTable(fontConfiguration, skinParam, line);
 		}
-		return new CreoleStripeSimpleParser(line, fontConfiguration, skinParam).createStripe(context);
+		return new CreoleStripeSimpleParser(line, context, fontConfiguration, skinParam).createStripe(context);
 	}
 
 	public Sheet createSheet(Display display) {

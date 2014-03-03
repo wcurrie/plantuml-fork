@@ -48,7 +48,7 @@ import net.sourceforge.plantuml.ugraphic.UTranslate;
 
 public enum PackageStyle {
 
-	FOLDER, RECT, NODE, FRAME, CLOUD, DATABASE, AGENT, STORAGE, COMPONENT1, COMPONENT2, ARTIFACT;
+	FOLDER, RECT, NODE, FRAME, CLOUD, DATABASE, AGENT, STORAGE, COMPONENT1, COMPONENT2, ARTIFACT, CARD;
 
 	public static PackageStyle fromString(String value) {
 		for (PackageStyle p : EnumSet.allOf(PackageStyle.class)) {

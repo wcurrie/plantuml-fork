@@ -225,7 +225,8 @@ public class CommandArrow extends SingleLineCommand2<SequenceDiagram> {
 			default:
 				break;
 			}
-		} else if (system.isAutoactivate() && config.getHead() == ArrowHead.NORMAL) {
+		} else if (system.isAutoactivate()
+				&& (config.getHead() == ArrowHead.NORMAL || config.getHead() == ArrowHead.ASYNC)) {
 			if (config.isDotted()) {
 				system.activate(p1, LifeEventType.DEACTIVATE, null);
 			} else {

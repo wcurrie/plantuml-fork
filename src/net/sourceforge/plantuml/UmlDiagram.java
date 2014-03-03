@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  *
- * Revision $Revision: 12235 $
+ * Revision $Revision: 12564 $
  *
  */
 package net.sourceforge.plantuml;
@@ -58,6 +58,8 @@ import net.sourceforge.plantuml.cucadiagram.Display;
 import net.sourceforge.plantuml.cucadiagram.UnparsableGraphvizException;
 import net.sourceforge.plantuml.flashcode.FlashCodeFactory;
 import net.sourceforge.plantuml.flashcode.FlashCodeUtils;
+import net.sourceforge.plantuml.fun.IconLoader;
+import net.sourceforge.plantuml.graphic.GraphicPosition;
 import net.sourceforge.plantuml.graphic.GraphicStrings;
 import net.sourceforge.plantuml.graphic.HorizontalAlignment;
 import net.sourceforge.plantuml.graphic.HtmlColorUtils;
@@ -262,8 +264,15 @@ public abstract class UmlDiagram extends AbstractPSystem implements Diagram {
 			strings.add("  " + ste.toString());
 
 		}
-		final GraphicStrings graphicStrings = new GraphicStrings(strings, font, HtmlColorUtils.BLACK,
-				HtmlColorUtils.WHITE, UAntiAliasing.ANTI_ALIASING_ON);
+
+		final GraphicStrings graphicStrings;
+		if (OptionFlags.CRASH_SPRITE) {
+			graphicStrings = new GraphicStrings(strings, font, HtmlColorUtils.BLACK, HtmlColorUtils.WHITE,
+					UAntiAliasing.ANTI_ALIASING_ON, IconLoader.getRandom(), GraphicPosition.BACKGROUND_CORNER_TOP_RIGHT);
+		} else {
+			graphicStrings = new GraphicStrings(strings, font, HtmlColorUtils.BLACK, HtmlColorUtils.WHITE,
+					UAntiAliasing.ANTI_ALIASING_ON);
+		}
 		graphicStrings.writeImage(os, fileFormat, svg);
 	}
 

@@ -78,6 +78,7 @@ public class SyntaxChecker {
 				Collections.<String> emptyList());
 
 		final Diagram system = sourceStringReader.getBlocks().get(0).getDiagram();
+		result.setCmapData(system.hasUrl());
 		if (system instanceof UmlDiagram) {
 			result.setUmlDiagramType(((UmlDiagram) system).getUmlDiagramType());
 			result.setDescription(system.getDescription().getDescription());
@@ -92,9 +93,32 @@ public class SyntaxChecker {
 		} else {
 			result.setDescription(system.getDescription().getDescription());
 		}
-
 		return result;
+	}
 
+	public static SyntaxResult checkSyntaxFair(String source) {
+		final SyntaxResult result = new SyntaxResult();
+		final SourceStringReader sourceStringReader = new SourceStringReader(new Defines(), source,
+				Collections.<String> emptyList());
+
+		final Diagram system = sourceStringReader.getBlocks().get(0).getDiagram();
+		result.setCmapData(system.hasUrl());
+		if (system instanceof UmlDiagram) {
+			result.setUmlDiagramType(((UmlDiagram) system).getUmlDiagramType());
+			result.setDescription(system.getDescription().getDescription());
+		} else if (system instanceof PSystemError) {
+			result.setError(true);
+			final PSystemError sys = (PSystemError) system;
+			result.setErrorLinePosition(sys.getHigherErrorPosition());
+			for (ErrorUml er : sys.getErrorsUml()) {
+				result.addErrorText(er.getError());
+			}
+			result.setSystemError(sys);
+			result.setSuggest(sys.getSuggest());
+		} else {
+			result.setDescription(system.getDescription().getDescription());
+		}
+		return result;
 	}
 
 	private static int lastLineNumber(String source) {

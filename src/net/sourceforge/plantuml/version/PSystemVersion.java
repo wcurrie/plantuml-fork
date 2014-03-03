@@ -243,7 +243,7 @@ public class PSystemVersion extends AbstractPSystem {
 	private GraphicStrings getGraphicStrings() throws IOException {
 		final UFont font = new UFont("SansSerif", Font.PLAIN, 12);
 		return new GraphicStrings(strings, font, HtmlColorUtils.BLACK, HtmlColorUtils.WHITE, UAntiAliasing.ANTI_ALIASING_ON,
-				image, GraphicPosition.BACKGROUND_CORNER);
+				image, GraphicPosition.BACKGROUND_CORNER_BOTTOM_RIGHT);
 	}
 
 	public DiagramDescription getDescription() {

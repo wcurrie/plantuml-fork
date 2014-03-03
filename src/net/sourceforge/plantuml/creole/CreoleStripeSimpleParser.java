@@ -48,7 +48,7 @@ public class CreoleStripeSimpleParser {
 	private final FontConfiguration fontConfiguration;
 	private final ISkinSimple skinParam;
 
-	public CreoleStripeSimpleParser(String line, FontConfiguration fontConfiguration, ISkinSimple skinParam) {
+	public CreoleStripeSimpleParser(String line, CreoleContext creoleContext, FontConfiguration fontConfiguration, ISkinSimple skinParam) {
 		this.fontConfiguration = fontConfiguration;
 		this.skinParam = skinParam;
 
@@ -91,7 +91,7 @@ public class CreoleStripeSimpleParser {
 			return;
 		}
 
-		final Pattern p1 = MyPattern.cmpile("^(\\*+)([^*]+)$");
+		final Pattern p1 = MyPattern.cmpile("^(\\*+)([^*]+(?:[^*]|\\*\\*[^*]+\\*\\*)*)$");
 		final Matcher m1 = p1.matcher(line);
 		if (m1.find()) {
 			this.line = m1.group(2).trim();
@@ -100,7 +100,7 @@ public class CreoleStripeSimpleParser {
 			return;
 		}
 
-		final Pattern p2 = MyPattern.cmpile("^(#+)([^*]+)$");
+		final Pattern p2 = MyPattern.cmpile("^(#+)(.+)$");
 		final Matcher m2 = p2.matcher(line);
 		if (m2.find()) {
 			this.line = m2.group(2).trim();
@@ -109,7 +109,7 @@ public class CreoleStripeSimpleParser {
 			return;
 		}
 
-		final Pattern p3 = MyPattern.cmpile("^(=+)([^*]+)$");
+		final Pattern p3 = MyPattern.cmpile("^(=+)(.+)$");
 		final Matcher m3 = p3.matcher(line);
 		if (m3.find()) {
 			this.line = m3.group(2).trim();

@@ -72,7 +72,7 @@ public class PSystemTuring extends AbstractPSystem {
 		}
 		final UFont font = new UFont("Monospaced", Font.PLAIN, 14);
 		return new GraphicStrings(strings, font, HtmlColorUtils.BLACK, HtmlColorUtils.WHITE, UAntiAliasing.ANTI_ALIASING_ON,
-				null, GraphicPosition.BACKGROUND_CORNER);
+				null, GraphicPosition.BACKGROUND_CORNER_BOTTOM_RIGHT);
 	}
 
 	public DiagramDescription getDescription() {

@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 12458 $
+ * Revision $Revision: 12553 $
  *
  */
 package net.sourceforge.plantuml.cucadiagram.dot;
@@ -89,12 +89,12 @@ abstract class AbstractGraphviz implements Graphviz {
 		final String cmd[] = getCommandLine();
 		ProcessRunner p = null;
 		ProcessState state = null;
-		long startTime = -1;
+		long startTime2 = -1;
 		try {
 			Log.info("Starting Graphviz process " + Arrays.asList(cmd));
 			Log.info("DotString size: " + dotString.length());
 			p = new ProcessRunner(cmd);
-			startTime = System.nanoTime();
+			startTime2 = System.currentTimeMillis();
 			state = p.run(dotString.getBytes(), os);
 			// if (state == ProcessState.TERMINATED_OK) {
 			// result = true;
@@ -108,10 +108,9 @@ abstract class AbstractGraphviz implements Graphviz {
 			Log.error("Try java -jar plantuml.jar -testdot to figure out the issue");
 			Log.error("");
 		} finally {
-			Performance.incDotCount();
-			if (startTime != -1) {
-				final long duration = System.nanoTime() - startTime;
-				Performance.updateDotTime(duration);
+			if (startTime2 != -1) {
+				final long duration = System.currentTimeMillis() - startTime2;
+				Performance.updateDotTime2(duration);
 			}
 			Log.info("Ending Graphviz process");
 		}

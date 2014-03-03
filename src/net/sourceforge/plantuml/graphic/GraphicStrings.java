@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 12495 $
+ * Revision $Revision: 12563 $
  *
  */
 package net.sourceforge.plantuml.graphic;
@@ -207,9 +207,11 @@ public class GraphicStrings implements IEntityImage {
 				ug.apply(new UTranslate((size.getWidth() - image.getWidth()) / 2, size.getHeight())).draw(
 						new UImage(image));
 				size = new Dimension2DDouble(size.getWidth(), size.getHeight() + image.getHeight());
-			} else if (position == GraphicPosition.BACKGROUND_CORNER) {
+			} else if (position == GraphicPosition.BACKGROUND_CORNER_BOTTOM_RIGHT) {
 				ug.apply(new UTranslate(size.getWidth() - image.getWidth(), size.getHeight() - image.getHeight()))
 						.draw(new UImage(image));
+			} else if (position == GraphicPosition.BACKGROUND_CORNER_TOP_RIGHT) {
+				ug.apply(new UTranslate(size.getWidth() - image.getWidth() - 1, 1)).draw(new UImage(image));
 			}
 		}
 		return size;

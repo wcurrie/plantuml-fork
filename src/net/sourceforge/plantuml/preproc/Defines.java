@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 12395 $
+ * Revision $Revision: 12556 $
  *
  */
 package net.sourceforge.plantuml.preproc;
@@ -92,7 +92,8 @@ public class Defines {
 						regex.append("([^)]*)");
 					}
 					final String var1 = st.nextToken();
-					newValue = newValue.replaceAll("\\b" + var1 + "\\b", "\\$" + i);
+					final String var2 = "(##" + var1 + "\\b)|(\\b" + var1 + "##)|(\\b" + var1 + "\\b)";
+					newValue = newValue.replaceAll(var2, "\\$" + i);
 					i++;
 					if (st.hasMoreTokens()) {
 						regex.append(",");

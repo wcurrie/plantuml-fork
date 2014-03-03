@@ -48,6 +48,8 @@ public abstract class USymbol {
 	public final static USymbol STORAGE = record("STORAGE", new USymbolStorage());
 	public final static USymbol DATABASE = record("DATABASE", new USymbolDatabase());
 	public final static USymbol CLOUD = record("CLOUD", new USymbolCloud());
+	public final static USymbol CARD = record("CARD", new USymbolCard(ColorParam.rectangleBackground,
+			ColorParam.rectangleBorder, FontParam.RECTANGLE, FontParam.RECTANGLE_STEREOTYPE));
 	public final static USymbol FRAME = record("FRAME", new USymbolFrame());
 	public final static USymbol NODE = record("NODE", new USymbolNode());
 	public final static USymbol ARTIFACT = record("ARTIFACT", new USymbolArtifact());

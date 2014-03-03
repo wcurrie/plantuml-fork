@@ -75,7 +75,7 @@ public class PSystemDonors extends AbstractPSystem {
 		lines.add(" ");
 		final UFont font = new UFont("SansSerif", Font.PLAIN, 12);
 		return new GraphicStrings(lines, font, HtmlColorUtils.BLACK, HtmlColorUtils.WHITE,
-				UAntiAliasing.ANTI_ALIASING_ON, PSystemVersion.getPlantumlImage(), GraphicPosition.BACKGROUND_CORNER);
+				UAntiAliasing.ANTI_ALIASING_ON, PSystemVersion.getPlantumlImage(), GraphicPosition.BACKGROUND_CORNER_BOTTOM_RIGHT);
 	}
 
 	public DiagramDescription getDescription() {
