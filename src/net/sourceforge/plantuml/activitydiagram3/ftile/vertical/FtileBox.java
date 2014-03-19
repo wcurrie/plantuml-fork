@@ -121,7 +121,7 @@ public class FtileBox extends AbstractFtile {
 		final FontConfiguration fc = new FontConfiguration(font, HtmlColorUtils.BLACK);
 		if (OptionFlags.USE_CREOLE) {
 			final Sheet sheet = new CreoleParser(fc, HorizontalAlignment.LEFT, skinParam).createSheet(label);
-			tb = new SheetBlock2(new SheetBlock1(sheet), new MyStencil(), new UStroke(1));
+			tb = new SheetBlock2(new SheetBlock1(sheet, 0), new MyStencil(), new UStroke(1));
 		} else {
 			tb = TextBlockUtils.create(label, fc, HorizontalAlignment.LEFT, skinParam);
 		}

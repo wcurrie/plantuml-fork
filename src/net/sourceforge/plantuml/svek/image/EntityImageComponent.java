@@ -41,7 +41,9 @@ import net.sourceforge.plantuml.SkinParamUtils;
 import net.sourceforge.plantuml.Url;
 import net.sourceforge.plantuml.cucadiagram.BodyEnhanced;
 import net.sourceforge.plantuml.cucadiagram.Display;
+import net.sourceforge.plantuml.cucadiagram.EntityPortion;
 import net.sourceforge.plantuml.cucadiagram.ILeaf;
+import net.sourceforge.plantuml.cucadiagram.PortionShower;
 import net.sourceforge.plantuml.cucadiagram.Stereotype;
 import net.sourceforge.plantuml.graphic.FontConfiguration;
 import net.sourceforge.plantuml.graphic.HorizontalAlignment;
@@ -62,7 +64,7 @@ public class EntityImageComponent extends AbstractEntityImage {
 
 	private final TextBlock asSmall;
 
-	public EntityImageComponent(ILeaf entity, ISkinParam skinParam) {
+	public EntityImageComponent(ILeaf entity, ISkinParam skinParam, PortionShower portionShower) {
 		super(entity, skinParam);
 		final Stereotype stereotype = entity.getStereotype();
 		final USymbol symbol = entity.getUSymbol() == null ? (skinParam.useUml2ForComponent() ? USymbol.COMPONENT2
@@ -86,7 +88,9 @@ public class EntityImageComponent extends AbstractEntityImage {
 				getSkinParam().shadowing());
 
 		TextBlock stereo = TextBlockUtils.empty(0, 0);
-		if (stereotype != null && stereotype.getLabel() != null) {
+
+		if (stereotype != null && stereotype.getLabel() != null
+				&& portionShower.showPortion(EntityPortion.STEREOTYPE, entity)) {
 			stereo = TextBlockUtils.create(
 					Display.getWithNewlines(stereotype.getLabel()),
 					new FontConfiguration(SkinParamUtils.getFont(getSkinParam(), symbol.getFontParamStereotype(),

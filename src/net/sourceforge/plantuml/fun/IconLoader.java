@@ -34,23 +34,36 @@ package net.sourceforge.plantuml.fun;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 import javax.imageio.ImageIO;
 
 public class IconLoader {
 
+	private final static Map<String, BufferedImage> all = new ConcurrentHashMap<String, BufferedImage>();
+
 	public static BufferedImage getRandom() {
-		return addTransparent(getIcon("sprite013.png"));
-		// return addTransparent(getIcon(getSomeQuote()));
+		// return addTransparent(getIcon("sprite013.png"));
+		return addTransparent(getIcon(getSomeQuote()));
 	}
 
 	private static String getSomeQuote() {
 		final int v = (int) (System.currentTimeMillis() / 1000L);
-		final int n = v % 10;
+		final int n = v % 18;
 		return "sprite" + String.format("%03d", n) + ".png";
 	}
 
 	private static BufferedImage getIcon(String name) {
+		BufferedImage result = all.get(name);
+		if (result == null) {
+			result = getIconSlow(name);
+			all.put(name, result);
+		}
+		return result;
+	}
+
+	private static BufferedImage getIconSlow(String name) {
 		try {
 			final InputStream is = IconLoader.class.getResourceAsStream(name);
 			final BufferedImage image = ImageIO.read(is);

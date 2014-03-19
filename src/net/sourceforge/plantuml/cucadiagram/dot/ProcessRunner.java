@@ -40,6 +40,7 @@ import java.io.OutputStream;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
+import net.sourceforge.plantuml.OptionFlags;
 import net.sourceforge.plantuml.api.MyRunnable;
 import net.sourceforge.plantuml.api.Performance;
 import net.sourceforge.plantuml.api.TimeoutExecutor;
@@ -67,6 +68,9 @@ public class ProcessRunner {
 	public ProcessState run(byte in[], OutputStream redirection, File dir) {
 		if (this.state != ProcessState.INIT) {
 			throw new IllegalStateException();
+		}
+		if (OptionFlags.CRASH_SPRITE) {
+			throw new UnsupportedOperationException();
 		}
 		this.state = ProcessState.RUNNING;
 		final MainThread mainThread = new MainThread(cmd, dir, redirection, in);

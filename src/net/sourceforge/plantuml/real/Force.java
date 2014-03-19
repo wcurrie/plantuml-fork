@@ -28,58 +28,13 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 3835 $
+ * Revision $Revision: 4636 $
  *
  */
-package net.sourceforge.plantuml.salt;
+package net.sourceforge.plantuml.real;
 
-import java.util.Collections;
-import java.util.LinkedHashMap;
-import java.util.Map;
+interface Force {
 
-import net.sourceforge.plantuml.salt.element.Element;
-
-public class Positionner {
-
-	private int row;
-	private int col;
-
-	private int maxRow;
-	private int maxCol;
-
-	private final Map<Element, Position> positions = new LinkedHashMap<Element, Position>();
-
-	public void add(Terminated<Element> element) {
-		positions.put(element.getElement(), new Position(row, col));
-		updateMax();
-		final Terminator terminator = element.getTerminator();
-		if (terminator == Terminator.NEWCOL) {
-			col++;
-		} else {
-			row++;
-			col = 0;
-		}
-	}
-
-	private void updateMax() {
-		if (row > maxRow) {
-			maxRow = row;
-		}
-		if (col > maxCol) {
-			maxCol = col;
-		}
-	}
-
-	public Map<Element, Position> getAll() {
-		return Collections.unmodifiableMap(positions);
-	}
-
-	public final int getNbRows() {
-		return maxRow + 1;
-	}
-
-	public final int getNbCols() {
-		return maxCol + 1;
-	}
+	public boolean apply();
 
 }

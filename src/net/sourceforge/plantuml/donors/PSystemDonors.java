@@ -67,7 +67,7 @@ public class PSystemDonors extends AbstractPSystem {
 		lines.add("<b>Special thanks to our sponsors and donors !");
 		lines.add(" ");
 		final Transcoder t = new TranscoderImpl();
-		final String s = t.decode(DONORS);
+		final String s = t.decode(DONORS).replace('*', '.');
 		final StringTokenizer st = new StringTokenizer(s, "\n");
 		while (st.hasMoreTokens()) {
 			lines.add(st.nextToken());

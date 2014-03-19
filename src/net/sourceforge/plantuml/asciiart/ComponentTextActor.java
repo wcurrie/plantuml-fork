@@ -46,7 +46,7 @@ import net.sourceforge.plantuml.skin.Context2D;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
 import net.sourceforge.plantuml.ugraphic.txt.UGraphicTxt;
 
-public class ComponentTextActor implements Component {
+public class ComponentTextActor extends AbstractComponentText {
 
 	private final ComponentType type;
 	private final Display stringsToDisplay;

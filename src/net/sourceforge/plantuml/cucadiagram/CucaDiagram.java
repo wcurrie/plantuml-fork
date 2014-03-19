@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 12371 $
+ * Revision $Revision: 12624 $
  *
  */
 package net.sourceforge.plantuml.cucadiagram;
@@ -424,7 +424,7 @@ public abstract class CucaDiagram extends UmlDiagram implements GroupHierarchy, 
 		this.visibilityModifierPresent = visibilityModifierPresent;
 	}
 
-	public final boolean showPortion(EntityPortion portion, ILeaf entity) {
+	public final boolean showPortion(EntityPortion portion, IEntity entity) {
 		if (getSkinParam().strictUmlStyle() && portion == EntityPortion.CIRCLED_CHARACTER) {
 			return false;
 		}

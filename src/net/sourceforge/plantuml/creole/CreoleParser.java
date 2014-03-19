@@ -33,6 +33,10 @@
  */
 package net.sourceforge.plantuml.creole;
 
+import java.util.Arrays;
+import java.util.List;
+
+import net.sourceforge.plantuml.EmbededDiagram;
 import net.sourceforge.plantuml.ISkinSimple;
 import net.sourceforge.plantuml.cucadiagram.Display;
 import net.sourceforge.plantuml.graphic.FontConfiguration;
@@ -67,7 +71,17 @@ public class CreoleParser {
 		if (display != null) {
 			final CreoleContext context = new CreoleContext();
 			for (CharSequence cs : display) {
-				final Stripe stripe = createStripe(cs.toString(), context, sheet.getLastStripe());
+				final Stripe stripe;
+				if (cs instanceof EmbededDiagram) {
+					final Atom atom = new AtomEmbededSystem((EmbededDiagram) cs);
+					stripe = new Stripe() {
+						public List<Atom> getAtoms() {
+							return Arrays.asList(atom);
+						}
+					};
+				} else {
+					stripe = createStripe(cs.toString(), context, sheet.getLastStripe());
+				}
 				if (stripe != null) {
 					sheet.add(stripe);
 				}

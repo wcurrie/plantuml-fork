@@ -55,6 +55,7 @@ import net.sourceforge.plantuml.SkinParamSameClassWidth;
 import net.sourceforge.plantuml.UmlDiagramType;
 import net.sourceforge.plantuml.core.UmlSource;
 import net.sourceforge.plantuml.cucadiagram.Display;
+import net.sourceforge.plantuml.cucadiagram.EntityPortion;
 import net.sourceforge.plantuml.cucadiagram.EntityPosition;
 import net.sourceforge.plantuml.cucadiagram.GroupType;
 import net.sourceforge.plantuml.cucadiagram.IEntity;
@@ -396,7 +397,7 @@ public final class CucaDiagramFileMakerSvek2 {
 			return new EntityImageLollipopInterface(leaf, skinParam);
 		}
 		if (leaf.getEntityType() == LeafType.DESCRIPTION) {
-			return new EntityImageComponent(leaf, skinParam);
+			return new EntityImageComponent(leaf, skinParam, portionShower);
 		}
 		if (leaf.getEntityType() == LeafType.USECASE) {
 			return new EntityImageUseCase(leaf, skinParam);
@@ -421,7 +422,8 @@ public final class CucaDiagramFileMakerSvek2 {
 		}
 		if (leaf.getEntityType() == LeafType.EMPTY_PACKAGE) {
 			if (leaf.getUSymbol() != null) {
-				return new EntityImageComponent(leaf, new SkinParamForecolored(skinParam, HtmlColorUtils.BLACK));
+				return new EntityImageComponent(leaf, new SkinParamForecolored(skinParam, HtmlColorUtils.BLACK),
+						portionShower);
 			}
 			return new EntityImageEmptyPackage2(leaf, skinParam);
 		}
@@ -526,6 +528,11 @@ public final class CucaDiagramFileMakerSvek2 {
 		if (stereos == null) {
 			return TextBlockUtils.empty(0, 0);
 		}
+		final boolean show = dotData.showPortion(EntityPortion.STEREOTYPE, g);
+		if (show == false) {
+			return TextBlockUtils.empty(0, 0);
+		}
+
 		final Stereotype stereotype2 = g.getStereotype();
 
 		final FontParam fontParam = FontParam.COMPONENT_STEREOTYPE;

@@ -36,6 +36,7 @@ package net.sourceforge.plantuml.creole;
 import java.awt.font.LineMetrics;
 import java.awt.geom.Dimension2D;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.StringTokenizer;
 
@@ -114,7 +115,7 @@ public class AtomText implements Atom {
 	private AtomText(String text, FontConfiguration style, Url url, DelayedDouble marginLeft, DelayedDouble marginRight) {
 		this.marginLeft = marginLeft;
 		this.marginRight = marginRight;
-		this.text = StringUtils.showComparatorCharacters(text);
+		this.text = StringUtils.showComparatorCharacters(StringUtils.manageBackslash(text));
 		this.fontConfiguration = style;
 		this.url = url;
 	}
@@ -193,6 +194,10 @@ public class AtomText implements Atom {
 	}
 
 	private double getWidth(StringBounder stringBounder) {
+		return getWidth(stringBounder, text);
+	}
+
+	private double getWidth(StringBounder stringBounder, String text) {
 		final StringTokenizer tokenizer = new StringTokenizer(text, "\t", true);
 		final double tabSize = getTabSize(stringBounder);
 		double x = 0;
@@ -209,4 +214,25 @@ public class AtomText implements Atom {
 		return x;
 	}
 
+	public List<AtomText> getSplitted(StringBounder stringBounder, double maxWidth) {
+		final List<AtomText> result = new ArrayList<AtomText>();
+		final StringTokenizer st = new StringTokenizer(text, " ", true);
+		final StringBuilder currentLine = new StringBuilder();
+		while (st.hasMoreTokens()) {
+			final String token = st.nextToken();
+			final double w = getWidth(stringBounder, currentLine + token);
+			if (w > maxWidth) {
+				result.add(new AtomText(currentLine.toString(), fontConfiguration, url, marginLeft, marginRight));
+				currentLine.setLength(0);
+				if (token.startsWith(" ") == false) {
+					currentLine.append(token);
+				}
+			} else {
+				currentLine.append(token);
+			}
+		}
+		result.add(new AtomText(currentLine.toString(), fontConfiguration, url, marginLeft, marginRight));
+		return Collections.unmodifiableList(result);
+
+	}
 }

@@ -33,6 +33,9 @@
  */
 package net.sourceforge.plantuml.skin.rose;
 
+import java.awt.geom.Dimension2D;
+
+import net.sourceforge.plantuml.Dimension2DDouble;
 import net.sourceforge.plantuml.graphic.StringBounder;
 import net.sourceforge.plantuml.skin.Area;
 import net.sourceforge.plantuml.skin.Component;
@@ -56,6 +59,12 @@ public class ComponentRoseGroupingSpace implements Component {
 	}
 
 	public void drawU(UGraphic ug, Area area, Context2D context) {
+	}
+
+	public final Dimension2D getPreferredDimension(StringBounder stringBounder) {
+		final double w = getPreferredWidth(stringBounder);
+		final double h = getPreferredHeight(stringBounder);
+		return new Dimension2DDouble(w, h);
 	}
 
 }

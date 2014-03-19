@@ -45,6 +45,7 @@ import java.util.Stack;
 
 import net.sourceforge.plantuml.FileFormat;
 import net.sourceforge.plantuml.FileFormatOption;
+import net.sourceforge.plantuml.OptionFlags;
 import net.sourceforge.plantuml.UmlDiagram;
 import net.sourceforge.plantuml.UmlDiagramType;
 import net.sourceforge.plantuml.core.DiagramDescription;
@@ -55,6 +56,7 @@ import net.sourceforge.plantuml.graphic.HtmlColor;
 import net.sourceforge.plantuml.sequencediagram.graphic.FileMaker;
 import net.sourceforge.plantuml.sequencediagram.graphic.SequenceDiagramFileMakerPuma;
 import net.sourceforge.plantuml.sequencediagram.graphic.SequenceDiagramTxtMaker;
+import net.sourceforge.plantuml.sequencediagram.teoz.SequenceDiagramFileMakerTeoz;
 import net.sourceforge.plantuml.skin.ProtectedSkin;
 import net.sourceforge.plantuml.skin.Skin;
 import net.sourceforge.plantuml.skin.SkinUtils;
@@ -192,6 +194,10 @@ public class SequenceDiagram extends UmlDiagram {
 
 		if (fileFormat == FileFormat.ATXT || fileFormat == FileFormat.UTXT) {
 			return new SequenceDiagramTxtMaker(this, fileFormat);
+		}
+		
+		if (OptionFlags.TEOZ) {
+			return new SequenceDiagramFileMakerTeoz(this, skin, fileFormatOption, flashcodes);
 		}
 
 		return new SequenceDiagramFileMakerPuma(this, skin, fileFormatOption, flashcodes);

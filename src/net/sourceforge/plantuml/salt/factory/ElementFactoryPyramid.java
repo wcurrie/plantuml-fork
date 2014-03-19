@@ -38,13 +38,13 @@ import net.sourceforge.plantuml.salt.Dictionary;
 import net.sourceforge.plantuml.salt.Positionner2;
 import net.sourceforge.plantuml.salt.Terminated;
 import net.sourceforge.plantuml.salt.element.Element;
-import net.sourceforge.plantuml.salt.element.ElementPyramid2;
+import net.sourceforge.plantuml.salt.element.ElementPyramid;
 import net.sourceforge.plantuml.salt.element.ElementText;
 import net.sourceforge.plantuml.salt.element.TableStrategy;
 
-public class ElementFactoryPyramid2 extends AbstractElementFactoryComplex {
+public class ElementFactoryPyramid extends AbstractElementFactoryComplex {
 
-	public ElementFactoryPyramid2(DataSource dataSource, Dictionary dictionary) {
+	public ElementFactoryPyramid(DataSource dataSource, Dictionary dictionary) {
 		super(dataSource, dictionary);
 	}
 
@@ -71,7 +71,7 @@ public class ElementFactoryPyramid2 extends AbstractElementFactoryComplex {
 			}
 		}
 		final Terminated<String> next = getDataSource().next();
-		return new Terminated<Element>(new ElementPyramid2(positionner, strategy), next.getTerminator());
+		return new Terminated<Element>(new ElementPyramid(positionner, strategy), next.getTerminator());
 	}
 
 	private boolean isStar(Element element) {

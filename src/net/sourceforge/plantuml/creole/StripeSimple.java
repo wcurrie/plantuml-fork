@@ -53,7 +53,6 @@ public class StripeSimple implements Stripe {
 	private FontConfiguration fontConfiguration;
 
 	final private StripeStyle style;
-
 	final private ISkinSimple skinParam;
 
 	public StripeSimple(FontConfiguration fontConfiguration, StripeStyle style, CreoleContext context,
@@ -83,6 +82,7 @@ public class StripeSimple implements Stripe {
 		this.commands.add(CommandCreoleSizeChange.create());
 		this.commands.add(CommandCreoleSizeChange.createEol());
 		this.commands.add(CommandCreoleColorChange.create());
+		this.commands.add(CommandCreoleColorChange.createEol());
 		this.commands.add(CommandCreoleColorAndSizeChange.create());
 		this.commands.add(CommandCreoleColorAndSizeChange.createEol());
 		this.commands.add(CommandCreoleExposantChange.create(FontPosition.EXPOSANT));

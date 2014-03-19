@@ -37,6 +37,7 @@ import java.awt.geom.Dimension2D;
 import java.util.List;
 
 import net.sourceforge.plantuml.ColorParam;
+import net.sourceforge.plantuml.Dimension2DDouble;
 import net.sourceforge.plantuml.FontParam;
 import net.sourceforge.plantuml.ISkinParam;
 import net.sourceforge.plantuml.SpriteContainerEmpty;
@@ -122,6 +123,12 @@ public class Frame implements Component {
 		final TextBlock bloc = TextBlockUtils.create(Display.create(name), new FontConfiguration(font, textColor),
 				HorizontalAlignment.LEFT, new SpriteContainerEmpty());
 		return bloc;
+	}
+
+	public final Dimension2D getPreferredDimension(StringBounder stringBounder) {
+		final double w = getPreferredWidth(stringBounder);
+		final double h = getPreferredHeight(stringBounder);
+		return new Dimension2DDouble(w, h);
 	}
 
 }

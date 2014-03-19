@@ -46,11 +46,11 @@ import net.sourceforge.plantuml.ugraphic.UPath;
 import net.sourceforge.plantuml.ugraphic.UTranslate;
 
 class USymbolDatabase extends USymbol {
-	
-	public USymbolDatabase() {
-		super(ColorParam.databaseBackground, ColorParam.databaseBorder, FontParam.DATABASE, FontParam.DATABASE_STEREOTYPE);
-	}
 
+	public USymbolDatabase() {
+		super(ColorParam.databaseBackground, ColorParam.databaseBorder, FontParam.DATABASE,
+				FontParam.DATABASE_STEREOTYPE);
+	}
 
 	private void drawDatabase(UGraphic ug, double width, double height, boolean shadowing) {
 		final UPath shape = new UPath();
@@ -99,6 +99,10 @@ class USymbolDatabase extends USymbol {
 			final UPath closing = getClosingPath(endingX);
 			ug = ug.apply(translate);
 			ug.apply(line.getStroke()).apply(new UChangeBackColor(null)).apply(new UTranslate(0, -15)).draw(closing);
+			if (line.isDouble()) {
+				ug.apply(line.getStroke()).apply(new UChangeBackColor(null)).apply(new UTranslate(0, -15 + 2))
+						.draw(closing);
+			}
 			line.drawTitleInternal(ug, 0, endingX, 0, true);
 		}
 

@@ -105,7 +105,7 @@ public class UFont {
 
 	@Override
 	public String toString() {
-		return font.toString() + " " + font.getPSName();
+		return font.toString()/* + " " + font.getPSName() */;
 	}
 
 	@Override
@@ -124,7 +124,8 @@ public class UFont {
 
 	@Deprecated
 	public static UFont getCurrentFont(Graphics2D g2d) {
-		return new UFont(g2d.getFont(), g2d.getFont().getFontName());
+		// return new UFont(g2d.getFont(), g2d.getFont().getFontName());
+		throw new UnsupportedOperationException();
 	}
 
 	public LineMetrics getLineMetrics(Graphics2D gg, String text) {

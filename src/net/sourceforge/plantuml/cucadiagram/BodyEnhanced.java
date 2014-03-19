@@ -157,7 +157,7 @@ public class BodyEnhanced implements TextBlock {
 		if (s.startsWith("==") && s.endsWith("==")) {
 			return true;
 		}
-		if (s.startsWith("..") && s.endsWith("..")) {
+		if (s.startsWith("..") && s.endsWith("..") && s.equals("...") == false) {
 			return true;
 		}
 		if (s.startsWith("__") && s.endsWith("__")) {
@@ -171,8 +171,8 @@ public class BodyEnhanced implements TextBlock {
 			return null;
 		}
 		s = s.substring(2, s.length() - 2).trim();
-		return TextBlockUtils.create(Display.getWithNewlines(s), titleConfig, HorizontalAlignment.LEFT,
-				spriteContainer);
+		return TextBlockUtils
+				.create(Display.getWithNewlines(s), titleConfig, HorizontalAlignment.LEFT, spriteContainer);
 	}
 
 	public void drawU(UGraphic ug) {

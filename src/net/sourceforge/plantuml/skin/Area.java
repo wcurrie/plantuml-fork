@@ -35,6 +35,8 @@ package net.sourceforge.plantuml.skin;
 
 import java.awt.geom.Dimension2D;
 
+import net.sourceforge.plantuml.Dimension2DDouble;
+
 public class Area {
 
 	private final Dimension2D dimensionToUse;
@@ -47,6 +49,10 @@ public class Area {
 
 	public Area(Dimension2D dimensionToUse) {
 		this.dimensionToUse = dimensionToUse;
+	}
+
+	public Area(double with, double height) {
+		this(new Dimension2DDouble(with, height));
 	}
 
 	public Dimension2D getDimensionToUse() {

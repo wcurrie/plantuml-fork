@@ -63,6 +63,10 @@ public class UHorizontalLine implements UShape {
 		return new UHorizontalLine(skipAtStart, skipAtEnd, title, false, style);
 	}
 
+	public boolean isDouble() {
+		return style == '=';
+	}
+
 	// static public UHorizontalLine infinite(UStroke stroke) {
 	// return new UHorizontalLine(0, 0, null, false, stroke);
 	// }

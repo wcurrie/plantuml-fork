@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 12328 $
+ * Revision $Revision: 12624 $
  *
  */
 package net.sourceforge.plantuml.cucadiagram.dot;
@@ -40,6 +40,7 @@ import net.sourceforge.plantuml.ISkinParam;
 import net.sourceforge.plantuml.UmlDiagramType;
 import net.sourceforge.plantuml.cucadiagram.EntityPortion;
 import net.sourceforge.plantuml.cucadiagram.GroupHierarchy;
+import net.sourceforge.plantuml.cucadiagram.IEntity;
 import net.sourceforge.plantuml.cucadiagram.IGroup;
 import net.sourceforge.plantuml.cucadiagram.ILeaf;
 import net.sourceforge.plantuml.cucadiagram.Link;
@@ -89,7 +90,7 @@ final public class DotData implements PortionShower {
 			ISkinParam skinParam, Rankdir rankdir, GroupHierarchy groupHierarchy, ColorMapper colorMapper,
 			EntityFactory entityFactory, boolean isHideEmptyDescriptionForState, DotMode dotMode) {
 		this(topParent, links, leafs, umlDiagramType, skinParam, groupHierarchy, new PortionShower() {
-			public boolean showPortion(EntityPortion portion, ILeaf entity) {
+			public boolean showPortion(EntityPortion portion, IEntity entity) {
 				return true;
 			}
 		}, colorMapper, entityFactory, isHideEmptyDescriptionForState, dotMode);
@@ -127,7 +128,7 @@ final public class DotData implements PortionShower {
 		return groupHierarchy.isEmpty(g);
 	}
 
-	public boolean showPortion(EntityPortion portion, ILeaf entity) {
+	public boolean showPortion(EntityPortion portion, IEntity entity) {
 		return portionShower.showPortion(portion, entity);
 	}
 

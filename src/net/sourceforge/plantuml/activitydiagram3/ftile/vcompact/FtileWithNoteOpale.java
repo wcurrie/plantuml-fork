@@ -111,7 +111,7 @@ public class FtileWithNoteOpale extends AbstractFtile implements Stencil {
 		final TextBlock text;
 		if (OptionFlags.USE_CREOLE) {
 			final Sheet sheet = new CreoleParser(fc, HorizontalAlignment.LEFT, skinParam).createSheet(note);
-			text = new SheetBlock2(new SheetBlock1(sheet), this, new UStroke(1));
+			text = new SheetBlock2(new SheetBlock1(sheet, 0), this, new UStroke(1));
 		} else {
 			text = TextBlockUtils.create(note, fc, HorizontalAlignment.LEFT, skinParam);
 		}

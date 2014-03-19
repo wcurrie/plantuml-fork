@@ -36,6 +36,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 
 import net.sourceforge.plantuml.Dimension2DDouble;
+import net.sourceforge.plantuml.OptionFlags;
 import net.sourceforge.plantuml.Url;
 import net.sourceforge.plantuml.asciiart.TextStringBounder;
 import net.sourceforge.plantuml.asciiart.TranslatedCharArea;
@@ -46,7 +47,6 @@ import net.sourceforge.plantuml.graphic.StringBounder;
 import net.sourceforge.plantuml.ugraphic.AbstractCommonUGraphic;
 import net.sourceforge.plantuml.ugraphic.ClipContainer;
 import net.sourceforge.plantuml.ugraphic.ColorMapperIdentity;
-import net.sourceforge.plantuml.ugraphic.UClip;
 import net.sourceforge.plantuml.ugraphic.UImage;
 import net.sourceforge.plantuml.ugraphic.UShape;
 import net.sourceforge.plantuml.ugraphic.UText;
@@ -75,10 +75,15 @@ public class UGraphicTxt extends AbstractCommonUGraphic implements ClipContainer
 	}
 
 	public void draw(UShape shape) {
-		final UClip clip = getClip();
+		// final UClip clip = getClip();
 		if (shape instanceof UText) {
 			final UText txt = (UText) shape;
-			final int y = getDy() / 10 - 1;
+			final int y;
+			if (OptionFlags.USE_CREOLE2 == false) {
+				y = getDy() / 10 - 1;
+			} else {
+				y = ((int) (getTranslateY() + txt.getDescent())) / 10;
+			}
 			if (txt.getFontConfiguration().containsStyle(FontStyle.WAVE)) {
 				charArea.drawHLine('^', y, getDx(), txt.getText().length());
 				charArea.drawStringLR(txt.getText(), 0, y + 1);

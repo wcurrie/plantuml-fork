@@ -39,13 +39,12 @@ import java.util.List;
 import net.sourceforge.plantuml.FileFormat;
 import net.sourceforge.plantuml.graphic.StringBounder;
 import net.sourceforge.plantuml.skin.Area;
-import net.sourceforge.plantuml.skin.Component;
 import net.sourceforge.plantuml.skin.ComponentType;
 import net.sourceforge.plantuml.skin.Context2D;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
 import net.sourceforge.plantuml.ugraphic.txt.UGraphicTxt;
 
-public class ComponentTextGroupingBody implements Component {
+public class ComponentTextGroupingBody extends AbstractComponentText {
 
 	private final ComponentType type;
 	private final List<? extends CharSequence> stringsToDisplay;

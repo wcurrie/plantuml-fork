@@ -28,14 +28,16 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 12235 $
+ * Revision $Revision: 12645 $
  *
  */
 package net.sourceforge.plantuml.skin;
 
 import java.awt.BasicStroke;
 import java.awt.Graphics2D;
+import java.awt.geom.Dimension2D;
 
+import net.sourceforge.plantuml.Dimension2DDouble;
 import net.sourceforge.plantuml.graphic.StringBounder;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
 import net.sourceforge.plantuml.ugraphic.UStroke;
@@ -85,5 +87,11 @@ public abstract class AbstractComponent implements Component {
 	public abstract double getPreferredWidth(StringBounder stringBounder);
 
 	public abstract double getPreferredHeight(StringBounder stringBounder);
+
+	public final Dimension2D getPreferredDimension(StringBounder stringBounder) {
+		final double w = getPreferredWidth(stringBounder);
+		final double h = getPreferredHeight(stringBounder);
+		return new Dimension2DDouble(w, h);
+	}
 
 }

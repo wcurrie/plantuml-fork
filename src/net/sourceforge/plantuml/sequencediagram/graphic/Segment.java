@@ -39,7 +39,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-class Segment {
+public class Segment {
 
 	final private double pos1;
 	final private double pos2;

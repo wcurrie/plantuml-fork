@@ -71,7 +71,7 @@ public class StripeTable implements Stripe {
 		for (StripeSimple cell : cells) {
 			sheet.add(cell);
 		}
-		return new SheetBlock1(sheet);
+		return new SheetBlock1(sheet, 0);
 	}
 
 	private void analyzeAndAddInternal(String line, Mode mode) {

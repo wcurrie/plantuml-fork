@@ -34,7 +34,9 @@
 package net.sourceforge.plantuml.creole;
 
 import java.awt.geom.Dimension2D;
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 
 import net.sourceforge.plantuml.graphic.HorizontalAlignment;
@@ -46,25 +48,32 @@ import net.sourceforge.plantuml.ugraphic.UGraphic;
 public class SheetBlock1 implements TextBlock, Atom, Stencil {
 
 	private final Sheet sheet;
+	private List<Stripe> stripes;
 	private Map<Stripe, Double> heights;
 	private Map<Stripe, Double> widths;
 	private Map<Atom, Position> positions;
 	private MinMax minMax;
+	private final double maxWidth;
 
-	public SheetBlock1(Sheet sheet) {
+	public SheetBlock1(Sheet sheet, double maxWidth) {
 		this.sheet = sheet;
+		this.maxWidth = maxWidth;
 	}
 
 	private void initMap(StringBounder stringBounder) {
 		if (positions != null) {
 			return;
 		}
+		stripes = new ArrayList<Stripe>();
+		for (Stripe stripe : sheet) {
+			stripes.addAll(new Fission(stripe, maxWidth).getSplitted(stringBounder));
+		}
 		positions = new LinkedHashMap<Atom, Position>();
 		widths = new LinkedHashMap<Stripe, Double>();
 		heights = new LinkedHashMap<Stripe, Double>();
 		minMax = MinMax.getEmpty(true);
 		double y = 0;
-		for (Stripe stripe : sheet) {
+		for (Stripe stripe : stripes) {
 			if (stripe.getAtoms().size() == 0) {
 				continue;
 			}
@@ -118,7 +127,7 @@ public class SheetBlock1 implements TextBlock, Atom, Stencil {
 
 	public void drawU(UGraphic ug) {
 		initMap(ug.getStringBounder());
-		for (Stripe stripe : sheet) {
+		for (Stripe stripe : stripes) {
 			for (Atom atom : stripe.getAtoms()) {
 				final Position position = positions.get(atom);
 				atom.drawU(position.translate(ug));

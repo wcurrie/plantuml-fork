@@ -184,5 +184,7 @@ public abstract class AbstractMessage implements Event {
 	}
 
 	public abstract boolean compatibleForCreate(Participant p);
+	
+	public abstract boolean isSelfMessage();
 
 }

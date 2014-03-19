@@ -28,12 +28,12 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 12235 $
+ * Revision $Revision: 12651 $
  *
  */
 package net.sourceforge.plantuml.sequencediagram.graphic;
 
-class Constraint {
+public class Constraint {
 
 	private final Pushable p1;
 	private final Pushable p2;

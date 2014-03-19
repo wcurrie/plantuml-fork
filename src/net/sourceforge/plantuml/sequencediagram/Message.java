@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 12235 $
+ * Revision $Revision: 12630 $
  *
  */
 package net.sourceforge.plantuml.sequencediagram;
@@ -63,6 +63,10 @@ public class Message extends AbstractMessage {
 	@Override
 	public boolean compatibleForCreate(Participant p) {
 		return p1 != p && p2 == p;
+	}
+
+	public boolean isSelfMessage() {
+		return p1 == p2;
 	}
 
 }

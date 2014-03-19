@@ -48,6 +48,6 @@ public enum TableStrategy {
 				return t;
 			}
 		}
-		throw new IllegalArgumentException();
+		return null;
 	}
 }

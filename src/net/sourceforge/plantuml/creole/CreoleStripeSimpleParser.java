@@ -48,7 +48,8 @@ public class CreoleStripeSimpleParser {
 	private final FontConfiguration fontConfiguration;
 	private final ISkinSimple skinParam;
 
-	public CreoleStripeSimpleParser(String line, CreoleContext creoleContext, FontConfiguration fontConfiguration, ISkinSimple skinParam) {
+	public CreoleStripeSimpleParser(String line, CreoleContext creoleContext, FontConfiguration fontConfiguration,
+			ISkinSimple skinParam) {
 		this.fontConfiguration = fontConfiguration;
 		this.skinParam = skinParam;
 

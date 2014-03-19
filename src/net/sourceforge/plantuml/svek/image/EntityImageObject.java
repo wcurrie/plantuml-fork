@@ -44,6 +44,7 @@ import net.sourceforge.plantuml.Url;
 import net.sourceforge.plantuml.creole.Stencil;
 import net.sourceforge.plantuml.cucadiagram.Display;
 import net.sourceforge.plantuml.cucadiagram.EntityPortion;
+import net.sourceforge.plantuml.cucadiagram.IEntity;
 import net.sourceforge.plantuml.cucadiagram.ILeaf;
 import net.sourceforge.plantuml.cucadiagram.PortionShower;
 import net.sourceforge.plantuml.cucadiagram.Stereotype;
@@ -101,7 +102,7 @@ public class EntityImageObject extends AbstractEntityImage implements Stencil {
 			// entity.getFieldsToDisplay().asTextBlock(FontParam.OBJECT_ATTRIBUTE,
 			// skinParam);
 			this.fields = entity.getBody(new PortionShower() {
-				public boolean showPortion(EntityPortion portion, ILeaf entity) {
+				public boolean showPortion(EntityPortion portion, IEntity entity) {
 					return true;
 				}
 			}).asTextBlock(FontParam.OBJECT_ATTRIBUTE, skinParam);

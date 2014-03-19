@@ -43,7 +43,7 @@ import net.sourceforge.plantuml.skin.Context2D;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
 import net.sourceforge.plantuml.ugraphic.txt.UGraphicTxt;
 
-public class ComponentTextActiveLine implements Component {
+public class ComponentTextActiveLine extends AbstractComponentText {
 
 	private final FileFormat fileFormat;
 

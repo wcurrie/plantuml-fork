@@ -82,6 +82,11 @@ public class MessageExo extends AbstractMessage {
 	public boolean compatibleForCreate(Participant p) {
 		return p == participant;
 	}
+	
+	public boolean isSelfMessage() {
+		return false;
+	}
+
 
 
 }

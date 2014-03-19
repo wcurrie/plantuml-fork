@@ -49,7 +49,7 @@ import net.sourceforge.plantuml.skin.Context2D;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
 import net.sourceforge.plantuml.ugraphic.txt.UGraphicTxt;
 
-public class ComponentTextArrow implements Component {
+public class ComponentTextArrow extends AbstractComponentText {
 
 	private final ComponentType type;
 	private final Display stringsToDisplay;

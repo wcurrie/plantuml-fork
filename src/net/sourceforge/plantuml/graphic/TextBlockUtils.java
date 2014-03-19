@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 12452 $
+ * Revision $Revision: 12648 $
  *
  */
 package net.sourceforge.plantuml.graphic;
@@ -47,7 +47,6 @@ import net.sourceforge.plantuml.FileFormatOption;
 import net.sourceforge.plantuml.ISkinSimple;
 import net.sourceforge.plantuml.OptionFlags;
 import net.sourceforge.plantuml.SpriteContainer;
-import net.sourceforge.plantuml.activitydiagram3.ftile.Diamond;
 import net.sourceforge.plantuml.creole.CreoleParser;
 import net.sourceforge.plantuml.creole.Sheet;
 import net.sourceforge.plantuml.creole.SheetBlock1;
@@ -92,18 +91,31 @@ public class TextBlockUtils {
 		}
 
 		if (OptionFlags.USE_CREOLE2) {
-			final Sheet sheet = new CreoleParser(fontConfiguration, horizontalAlignment, spriteContainer).createSheet(texts);
-			final SheetBlock1 sheetBlock1 = new SheetBlock1(sheet);
-			// return sheetBlock1;
-			return new SheetBlock2(sheetBlock1, sheetBlock1, new UStroke(1.5));
+			return getCreole(texts, fontConfiguration, horizontalAlignment, spriteContainer, maxMessageSize);
 		}
 		// tbTest = TextBlockUtils.create(branch1.getLabelTest(), fcTest, HorizontalAlignment.LEFT, ftileFactory);
 		return new TextBlockSimple(texts, fontConfiguration, horizontalAlignment, spriteContainer, maxMessageSize);
 	}
 
+	private static TextBlock getCreole(Display texts, FontConfiguration fontConfiguration,
+			HorizontalAlignment horizontalAlignment, ISkinSimple spriteContainer, double maxMessageSize) {
+		final Sheet sheet = new CreoleParser(fontConfiguration, horizontalAlignment, spriteContainer)
+				.createSheet(texts);
+		final SheetBlock1 sheetBlock1 = new SheetBlock1(sheet, maxMessageSize);
+		return new SheetBlock2(sheetBlock1, sheetBlock1, new UStroke(1.5));
+	}
+
 	private static TextBlock createMessageNumber(Display texts, FontConfiguration fontConfiguration,
 			HorizontalAlignment horizontalAlignment, ISkinSimple spriteContainer, double maxMessageSize) {
 		final MessageNumber number = (MessageNumber) texts.get(0);
+		if (OptionFlags.USE_CREOLE2) {
+			TextBlock tb1 = getCreole(texts.subList(0, 1), fontConfiguration, horizontalAlignment, spriteContainer,
+					maxMessageSize);
+			tb1 = TextBlockUtils.withMargin(tb1, 0, 4, 0, 0);
+			final TextBlock tb2 = getCreole(texts.subList(1, texts.size()), fontConfiguration, horizontalAlignment,
+					spriteContainer, maxMessageSize);
+			return TextBlockUtils.mergeLR(tb1, tb2, VerticalAlignment.CENTER);
+		}
 		return new TextBlockWithNumber(number.getNumber(), texts.subList(1, texts.size()), fontConfiguration,
 				horizontalAlignment, spriteContainer, maxMessageSize);
 

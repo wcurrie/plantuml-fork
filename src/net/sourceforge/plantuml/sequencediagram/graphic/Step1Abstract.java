@@ -33,6 +33,7 @@
  */
 package net.sourceforge.plantuml.sequencediagram.graphic;
 
+import net.sourceforge.plantuml.OptionFlags;
 import net.sourceforge.plantuml.Url;
 import net.sourceforge.plantuml.cucadiagram.Display;
 import net.sourceforge.plantuml.graphic.StringBounder;
@@ -56,7 +57,7 @@ abstract class Step1Abstract {
 
 	private Frontier freeY2;
 
-//	private ComponentType type;
+	// private ComponentType type;
 	private ArrowConfiguration config;
 
 	private Component note;
@@ -103,6 +104,8 @@ abstract class Step1Abstract {
 		int delta = 0;
 		if (message.isCreate()) {
 			delta += 10;
+		} else if (OptionFlags.STRICT_SELFMESSAGE_POSITION && message.isSelfMessage()) {
+			delta += 8;
 		}
 		line.addSegmentVariation(LifeSegmentVariation.LARGER, pos + delta, n.getSpecificBackColor());
 	}
@@ -129,7 +132,12 @@ abstract class Step1Abstract {
 			throw new IllegalStateException();
 		}
 
-		line.addSegmentVariation(LifeSegmentVariation.SMALLER, pos, n.getSpecificBackColor());
+		double delta = 0;
+		if (OptionFlags.STRICT_SELFMESSAGE_POSITION && message.isSelfMessage()) {
+			delta += 7;
+		}
+
+		line.addSegmentVariation(LifeSegmentVariation.SMALLER, pos - delta, n.getSpecificBackColor());
 	}
 
 	private boolean lifelineAfterDestroy() {
@@ -137,14 +145,14 @@ abstract class Step1Abstract {
 		return false;
 	}
 
-//	protected final ComponentType getType() {
-//		return type;
-//	}
-//
-//	protected final void setType(ComponentType type) {
-//		this.type = type;
-//	}
-	
+	// protected final ComponentType getType() {
+	// return type;
+	// }
+	//
+	// protected final void setType(ComponentType type) {
+	// this.type = type;
+	// }
+
 	protected final ArrowConfiguration getConfig() {
 		return config;
 	}
@@ -152,8 +160,6 @@ abstract class Step1Abstract {
 	protected final void setConfig(ArrowConfiguration config) {
 		this.config = config;
 	}
-
-
 
 	protected final Component getNote() {
 		return note;

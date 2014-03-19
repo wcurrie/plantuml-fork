@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  *
- * Revision $Revision: 12495 $
+ * Revision $Revision: 12590 $
  *
  */
 package net.sourceforge.plantuml;
@@ -512,11 +512,31 @@ public class StringUtils {
 		result.addAll(l2);
 		return Collections.unmodifiableList(result);
 	}
-	
+
 	public static boolean endsWithBackslash(final String s) {
 		return s.endsWith("\\") && s.endsWith("\\\\") == false;
 	}
 
-
+	public static String manageBackslash(String s) {
+		final StringBuilder result = new StringBuilder();
+		for (int i = 0; i < s.length(); i++) {
+			final char c = s.charAt(i);
+			if (c == '\\' && i < s.length() - 1) {
+				final char c2 = s.charAt(i + 1);
+				i++;
+				if (c2 == '#' || c2 == '[' || c2 == ']') {
+					result.append(c2);
+				} else if (c2 == '\\') {
+					result.append(c2);
+				} else {
+					result.append(c);
+					result.append(c2);
+				}
+			} else {
+				result.append(c);
+			}
+		}
+		return result.toString();
+	}
 
 }
