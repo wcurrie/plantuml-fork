@@ -42,7 +42,7 @@ import net.sourceforge.plantuml.ugraphic.UGraphic;
 import net.sourceforge.plantuml.ugraphic.UPixel;
 import net.sourceforge.plantuml.ugraphic.UTranslate;
 
-public class ElementImage implements Element {
+public class ElementImage extends AbstractElement {
 
 	private final List<String> img;
 
@@ -54,7 +54,7 @@ public class ElementImage implements Element {
 		return new Dimension2DDouble(img.get(0).length(), img.size());
 	}
 
-	public void drawU(UGraphic ug, double x, double y, int zIndex, Dimension2D dimToUse) {
+	public void drawU(UGraphic ug, int zIndex, Dimension2D dimToUse) {
 		if (zIndex != 0) {
 			return;
 		}
@@ -64,7 +64,7 @@ public class ElementImage implements Element {
 			for (int j = 0; j < h; j++) {
 				final char c = img.get(j).charAt(i);
 				if (c == 'X') {
-					ug.apply(new UTranslate(x + i, y + j)).draw(new UPixel());
+					ug.apply(new UTranslate(i, j)).draw(new UPixel());
 				}
 			}
 		}

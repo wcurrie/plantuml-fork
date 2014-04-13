@@ -44,7 +44,7 @@ import net.sourceforge.plantuml.ugraphic.ULine;
 import net.sourceforge.plantuml.ugraphic.UStroke;
 import net.sourceforge.plantuml.ugraphic.UTranslate;
 
-public class ElementLine implements Element {
+public class ElementLine extends AbstractElement {
 
 	private final char separator;
 
@@ -56,16 +56,16 @@ public class ElementLine implements Element {
 		return new Dimension2DDouble(10, 6);
 	}
 
-	public void drawU(UGraphic ug, double x, double y, int zIndex, Dimension2D dimToUse) {
+	public void drawU(UGraphic ug, int zIndex, Dimension2D dimToUse) {
 		if (zIndex != 0) {
 			return;
 		}
 		ug = ug.apply(new UChangeColor(HtmlColorUtils.getColorIfValid("#AAAAAA")));
-		double y2 = y + dimToUse.getHeight() / 2;
+		double y2 = dimToUse.getHeight() / 2;
 		if (separator == '=') {
 			y2 = y2 - 1;
 		}
-		drawLine(ug, x, y2, dimToUse.getWidth(), separator);
+		drawLine(ug, 0, y2, dimToUse.getWidth(), separator);
 	}
 
 	private static void drawLine(UGraphic ug, double x, double y, double widthToUse, char separator) {

@@ -28,50 +28,57 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 8770 $
+ * Revision $Revision: 4636 $
  *
  */
-package net.sourceforge.plantuml.cucadiagram;
+package net.sourceforge.plantuml.real;
 
-public class Code2 {
+import java.util.ArrayList;
+import java.util.List;
 
-	private final Namespace namespace;
-	private final String unqualifiedCode;
+public class RealMax implements Real {
 
-	private Code2(Namespace namespace, String unqualifiedCode) {
-		if (namespace == null) {
+	private final List<Real> all = new ArrayList<Real>();
+
+	public void put(Real real) {
+		if (real == null) {
 			throw new IllegalArgumentException();
 		}
-		if (unqualifiedCode == null) {
-			throw new IllegalArgumentException();
+		if (real == this) {
+			return;
 		}
-		this.namespace = namespace;
-		this.unqualifiedCode = unqualifiedCode;
+		all.add(real);
 	}
 
-	public final Namespace getNamespace() {
-		return namespace;
+	public String getName() {
+		return "max " + all;
 	}
 
-	public final String getUnqualifiedCode() {
-		return unqualifiedCode;
-	}
-
-	public final String getFullQualifiedCode() {
-		if (namespace.isMain()) {
-			return unqualifiedCode;
+	public double getCurrentValue() {
+		double result = all.get(0).getCurrentValue();
+		for (int i = 1; i < all.size(); i++) {
+			final double v = all.get(i).getCurrentValue();
+			if (v > result) {
+				result = v;
+			}
 		}
-		return namespace.getNamespace() + "." + unqualifiedCode;
+		return result;
 	}
 
-	@Override
-	public int hashCode() {
-		return namespace.hashCode() + 43 * unqualifiedCode.hashCode();
+	public Real addFixed(double delta) {
+		return new RealDelta(this, delta);
 	}
 
-	@Override
-	public boolean equals(Object obj) {
-		final Code2 other = (Code2) obj;
-		return this.unqualifiedCode.equals(other.unqualifiedCode) && this.namespace.equals(other.namespace);
+	public Real addAtLeast(double delta) {
+		throw new UnsupportedOperationException();
 	}
+
+	public void ensureBiggerThan(Real other) {
+		all.add(other);
+	}
+
+	public void compile() {
+		all.get(0).compile();
+	}
+
 }

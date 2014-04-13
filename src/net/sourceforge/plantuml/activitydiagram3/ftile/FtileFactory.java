@@ -66,7 +66,7 @@ public interface FtileFactory extends ISkinSimple {
 
 	public Ftile assembly(Ftile tile1, Ftile tile2);
 
-	public Ftile repeat(Swimlane swimlane, Ftile repeat, Display test, HtmlColor color);
+	public Ftile repeat(Swimlane swimlane, Ftile repeat, Display test, Display yes, Display out, HtmlColor color);
 
 	public Ftile createWhile(Swimlane swimlane, Ftile whileBlock, Display test, Display yes, Display out,
 			LinkRendering afterEndwhile, HtmlColor color);

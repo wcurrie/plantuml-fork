@@ -44,7 +44,6 @@ import net.sourceforge.plantuml.activitydiagram3.Branch;
 import net.sourceforge.plantuml.activitydiagram3.LinkRendering;
 import net.sourceforge.plantuml.activitydiagram3.ftile.BoxStyle;
 import net.sourceforge.plantuml.activitydiagram3.ftile.Ftile;
-import net.sourceforge.plantuml.activitydiagram3.ftile.FtileAssemblySimple;
 import net.sourceforge.plantuml.activitydiagram3.ftile.FtileAssemblyUtils;
 import net.sourceforge.plantuml.activitydiagram3.ftile.FtileFactory;
 import net.sourceforge.plantuml.activitydiagram3.ftile.Swimlane;
@@ -106,7 +105,7 @@ public class VCompactFactory implements FtileFactory {
 		return FtileAssemblyUtils.assembly(tile1, tile2);
 	}
 
-	public Ftile repeat(Swimlane swimlane, Ftile repeat, Display test, HtmlColor color) {
+	public Ftile repeat(Swimlane swimlane, Ftile repeat, Display test, Display yes, Display out, HtmlColor color) {
 		return repeat;
 	}
 

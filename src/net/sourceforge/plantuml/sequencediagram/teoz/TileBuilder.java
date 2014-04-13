@@ -41,38 +41,38 @@ import java.util.Map;
 
 import net.sourceforge.plantuml.ISkinParam;
 import net.sourceforge.plantuml.graphic.StringBounder;
-import net.sourceforge.plantuml.real.Real;
+import net.sourceforge.plantuml.sequencediagram.Delay;
 import net.sourceforge.plantuml.sequencediagram.Divider;
 import net.sourceforge.plantuml.sequencediagram.Event;
+import net.sourceforge.plantuml.sequencediagram.GroupingLeaf;
 import net.sourceforge.plantuml.sequencediagram.GroupingStart;
+import net.sourceforge.plantuml.sequencediagram.GroupingType;
 import net.sourceforge.plantuml.sequencediagram.Message;
 import net.sourceforge.plantuml.sequencediagram.MessageExo;
 import net.sourceforge.plantuml.sequencediagram.Note;
 import net.sourceforge.plantuml.sequencediagram.NotePosition;
 import net.sourceforge.plantuml.sequencediagram.Participant;
+import net.sourceforge.plantuml.sequencediagram.Reference;
 import net.sourceforge.plantuml.skin.Skin;
 
 public class TileBuilder {
 
-	public static List<Tile> buildSeveral(Iterator<Event> it, TileArguments tileArguments) {
+	public static List<Tile> buildSeveral(Iterator<Event> it, TileArguments tileArguments, Tile parent) {
 		final List<Tile> tiles = new ArrayList<Tile>();
 		while (it.hasNext()) {
 			final Event ev = it.next();
-			final Tile tile = TileBuilder.buildOne(it, tileArguments, ev);
+			final Tile tile = TileBuilder.buildOne(it, tileArguments, ev, parent);
 			if (tile != null) {
 				tiles.add(tile);
-				tileArguments.getAlpha().ensureLowerThan(tile.getMinX(tileArguments.getStringBounder()));
 				tileArguments.getOmega().ensureBiggerThan(tile.getMaxX(tileArguments.getStringBounder()));
 			}
 		}
 		return Collections.unmodifiableList(tiles);
 	}
 
-	public static Tile buildOne(Iterator<Event> it, TileArguments tileArguments, final Event ev) {
+	public static Tile buildOne(Iterator<Event> it, TileArguments tileArguments, final Event ev, Tile parent) {
 
 		final StringBounder stringBounder = tileArguments.getStringBounder();
-		final Real alpha = tileArguments.getAlpha();
-		final Real omega = tileArguments.getOmega();
 		final Skin skin = tileArguments.getSkin();
 		final ISkinParam skinParam = tileArguments.getSkinParam();
 		final Map<Participant, LivingSpace> livingSpaces = tileArguments.getLivingSpaces();
@@ -109,16 +109,26 @@ public class TileBuilder {
 			tile = new NoteTile(livingSpace1, livingSpace2, note, skin, skinParam);
 		} else if (ev instanceof Divider) {
 			final Divider divider = (Divider) ev;
-			tile = new DividerTile(divider, skin, skinParam, alpha, omega);
+			tile = new DividerTile(divider, skin, skinParam, tileArguments.getOrigin(), tileArguments.getOmega());
 		} else if (ev instanceof MessageExo) {
 			final MessageExo exo = (MessageExo) ev;
 			final LivingSpace livingSpace1 = livingSpaces.get(exo.getParticipant());
-			tile = new CommunicationExoTile(livingSpace1, exo, skin, skinParam, alpha, omega);
+			tile = new CommunicationExoTile(livingSpace1, exo, skin, skinParam, tileArguments.getOrigin(),
+					tileArguments.getOmega());
 		} else if (ev instanceof GroupingStart) {
 			final GroupingStart start = (GroupingStart) ev;
 			tile = new GroupingTile(it, start, tileArguments);
+		} else if (ev instanceof GroupingLeaf && ((GroupingLeaf) ev).getType() == GroupingType.ELSE) {
+			final GroupingLeaf anElse = (GroupingLeaf) ev;
+			tile = new ElseTile(anElse, skin, skinParam, parent);
+		} else if (ev instanceof Reference) {
+			final Reference ref = (Reference) ev;
+			tile = new ReferenceTile(ref, tileArguments);
+		} else if (ev instanceof Delay) {
+			final Delay delay = (Delay) ev;
+			tile = new DelayTile(delay, tileArguments);
 		} else {
-			System.err.println("Ignoring " + ev);
+			System.err.println("Ignoring " + ev.getClass());
 		}
 		return tile;
 	}

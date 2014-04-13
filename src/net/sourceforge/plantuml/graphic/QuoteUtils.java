@@ -102,7 +102,8 @@ public class QuoteUtils {
 			"Boot failure, press any key to continue", //
 			"Big mistake!",
 			"How many UML designers does it take to change a lightbulb ?",
-			"Do you like movies about gladiators ?");
+			"Do you like movies about gladiators ?",
+			"The spirit of learning is a lasting frontier.");
 
 	private QuoteUtils() {
 	}

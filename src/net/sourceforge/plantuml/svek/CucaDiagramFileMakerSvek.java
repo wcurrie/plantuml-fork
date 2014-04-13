@@ -79,6 +79,7 @@ import net.sourceforge.plantuml.ugraphic.UFont;
 import net.sourceforge.plantuml.ugraphic.eps.UGraphicEps;
 import net.sourceforge.plantuml.ugraphic.g2d.UGraphicG2d;
 import net.sourceforge.plantuml.ugraphic.svg.UGraphicSvg;
+import net.sourceforge.plantuml.ugraphic.tikz.UGraphicTikz;
 import net.sourceforge.plantuml.ugraphic.visio.UGraphicVdx;
 
 public final class CucaDiagramFileMakerSvek implements CucaDiagramFileMaker {
@@ -110,8 +111,9 @@ public final class CucaDiagramFileMakerSvek implements CucaDiagramFileMaker {
 
 	private CucaDiagramFileMakerSvek2 buildCucaDiagramFileMakerSvek2(DotMode dotMode) {
 		final DotData dotData = new DotData(diagram.getEntityFactory().getRootGroup(), getOrderedLinks(), diagram
-				.getLeafs().values(), diagram.getUmlDiagramType(), diagram.getSkinParam(), diagram, diagram,
-				diagram.getColorMapper(), diagram.getEntityFactory(), diagram.isHideEmptyDescriptionForState(), dotMode);
+				.getLeafsvalues(), diagram.getUmlDiagramType(), diagram.getSkinParam(), diagram, diagram,
+				diagram.getColorMapper(), diagram.getEntityFactory(), diagram.isHideEmptyDescriptionForState(),
+				dotMode, diagram.getNamespaceSeparator());
 		final CucaDiagramFileMakerSvek2 svek2 = new CucaDiagramFileMakerSvek2(dotData, diagram.getEntityFactory(),
 				false, diagram.getSource(), diagram.getPragma());
 		return svek2;
@@ -148,6 +150,8 @@ public final class CucaDiagramFileMakerSvek implements CucaDiagramFileMaker {
 			createSvg(os, fileFormatOption, result, dim);
 		} else if (fileFormat == FileFormat.VDX) {
 			createVdx(os, fileFormatOption, result, dim);
+		} else if (fileFormat == FileFormat.LATEX) {
+			createTikz(os, fileFormatOption, result, dim);
 		} else if (fileFormat == FileFormat.EPS) {
 			createEps(os, fileFormatOption, result, dim);
 		} else {
@@ -311,6 +315,14 @@ public final class CucaDiagramFileMakerSvek implements CucaDiagramFileMaker {
 		final UGraphicVdx ug = new UGraphicVdx(diagram.getSkinParam().getColorMapper());
 		result.drawU(ug);
 		ug.createVsd(os);
+	}
+
+	private void createTikz(OutputStream os, FileFormatOption fileFormatOption, final TextBlockBackcolored result,
+			final Dimension2D dim) throws IOException {
+
+		final UGraphicTikz ug = new UGraphicTikz(diagram.getSkinParam().getColorMapper());
+		result.drawU(ug);
+		ug.createTikz(os);
 	}
 
 	private void createEps(OutputStream os, FileFormatOption fileFormatOption, final TextBlockBackcolored result,

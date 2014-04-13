@@ -49,14 +49,13 @@ import net.sourceforge.plantuml.ugraphic.UChangeBackColor;
 import net.sourceforge.plantuml.ugraphic.UFont;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
 import net.sourceforge.plantuml.ugraphic.URectangle;
-import net.sourceforge.plantuml.ugraphic.UTranslate;
 
-public class ElementMenuEntry implements Element {
+public class ElementMenuEntry extends AbstractElement {
 
 	private final TextBlock block;
 	private final String text;
 	private HtmlColor background;
-	private double x;
+	private double xxx;
 
 	public ElementMenuEntry(String text, UFont font, ISkinSimple spriteContainer) {
 		final FontConfiguration config = new FontConfiguration(font, HtmlColorUtils.BLACK);
@@ -71,20 +70,20 @@ public class ElementMenuEntry implements Element {
 		return block.calculateDimension(stringBounder);
 	}
 
-	public void drawU(UGraphic ug, double x, double y, int zIndex, Dimension2D dimToUse) {
+	public void drawU(UGraphic ug, int zIndex, Dimension2D dimToUse) {
 		if (background != null) {
-			final Dimension2D dim = getPreferredDimension(ug.getStringBounder(), x, y);
-			ug.apply(new UChangeBackColor(background)).apply(new UTranslate(x, y)).draw(new URectangle(dim.getWidth(), dim.getHeight()));
+			final Dimension2D dim = getPreferredDimension(ug.getStringBounder(), 0, 0);
+			ug.apply(new UChangeBackColor(background)).draw(new URectangle(dim.getWidth(), dim.getHeight()));
 		}
-		block.drawU(ug.apply(new UTranslate(x, y)));
+		block.drawU(ug);
 	}
 
 	public double getX() {
-		return x;
+		return xxx;
 	}
 
 	public void setX(double x) {
-		this.x = x;
+		this.xxx = x;
 	}
 
 	public String getText() {

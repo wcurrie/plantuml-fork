@@ -80,8 +80,7 @@ public class SequenceDiagramFileMakerTeoz implements FileMaker {
 		final ISkinParam skinParam = diagram.getSkinParam();
 
 		final Real origin = RealUtils.createOrigin();
-		final Real alpha = origin.subAtLeast(0);
-		Real currentPos = origin;
+		Real currentPos = origin.addAtLeast(0);
 		double headHeight = 0;
 		LivingSpace previous = null;
 		for (Participant p : diagram.participants().values()) {
@@ -96,19 +95,21 @@ public class SequenceDiagramFileMakerTeoz implements FileMaker {
 			currentPos = livingSpace.getPosD(stringBounder).addAtLeast(0);
 			headHeight = Math.max(headHeight, headDim.getHeight());
 		}
-		final Real omega = previous.getPosD(stringBounder).addAtLeast(0);
 
-		final MainTile mainTile = new MainTile(diagram, skin, alpha, omega, Collections.unmodifiableMap(livingSpaces));
-		mainTile.compile(stringBounder);
+		final MainTile mainTile = new MainTile(diagram, skin, previous.getPosD(stringBounder).addAtLeast(0),
+				Collections.unmodifiableMap(livingSpaces), origin);
+		mainTile.addConstraints(stringBounder);
 		origin.compile();
 
 		final double height = mainTile.getPreferredHeight(stringBounder) + 2 * headHeight;
 
-		System.err.println("alpha=" + alpha.getCurrentValue());
-		System.err.println("omega=" + omega.getCurrentValue());
+		final Real min1 = mainTile.getMinX(stringBounder);
+		final Real max1 = mainTile.getMaxX(stringBounder);
+		System.err.println("min1=" + min1.getCurrentValue());
+		System.err.println("max1=" + max1.getCurrentValue());
 
-		final Dimension2D dim = new Dimension2DDouble(omega.getCurrentValue() - alpha.getCurrentValue(), height);
-		final UGraphic ug = fileFormatOption.createUGraphic(dim).apply(new UTranslate(-alpha.getCurrentValue(), 0));
+		final Dimension2D dim = new Dimension2DDouble(max1.getCurrentValue() - min1.getCurrentValue(), height);
+		final UGraphic ug = fileFormatOption.createUGraphic(dim).apply(new UTranslate(-min1.getCurrentValue(), 0));
 		stringBounder = ug.getStringBounder();
 
 		drawHeads(ug);

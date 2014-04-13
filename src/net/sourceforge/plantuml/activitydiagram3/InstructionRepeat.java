@@ -51,6 +51,8 @@ public class InstructionRepeat implements Instruction {
 	private final HtmlColor color;
 
 	private Display test;
+	private Display yes;
+	private Display out;
 	private LinkRendering endRepeatLinkRendering;
 
 	public InstructionRepeat(Swimlane swimlane, Instruction parent, LinkRendering nextLinkRenderer, HtmlColor color) {
@@ -66,15 +68,17 @@ public class InstructionRepeat implements Instruction {
 
 	public Ftile createFtile(FtileFactory factory) {
 		return factory.repeat(swimlane, factory.decorateOut(repeatList.createFtile(factory), endRepeatLinkRendering),
-				test, color);
+				test, yes, out, color);
 	}
 
 	public Instruction getParent() {
 		return parent;
 	}
 
-	public void setTest(Display test, LinkRendering linkRenderer) {
+	public void setTest(Display test, Display yes, Display out, LinkRendering linkRenderer) {
 		this.test = test;
+		this.yes = yes;
+		this.out = out;
 		this.endRepeatLinkRendering = linkRenderer;
 	}
 

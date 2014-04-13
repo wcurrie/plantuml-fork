@@ -108,7 +108,7 @@ public class XmiClassDiagramArgo implements IXmiClassDiagram {
 		this.ownedElement = document.createElement("UML:Namespace.ownedElement");
 		model.appendChild(ownedElement);
 
-		for (final IEntity ent : classDiagram.getLeafs().values()) {
+		for (final IEntity ent : classDiagram.getLeafsvalues()) {
 			if (classDiagram.isStandalone(ent) == false) {
 				continue;
 			}

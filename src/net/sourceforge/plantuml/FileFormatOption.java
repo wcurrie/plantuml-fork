@@ -53,6 +53,7 @@ import net.sourceforge.plantuml.ugraphic.eps.UGraphicEps;
 import net.sourceforge.plantuml.ugraphic.g2d.UGraphicG2d;
 import net.sourceforge.plantuml.ugraphic.html5.UGraphicHtml5;
 import net.sourceforge.plantuml.ugraphic.svg.UGraphicSvg;
+import net.sourceforge.plantuml.ugraphic.tikz.UGraphicTikz;
 import net.sourceforge.plantuml.ugraphic.visio.UGraphicVdx;
 
 /**
@@ -135,6 +136,8 @@ public class FileFormatOption {
 			return new UGraphicHtml5(colorMapper);
 		case VDX:
 			return new UGraphicVdx(colorMapper);
+		case LATEX:
+			return new UGraphicTikz(colorMapper);
 		default:
 			throw new UnsupportedOperationException(fileFormat.toString());
 		}

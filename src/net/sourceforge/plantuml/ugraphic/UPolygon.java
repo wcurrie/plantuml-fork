@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 12235 $
+ * Revision $Revision: 12939 $
  *
  */
 package net.sourceforge.plantuml.ugraphic;
@@ -116,4 +116,14 @@ public class UPolygon extends AbstractShadowable {
 		return minmax;
 	}
 
+	public double[] getPointArray(double x, double y) {
+		final double points[] = new double[getPoints().size() * 2];
+		int i = 0;
+
+		for (Point2D pt : getPoints()) {
+			points[i++] = pt.getX() + x;
+			points[i++] = pt.getY() + y;
+		}
+		return points;
+	}
 }

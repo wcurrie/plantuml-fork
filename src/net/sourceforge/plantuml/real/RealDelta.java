@@ -52,17 +52,9 @@ class RealDelta extends RealMoveable {
 		return new RealDelta(delegated.addAtLeast(delta), diff);
 	}
 
-	public Real subAtLeast(double delta) {
-		return new RealDelta(delegated.subAtLeast(delta), diff);
-	}
-
 	public void ensureBiggerThan(Real other) {
 		delegated.ensureBiggerThan(new RealDelta(other, -diff));
 
-	}
-
-	public void ensureLowerThan(Real other) {
-		delegated.ensureLowerThan(new RealDelta(other, -diff));
 	}
 
 	public void compile() {

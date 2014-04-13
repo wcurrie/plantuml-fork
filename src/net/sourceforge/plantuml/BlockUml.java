@@ -45,15 +45,17 @@ import net.sourceforge.plantuml.core.Diagram;
 public class BlockUml {
 
 	private final List<? extends CharSequence> data;
+	private final int startLine;
 	private Diagram system;
 
 	private static final Pattern patternFilename = MyPattern.cmpile("^@start[^%s{}%g]+[%s{][%s%g]*([^%g]*?)[%s}%g]*$");
 
 	BlockUml(String... strings) {
-		this(Arrays.asList(strings));
+		this(Arrays.asList(strings), 0);
 	}
 
-	public BlockUml(List<? extends CharSequence> strings) {
+	public BlockUml(List<? extends CharSequence> strings, int startLine) {
+		this.startLine = startLine;
 		final String s0 = strings.get(0).toString().trim();
 		if (s0.startsWith("@start") == false) {
 			throw new IllegalArgumentException();
@@ -84,15 +86,15 @@ public class BlockUml {
 		return result;
 	}
 
-	private Diagram getSystem() {
+	public Diagram getDiagram() {
 		if (system == null) {
 			system = new PSystemBuilder().createPSystem(data);
 		}
 		return system;
 	}
 
-	public Diagram getDiagram() {
-		return getSystem();
+	public final int getStartLine() {
+		return startLine;
 	}
 
 }

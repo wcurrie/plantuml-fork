@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  *
- * Revision $Revision: 12394 $
+ * Revision $Revision: 12958 $
  *
  */
 package net.sourceforge.plantuml;
@@ -113,6 +113,8 @@ public class Option {
 				setFileFormat(FileFormat.PNG);
 			} else if (s.equalsIgnoreCase("-vdx") || s.equalsIgnoreCase("-tvdx")) {
 				setFileFormat(FileFormat.VDX);
+			} else if (s.equalsIgnoreCase("-latex") || s.equalsIgnoreCase("-tlatex")) {
+				setFileFormat(FileFormat.LATEX);
 			} else if (s.equalsIgnoreCase("-pdf") || s.equalsIgnoreCase("-tpdf")) {
 				setFileFormat(FileFormat.PDF);
 			} else if (s.equalsIgnoreCase("-overwrite")) {

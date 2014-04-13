@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  *
- * Revision $Revision: 12590 $
+ * Revision $Revision: 12807 $
  *
  */
 package net.sourceforge.plantuml;
@@ -60,7 +60,7 @@ public class StringUtils {
 	}
 
 	public static List<String> getWithNewlines2(Code s) {
-		return getWithNewlines2(s.getCode());
+		return getWithNewlines2(s.getFullName());
 	}
 
 	public static List<String> getWithNewlines2(String s) {

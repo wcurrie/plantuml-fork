@@ -50,7 +50,7 @@ import net.sourceforge.plantuml.ugraphic.ULine;
 import net.sourceforge.plantuml.ugraphic.URectangle;
 import net.sourceforge.plantuml.ugraphic.UTranslate;
 
-public class ElementTree implements Element {
+public class ElementTree extends AbstractElement {
 
 	private final List<ElementTreeEntry> entries = new ArrayList<ElementTreeEntry>();
 	private final UFont font;
@@ -94,7 +94,7 @@ public class ElementTree implements Element {
 		if (w2 > 0) {
 			w2 += margin;
 		}
-		return new Dimension2DDouble(w1 + w2, h);
+		return new Dimension2DDouble(w1 + w2 + 2, h);
 	}
 
 	private ListWidth getWidthOther(StringBounder stringBounder) {
@@ -115,7 +115,7 @@ public class ElementTree implements Element {
 		return w1;
 	}
 
-	public void drawU(UGraphic ug, final double x, final double y, int zIndex, Dimension2D dimToUse) {
+	public void drawU(UGraphic ug, int zIndex, Dimension2D dimToUse) {
 		if (zIndex != 0) {
 			return;
 		}
@@ -124,11 +124,11 @@ public class ElementTree implements Element {
 		final double w1 = getWidth1(stringBounder);
 		final ListWidth otherWidth = getWidthOther(stringBounder);
 		final Skeleton skeleton = new Skeleton();
-		double yvar = y;
+		double yvar = 0;
 		final List<Double> rows = new ArrayList<Double>();
 		final List<Double> cols = new ArrayList<Double>();
 		rows.add(yvar);
-		double xvar = -1;
+		double xvar = 0;
 		cols.add(xvar);
 		xvar += w1 + margin / 2;
 		cols.add(xvar);
@@ -138,15 +138,15 @@ public class ElementTree implements Element {
 		}
 
 		for (ElementTreeEntry entry : entries) {
-			entry.drawFirstCell(ug, x, yvar);
-			entry.drawSecondCell(ug, x + w1 + margin, yvar, otherWidth, margin);
+			entry.drawFirstCell(ug, 0, yvar);
+			entry.drawSecondCell(ug, w1 + margin, yvar, otherWidth, margin);
 			final double h = entry.getPreferredDimensionFirstCell(stringBounder).getHeight();
-			skeleton.add(x + entry.getXDelta() - 10, yvar + h / 2 - 1);
+			skeleton.add(entry.getXDelta() - 7, yvar + h / 2 - 1);
 			yvar += h;
 			rows.add(yvar);
 		}
 		ug = ug.apply(new UChangeColor(HtmlColorUtils.getColorIfValid("#888888")));
-		skeleton.draw(ug, x, y);
+		skeleton.draw(ug, 0, 0);
 		if (strategy != TableStrategy.DRAW_NONE) {
 			final Grid2 grid = new Grid2(rows, cols, strategy);
 			grid.drawU(ug);

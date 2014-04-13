@@ -41,7 +41,7 @@ import net.sourceforge.plantuml.classdiagram.command.CommandLinkClass;
 import net.sourceforge.plantuml.classdiagram.command.CommandUrl;
 import net.sourceforge.plantuml.command.Command;
 import net.sourceforge.plantuml.command.CommandEndPackage;
-import net.sourceforge.plantuml.command.CommandFootbox;
+import net.sourceforge.plantuml.command.CommandFootboxIgnored;
 import net.sourceforge.plantuml.command.CommandPackage;
 import net.sourceforge.plantuml.command.CommandPage;
 import net.sourceforge.plantuml.command.CommandRankDir;
@@ -60,7 +60,7 @@ public class ObjectDiagramFactory extends UmlDiagramFactory {
 	protected List<Command> createCommands() {
 
 		final List<Command> cmds = new ArrayList<Command>();
-		cmds.add(new CommandFootbox());
+		cmds.add(new CommandFootboxIgnored());
 
 		addCommonCommands(cmds);
 		cmds.add(new CommandRankDir());

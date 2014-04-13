@@ -55,7 +55,7 @@ public class CommandCreatePackageBlock extends SingleLineCommand<CompositeDiagra
 		String display = arg.get(0);
 		final Code code = Code.of(arg.get(1));
 		if (display == null) {
-			display = code.getCode();
+			display = code.getFullName();
 		}
 		diagram.getOrCreateGroup(code, Display.getWithNewlines(display), null, GroupType.PACKAGE, currentPackage);
 		return CommandExecutionResult.ok();

@@ -56,14 +56,7 @@ public class DriverPolygonSvg implements UDriver<SvgGraphics> {
 	public void draw(UShape ushape, double x, double y, ColorMapper mapper, UParam param, SvgGraphics svg) {
 		final UPolygon shape = (UPolygon) ushape;
 
-		final double points[] = new double[shape.getPoints().size() * 2];
-		int i = 0;
-
-		for (Point2D pt : shape.getPoints()) {
-			points[i++] = pt.getX() + x;
-			points[i++] = pt.getY() + y;
-		}
-
+		final double points[] = shape.getPointArray(x, y);
 		final UClip clip = clipContainer.getClip();
 
 		if (clip != null) {

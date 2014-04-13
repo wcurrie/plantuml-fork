@@ -33,13 +33,16 @@
  */
 package net.sourceforge.plantuml.real;
 
-class PositiveForce implements Force {
+class PositiveForce {
 
 	private final Real fixedPoint;
 	private final RealMoveable movingPoint;
 	private final double minimunDistance;
 
 	public PositiveForce(Real fixedPoint, RealMoveable movingPoint, double minimunDistance) {
+		if (fixedPoint == movingPoint) {
+			throw new IllegalArgumentException();
+		}
 		this.fixedPoint = fixedPoint;
 		this.movingPoint = movingPoint;
 		this.minimunDistance = minimunDistance;

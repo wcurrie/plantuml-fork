@@ -33,13 +33,10 @@
  */
 package net.sourceforge.plantuml.activitydiagram3.ftile;
 
-import net.sourceforge.plantuml.OptionFlags;
-
 public class FtileAssemblyUtils {
 
 	static public Ftile assembly(Ftile tile1, Ftile tile2) {
-		return OptionFlags.USE_4747 ? new FtileAssemblySimple4747bis(tile1, tile2) : new FtileAssemblySimple(tile1,
-				tile2);
+		return new FtileAssemblySimple4747bis(tile1, tile2);
 	}
 
 }

@@ -146,7 +146,7 @@ public class ActivityDiagram3 extends UmlDiagram {
 	public UmlDiagramType getUmlDiagramType() {
 		return UmlDiagramType.ACTIVITY;
 	}
-	
+
 	private TextBlock addLegend(TextBlock original) {
 		final Display legend = getLegend();
 		if (legend == null) {
@@ -156,7 +156,6 @@ public class ActivityDiagram3 extends UmlDiagram {
 
 		return DecorateEntityImage.addBottom(original, text, getLegendAlignment());
 	}
-
 
 	protected ImageData exportDiagramInternal(OutputStream os, int index, FileFormatOption fileFormatOption,
 			List<BufferedImage> flashcodes) throws IOException {
@@ -326,11 +325,11 @@ public class ActivityDiagram3 extends UmlDiagram {
 
 	}
 
-	public CommandExecutionResult repeatWhile(Display label) {
+	public CommandExecutionResult repeatWhile(Display label, Display yes, Display out) {
 		manageSwimlaneStrategy();
 		if (current() instanceof InstructionRepeat) {
 			final InstructionRepeat instructionRepeat = (InstructionRepeat) current();
-			instructionRepeat.setTest(label, nextLinkRenderer());
+			instructionRepeat.setTest(label, yes, out, nextLinkRenderer());
 			setCurrent(instructionRepeat.getParent());
 			this.setNextLinkRendererInternal(null);
 			return CommandExecutionResult.ok();

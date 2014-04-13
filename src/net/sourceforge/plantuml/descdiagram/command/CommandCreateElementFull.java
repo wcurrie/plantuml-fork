@@ -193,7 +193,7 @@ public class CommandCreateElementFull extends SingleLineCommand2<DescriptionDiag
 		final Code code = Code.of(StringUtils.eventuallyRemoveStartingAndEndingDoubleQuote(codeRaw));
 		String display = displayRaw;
 		if (display == null) {
-			display = code.getCode();
+			display = code.getFullName();
 		}
 		display = StringUtils.eventuallyRemoveStartingAndEndingDoubleQuote(display);
 		final String stereotype = arg.getLazzy("STEREOTYPE", 0);

@@ -124,6 +124,10 @@ public class GroupRoot implements IGroup {
 		return Code.of("__ROOT__");
 	}
 
+	public LongCode getLongCode() {
+		return null;
+	}
+
 	public BlockMember getMouseOver() {
 		throw new UnsupportedOperationException();
 	}
@@ -184,7 +188,7 @@ public class GroupRoot implements IGroup {
 		return null;
 	}
 
-	public String getNamespace() {
+	public Code getNamespace2() {
 		throw new UnsupportedOperationException();
 
 	}
@@ -257,14 +261,13 @@ public class GroupRoot implements IGroup {
 	public boolean hasUrl() {
 		return false;
 	}
-	
+
 	public int getHectorLayer() {
 		throw new UnsupportedOperationException();
 	}
-	
+
 	public void setHectorLayer(int layer) {
 		throw new UnsupportedOperationException();
 	}
-
 
 }

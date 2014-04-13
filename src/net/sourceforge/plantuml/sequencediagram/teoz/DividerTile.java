@@ -51,14 +51,14 @@ public class DividerTile implements Tile {
 	private final Skin skin;
 	private final ISkinParam skinParam;
 	private final Divider divider;
-	private final Real alpha;
+	private final Real origin;
 	private final Real omega;
 
-	public DividerTile(Divider divider, Skin skin, ISkinParam skinParam, Real alpha, Real omega) {
+	public DividerTile(Divider divider, Skin skin, ISkinParam skinParam, Real origin, Real omega) {
 		this.divider = divider;
 		this.skin = skin;
 		this.skinParam = skinParam;
-		this.alpha = alpha;
+		this.origin = origin;
 		this.omega = omega;
 	}
 
@@ -71,7 +71,7 @@ public class DividerTile implements Tile {
 		final StringBounder stringBounder = ug.getStringBounder();
 		final Component comp = getComponent(stringBounder);
 		final Dimension2D dim = comp.getPreferredDimension(stringBounder);
-		final Area area = new Area(omega.getCurrentValue() - alpha.getCurrentValue(), dim.getHeight());
+		final Area area = new Area(omega.getCurrentValue() - origin.getCurrentValue(), dim.getHeight());
 
 		// ug = ug.apply(new UTranslate(x, 0));
 		comp.drawU(ug, area, new SimpleContext2D(false));
@@ -83,14 +83,14 @@ public class DividerTile implements Tile {
 		return dim.getHeight();
 	}
 
-	public void compile(StringBounder stringBounder) {
+	public void addConstraints(StringBounder stringBounder) {
 		// final Component comp = getComponent(stringBounder);
 		// final Dimension2D dim = comp.getPreferredDimension(stringBounder);
 		// final double width = dim.getWidth();
 	}
 
 	public Real getMinX(StringBounder stringBounder) {
-		return alpha;
+		return origin;
 	}
 
 	public Real getMaxX(StringBounder stringBounder) {

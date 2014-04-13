@@ -77,6 +77,10 @@ public class Footprint {
 			this.translate = translate;
 		}
 
+		public boolean isSpecialTxt() {
+			return false;
+		}
+
 		public MyUGraphic() {
 			this(new ArrayList<Point2D.Double>(), new UTranslate());
 		}

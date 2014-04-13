@@ -28,10 +28,12 @@
  *
  * Original Author:  Arnaud Roques
  *
- * Revision $Revision: 12371 $
+ * Revision $Revision: 12881 $
  *
  */
 package net.sourceforge.plantuml.classdiagram;
+
+import java.util.Map;
 
 import net.sourceforge.plantuml.UmlDiagramType;
 import net.sourceforge.plantuml.cucadiagram.Code;
@@ -50,39 +52,45 @@ public class ClassDiagram extends AbstractClassOrObjectDiagram {
 
 	@Override
 	public ILeaf getOrCreateLeaf(Code code, LeafType type, USymbol symbol) {
+		if (namespaceSeparator != null) {
+			code = code.withSeparator(namespaceSeparator);
+		}
 		if (type == null) {
 			code = code.eventuallyRemoveStartingAndEndingDoubleQuote();
-			if (getNamespaceSeparator() == null) {
+			if (namespaceSeparator == null) {
 				return getOrCreateLeafDefault(code, LeafType.CLASS, symbol);
 			}
-			code = code.getFullyQualifiedCode(getCurrentGroup(), getNamespaceSeparator());
+			code = code.getFullyQualifiedCode(getCurrentGroup());
 			if (super.leafExist(code)) {
 				return getOrCreateLeafDefault(code, LeafType.CLASS, symbol);
 			}
-			return createEntityWithNamespace(code,
-					Display.getWithNewlines(code.getShortName(getLeafs(), getNamespaceSeparator())), LeafType.CLASS, symbol);
+			return createEntityWithNamespace(code, Display.getWithNewlines(code.getShortName(getLeafs())),
+					LeafType.CLASS, symbol);
 		}
-		if (getNamespaceSeparator() == null) {
+		if (namespaceSeparator == null) {
 			return getOrCreateLeafDefault(code, LeafType.CLASS, symbol);
 		}
-		code = code.getFullyQualifiedCode(getCurrentGroup(), getNamespaceSeparator());
+		code = code.getFullyQualifiedCode(getCurrentGroup());
 		if (super.leafExist(code)) {
 			return getOrCreateLeafDefault(code, type, symbol);
 		}
-		return createEntityWithNamespace(code,
-				Display.getWithNewlines(code.getShortName(getLeafs(), getNamespaceSeparator())), type, symbol);
+		return createEntityWithNamespace(code, Display.getWithNewlines(code.getShortName(getLeafs())), type, symbol);
 	}
 
 	@Override
 	public ILeaf createLeaf(Code code, Display display, LeafType type, USymbol symbol) {
-		if (type != LeafType.ABSTRACT_CLASS && type != LeafType.ANNOTATION && type != LeafType.CLASS && type != LeafType.INTERFACE
-				&& type != LeafType.ENUM && type != LeafType.LOLLIPOP && type != LeafType.NOTE) {
+		if (namespaceSeparator != null) {
+			code = code.withSeparator(namespaceSeparator);
+		}
+		if (type != LeafType.ABSTRACT_CLASS && type != LeafType.ANNOTATION && type != LeafType.CLASS
+				&& type != LeafType.INTERFACE && type != LeafType.ENUM && type != LeafType.LOLLIPOP
+				&& type != LeafType.NOTE) {
 			return super.createLeaf(code, display, type, symbol);
 		}
-		if (getNamespaceSeparator() == null) {
+		if (namespaceSeparator == null) {
 			return super.createLeaf(code, display, type, symbol);
 		}
-		code = code.getFullyQualifiedCode(getCurrentGroup(), getNamespaceSeparator());
+		code = code.getFullyQualifiedCode(getCurrentGroup());
 		if (super.leafExist(code)) {
 			throw new IllegalArgumentException("Already known: " + code);
 		}
@@ -91,23 +99,37 @@ public class ClassDiagram extends AbstractClassOrObjectDiagram {
 
 	private ILeaf createEntityWithNamespace(Code fullyCode, Display display, LeafType type, USymbol symbol) {
 		IGroup group = getCurrentGroup();
-		final String namespace = fullyCode.getNamespace(getLeafs(), getNamespaceSeparator());
-		if (namespace != null && (EntityUtils.groupRoot(group) || group.getCode().getCode().equals(namespace) == false)) {
-			group = getOrCreateGroupInternal(Code.of(namespace), Display.getWithNewlines(namespace), namespace,
+		final String namespace = getNamespace(fullyCode);
+		if (namespace != null
+				&& (EntityUtils.groupRoot(group) || group.getCode().getFullName().equals(namespace) == false)) {
+			final Code namespace2 = Code.of(namespace);
+			group = getOrCreateGroupInternal(namespace2, Display.getWithNewlines(namespace), namespace2,
 					GroupType.PACKAGE, getRootGroup());
 		}
-		return createLeafInternal(
-				fullyCode,
-				display == null ? Display.getWithNewlines(fullyCode.getShortName(getLeafs(),
-				getNamespaceSeparator())) : display, type, group, symbol);
+		return createLeafInternal(fullyCode,
+				display == null ? Display.getWithNewlines(fullyCode.getShortName(getLeafs())) : display, type, group,
+				symbol);
+	}
+
+	private final String getNamespace(Code fullyCode) {
+		String name = fullyCode.getFullName();
+		do {
+			final int x = name.lastIndexOf(namespaceSeparator);
+			if (x == -1) {
+				return null;
+			}
+			name = name.substring(0, x);
+		} while (getLeafs().containsKey(Code.of(name, namespaceSeparator)));
+		return name;
 	}
 
 	@Override
 	public final boolean leafExist(Code code) {
-		if (getNamespaceSeparator() == null) {
+		if (namespaceSeparator == null) {
 			return super.leafExist(code);
 		}
-		return super.leafExist(code.getFullyQualifiedCode(getCurrentGroup(), getNamespaceSeparator()));
+		code = code.withSeparator(namespaceSeparator);
+		return super.leafExist(code.getFullyQualifiedCode(getCurrentGroup()));
 	}
 
 	@Override
@@ -115,12 +137,12 @@ public class ClassDiagram extends AbstractClassOrObjectDiagram {
 		return UmlDiagramType.CLASS;
 	}
 
-	private String getNamespaceSeparator() {
-		return namespaceSeparator;
-	}
-
 	public void setNamespaceSeparator(String namespaceSeparator) {
 		this.namespaceSeparator = namespaceSeparator;
+	}
+
+	public String getNamespaceSeparator() {
+		return namespaceSeparator;
 	}
 
 }

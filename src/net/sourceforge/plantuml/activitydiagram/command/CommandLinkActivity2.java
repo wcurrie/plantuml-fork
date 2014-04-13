@@ -243,7 +243,7 @@ public class CommandLinkActivity2 extends SingleLineCommand2<ActivityDiagram> {
 
 	static LeafType getTypeIfExisting(ActivityDiagram system, Code code) {
 		if (system.leafExist(code)) {
-			final IEntity ent = system.getLeafs().get(code);
+			final IEntity ent = system.getLeafsget(code);
 			if (ent.getEntityType() == LeafType.BRANCH) {
 				return LeafType.BRANCH;
 			}

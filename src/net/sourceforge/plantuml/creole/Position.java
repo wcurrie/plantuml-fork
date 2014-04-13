@@ -53,12 +53,12 @@ public class Position {
 		this.x = x;
 		this.y = y;
 		this.dim = dim;
-		if (dim.getHeight() == 0) {
-			throw new IllegalArgumentException();
-		}
-		if (dim.getWidth() == 0) {
-			throw new IllegalArgumentException();
-		}
+//		if (dim.getHeight() == 0) {
+//			throw new IllegalArgumentException();
+//		}
+//		if (dim.getWidth() == 0) {
+//			throw new IllegalArgumentException();
+//		}
 	}
 
 	@Override

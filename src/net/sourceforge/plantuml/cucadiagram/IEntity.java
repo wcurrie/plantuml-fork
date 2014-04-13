@@ -44,6 +44,10 @@ import net.sourceforge.plantuml.graphic.USymbol;
 
 public interface IEntity extends SpecificBackcolorable, Hideable, Removeable, LineConfigurable {
 
+	public Code getCode();
+
+	public LongCode getLongCode();
+
 	public USymbol getUSymbol();
 
 	public void setUSymbol(USymbol symbol);
@@ -70,8 +74,6 @@ public interface IEntity extends SpecificBackcolorable, Hideable, Removeable, Li
 
 	public BlockMember getBody(PortionShower portionShower);
 
-	public Code getCode();
-
 	public BlockMember getMouseOver();
 
 	public void addFieldOrMethod(String s);
@@ -83,9 +85,9 @@ public interface IEntity extends SpecificBackcolorable, Hideable, Removeable, Li
 	public boolean isGroup();
 
 	public boolean hasUrl();
-	
+
 	public int getHectorLayer();
-	
+
 	public void setHectorLayer(int layer);
 
 }

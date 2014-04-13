@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 12624 $
+ * Revision $Revision: 12853 $
  *
  */
 package net.sourceforge.plantuml.cucadiagram;
@@ -76,6 +76,10 @@ public abstract class CucaDiagram extends UmlDiagram implements GroupHierarchy, 
 	private boolean visibilityModifierPresent;
 
 	public abstract IEntity getOrCreateLeaf(Code code, LeafType type, USymbol symbol);
+
+	public String getNamespaceSeparator() {
+		return null;
+	}
 
 	@Override
 	public boolean hasUrl() {
@@ -125,7 +129,7 @@ public abstract class CucaDiagram extends UmlDiagram implements GroupHierarchy, 
 		if (display == null) {
 			display = Display.getWithNewlines(code);
 		}
-		final ILeaf leaf = entityFactory.createLeaf(code, display, type, group, getHides());
+		final ILeaf leaf = entityFactory.createLeaf(code, display, type, group, getHides(), getNamespaceSeparator());
 		entityFactory.addLeaf(leaf);
 		this.lastEntity = leaf;
 		leaf.setUSymbol(symbol);
@@ -146,23 +150,24 @@ public abstract class CucaDiagram extends UmlDiagram implements GroupHierarchy, 
 		return Collections.unmodifiableCollection(result);
 	}
 
-	public final IGroup getOrCreateGroup(Code code, Display display, String namespace, GroupType type, IGroup parent) {
-		final IGroup g = getOrCreateGroupInternal(code, display, namespace, type, parent);
+	public final IGroup getOrCreateGroup(Code code, Display display, Code namespace2, GroupType type, IGroup parent) {
+		final IGroup g = getOrCreateGroupInternal(code, display, namespace2, type, parent);
 		currentGroup = g;
 		return g;
 	}
 
-	protected final IGroup getOrCreateGroupInternal(Code code, Display display, String namespace, GroupType type,
+	protected final IGroup getOrCreateGroupInternal(Code code, Display display, Code namespace2, GroupType type,
 			IGroup parent) {
 		IGroup result = entityFactory.getGroups().get(code);
 		if (result != null) {
 			return result;
 		}
 		if (entityFactory.getLeafs().containsKey(code)) {
-			result = entityFactory.muteToGroup(code, namespace, type, parent);
+			result = entityFactory.muteToGroup(code, namespace2, type, parent);
 			result.setDisplay(display);
 		} else {
-			result = entityFactory.createGroup(code, display, namespace, type, parent, getHides());
+			result = entityFactory.createGroup(code, display, namespace2, type, parent, getHides(),
+					getNamespaceSeparator());
 		}
 		entityFactory.addGroup(result);
 		return result;
@@ -208,8 +213,20 @@ public abstract class CucaDiagram extends UmlDiagram implements GroupHierarchy, 
 
 	}
 
-	final public Map<Code, ILeaf> getLeafs() {
+	final protected Map<Code, ILeaf> getLeafs() {
 		return entityFactory.getLeafs();
+	}
+
+	public Collection<ILeaf> getLeafsvalues() {
+		return getLeafs().values();
+	}
+
+	public final int getLeafssize() {
+		return getLeafs().size();
+	}
+
+	public final ILeaf getLeafsget(Code code) {
+		return getLeafs().get(code);
 	}
 
 	final public void addLink(Link link) {
@@ -240,15 +257,15 @@ public abstract class CucaDiagram extends UmlDiagram implements GroupHierarchy, 
 		this.verticalPages = verticalPages;
 	}
 
-//	final public List<File> createPng2(File pngFile) throws IOException, InterruptedException {
-//		final CucaDiagramPngMaker3 maker = new CucaDiagramPngMaker3(this);
-//		return maker.createPng(pngFile);
-//	}
-//
-//	final public void createPng2(OutputStream os) throws IOException {
-//		final CucaDiagramPngMaker3 maker = new CucaDiagramPngMaker3(this);
-//		maker.createPng(os);
-//	}
+	// final public List<File> createPng2(File pngFile) throws IOException, InterruptedException {
+	// final CucaDiagramPngMaker3 maker = new CucaDiagramPngMaker3(this);
+	// return maker.createPng(pngFile);
+	// }
+	//
+	// final public void createPng2(OutputStream os) throws IOException {
+	// final CucaDiagramPngMaker3 maker = new CucaDiagramPngMaker3(this);
+	// maker.createPng(os);
+	// }
 
 	abstract protected List<String> getDotStrings();
 
@@ -324,13 +341,13 @@ public abstract class CucaDiagram extends UmlDiagram implements GroupHierarchy, 
 		maker.createFiles(os, index);
 	}
 
-//	public final Rankdir getRankdir() {
-//		return rankdir;
-//	}
-//
-//	public final void setRankdir(Rankdir rankdir) {
-//		this.rankdir = rankdir;
-//	}
+	// public final Rankdir getRankdir() {
+	// return rankdir;
+	// }
+	//
+	// public final void setRankdir(Rankdir rankdir) {
+	// this.rankdir = rankdir;
+	// }
 
 	public boolean isAutarkic(IGroup g) {
 		if (g.getGroupType() == GroupType.PACKAGE) {

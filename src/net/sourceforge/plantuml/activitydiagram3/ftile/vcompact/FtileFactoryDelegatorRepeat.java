@@ -53,7 +53,7 @@ public class FtileFactoryDelegatorRepeat extends FtileFactoryDelegator {
 	}
 
 	@Override
-	public Ftile repeat(Swimlane swimlane, Ftile repeat, Display test, HtmlColor color) {
+	public Ftile repeat(Swimlane swimlane, Ftile repeat, Display test, Display yes, Display out, HtmlColor color) {
 		final ConditionStyle conditionStyle = getSkinParam().getConditionStyle();
 		final UFont font = getSkinParam().getFont(
 				conditionStyle == ConditionStyle.INSIDE ? FontParam.ACTIVITY_DIAMOND : FontParam.ACTIVITY_ARROW, null);
@@ -66,7 +66,7 @@ public class FtileFactoryDelegatorRepeat extends FtileFactoryDelegator {
 		final LinkRendering endRepeatLinkRendering = repeat.getOutLinkRendering();
 		final HtmlColor endRepeatLinkColor = endRepeatLinkRendering == null ? null : endRepeatLinkRendering.getColor();
 
-		return FtileRepeat2.create(swimlane, repeat, test, borderColor, backColor, font, arrowColor,
+		return FtileRepeat.create(swimlane, repeat, test, yes, out, borderColor, backColor, font, arrowColor,
 				endRepeatLinkColor, conditionStyle, this);
 	}
 

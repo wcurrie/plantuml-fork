@@ -68,7 +68,7 @@ public class CucaDiagramFileMakerHector implements CucaDiagramFileMaker {
 		double singleWidth = 0;
 		double singleHeight = 0;
 		int nb = 0;
-		for (ILeaf leaf : diagram.getLeafs().values()) {
+		for (ILeaf leaf : diagram.getLeafsvalues()) {
 			final IEntityImage image = computeImage(leaf);
 			final Dimension2D dim = TextBlockUtils.getDimension(image);
 			if (dim.getWidth() > singleWidth) {

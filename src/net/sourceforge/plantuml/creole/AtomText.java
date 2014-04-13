@@ -158,6 +158,10 @@ public class AtomText implements Atom {
 	}
 
 	public void drawU(UGraphic ug) {
+		if (ug.isSpecialTxt()) {
+			ug.draw(this);
+			return;
+		}
 		if (url != null) {
 			ug.startUrl(url);
 		}
@@ -234,5 +238,9 @@ public class AtomText implements Atom {
 		result.add(new AtomText(currentLine.toString(), fontConfiguration, url, marginLeft, marginRight));
 		return Collections.unmodifiableList(result);
 
+	}
+
+	public final String getText() {
+		return text;
 	}
 }

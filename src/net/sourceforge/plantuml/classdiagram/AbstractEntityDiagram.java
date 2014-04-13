@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  *
- * Revision $Revision: 12235 $
+ * Revision $Revision: 12853 $
  *
  */
 package net.sourceforge.plantuml.classdiagram;
@@ -57,7 +57,7 @@ public abstract class AbstractEntityDiagram extends CucaDiagram {
 	}
 
 	final public DiagramDescription getDescription() {
-		return new DiagramDescriptionImpl("(" + getLeafs().size() + " entities)", getClass());
+		return new DiagramDescriptionImpl("(" + getLeafssize() + " entities)", getClass());
 	}
 
 }

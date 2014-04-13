@@ -41,7 +41,7 @@ public interface Tile extends UDrawable {
 
 	public double getPreferredHeight(StringBounder stringBounder);
 
-	public void compile(StringBounder stringBounder);
+	public void addConstraints(StringBounder stringBounder);
 
 	public Real getMinX(StringBounder stringBounder);
 

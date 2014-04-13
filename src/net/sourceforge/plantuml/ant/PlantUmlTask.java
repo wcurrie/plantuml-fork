@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  *
- * Revision $Revision: 12390 $
+ * Revision $Revision: 12958 $
  *
  */
 package net.sourceforge.plantuml.ant;
@@ -206,7 +206,7 @@ public class PlantUmlTask extends Task {
 				myLog(g + " " + g.getDescription());
 			}
 			nbFiles.addAndGet(1);
-			if (g.isError()) {
+			if (g.lineErrorRaw() != -1) {
 				error = true;
 			}
 		}
@@ -295,6 +295,9 @@ public class PlantUmlTask extends Task {
 		}
 		if ("pdf".equalsIgnoreCase(s)) {
 			option.setFileFormat(FileFormat.PDF);
+		}
+		if ("latex".equalsIgnoreCase(s)) {
+			option.setFileFormat(FileFormat.LATEX);
 		}
 		if ("eps:text".equalsIgnoreCase(s)) {
 			option.setFileFormat(FileFormat.EPS_TEXT);

@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 12624 $
+ * Revision $Revision: 12846 $
  *
  */
 package net.sourceforge.plantuml.cucadiagram.dot;
@@ -62,13 +62,16 @@ final public class DotData implements PortionShower {
 	final private PortionShower portionShower;
 	final private boolean isHideEmptyDescriptionForState;
 	final private DotMode dotMode;
+	final private String namespaceSeparator;
 
 	private final ColorMapper colorMapper;
 	private final EntityFactory entityFactory;
 
 	public DotData(IGroup topParent, List<Link> links, Collection<ILeaf> leafs, UmlDiagramType umlDiagramType,
 			ISkinParam skinParam, GroupHierarchy groupHierarchy, PortionShower portionShower, ColorMapper colorMapper,
-			EntityFactory entityFactory, boolean isHideEmptyDescriptionForState, DotMode dotMode) {
+			EntityFactory entityFactory, boolean isHideEmptyDescriptionForState, DotMode dotMode,
+			String namespaceSeparator) {
+		this.namespaceSeparator = namespaceSeparator;
 		this.topParent = topParent;
 		if (topParent == null) {
 			throw new IllegalArgumentException();
@@ -88,12 +91,13 @@ final public class DotData implements PortionShower {
 
 	public DotData(IGroup topParent, List<Link> links, Collection<ILeaf> leafs, UmlDiagramType umlDiagramType,
 			ISkinParam skinParam, Rankdir rankdir, GroupHierarchy groupHierarchy, ColorMapper colorMapper,
-			EntityFactory entityFactory, boolean isHideEmptyDescriptionForState, DotMode dotMode) {
+			EntityFactory entityFactory, boolean isHideEmptyDescriptionForState, DotMode dotMode,
+			String namespaceSeparator) {
 		this(topParent, links, leafs, umlDiagramType, skinParam, groupHierarchy, new PortionShower() {
 			public boolean showPortion(EntityPortion portion, IEntity entity) {
 				return true;
 			}
-		}, colorMapper, entityFactory, isHideEmptyDescriptionForState, dotMode);
+		}, colorMapper, entityFactory, isHideEmptyDescriptionForState, dotMode, namespaceSeparator);
 	}
 
 	public UmlDiagramType getUmlDiagramType() {
@@ -104,9 +108,9 @@ final public class DotData implements PortionShower {
 		return skinParam;
 	}
 
-//	public Rankdir getRankdir() {
-//		return rankdir;
-//	}
+	// public Rankdir getRankdir() {
+	// return rankdir;
+	// }
 
 	public GroupHierarchy getGroupHierarchy() {
 		return groupHierarchy;
@@ -146,6 +150,10 @@ final public class DotData implements PortionShower {
 
 	public final DotMode getDotMode() {
 		return dotMode;
+	}
+
+	public final String getNamespaceSeparator() {
+		return namespaceSeparator;
 	}
 
 }

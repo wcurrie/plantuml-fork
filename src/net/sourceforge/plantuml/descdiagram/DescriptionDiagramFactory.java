@@ -40,6 +40,7 @@ import net.sourceforge.plantuml.AbstractPSystem;
 import net.sourceforge.plantuml.classdiagram.command.CommandUrl;
 import net.sourceforge.plantuml.command.Command;
 import net.sourceforge.plantuml.command.CommandEndPackage;
+import net.sourceforge.plantuml.command.CommandFootboxIgnored;
 import net.sourceforge.plantuml.command.CommandPackage;
 import net.sourceforge.plantuml.command.CommandPage;
 import net.sourceforge.plantuml.command.CommandRankDir;
@@ -52,6 +53,7 @@ import net.sourceforge.plantuml.command.regex.RegexOr;
 import net.sourceforge.plantuml.descdiagram.command.CommandCreateElementFull;
 import net.sourceforge.plantuml.descdiagram.command.CommandCreateElementMultilines;
 import net.sourceforge.plantuml.descdiagram.command.CommandLinkElement;
+import net.sourceforge.plantuml.descdiagram.command.CommandNamespaceSeparator;
 import net.sourceforge.plantuml.descdiagram.command.CommandNewpage;
 import net.sourceforge.plantuml.descdiagram.command.CommandPackageWithUSymbol;
 
@@ -66,6 +68,8 @@ public class DescriptionDiagramFactory extends UmlDiagramFactory {
 	protected List<Command> createCommands() {
 		final List<Command> cmds = new ArrayList<Command>();
 
+		cmds.add(new CommandFootboxIgnored());
+		cmds.add(new CommandNamespaceSeparator());
 		cmds.add(new CommandRankDir());
 		cmds.add(new CommandNewpage(this));
 		addCommonCommands(cmds);

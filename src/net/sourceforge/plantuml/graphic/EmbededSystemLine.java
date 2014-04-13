@@ -101,7 +101,7 @@ class EmbededSystemLine implements Line {
 	}
 
 	private Diagram getSystem() throws IOException, InterruptedException {
-		final BlockUml blockUml = new BlockUml(lines);
+		final BlockUml blockUml = new BlockUml(lines, 0);
 		return blockUml.getDiagram();
 
 	}

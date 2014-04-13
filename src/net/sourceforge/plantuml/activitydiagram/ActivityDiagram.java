@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  *
- * Revision $Revision: 12495 $
+ * Revision $Revision: 12853 $
  *
  */
 package net.sourceforge.plantuml.activitydiagram;
@@ -124,7 +124,7 @@ public class ActivityDiagram extends CucaDiagram {
 	}
 
 	public DiagramDescription getDescription() {
-		return new DiagramDescriptionImpl("(" + getLeafs().size() + " activities)", getClass());
+		return new DiagramDescriptionImpl("(" + getLeafssize() + " activities)", getClass());
 	}
 
 	public IEntity getLastEntityConsulted() {
@@ -178,5 +178,6 @@ public class ActivityDiagram extends CucaDiagram {
 		lastEntityConsulted = null;
 		lastEntityBrancheConsulted = null;
 	}
+	
 
 }

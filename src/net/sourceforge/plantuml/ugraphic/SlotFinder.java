@@ -40,6 +40,10 @@ import net.sourceforge.plantuml.Url;
 import net.sourceforge.plantuml.graphic.StringBounder;
 
 public class SlotFinder implements UGraphic {
+	
+	public boolean isSpecialTxt() {
+		return false;
+	}
 
 	public UGraphic apply(UChange change) {
 		if (change instanceof UTranslate) {

@@ -61,27 +61,32 @@ public class FtileDiamondInside extends AbstractFtile {
 	private final TextBlock west;
 	private final TextBlock east;
 	private final TextBlock north;
+	private final TextBlock south;
 
 	public FtileDiamondInside(boolean shadowing, HtmlColor backColor, HtmlColor borderColor, Swimlane swimlane,
 			TextBlock label) {
 		this(shadowing, backColor, borderColor, swimlane, label, TextBlockUtils.empty(0, 0),
-				TextBlockUtils.empty(0, 0), TextBlockUtils.empty(0, 0));
+				TextBlockUtils.empty(0, 0), TextBlockUtils.empty(0, 0), TextBlockUtils.empty(0, 0));
 	}
 
 	public FtileDiamondInside withNorth(TextBlock north) {
-		return new FtileDiamondInside(shadowing(), backColor, borderColor, swimlane, label, north, west, east);
+		return new FtileDiamondInside(shadowing(), backColor, borderColor, swimlane, label, north, south, west, east);
 	}
 
 	public FtileDiamondInside withWest(TextBlock west) {
-		return new FtileDiamondInside(shadowing(), backColor, borderColor, swimlane, label, north, west, east);
+		return new FtileDiamondInside(shadowing(), backColor, borderColor, swimlane, label, north, south, west, east);
 	}
 
 	public FtileDiamondInside withEast(TextBlock east) {
-		return new FtileDiamondInside(shadowing(), backColor, borderColor, swimlane, label, north, west, east);
+		return new FtileDiamondInside(shadowing(), backColor, borderColor, swimlane, label, north, south, west, east);
+	}
+
+	public FtileDiamondInside withSouth(TextBlock south) {
+		return new FtileDiamondInside(shadowing(), backColor, borderColor, swimlane, label, north, south, west, east);
 	}
 
 	private FtileDiamondInside(boolean shadowing, HtmlColor backColor, HtmlColor borderColor, Swimlane swimlane,
-			TextBlock label, TextBlock north, TextBlock west, TextBlock east) {
+			TextBlock label, TextBlock north, TextBlock south, TextBlock west, TextBlock east) {
 		super(shadowing);
 		this.backColor = backColor;
 		this.swimlane = swimlane;
@@ -90,6 +95,7 @@ public class FtileDiamondInside extends AbstractFtile {
 		this.west = west;
 		this.east = east;
 		this.north = north;
+		this.south = south;
 	}
 
 	public Set<Swimlane> getSwimlanes() {
@@ -116,6 +122,9 @@ public class FtileDiamondInside extends AbstractFtile {
 
 		// final Dimension2D dimNorth = west.calculateDimension(stringBounder);
 		north.drawU(ug.apply(new UTranslate(4 + dimTotal.getWidth() / 2, dimTotal.getHeight())));
+
+		final Dimension2D dimSouth = south.calculateDimension(ug.getStringBounder());
+		south.drawU(ug.apply(new UTranslate(4 + dimTotal.getWidth() / 2, dimTotal.getHeight())));
 
 		final double lx = (dimTotal.getWidth() - dimLabel.getWidth()) / 2;
 		final double ly = (dimTotal.getHeight() - dimLabel.getHeight()) / 2;

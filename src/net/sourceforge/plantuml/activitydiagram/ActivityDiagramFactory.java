@@ -44,6 +44,7 @@ import net.sourceforge.plantuml.activitydiagram.command.CommandLinkActivity2;
 import net.sourceforge.plantuml.activitydiagram.command.CommandLinkLongActivity2;
 import net.sourceforge.plantuml.activitydiagram.command.CommandPartition;
 import net.sourceforge.plantuml.command.Command;
+import net.sourceforge.plantuml.command.CommandFootboxIgnored;
 import net.sourceforge.plantuml.command.CommandRankDir;
 import net.sourceforge.plantuml.command.UmlDiagramFactory;
 import net.sourceforge.plantuml.command.note.FactoryNoteActivityCommand;
@@ -59,6 +60,7 @@ public class ActivityDiagramFactory extends UmlDiagramFactory {
 	@Override
 	protected List<Command> createCommands() {
 		final List<Command> cmds = new ArrayList<Command>();
+		cmds.add(new CommandFootboxIgnored());
 		addCommonCommands(cmds);
 		cmds.add(new CommandRankDir());
 

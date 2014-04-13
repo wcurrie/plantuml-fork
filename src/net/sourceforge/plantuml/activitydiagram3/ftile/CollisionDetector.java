@@ -221,4 +221,8 @@ public class CollisionDetector implements UGraphic {
 		this.context.manageSnakes = manageSnakes;
 	}
 
+	public boolean isSpecialTxt() {
+		return false;
+	}
+
 }

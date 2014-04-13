@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 12371 $
+ * Revision $Revision: 12841 $
  *
  */
 package net.sourceforge.plantuml.statediagram.command;
@@ -41,6 +41,7 @@ import net.sourceforge.plantuml.command.CommandExecutionResult;
 import net.sourceforge.plantuml.command.SingleLineCommand2;
 import net.sourceforge.plantuml.command.regex.RegexConcat;
 import net.sourceforge.plantuml.command.regex.RegexLeaf;
+import net.sourceforge.plantuml.command.regex.RegexOr;
 import net.sourceforge.plantuml.command.regex.RegexResult;
 import net.sourceforge.plantuml.cucadiagram.Code;
 import net.sourceforge.plantuml.cucadiagram.Display;
@@ -59,8 +60,18 @@ public class CommandCreateState extends SingleLineCommand2<StateDiagram> {
 	private static RegexConcat getRegexConcat() {
 		return new RegexConcat(new RegexLeaf("^"), //
 				new RegexLeaf("(?:state[%s]+)"), //
-				new RegexLeaf("DISPLAY", "(?:[%g]([^%g]+)[%g][%s]+as[%s]+)?"), //
-				new RegexLeaf("CODE", "([\\p{L}0-9_.]+)"), //
+				new RegexOr(//
+						new RegexConcat(//
+								new RegexLeaf("CODE1", "([\\p{L}0-9_.]+)"), //
+								new RegexLeaf("[%s]+as[%s]+"), //
+								new RegexLeaf("DISPLAY1", "[%g]([^%g]+)[%g]")), //
+						new RegexConcat(//
+								new RegexLeaf("DISPLAY2", "[%g]([^%g]+)[%g]"), //
+								new RegexLeaf("[%s]+as[%s]+"), //
+								new RegexLeaf("CODE2", "([\\p{L}0-9_.]+)")), //
+						new RegexLeaf("CODE3", "([\\p{L}0-9_.]+)"), //
+						new RegexLeaf("CODE4", "[%g]([^%g]+)[%g]")), //
+
 				new RegexLeaf("[%s]*"), //
 				new RegexLeaf("STEREOTYPE", "(\\<\\<.*\\>\\>)?"), //
 				new RegexLeaf("[%s]*"), //
@@ -69,15 +80,17 @@ public class CommandCreateState extends SingleLineCommand2<StateDiagram> {
 				new RegexLeaf("COLOR", "(" + HtmlColorUtils.COLOR_REGEXP + ")?"), //
 				new RegexLeaf("[%s]*"), //
 				new RegexLeaf("LINECOLOR", "(?:##(?:\\[(dotted|dashed|bold)\\])?(\\w+)?)?"), //
+				new RegexLeaf("[%s]*"), //
+				new RegexLeaf("ADDFIELD", "(?::[%s]*(.*))?"), //
 				new RegexLeaf("$"));
 	}
 
 	@Override
 	protected CommandExecutionResult executeArg(StateDiagram system, RegexResult arg) {
-		String display = arg.get("DISPLAY", 0);
-		final Code code = Code.of(arg.get("CODE", 0));
+		final Code code = Code.of(arg.getLazzy("CODE", 0));
+		String display = arg.getLazzy("DISPLAY", 0);
 		if (display == null) {
-			display = code.getCode();
+			display = code.getFullName();
 		}
 		final String stereotype = arg.get("STEREOTYPE", 0);
 		final LeafType type = getTypeFromStereotype(stereotype);
@@ -100,6 +113,11 @@ public class CommandCreateState extends SingleLineCommand2<StateDiagram> {
 		ent.setSpecificBackcolor(HtmlColorUtils.getColorIfValid(arg.get("COLOR", 0)));
 		ent.setSpecificLineColor(HtmlColorUtils.getColorIfValid(arg.get("LINECOLOR", 1)));
 		CommandCreateClassMultilines.applyStroke(ent, arg.get("LINECOLOR", 0));
+
+		final String addFields = arg.get("ADDFIELD", 0);
+		if (addFields != null) {
+			ent.addFieldOrMethod(addFields);
+		}
 		return CommandExecutionResult.ok();
 	}
 

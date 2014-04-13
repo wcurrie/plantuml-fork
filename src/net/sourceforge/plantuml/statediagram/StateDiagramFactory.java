@@ -38,6 +38,7 @@ import java.util.List;
 
 import net.sourceforge.plantuml.classdiagram.command.CommandUrl;
 import net.sourceforge.plantuml.command.Command;
+import net.sourceforge.plantuml.command.CommandFootboxIgnored;
 import net.sourceforge.plantuml.command.CommandRankDir;
 import net.sourceforge.plantuml.command.UmlDiagramFactory;
 import net.sourceforge.plantuml.command.note.FactoryNoteCommand;
@@ -49,7 +50,6 @@ import net.sourceforge.plantuml.statediagram.command.CommandAddField;
 import net.sourceforge.plantuml.statediagram.command.CommandConcurrentState;
 import net.sourceforge.plantuml.statediagram.command.CommandCreatePackageState;
 import net.sourceforge.plantuml.statediagram.command.CommandCreateState;
-import net.sourceforge.plantuml.statediagram.command.CommandCreateState2;
 import net.sourceforge.plantuml.statediagram.command.CommandEndState;
 import net.sourceforge.plantuml.statediagram.command.CommandHideEmptyDescription;
 import net.sourceforge.plantuml.statediagram.command.CommandLinkState;
@@ -64,9 +64,9 @@ public class StateDiagramFactory extends UmlDiagramFactory {
 	@Override
 	protected List<Command> createCommands() {
 		final List<Command> cmds = new ArrayList<Command>();
+		cmds.add(new CommandFootboxIgnored());
 		cmds.add(new CommandRankDir());
 		cmds.add(new CommandCreateState());
-		cmds.add(new CommandCreateState2());
 		// addCommand(new CommandLinkState());
 		cmds.add(new CommandLinkState());
 		cmds.add(new CommandCreatePackageState());

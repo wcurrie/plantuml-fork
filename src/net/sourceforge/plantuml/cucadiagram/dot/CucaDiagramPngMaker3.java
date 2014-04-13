@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 12235 $
+ * Revision $Revision: 12850 $
  *
  */
 package net.sourceforge.plantuml.cucadiagram.dot;
@@ -77,10 +77,10 @@ public final class CucaDiagramPngMaker3 {
 			// Log.error("CucaDiagramPngMaker3:: " + s + " " + diffHeight);
 			zoda2.addLink(s, diffHeight, link);
 		}
-		for (IEntity ent : diagram.getLeafs().values()) {
-			ANode n = zoda2.getNode(ent.getCode().getCode());
+		for (IEntity ent : diagram.getLeafsvalues()) {
+			ANode n = zoda2.getNode(ent.getCode().getFullName());
 			if (n == null) {
-				n = zoda2.createAloneNode(ent.getCode().getCode());
+				n = zoda2.createAloneNode(ent.getCode().getFullName());
 			}
 			((ANodeImpl) n).setUserData(ent);
 		}

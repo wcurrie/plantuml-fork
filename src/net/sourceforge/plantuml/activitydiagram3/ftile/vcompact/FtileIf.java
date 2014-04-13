@@ -385,8 +385,8 @@ class FtileIf extends AbstractFtile {
 				return;
 			}
 			final Point2D p1 = geo.translate(translate(stringBounder)).getPointOut();
-			final Point2D p2 = new Point2D.Double(OptionFlags.USE_4747 ? getLeft(stringBounder)
-					: dimTotal.getWidth() / 2, dimTotal.getHeight() - Diamond.diamondHalfSize);
+			final Point2D p2 = new Point2D.Double(getLeft(stringBounder), dimTotal.getHeight()
+					- Diamond.diamondHalfSize);
 
 			final double x1 = p1.getX();
 			final double y1 = p1.getY();
@@ -422,8 +422,8 @@ class FtileIf extends AbstractFtile {
 				return;
 			}
 			final Point2D p1 = geo.translate(translate(stringBounder)).getPointOut();
-			final Point2D p2 = new Point2D.Double(OptionFlags.USE_4747 ? getLeft(stringBounder)
-					: dimTotal.getWidth() / 2, dimTotal.getHeight() - Diamond.diamondHalfSize);
+			final Point2D p2 = new Point2D.Double(getLeft(stringBounder), dimTotal.getHeight()
+					- Diamond.diamondHalfSize);
 
 			final Point2D mp1a = translate1.getTranslated(p1);
 			final Point2D mp2b = translate2.getTranslated(p2);
@@ -469,13 +469,7 @@ class FtileIf extends AbstractFtile {
 	private UTranslate getTranslateDiamond1(StringBounder stringBounder) {
 		final double y1 = 0;
 		final Dimension2D dimDiamond1 = diamond1.calculateDimension(stringBounder);
-		if (OptionFlags.USE_4747) {
-			final double x1 = getLeft(stringBounder) - dimDiamond1.getWidth() / 2;
-			return new UTranslate(x1, y1);
-		}
-		final Dimension2D dimTotal = calculateDimensionInternal(stringBounder);
-
-		final double x1 = (dimTotal.getWidth() - dimDiamond1.getWidth()) / 2;
+		final double x1 = getLeft(stringBounder) - dimDiamond1.getWidth() / 2;
 		return new UTranslate(x1, y1);
 	}
 
@@ -483,12 +477,7 @@ class FtileIf extends AbstractFtile {
 		final Dimension2D dimTotal = calculateDimensionInternal(stringBounder);
 		final Dimension2D dimDiamond2 = diamond2.calculateDimension(stringBounder);
 		final double y2 = dimTotal.getHeight() - dimDiamond2.getHeight();
-		if (OptionFlags.USE_4747) {
-			final double x2 = getLeft(stringBounder) - dimDiamond2.getWidth() / 2;
-			return new UTranslate(x2, y2);
-		}
-
-		final double x2 = (dimTotal.getWidth() - dimDiamond2.getWidth()) / 2;
+		final double x2 = getLeft(stringBounder) - dimDiamond2.getWidth() / 2;
 		return new UTranslate(x2, y2);
 	}
 
@@ -520,11 +509,7 @@ class FtileIf extends AbstractFtile {
 
 	public FtileGeometry calculateDimension(StringBounder stringBounder) {
 		final Dimension2D dimTotal = calculateDimensionInternal(stringBounder);
-		if (OptionFlags.USE_4747) {
 			return new FtileGeometry(dimTotal, getLeft(stringBounder), 0, dimTotal.getHeight());
-
-		}
-		return new FtileGeometry(dimTotal, dimTotal.getWidth() / 2, 0, dimTotal.getHeight());
 	}
 
 	public boolean isKilled() {

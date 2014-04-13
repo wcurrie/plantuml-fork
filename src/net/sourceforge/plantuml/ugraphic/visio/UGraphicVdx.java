@@ -35,6 +35,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 
 import net.sourceforge.plantuml.Url;
+import net.sourceforge.plantuml.creole.AtomText;
 import net.sourceforge.plantuml.graphic.StringBounder;
 import net.sourceforge.plantuml.graphic.TextBlockUtils;
 import net.sourceforge.plantuml.posimo.DotPath;
@@ -82,6 +83,7 @@ public class UGraphicVdx extends AbstractUGraphic<VisioGraphics> implements Clip
 	private void register() {
 		registerDriver(URectangle.class, new DriverRectangleVdx());
 		registerDriver(UText.class, new DriverTextVdx(stringBounder));
+		registerDriver(AtomText.class, new DriverNoneVdx());
 		registerDriver(ULine.class, new DriverLineVdx());
 		registerDriver(UPolygon.class, new DriverPolygonVdx());
 		registerDriver(UEllipse.class, new DriverNoneVdx());
@@ -108,6 +110,10 @@ public class UGraphicVdx extends AbstractUGraphic<VisioGraphics> implements Clip
 
 	public void createVsd(OutputStream os) throws IOException {
 		getGraphicObject().createVsd(os);
+	}
+
+	public boolean isSpecialTxt() {
+		return true;
 	}
 
 }

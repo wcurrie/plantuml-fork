@@ -284,7 +284,7 @@ public class CommandLinkElement extends SingleLineCommand2<DescriptionDiagram> {
 	}
 
 	private ILeaf getOrCreateLeaf(DescriptionDiagram diagram, final Code code2) {
-		final String code = code2.getCode();
+		final String code = code2.getFullName();
 		if (code.startsWith("()")) {
 			return diagram.getOrCreateLeaf(
 					Code.of(StringUtils.eventuallyRemoveStartingAndEndingDoubleQuote(code.substring(2).trim())),

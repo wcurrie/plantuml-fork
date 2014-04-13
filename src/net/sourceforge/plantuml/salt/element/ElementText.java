@@ -46,9 +46,8 @@ import net.sourceforge.plantuml.graphic.TextBlock;
 import net.sourceforge.plantuml.graphic.TextBlockUtils;
 import net.sourceforge.plantuml.ugraphic.UFont;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
-import net.sourceforge.plantuml.ugraphic.UTranslate;
 
-public class ElementText implements Element {
+public class ElementText extends AbstractElement {
 
 	private final TextBlock block;
 	private final boolean show;
@@ -65,12 +64,12 @@ public class ElementText implements Element {
 		return block.calculateDimension(stringBounder);
 	}
 
-	public void drawU(UGraphic ug, double x, double y, int zIndex, Dimension2D dimToUse) {
+	public void drawU(UGraphic ug, int zIndex, Dimension2D dimToUse) {
 		if (zIndex != 0) {
 			return;
 		}
 		if (show) {
-			block.drawU(ug.apply(new UTranslate(x, y)));
+			block.drawU(ug);
 		}
 	}
 

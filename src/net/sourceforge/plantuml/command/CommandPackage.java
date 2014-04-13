@@ -80,7 +80,7 @@ public class CommandPackage extends SingleLineCommand2<AbstractEntityDiagram> {
 				display = null;
 			} else {
 				code = Code.of(name);
-				display = code.getCode();
+				display = code.getFullName();
 			}
 		} else {
 			display = name;

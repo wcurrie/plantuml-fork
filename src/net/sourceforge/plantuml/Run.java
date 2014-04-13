@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  *
- * Revision $Revision: 12463 $
+ * Revision $Revision: 12866 $
  *
  */
 package net.sourceforge.plantuml;
@@ -302,6 +302,7 @@ public class Run {
 				&& OptionFlags.getInstance().isMetadata() == false) {
 			return multithread(option);
 		}
+		boolean errorGlobal = false;
 		for (String s : option.getResult()) {
 			if (option.isDecodeurl()) {
 				final Transcoder transcoder = TranscoderUtil.getDefaultTranscoder();
@@ -314,6 +315,9 @@ public class Run {
 					try {
 						final boolean error = manageFileInternal(f, option);
 						if (error) {
+							errorGlobal = true;
+						}
+						if (error && option.isFailfastOrFailfast2()) {
 							return true;
 						}
 					} catch (IOException e) {
@@ -322,7 +326,7 @@ public class Run {
 				}
 			}
 		}
-		return false;
+		return errorGlobal;
 	}
 
 	private static boolean multithread(final Option option) throws InterruptedException {
@@ -334,7 +338,7 @@ public class Run {
 			for (final File f : group.getFiles()) {
 				executor.submit(new Runnable() {
 					public void run() {
-						if (errors.get()) {
+						if (errors.get() && option.isFailfastOrFailfast2()) {
 							return;
 						}
 						try {
@@ -383,25 +387,24 @@ public class Run {
 		}
 		if (option.isCheckOnly()) {
 			final boolean hasError = sourceFileReader.hasError();
-			if (hasError) {
-				Log.error("Error in file: " + f.getCanonicalPath());
-			}
+			final List<GeneratedImage> result = sourceFileReader.getGeneratedImages();
+			hasErrors(f, result);
 			return hasError;
 		}
 		final List<GeneratedImage> result = sourceFileReader.getGeneratedImages();
-		for (GeneratedImage i : result) {
-			if (i.isError()) {
-				Log.error("Error in file: " + f.getCanonicalPath());
+		return hasErrors(f, result);
+	}
+
+	private static boolean hasErrors(File f, final List<GeneratedImage> list) throws IOException {
+		boolean result = false;
+		for (GeneratedImage i : list) {
+			final int lineError = i.lineErrorRaw();
+			if (lineError != -1) {
+				Log.error("Error line " + lineError + " in file: " + f.getCanonicalPath());
+				result = true;
 			}
 		}
-		if (option.isFailfastOrFailfast2()) {
-			for (GeneratedImage i : result) {
-				if (i.isError()) {
-					return true;
-				}
-			}
-		}
-		return false;
+		return result;
 	}
 
 }

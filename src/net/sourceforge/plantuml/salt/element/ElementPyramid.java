@@ -45,8 +45,9 @@ import net.sourceforge.plantuml.graphic.StringBounder;
 import net.sourceforge.plantuml.salt.Cell;
 import net.sourceforge.plantuml.salt.Positionner2;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
+import net.sourceforge.plantuml.ugraphic.UTranslate;
 
-public class ElementPyramid implements Element {
+public class ElementPyramid extends AbstractElement {
 
 	private int rows;
 	private int cols;
@@ -79,7 +80,7 @@ public class ElementPyramid implements Element {
 		return new Dimension2DDouble(colsStart[colsStart.length - 1], rowsStart[rowsStart.length - 1]);
 	}
 
-	public void drawU(UGraphic ug, final double x, final double y, int zIndex, Dimension2D dimToUse) {
+	public void drawU(UGraphic ug, int zIndex, Dimension2D dimToUse) {
 		init(ug.getStringBounder());
 		final Grid grid = new Grid(rowsStart, colsStart, tableStrategy);
 		for (Map.Entry<Element, Cell> ent : positions1.entrySet()) {
@@ -90,13 +91,10 @@ public class ElementPyramid implements Element {
 			final double width = colsStart[cell.getMaxCol() + 1] - colsStart[cell.getMinCol()] - 1;
 			final double height = rowsStart[cell.getMaxRow() + 1] - rowsStart[cell.getMinRow()] - 1;
 			grid.addCell(cell);
-			// ug.draw(x + xcell, y + ycell, new ULine(width, 0));
-			// ug.draw(x + xcell, y + ycell, new ULine(0, height));
-			// ug.draw(x + xcell, y + ycell, new URectangle(width, height));
-			elt.drawU(ug, x + xcell + 1, y + ycell + 1, zIndex, new Dimension2DDouble(width, height));
+			elt.drawU(ug.apply(new UTranslate(xcell + 1, ycell + 1)), zIndex, new Dimension2DDouble(width, height));
 		}
 		if (zIndex == 0) {
-			grid.drawU(ug, x, y);
+			grid.drawU(ug, 0, 0);
 		}
 	}
 

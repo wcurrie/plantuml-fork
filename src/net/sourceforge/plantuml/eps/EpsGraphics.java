@@ -36,7 +36,6 @@ package net.sourceforge.plantuml.eps;
 import java.awt.Color;
 import java.awt.geom.PathIterator;
 import java.awt.image.BufferedImage;
-import java.util.Date;
 import java.util.Locale;
 import java.util.StringTokenizer;
 
@@ -79,7 +78,7 @@ public class EpsGraphics {
 		}
 		header.append("%%Creator: PlantUML v" + v + "\n");
 		header.append("%%Title: noTitle\n");
-		header.append("%%CreationDate: " + new Date() + "\n");
+		// header.append("%%CreationDate: " + new Date() + "\n");
 		setcolorgradient.add(new PostScriptCommandRaw("3 index 7 index sub 1 index mul 7 index add", true));
 		setcolorgradient.add(new PostScriptCommandRaw("3 index 7 index sub 2 index mul 7 index add", true));
 		setcolorgradient.add(new PostScriptCommandRaw("3 index 7 index sub 3 index mul 7 index add", true));

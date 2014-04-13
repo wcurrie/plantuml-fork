@@ -28,13 +28,23 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 4636 $
+ * Revision $Revision: 12235 $
  *
  */
-package net.sourceforge.plantuml.real;
+package net.sourceforge.plantuml.command;
 
-interface Force {
+import java.util.List;
 
-	public boolean apply();
+import net.sourceforge.plantuml.UmlDiagram;
 
+public class CommandFootboxIgnored extends SingleLineCommand<UmlDiagram> {
+
+	public CommandFootboxIgnored() {
+		super("(?i)^(hide|show)?[%s]*footbox$");
+	}
+
+	@Override
+	protected CommandExecutionResult executeArg(UmlDiagram diagram, List<String> arg) {
+		return CommandExecutionResult.ok();
+	}
 }

@@ -40,7 +40,7 @@ class RealLine {
 
 	// private final List<RealImpl> allReals = new ArrayList<RealImpl>();
 
-	private final List<Force> forces = new ArrayList<Force>();
+	private final List<PositiveForce> forces = new ArrayList<PositiveForce>();
 
 	// private boolean isFreezed;
 	//
@@ -52,23 +52,28 @@ class RealLine {
 	// return isFreezed;
 	// }
 
-	public void addForce(Force force) {
+	public void addForce(PositiveForce force) {
 		this.forces.add(force);
 	}
+
+	static private int CPT;
 
 	public void compile() {
 		int cpt = 0;
 		do {
 			boolean done = true;
-			for (Force f : forces) {
+			for (PositiveForce f : forces) {
 				// System.err.println("force=" + f);
 				final boolean change = f.apply();
 				if (change) {
-					// System.err.println("changed!");
+					// System.err.println("changed! " + f);
 					done = false;
 				}
 			}
 			if (done) {
+				System.err.println("cpt=" + cpt + " size=" + forces.size());
+				CPT += cpt;
+				System.err.println("CPT=" + CPT);
 				return;
 			}
 			cpt++;

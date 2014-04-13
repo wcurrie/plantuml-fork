@@ -53,6 +53,7 @@ public class DriverTextVdx implements UDriver<VisioGraphics> {
 
 	public void draw(UShape ushape, double x, double y, ColorMapper mapper, UParam param, VisioGraphics visio) {
 		final UText shape = (UText) ushape;
+		Thread.dumpStack();
 
 		final FontConfiguration fontConfiguration = shape.getFontConfiguration();
 		final UFont font = fontConfiguration.getFont();

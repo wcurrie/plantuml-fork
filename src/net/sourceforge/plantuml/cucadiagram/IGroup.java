@@ -53,7 +53,7 @@ public interface IGroup extends IEntity {
 
 	public GroupType getGroupType();
 
-	public String getNamespace();
+	public Code getNamespace2();
 
 	public boolean isAutonom();
 

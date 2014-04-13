@@ -43,10 +43,21 @@ import net.sourceforge.plantuml.graphic.USymbol;
 
 public class DescriptionDiagram extends AbstractEntityDiagram {
 
+	private String namespaceSeparator = null;
+
 	@Override
 	public ILeaf getOrCreateLeaf(Code code, LeafType type, USymbol symbol) {
+		if (namespaceSeparator != null) {
+			code = code.withSeparator(namespaceSeparator);
+		}
+		if (namespaceSeparator != null && code.getFullName().contains(namespaceSeparator)) {
+			System.err.println("code=" + code);
+			final Code fullyCode = code;
+			// final String namespace = fullyCode.getNamespace(getLeafs());
+			// System.err.println("namespace=" + namespace);
+		}
 		if (type == null) {
-			String code2 = code.getCode();
+			String code2 = code.getFullName();
 			if (code2.startsWith("[") && code2.endsWith("]")) {
 				final USymbol sym = getSkinParam().useUml2ForComponent() ? USymbol.COMPONENT2 : USymbol.COMPONENT1;
 				return getOrCreateLeafDefault(code.eventuallyRemoveStartingAndEndingDoubleQuote(),
@@ -92,7 +103,7 @@ public class DescriptionDiagram extends AbstractEntityDiagram {
 	// }
 
 	private boolean isUsecase() {
-		for (ILeaf leaf : getLeafs().values()) {
+		for (ILeaf leaf : getLeafsvalues()) {
 			final LeafType type = leaf.getEntityType();
 			final USymbol usymbol = leaf.getUSymbol();
 			if (type == LeafType.USECASE || usymbol == USymbol.ACTOR) {
@@ -107,7 +118,7 @@ public class DescriptionDiagram extends AbstractEntityDiagram {
 		super.makeDiagramReady();
 		final LeafType defaultType = isUsecase() ? LeafType.DESCRIPTION : LeafType.DESCRIPTION;
 		final USymbol defaultSymbol = isUsecase() ? USymbol.ACTOR : USymbol.INTERFACE;
-		for (ILeaf leaf : getLeafs().values()) {
+		for (ILeaf leaf : getLeafsvalues()) {
 			if (leaf.getEntityType() == LeafType.STILL_UNKNOWN) {
 				leaf.muteToType(defaultType, defaultSymbol);
 			}
@@ -118,5 +129,14 @@ public class DescriptionDiagram extends AbstractEntityDiagram {
 	public UmlDiagramType getUmlDiagramType() {
 		return UmlDiagramType.DESCRIPTION;
 	}
+
+	public void setNamespaceSeparator(String namespaceSeparator) {
+		this.namespaceSeparator = namespaceSeparator;
+	}
+	
+	public String getNamespaceSeparator() {
+		return namespaceSeparator;
+	}
+
 
 }

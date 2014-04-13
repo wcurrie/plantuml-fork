@@ -105,7 +105,7 @@ public class XmiClassDiagramStar implements IXmiClassDiagram {
 		this.ownedElement = document.createElement("UML:Namespace.ownedElement");
 		model.appendChild(ownedElement);
 
-		for (final IEntity ent : classDiagram.getLeafs().values()) {
+		for (final IEntity ent : classDiagram.getLeafsvalues()) {
 			// if (fileFormat == FileFormat.XMI_ARGO && isStandalone(ent) == false) {
 			// continue;
 			// }

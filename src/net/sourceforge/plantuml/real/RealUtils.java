@@ -33,8 +33,7 @@
  */
 package net.sourceforge.plantuml.real;
 
-import java.util.Arrays;
-import java.util.Collection;
+import java.util.List;
 
 public class RealUtils {
 
@@ -48,48 +47,12 @@ public class RealUtils {
 		return new RealMiddle((RealMoveable) r1, (RealMoveable) r2);
 	}
 
-	public static Real max(Collection<Real> reals) {
-		double v = -Double.MAX_VALUE;
-		final RealLine line = ((RealMoveable) reals.iterator().next()).getLine();
-		final RealImpl result = new RealImpl("max", line, 0);
-		for (Real r : reals) {
-			final RealImpl rr = (RealImpl) r;
-			if (rr.getLine() != line) {
-				throw new IllegalArgumentException();
-			}
-			if (rr.getCurrentValue() > v) {
-				v = rr.getCurrentValue();
-			}
-			line.addForce(new PositiveForce(rr, result, 0));
-		}
-		result.move(v);
-		return result;
-	}
-
-	public static Real max(Real... reals) {
-		return max(Arrays.asList(reals));
-	}
-
-	public static Real min(Collection<Real> reals) {
-		double v = Double.MAX_VALUE;
-		final RealLine line = ((RealImpl) reals.iterator().next()).getLine();
-		final RealImpl result = new RealImpl("min", line, 0);
-		for (Real r : reals) {
-			final RealImpl rr = (RealImpl) r;
-			if (rr.getLine() != line) {
-				throw new IllegalArgumentException();
-			}
-			if (rr.getCurrentValue() < v) {
-				v = rr.getCurrentValue();
-			}
-			line.addForce(new NegativeForce(rr, result, 0));
-		}
-		result.move(v);
-		return result;
-	}
-
-	public static Real min(Real... reals) {
-		return min(Arrays.asList(reals));
-	}
+	// public static Real max(List<Real> all) {
+	// return new RealMax(all);
+	// }
+	//
+	// public static Real min(List<Real> all) {
+	// return new RealMin(all);
+	// }
 
 }

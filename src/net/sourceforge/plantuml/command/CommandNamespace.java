@@ -66,7 +66,7 @@ public class CommandNamespace extends SingleLineCommand2<AbstractEntityDiagram> 
 	protected CommandExecutionResult executeArg(AbstractEntityDiagram diagram, RegexResult arg) {
 		final Code code = Code.of(arg.get("NAME", 0));
 		final IGroup currentPackage = diagram.getCurrentGroup();
-		final IEntity p = diagram.getOrCreateGroup(code, Display.getWithNewlines(code), code.getCode(),
+		final IEntity p = diagram.getOrCreateGroup(code, Display.getWithNewlines(code), code,
 				GroupType.PACKAGE, currentPackage);
 		final String stereotype = arg.get("STEREOTYPE", 0);
 		if (stereotype != null) {

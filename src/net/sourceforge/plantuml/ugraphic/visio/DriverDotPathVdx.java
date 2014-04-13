@@ -41,9 +41,7 @@ public class DriverDotPathVdx implements UDriver<VisioGraphics> {
 
 	public void draw(UShape shape, double x, double y, ColorMapper mapper, UParam param, VisioGraphics visio) {
 		final DotPath path = (DotPath) shape;
-
 		visio.upath(x, y, path.toUPath());
-
 	}
 
 }

@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 12563 $
+ * Revision $Revision: 12835 $
  *
  */
 package net.sourceforge.plantuml.graphic;
@@ -163,7 +163,7 @@ public class GraphicStrings implements IEntityImage {
 		return new ImageDataSimple();
 	}
 
-	private BufferedImage createImage() {
+	public BufferedImage createImage() {
 		EmptyImageBuilder builder = new EmptyImageBuilder(10, 10, colorMapper.getMappedColor(background));
 		Graphics2D g2d = builder.getGraphics2D();
 

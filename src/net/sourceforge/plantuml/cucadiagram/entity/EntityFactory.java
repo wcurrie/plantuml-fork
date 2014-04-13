@@ -51,6 +51,7 @@ import net.sourceforge.plantuml.cucadiagram.IGroup;
 import net.sourceforge.plantuml.cucadiagram.ILeaf;
 import net.sourceforge.plantuml.cucadiagram.LeafType;
 import net.sourceforge.plantuml.cucadiagram.Link;
+import net.sourceforge.plantuml.cucadiagram.LongCode;
 import net.sourceforge.plantuml.skin.VisibilityModifier;
 
 public class EntityFactory {
@@ -62,23 +63,37 @@ public class EntityFactory {
 	private final IGroup rootGroup = new GroupRoot(this);
 
 	public ILeaf createLeaf(Code code, Display display, LeafType entityType, IGroup parentContainer,
-			Set<VisibilityModifier> hides) {
+			Set<VisibilityModifier> hides, String namespaceSeparator) {
 		if (entityType == null) {
 			throw new IllegalArgumentException();
 		}
 		final Bodier bodier = new Bodier(entityType, hides);
-		final EntityImpl result = new EntityImpl(this, code, bodier, parentContainer, entityType);
+		final LongCode longCode = getLongCode(code, namespaceSeparator);
+		final EntityImpl result = new EntityImpl(this, code, bodier, parentContainer, entityType, longCode,
+				namespaceSeparator);
 		result.setDisplay(display);
 		return result;
 	}
 
-	public IGroup createGroup(Code code, Display display, String namespace, GroupType groupType,
-			IGroup parentContainer, Set<VisibilityModifier> hides) {
+	private LongCode getLongCode(Code code, String namespaceSeparator) {
+		final LongCode result = LongCode.of(code.getFullName(), namespaceSeparator);
+//		if (result.toString().equals(code.toString()) == false) {
+//			System.err.println("result=" + result);
+//			System.err.println(" code =" + code);
+//			throw new UnsupportedOperationException();
+//		}
+		return result;
+	}
+
+	public IGroup createGroup(Code code, Display display, Code namespace2, GroupType groupType, IGroup parentContainer,
+			Set<VisibilityModifier> hides, String namespaceSeparator) {
 		if (groupType == null) {
 			throw new IllegalArgumentException();
 		}
 		final Bodier bodier = new Bodier(null, hides);
-		final EntityImpl result = new EntityImpl(this, code, bodier, parentContainer, groupType, namespace);
+		final LongCode longCode = getLongCode(code, namespaceSeparator);
+		final EntityImpl result = new EntityImpl(this, code, bodier, parentContainer, groupType, namespace2, longCode,
+				namespaceSeparator);
 		if (display != null) {
 			result.setDisplay(display);
 		}
@@ -134,9 +149,9 @@ public class EntityFactory {
 		}
 	}
 
-	public IGroup muteToGroup(Code code, String namespace, GroupType type, IGroup parent) {
+	public IGroup muteToGroup(Code code, Code namespace2, GroupType type, IGroup parent) {
 		final ILeaf leaf = getLeafs().get(code);
-		((EntityImpl) leaf).muteToGroup(namespace, type, parent);
+		((EntityImpl) leaf).muteToGroup(namespace2, type, parent);
 		final IGroup result = (IGroup) leaf;
 		removeLeaf(code);
 		return result;

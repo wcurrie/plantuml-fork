@@ -41,6 +41,8 @@ import net.sourceforge.plantuml.ISkinParam;
 import net.sourceforge.plantuml.graphic.StringBounder;
 import net.sourceforge.plantuml.graphic.TextBlockUtils;
 import net.sourceforge.plantuml.real.Real;
+import net.sourceforge.plantuml.real.RealMax;
+import net.sourceforge.plantuml.real.RealMin;
 import net.sourceforge.plantuml.sequencediagram.Participant;
 import net.sourceforge.plantuml.sequencediagram.SequenceDiagram;
 import net.sourceforge.plantuml.skin.Skin;
@@ -49,28 +51,30 @@ import net.sourceforge.plantuml.ugraphic.UTranslate;
 
 public class MainTile implements Tile {
 
-	private final Real alpha;
-	private final Real omega;
+	private final RealMin min = new RealMin();
+	private final RealMax max = new RealMax();
 	private double height;
 
 	private final List<Tile> tiles = new ArrayList<Tile>();
 
-	public MainTile(SequenceDiagram diagram, Skin skin, Real alpha, Real omega,
-			Map<Participant, LivingSpace> livingSpaces) {
-		final StringBounder stringBounder = TextBlockUtils.getDummyStringBounder();
+	public MainTile(SequenceDiagram diagram, Skin skin, Real omega, Map<Participant, LivingSpace> livingSpaces,
+			Real origin) {
+
+		min.put(origin);
+		max.put(omega);
 
 		final ISkinParam skinParam = diagram.getSkinParam();
+		final StringBounder stringBounder = TextBlockUtils.getDummyStringBounder();
 
-		this.alpha = alpha;
-		this.omega = omega;
+		final TileArguments tileArguments = new TileArguments(stringBounder, omega, livingSpaces, skin, skinParam,
+				origin);
 
-		final TileArguments tileArguments = new TileArguments(stringBounder, alpha, omega, livingSpaces, skin,
-				skinParam);
-
-		tiles.addAll(TileBuilder.buildSeveral(diagram.events().iterator(), tileArguments));
+		tiles.addAll(TileBuilder.buildSeveral(diagram.events().iterator(), tileArguments, null));
 
 		for (Tile tile : tiles) {
 			height += tile.getPreferredHeight(stringBounder);
+			min.put(tile.getMinX(stringBounder));
+			max.put(tile.getMaxX(stringBounder));
 		}
 	}
 
@@ -88,18 +92,18 @@ public class MainTile implements Tile {
 		return height;
 	}
 
-	public void compile(StringBounder stringBounder) {
+	public void addConstraints(StringBounder stringBounder) {
 		for (Tile tile : tiles) {
-			tile.compile(stringBounder);
+			tile.addConstraints(stringBounder);
 		}
 	}
 
 	public Real getMinX(StringBounder stringBounder) {
-		return alpha;
+		return min;
 	}
 
 	public Real getMaxX(StringBounder stringBounder) {
-		return omega;
+		return max;
 	}
 
 }

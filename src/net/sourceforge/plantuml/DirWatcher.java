@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  *
- * Revision $Revision: 12390 $
+ * Revision $Revision: 12866 $
  * 
  */
 package net.sourceforge.plantuml;
@@ -82,7 +82,7 @@ public class DirWatcher {
 				files.add(f);
 				for (GeneratedImage g : sourceFileReader.getGeneratedImages()) {
 					result.add(g);
-					if (option.isFailfastOrFailfast2() && g.isError()) {
+					if (option.isFailfastOrFailfast2() && g.lineErrorRaw() != -1) {
 						error = true;
 					}
 				}

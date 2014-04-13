@@ -58,18 +58,8 @@ class RealImpl extends RealMoveable {
 		return result;
 	}
 
-	public Real subAtLeast(double delta) {
-		final RealImpl result = new RealImpl(getName() + ".subAtLeast" + delta, line, this.currentValue - delta);
-		line.addForce(new NegativeForce(this, result, delta));
-		return result;
-	}
-
 	public void ensureBiggerThan(Real other) {
 		line.addForce(new PositiveForce(other, this, 0));
-	}
-
-	public void ensureLowerThan(Real other) {
-		line.addForce(new NegativeForce(other, this, 0));
 	}
 
 	public void compile() {

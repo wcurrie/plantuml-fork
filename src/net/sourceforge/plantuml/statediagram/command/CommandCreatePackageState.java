@@ -91,7 +91,7 @@ public class CommandCreatePackageState extends SingleLineCommand2<StateDiagram> 
 		final Code code = Code.of(getNotNull(arg, "CODE1", "CODE2"));
 		String display = getNotNull(arg, "DISPLAY1", "DISPLAY2");
 		if (display == null) {
-			display = code.getCode();
+			display = code.getFullName();
 		}
 		final IEntity p = system.getOrCreateGroup(code, Display.getWithNewlines(display), null, GroupType.STATE,
 				currentPackage);

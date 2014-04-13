@@ -35,7 +35,6 @@ package net.sourceforge.plantuml.activitydiagram3.ftile.vcompact;
 
 import net.sourceforge.plantuml.ColorParam;
 import net.sourceforge.plantuml.ISkinParam;
-import net.sourceforge.plantuml.OptionFlags;
 import net.sourceforge.plantuml.activitydiagram3.LinkRendering;
 import net.sourceforge.plantuml.activitydiagram3.ftile.Ftile;
 import net.sourceforge.plantuml.activitydiagram3.ftile.FtileFactory;
@@ -65,7 +64,6 @@ public class FtileFactoryDelegatorAddNote extends FtileFactoryDelegator {
 		} else {
 			colorlink = inlinkRendering.getColor();
 		}
-		return OptionFlags.USE_4747 ? new FtileWithNoteOpale4747(ftile, note, colorlink, notePosition, getSkinParam())
-				: new FtileWithNoteOpale(ftile, note, colorlink, notePosition);
+		return new FtileWithNoteOpale(ftile, note, colorlink, notePosition, getSkinParam());
 	}
 }

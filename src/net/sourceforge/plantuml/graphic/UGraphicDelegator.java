@@ -45,6 +45,11 @@ import net.sourceforge.plantuml.ugraphic.UShape;
 public abstract class UGraphicDelegator implements UGraphic {
 
 	final private UGraphic ug;
+	
+	public final boolean isSpecialTxt() {
+		return ug.isSpecialTxt();
+	}
+
 
 	public UGraphicDelegator(UGraphic ug) {
 		this.ug = ug;

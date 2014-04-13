@@ -94,8 +94,8 @@ public class PSystemSalt extends AbstractPSystem {
 		UAntiAliasing.ANTI_ALIASING_ON.apply(g2d);
 		UGraphic ug = new UGraphicG2d(new ColorMapperIdentity(), g2d, 1.0);
 		ug = ug.apply(new UChangeColor(HtmlColorUtils.BLACK));
-		salt.drawU(ug, 0, 0, 0, new Dimension2DDouble(size.getWidth(), size.getHeight()));
-		salt.drawU(ug, 0, 0, 1, new Dimension2DDouble(size.getWidth(), size.getHeight()));
+		salt.drawU(ug, 0, new Dimension2DDouble(size.getWidth(), size.getHeight()));
+		salt.drawU(ug, 1, new Dimension2DDouble(size.getWidth(), size.getHeight()));
 		g2d.dispose();
 
 		// Writes the off-screen image into a PNG file

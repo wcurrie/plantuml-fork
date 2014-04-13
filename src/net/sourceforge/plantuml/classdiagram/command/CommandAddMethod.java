@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  *
- * Revision $Revision: 12371 $
+ * Revision $Revision: 12821 $
  *
  */
 package net.sourceforge.plantuml.classdiagram.command;
@@ -45,7 +45,7 @@ import net.sourceforge.plantuml.skin.VisibilityModifier;
 public class CommandAddMethod extends SingleLineCommand<ClassDiagram> {
 
 	public CommandAddMethod() {
-		super("(?i)^([\\p{L}0-9_.]+|[%g][^%g]+[%g])[%s]*:[%s]*(.*)$");
+		super("(?i)^([\\p{L}0-9_.]+|[%g][^%g]+[%g])[%s]+:[%s]+(.*)$");
 	}
 
 	@Override

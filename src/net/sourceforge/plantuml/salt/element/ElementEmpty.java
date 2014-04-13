@@ -39,12 +39,12 @@ import net.sourceforge.plantuml.Dimension2DDouble;
 import net.sourceforge.plantuml.graphic.StringBounder;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
 
-public class ElementEmpty implements Element {
+public class ElementEmpty extends AbstractElement {
 
 	public Dimension2D getPreferredDimension(StringBounder stringBounder, double x, double y) {
 		return new Dimension2DDouble(1, 1);
 	}
 
-	public void drawU(UGraphic ug, double x, double y, int zIndex, Dimension2D dimToUse) {
+	public void drawU(UGraphic ug, int zIndex, Dimension2D dimToUse) {
 	}
 }

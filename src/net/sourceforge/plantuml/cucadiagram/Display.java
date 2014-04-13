@@ -60,7 +60,7 @@ public class Display implements Iterable<CharSequence> {
 	}
 
 	public static Display getWithNewlines(Code s) {
-		return getWithNewlines(s.getCode());
+		return getWithNewlines(s.getFullName());
 	}
 
 	public static Display getWithNewlines(String s) {

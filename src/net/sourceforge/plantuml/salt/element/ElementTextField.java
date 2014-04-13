@@ -54,17 +54,17 @@ public class ElementTextField extends AbstractElementText implements Element {
 		return Dimension2DDouble.delta(dim, 6, 2);
 	}
 
-	public void drawU(UGraphic ug, double x, double y, int zIndex, Dimension2D dimToUse) {
+	public void drawU(UGraphic ug, int zIndex, Dimension2D dimToUse) {
 		if (zIndex != 0) {
 			return;
 		}
-		drawText(ug, x + 3, y);
+		drawText(ug, 3, 0);
 		final Dimension2D dim = getPreferredDimension(ug.getStringBounder(), 0, 0);
 		final Dimension2D textDim = getTextDimensionAt(ug.getStringBounder(), 0);
-		ug.apply(new UTranslate(x + 1, y + textDim.getHeight())).draw(new ULine(dim.getWidth() - 3, 0));
-		final double y3 = y + textDim.getHeight() - 3;
-		ug.apply(new UTranslate(x + 1, y3)).draw(new ULine(0, 2));
-		ug.apply(new UTranslate(x + 3 + textDim.getWidth() + 1, y3)).draw(new ULine(0, 2));
+		ug.apply(new UTranslate(1, textDim.getHeight())).draw(new ULine(dim.getWidth() - 3, 0));
+		final double y3 = textDim.getHeight() - 3;
+		ug.apply(new UTranslate(1, y3)).draw(new ULine(0, 2));
+		ug.apply(new UTranslate(3 + textDim.getWidth() + 1, y3)).draw(new ULine(0, 2));
 	}
 
 }

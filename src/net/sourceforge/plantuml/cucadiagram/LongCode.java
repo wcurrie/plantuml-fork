@@ -28,37 +28,63 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 4636 $
+ * Revision $Revision: 8770 $
  *
  */
-package net.sourceforge.plantuml.real;
+package net.sourceforge.plantuml.cucadiagram;
 
-class NegativeForce implements Force {
+import net.sourceforge.plantuml.StringUtils;
 
-	private final Real fixedPoint;
-	private final RealMoveable movingPoint;
-	private final double minimunDistance;
+public class LongCode implements Comparable<LongCode> {
 
-	public NegativeForce(Real fixedPoint, RealMoveable movingPoint, double minimunDistance) {
-		this.fixedPoint = fixedPoint;
-		this.movingPoint = movingPoint;
-		this.minimunDistance = minimunDistance;
+	private final String fullName;
+	private final String separator;
+
+	private LongCode(String fullName, String separator) {
+		if (fullName == null) {
+			throw new IllegalArgumentException();
+		}
+		this.fullName = fullName;
+		this.separator = separator;
+	}
+
+	public String getNamespaceSeparator() {
+		return separator;
+	}
+
+	public static LongCode of(String code, String separator) {
+		if (code == null) {
+			throw new IllegalStateException();
+		}
+		return new LongCode(code, separator);
+	}
+
+	public final String getFullName() {
+		return fullName;
 	}
 
 	@Override
 	public String toString() {
-		return "NegativeForce fixed=" + fixedPoint + " moving=" + movingPoint + " min=" + minimunDistance;
+		return fullName + "(" + separator + ")";
 	}
 
-	public boolean apply() {
-		final double distance = fixedPoint.getCurrentValue() - movingPoint.getCurrentValue();
-		final double diff = distance - minimunDistance;
-		if (diff >= 0) {
-			return false;
-		}
-		// System.err.println("moving " + diff + " " + movingPoint);
-		movingPoint.move(diff);
-		return true;
+	@Override
+	public int hashCode() {
+		return fullName.hashCode();
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		final LongCode other = (LongCode) obj;
+		return this.fullName.equals(other.fullName);
+	}
+
+	public int compareTo(LongCode other) {
+		return this.fullName.compareTo(other.fullName);
+	}
+
+	private LongCode eventuallyRemoveStartingAndEndingDoubleQuote() {
+		return LongCode.of(StringUtils.eventuallyRemoveStartingAndEndingDoubleQuote(fullName), separator);
 	}
 
 }

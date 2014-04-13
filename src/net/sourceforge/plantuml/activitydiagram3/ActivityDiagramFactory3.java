@@ -71,6 +71,7 @@ import net.sourceforge.plantuml.activitydiagram3.command.CommandSwimlane2;
 import net.sourceforge.plantuml.activitydiagram3.command.CommandWhile3;
 import net.sourceforge.plantuml.activitydiagram3.command.CommandWhileEnd3;
 import net.sourceforge.plantuml.command.Command;
+import net.sourceforge.plantuml.command.CommandFootboxIgnored;
 import net.sourceforge.plantuml.command.UmlDiagramFactory;
 
 public class ActivityDiagramFactory3 extends UmlDiagramFactory {
@@ -79,6 +80,7 @@ public class ActivityDiagramFactory3 extends UmlDiagramFactory {
 	protected List<Command> createCommands() {
 
 		final List<Command> cmds = new ArrayList<Command>();
+		cmds.add(new CommandFootboxIgnored());
 
 		addCommonCommands(cmds);
 		cmds.add(new CommandSwimlane());

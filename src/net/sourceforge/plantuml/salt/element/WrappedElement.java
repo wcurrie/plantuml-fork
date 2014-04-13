@@ -50,8 +50,8 @@ public class WrappedElement implements Element {
 		return wrapped.getPreferredDimension(stringBounder, 0, 0);
 	}
 
-	public void drawU(UGraphic ug, double x, double y, int zIndex, Dimension2D dimToUse) {
-		wrapped.drawU(ug, x, y, zIndex, dimToUse);
+	public void drawU(UGraphic ug, int zIndex, Dimension2D dimToUse) {
+		wrapped.drawU(ug, zIndex, dimToUse);
 	}
 
 }

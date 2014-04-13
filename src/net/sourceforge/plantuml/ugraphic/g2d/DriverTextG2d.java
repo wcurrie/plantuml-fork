@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 12235 $
+ * Revision $Revision: 12791 $
  *
  */
 package net.sourceforge.plantuml.ugraphic.g2d;
@@ -77,7 +77,7 @@ public class DriverTextG2d implements UDriver<Graphics2D> {
 		final UText shape = (UText) ushape;
 		final FontConfiguration fontConfiguration = shape.getFontConfiguration();
 
-		final UFont font = fontConfiguration.getFont();
+		final UFont font = fontConfiguration.getFont().scaled(param.getScale());
 		final Dimension2D dimBack = calculateDimension(StringBounderUtils.asStringBounder(g2d), font, shape.getText());
 		if (fontConfiguration.containsStyle(FontStyle.BACKCOLOR)) {
 			final Color extended = mapper.getMappedColor(fontConfiguration.getExtendedColor());

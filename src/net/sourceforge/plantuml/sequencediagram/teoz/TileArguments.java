@@ -44,16 +44,16 @@ import net.sourceforge.plantuml.skin.Skin;
 
 public class TileArguments {
 	private final StringBounder stringBounder;
-	private final Real alpha;
 	private final Real omega;
+	private final Real origin;
 	private final Map<Participant, LivingSpace> livingSpaces;
 	private final Skin skin;
 	private final ISkinParam skinParam;
 
-	public TileArguments(StringBounder stringBounder, Real alpha, Real omega,
-			Map<Participant, LivingSpace> livingSpaces, Skin skin, ISkinParam skinParam) {
+	public TileArguments(StringBounder stringBounder, Real omega, Map<Participant, LivingSpace> livingSpaces,
+			Skin skin, ISkinParam skinParam, Real origin) {
 		this.stringBounder = stringBounder;
-		this.alpha = alpha;
+		this.origin = origin;
 		this.omega = omega;
 		this.livingSpaces = livingSpaces;
 		this.skin = skin;
@@ -64,12 +64,12 @@ public class TileArguments {
 		return stringBounder;
 	}
 
-	public final Real getAlpha() {
-		return alpha;
-	}
-
 	public final Real getOmega() {
 		return omega;
+	}
+
+	public final Real getOrigin() {
+		return origin;
 	}
 
 	public final Map<Participant, LivingSpace> getLivingSpaces() {
@@ -84,9 +84,25 @@ public class TileArguments {
 		return skinParam;
 	}
 
-//	public void ensure(Tile tile) {
-//		getAlpha().ensureLowerThan(tile.getMinX(getStringBounder()));
-//		getOmega().ensureBiggerThan(tile.getMaxX(getStringBounder()));
-//	}
+	public LivingSpace getLivingSpace(Participant p) {
+		return livingSpaces.get(p);
+	}
+
+	public LivingSpace getFirstLivingSpace() {
+		return livingSpaces.entrySet().iterator().next().getValue();
+	}
+
+	public LivingSpace getLastLivingSpace() {
+		LivingSpace result = null;
+		for (LivingSpace v : livingSpaces.values()) {
+			result = v;
+		}
+		return result;
+	}
+
+	// public void ensure(Tile tile) {
+	// getAlpha().ensureLowerThan(tile.getMinX(getStringBounder()));
+	// getOmega().ensureBiggerThan(tile.getMaxX(getStringBounder()));
+	// }
 
 }

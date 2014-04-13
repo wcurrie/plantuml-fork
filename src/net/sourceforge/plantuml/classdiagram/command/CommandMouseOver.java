@@ -77,7 +77,7 @@ public class CommandMouseOver extends CommandMultilines2<ClassDiagram> {
 		if (system.leafExist(code) == false) {
 			return CommandExecutionResult.error("No such entity");
 		}
-		final IEntity entity = system.getLeafs().get(code);
+		final IEntity entity = system.getLeafsget(code);
 		for (String s : lines.subList(1, lines.size() - 1)) {
 			entity.mouseOver(s);
 		}

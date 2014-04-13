@@ -53,5 +53,6 @@ public class ObjectDiagram extends AbstractClassOrObjectDiagram {
 	public UmlDiagramType getUmlDiagramType() {
 		return UmlDiagramType.OBJECT;
 	}
+	
 
 }

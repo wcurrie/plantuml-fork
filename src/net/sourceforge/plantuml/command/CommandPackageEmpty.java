@@ -62,7 +62,7 @@ public class CommandPackageEmpty extends SingleLineCommand<AbstractEntityDiagram
 				display = null;
 			} else {
 				code = Code.of(StringUtils.eventuallyRemoveStartingAndEndingDoubleQuote(arg.get(0)));
-				display = code.getCode();
+				display = code.getFullName();
 			}
 		} else {
 			display = StringUtils.eventuallyRemoveStartingAndEndingDoubleQuote(arg.get(0));

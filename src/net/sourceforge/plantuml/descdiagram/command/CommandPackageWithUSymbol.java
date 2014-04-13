@@ -83,7 +83,7 @@ public class CommandPackageWithUSymbol extends SingleLineCommand2<AbstractEntity
 				display = null;
 			} else {
 				code = Code.of(name);
-				display = code.getCode();
+				display = code.getFullName();
 			}
 		} else {
 			display = name;

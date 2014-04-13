@@ -121,7 +121,7 @@ public class NoteTile implements Tile {
 		return dim.getHeight();
 	}
 
-	public void compile(StringBounder stringBounder) {
+	public void addConstraints(StringBounder stringBounder) {
 		// final Component comp = getComponent(stringBounder);
 		// final Dimension2D dim = comp.getPreferredDimension(stringBounder);
 		// final double width = dim.getWidth();

@@ -61,15 +61,7 @@ class RealMiddle implements Real {
 		throw new UnsupportedOperationException();
 	}
 
-	public Real subAtLeast(double delta) {
-		throw new UnsupportedOperationException();
-	}
-
 	public void ensureBiggerThan(Real other) {
-		throw new UnsupportedOperationException();
-	}
-
-	public void ensureLowerThan(Real other) {
 		throw new UnsupportedOperationException();
 	}
 

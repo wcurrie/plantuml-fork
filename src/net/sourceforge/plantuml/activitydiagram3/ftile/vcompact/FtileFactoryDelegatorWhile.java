@@ -36,7 +36,6 @@ package net.sourceforge.plantuml.activitydiagram3.ftile.vcompact;
 import net.sourceforge.plantuml.ColorParam;
 import net.sourceforge.plantuml.FontParam;
 import net.sourceforge.plantuml.ISkinParam;
-import net.sourceforge.plantuml.OptionFlags;
 import net.sourceforge.plantuml.activitydiagram3.LinkRendering;
 import net.sourceforge.plantuml.activitydiagram3.ftile.Ftile;
 import net.sourceforge.plantuml.activitydiagram3.ftile.FtileFactory;
@@ -68,12 +67,8 @@ public class FtileFactoryDelegatorWhile extends FtileFactoryDelegator {
 
 		final LinkRendering endInlinkRendering = whileBlock.getOutLinkRendering();
 		final HtmlColor endInlinkColor = endInlinkRendering == null ? arrowColor : endInlinkRendering.getColor();
-		if (OptionFlags.USE_4747) {
-			return FtileWhile4747.create(swimlane, whileBlock, test, borderColor, backColor, arrowColor, yes, out,
-					fontArrow, endInlinkColor, afterEndwhile, getFactory(), conditionStyle, fontTest);
-		}
-		return FtileWhile2.create(swimlane, whileBlock, test, borderColor, backColor, arrowColor, yes, out, fontArrow,
-				endInlinkColor, afterEndwhile, getFactory(), conditionStyle, fontTest);
+		return FtileWhile.create(swimlane, whileBlock, test, borderColor, backColor, arrowColor, yes, out,
+				fontArrow, endInlinkColor, afterEndwhile, getFactory(), conditionStyle, fontTest);
 	}
 
 }

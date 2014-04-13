@@ -306,7 +306,7 @@ public class DotStringFactory implements Moveable {
 				final int idx2 = svg.indexOf("d=\"", idx + 1);
 				idx = svg.indexOf("points=\"", idx + 1);
 				final List<Point2D.Double> points;
-				if (idx2 != -1 && idx2 < idx) {
+				if (idx2 != -1 && (idx == -1 || idx2 < idx)) {
 					// GraphViz 2.30
 					points = SvekUtils.extractD(svg, idx2, fullHeight);
 				} else {

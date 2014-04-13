@@ -80,7 +80,7 @@ public class FtileDiamond extends AbstractFtile {
 		return new FtileDiamond(shadowing(), backColor, borderColor, swimlane, north, south, east1, west1);
 	}
 
-	public Ftile withSouth(TextBlock south) {
+	public FtileDiamond withSouth(TextBlock south) {
 		return new FtileDiamond(shadowing(), backColor, borderColor, swimlane, north, south, east1, west1);
 	}
 

@@ -53,7 +53,7 @@ public class CommandCreateBlock extends SingleLineCommand<CompositeDiagram> {
 		String display = arg.get(0);
 		final Code code = Code.of(arg.get(1));
 		if (display == null) {
-			display = code.getCode();
+			display = code.getFullName();
 		}
 		final IEntity ent = diagram.getOrCreateLeaf(code, null, null);
 		ent.setDisplay(Display.getWithNewlines(display));

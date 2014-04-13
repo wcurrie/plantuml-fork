@@ -57,6 +57,7 @@ import net.sourceforge.plantuml.cucadiagram.IGroup;
 import net.sourceforge.plantuml.cucadiagram.ILeaf;
 import net.sourceforge.plantuml.cucadiagram.LeafType;
 import net.sourceforge.plantuml.cucadiagram.Link;
+import net.sourceforge.plantuml.cucadiagram.LongCode;
 import net.sourceforge.plantuml.cucadiagram.Member;
 import net.sourceforge.plantuml.cucadiagram.PortionShower;
 import net.sourceforge.plantuml.cucadiagram.Rankdir;
@@ -77,6 +78,8 @@ final class EntityImpl implements ILeaf, IGroup {
 
 	// Entity
 	private final Code code;
+	private final LongCode longCode;
+
 	private Url url;
 
 	private final Bodier bodier;
@@ -93,7 +96,7 @@ final class EntityImpl implements ILeaf, IGroup {
 	private final List<String> mouseOver = new ArrayList<String>();
 
 	// Group
-	private String namespace;
+	private Code namespace2;
 
 	private GroupType groupType;
 
@@ -122,7 +125,8 @@ final class EntityImpl implements ILeaf, IGroup {
 		this.top = top;
 	}
 
-	private EntityImpl(EntityFactory entityFactory, Code code, Bodier bodier, IGroup parentContainer) {
+	private EntityImpl(EntityFactory entityFactory, Code code, Bodier bodier, IGroup parentContainer,
+			LongCode longCode, String namespaceSeparator) {
 		if (code == null) {
 			throw new IllegalArgumentException();
 		}
@@ -130,18 +134,20 @@ final class EntityImpl implements ILeaf, IGroup {
 		this.bodier = bodier;
 		this.code = code;
 		this.parentContainer = parentContainer;
+		this.longCode = longCode;
 	}
 
-	EntityImpl(EntityFactory entityFactory, Code code, Bodier bodier, IGroup parentContainer, LeafType leafType) {
-		this(entityFactory, code, bodier, parentContainer);
+	EntityImpl(EntityFactory entityFactory, Code code, Bodier bodier, IGroup parentContainer, LeafType leafType,
+			LongCode longCode, String namespaceSeparator) {
+		this(entityFactory, code, bodier, parentContainer, longCode, namespaceSeparator);
 		this.leafType = leafType;
 	}
 
 	EntityImpl(EntityFactory entityFactory, Code code, Bodier bodier, IGroup parentContainer, GroupType groupType,
-			String namespace) {
-		this(entityFactory, code, bodier, parentContainer);
+			Code namespace2, LongCode longCode, String namespaceSeparator) {
+		this(entityFactory, code, bodier, parentContainer, longCode, namespaceSeparator);
 		this.groupType = groupType;
-		this.namespace = namespace;
+		this.namespace2 = namespace2;
 	}
 
 	public void setContainer(IGroup container) {
@@ -240,7 +246,7 @@ final class EntityImpl implements ILeaf, IGroup {
 	}
 
 	public final void setNearDecoration(boolean nearDecoration) {
-		checkNotGroup();
+		// checkNotGroup();
 		this.nearDecoration = nearDecoration;
 	}
 
@@ -452,9 +458,9 @@ final class EntityImpl implements ILeaf, IGroup {
 		return groupType;
 	}
 
-	public String getNamespace() {
+	public Code getNamespace2() {
 		checkGroup();
-		return namespace;
+		return namespace2;
 	}
 
 	public boolean isAutonom() {
@@ -523,12 +529,12 @@ final class EntityImpl implements ILeaf, IGroup {
 		this.leafType = leafType;
 	}
 
-	void muteToGroup(String namespace, GroupType groupType, IGroup parentContainer) {
+	void muteToGroup(Code namespace2, GroupType groupType, IGroup parentContainer) {
 		checkNotGroup();
 		if (parentContainer.isGroup() == false) {
 			throw new IllegalArgumentException();
 		}
-		this.namespace = namespace;
+		this.namespace2 = namespace2;
 		this.groupType = groupType;
 		this.leafType = null;
 		this.parentContainer = parentContainer;
@@ -602,11 +608,15 @@ final class EntityImpl implements ILeaf, IGroup {
 	}
 
 	public void setHectorLayer(int layer) {
-		System.err.println("layer=" + layer);
+		// System.err.println("layer=" + layer);
 		this.layer = layer;
 		if (layer > 1000) {
 			throw new IllegalArgumentException();
 		}
+	}
+
+	public LongCode getLongCode() {
+		return longCode;
 	}
 
 }

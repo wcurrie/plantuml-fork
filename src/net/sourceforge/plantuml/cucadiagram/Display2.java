@@ -63,7 +63,7 @@ public class Display2 implements Iterable<CharSequence> {
 	}
 
 	public static Display2 getWithNewlines(Code s) {
-		return getWithNewlines(s.getCode());
+		return getWithNewlines(s.getFullName());
 	}
 
 	public static Display2 getWithNewlines(String s) {

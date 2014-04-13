@@ -89,6 +89,7 @@ public class StripeSimple implements Stripe {
 		this.commands.add(CommandCreoleExposantChange.create(FontPosition.INDICE));
 		this.commands.add(CommandCreoleImg.create());
 		this.commands.add(CommandCreoleSprite.create());
+		this.commands.add(CommandCreoleSpace.create());
 		this.commands.add(CommandCreoleFontFamilyChange.create());
 		this.commands.add(CommandCreoleFontFamilyChange.createEol());
 		this.commands.add(CommandCreoleMonospaced.create());
@@ -132,6 +133,10 @@ public class StripeSimple implements Stripe {
 
 	public void addImage(String src) {
 		atoms.add(AtomImg.create(src, ImgValign.TOP, 0));
+	}
+
+	public void addSpace(int size) {
+		atoms.add(AtomSpace.create(size));
 	}
 
 	public void addUrl(Url url) {

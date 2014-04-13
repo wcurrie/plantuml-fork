@@ -74,7 +74,11 @@ public class SkinParamBackcolored extends SkinParamDelegator {
 			return backColorElement;
 		}
 		if (forceClickage) {
-			clickable = true;
+			final HtmlColor c1 = super.getHtmlColor(param, stereotype, true);
+			if (c1 != null) {
+				return c1;
+			}
+			// clickable = true;
 		}
 		return super.getHtmlColor(param, stereotype, clickable);
 	}

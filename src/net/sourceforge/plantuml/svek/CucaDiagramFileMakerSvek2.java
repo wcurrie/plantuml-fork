@@ -453,7 +453,7 @@ public final class CucaDiagramFileMakerSvek2 {
 			}
 			if (dotData.isEmpty(g) && g.getGroupType() == GroupType.PACKAGE) {
 				final ILeaf folder = entityFactory.createLeaf(g.getCode(), g.getDisplay(), LeafType.EMPTY_PACKAGE,
-						g.getParentContainer(), null);
+						g.getParentContainer(), null, dotData.getNamespaceSeparator());
 				final USymbol symbol = g.getUSymbol();
 				folder.setUSymbol(symbol);
 				if (g.getSpecificBackColor() == null) {

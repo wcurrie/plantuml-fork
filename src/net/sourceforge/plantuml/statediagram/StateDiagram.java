@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 12495 $
+ * Revision $Revision: 12853 $
  *
  */
 package net.sourceforge.plantuml.statediagram;
@@ -51,7 +51,7 @@ public class StateDiagram extends AbstractEntityDiagram {
 		if (leafExist(code) == false) {
 			return true;
 		}
-		final IEntity existing = this.getLeafs().get(code);
+		final IEntity existing = this.getLeafsget(code);
 		if (getCurrentGroup().getGroupType() == GroupType.CONCURRENT_STATE
 				&& getCurrentGroup() != existing.getParentContainer()) {
 			return false;
@@ -69,7 +69,7 @@ public class StateDiagram extends AbstractEntityDiagram {
 			throw new IllegalStateException("Concurrent State " + code);
 		}
 		if (type == null) {
-			if (code.getCode().startsWith("[*]")) {
+			if (code.getFullName().startsWith("[*]")) {
 				throw new IllegalArgumentException();
 			}
 			if (isGroup(code)) {
@@ -85,7 +85,7 @@ public class StateDiagram extends AbstractEntityDiagram {
 		if (EntityUtils.groupRoot(g)) {
 			return getOrCreateLeaf(Code.of("*start"), LeafType.CIRCLE_START, null);
 		}
-		return getOrCreateLeaf(Code.of("*start*" + g.getCode().getCode()), LeafType.CIRCLE_START, null);
+		return getOrCreateLeaf(Code.of("*start*" + g.getCode().getFullName()), LeafType.CIRCLE_START, null);
 	}
 
 	public IEntity getEnd() {
@@ -93,7 +93,7 @@ public class StateDiagram extends AbstractEntityDiagram {
 		if (EntityUtils.groupRoot(p)) {
 			return getOrCreateLeaf(Code.of("*end"), LeafType.CIRCLE_END, null);
 		}
-		return getOrCreateLeaf(Code.of("*end*" + p.getCode().getCode()), LeafType.CIRCLE_END, null);
+		return getOrCreateLeaf(Code.of("*end*" + p.getCode().getFullName()), LeafType.CIRCLE_END, null);
 	}
 
 	public IEntity getHistorical() {
@@ -101,13 +101,13 @@ public class StateDiagram extends AbstractEntityDiagram {
 		if (EntityUtils.groupRoot(g)) {
 			return getOrCreateLeaf(Code.of("*historical"), LeafType.PSEUDO_STATE, null);
 		}
-		return getOrCreateLeaf(Code.of("*historical*" + g.getCode().getCode()), LeafType.PSEUDO_STATE, null);
+		return getOrCreateLeaf(Code.of("*historical*" + g.getCode().getFullName()), LeafType.PSEUDO_STATE, null);
 	}
 
 	public IEntity getHistorical(Code codeGroup) {
 		final IEntity g = getOrCreateGroup(codeGroup, Display.getWithNewlines(codeGroup), null, GroupType.STATE,
 				getRootGroup());
-		final IEntity result = getOrCreateLeaf(Code.of("*historical*" + g.getCode().getCode()), LeafType.PSEUDO_STATE, null);
+		final IEntity result = getOrCreateLeaf(Code.of("*historical*" + g.getCode().getFullName()), LeafType.PSEUDO_STATE, null);
 		endGroup();
 		return result;
 	}
@@ -160,6 +160,7 @@ public class StateDiagram extends AbstractEntityDiagram {
 	public final boolean isHideEmptyDescriptionForState() {
 		return hideEmptyDescription;
 	}
+	
 
 	// public Link isEntryPoint(IEntity ent) {
 	// final Stereotype stereotype = ent.getStereotype();

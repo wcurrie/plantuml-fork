@@ -71,7 +71,7 @@ final public class CommandLinkClass extends SingleLineCommand2<AbstractClassOrOb
 				new RegexLeaf("HEADER", "^(?:@([\\d.]+)[%s]+)?"), //
 				new RegexOr(//
 						new RegexLeaf("ENT1", "(?:" + optionalKeywords(umlDiagramType) + "[%s]+)?"
-								+ "(\\.?[\\p{L}0-9_]+(?:\\.[\\p{L}0-9_]+)*|[%g][^%g]+[%g])[%s]*(\\<\\<.*\\>\\>)?"),
+								+ getClassIdentifier()),
 						new RegexLeaf("COUPLE1",
 								"\\([%s]*(\\.?[\\p{L}0-9_]+(?:\\.[\\p{L}0-9_]+)*)[%s]*,[%s]*(\\.?[\\p{L}0-9_]+(?:\\.[\\p{L}0-9_]+)*)[%s]*\\)")),
 				new RegexLeaf("[%s]*"), //
@@ -95,12 +95,20 @@ final public class CommandLinkClass extends SingleLineCommand2<AbstractClassOrOb
 				new RegexLeaf("[%s]*"), //
 				new RegexOr(
 						new RegexLeaf("ENT2", "(?:" + optionalKeywords(umlDiagramType) + "[%s]+)?"
-								+ "(\\.?[\\p{L}0-9_]+(?:\\.[\\p{L}0-9_]+)*|[%g][^%g]+[%g])[%s]*(\\<\\<.*\\>\\>)?"),
+								+ getClassIdentifier()),
 						new RegexLeaf("COUPLE2",
 								"\\([%s]*(\\.?[\\p{L}0-9_]+(?:\\.[\\p{L}0-9_]+)*)[%s]*,[%s]*(\\.?[\\p{L}0-9_]+(?:\\.[\\p{L}0-9_]+)*)[%s]*\\)")),
 				new RegexLeaf("[%s]*"), //
 				new RegexLeaf("LABEL_LINK", "(?::[%s]*(.+))?"), //
 				new RegexLeaf("$"));
+	}
+
+	private static String getClassIdentifier() {
+		return "(" + getSeparator() + "?[\\p{L}0-9_]+(?:" + getSeparator() + "[\\p{L}0-9_]+)*|[%g][^%g]+[%g])[%s]*(\\<\\<.*\\>\\>)?";
+	}
+
+	private static String getSeparator() {
+		return "(?:\\.|::)";
 	}
 
 	private static String optionalKeywords(UmlDiagramType type) {

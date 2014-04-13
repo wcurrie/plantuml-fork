@@ -31,20 +31,9 @@
  * Revision $Revision: 12235 $
  *
  */
-package net.sourceforge.plantuml.command;
+package net.sourceforge.plantuml.ugraphic;
 
-import java.util.List;
+public interface Scalable {
 
-import net.sourceforge.plantuml.UmlDiagram;
-
-public class CommandFootbox extends SingleLineCommand<UmlDiagram> {
-
-	public CommandFootbox() {
-		super("(?i)^(hide|show)?[%s]*footbox$");
-	}
-
-	@Override
-	protected CommandExecutionResult executeArg(UmlDiagram diagram, List<String> arg) {
-		return CommandExecutionResult.ok();
-	}
+	public UShape getScaled(double scale);
 }

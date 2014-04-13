@@ -42,6 +42,10 @@ import net.sourceforge.plantuml.graphic.StringBounder;
 
 public class TextLimitFinder implements UGraphic {
 
+	public boolean isSpecialTxt() {
+		return false;
+	}
+
 	public UGraphic apply(UChange change) {
 		if (change instanceof UTranslate) {
 			return new TextLimitFinder(stringBounder, minmax, translate.compose((UTranslate) change));

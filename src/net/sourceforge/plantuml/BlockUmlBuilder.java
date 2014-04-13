@@ -71,10 +71,12 @@ final public class BlockUmlBuilder {
 		String s = null;
 		List<String> current = null;
 		boolean paused = false;
+		int startLine = 0;
 		while ((s = includer.readLine()) != null) {
 			if (StartUtils.isArobaseStartDiagram(s)) {
 				current = new ArrayList<String>();
 				paused = false;
+				startLine = includer.getLineNumber();
 			}
 			if (StartUtils.isArobasePauseDiagram(s)) {
 				paused = true;
@@ -88,14 +90,14 @@ final public class BlockUmlBuilder {
 					current.add(append);
 				}
 			}
-			
+
 			if (StartUtils.isArobaseUnpauseDiagram(s)) {
 				paused = false;
 				reader2.setPaused(false);
 			}
 			if (StartUtils.isArobaseEndDiagram(s) && current != null) {
 				current.addAll(1, config);
-				blocks.add(new BlockUml(current));
+				blocks.add(new BlockUml(current, startLine));
 				current = null;
 				reader2.setPaused(false);
 			}

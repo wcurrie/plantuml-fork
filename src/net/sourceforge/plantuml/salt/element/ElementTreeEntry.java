@@ -75,13 +75,13 @@ public class ElementTreeEntry {
 	}
 
 	public void drawFirstCell(UGraphic ug, double x, double y) {
-		firstElement.drawU(ug.apply(new UTranslate(x + getXDelta(), y)), 0, 0, 0, null);
+		firstElement.drawU(ug.apply(new UTranslate(x + getXDelta(), y)), 0, null);
 	}
 
 	public void drawSecondCell(UGraphic ug, double x, double y, ListWidth otherWidth, double margin) {
 		final Iterator<Double> it = otherWidth.iterator();
 		for (Element element : otherElements) {
-			element.drawU(ug.apply(new UTranslate(x, y)), 0, 0, 0, null);
+			element.drawU(ug.apply(new UTranslate(x, y)), 0, null);
 			x += it.next() + margin;
 		}
 	}

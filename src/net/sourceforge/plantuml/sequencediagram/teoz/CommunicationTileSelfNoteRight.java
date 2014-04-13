@@ -94,8 +94,8 @@ public class CommunicationTileSelfNoteRight implements Tile {
 		return Math.max(tile.getPreferredHeight(stringBounder), dim.getHeight());
 	}
 
-	public void compile(StringBounder stringBounder) {
-		tile.compile(stringBounder);
+	public void addConstraints(StringBounder stringBounder) {
+		tile.addConstraints(stringBounder);
 	}
 
 	public Real getMinX(StringBounder stringBounder) {

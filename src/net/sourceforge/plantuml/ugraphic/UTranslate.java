@@ -73,6 +73,10 @@ public class UTranslate implements UChange {
 		return new Point2D.Double(p.getX() + dx, p.getY() + dy);
 	}
 
+	public UTranslate scaled(double scale) {
+		return new UTranslate(dx * scale, dy * scale);
+	}
+
 	public UTranslate compose(UTranslate other) {
 		return new UTranslate(dx + other.dx, dy + other.dy);
 	}

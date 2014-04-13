@@ -28,7 +28,7 @@
  *
  * Original Author:  Arnaud Roques
  * 
- * Revision $Revision: 12235 $
+ * Revision $Revision: 12976 $
  *
  */
 package net.sourceforge.plantuml.ugraphic;
@@ -75,6 +75,13 @@ public class UStroke implements UChange {
 			return null;
 		}
 		return "" + dashVisible + "," + dashSpace;
+	}
+
+	public String getDashTikz() {
+		if (dashVisible == 0) {
+			return null;
+		}
+		return "on " + dashVisible + "pt off " + dashSpace + "pt";
 	}
 
 	// public String getDasharrayEps() {

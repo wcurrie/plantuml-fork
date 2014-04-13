@@ -48,7 +48,7 @@ import net.sourceforge.plantuml.ugraphic.UFont;
 import net.sourceforge.plantuml.ugraphic.UGraphic;
 import net.sourceforge.plantuml.ugraphic.UTranslate;
 
-abstract class AbstractElementText implements Element {
+abstract class AbstractElementText extends AbstractElement {
 
 	private final TextBlock block;
 	private final FontConfiguration config;
@@ -87,17 +87,17 @@ abstract class AbstractElementText implements Element {
 	}
 
 	private double getSingleSpace(StringBounder stringBounder) {
-//		double max = 0;
-//		for (int i = 32; i < 127; i++) {
-//			final char c = (char) i;
-//			final double w = TextBlockUtils.create(Arrays.asList("" + c), config, HorizontalAlignment.LEFT)
-//					.calculateDimension(stringBounder).getWidth();
-//			if (w > max) {
-// Log.println("c="+c+" "+max);
-//				max = w;
-//			}
-//		}
-//		return max;
+		// double max = 0;
+		// for (int i = 32; i < 127; i++) {
+		// final char c = (char) i;
+		// final double w = TextBlockUtils.create(Arrays.asList("" + c), config, HorizontalAlignment.LEFT)
+		// .calculateDimension(stringBounder).getWidth();
+		// if (w > max) {
+		// Log.println("c="+c+" "+max);
+		// max = w;
+		// }
+		// }
+		// return max;
 		return 8;
 	}
 

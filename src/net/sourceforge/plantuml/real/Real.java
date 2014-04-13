@@ -43,11 +43,7 @@ public interface Real {
 
 	public Real addAtLeast(double delta);
 
-	public Real subAtLeast(double delta);
-
 	public void ensureBiggerThan(Real other);
-
-	public void ensureLowerThan(Real other);
 
 	public void compile();
 

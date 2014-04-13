@@ -82,7 +82,7 @@ public final class CucaDiagramTxtMaker {
 
 		final Map<IEntity, Block> blocks = new HashMap<IEntity, Block>();
 
-		for (IEntity ent : diagram.getLeafs().values()) {
+		for (IEntity ent : diagram.getLeafsvalues()) {
 			// printClass(ent);
 			// ug.translate(0, getHeight(ent) + 1);
 			final double width = getWidth(ent) * getXPixelPerChar();
@@ -104,7 +104,7 @@ public final class CucaDiagramTxtMaker {
 		for (Path p : paths) {
 			p.getDotPath().draw(globalUg.getCharArea(), getXPixelPerChar(), getYPixelPerChar());
 		}
-		for (IEntity ent : diagram.getLeafs().values()) {
+		for (IEntity ent : diagram.getLeafsvalues()) {
 			final Block b = blocks.get(ent);
 			final Point2D p = b.getPosition();
 			printClass(

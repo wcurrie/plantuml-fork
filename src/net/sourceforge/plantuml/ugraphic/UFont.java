@@ -59,6 +59,14 @@ public class UFont {
 		return font;
 	}
 
+	public UFont scaled(double scale) {
+		if (scale == 1) {
+			return this;
+		}
+		final float current = font.getSize2D();
+		return deriveSize((float) (current * scale));
+	}
+
 	public UFont deriveSize(float size) {
 		return new UFont(font.deriveFont(size), family);
 	}
@@ -136,4 +144,5 @@ public class UFont {
 	public FontMetrics getFontMetrics() {
 		return TextBlockUtils.getFontMetrics(getFont());
 	}
+
 }
