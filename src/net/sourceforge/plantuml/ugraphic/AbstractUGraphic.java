@@ -93,4 +93,11 @@ public abstract class AbstractUGraphic<O> extends AbstractCommonUGraphic {
 	protected void afterDraw() {
 	}
 
+    @Override
+    public void startGroup(String... attributeNamesAndValues) {
+    }
+
+    @Override
+    public void endGroup() {
+    }
 }

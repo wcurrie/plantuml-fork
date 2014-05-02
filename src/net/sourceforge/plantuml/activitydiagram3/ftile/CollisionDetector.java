@@ -213,7 +213,15 @@ public class CollisionDetector implements UGraphic {
 	public void flushUg() {
 	}
 
-	public void drawDebug(UGraphic ug) {
+    @Override
+    public void startGroup(String... attributeNamesAndValues) {
+    }
+
+    @Override
+    public void endGroup() {
+    }
+
+    public void drawDebug(UGraphic ug) {
 		context.drawDebug(ug);
 	}
 

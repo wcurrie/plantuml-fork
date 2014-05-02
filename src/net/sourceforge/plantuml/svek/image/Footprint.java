@@ -156,7 +156,15 @@ public class Footprint {
 		public void flushUg() {
 		}
 
-	}
+        @Override
+        public void startGroup(String... attributeNamesAndValues) {
+        }
+
+        @Override
+        public void endGroup() {
+        }
+
+    }
 
 	public ContainingEllipse getEllipse(UDrawable drawable, double alpha) {
 		final MyUGraphic ug = new MyUGraphic();

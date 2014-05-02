@@ -91,4 +91,12 @@ public abstract class UGraphicDelegator implements UGraphic {
 		ug.flushUg();
 	}
 
+    public void startGroup(String... attributeNamesAndValues) {
+        ug.startGroup(attributeNamesAndValues);
+    }
+
+    public void endGroup() {
+        ug.endGroup();
+    }
+
 }

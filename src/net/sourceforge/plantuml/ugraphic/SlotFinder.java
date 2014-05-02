@@ -143,4 +143,12 @@ public class SlotFinder implements UGraphic {
 	public void flushUg() {
 	}
 
+    @Override
+    public void startGroup(String... attributeNamesAndValues) {
+    }
+
+    @Override
+    public void endGroup() {
+    }
+
 }
