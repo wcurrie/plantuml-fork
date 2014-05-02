@@ -22,3 +22,6 @@ are involved
 
 How to make participant line fatter with respect to delay between messages?
 * Would provide a visual clue in log-tool for the biggest delay in a transaction.
+
+Releasing:
+mvn release:perform -Darguments="-DaltDeploymentRepository=repo::default::file:../mvn-repo/releases/"
